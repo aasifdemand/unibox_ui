@@ -4,7 +4,7 @@ import Button from "../../components/ui/button";
 import Input from "../../components/ui/input";
 import Checkbox from "../../components/ui/checkbox";
 import { User, Mail } from "lucide-react";
-import { useAuthStore } from "../../store/auth.store";
+import { useSignup, useCurrentUser } from "../../hooks/useAuth";
 import { signupSchema } from "../../validators/signup.schema";
 import { useToast } from "../../hooks/useToast";
 import { mapZodErrors } from "../../utils/map-zod";
@@ -24,9 +24,9 @@ const Signup = () => {
 
   const [errors, setErrors] = useState({});
 
-  const signup = useAuthStore((state) => state.signup);
-  const loading = useAuthStore((state) => state.loading);
-  const user = useAuthStore((state) => state.user);
+  // React Query hooks
+  const signup = useSignup();
+  const { data: user, isLoading: userLoading } = useCurrentUser();
 
   useEffect(() => {
     if (user) {
@@ -71,20 +71,24 @@ const Signup = () => {
 
     const toastId = toast.loading("Creating your account...");
 
-    const success = await signup({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-    });
+    try {
+      await signup.mutateAsync({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
 
-    toast.dismiss(toastId);
-
-    if (success) {
+      toast.dismiss(toastId);
       toast.success("Account created successfully 🎉");
-    } else {
-      toast.error("Signup failed. Please try again.");
+      // Navigation will happen automatically via useEffect when user data loads
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error.message || "Signup failed. Please try again.");
     }
   };
+
+  // Handle loading state
+  const isLoading = signup.isPending || userLoading;
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -108,6 +112,7 @@ const Signup = () => {
             required
             icon={User}
             error={errors.name}
+            disabled={isLoading}
           />
 
           <Input
@@ -120,6 +125,7 @@ const Signup = () => {
             required
             icon={Mail}
             error={errors.email}
+            disabled={isLoading}
           />
 
           <Input.Password
@@ -132,6 +138,7 @@ const Signup = () => {
             minLength={8}
             error={errors.password}
             helperText="Must be at least 8 characters"
+            disabled={isLoading}
           />
 
           <Input.Password
@@ -142,6 +149,7 @@ const Signup = () => {
             placeholder="••••••••"
             required
             error={errors.confirmPassword}
+            disabled={isLoading}
           />
 
           <Checkbox
@@ -168,6 +176,7 @@ const Signup = () => {
             }
             required
             error={errors.acceptTerms}
+            disabled={isLoading}
           />
 
           <Button
@@ -175,8 +184,8 @@ const Signup = () => {
             variant="primary"
             size="large"
             fullWidth
-            isLoading={loading}
-            disabled={loading}
+            isLoading={isLoading}
+            disabled={isLoading}
           >
             Create Account
           </Button>
@@ -206,6 +215,7 @@ const Signup = () => {
                   import.meta.env.VITE_API_URL
                 }/auth/google`)
               }
+              disabled={isLoading}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path

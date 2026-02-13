@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Users,
   Upload,
@@ -27,9 +27,15 @@ import {
   Phone,
 } from "lucide-react";
 import Button from "../ui/button";
-import { useUploadStore } from "../../store/upload.store";
-import { useSenderStore } from "../../store/sender.store";
 import * as XLSX from "xlsx";
+
+// Import React Query hooks
+import { useBatches, useUploadBatch } from "../../hooks/useBatches";
+import { useSenders, useCreateSmtpSender } from "../../hooks/useSenders";
+import {
+  initiateGmailOAuth,
+  initiateOutlookOAuth,
+} from "../../hooks/useSenders";
 
 const Step3Audience = ({ errors, watch, setValue, navigate }) => {
   const [senderType, setSenderType] = useState("gmail");
@@ -49,7 +55,6 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
     city: "",
     country: "",
   });
-  const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [previewRows, setPreviewRows] = useState(5);
   const [validationErrors, setValidationErrors] = useState([]);
@@ -58,26 +63,26 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
   const watchListBatchId = watch("listBatchId");
   const watchSenderId = watch("senderId");
 
+  // React Query hooks
   const {
-    batches: verifiedBatches,
+    data: batches = [],
     isLoading: isLoadingBatches,
-    fetchBatches,
-    uploadBatch,
-  } = useUploadStore();
+    refetch: refetchBatches,
+  } = useBatches();
 
   const {
-    senders,
+    data: senders = [],
     isLoading: isLoadingSenders,
-    fetchSenders,
-    initiateGmailOAuth,
-    initiateOutlookOAuth,
-    createSmtpSender,
-  } = useSenderStore();
+    refetch: refetchSenders,
+  } = useSenders();
 
-  useEffect(() => {
-    fetchBatches();
-    fetchSenders();
-  }, [fetchBatches, fetchSenders]);
+  const uploadBatch = useUploadBatch();
+  const createSmtpSender = useCreateSmtpSender();
+
+  // Filter verified batches
+  const verifiedBatches = batches.filter(
+    (batch) => batch.status === "verified",
+  );
 
   const handleBatchSelect = (batchId) => {
     setValue("listBatchId", batchId, { shouldValidate: true });
@@ -86,8 +91,9 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
   // Update the handleSenderSelect function in Step3Audience:
   const handleSenderSelect = (senderId, senderType) => {
     setValue("senderId", senderId, { shouldValidate: true });
-    setValue("senderType", senderType, { shouldValidate: true }); // Add this line
+    setValue("senderType", senderType, { shouldValidate: true });
   };
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -193,7 +199,6 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
       return;
     }
 
-    setUploading(true);
     setUploadProgress(0);
 
     // Simulate upload progress
@@ -216,34 +221,27 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
       formData.append("mapping", JSON.stringify(mapping));
       formData.append("totalRows", uploadedData.length.toString());
 
-      const result = await uploadBatch(formData);
+      const result = await uploadBatch.mutateAsync(formData);
 
       clearInterval(progressInterval);
       setUploadProgress(100);
 
-      if (result.success) {
-        setTimeout(() => {
-          setUploading(false);
-          setShowUploadModal(false);
-          resetUploadState();
-          fetchBatches();
+      setTimeout(() => {
+        setShowUploadModal(false);
+        resetUploadState();
+        refetchBatches();
 
-          // If batchId is returned, auto-select it
-          if (result.data.batchId) {
-            setValue("listBatchId", result.data.batchId, {
-              shouldValidate: true,
-            });
-          }
-        }, 500);
-      } else {
-        setUploading(false);
-        alert(`Upload failed: ${result.error}`);
-      }
+        // If batchId is returned, auto-select it
+        if (result.data?.batchId) {
+          setValue("listBatchId", result.data.batchId, {
+            shouldValidate: true,
+          });
+        }
+      }, 500);
     } catch (error) {
       clearInterval(progressInterval);
-      setUploading(false);
       console.error("Upload error:", error);
-      alert("Upload failed. Please try again.");
+      alert(error.message || "Upload failed. Please try again.");
     }
   };
 
@@ -291,10 +289,13 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
       smtpPassword: formData.get("smtpPassword"),
     };
 
-    const success = await createSmtpSender(smtpData);
-    if (success) {
+    try {
+      await createSmtpSender.mutateAsync(smtpData);
       setShowSmtpForm(false);
-      fetchSenders();
+      refetchSenders();
+    } catch (error) {
+      console.error("Failed to create SMTP sender:", error);
+      alert(error.message || "Failed to create SMTP sender");
     }
   };
 
@@ -319,6 +320,9 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
     city: "City",
     country: "Country",
   };
+
+  // Check if any mutation is pending
+  const isUploading = uploadBatch.isPending;
 
   return (
     <div className="space-y-8">
@@ -351,6 +355,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
             variant="primary"
             size="small"
             onClick={() => setShowUploadModal(true)}
+            disabled={isUploading}
           >
             <Upload className="w-4 h-4 mr-2" />
             Upload New List
@@ -374,6 +379,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
             <Button
               onClick={() => setShowUploadModal(true)}
               className="mx-auto"
+              disabled={isUploading}
             >
               <Upload className="w-4 h-4 mr-2" />
               Upload Contact List
@@ -649,7 +655,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                         name="displayName"
                         type="text"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        disabled={createSmtpSender.isPending}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                         placeholder="Your Company Name"
                       />
                     </div>
@@ -661,7 +668,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                         name="smtpEmail"
                         type="email"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        disabled={createSmtpSender.isPending}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                         placeholder="sender@yourdomain.com"
                       />
                     </div>
@@ -681,7 +689,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                           name="smtpHost"
                           type="text"
                           required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          disabled={createSmtpSender.isPending}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                           placeholder="smtp.yourdomain.com"
                         />
                       </div>
@@ -693,7 +702,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                           name="smtpPort"
                           type="number"
                           required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          disabled={createSmtpSender.isPending}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                           placeholder="587"
                           defaultValue="587"
                         />
@@ -709,7 +719,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                           name="smtpUser"
                           type="text"
                           required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          disabled={createSmtpSender.isPending}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                           placeholder="username"
                         />
                       </div>
@@ -721,7 +732,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                           name="smtpPassword"
                           type="password"
                           required
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          disabled={createSmtpSender.isPending}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                           placeholder="••••••••"
                         />
                       </div>
@@ -734,6 +746,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                         id="smtpSecure"
                         className="h-4 w-4 text-blue-600 rounded"
                         defaultChecked={true}
+                        disabled={createSmtpSender.isPending}
                       />
                       <label
                         htmlFor="smtpSecure"
@@ -749,10 +762,15 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                       type="button"
                       variant="outline"
                       onClick={() => setShowSmtpForm(false)}
+                      disabled={createSmtpSender.isPending}
                     >
                       Cancel
                     </Button>
-                    <Button type="submit">
+                    <Button
+                      type="submit"
+                      isLoading={createSmtpSender.isPending}
+                      disabled={createSmtpSender.isPending}
+                    >
                       <Check className="w-4 h-4 mr-2" />
                       Save SMTP Configuration
                     </Button>
@@ -813,7 +831,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                 return (
                   <div
                     key={sender.id}
-                    onClick={() => handleSenderSelect(sender.id, senderType)} // Add senderType here
+                    onClick={() => handleSenderSelect(sender.id, senderType)}
                     className={`p-4 border rounded-xl cursor-pointer transition-all ${
                       watchSenderId === sender.id
                         ? "border-blue-500 bg-blue-50"
@@ -960,6 +978,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                       onChange={handleFileUpload}
                       accept=".xlsx,.xls,.csv"
                       className="hidden"
+                      disabled={isUploading}
                     />
                     <FileSpreadsheet className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-600 mb-4">
@@ -969,6 +988,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       variant="outline"
+                      disabled={isUploading}
                     >
                       <Upload className="w-4 h-4 mr-2" />
                       Browse Files
@@ -1002,6 +1022,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                             Math.min(previewRows + 5, uploadedData.length),
                           )
                         }
+                        disabled={isUploading}
                       >
                         Show More
                       </Button>
@@ -1010,6 +1031,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                         variant="primary"
                         size="small"
                         onClick={() => setUploadStep(3)}
+                        disabled={isUploading}
                       >
                         Continue to Mapping
                         <ChevronRight className="w-4 h-4 ml-2" />
@@ -1075,6 +1097,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                       type="button"
                       variant="outline"
                       onClick={() => setUploadStep(1)}
+                      disabled={isUploading}
                     >
                       <ChevronLeft className="w-4 h-4 mr-2" />
                       Back
@@ -1124,7 +1147,8 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                                 [field]: e.target.value,
                               })
                             }
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            disabled={isUploading}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                           >
                             <option value="">Select column...</option>
                             {fileHeaders.map((header) => (
@@ -1159,6 +1183,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                       type="button"
                       variant="outline"
                       onClick={() => setUploadStep(2)}
+                      disabled={isUploading}
                     >
                       <ChevronLeft className="w-4 h-4 mr-2" />
                       Back to Preview
@@ -1168,15 +1193,17 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
                         type="button"
                         variant="outline"
                         onClick={resetUploadState}
+                        disabled={isUploading}
                       >
                         Start Over
                       </Button>
                       <Button
                         type="button"
                         onClick={handleUpload}
-                        disabled={!mapping.email || uploading}
+                        disabled={!mapping.email || isUploading}
+                        isLoading={isUploading}
                       >
-                        {uploading ? (
+                        {isUploading ? (
                           <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                             Uploading...
@@ -1194,7 +1221,7 @@ const Step3Audience = ({ errors, watch, setValue, navigate }) => {
               )}
 
               {/* Upload Progress */}
-              {uploading && (
+              {isUploading && (
                 <div className="space-y-4">
                   <div className="text-center">
                     <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />

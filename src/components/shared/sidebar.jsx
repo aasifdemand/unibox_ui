@@ -1,4 +1,4 @@
-// Sidebar.jsx - Enhanced version
+// Sidebar.jsx - Enhanced version with React Query
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,28 +8,27 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/auth.store";
+import { useCurrentUser, useLogout } from "../../hooks/useAuth";
 import Dialog from "../../components/ui/dialog";
 
 const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const logout = useAuthStore((state) => state.logout);
-  const loading = useAuthStore((state) => state.loading);
-  const user = useAuthStore((state) => state.user);
-
-  // console.log("USER:", user);
+  // React Query hooks
+  const { data: user } = useCurrentUser();
+  const logout = useLogout();
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [activeHover, setActiveHover] = useState(null);
 
   const handleLogout = async () => {
-    const success = await logout();
-
-    if (success) {
+    try {
+      await logout.mutateAsync();
       setShowLogoutDialog(false);
       navigate("/auth/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
   };
 
@@ -136,7 +135,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
           <div className="flex items-center">
             <div className="relative">
               <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                {user?.name?.charAt(0)}
+                {user?.name?.charAt(0) || "U"}
               </div>
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
@@ -144,13 +143,12 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
             {!sidebarCollapsed && (
               <div className="ml-3 flex-1">
                 <p className="text-sm font-semibold text-gray-900">
-                  {user?.name}
+                  {user?.name || "User"}
                 </p>
                 <div className="flex items-center">
-                  <span className="text-xs text-gray-500">{user?.role}</span>
-                  {/* <span className="ml-2 px-1.5 py-0.5 text-[10px] font-medium rounded bg-linear-to-r from-green-500 to-emerald-600 text-white">
-                    Pro
-                  </span> */}
+                  <span className="text-xs text-gray-500">
+                    {user?.role || "User"}
+                  </span>
                 </div>
               </div>
             )}
@@ -164,8 +162,13 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                 e.currentTarget.classList.remove("animate-pulse")
               }
               className="p-1.5 rounded-lg hover:bg-red-50 transition-all hover:scale-110 active:scale-95 ml-auto group"
+              disabled={logout.isPending}
             >
-              <LogOut className="w-4 h-4 text-gray-600 group-hover:text-red-600 transition-colors" />
+              {logout.isPending ? (
+                <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <LogOut className="w-4 h-4 text-gray-600 group-hover:text-red-600 transition-colors" />
+              )}
             </button>
           </div>
         </div>
@@ -179,7 +182,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
         confirmText="Yes, Logout"
         cancelText="Cancel"
         confirmVariant="danger"
-        isLoading={loading}
+        isLoading={logout.isPending}
         onCancel={() => setShowLogoutDialog(false)}
         onConfirm={handleLogout}
       />

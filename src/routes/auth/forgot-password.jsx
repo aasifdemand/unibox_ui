@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/ui/button";
 import Input from "../../components/ui/input";
 import { Mail, ArrowLeft } from "lucide-react";
+import { useForgotPassword } from "../../hooks/useAuth";
 import { forgotPasswordSchema } from "../../validators/forgot-password.schema";
-import { useAuthStore } from "../../store/auth.store";
 import { useToast } from "../../hooks/useToast";
 import { mapZodErrors } from "../../utils/map-zod";
 
@@ -12,7 +12,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const { forgotPassword, loading } = useAuthStore();
+  const forgotPassword = useForgotPassword();
 
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -31,16 +31,15 @@ const ForgotPassword = () => {
 
     const toastId = toast.loading("Sending reset instructions...");
 
-    const success = await forgotPassword(email);
-
-    toast.dismiss(toastId);
-
-    if (success) {
+    try {
+      await forgotPassword.mutateAsync(email);
+      toast.dismiss(toastId);
       toast.success("Reset instructions sent 📩");
       setIsSubmitted(true);
       setErrors({});
-    } else {
-      toast.error("Failed to send reset email");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error.message || "Failed to send reset email");
     }
   };
 
@@ -86,6 +85,7 @@ const ForgotPassword = () => {
               icon={Mail}
               error={errors.email}
               helperText="We'll send a password reset link to this email"
+              disabled={forgotPassword.isPending}
             />
 
             <Button
@@ -93,8 +93,8 @@ const ForgotPassword = () => {
               variant="primary"
               size="large"
               fullWidth
-              isLoading={loading}
-              disabled={loading}
+              isLoading={forgotPassword.isPending}
+              disabled={forgotPassword.isPending}
             >
               Send Reset Link
             </Button>

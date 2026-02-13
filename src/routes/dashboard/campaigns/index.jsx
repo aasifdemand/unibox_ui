@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Search,
   Filter,
@@ -23,10 +23,17 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCampaignStore } from "../../../store/campaign.store";
-import Button from "../../../components/ui/button";
 import toast from "react-hot-toast";
 import ShowDelete from "../../../modals/showdelete";
+
+// Import React Query hooks
+import {
+  useCampaigns,
+  useActivateCampaign,
+  usePauseCampaign,
+  useResumeCampaign,
+  useDeleteCampaign,
+} from "../../../hooks/useCampaign";
 
 const Campaigns = () => {
   const navigate = useNavigate();
@@ -34,26 +41,20 @@ const Campaigns = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [activatingId, setActivatingId] = useState(null);
-  const [pausingId, setPausingId] = useState(null);
-  const [resumingId, setResumingId] = useState(null);
-  const [deletingId, setDeletingId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState(null);
 
+  // React Query hooks
   const {
-    campaigns,
+    data: campaigns = [],
     isLoading,
-    fetchCampaigns,
-    activateCampaign,
-    pauseCampaign,
-    resumeCampaign,
-    deleteCampaign,
-  } = useCampaignStore();
+    refetch: refetchCampaigns,
+  } = useCampaigns();
 
-  useEffect(() => {
-    fetchCampaigns();
-  }, [fetchCampaigns]);
+  const activateCampaign = useActivateCampaign();
+  const pauseCampaign = usePauseCampaign();
+  const resumeCampaign = useResumeCampaign();
+  const deleteCampaign = useDeleteCampaign();
 
   // Filter campaigns
   const filteredCampaigns = campaigns.filter((campaign) => {
@@ -190,49 +191,31 @@ const Campaigns = () => {
   // Campaign action handlers
   const handleActivateCampaign = async (campaignId) => {
     try {
-      setActivatingId(campaignId);
-      const result = await activateCampaign(campaignId);
-      if (result.success) {
-        toast.success("Campaign activated successfully!");
-      } else {
-        toast.error(result.error || "Failed to activate campaign");
-      }
+      await activateCampaign.mutateAsync(campaignId);
+      toast.success("Campaign activated successfully!");
+      refetchCampaigns();
     } catch (error) {
       toast.error(error.message || "Failed to activate campaign");
-    } finally {
-      setActivatingId(null);
     }
   };
 
   const handlePauseCampaign = async (campaignId) => {
     try {
-      setPausingId(campaignId);
-      const result = await pauseCampaign(campaignId);
-      if (result.success) {
-        toast.success("Campaign paused successfully");
-      } else {
-        toast.error(result.error || "Failed to pause campaign");
-      }
+      await pauseCampaign.mutateAsync(campaignId);
+      toast.success("Campaign paused successfully");
+      refetchCampaigns();
     } catch (error) {
       toast.error(error.message || "Failed to pause campaign");
-    } finally {
-      setPausingId(null);
     }
   };
 
   const handleResumeCampaign = async (campaignId) => {
     try {
-      setResumingId(campaignId);
-      const result = await resumeCampaign(campaignId);
-      if (result.success) {
-        toast.success("Campaign resumed successfully");
-      } else {
-        toast.error(result.error || "Failed to resume campaign");
-      }
+      await resumeCampaign.mutateAsync(campaignId);
+      toast.success("Campaign resumed successfully");
+      refetchCampaigns();
     } catch (error) {
       toast.error(error.message || "Failed to resume campaign");
-    } finally {
-      setResumingId(null);
     }
   };
 
@@ -245,19 +228,13 @@ const Campaigns = () => {
     if (!campaignToDelete) return;
 
     try {
-      setDeletingId(campaignToDelete.id);
-      const result = await deleteCampaign(campaignToDelete.id);
-      if (result.success) {
-        toast.success("Campaign deleted successfully");
-        setShowDeleteModal(false);
-        setCampaignToDelete(null);
-      } else {
-        toast.error(result.error || "Failed to delete campaign");
-      }
+      await deleteCampaign.mutateAsync(campaignToDelete.id);
+      toast.success("Campaign deleted successfully");
+      setShowDeleteModal(false);
+      setCampaignToDelete(null);
+      refetchCampaigns();
     } catch (error) {
       toast.error(error.message || "Failed to delete campaign");
-    } finally {
-      setDeletingId(null);
     }
   };
 
@@ -278,10 +255,10 @@ const Campaigns = () => {
       let failCount = 0;
 
       for (const id of selectedCampaigns) {
-        const result = await deleteCampaign(id);
-        if (result.success) {
+        try {
+          await deleteCampaign.mutateAsync(id);
           successCount++;
-        } else {
+        } catch {
           failCount++;
         }
       }
@@ -294,8 +271,9 @@ const Campaigns = () => {
         toast.error(`Failed to delete ${failCount} campaigns`);
       }
       setSelectedCampaigns([]);
+      refetchCampaigns();
     } catch (error) {
-      console.log("err:", error);
+      console.log(error);
 
       toast.error("Failed to delete selected campaigns");
     }
@@ -312,9 +290,12 @@ const Campaigns = () => {
       for (const id of selectedCampaigns) {
         const campaign = campaigns.find((c) => c.id === id);
         if (campaign?.status === "running" || campaign?.status === "sending") {
-          const result = await pauseCampaign(id);
-          if (result.success) successCount++;
-          else failCount++;
+          try {
+            await pauseCampaign.mutateAsync(id);
+            successCount++;
+          } catch {
+            failCount++;
+          }
         }
       }
 
@@ -326,8 +307,10 @@ const Campaigns = () => {
         toast.error(`Failed to pause ${failCount} campaigns`);
       }
       setSelectedCampaigns([]);
+      refetchCampaigns();
     } catch (error) {
-      console.log("err:", error);
+      console.log(error);
+
       toast.error("Failed to pause selected campaigns");
     }
   };
@@ -343,9 +326,12 @@ const Campaigns = () => {
       for (const id of selectedCampaigns) {
         const campaign = campaigns.find((c) => c.id === id);
         if (campaign?.status === "draft") {
-          const result = await activateCampaign(id);
-          if (result.success) successCount++;
-          else failCount++;
+          try {
+            await activateCampaign.mutateAsync(id);
+            successCount++;
+          } catch {
+            failCount++;
+          }
         }
       }
 
@@ -357,8 +343,10 @@ const Campaigns = () => {
         toast.error(`Failed to activate ${failCount} campaigns`);
       }
       setSelectedCampaigns([]);
+      refetchCampaigns();
     } catch (error) {
-      console.log("err:", error);
+      console.log(error);
+
       toast.error("Failed to activate selected campaigns");
     }
   };
@@ -372,6 +360,14 @@ const Campaigns = () => {
     { label: "Paused", value: "paused" },
     { label: "Completed", value: "completed" },
   ];
+
+  // Loading state
+  const isAnyLoading =
+    isLoading ||
+    activateCampaign.isPending ||
+    pauseCampaign.isPending ||
+    resumeCampaign.isPending ||
+    deleteCampaign.isPending;
 
   if (isLoading && campaigns.length === 0) {
     return (
@@ -389,10 +385,10 @@ const Campaigns = () => {
       {showDeleteModal && (
         <ShowDelete
           campaign={campaignToDelete}
-          showDeleteModal={showDeleteModal} // ✅ Pass the visibility state
+          showDeleteModal={showDeleteModal}
           setShowDeleteModal={setShowDeleteModal}
           handleDelete={handleDeleteConfirm}
-          isDeleting={deletingId === campaignToDelete?.id}
+          isDeleting={deleteCampaign.isPending}
         />
       )}
 
@@ -541,19 +537,22 @@ const Campaigns = () => {
             <div className="flex items-center space-x-3">
               <button
                 onClick={handleBulkPause}
-                className="px-3 py-1.5 text-sm font-medium text-blue-700 bg-white border border-blue-300 rounded-lg hover:bg-blue-50 transition"
+                disabled={pauseCampaign.isPending}
+                className="px-3 py-1.5 text-sm font-medium text-blue-700 bg-white border border-blue-300 rounded-lg hover:bg-blue-50 transition disabled:opacity-50"
               >
                 Pause Selected
               </button>
               <button
                 onClick={handleBulkActivate}
-                className="px-3 py-1.5 text-sm font-medium text-white bg-linear-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition"
+                disabled={activateCampaign.isPending}
+                className="px-3 py-1.5 text-sm font-medium text-white bg-linear-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition disabled:opacity-50"
               >
                 Activate Selected
               </button>
               <button
                 onClick={handleBulkDelete}
-                className="px-3 py-1.5 text-sm font-medium text-white bg-linear-to-r from-red-600 to-red-700 rounded-lg hover:from-red-700 hover:to-red-800 transition"
+                disabled={deleteCampaign.isPending}
+                className="px-3 py-1.5 text-sm font-medium text-white bg-linear-to-r from-red-600 to-red-700 rounded-lg hover:from-red-700 hover:to-red-800 transition disabled:opacity-50"
               >
                 Delete Selected
               </button>
@@ -620,10 +619,6 @@ const Campaigns = () => {
             const progress = calculateProgress(campaign);
             const openRate = calculateOpenRate(campaign);
             const clickRate = calculateClickRate(campaign);
-            const isActivating = activatingId === campaign.id;
-            const isPausing = pausingId === campaign.id;
-            const isResuming = resumingId === campaign.id;
-            const isDeleting = deletingId === campaign.id;
 
             return (
               <div
@@ -640,6 +635,7 @@ const Campaigns = () => {
                           checked={selectedCampaigns.includes(campaign.id)}
                           onChange={() => handleSelectCampaign(campaign.id)}
                           className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                          disabled={isAnyLoading}
                         />
                         <span
                           className={`ml-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusInfo.color}`}
@@ -733,15 +729,16 @@ const Campaigns = () => {
                       {campaign.status === "draft" && (
                         <button
                           onClick={() => handleActivateCampaign(campaign.id)}
-                          disabled={isActivating}
+                          disabled={activateCampaign.isPending}
                           className={`p-2 transition rounded-lg ${
-                            isActivating
+                            activateCampaign.isPending
                               ? "text-gray-400 cursor-not-allowed"
                               : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                           }`}
                           title="Activate Campaign"
                         >
-                          {isActivating ? (
+                          {activateCampaign.isPending &&
+                          activateCampaign.variables === campaign.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
                             <Send className="w-4 h-4" />
@@ -753,15 +750,16 @@ const Campaigns = () => {
                       {campaign.status === "running" && (
                         <button
                           onClick={() => handlePauseCampaign(campaign.id)}
-                          disabled={isPausing}
+                          disabled={pauseCampaign.isPending}
                           className={`p-2 transition rounded-lg ${
-                            isPausing
+                            pauseCampaign.isPending
                               ? "text-gray-400 cursor-not-allowed"
                               : "text-gray-600 hover:text-amber-600 hover:bg-amber-50"
                           }`}
                           title="Pause Campaign"
                         >
-                          {isPausing ? (
+                          {pauseCampaign.isPending &&
+                          pauseCampaign.variables === campaign.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
                             <Pause className="w-4 h-4" />
@@ -772,15 +770,16 @@ const Campaigns = () => {
                       {campaign.status === "paused" && (
                         <button
                           onClick={() => handleResumeCampaign(campaign.id)}
-                          disabled={isResuming}
+                          disabled={resumeCampaign.isPending}
                           className={`p-2 transition rounded-lg ${
-                            isResuming
+                            resumeCampaign.isPending
                               ? "text-gray-400 cursor-not-allowed"
                               : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                           }`}
                           title="Resume Campaign"
                         >
-                          {isResuming ? (
+                          {resumeCampaign.isPending &&
+                          resumeCampaign.variables === campaign.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
                             <Play className="w-4 h-4" />
@@ -812,15 +811,17 @@ const Campaigns = () => {
                       {/* Delete button */}
                       <button
                         onClick={() => handleDeleteClick(campaign)}
-                        disabled={isDeleting}
+                        disabled={deleteCampaign.isPending}
                         className={`p-2 transition rounded-lg ${
-                          isDeleting
+                          deleteCampaign.isPending &&
+                          deleteCampaign.variables === campaign.id
                             ? "text-gray-400 cursor-not-allowed"
                             : "text-gray-600 hover:text-red-600 hover:bg-red-50"
                         }`}
                         title="Delete Campaign"
                       >
-                        {isDeleting ? (
+                        {deleteCampaign.isPending &&
+                        deleteCampaign.variables === campaign.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
                           <Trash2 className="w-4 h-4" />
@@ -849,6 +850,7 @@ const Campaigns = () => {
                       }
                       onChange={(e) => handleSelectAll(e.target.checked)}
                       className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      disabled={isAnyLoading}
                     />
                   </th>
                   <th className="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
@@ -878,10 +880,6 @@ const Campaigns = () => {
                 {filteredCampaigns.map((campaign) => {
                   const statusInfo = getStatusInfo(campaign.status);
                   const openRate = calculateOpenRate(campaign);
-                  const isActivating = activatingId === campaign.id;
-                  const isPausing = pausingId === campaign.id;
-                  const isResuming = resumingId === campaign.id;
-                  const isDeleting = deletingId === campaign.id;
 
                   return (
                     <tr
@@ -894,6 +892,7 @@ const Campaigns = () => {
                           checked={selectedCampaigns.includes(campaign.id)}
                           onChange={() => handleSelectCampaign(campaign.id)}
                           className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                          disabled={isAnyLoading}
                         />
                       </td>
                       <td className="py-4 px-6">
@@ -956,15 +955,16 @@ const Campaigns = () => {
                               onClick={() =>
                                 handleActivateCampaign(campaign.id)
                               }
-                              disabled={isActivating}
+                              disabled={activateCampaign.isPending}
                               className={`p-2 transition rounded-lg ${
-                                isActivating
+                                activateCampaign.isPending
                                   ? "text-gray-400 cursor-not-allowed"
                                   : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                               }`}
                               title="Activate Campaign"
                             >
-                              {isActivating ? (
+                              {activateCampaign.isPending &&
+                              activateCampaign.variables === campaign.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                               ) : (
                                 <Send className="w-4 h-4" />
@@ -976,15 +976,16 @@ const Campaigns = () => {
                           {campaign.status === "running" && (
                             <button
                               onClick={() => handlePauseCampaign(campaign.id)}
-                              disabled={isPausing}
+                              disabled={pauseCampaign.isPending}
                               className={`p-2 transition rounded-lg ${
-                                isPausing
+                                pauseCampaign.isPending
                                   ? "text-gray-400 cursor-not-allowed"
                                   : "text-gray-600 hover:text-amber-600 hover:bg-amber-50"
                               }`}
                               title="Pause Campaign"
                             >
-                              {isPausing ? (
+                              {pauseCampaign.isPending &&
+                              pauseCampaign.variables === campaign.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                               ) : (
                                 <Pause className="w-4 h-4" />
@@ -995,15 +996,16 @@ const Campaigns = () => {
                           {campaign.status === "paused" && (
                             <button
                               onClick={() => handleResumeCampaign(campaign.id)}
-                              disabled={isResuming}
+                              disabled={resumeCampaign.isPending}
                               className={`p-2 transition rounded-lg ${
-                                isResuming
+                                resumeCampaign.isPending
                                   ? "text-gray-400 cursor-not-allowed"
                                   : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                               }`}
                               title="Resume Campaign"
                             >
-                              {isResuming ? (
+                              {resumeCampaign.isPending &&
+                              resumeCampaign.variables === campaign.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                               ) : (
                                 <Play className="w-4 h-4" />
@@ -1035,15 +1037,17 @@ const Campaigns = () => {
                           {/* Delete button */}
                           <button
                             onClick={() => handleDeleteClick(campaign)}
-                            disabled={isDeleting}
+                            disabled={deleteCampaign.isPending}
                             className={`p-2 transition rounded-lg ${
-                              isDeleting
+                              deleteCampaign.isPending &&
+                              deleteCampaign.variables === campaign.id
                                 ? "text-gray-400 cursor-not-allowed"
                                 : "text-gray-600 hover:text-red-600 hover:bg-red-50"
                             }`}
                             title="Delete Campaign"
                           >
-                            {isDeleting ? (
+                            {deleteCampaign.isPending &&
+                            deleteCampaign.variables === campaign.id ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                               <Trash2 className="w-4 h-4" />

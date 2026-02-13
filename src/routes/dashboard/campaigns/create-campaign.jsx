@@ -11,10 +11,12 @@ import Step2Content from "../../../components/campaign/content";
 import Step3Audience from "../../../components/campaign/audience";
 import Step4Schedule from "../../../components/campaign/schedule";
 import Step5Settings from "../../../components/campaign/settings";
-import { useCampaignStore } from "../../../store/campaign.store";
-import { useSenderStore } from "../../../store/sender.store";
-import { useUploadStore } from "../../../store/upload.store";
 import Button from "../../../components/ui/button";
+
+// Import React Query hooks
+import { useCreateCampaign } from "../../../hooks/useCampaign";
+import { useSenders } from "../../../hooks/useSenders";
+import { useBatches } from "../../../hooks/useBatches";
 
 const campaignSchema = z
   .object({
@@ -52,6 +54,7 @@ const campaignSchema = z
       path: ["htmlBody"],
     },
   );
+
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
@@ -59,23 +62,19 @@ const CreateCampaign = () => {
   const [selectedSender, setSelectedSender] = useState(null);
   const [editorMode, setEditorMode] = useState("html"); // Default to HTML mode
 
-  // Zustand stores
+  // React Query hooks
+  const createCampaign = useCreateCampaign();
   const {
-    createCampaign,
-    isLoading: isCreating,
-    error: campaignError,
-    clearError,
-  } = useCampaignStore();
-  const {
-    senders,
+    data: senders = [],
     isLoading: isLoadingSenders,
-    fetchSenders,
-  } = useSenderStore();
+    refetch: refetchSenders,
+  } = useSenders();
+
   const {
-    batches,
+    data: batches = [],
     isLoading: isLoadingBatches,
-    fetchBatches,
-  } = useUploadStore();
+    refetch: refetchBatches,
+  } = useBatches();
 
   const {
     register,
@@ -102,11 +101,11 @@ const CreateCampaign = () => {
   const watchHtmlBody = watch("htmlBody");
   const watchTextBody = watch("textBody");
 
+  // Fetch data on mount
   useEffect(() => {
-    fetchSenders();
-    fetchBatches();
-    clearError();
-  }, [fetchBatches, clearError, fetchSenders]);
+    refetchSenders();
+    refetchBatches();
+  }, [refetchSenders, refetchBatches]);
 
   const verifiedBatches = batches.filter(
     (batch) => batch.status === "verified",
@@ -119,11 +118,10 @@ const CreateCampaign = () => {
   };
 
   const handleSenderSelect = (senderId, senderType) => {
-    // Add senderType parameter
     const sender = senders.find((s) => s.id === senderId);
     setSelectedSender(sender);
     setValue("senderId", senderId);
-    setValue("senderType", senderType); // Set senderType
+    setValue("senderType", senderType);
   };
 
   const steps = [
@@ -146,7 +144,7 @@ const CreateCampaign = () => {
         isValid = await trigger(["name", "subject"]);
         break;
       case 2:
-        // FIX: Check content based on editor mode
+        // Check content based on editor mode
         if (editorMode === "html") {
           // For HTML mode, require htmlBody
           if (!watchHtmlBody || watchHtmlBody.trim().length < 10) {
@@ -260,25 +258,17 @@ const CreateCampaign = () => {
       console.log("Final campaign data:", campaignData);
       console.log("Calling createCampaign API...");
 
-      const success = await createCampaign(campaignData);
+      await createCampaign.mutateAsync(campaignData);
 
-      if (success) {
-        console.log("Campaign created successfully");
+      console.log("Campaign created successfully");
 
-        // Get the newly created campaign from the store
-        const newCampaign = useCampaignStore.getState().currentCampaign;
-
-        // Navigate to campaigns list with success message
-        navigate("/dashboard/campaigns", {
-          state: {
-            message:
-              "Campaign created successfully! Don't forget to activate it when you're ready to send.",
-            campaignId: newCampaign?.id,
-          },
-        });
-      } else {
-        console.log("Campaign creation failed");
-      }
+      // Navigate to campaigns list with success message
+      navigate("/dashboard/campaigns", {
+        state: {
+          message:
+            "Campaign created successfully! Don't forget to activate it when you're ready to send.",
+        },
+      });
     } catch (error) {
       console.error("Failed to create campaign:", error);
       alert(`Error creating campaign: ${error.message}`);
@@ -342,11 +332,11 @@ const CreateCampaign = () => {
 
       <CampaignStepper steps={steps} currentStep={currentStep} />
 
-      {campaignError && (
+      {createCampaign.error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
           <div className="flex items-center">
             <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
-            <p className="text-red-700">{campaignError}</p>
+            <p className="text-red-700">{createCampaign.error.message}</p>
           </div>
         </div>
       )}
@@ -362,7 +352,7 @@ const CreateCampaign = () => {
                   type="button"
                   variant="outline"
                   onClick={prevStep}
-                  disabled={isCreating}
+                  disabled={createCampaign.isPending}
                 >
                   Previous
                 </Button>
@@ -371,16 +361,24 @@ const CreateCampaign = () => {
 
             <div className="flex items-center space-x-3">
               {currentStep < steps.length ? (
-                <Button type="button" onClick={nextStep} disabled={isCreating}>
+                <Button
+                  type="button"
+                  onClick={nextStep}
+                  disabled={createCampaign.isPending}
+                >
                   Continue to {steps[currentStep]?.title || "Next Step"}
                 </Button>
               ) : (
                 <Button
                   type="submit"
-                  isLoading={isCreating}
-                  disabled={isCreating}
+                  isLoading={createCampaign.isPending}
+                  disabled={createCampaign.isPending}
                 >
-                  <Send className="w-4 h-4 mr-2" />
+                  {createCampaign.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4 mr-2" />
+                  )}
                   Launch Campaign
                 </Button>
               )}

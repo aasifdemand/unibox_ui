@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -20,102 +20,77 @@ import {
   Pause,
   ExternalLink,
 } from "lucide-react";
-import { useCampaignStore } from "../../../store/campaign.store";
 import toast from "react-hot-toast";
 import ShowDelete from "../../../modals/showdelete";
+
+// Import React Query hooks
+import {
+  useCampaign,
+  useDeleteCampaign,
+  useActivateCampaign,
+  usePauseCampaign,
+  useResumeCampaign,
+} from "../../../hooks/useCampaign";
 
 const ViewCampaign = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("overview");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isActivating, setIsActivating] = useState(false);
-  const [isPausing, setIsPausing] = useState(false);
-  const [isResuming, setIsResuming] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // React Query hooks
   const {
-    currentCampaign,
-    getCampaign,
-    deleteCampaign,
-    activateCampaign,
-    pauseCampaign,
-    resumeCampaign,
+    data: campaign,
     isLoading,
-  } = useCampaignStore();
+    error,
+    refetch: refetchCampaign,
+  } = useCampaign(id);
 
-  useEffect(() => {
-    if (id) {
-      getCampaign(id);
-    }
-  }, [id, getCampaign]);
+  const deleteCampaign = useDeleteCampaign();
+  const activateCampaign = useActivateCampaign();
+  const pauseCampaign = usePauseCampaign();
+  const resumeCampaign = useResumeCampaign();
 
   const handleDelete = async () => {
     try {
-      setIsDeleting(true);
-      const result = await deleteCampaign(id);
-      if (result.success) {
-        toast.success("Campaign deleted successfully");
-        navigate("/dashboard/campaigns");
-      } else {
-        toast.error(result.error || "Failed to delete campaign");
-      }
+      await deleteCampaign.mutateAsync(id);
+      toast.success("Campaign deleted successfully");
+      navigate("/dashboard/campaigns");
     } catch (error) {
       toast.error(error.message || "Failed to delete campaign");
     } finally {
-      setIsDeleting(false);
       setShowDeleteModal(false);
     }
   };
 
   const handleActivate = async () => {
     try {
-      setIsActivating(true);
-      const result = await activateCampaign(id);
-      if (result.success) {
-        toast.success("Campaign activated successfully");
-        getCampaign(id);
-      } else {
-        toast.error(result.error || "Failed to activate campaign");
-      }
+      await activateCampaign.mutateAsync(id);
+      toast.success("Campaign activated successfully");
+      refetchCampaign();
     } catch (error) {
       toast.error(error.message || "Failed to activate campaign");
-    } finally {
-      setIsActivating(false);
     }
   };
 
   const handlePause = async () => {
     try {
-      setIsPausing(true);
-      const result = await pauseCampaign(id);
-      if (result.success) {
-        toast.success("Campaign paused successfully");
-        getCampaign(id);
-      } else {
-        toast.error(result.error || "Failed to pause campaign");
-      }
+      await pauseCampaign.mutateAsync(id);
+      toast.success("Campaign paused successfully");
+      refetchCampaign();
     } catch (error) {
       toast.error(error.message || "Failed to pause campaign");
-    } finally {
-      setIsPausing(false);
     }
   };
 
   const handleResume = async () => {
     try {
-      setIsResuming(true);
-      const result = await resumeCampaign(id);
-      if (result.success) {
-        toast.success("Campaign resumed successfully");
-        getCampaign(id);
-      } else {
-        toast.error(result.error || "Failed to resume campaign");
-      }
+      await resumeCampaign.mutateAsync(id);
+      toast.success("Campaign resumed successfully");
+      refetchCampaign();
     } catch (error) {
       toast.error(error.message || "Failed to resume campaign");
-    } finally {
-      setIsResuming(false);
     }
   };
 
@@ -177,7 +152,7 @@ const ViewCampaign = () => {
     }
   };
 
-  if (isLoading && !currentCampaign) {
+  if (isLoading && !campaign) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
         <div className="text-center">
@@ -188,7 +163,7 @@ const ViewCampaign = () => {
     );
   }
 
-  if (!currentCampaign) {
+  if (error || !campaign) {
     return (
       <div className="p-6">
         <div className="bg-white rounded-2xl border border-gray-200/50 p-8 text-center">
@@ -212,8 +187,6 @@ const ViewCampaign = () => {
       </div>
     );
   }
-
-  const campaign = currentCampaign;
 
   // Calculate total recipients from CampaignRecipients array
   const totalRecipients = campaign.CampaignRecipients?.length || 0;
@@ -241,7 +214,7 @@ const ViewCampaign = () => {
           handleDelete={handleDelete}
           setShowDeleteModal={setShowDeleteModal}
           campaign={campaign}
-          isDeleting={isDeleting}
+          isDeleting={deleteCampaign.isPending}
         />
       )}
 
@@ -269,10 +242,10 @@ const ViewCampaign = () => {
           {campaign.status === "draft" && (
             <button
               onClick={handleActivate}
-              disabled={isActivating}
-              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition flex items-center"
+              disabled={activateCampaign.isPending}
+              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition flex items-center disabled:opacity-50"
             >
-              {isActivating ? (
+              {activateCampaign.isPending ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <Play className="w-4 h-4 mr-2" />
@@ -284,10 +257,10 @@ const ViewCampaign = () => {
           {campaign.status === "running" && (
             <button
               onClick={handlePause}
-              disabled={isPausing}
-              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-amber-600 to-amber-700 rounded-lg hover:from-amber-700 hover:to-amber-800 transition flex items-center"
+              disabled={pauseCampaign.isPending}
+              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-amber-600 to-amber-700 rounded-lg hover:from-amber-700 hover:to-amber-800 transition flex items-center disabled:opacity-50"
             >
-              {isPausing ? (
+              {pauseCampaign.isPending ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <Pause className="w-4 h-4 mr-2" />
@@ -299,10 +272,10 @@ const ViewCampaign = () => {
           {campaign.status === "paused" && (
             <button
               onClick={handleResume}
-              disabled={isResuming}
-              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition flex items-center"
+              disabled={resumeCampaign.isPending}
+              className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-green-600 to-green-700 rounded-lg hover:from-green-700 hover:to-green-800 transition flex items-center disabled:opacity-50"
             >
-              {isResuming ? (
+              {resumeCampaign.isPending ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <Play className="w-4 h-4 mr-2" />
@@ -323,9 +296,14 @@ const ViewCampaign = () => {
 
           <button
             onClick={() => setShowDeleteModal(true)}
-            className="px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-lg hover:bg-red-50 transition flex items-center"
+            disabled={deleteCampaign.isPending}
+            className="px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-lg hover:bg-red-50 transition flex items-center disabled:opacity-50"
           >
-            <Trash2 className="w-4 h-4 mr-2" />
+            {deleteCampaign.isPending ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Trash2 className="w-4 h-4 mr-2" />
+            )}
             Delete
           </button>
 

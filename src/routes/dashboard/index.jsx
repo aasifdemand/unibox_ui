@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   TrendingUp,
@@ -18,53 +18,53 @@ import {
   Users,
   Loader2,
 } from "lucide-react";
-import { useCampaignStore } from "../../store/campaign.store";
-import { useSenderStore } from "../../store/sender.store";
-import { useTemplateStore } from "../../store/template.store";
-import { useUploadStore } from "../../store/upload.store";
+
+// Import React Query hooks
+import { useCampaigns } from "../../hooks/useCampaign";
+import { useSenders } from "../../hooks/useSenders";
+import { useTemplates } from "../../hooks/useTemplate";
+import { useBatches, useVerificationTotals } from "../../hooks/useBatches";
 
 const Dashboard = () => {
   const [timeRange, setTimeRange] = useState("30");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Store data
+  // React Query hooks
   const {
-    campaigns,
+    data: campaigns = [],
     isLoading: campaignsLoading,
-    fetchCampaigns,
-  } = useCampaignStore();
-
-  const { senders, isLoading: sendersLoading, fetchSenders } = useSenderStore();
+    refetch: refetchCampaigns,
+  } = useCampaigns();
 
   const {
-    templates,
+    data: senders = [],
+    isLoading: sendersLoading,
+    refetch: refetchSenders,
+  } = useSenders();
+
+  const {
+    data: templates = [],
     isLoading: templatesLoading,
-    fetchTemplates,
-  } = useTemplateStore();
+    refetch: refetchTemplates,
+  } = useTemplates();
 
   const {
-    batches,
+    data: batches = [],
     isLoading: batchesLoading,
-    fetchBatches,
-    getVerificationTotals,
-  } = useUploadStore();
+    refetch: refetchBatches,
+  } = useBatches();
 
-  // Fetch all data on mount
-  useEffect(() => {
-    fetchCampaigns();
-    fetchSenders();
-    fetchTemplates();
-    fetchBatches();
-  }, [fetchCampaigns, fetchSenders, fetchTemplates, fetchBatches]);
+  // Get verification totals using the hook
+  const verificationTotals = useVerificationTotals();
 
   // Handle refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await Promise.all([
-      fetchCampaigns(),
-      fetchSenders(),
-      fetchTemplates(),
-      fetchBatches(),
+      refetchCampaigns(),
+      refetchSenders(),
+      refetchTemplates(),
+      refetchBatches(),
     ]);
     setIsRefreshing(false);
   };
@@ -77,8 +77,6 @@ const Dashboard = () => {
   const scheduledCampaigns = campaigns.filter(
     (c) => c.status === "scheduled",
   ).length;
-
-  // const draftCampaigns = campaigns.filter((c) => c.status === "draft").length;
   const completedCampaigns = campaigns.filter(
     (c) => c.status === "completed",
   ).length;
@@ -90,10 +88,6 @@ const Dashboard = () => {
     (sum, c) => sum + (c.totalReplied || 0),
     0,
   );
-  // const totalRecipients = campaigns.reduce(
-  //   (sum, c) => sum + (c.totalRecipients || 0),
-  //   0,
-  // );
 
   // Calculate rates
   const avgOpenRate =
@@ -108,8 +102,7 @@ const Dashboard = () => {
   const avgReplyRate =
     totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : "0.0";
 
-  // Get verification totals
-  const verificationTotals = getVerificationTotals();
+  // Contact stats
   const totalContacts =
     verificationTotals.verified +
     verificationTotals.invalid +

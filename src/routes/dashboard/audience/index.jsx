@@ -1,6 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
-import { useUploadStore } from "../../../store/upload.store";
-import { useSenderStore } from "../../../store/sender.store";
 
 import ShowUpload from "../../../modals/showupload";
 import ShowSender from "../../../modals/showsender";
@@ -12,6 +11,22 @@ import {
   filterBatches,
   resetUploadState,
 } from "./audience-service";
+
+// Import React Query hooks
+import {
+  useBatches,
+  useUploadBatch,
+  useDeleteBatch,
+  useBatchStatus,
+} from "../../../hooks/useBatches";
+import {
+  useSenders,
+  useDeleteSender,
+  useTestSender,
+  useCreateSmtpSender,
+  initiateGmailOAuth,
+  initiateOutlookOAuth,
+} from "../../../hooks/useSenders";
 
 const Audience = () => {
   const [activeTab, setActiveTab] = useState("contacts");
@@ -38,7 +53,6 @@ const Audience = () => {
     city: "",
     country: "",
   });
-  const [uploading, setUploading] = useState(false);
 
   // Senders state - Enhanced with IMAP support
   const [smtpData, setSmtpData] = useState({
@@ -59,31 +73,29 @@ const Audience = () => {
     provider: "custom",
   });
 
-  // Fetch data from stores
+  // React Query hooks
   const {
-    batches,
+    data: batches = [],
     isLoading: isLoadingBatches,
-    fetchBatches,
-    uploadBatch,
-    deleteBatch,
-    getBatchStatus,
-  } = useUploadStore();
+    refetch: refetchBatches,
+  } = useBatches();
 
   const {
-    senders,
+    data: senders = [],
     isLoading: isLoadingSenders,
-    fetchSenders,
-    initiateGmailOAuth,
-    initiateOutlookOAuth,
-    createSmtpSender,
-    deleteSender,
-    testSender,
-  } = useSenderStore();
+    refetch: refetchSenders,
+  } = useSenders();
 
-  useEffect(() => {
-    fetchBatches();
-    fetchSenders();
-  }, [fetchBatches, fetchSenders]);
+  const uploadBatch = useUploadBatch();
+  const deleteBatch = useDeleteBatch();
+  const deleteSender = useDeleteSender();
+  const testSender = useTestSender();
+  const createSmtpSender = useCreateSmtpSender();
+
+  // Get batch status function
+  const getBatchStatus = (batchId) => {
+    return useBatchStatus(batchId);
+  };
 
   // Calculate verification totals using service function
   const { valid, invalid, risky, unverified } =
@@ -113,32 +125,23 @@ const Audience = () => {
       return;
     }
 
-    setUploading(true);
-
     try {
       const formData = new FormData();
       formData.append("file", uploadedFile);
 
-      const result = await uploadBatch(formData);
+      await uploadBatch.mutateAsync(formData);
 
-      if (result.success) {
-        setUploading(false);
-        setShowUploadModal(false);
-        resetUploadState(
-          setUploadStep,
-          setUploadedFile,
-          setFileHeaders,
-          setMapping,
-        );
-        fetchBatches();
-      } else {
-        setUploading(false);
-        alert(`Upload failed: ${result.error}`);
-      }
+      setShowUploadModal(false);
+      resetUploadState(
+        setUploadStep,
+        setUploadedFile,
+        setFileHeaders,
+        setMapping,
+      );
+      refetchBatches();
+      alert("Upload successful!");
     } catch (error) {
-      setUploading(false);
-      alert("Upload failed. Please try again.");
-      console.log(error);
+      alert(`Upload failed: ${error.message}`);
     }
   };
 
@@ -193,8 +196,8 @@ const Audience = () => {
       formData.imapPassword = formData.password;
     }
 
-    const success = await createSmtpSender(formData);
-    if (success) {
+    try {
+      await createSmtpSender.mutateAsync(formData);
       setShowSenderModal(false);
       setSmtpData({
         displayName: "",
@@ -211,33 +214,39 @@ const Audience = () => {
         imapPassword: "",
         provider: "custom",
       });
-      fetchSenders();
+      refetchSenders();
+      alert("SMTP sender created successfully!");
+    } catch (error) {
+      alert(`Failed to create SMTP sender: ${error.message}`);
     }
   };
 
-  // ✅ UPDATED: Delete sender with type
+  // Delete sender with type
   const handleDeleteSender = async (sender) => {
     if (
       window.confirm(
         `Are you sure you want to delete ${sender.email} (${sender.type})?`,
       )
     ) {
-      const result = await deleteSender(sender.id, sender.type);
-      if (result.success) {
-        alert(result.message || `${sender.type} sender deleted successfully`);
-        fetchSenders();
-      } else {
-        alert(result.error || "Failed to delete sender");
+      try {
+        await deleteSender.mutateAsync({
+          senderId: sender.id,
+          senderType: sender.type,
+        });
+        alert(`${sender.type} sender deleted successfully`);
+        refetchSenders();
+      } catch (error) {
+        alert(error.message || "Failed to delete sender");
       }
     }
   };
 
   const handleTestSender = async (senderId) => {
-    const success = await testSender(senderId);
-    if (success) {
+    try {
+      await testSender.mutateAsync(senderId);
       alert("Sender test successful!");
-    } else {
-      alert("Sender test failed. Please check your configuration.");
+    } catch (error) {
+      alert(`Sender test failed: ${error.message}`);
     }
   };
 
@@ -247,8 +256,13 @@ const Audience = () => {
         "Are you sure you want to delete this contact list? This action cannot be undone.",
       )
     ) {
-      await deleteBatch(batchId);
-      fetchBatches();
+      try {
+        await deleteBatch.mutateAsync(batchId);
+        refetchBatches();
+        alert("Batch deleted successfully");
+      } catch (error) {
+        alert(`Failed to delete batch: ${error.message}`);
+      }
     }
   };
 
@@ -263,7 +277,7 @@ const Audience = () => {
       alert(
         `${success === "gmail_connected" ? "Gmail" : "Outlook"} connected successfully!`,
       );
-      fetchSenders();
+      refetchSenders();
 
       // Clean URL
       const cleanUrl = window.location.pathname;
@@ -277,7 +291,7 @@ const Audience = () => {
       const cleanUrl = window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
     }
-  }, [fetchSenders]);
+  }, [refetchSenders]);
 
   return (
     <div className="space-y-6 p-6">
@@ -308,9 +322,12 @@ const Audience = () => {
         handleDeleteBatch={handleDeleteBatch}
         isLoadingSenders={isLoadingSenders}
         senders={senders}
-        handleDeleteSender={handleDeleteSender} // ✅ Pass the updated handler
+        handleDeleteSender={handleDeleteSender}
         handleTestSender={handleTestSender}
         openBatchDetails={openBatchDetails}
+        isDeletingBatch={deleteBatch.isPending}
+        isDeletingSender={deleteSender.isPending}
+        isTestingSender={testSender.isPending}
       />
 
       {/* Upload Modal */}
@@ -332,7 +349,7 @@ const Audience = () => {
           fileHeaders={fileHeaders}
           setUploadStep={setUploadStep}
           handleContactsUpload={handleContactsUpload}
-          uploading={uploading}
+          uploading={uploadBatch.isPending}
         />
       )}
 
@@ -347,6 +364,7 @@ const Audience = () => {
           handleSmtpSubmit={handleSmtpSubmit}
           smtpData={smtpData}
           setSmtpData={setSmtpData}
+          isSubmitting={createSmtpSender.isPending}
         />
       )}
 

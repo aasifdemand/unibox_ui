@@ -15,11 +15,14 @@ import {
   Mailbox,
 } from "lucide-react";
 import Sidebar from "../components/shared/sidebar";
-import { useAuthStore } from "../store/auth.store";
+import { useCurrentUser } from "../hooks/useAuth";
 
 const DashboardLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
+
+  // React Query hook
+  const { data: user } = useCurrentUser();
 
   const navItems = [
     {
@@ -50,8 +53,6 @@ const DashboardLayout = () => {
     { icon: BarChart3, label: "Analytics", path: "/dashboard/analytics" },
     { icon: Settings, label: "Settings", path: "/dashboard/settings" },
   ];
-
-  const user = useAuthStore((state) => state.user);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 via-blue-50/20 to-gray-50">
@@ -121,15 +122,15 @@ const DashboardLayout = () => {
             <div className="flex items-center space-x-3">
               <div className="text-right hidden md:block">
                 <p className="text-sm font-semibold text-gray-900">
-                  {user?.name}
+                  {user?.name || "User"}
                 </p>
                 <p className="text-xs text-gray-500 bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text">
-                  {user?.email}
+                  {user?.email || "user@example.com"}
                 </p>
               </div>
               <div className="relative">
                 <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                  {user?.name?.charAt(0)}
+                  {user?.name?.charAt(0) || "U"}
                 </div>
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
@@ -139,11 +140,7 @@ const DashboardLayout = () => {
 
         {/* Scrollable Content Area - Enhanced */}
         <main className="p-6 min-h-[calc(100vh-64px)]">
-          {" "}
-          {/* Changed from rounded-2xl bg-white/80... */}
           <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg h-full">
-            {" "}
-            {/* Added h-full */}
             <Outlet />
           </div>
         </main>

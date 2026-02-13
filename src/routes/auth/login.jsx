@@ -4,7 +4,7 @@ import Button from "../../components/ui/button";
 import Input from "../../components/ui/input";
 import Checkbox from "../../components/ui/checkbox";
 import { Mail } from "lucide-react";
-import { useAuthStore } from "../../store/auth.store";
+import { useLogin, useCurrentUser } from "../../hooks/useAuth";
 import { loginSchema } from "../../validators/login.schema";
 import { useToast } from "../../hooks/useToast";
 import { mapZodErrors } from "../../utils/map-zod";
@@ -21,9 +21,9 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
 
-  const login = useAuthStore((state) => state.login);
-  const loading = useAuthStore((state) => state.loading);
-  const user = useAuthStore((state) => state.user);
+  // React Query hooks
+  const login = useLogin();
+  const { data: user, isLoading: userLoading } = useCurrentUser();
 
   useEffect(() => {
     if (user) {
@@ -66,18 +66,19 @@ const Login = () => {
 
     const toastId = toast.loading("Signing you in...");
 
-    const success = await login({
-      email: formData.email,
-      password: formData.password,
-      rememberMe: formData.rememberMe,
-    });
+    try {
+      await login.mutateAsync({
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
 
-    toast.dismiss(toastId);
-
-    if (success) {
+      toast.dismiss(toastId);
       toast.success("Welcome back 👋");
-    } else {
-      toast.error("Invalid email or password");
+      // Navigation will happen automatically via useEffect when user data loads
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error.message || "Invalid email or password");
     }
   };
 
@@ -85,6 +86,9 @@ const Login = () => {
     e.preventDefault();
     navigate("/auth/forgot-password");
   };
+
+  // Combined loading state
+  const isLoading = login.isPending || userLoading;
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -109,6 +113,7 @@ const Login = () => {
             required
             icon={Mail}
             error={errors.email}
+            disabled={isLoading}
           />
 
           <div className="space-y-2">
@@ -119,6 +124,8 @@ const Login = () => {
               <button
                 onClick={handleForgotPassword}
                 className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                type="button"
+                disabled={isLoading}
               >
                 Forgot password?
               </button>
@@ -131,6 +138,7 @@ const Login = () => {
               placeholder="••••••••"
               required
               error={errors.password}
+              disabled={isLoading}
             />
           </div>
 
@@ -140,6 +148,7 @@ const Login = () => {
               checked={formData.rememberMe}
               onChange={handleCheckboxChange}
               label="Remember me"
+              disabled={isLoading}
             />
           </div>
 
@@ -148,8 +157,8 @@ const Login = () => {
             variant="primary"
             size="large"
             fullWidth
-            isLoading={loading}
-            disabled={loading}
+            isLoading={isLoading}
+            disabled={isLoading}
           >
             Sign In
           </Button>
@@ -179,6 +188,7 @@ const Login = () => {
                   import.meta.env.VITE_API_URL
                 }/auth/google`)
               }
+              disabled={isLoading}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path

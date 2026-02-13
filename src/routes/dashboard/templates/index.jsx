@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FileText,
   Plus,
@@ -14,23 +14,17 @@ import {
   Sparkles,
 } from "lucide-react";
 import Button from "../../../components/ui/button";
-import { useTemplateStore } from "../../../store/template.store";
 import ShowTemplate from "../../../modals/showtemplate";
 
-const Templates = () => {
-  const {
-    templates,
-    currentTemplate,
-    isLoading,
-    error,
-    fetchTemplates,
-    setCurrentTemplate,
-    createTemplate,
-    updateTemplate,
-    deleteTemplate,
-    clearError,
-  } = useTemplateStore();
+// Import React Query hooks
+import {
+  useTemplates,
+  useCreateTemplate,
+  useUpdateTemplate,
+  useDeleteTemplate,
+} from "../../../hooks/useTemplate";
 
+const Templates = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState("all");
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -44,10 +38,17 @@ const Templates = () => {
   });
   const [editorMode, setEditorMode] = useState("rich");
 
-  // Fetch templates on mount
-  useEffect(() => {
-    fetchTemplates();
-  }, [fetchTemplates]);
+  // React Query hooks
+  const {
+    data: templates = [],
+    isLoading,
+    error,
+    refetch: refetchTemplates,
+  } = useTemplates();
+
+  const createTemplate = useCreateTemplate();
+  const updateTemplate = useUpdateTemplate();
+  const deleteTemplate = useDeleteTemplate();
 
   // Mock user fields for the editor
   const defaultUserFields = [
@@ -109,7 +110,8 @@ const Templates = () => {
 
   // Select template for viewing/editing
   const handleSelectTemplate = (template) => {
-    setCurrentTemplate(template);
+    // This could set a selected template in local state if needed
+    console.log("Selected template:", template);
   };
 
   // Save template (create or update)
@@ -123,22 +125,23 @@ const Templates = () => {
 
       if (editingTemplate) {
         // Update existing template
-        const result = await updateTemplate(editingTemplate.id, formData);
-        if (result.success) {
-          console.log("Template updated successfully");
-          setShowTemplateModal(false);
-          setEditingTemplate(null);
-        }
+        await updateTemplate.mutateAsync({
+          templateId: editingTemplate.id,
+          ...formData,
+        });
+        console.log("Template updated successfully");
       } else {
         // Create new template
-        const result = await createTemplate(formData);
-        if (result.success) {
-          console.log("Template created successfully");
-          setShowTemplateModal(false);
-        }
+        await createTemplate.mutateAsync(formData);
+        console.log("Template created successfully");
       }
+
+      setShowTemplateModal(false);
+      setEditingTemplate(null);
+      refetchTemplates();
     } catch (err) {
       console.error("Failed to save template:", err);
+      alert(`Failed to save template: ${err.message}`);
     }
   };
 
@@ -147,9 +150,13 @@ const Templates = () => {
     e.stopPropagation();
 
     if (window.confirm(`Are you sure you want to delete "${template.name}"?`)) {
-      const result = await deleteTemplate(template.id);
-      if (result.success) {
+      try {
+        await deleteTemplate.mutateAsync(template.id);
         console.log("Template deleted successfully");
+        refetchTemplates();
+      } catch (err) {
+        console.error("Failed to delete template:", err);
+        alert(`Failed to delete template: ${err.message}`);
       }
     }
   };
@@ -158,7 +165,7 @@ const Templates = () => {
   const filteredTemplates = templates.filter((template) => {
     const matchesSearch =
       template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      template.subject.toLowerCase().includes(searchTerm.toLowerCase());
+      template.subject?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter =
       filterActive === "all" ||
       (filterActive === "active" && template.isActive) ||
@@ -207,6 +214,12 @@ const Templates = () => {
     },
   ];
 
+  // Check if any mutation is pending
+  const isPending =
+    createTemplate.isPending ||
+    updateTemplate.isPending ||
+    deleteTemplate.isPending;
+
   if (isLoading && templates.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-100 p-6">
@@ -238,7 +251,8 @@ const Templates = () => {
           <div className="flex items-center space-x-3">
             <Button
               onClick={handleCreateNew}
-              className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              disabled={isPending}
+              className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50"
             >
               <Plus className="w-5 h-5 mr-2" />
               New Template
@@ -257,20 +271,20 @@ const Templates = () => {
                 <h3 className="font-semibold text-red-900 mb-1">
                   Failed to load templates
                 </h3>
-                <p className="text-red-700">{error}</p>
+                <p className="text-red-700">{error.message}</p>
                 <p className="text-sm text-red-600 mt-2">
                   Please check your connection and try again
                 </p>
               </div>
               <div className="flex items-center space-x-3">
                 <Button
-                  onClick={clearError}
+                  onClick={() => {}} // Clear error if needed
                   className="px-4 py-2 text-sm bg-white border border-red-300 text-red-700 hover:bg-red-50"
                 >
                   Dismiss
                 </Button>
                 <Button
-                  onClick={fetchTemplates}
+                  onClick={() => refetchTemplates()}
                   className="px-4 py-2 text-sm bg-linear-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800"
                 >
                   Retry
@@ -291,7 +305,8 @@ const Templates = () => {
                   placeholder="Search templates..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={isPending}
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -299,24 +314,30 @@ const Templates = () => {
               <div className="flex items-center space-x-2">
                 <Button
                   onClick={() => setFilterActive("all")}
-                  className={`px-4 py-2 text-sm ${filterActive === "all" ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"}`}
+                  disabled={isPending}
+                  className={`px-4 py-2 text-sm ${filterActive === "all" ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"} disabled:opacity-50`}
                 >
                   All
                 </Button>
                 <Button
                   onClick={() => setFilterActive("active")}
-                  className={`px-4 py-2 text-sm ${filterActive === "active" ? "bg-linear-to-r from-green-600 to-emerald-600 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"}`}
+                  disabled={isPending}
+                  className={`px-4 py-2 text-sm ${filterActive === "active" ? "bg-linear-to-r from-green-600 to-emerald-600 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"} disabled:opacity-50`}
                 >
                   Active
                 </Button>
                 <Button
                   onClick={() => setFilterActive("inactive")}
-                  className={`px-4 py-2 text-sm ${filterActive === "inactive" ? "bg-linear-to-r from-gray-600 to-gray-700 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"}`}
+                  disabled={isPending}
+                  className={`px-4 py-2 text-sm ${filterActive === "inactive" ? "bg-linear-to-r from-gray-600 to-gray-700 text-white" : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"} disabled:opacity-50`}
                 >
                   Inactive
                 </Button>
               </div>
-              <Button className="px-4 py-2.5 text-sm border border-gray-300 rounded-xl hover:bg-gray-50">
+              <Button
+                className="px-4 py-2.5 text-sm border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-50"
+                disabled={isPending}
+              >
                 <Filter className="w-4 h-4 mr-2" />
                 More Filters
               </Button>
@@ -342,7 +363,8 @@ const Templates = () => {
             </p>
             <Button
               onClick={handleCreateNew}
-              className="px-8 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              disabled={isPending}
+              className="px-8 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Create Your First Template
@@ -367,7 +389,10 @@ const Templates = () => {
                         {filteredTemplates.length !== 1 ? "s" : ""} found
                       </p>
                     </div>
-                    <Button className="px-4 py-2 text-sm border border-gray-300 rounded-xl hover:bg-gray-50">
+                    <Button
+                      className="px-4 py-2 text-sm border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-50"
+                      disabled={isPending}
+                    >
                       <Download className="w-4 h-4 mr-2" />
                       Export
                     </Button>
@@ -383,11 +408,8 @@ const Templates = () => {
                         onClick={() => handleSelectTemplate(template)}
                         className={`
                           group cursor-pointer rounded-xl border p-5 transition-all duration-300
-                          ${
-                            currentTemplate?.id === template.id
-                              ? "border-blue-500 bg-linear-to-br from-blue-50 to-blue-50/30 ring-2 ring-blue-500 ring-opacity-20"
-                              : "border-gray-200/50 bg-white hover:border-blue-300 hover:shadow-lg"
-                          }
+                          border-gray-200/50 bg-white hover:border-blue-300 hover:shadow-lg
+                          ${deleteTemplate.isPending && deleteTemplate.variables === template.id ? "opacity-50 pointer-events-none" : ""}
                         `}
                       >
                         <div className="flex items-start justify-between mb-4">
@@ -395,19 +417,10 @@ const Templates = () => {
                             <div
                               className={`
                               w-12 h-12 rounded-xl flex items-center justify-center mr-4
-                              ${
-                                currentTemplate?.id === template.id
-                                  ? "bg-linear-to-r from-blue-600 to-indigo-600"
-                                  : "bg-linear-to-br from-gray-100 to-gray-50"
-                              }
+                              bg-linear-to-br from-gray-100 to-gray-50
                             `}
                             >
-                              <FileText
-                                className={`
-                                w-6 h-6
-                                ${currentTemplate?.id === template.id ? "text-white" : "text-gray-600"}
-                              `}
-                              />
+                              <FileText className="w-6 h-6 text-gray-600" />
                             </div>
                             <div>
                               <h4 className="font-semibold text-gray-900">
@@ -435,17 +448,24 @@ const Templates = () => {
                           <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={(e) => handleEditTemplate(template, e)}
-                              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                              disabled={isPending}
+                              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition disabled:opacity-50"
                               aria-label={`Edit template ${template.name}`}
                             >
                               <Edit3 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={(e) => handleDeleteTemplate(template, e)}
-                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                              disabled={isPending}
+                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition disabled:opacity-50"
                               aria-label={`Delete template ${template.name}`}
                             >
-                              <Trash2 className="w-4 h-4" />
+                              {deleteTemplate.isPending &&
+                              deleteTemplate.variables === template.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-4 h-4" />
+                              )}
                             </button>
                           </div>
                         </div>
@@ -463,15 +483,6 @@ const Templates = () => {
                             <ChevronRight className="w-4 h-4 ml-1" />
                           </div>
                         </div>
-
-                        {/* Selected Indicator */}
-                        {currentTemplate?.id === template.id && (
-                          <div className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4">
-                            <div className="w-8 h-8 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
-                              <div className="w-2 h-2 bg-white rounded-full"></div>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     ))}
                   </div>
@@ -491,7 +502,8 @@ const Templates = () => {
                     <button
                       key={index}
                       onClick={action.onClick}
-                      className={`w-full p-4 rounded-xl ${action.bgColor} border border-gray-200/50 hover:shadow-md transition-all text-left group`}
+                      disabled={isPending}
+                      className={`w-full p-4 rounded-xl ${action.bgColor} border border-gray-200/50 hover:shadow-md transition-all text-left group disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                       <div className="flex items-center">
                         <div
@@ -620,7 +632,7 @@ const Templates = () => {
 
       {showTemplateModal && (
         <ShowTemplate
-          showTemplateModal={showTemplateModal} // ADD THIS LINE
+          showTemplateModal={showTemplateModal}
           defaultUserFields={defaultUserFields}
           setShowTemplateModal={setShowTemplateModal}
           editingTemplate={editingTemplate}
@@ -629,6 +641,7 @@ const Templates = () => {
           setFormData={setFormData}
           editorMode={editorMode}
           setEditorMode={setEditorMode}
+          isSaving={createTemplate.isPending || updateTemplate.isPending}
         />
       )}
     </>

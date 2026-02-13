@@ -1,12 +1,16 @@
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/auth.store";
+import { useCurrentUser } from "../hooks/useAuth";
 
 const AuthRoute = ({ children }) => {
-  const user = useAuthStore((state) => state.user);
-  const loading = useAuthStore((state) => state.loading);
+  const { data: user, isLoading } = useCurrentUser();
 
-  if (loading) {
-    return null; // or loader
+  if (isLoading) {
+    // You can return a proper loading spinner here
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   // If logged in → block auth pages

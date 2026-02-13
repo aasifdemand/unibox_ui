@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+
 import AuthLayout from "./layouts/auth.layout";
 import Signup from "./routes/auth/signup";
 import Login from "./routes/auth/login";
@@ -7,8 +9,6 @@ import ResetPassword from "./routes/auth/reset-password";
 import Dashboard from "./routes/dashboard";
 import ProtectedRoute from "./routes/protected-route";
 import AuthRoute from "./routes/auth-route";
-import { useAuthStore } from "./store/auth.store";
-import { useEffect } from "react";
 import DashboardLayout from "./layouts/dashboard.layout";
 import Campaigns from "./routes/dashboard/campaigns";
 import Analytics from "./routes/dashboard/analytics";
@@ -19,12 +19,17 @@ import Audience from "./routes/dashboard/audience";
 import ViewCampaign from "./routes/dashboard/campaigns/view-campaign";
 import Mailboxes from "./routes/dashboard/mailboxes";
 
-const AppRoutes = () => {
-  const { checkAuth } = useAuthStore();
+// Import React Query hooks
+import { useCurrentUser } from "./hooks/useAuth";
 
+const AppRoutes = () => {
+  const { refetch: refetchUser } = useCurrentUser();
+
+  // Check auth on mount
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    refetchUser();
+  }, [refetchUser]);
+
   return (
     <Routes>
       {/* Auth routes (ONLY for logged-out users) */}

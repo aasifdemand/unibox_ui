@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FileText, Sparkles, Database, Users, Zap } from "lucide-react";
 import Button from "../ui/button";
 import HtmlEmailEditor from "../shared/html-editor";
-import { useUploadStore } from "../../store/upload.store";
+import { useBatches } from "../../hooks/useBatches";
 
 const Step2Content = ({
   register,
@@ -15,7 +15,7 @@ const Step2Content = ({
   selectedBatch,
 }) => {
   const [userFields, setUserFields] = useState([]);
-  const { batches } = useUploadStore();
+  const { data: batches = [] } = useBatches();
   const htmlBody = watch("htmlBody");
   const textBody = watch("textBody");
   const listBatchId = watch("listBatchId");
@@ -28,6 +28,7 @@ const Step2Content = ({
       .replace(/^./, (str) => str.toUpperCase())
       .trim();
   };
+
   useEffect(() => {
     if (listBatchId && batches.length > 0) {
       const batch = batches.find((b) => b.id === listBatchId);

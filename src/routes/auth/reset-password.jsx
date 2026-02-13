@@ -4,8 +4,8 @@ import OTPInput from "react-otp-input";
 import Button from "../../components/ui/button";
 import Input from "../../components/ui/input";
 import { Mail, KeyRound } from "lucide-react";
+import { useResetPassword, useForgotPassword } from "../../hooks/useAuth";
 import { resetPasswordSchema } from "../../validators/reset-password.schema";
-import { useAuthStore } from "../../store/auth.store";
 import { useToast } from "../../hooks/useToast";
 
 const mapZodErrors = (zodError) => {
@@ -24,7 +24,9 @@ const ResetPassword = () => {
   const toast = useToast();
   const intervalRef = useRef(null);
 
-  const { resetPassword, forgotPassword, loading } = useAuthStore();
+  // React Query hooks
+  const resetPassword = useResetPassword();
+  const forgotPassword = useForgotPassword();
 
   const initialEmail = location.state?.email || "";
 
@@ -60,19 +62,19 @@ const ResetPassword = () => {
 
     const toastId = toast.loading("Resetting password...");
 
-    const success = await resetPassword({
-      email: formData.email,
-      otp: formData.otp,
-      newPassword: formData.newPassword,
-    });
+    try {
+      await resetPassword.mutateAsync({
+        email: formData.email,
+        otp: formData.otp,
+        newPassword: formData.newPassword,
+      });
 
-    toast.dismiss(toastId);
-
-    if (success) {
+      toast.dismiss(toastId);
       toast.success("Password reset successful 🔐");
       navigate("/auth/login");
-    } else {
-      toast.error("Invalid or expired OTP");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error.message || "Invalid or expired OTP");
     }
   };
 
@@ -102,16 +104,22 @@ const ResetPassword = () => {
     startResendTimer();
 
     const toastId = toast.loading("Resending OTP...");
-    const success = await forgotPassword(formData.email);
-    toast.dismiss(toastId);
 
-    success
-      ? toast.success("OTP resent successfully")
-      : toast.error("Failed to resend OTP");
+    try {
+      await forgotPassword.mutateAsync(formData.email);
+      toast.dismiss(toastId);
+      toast.success("OTP resent successfully");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error(error.message || "Failed to resend OTP");
+    }
   };
 
   const formatTime = (s) =>
     `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+
+  // Combined loading state
+  const isLoading = resetPassword.isPending || forgotPassword.isPending;
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -135,7 +143,7 @@ const ResetPassword = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            disabled={!!initialEmail}
+            disabled={!!initialEmail || isLoading}
             icon={Mail}
             error={errors.email}
           />
@@ -148,7 +156,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={handleResendOTP}
-                disabled={showResendTimer}
+                disabled={showResendTimer || isLoading}
                 className="text-sm text-blue-600 disabled:text-gray-400"
               >
                 {showResendTimer
@@ -165,7 +173,8 @@ const ResetPassword = () => {
               renderInput={(props) => (
                 <input
                   {...props}
-                  className="w-full h-14 text-2xl text-center border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  disabled={isLoading}
+                  className="w-full h-14 text-2xl text-center border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   style={{
                     borderColor: errors.otp ? "#f87171" : "#d1d5db",
                   }}
@@ -183,6 +192,7 @@ const ResetPassword = () => {
             onChange={handleInputChange}
             error={errors.newPassword}
             helperText="Must be at least 8 characters"
+            disabled={isLoading}
           />
 
           <Button
@@ -190,8 +200,8 @@ const ResetPassword = () => {
             variant="primary"
             size="large"
             fullWidth
-            isLoading={loading}
-            disabled={loading}
+            isLoading={isLoading}
+            disabled={isLoading}
           >
             Reset Password
           </Button>
