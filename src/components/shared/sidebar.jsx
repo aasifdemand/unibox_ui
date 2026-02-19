@@ -1,21 +1,13 @@
-// Sidebar.jsx - Enhanced version with React Query
-import {
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
-  Mail,
-  Sparkles,
-} from "lucide-react";
+import { LogOut, Mail, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCurrentUser, useLogout } from "../../hooks/useAuth";
 import Dialog from "../../components/ui/dialog";
 
-const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
+const Sidebar = ({ sidebarCollapsed, navItems }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // React Query hooks
   const { data: user } = useCurrentUser();
   const logout = useLogout();
 
@@ -35,57 +27,62 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 h-screen bg-linear-to-b from-white via-blue-50/30 to-white border-r border-gray-200/50 transition-all duration-300 z-30 shadow-xl backdrop-blur-sm ${
-          sidebarCollapsed ? "w-20" : "w-64"
+        className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 transition-all duration-500 z-30 flex flex-col ${
+          sidebarCollapsed ? "w-20" : "w-70"
         }`}
-        style={{
-          boxShadow: "4px 0 20px rgba(59, 130, 246, 0.08)",
-        }}
       >
-        {/* Logo Section - Enhanced */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200/50 bg-white/80 backdrop-blur-sm">
-          <div className="flex items-center space-x-2">
+        {/* Superior Logo Section - Removed toggle button */}
+        <div className="flex items-center h-20 px-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
+          <div className="flex items-center gap-3 group cursor-pointer">
             <div className="relative">
-              <div className="w-8 h-8 rounded-xl bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <Mail className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform duration-500">
+                <Mail className="w-5 h-5 text-white" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-linear-to-r from-blue-400 to-indigo-500 rounded-full animate-pulse"></div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             {!sidebarCollapsed && (
-              <div className="flex flex-col">
-                <h1 className="text-xl font-bold bg-linear-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent tracking-tight">
-                  Unibox
-                </h1>
-                <p className="text-xs text-gray-500 -mt-1">Email Campaigns</p>
+              <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
+                <span className="text-xl font-extrabold text-slate-800 tracking-tighter leading-none">
+                  Unibox<span className="text-blue-600">.</span>
+                </span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                  Growth Platform
+                </span>
               </div>
             )}
           </div>
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="p-1.5 rounded-lg hover:bg-blue-50 transition-all hover:scale-110 active:scale-95 border border-gray-200/50"
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="w-4 h-4 text-blue-600" />
-            ) : (
-              <ChevronLeft className="w-4 h-4 text-blue-600" />
-            )}
-          </button>
         </div>
 
-        {/* Navigation - Enhanced */}
-        <div className="p-3">
-          <div className="mb-4 px-3 py-2 rounded-lg bg-linear-to-r from-blue-50/80 to-indigo-50/50 border border-blue-100/50">
-            <div className="flex items-center">
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              {!sidebarCollapsed && (
-                <p className="ml-2 text-xs font-medium text-blue-700">
-                  Daily Campaigns: 12
-                </p>
-              )}
+        {/* Premium Navigation */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden py-6 px-4 space-y-8 scrollbar-hide">
+          {!sidebarCollapsed && (
+            <div className="px-2">
+              <div className="bg-linear-to-br from-blue-500 to-indigo-600 rounded-3xl p-5 shadow-2xl shadow-blue-500/20 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-110 transition-transform duration-700"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles className="w-4 h-4 text-blue-100" />
+                    <span className="text-[10px] font-extrabold text-blue-50 uppercase tracking-widest">
+                      Growth Plan
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold text-white leading-relaxed opacity-90">
+                    Reach 5k more leads today with AI automation.
+                  </p>
+                  <button className="mt-4 w-full py-2 bg-white text-blue-600 rounded-xl text-[10px] font-extrabold uppercase tracking-widest hover:bg-blue-50 transition-colors shadow-lg shadow-black/5">
+                    Upgrade Now
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
 
-          <nav className="space-y-1 overflow-y-auto h-[calc(100vh-10rem)] pr-1">
+          <nav className="space-y-1.5">
+            {!sidebarCollapsed && (
+              <div className="px-4 py-2 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] mb-2">
+                Main Dashboard
+              </div>
+            )}
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -96,33 +93,48 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                   to={item.path}
                   onMouseEnter={() => setActiveHover(item.path)}
                   onMouseLeave={() => setActiveHover(null)}
-                  className={`relative flex items-center rounded-xl px-3 py-3 transition-all duration-200 ${
+                  className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${
                     isActive
-                      ? "bg-linear-to-r from-blue-500/10 to-indigo-500/5 text-blue-700 shadow-sm shadow-blue-500/10 border-l-4 border-blue-500"
-                      : "text-gray-700 hover:bg-gray-50/80 hover:shadow-sm"
-                  } ${activeHover === item.path ? "translate-x-1" : ""}`}
+                      ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
+                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                  }`}
                 >
-                  <div className="relative">
+                  <div className="relative flex items-center justify-center shrink-0">
                     <Icon
-                      className={`w-5 h-5 transition-all ${
+                      className={`w-5 h-5 transition-all duration-300 ${
                         isActive
-                          ? "text-blue-600"
-                          : "text-gray-500 group-hover:text-blue-500"
+                          ? "scale-110"
+                          : "group-hover:text-blue-500 group-hover:scale-110"
                       }`}
                     />
                     {isActive && (
-                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <div className="absolute -left-5 w-1 h-6 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)]"></div>
                     )}
                   </div>
                   {!sidebarCollapsed && (
-                    <>
-                      <span className="ml-3 font-medium">{item.label}</span>
+                    <div className="ml-4 flex-1 flex items-center justify-between overflow-hidden">
+                      <span
+                        className={`text-sm tracking-tight transition-all duration-300 ${isActive ? "font-extrabold opacity-100" : "font-bold opacity-80 group-hover:opacity-100"}`}
+                      >
+                        {item.label}
+                      </span>
                       {item.badge && (
-                        <span className="ml-auto px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r from-blue-500 to-blue-600 text-white">
+                        <span
+                          className={`px-1.5 py-0.5 text-[9px] font-extrabold rounded-lg uppercase tracking-widest ${
+                            isActive
+                              ? "bg-blue-500 text-white"
+                              : "bg-blue-50 text-blue-600"
+                          }`}
+                        >
                           {item.badge}
                         </span>
                       )}
-                    </>
+                    </div>
+                  )}
+                  {sidebarCollapsed && activeHover === item.path && (
+                    <div className="absolute left-full ml-4 px-3 py-2 bg-blue-600 text-white text-[10px] font-extrabold uppercase tracking-widest rounded-xl shadow-2xl z-50 animate-in fade-in slide-in-from-left-2 duration-200 pointer-events-none whitespace-nowrap">
+                      {item.label}
+                    </div>
                   )}
                 </Link>
               );
@@ -130,61 +142,66 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
           </nav>
         </div>
 
-        {/* Footer - Enhanced */}
-        <div className="absolute bottom-0 left-0 right-0 border-t border-gray-200/50 bg-white/80 backdrop-blur-sm p-4">
-          <div className="flex items-center">
-            <div className="relative">
-              <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                {user?.name?.charAt(0) || "U"}
+        {/* Ultra Premium User Profile */}
+        <div className="p-4 border-t border-slate-100 bg-white/80 backdrop-blur-xl">
+          <div
+            className={`p-3 rounded-3xl transition-all duration-300 border border-transparent flex items-center gap-3 ${
+              sidebarCollapsed
+                ? "justify-center"
+                : "hover:bg-slate-50 hover:border-slate-100 group cursor-pointer shadow-xs active:scale-[0.98]"
+            }`}
+          >
+            <div className="relative shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-slate-100 to-slate-200 p-0.5 border border-slate-200 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
+                <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-800 font-extrabold text-sm">
+                  {user?.name?.charAt(0) || "U"}
+                </div>
               </div>
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                <div className="w-2.5 h-2.5 bg-green-500 rounded-full border border-white"></div>
+              </div>
             </div>
 
             {!sidebarCollapsed && (
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-semibold text-gray-900">
-                  {user?.name || "User"}
+              <div className="flex-1 min-w-0 animate-in fade-in slide-in-from-left-2 duration-500">
+                <p className="text-xs font-extrabold text-slate-800 truncate tracking-tight">
+                  {user?.name || "Premium User"}
                 </p>
-                <div className="flex items-center">
-                  <span className="text-xs text-gray-500">
-                    {user?.role || "User"}
-                  </span>
-                </div>
+                <p className="text-[10px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-widest">
+                  {user?.role || "Administrator"}
+                </p>
               </div>
             )}
 
-            <button
-              onClick={() => setShowLogoutDialog(true)}
-              onMouseEnter={(e) =>
-                e.currentTarget.classList.add("animate-pulse")
-              }
-              onMouseLeave={(e) =>
-                e.currentTarget.classList.remove("animate-pulse")
-              }
-              className="p-1.5 rounded-lg hover:bg-red-50 transition-all hover:scale-110 active:scale-95 ml-auto group"
-              disabled={logout.isPending}
-            >
-              {logout.isPending ? (
-                <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <LogOut className="w-4 h-4 text-gray-600 group-hover:text-red-600 transition-colors" />
-              )}
-            </button>
+            {!sidebarCollapsed && (
+              <button
+                onClick={() => setShowLogoutDialog(true)}
+                disabled={logout.isPending}
+                className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all duration-300 hover:scale-110 active:scale-90"
+              >
+                {logout.isPending ? (
+                  <div className="w-5 h-5 border-2 border-slate-200 border-t-blue-500 rounded-full animate-spin" />
+                ) : (
+                  <LogOut className="w-5 h-5" />
+                )}
+              </button>
+            )}
           </div>
         </div>
       </aside>
 
-      {/* Logout Dialog */}
+      {/* Modern Logout Dialog */}
       <Dialog
         open={showLogoutDialog}
-        title="Logout Confirmation"
-        description="Are you sure you want to log out? Your session will be terminated."
-        confirmText="Yes, Logout"
-        cancelText="Cancel"
+        title="Terminate Session"
+        description="Are you sure you want to end your current dashboard session? You will need to re-authenticate."
+        confirmText="Confirm Logout"
+        cancelText="Stay Logged In"
         confirmVariant="danger"
         isLoading={logout.isPending}
         onCancel={() => setShowLogoutDialog(false)}
         onConfirm={handleLogout}
+        setOpen={setShowLogoutDialog}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "./button";
-import { X } from "lucide-react";
+import { X, AlertCircle, Shield, CheckCircle, Info } from "lucide-react";
+import Modal from "../shared/modal";
 
 const Dialog = ({
   open,
@@ -12,45 +13,186 @@ const Dialog = ({
   isLoading = false,
   onConfirm,
   onCancel,
+  setOpen,
 }) => {
   if (!open) return null;
 
+  // Get variant-specific styles
+  const getVariantStyles = () => {
+    switch (confirmVariant) {
+      case "danger":
+        return {
+          icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
+          bg: "bg-rose-50",
+          border: "border-rose-100",
+          button: "bg-rose-600 hover:bg-rose-700 shadow-rose-600/20",
+          gradient: "from-rose-600 to-red-600",
+        };
+      case "warning":
+        return {
+          icon: <AlertCircle className="w-6 h-6 text-amber-500" />,
+          bg: "bg-amber-50",
+          border: "border-amber-100",
+          button: "bg-amber-600 hover:bg-amber-700 shadow-amber-600/20",
+          gradient: "from-amber-600 to-orange-600",
+        };
+      case "success":
+        return {
+          icon: <CheckCircle className="w-6 h-6 text-emerald-500" />,
+          bg: "bg-emerald-50",
+          border: "border-emerald-100",
+          button: "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20",
+          gradient: "from-emerald-600 to-green-600",
+        };
+      case "info":
+        return {
+          icon: <Info className="w-6 h-6 text-blue-500" />,
+          bg: "bg-blue-50",
+          border: "border-blue-100",
+          button: "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20",
+          gradient: "from-blue-600 to-indigo-600",
+        };
+      default:
+        return {
+          icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
+          bg: "bg-rose-50",
+          border: "border-rose-100",
+          button: "bg-rose-600 hover:bg-rose-700 shadow-rose-600/20",
+          gradient: "from-rose-600 to-red-600",
+        };
+    }
+  };
+
+  const styles = getVariantStyles();
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-
-      {/* Dialog */}
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6 z-10">
-        {/* Close */}
-        <button
-          onClick={onCancel}
-          className="absolute top-3 right-3 p-1 rounded-lg hover:bg-gray-100"
+    <Modal
+      isOpen={open}
+      onClose={() => setOpen(false)}
+      maxWidth="max-w-md"
+      closeOnBackdrop={true}
+    >
+      <div className="bg-inherit rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+        {/* Premium Header - Dynamic based on variant */}
+        <div
+          className={`bg-linear-to-r ${styles.gradient} p-8 relative overflow-hidden group`}
         >
-          <X className="w-4 h-4 text-gray-500" />
-        </button>
+          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+            <Shield className="w-20 h-20 text-white" />
+          </div>
+          <div className="relative flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm">
+                {styles.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-white uppercase tracking-tighter">
+                  Confirmation
+                </h3>
+                <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-0.5">
+                  {confirmVariant === "danger" &&
+                    "This action cannot be undone"}
+                  {confirmVariant === "warning" &&
+                    "Please review before proceeding"}
+                  {confirmVariant === "success" && "Confirm your action"}
+                  {confirmVariant === "info" && "Additional information"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+        {/* Content */}
+        <div className="p-8">
+          {/* Icon and Title Section */}
+          <div className="flex items-start gap-4 mb-6">
+            <div
+              className={`w-12 h-12 rounded-2xl ${styles.bg} flex items-center justify-center shrink-0 border ${styles.border}`}
+            >
+              {styles.icon}
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight mb-2">
+                {title}
+              </h4>
+              {description && (
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {description}
+                </p>
+              )}
+            </div>
+          </div>
 
-        {description && (
-          <p className="text-sm text-gray-600 mt-2">{description}</p>
-        )}
+          {/* Warning Message for Danger variant */}
+          {confirmVariant === "danger" && (
+            <div className="bg-rose-50/50 p-5 rounded-2xl border border-rose-100 mb-6">
+              <div className="flex gap-3">
+                <Shield className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+                <p className="text-[11px] font-bold text-rose-700 leading-relaxed">
+                  This action is permanent and cannot be reversed. Please ensure
+                  you want to proceed.
+                </p>
+              </div>
+            </div>
+          )}
 
-        <div className="flex justify-end gap-3 mt-6">
-          <Button variant="ghost" onClick={onCancel} disabled={isLoading}>
-            {cancelText}
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-3 mt-4">
+            <button
+              onClick={onCancel}
+              disabled={isLoading}
+              className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 hover:border-slate-300 transition-all active:scale-95 disabled:opacity-50"
+            >
+              {cancelText}
+            </button>
 
-          <Button
-            variant={confirmVariant}
-            onClick={onConfirm}
-            isLoading={isLoading}
-          >
-            {confirmText}
-          </Button>
+            <button
+              onClick={onConfirm}
+              disabled={isLoading}
+              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white shadow-xl hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 ${styles.button}`}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                confirmText
+              )}
+            </button>
+          </div>
+
+          {/* Footer Note */}
+          <div className="mt-6 pt-4 border-t border-slate-100">
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
+              {confirmVariant === "danger" && "⚠️ This action is permanent"}
+              {confirmVariant === "warning" && "Please verify your choice"}
+              {confirmVariant === "success" && "Click confirm to proceed"}
+              {confirmVariant === "info" && "Review the information above"}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

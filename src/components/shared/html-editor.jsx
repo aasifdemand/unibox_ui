@@ -25,6 +25,9 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import FontFamily from "@tiptap/extension-font-family";
+import { Extension } from "@tiptap/core";
+import { Plugin, PluginKey } from "@tiptap/pm/state";
+import { Decoration, DecorationSet } from "@tiptap/pm/view";
 
 import {
   Bold,
@@ -61,6 +64,7 @@ import {
   TypeOutline,
   CornerDownRight,
   Hash,
+  FileText,
 } from "lucide-react";
 import PersonalizationTokens from "./personalization-tokens";
 
@@ -203,6 +207,62 @@ const FontSize = TextStyle.extend({
   },
 });
 
+// 🔴 Custom variable highlighting extension
+const VariableHighlight = Extension.create({
+  name: "variableHighlight",
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("variableHighlight"),
+        state: {
+          init(_, { doc }) {
+            return findVariables(doc);
+          },
+          apply(tr, oldState) {
+            if (tr.docChanged) {
+              return findVariables(tr.doc);
+            }
+            return oldState.map(tr.mapping, tr.doc);
+          },
+        },
+        props: {
+          decorations(state) {
+            return this.getState(state);
+          },
+        },
+      }),
+    ];
+  },
+});
+
+function findVariables(doc) {
+  const decorations = [];
+  const regex = /\{\{[^{}]+\}\}/g;
+
+  doc.descendants((node, pos) => {
+    if (node.isText) {
+      let match;
+      while ((match = regex.exec(node.text))) {
+        decorations.push(
+          Decoration.inline(
+            pos + match.index,
+            pos + match.index + match[0].length,
+            {
+              class:
+                "bg-yellow-100 text-yellow-800 px-1 py-0.5 rounded font-mono border border-yellow-200",
+              style:
+                "background-color: #fef3c7; color: #92400e; padding: 2px 4px; border-radius: 4px; font-family: monospace; border: 1px solid #fde68a;",
+            },
+          ),
+        );
+      }
+    }
+  });
+
+  return DecorationSet.create(doc, decorations);
+}
+
 const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   const [showTokens, setShowTokens] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
@@ -298,10 +358,22 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
           class: "border border-gray-300 px-4 py-2",
         },
       }),
+      VariableHighlight,
     ],
     content: value || "",
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
+
+      // Real-time suggestion trigger
+      const { from } = editor.state.selection;
+      const textBefore = editor.state.doc.textBetween(
+        Math.max(0, from - 2),
+        from,
+      );
+      if (textBefore === "{{") {
+        setShowTokens(true);
+      }
+
       onChange(html);
       setPreviewContent(html);
     },
@@ -331,10 +403,6 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   const clearContent = () => {
     editor?.commands.clearContent();
     setPreviewContent("");
-  };
-
-  const copyHTML = () => {
-    navigator.clipboard.writeText(editor?.getHTML() || "");
   };
 
   const setLink = () => {
@@ -443,604 +511,421 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 border rounded-lg bg-gray-50 sticky top-0 z-10 shadow-sm">
-        {/* Undo/Redo - Now working! */}
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-          title="Undo"
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <Undo className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-          title="Redo"
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <Redo className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Font Family */}
-        <div className="relative">
+    <div className="flex flex-col rounded-3xl border border-slate-200/60 overflow-hidden shadow-2xl bg-white group/editor">
+      {/* Premium Toolbar */}
+      <div className="flex flex-wrap items-center gap-2 p-4 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10 backdrop-blur-3xl">
+        {/* Navigation Group */}
+        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
           <button
             type="button"
-            onClick={() => setShowFontPicker(!showFontPicker)}
-            title="Font Family"
-            className="p-2 rounded-md hover:bg-gray-200 text-gray-700 flex items-center gap-1"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-600 disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-90"
+            title="Undo (Ctrl+Z)"
           >
-            <TypeOutline className="w-4 h-4" />
-            <span className="text-xs hidden md:inline">Font</span>
+            <Undo className="w-4 h-4" />
           </button>
-          {showFontPicker && (
-            <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg p-2 z-50 w-48 max-h-60 overflow-y-auto">
-              {FONTS.map((font) => (
-                <button
-                  key={font}
-                  onClick={() => {
-                    editor.chain().focus().setFontFamily(font).run();
-                    setShowFontPicker(false);
-                  }}
-                  className="w-full text-left px-3 py-1.5 text-sm hover:bg-gray-100 rounded"
-                  style={{ fontFamily: font }}
-                >
-                  {font}
-                </button>
-              ))}
-            </div>
-          )}
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-600 disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-90"
+            title="Redo (Ctrl+Y)"
+          >
+            <Redo className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Font Size */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setShowFontSizePicker(!showFontSizePicker)}
-            title="Font Size"
-            className="p-2 rounded-md hover:bg-gray-200 text-gray-700 flex items-center gap-1"
-          >
-            <Hash className="w-4 h-4" />
-            <span className="text-xs hidden md:inline">Size</span>
-          </button>
-          {showFontSizePicker && (
-            <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg p-2 z-50 w-24 max-h-60 overflow-y-auto">
-              {FONT_SIZES.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => {
-                    editor.chain().focus().setFontSize(`${size}px`).run();
-                    setShowFontSizePicker(false);
-                  }}
-                  className="w-full text-left px-3 py-1.5 text-sm hover:bg-gray-100 rounded"
-                >
-                  {size}px
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <div className="w-px h-6 bg-slate-200 mx-1" />
 
-        {/* Text Color */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setShowColorPicker(!showColorPicker)}
-            title="Text Color"
-            className="p-2 rounded-md hover:bg-gray-200 text-gray-700 flex items-center gap-1"
-          >
-            <Palette className="w-4 h-4" />
-            <span className="text-xs hidden md:inline">Color</span>
-          </button>
-          {showColorPicker && (
-            <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg p-3 z-50 w-64">
-              <div className="grid grid-cols-10 gap-1">
-                {COLORS.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => {
-                      editor.chain().focus().setColor(color).run();
-                      setShowColorPicker(false);
-                    }}
-                    className="w-5 h-5 rounded border border-gray-200 hover:scale-110 transition"
-                    style={{ backgroundColor: color }}
-                    title={color}
-                  />
-                ))}
+        {/* Typography & Design Group */}
+        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowFontPicker(!showFontPicker)}
+              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontPicker ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "hover:bg-slate-100 text-slate-600"}`}
+              title="Typography"
+            >
+              <TypeOutline className="w-4 h-4" />
+              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
+                Typography
+              </span>
+            </button>
+            {showFontPicker && (
+              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-64 animate-in fade-in zoom-in-95 duration-200">
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
+                  {" "}
+                  protocols{" "}
+                </div>
+                <div className="max-h-72 overflow-y-auto custom-scrollbar">
+                  {FONTS.map((font) => (
+                    <button
+                      key={font}
+                      onClick={() => {
+                        editor.chain().focus().setFontFamily(font).run();
+                        setShowFontPicker(false);
+                      }}
+                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
+                      style={{ fontFamily: font }}
+                    >
+                      {font}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowFontSizePicker(!showFontSizePicker)}
+              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontSizePicker ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20" : "hover:bg-slate-100 text-slate-600"}`}
+              title="Scaling"
+            >
+              <Hash className="w-4 h-4" />
+              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
+                Scale
+              </span>
+            </button>
+            {showFontSizePicker && (
+              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-32 animate-in fade-in zoom-in-95 duration-200">
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
+                  {" "}
+                  unit{" "}
+                </div>
+                <div className="max-h-72 overflow-y-auto">
+                  {FONT_SIZES.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => {
+                        editor.chain().focus().setFontSize(`${size}px`).run();
+                        setShowFontSizePicker(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-xs font-black hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-2xl"
+                    >
+                      {size}PX
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowColorPicker(!showColorPicker)}
+              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showColorPicker ? "bg-rose-600 text-white shadow-lg shadow-rose-500/20" : "hover:bg-slate-100 text-slate-600"}`}
+              title="Color Spectrum"
+            >
+              <Palette className="w-4 h-4" />
+              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
+                Chroma
+              </span>
+            </button>
+            {showColorPicker && (
+              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-4 z-50 w-72 animate-in fade-in zoom-in-95 duration-200">
+                <div className="grid grid-cols-8 gap-2">
+                  {COLORS.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => {
+                        editor.chain().focus().setColor(color).run();
+                        setShowColorPicker(false);
+                      }}
+                      className="w-6 h-6 rounded-full border border-slate-100 hover:scale-125 transition-all"
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="w-px h-6 bg-gray-300 mx-1" />
+        <div className="w-px h-6 bg-slate-200 mx-1" />
 
-        {/* Text Formatting */}
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("bold")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Bold"
-        >
-          <Bold className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("italic")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Italic"
-        >
-          <Italic className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("underline")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Underline"
-        >
-          <UnderlineIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("strike")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Strikethrough"
-        >
-          <Strikethrough className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("highlight")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Highlight"
-        >
-          <Highlighter className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Headings */}
-        <button
-          type="button"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={`p-2 rounded-md ${
-            editor.isActive("heading", { level: 1 })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Heading 1"
-        >
-          <Heading1 className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={`p-2 rounded-md ${
-            editor.isActive("heading", { level: 2 })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Heading 2"
-        >
-          <Heading2 className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={`p-2 rounded-md ${
-            editor.isActive("heading", { level: 3 })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Heading 3"
-        >
-          <Heading3 className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("paragraph")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Paragraph"
-        >
-          <Pilcrow className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Alignment */}
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={`p-2 rounded-md ${
-            editor.isActive({ textAlign: "left" })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Align Left"
-        >
-          <AlignLeft className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={`p-2 rounded-md ${
-            editor.isActive({ textAlign: "center" })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Align Center"
-        >
-          <AlignCenter className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={`p-2 rounded-md ${
-            editor.isActive({ textAlign: "right" })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Align Right"
-        >
-          <AlignRight className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className={`p-2 rounded-md ${
-            editor.isActive({ textAlign: "justify" })
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Justify"
-        >
-          <AlignJustify className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Lists */}
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("bulletList")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Bullet List"
-        >
-          <List className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("orderedList")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Ordered List"
-        >
-          <ListOrdered className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Insert Elements */}
-        <button
-          type="button"
-          onClick={() => setShowLinkModal(true)}
-          className={`p-2 rounded-md ${
-            editor.isActive("link")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Insert Link"
-        >
-          <LinkIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowImageModal(true)}
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-          title="Insert Image"
-        >
-          <ImageIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("code")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Inline Code"
-        >
-          <CodeIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("codeBlock")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Code Block"
-        >
-          <Code2 className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={`p-2 rounded-md ${
-            editor.isActive("blockquote")
-              ? "bg-blue-600 text-white"
-              : "hover:bg-gray-200 text-gray-700"
-          }`}
-          title="Quote"
-        >
-          <Quote className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-          title="Horizontal Line"
-        >
-          <Minus className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowTableModal(true)}
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-          title="Insert Table"
-        >
-          <TableIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().setHardBreak().run()}
-          className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-          title="Line Break"
-        >
-          <CornerDownRight className="w-4 h-4" />
-        </button>
-
-        <div className="ml-auto flex gap-1">
+        {/* Format Group */}
+        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
           <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={`p-2.5 rounded-xl transition-all ${editor.isActive("bold") ? "bg-slate-900 text-white" : "hover:bg-slate-100 text-slate-500"}`}
+          >
+            <Bold className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={`p-2.5 rounded-xl transition-all ${editor.isActive("italic") ? "bg-slate-900 text-white" : "hover:bg-slate-100 text-slate-500"}`}
+          >
+            <Italic className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={`p-2.5 rounded-xl transition-all ${editor.isActive("underline") ? "bg-slate-900 text-white" : "hover:bg-slate-100 text-slate-500"}`}
+          >
+            <UnderlineIcon className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            className={`p-2.5 rounded-xl transition-all ${editor.isActive("highlight") ? "bg-amber-400 text-amber-950" : "hover:bg-slate-100 text-slate-500"}`}
+          >
+            <Highlighter className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="w-px h-6 bg-slate-200 mx-1" />
+
+        {/* Integration Group */}
+        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+          <button
+            type="button"
+            onClick={() => setShowLinkModal(true)}
+            className={`p-2.5 rounded-xl transition-all ${editor.isActive("link") ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20" : "hover:bg-slate-100 text-slate-500"}`}
+            title="Link Integration"
+          >
+            <LinkIcon className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowImageModal(true)}
+            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-500 transition-all"
+            title="Image Asset"
+          >
+            <ImageIcon className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowTableModal(true)}
+            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-500 transition-all"
+            title="Data Matrix"
+          >
+            <TableIcon className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
             onClick={() => setShowTokens(!showTokens)}
-            className={`p-2 rounded-md ${
-              showTokens
-                ? "bg-purple-600 text-white"
-                : "hover:bg-gray-200 text-gray-700"
-            }`}
-            title="Personalization Tokens"
+            className={`p-2.5 rounded-xl transition-all ${showTokens ? "bg-purple-600 text-white" : "hover:bg-slate-100 text-slate-500"}`}
+            title="Personalization Layer"
           >
             <Tag className="w-4 h-4" />
           </button>
+        </div>
+
+        <div className="ml-auto flex items-center gap-2">
           <button
+            type="button"
             onClick={() => setPreviewMode(!previewMode)}
-            className={`p-2 rounded-md ${
-              previewMode
-                ? "bg-green-600 text-white"
-                : "hover:bg-gray-200 text-gray-700"
-            }`}
-            title="Toggle Preview"
+            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${previewMode ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
           >
-            <Eye className="w-4 h-4" />
+            {previewMode ? (
+              <FileText className="w-3.5 h-3.5" />
+            ) : (
+              <Eye className="w-3.5 h-3.5" />
+            )}
+            <span>{previewMode ? "Editor" : "Preview"}</span>
           </button>
-          <button
-            onClick={copyHTML}
-            className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-            title="Copy HTML"
-          >
-            <Copy className="w-4 h-4" />
-          </button>
-          <button
-            onClick={clearContent}
-            className="p-2 rounded-md hover:bg-red-50 text-red-600"
-            title="Clear All"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().unsetAllMarks().run()}
-            className="p-2 rounded-md hover:bg-gray-200 text-gray-700"
-            title="Clear Formatting"
-          >
-            <Eraser className="w-4 h-4" />
-          </button>
+
+          <div className="flex items-center bg-slate-100 p-1 rounded-2xl">
+            <button
+              type="button"
+              onClick={clearContent}
+              className="p-2.5 text-slate-400 hover:text-rose-600 transition-colors"
+              title="Wipe Engine"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Link Modal */}
-      {showLinkModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold mb-4">Insert Link</h3>
-            <input
-              type="text"
-              value={linkUrl}
-              onChange={(e) => setLinkUrl(e.target.value)}
-              placeholder="https://example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
-              autoFocus
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowLinkModal(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={setLink}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Image Modal */}
-      {showImageModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold mb-4">Insert Image</h3>
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
-              autoFocus
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowImageModal(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={addImage}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Table Modal */}
-      {showTableModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold mb-4">Insert Table</h3>
-            <div className="space-y-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Rows
-                </label>
-                <input
-                  type="number"
-                  value={tableRows}
-                  onChange={(e) => setTableRows(parseInt(e.target.value) || 1)}
-                  min="1"
-                  max="10"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Columns
-                </label>
-                <input
-                  type="number"
-                  value={tableCols}
-                  onChange={(e) => setTableCols(parseInt(e.target.value) || 1)}
-                  min="1"
-                  max="10"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowTableModal(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={insertTable}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Insert
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showTokens && (
-        <PersonalizationTokens
-          onInsertToken={insertToken}
-          userFields={userFields}
-        />
-      )}
-
-      <div className="border border-gray-300 rounded-lg overflow-hidden bg-white">
+      <div className="relative flex-1 bg-slate-50/30">
         {previewMode ? (
-          <div className="p-6 max-h-150 overflow-y-auto">
+          <div className="p-8 h-full overflow-y-auto animate-in fade-in duration-500">
             <div
+              className="max-w-3xl mx-auto"
               dangerouslySetInnerHTML={{
                 __html: renderEmailPreview(previewContent),
               }}
             />
           </div>
         ) : (
-          <>
-            <EditorContent editor={editor} />
-            <div className="flex items-center justify-between px-4 py-2 border-t bg-gray-50 text-sm text-gray-600">
-              <div>
-                Characters: {editor.getText().length}
-                <span className="mx-2">•</span>
-                Words: {editor.getText().split(/\s+/).filter(Boolean).length}
-                <span className="mx-2">•</span>
-                Tokens:{" "}
-                {(previewContent.match(/\{\{([^}]+)\}\}/g) || []).length}
+          <div className="h-full flex flex-col">
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-0">
+              <EditorContent editor={editor} />
+            </div>
+
+            <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-white/80 backdrop-blur-md text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] select-none">
+              <div className="flex items-center gap-6">
+                <span className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>{" "}
+                  INTEL: {editor.getText().length} CHR
+                </span>
+                <span className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>{" "}
+                  CORPUS: {editor.getText().split(/\s+/).filter(Boolean).length}{" "}
+                  WRD
+                </span>
+                <span className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>{" "}
+                  VARIABLES:{" "}
+                  {(previewContent.match(/\{\{([^}]+)\}\}/g) || []).length}
+                </span>
               </div>
-              <div className="text-xs text-gray-500">
-                Use{" "}
-                <code className="bg-gray-100 px-1 py-0.5 rounded font-mono">
-                  {"{{token}}"}
-                </code>{" "}
-                for personalization
+              <div className="hidden md:flex items-center gap-2 text-blue-500/60 lowercase italic font-medium tracking-normal text-xs">
+                use internal tokens via {"{{"} trigger
               </div>
             </div>
-          </>
+          </div>
+        )}
+
+        {/* Modals & Overlays */}
+        {showLinkModal && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center">
+                  {" "}
+                  <LinkIcon className="w-5 h-5 text-blue-600" />{" "}
+                </div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                  Establish Link
+                </h3>
+              </div>
+              <input
+                type="text"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                placeholder="https://hyperlink.io"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl mb-6 text-sm outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
+                autoFocus
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowLinkModal(false)}
+                  className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={setLink}
+                  className="flex-1 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+                >
+                  Inject
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showImageModal && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                  {" "}
+                  <ImageIcon className="w-5 h-5 text-emerald-600" />{" "}
+                </div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                  Import Asset
+                </h3>
+              </div>
+              <input
+                type="text"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://asset-source.com/img.jpg"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl mb-6 text-sm outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all"
+                autoFocus
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowImageModal(false)}
+                  className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all"
+                >
+                  Abort
+                </button>
+                <button
+                  onClick={addImage}
+                  className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-all"
+                >
+                  Sync
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showTableModal && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center">
+                  {" "}
+                  <TableIcon className="w-5 h-5 text-indigo-600" />{" "}
+                </div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                  Construct Matrix
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div>
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 block">
+                    Rows
+                  </label>
+                  <input
+                    type="number"
+                    value={tableRows}
+                    onChange={(e) =>
+                      setTableRows(parseInt(e.target.value) || 1)
+                    }
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 block">
+                    Cols
+                  </label>
+                  <input
+                    type="number"
+                    value={tableCols}
+                    onChange={(e) =>
+                      setTableCols(parseInt(e.target.value) || 1)
+                    }
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowTableModal(false)}
+                  className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all"
+                >
+                  Discard
+                </button>
+                <button
+                  onClick={insertTable}
+                  className="flex-1 py-4 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 active:scale-95 transition-all"
+                >
+                  Build
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showTokens && (
+          <div className="absolute bottom-16 right-6 z-50 animate-in slide-in-from-bottom-6 duration-300">
+            <PersonalizationTokens
+              onInsertToken={insertToken}
+              userFields={userFields}
+            />
+          </div>
         )}
       </div>
     </div>

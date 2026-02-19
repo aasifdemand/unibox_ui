@@ -19,10 +19,10 @@ const Button = ({
     primary:
       "bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-800 focus:ring-blue-500",
     secondary:
-      "bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500",
+      "bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-500",
     outline:
-      "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500",
-    ghost: "text-gray-700 hover:bg-gray-100 focus:ring-gray-500",
+      "border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-blue-500",
+    ghost: "text-slate-700 hover:bg-slate-100 focus:ring-slate-500",
     danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
   };
 

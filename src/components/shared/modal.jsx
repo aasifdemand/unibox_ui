@@ -24,28 +24,28 @@ const Modal = ({
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
-      {/* Backdrop with fade animation */}
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
+      {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-all duration-500 animate-in fade-in"
         onClick={closeOnBackdrop ? onClose : undefined}
       />
 
-      {/* Modal Content with slide animation */}
+      {/* Modal Content */}
       <div
-        className={`relative bg-white rounded-2xl w-full ${maxWidth} max-h-screen flex flex-col shadow-2xl transition-all duration-200 transform ${isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4"}`}
+        className={`relative w-full ${maxWidth} max-h-[95vh] flex flex-col shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] transition-all duration-300 transform animate-in zoom-in-95 fade-in slide-in-from-bottom-8 rounded-[2.5rem] overflow-hidden bg-white`}
       >
-        {/* Close button */}
+        {/* Close button - more premium style */}
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors z-10"
+            className="absolute top-6 right-6 p-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl transition-all z-50 group border border-white/10 hover:scale-110 active:scale-95"
           >
-            <X className="w-5 h-5 text-gray-600 hover:text-gray-900" />
+            <X className="w-5 h-5 text-white group-hover:rotate-90 transition-transform duration-300" />
           </button>
         )}
 
-        {children}
+        <div className="flex-1 overflow-y-auto no-scrollbar">{children}</div>
       </div>
     </div>,
     document.body,

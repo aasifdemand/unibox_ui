@@ -11,6 +11,12 @@ export const campaignKeys = {
   list: (filters) => [...campaignKeys.lists(), { filters }],
   details: () => [...campaignKeys.all, "detail"],
   detail: (id) => [...campaignKeys.details(), id],
+  replies: (id) => [...campaignKeys.detail(id), "replies"],
+  recipientReplies: (campaignId, recipientId) => [
+    ...campaignKeys.all,
+    "replies",
+    { campaignId, recipientId },
+  ],
 };
 
 // =========================
@@ -52,6 +58,63 @@ export const useCampaign = (campaignId) => {
     queryFn: () => fetchCampaign(campaignId),
     enabled: !!campaignId,
     staleTime: 2 * 60 * 1000,
+  });
+};
+
+// =========================
+// FETCH CAMPAIGN REPLIES
+// =========================
+const fetchCampaignReplies = async (campaignId) => {
+  const res = await fetch(`${API_URL}/campaigns/${campaignId}/replies`, {
+    credentials: "include",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to fetch replies");
+  return data.data || [];
+};
+
+export const useCampaignReplies = (campaignId) => {
+  return useQuery({
+    queryKey: campaignKeys.replies(campaignId),
+    queryFn: () => fetchCampaignReplies(campaignId),
+    enabled: !!campaignId,
+    staleTime: 30 * 1000, // 30 seconds
+    refetchInterval: () => {
+      // Refetch if there are pending replies or campaign is running
+
+      const campaign = queryClient.getQueryData(
+        campaignKeys.detail(campaignId),
+      );
+      if (campaign?.status === "running" || campaign?.status === "sending") {
+        return 10000; // 10 seconds
+      }
+      return false;
+    },
+  });
+};
+
+// =========================
+// FETCH RECIPIENT REPLY
+// =========================
+const fetchRecipientReply = async ({ campaignId, recipientId }) => {
+  const res = await fetch(
+    `${API_URL}/campaigns/${campaignId}/replies?recipientId=${recipientId}`,
+    {
+      credentials: "include",
+    },
+  );
+  const data = await res.json();
+  if (!res.ok)
+    throw new Error(data.message || "Failed to fetch recipient reply");
+  return data.data;
+};
+
+export const useRecipientReply = (campaignId, recipientId) => {
+  return useQuery({
+    queryKey: campaignKeys.recipientReplies(campaignId, recipientId),
+    queryFn: () => fetchRecipientReply({ campaignId, recipientId }),
+    enabled: !!campaignId && !!recipientId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
 
@@ -156,6 +219,8 @@ export const useDeleteCampaign = () => {
       });
       // Remove detail query
       queryClient.removeQueries({ queryKey: campaignKeys.detail(campaignId) });
+      // Remove replies queries
+      queryClient.removeQueries({ queryKey: campaignKeys.replies(campaignId) });
     },
   });
 };
@@ -229,8 +294,21 @@ export const usePauseCampaign = () => {
 
   return useMutation({
     mutationFn: pauseCampaign,
-    onSuccess: (_, campaignId) => {
-      // Update campaign status
+    onSuccess: (data, campaignId) => {
+      console.log("✅ Campaign paused successfully, invalidating cache");
+
+      // Force refetch of all campaign queries
+      queryClient.invalidateQueries({
+        queryKey: campaignKeys.lists(),
+        refetchType: "active",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: campaignKeys.detail(campaignId),
+        refetchType: "active",
+      });
+
+      // Also directly update the cache for immediate UI feedback
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
           campaign.id === campaignId
@@ -238,10 +316,14 @@ export const usePauseCampaign = () => {
             : campaign,
         );
       });
+
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
         status: "paused",
       }));
+    },
+    onError: (error) => {
+      console.error("❌ Failed to pause campaign:", error);
     },
   });
 };
@@ -338,7 +420,7 @@ export const useCampaignStats = (campaignId) => {
       const campaign = queryClient.getQueryData(
         campaignKeys.detail(campaignId),
       );
-      if (campaign?.status === "running") {
+      if (campaign?.status === "running" || campaign?.status === "sending") {
         return 10000; // 10 seconds
       }
       return false;
@@ -376,6 +458,7 @@ export const useBulkDeleteCampaigns = () => {
       // Remove individual detail queries
       campaignIds.forEach((id) => {
         queryClient.removeQueries({ queryKey: campaignKeys.detail(id) });
+        queryClient.removeQueries({ queryKey: campaignKeys.replies(id) });
       });
     },
   });

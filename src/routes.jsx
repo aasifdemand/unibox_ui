@@ -21,6 +21,7 @@ import Mailboxes from "./routes/dashboard/mailboxes";
 
 // Import React Query hooks
 import { useCurrentUser } from "./hooks/useAuth";
+import VerifyAccount from "./routes/auth/verify-account";
 
 const AppRoutes = () => {
   const { refetch: refetchUser } = useCurrentUser();
@@ -45,6 +46,7 @@ const AppRoutes = () => {
         <Route path="login" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />
+        <Route path="verify-account" element={<VerifyAccount />} />
       </Route>
 
       {/* Protected app routes (ONLY for logged-in users) */}

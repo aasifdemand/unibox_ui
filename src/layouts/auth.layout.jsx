@@ -3,16 +3,36 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-linear-to-br from-gray-50 to-blue-50">
-      {/* Logo with icon */}
-      <Logo />
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px] animate-pulse"></div>
+        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] rounded-full bg-indigo-500/5 blur-[100px] animate-pulse [animation-delay:2s]"></div>
+        <div className="absolute -bottom-[10%] left-[20%] w-[35%] h-[35%] rounded-full bg-purple-500/5 blur-[110px] animate-pulse [animation-delay:4s]"></div>
 
-      <div className="w-full max-w-md">
-        <Outlet />
+        {/* Subtle Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
       </div>
 
-      <div className="mt-16 text-center text-sm text-gray-500">
-        <p>© 2024 Unibox Inc. All rights reserved.</p>
+      <div className="relative w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {/* Logo */}
+        <div className="flex justify-center mb-10">
+          <Logo />
+        </div>
+
+        {/* Main Content */}
+        <div className="bg-white/70 backdrop-blur-2xl border border-white p-2 shadow-xl rounded-2xl">
+          <div className="p-8">
+            <Outlet />
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 text-center">
+          <p className="text-xs text-slate-400">
+            © {new Date().getFullYear()} Unibox. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   );

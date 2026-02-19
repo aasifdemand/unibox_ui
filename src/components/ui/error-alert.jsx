@@ -199,7 +199,6 @@ export const BannerAlert = ({
   );
 };
 
-// Form field error
 export const FieldError = ({ error, className = "" }) => {
   if (!error) return null;
 
@@ -211,19 +210,4 @@ export const FieldError = ({ error, className = "" }) => {
   );
 };
 
-// API Error Handler utility
-export const handleApiError = (error, fallbackMessage = "Operation failed") => {
-  if (error?.response?.data?.message) {
-    return error.response.data.message;
-  }
-  if (error?.response?.data?.error) {
-    return error.response.data.error;
-  }
-  if (error?.message) {
-    return error.message;
-  }
-  return fallbackMessage;
-};
-
-// Default export
 export default ErrorAlert;

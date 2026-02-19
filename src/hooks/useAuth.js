@@ -19,7 +19,7 @@ const fetchCurrentUser = async () => {
 
   if (!res.ok) {
     if (res.status === 401) {
-      return null; // Not authenticated is not an error
+      return null;
     }
     const data = await res.json().catch(() => ({}));
     throw new Error(data.message || "Failed to fetch user");
@@ -33,8 +33,8 @@ export const useCurrentUser = () => {
   return useQuery({
     queryKey: authKeys.user(),
     queryFn: fetchCurrentUser,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     retry: false,
   });
 };
@@ -65,14 +65,13 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: async () => {
-      // Invalidate and refetch user data
       await queryClient.invalidateQueries({ queryKey: authKeys.user() });
     },
   });
 };
 
 // =========================
-// SIGNUP MUTATION
+// SIGNUP MUTATION - UPDATED
 // =========================
 const signupUser = async ({ name, email, password }) => {
   const res = await fetch(`${API_URL}/auth/signup`, {
@@ -88,18 +87,71 @@ const signupUser = async ({ name, email, password }) => {
     throw new Error(data.message || "Signup failed");
   }
 
-  return data;
+  return data; // Returns { message, data: { email, requiresVerification } }
 };
 
 export const useSignup = () => {
+  return useMutation({
+    mutationFn: signupUser,
+    // Don't auto-login anymore - user needs to verify email first
+  });
+};
+
+// =========================
+// VERIFY ACCOUNT MUTATION - NEW
+// =========================
+const verifyAccount = async ({ email, otp }) => {
+  const res = await fetch(`${API_URL}/auth/verify-account`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Verification failed");
+  }
+
+  return data;
+};
+
+export const useVerifyAccount = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: signupUser,
+    mutationFn: verifyAccount,
     onSuccess: async () => {
-      // Invalidate and refetch user data
+      // Auto-login after successful verification
       await queryClient.invalidateQueries({ queryKey: authKeys.user() });
     },
+  });
+};
+
+// =========================
+// RESEND VERIFICATION MUTATION - NEW
+// =========================
+const resendVerification = async (email) => {
+  const res = await fetch(`${API_URL}/auth/resend-verification`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to resend verification code");
+  }
+
+  return data;
+};
+
+export const useResendVerification = () => {
+  return useMutation({
+    mutationFn: resendVerification,
   });
 };
 
@@ -126,11 +178,9 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
-      // Clear all queries from cache
       queryClient.clear();
     },
     onError: () => {
-      // Still clear local state even if server logout fails
       queryClient.clear();
     },
   });
@@ -240,7 +290,6 @@ export const useUpdateProfile = () => {
   return useMutation({
     mutationFn: updateProfile,
     onSuccess: (updatedUser) => {
-      // Update user in cache
       queryClient.setQueryData(authKeys.user(), updatedUser);
     },
   });
@@ -270,7 +319,6 @@ export const useRefreshToken = () => {
   return useMutation({
     mutationFn: refreshToken,
     onSuccess: () => {
-      // Refetch user data
       queryClient.invalidateQueries({ queryKey: authKeys.user() });
     },
   });

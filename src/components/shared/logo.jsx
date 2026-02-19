@@ -1,15 +1,13 @@
 const Logo = () => {
   return (
-    <div className="mb-12 flex flex-col items-center">
-      {/* Logo icon with gradient background */}
-      <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 mb-4 shadow-lg shadow-blue-500/20">
-        {/* Email/Envelope icon */}
+    <div className="flex items-center gap-3">
+      {/* Logo icon */}
+      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 shadow-lg shadow-blue-500/20">
         <svg
-          className="w-8 h-8 text-white"
+          className="w-6 h-6 text-white"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             strokeLinecap="round"
@@ -20,13 +18,15 @@ const Logo = () => {
         </svg>
       </div>
 
-      {/* Brand name */}
-      <h1 className="text-3xl font-bold bg-linear-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
-        Unibox
-      </h1>
-
-      {/* Tagline */}
-      <p className="text-gray-600 mt-2 font-medium">Email Campaign Tool</p>
+      {/* Brand name and tagline */}
+      <div className="flex flex-col">
+        <h1 className="text-2xl font-bold bg-linear-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
+          Unibox
+        </h1>
+        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
+          Campaign Platform
+        </p>
+      </div>
     </div>
   );
 };

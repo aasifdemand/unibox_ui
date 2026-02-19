@@ -8,8 +8,11 @@ import {
   Upload,
   User,
   X,
+  Briefcase,
+  Factory,
+  Loader2,
+  Zap,
 } from "lucide-react";
-import Button from "../components/ui/button";
 import { useRef } from "react";
 import Modal from "../components/shared/modal";
 import * as XLSX from "xlsx";
@@ -81,6 +84,17 @@ const ShowUpload = ({
             if (lowerHeader.includes("phone")) autoMapping.phone = header;
             if (lowerHeader.includes("city")) autoMapping.city = header;
             if (lowerHeader.includes("country")) autoMapping.country = header;
+            if (
+              lowerHeader.includes("role") ||
+              lowerHeader.includes("title") ||
+              lowerHeader.includes("job")
+            )
+              autoMapping.role = header;
+            if (
+              lowerHeader.includes("industry") ||
+              lowerHeader.includes("sector")
+            )
+              autoMapping.industry = header;
           });
 
           setMapping((prev) => ({ ...prev, ...autoMapping }));
@@ -99,187 +113,201 @@ const ShowUpload = ({
   return (
     <Modal
       isOpen={true}
-      onClose={() => setShowUploadModal(false)}
-      maxWidth="max-w-2xl"
+      onClose={() => {
+        setShowUploadModal(false);
+        resetUploadState();
+      }}
+      maxWidth="max-w-3xl"
       closeOnBackdrop={true}
     >
-      <div className="flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <FileSpreadsheet className="w-6 h-6 text-green-600 mr-3" />
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    Upload Contact List
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Upload an Excel file (.xlsx) with your contacts
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setShowUploadModal(false);
-                  resetUploadState();
-                }}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-8 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+          <FileSpreadsheet className="w-20 h-20 text-blue-400" />
+        </div>
+        <div className="relative flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center border border-blue-500/30">
+              <FileSpreadsheet className="w-6 h-6 text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
+                Upload Contacts
+              </h3>
+              <p className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest mt-0.5">
+                Import your contact list
+              </p>
             </div>
           </div>
-
-          <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-            {uploadStep === 1 ? (
-              <div className="text-center py-8">
-                <div className="w-20 h-20 mx-auto mb-6 bg-blue-50 rounded-full flex items-center justify-center">
-                  <FileSpreadsheet className="w-10 h-10 text-blue-600" />
-                </div>
-                <h4 className="text-lg font-medium text-gray-900 mb-2">
-                  Upload Excel File
-                </h4>
-                <p className="text-gray-600 mb-6">
-                  Upload an Excel (.xlsx or .xls) file containing your contact
-                  list
-                </p>
-
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 hover:border-blue-400 transition-colors">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".xlsx,.xls,.csv"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-
-                  <FileSpreadsheet className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-4">
-                    Click to upload or drag & drop
-                  </p>
-
-                  <Button
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Browse Files
-                  </Button>
-
-                  <p className="text-xs text-gray-500 mt-4">
-                    Supported formats: .xlsx, .xls
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-lg font-medium text-gray-900 mb-2">
-                    Field Mapping
-                  </h4>
-                  <p className="text-gray-600 mb-4">
-                    Map your spreadsheet columns to contact fields
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {Object.keys(mapping).map((field) => (
-                    <div
-                      key={field}
-                      className="flex items-center p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-white border flex items-center justify-center mr-4">
-                        {field === "email" && (
-                          <Mail className="w-4 h-4 text-blue-600" />
-                        )}
-                        {field === "name" && (
-                          <User className="w-4 h-4 text-green-600" />
-                        )}
-                        {field === "firstName" && (
-                          <User className="w-4 h-4 text-green-600" />
-                        )}
-                        {field === "lastName" && (
-                          <User className="w-4 h-4 text-green-600" />
-                        )}
-                        {field === "company" && (
-                          <Building className="w-4 h-4 text-purple-600" />
-                        )}
-                        {field === "phone" && (
-                          <Phone className="w-4 h-4 text-red-600" />
-                        )}
-                        {field === "city" && (
-                          <MapPin className="w-4 h-4 text-orange-600" />
-                        )}
-                        {field === "country" && (
-                          <Globe className="w-4 h-4 text-indigo-600" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          {field === "email" && "Email Address"}
-                          {field === "name" && "Full Name"}
-                          {field === "firstName" && "First Name"}
-                          {field === "lastName" && "Last Name"}
-                          {field === "company" && "Company"}
-                          {field === "phone" && "Phone Number"}
-                          {field === "city" && "City"}
-                          {field === "country" && "Country"}
-                          {field === "email" && (
-                            <span className="text-red-500 ml-1">*</span>
-                          )}
-                        </label>
-                        <select
-                          value={mapping[field]}
-                          onChange={(e) =>
-                            setMapping({
-                              ...mapping,
-                              [field]: e.target.value,
-                            })
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        >
-                          <option value="">Select column...</option>
-                          {fileHeaders.map((header) => (
-                            <option key={header} value={header}>
-                              {header}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <Button variant="outline" onClick={() => setUploadStep(1)}>
-                    Back
-                  </Button>
-                  <div className="flex items-center space-x-3">
-                    <Button variant="outline" onClick={resetUploadState}>
-                      Start Over
-                    </Button>
-                    <Button
-                      onClick={handleContactsUpload}
-                      disabled={!mapping.email || uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload List
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
+      </div>
+
+      <div className="p-8">
+        {uploadStep === 1 ? (
+          <div className="space-y-8 py-2">
+            <div className="text-center space-y-3">
+              <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest">
+                Select File
+              </h4>
+              <p className="text-xs text-slate-400 font-medium">
+                Upload an Excel file (.xlsx or .xls) containing your contacts.
+              </p>
+            </div>
+
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="group relative border-2 border-dashed border-slate-100 rounded-[2.5rem] p-12 hover:border-blue-400/50 hover:bg-blue-50/10 cursor-pointer transition-all duration-500"
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".xlsx,.xls,.csv"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              <div className="flex flex-col items-center gap-6">
+                <div className="w-20 h-20 bg-slate-50 rounded-4xl flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-50 transition-all duration-500">
+                  <Upload className="w-8 h-8 text-slate-300 group-hover:text-blue-500" />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
+                    Click to Upload
+                  </p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                    or drag and drop files here
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="px-3 py-1.5 bg-slate-50 rounded-lg text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-100">
+                    .xlsx
+                  </span>
+                  <span className="px-3 py-1.5 bg-slate-50 rounded-lg text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-100">
+                    .xls
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            <div className="flex items-center justify-between border-b border-slate-50 pb-4">
+              <div>
+                <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
+                  Map Columns
+                </h4>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                  Match spreadsheet columns to contact fields
+                </p>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">
+                  File Loaded
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.keys(mapping).map((field) => (
+                <div
+                  key={field}
+                  className="group p-5 bg-slate-50/50 rounded-3xl border border-slate-100 hover:border-blue-200 hover:bg-white transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
+                      {field === "email" && (
+                        <Mail className="w-4 h-4 text-rose-500" />
+                      )}
+                      {field === "name" && (
+                        <User className="w-4 h-4 text-emerald-500" />
+                      )}
+                      {field === "firstName" && (
+                        <User className="w-4 h-4 text-emerald-500" />
+                      )}
+                      {field === "lastName" && (
+                        <User className="w-4 h-4 text-emerald-500" />
+                      )}
+                      {field === "company" && (
+                        <Building className="w-4 h-4 text-indigo-500" />
+                      )}
+                      {field === "phone" && (
+                        <Phone className="w-4 h-4 text-blue-500" />
+                      )}
+                      {field === "city" && (
+                        <MapPin className="w-4 h-4 text-amber-500" />
+                      )}
+                      {field === "country" && (
+                        <Globe className="w-4 h-4 text-sky-500" />
+                      )}
+                      {field === "role" && (
+                        <Briefcase className="w-4 h-4 text-slate-500" />
+                      )}
+                      {field === "industry" && (
+                        <Factory className="w-4 h-4 text-orange-500" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-extrabold text-slate-800 uppercase tracking-tight">
+                        {field === "email"
+                          ? "Email"
+                          : field.replace(/([A-Z])/g, " $1").trim()}
+                        {field === "email" && (
+                          <span className="text-rose-500 ml-1">*</span>
+                        )}
+                      </p>
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                        Select column
+                      </p>
+                    </div>
+                  </div>
+                  <select
+                    value={mapping[field]}
+                    onChange={(e) =>
+                      setMapping({ ...mapping, [field]: e.target.value })
+                    }
+                    className="w-full h-12 px-4 bg-white border-2 border-slate-100 rounded-2xl text-[11px] font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all outline-none appearance-none cursor-pointer"
+                  >
+                    <option value="">Select a column...</option>
+                    {fileHeaders.map((header) => (
+                      <option key={header} value={header}>
+                        {header}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between pt-6 mt-8 border-t border-slate-100">
+              <button
+                onClick={() => setUploadStep(1)}
+                className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
+              >
+                Back
+              </button>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={resetUploadState}
+                  className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-rose-500 hover:border-rose-100 transition-all active:scale-95"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleContactsUpload}
+                  disabled={!mapping.email || uploading}
+                  className="px-10 py-4 bg-blue-600 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+                >
+                  {uploading ? (
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  ) : (
+                    <Zap className="w-4 h-4" />
+                  )}
+                  {uploading ? "Uploading..." : "Upload Contacts"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Modal>
   );
