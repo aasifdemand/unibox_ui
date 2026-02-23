@@ -29,7 +29,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
@@ -172,12 +177,15 @@ body.modal-open {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none;
+  /* Chrome, Safari and Opera */
 }
 
 @keyframes slideDown {
@@ -196,3 +204,36 @@ body.modal-open {
   animation: slideDown 0.2s ease-out;
 }
 
+/* HTML Content Resets (SMTP/Gmail/Outlook) */
+.mail-content-html {
+  line-height: 1.6;
+  color: var(--text-main);
+  word-wrap: break-word;
+}
+
+.mail-content-html img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mail-content-html a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.mail-content-html blockquote {
+  border-left: 3px solid #e2e8f0;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #64748b;
+  margin-bottom: 1em;
+}
+
+.mail-content-html table {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.mail-content-html p {
+  margin-bottom: 1em;
+}

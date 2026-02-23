@@ -12,6 +12,7 @@ import {
   FileText,
   TrendingUp,
   Zap,
+  CreditCard,
   Mailbox,
   ChevronRight,
   PanelLeftClose,
@@ -66,7 +67,8 @@ const DashboardLayout = () => {
   const { data: campaigns = [] } = useCampaigns();
   const { data: templates = [] } = useTemplates();
   const { data: batches = [] } = useBatches();
-  const { data: mailboxes = [] } = useMailboxes();
+  const { data: mailboxResponse = { mailboxes: [] } } = useMailboxes();
+  const mailboxes = mailboxResponse.mailboxes || [];
 
   const unreadMailCount = mailboxes.reduce((total, mailbox) => {
     return total + (mailbox.unreadCount || 0);
@@ -99,6 +101,7 @@ const DashboardLayout = () => {
       path: "/dashboard/templates",
       badge: templates.length > 0 ? templates.length.toString() : null,
     },
+    { icon: CreditCard, label: "Subscription", path: "/dashboard/subscription" },
     { icon: Settings, label: "Settings", path: "/dashboard/settings" },
   ];
 
@@ -200,7 +203,7 @@ const DashboardLayout = () => {
             </button>
 
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-slate-800 flex items-center justify-center text-white shadow-lg shadow-slate-800/10 transition-transform hover:rotate-3">
+              <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-slate-800/10 transition-transform hover:rotate-3">
                 <activeItem.icon className="w-5 h-5" />
               </div>
               <div>
@@ -345,7 +348,7 @@ const DashboardLayout = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full mx-auto">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 group cursor-pointer">
-                <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-500">
+                <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-500">
                   <Mail className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-extrabold text-slate-800 tracking-tight">

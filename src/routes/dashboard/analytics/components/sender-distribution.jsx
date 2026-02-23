@@ -3,8 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import CustomTooltip from "./custom-tooltip";
 
 const SenderDistribution = ({ data, COLORS }) => {
-  const totalEmails = data.reduce((sum, s) => sum + s.sent, 0);
-  console.log("data: ", data);
+  const totalEmails = data.reduce((sum, s) => sum + (Number(s.sent) || Number(s.value) || 0), 0);
 
   return (
     <div className="premium-card p-8 h-full flex flex-col">
@@ -111,7 +110,7 @@ const SenderDistribution = ({ data, COLORS }) => {
                     {item.count} Active
                   </span>
                   <span className="text-[10px] font-bold text-slate-500">
-                    {item.sent.toLocaleString()} Sent
+                    {(item.sent || 0).toLocaleString()} Sent
                   </span>
                 </div>
               </div>

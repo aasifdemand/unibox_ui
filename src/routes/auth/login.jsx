@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../../components/ui/button";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Input from "../../components/ui/input";
 import Checkbox from "../../components/ui/checkbox";
 import { Mail } from "lucide-react";
@@ -11,6 +10,7 @@ import { mapZodErrors } from "../../utils/map-zod";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
 
   const [formData, setFormData] = useState({
@@ -23,6 +23,39 @@ const Login = () => {
 
   const login = useLogin();
   const { data: user, isLoading: userLoading } = useCurrentUser();
+
+  // Handle OAuth errors from URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const error = params.get("error");
+
+    if (error) {
+      // Decode the error message (in case it's encoded)
+      const errorMessage = decodeURIComponent(error);
+
+      // Show appropriate toast message based on error
+      switch (errorMessage) {
+        case "google_auth_failed":
+          toast.error("Google authentication failed. Please try again.");
+          break;
+        case "oauth_failed":
+          toast.error("OAuth authentication failed. Please try again.");
+          break;
+        case "LOCAL_ACCOUNT_EXISTS":
+          toast.error(
+            "An account with this email already exists. Please login with your password.",
+          );
+          break;
+        default:
+          toast.error(
+            errorMessage || "Authentication failed. Please try again.",
+          );
+      }
+
+      // Clean up the URL by removing the error parameter
+      navigate("/auth/login", { replace: true });
+    }
+  }, [location.search, navigate, toast]);
 
   useEffect(() => {
     if (user) {

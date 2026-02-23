@@ -146,8 +146,19 @@ export const useCampaignAnalytics = (id) => {
     error,
     refetch: refetchCampaign,
   } = useCampaign(id);
-  const { data: replies = [], isLoading: repliesLoading } =
+  const { data: repliesResponse = [], isLoading: repliesLoading } =
     useCampaignReplies(id);
+
+  // Extract replies list robustly
+  const replies = useMemo(() => {
+    if (!repliesResponse) return [];
+    if (Array.isArray(repliesResponse)) return repliesResponse;
+    if (Array.isArray(repliesResponse.replies)) return repliesResponse.replies;
+    if (repliesResponse.data && Array.isArray(repliesResponse.data.replies))
+      return repliesResponse.data.replies;
+    if (Array.isArray(repliesResponse.data)) return repliesResponse.data;
+    return [];
+  }, [repliesResponse]);
   const { data: recipientReply, isLoading: replyLoading } = useRecipientReply(
     id,
     selectedRecipientId,
@@ -162,21 +173,37 @@ export const useCampaignAnalytics = (id) => {
   // Metrics calculation
   const stats = useMemo(() => {
     if (!campaign) return null;
+
     const recipients = campaign.CampaignRecipients || [];
-    const totalSent = recipients.filter(
-      (r) => r.status === "sent" || r.status === "replied",
-    ).length;
-    const totalReplied = recipients.filter(
-      (r) => r.status === "replied",
-    ).length;
-    const totalOpened = recipients.filter((r) => r.openedAt).length;
-    const totalClicked = recipients.filter((r) => r.clickedAt).length;
+
+    // Prioritize backend-provided aggregate stats if available
+    const totalSent =
+      campaign.totalSent !== undefined
+        ? campaign.totalSent
+        : recipients.filter((r) => r.status === "sent" || r.status === "replied")
+          .length;
+
+    const totalReplied =
+      campaign.totalReplied !== undefined
+        ? campaign.totalReplied
+        : recipients.filter((r) => r.status === "replied").length;
+
+    const totalOpened =
+      campaign.totalOpens !== undefined
+        ? campaign.totalOpens
+        : recipients.filter((r) => r.openedAt).length;
+
+    const totalClicked =
+      campaign.totalClicks !== undefined
+        ? campaign.totalClicks
+        : recipients.filter((r) => r.clickedAt).length;
+
     const progress = recipients.length
       ? Math.min(100, Math.round((totalSent / recipients.length) * 100))
       : 0;
 
     return {
-      totalRecipients: recipients.length,
+      totalRecipients: recipients.length || campaign.totalRecipients || 0,
       totalSent,
       totalReplied,
       totalOpened,

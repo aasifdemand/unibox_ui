@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 
-const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
+const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAllTokens, setShowAllTokens] = useState(false);
 
@@ -114,17 +114,17 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
   const customTokens =
     userFields.length > 0
       ? [
-          {
-            category: "Custom Fields",
-            tokens: userFields.map((field) => ({
-              token: `{{${field.fieldName}}}`,
-              label: field.displayName || field.fieldName,
-              icon: <Tag className="w-4 h-4" />,
-              description: `Custom field: ${field.fieldName}`,
-              isCustom: true,
-            })),
-          },
-        ]
+        {
+          category: "Custom Fields",
+          tokens: userFields.map((field) => ({
+            token: `{{${field.fieldName}}}`,
+            label: field.displayName || field.fieldName,
+            icon: <Tag className="w-4 h-4" />,
+            description: `Custom field: ${field.fieldName}`,
+            isCustom: true,
+          })),
+        },
+      ]
       : [];
 
   const allTokens = [...systemTokens, ...customTokens];
@@ -147,33 +147,43 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-lg">
+    <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
       {/* Header */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-gray-900">
-            Personalization Tokens
+          <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-800">
+            Smart Variables
           </h3>
-          <button
-            onClick={() => setShowAllTokens(!showAllTokens)}
-            className="flex items-center text-sm text-blue-600 hover:text-blue-800"
-          >
-            {showAllTokens ? "Show Common" : "Show All"}
-            <ChevronDown
-              className={`w-4 h-4 ml-1 transition-transform ${showAllTokens ? "rotate-180" : ""}`}
-            />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowAllTokens(!showAllTokens)}
+              className="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest text-blue-600 hover:bg-blue-50 transition-all flex items-center gap-1.5"
+            >
+              {showAllTokens ? "Common Only" : "View All"}
+              <ChevronDown
+                className={`w-3 h-3 transition-transform ${showAllTokens ? "rotate-180" : ""}`}
+              />
+            </button>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-600 transition-all"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
           <input
             type="text"
-            placeholder="Search tokens..."
+            placeholder="Search variables..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold placeholder:text-slate-400 outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all"
           />
         </div>
       </div>
@@ -181,8 +191,8 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
       {/* Tokens List */}
       <div className="max-h-80 overflow-y-auto p-4">
         {filteredTokens.map((category, catIndex) => (
-          <div key={catIndex} className="mb-6 last:mb-0">
-            <h4 className="text-sm font-medium text-gray-700 mb-3 pb-2 border-b">
+          <div key={catIndex} className="mb-8 last:mb-0">
+            <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 pb-2 border-b border-slate-50">
               {category.category}
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -193,10 +203,14 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
                 <button
                   key={tokenIndex}
                   onClick={() => handleTokenClick(token.token)}
-                  className="flex items-start p-3 text-left rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors group"
+                  className={`flex items-start p-4 text-left rounded-2xl border transition-all duration-300 group ${token.isCustom
+                      ? "bg-purple-50/30 border-purple-100 hover:border-purple-300 hover:bg-purple-50"
+                      : "bg-slate-50/50 border-slate-100 hover:border-blue-300 hover:bg-blue-50"
+                    }`}
                 >
                   <div
-                    className={`p-2 rounded mr-3 ${token.isCustom ? "bg-purple-100" : "bg-blue-100"}`}
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-110 ${token.isCustom ? "bg-purple-100/50" : "bg-blue-100/50"
+                      }`}
                   >
                     <div
                       className={`${token.isCustom ? "text-purple-600" : "text-blue-600"}`}
@@ -204,16 +218,16 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
                       {token.icon}
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-bold text-slate-800 text-xs truncate">
                         {token.label}
                       </span>
-                      <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono text-gray-700">
+                      <code className="text-[10px] bg-white border border-slate-200 px-2 py-0.5 rounded-lg font-mono text-blue-600 font-bold">
                         {token.token}
                       </code>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-[10px] text-slate-500 font-medium leading-relaxed line-clamp-2">
                       {token.description}
                     </p>
                   </div>
@@ -234,20 +248,20 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [] }) => {
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t bg-gray-50">
+      <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600">
-            <span className="inline-flex items-center mr-4">
-              <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-              System Token
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-2 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+              System
             </span>
-            <span className="inline-flex items-center">
-              <div className="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
-              Custom Field
+            <span className="flex items-center gap-2 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+              Custom
             </span>
           </div>
-          <div className="text-xs text-gray-500">
-            Click to insert token into email
+          <div className="text-[9px] font-bold text-blue-600/60 uppercase tracking-widest italic">
+            Click to inject variable
           </div>
         </div>
       </div>

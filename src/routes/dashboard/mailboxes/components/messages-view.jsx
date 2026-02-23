@@ -89,11 +89,10 @@ const MessagesView = ({
 
             <button
               onClick={onFilterStarred}
-              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
-                filterStarred
-                  ? "bg-amber-500 text-white border-amber-600 shadow-lg shadow-amber-500/20"
-                  : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-              }`}
+              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${filterStarred
+                ? "bg-amber-500 text-white border-amber-600 shadow-lg shadow-amber-500/20"
+                : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                }`}
             >
               <Star
                 className={`w-3.5 h-3.5 mr-2 ${filterStarred ? "fill-white" : "text-slate-400"}`}
@@ -103,11 +102,10 @@ const MessagesView = ({
 
             <button
               onClick={onFilterAttachments}
-              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
-                filterAttachments
-                  ? "bg-purple-600 text-white border-purple-700 shadow-lg shadow-purple-500/20"
-                  : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-              }`}
+              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${filterAttachments
+                ? "bg-purple-600 text-white border-purple-700 shadow-lg shadow-purple-500/20"
+                : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                }`}
             >
               <Paperclip
                 className={`w-3.5 h-3.5 mr-2 ${filterAttachments ? "text-white" : "text-slate-400"}`}
@@ -137,66 +135,83 @@ const MessagesView = ({
 
         {/* Messages List Area */}
         <div className="flex-1 flex flex-col bg-transparent overflow-hidden h-screen ">
-          {isLoadingMessages && filteredMessages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 h-screen px-6">
-              <div className="relative">
-                <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+          {/* Main List Body */}
+          <div className="flex-1 min-h-0 relative flex flex-col">
+            {isLoadingMessages && filteredMessages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center flex-1 px-6">
+                <div className="relative">
+                  <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-6">
+                  Indexing Messages...
+                </span>
+              </div>
+            ) : filteredMessages.length === 0 ? (
+              <EmptyMessages
+                searchQuery={searchQuery}
+                filterUnread={filterUnread}
+                filterStarred={filterStarred}
+                filterAttachments={filterAttachments}
+                selectedFolder={selectedFolder}
+              />
+            ) : (
+              <div className="relative flex-1 flex flex-col overflow-hidden">
+                {isLoadingMessages && (
+                  <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-50/40 backdrop-blur-[2px] transition-all duration-500">
+                    <div className="flex flex-col items-center gap-4 p-8 bg-white/80 rounded-[2.5rem] shadow-2xl border border-white ring-1 ring-slate-200/50 animate-in zoom-in-95 duration-300">
+                      <div className="relative">
+                        <div className="w-12 h-12 border-4 border-slate-100 rounded-full"></div>
+                        <div className="absolute top-0 left-0 w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">
+                        Updating Feed...
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div
+                  className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-3 ${viewMode === "grid"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0"
+                    : ""
+                    }`}
+                >
+                  {filteredMessages.map((message) => {
+                    const isSentFolder =
+                      selectedFolder?.id === "SENT" ||
+                      selectedFolder?.id === "sentitems" ||
+                      selectedFolder?.name === "SENT" ||
+                      message.labelIds?.includes("SENT");
+
+                    return (
+                      <MessageListItem
+                        key={getDisplayId(message, selectedMailbox?.type)}
+                        message={message}
+                        isSelected={selectedMessages.includes(
+                          getMessageId(message, selectedMailbox?.type),
+                        )}
+                        onSelect={onSelectMessage}
+                        onCheck={onCheckMessage}
+                        viewMode={viewMode}
+                        formatDate={formatMessageDate}
+                        getSender={getSender}
+                        getSubject={getSubject}
+                        getPreview={getPreview}
+                        getInitials={getInitials}
+                        mailboxType={selectedMailbox?.type}
+                        isSent={isSentFolder}
+                      />
+                    );
+                  })}
                 </div>
               </div>
-              <span className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-6">
-                Indexing Messages...
-              </span>
-            </div>
-          ) : filteredMessages.length === 0 ? (
-            <EmptyMessages
-              searchQuery={searchQuery}
-              filterUnread={filterUnread}
-              filterStarred={filterStarred}
-              filterAttachments={filterAttachments}
-              selectedFolder={selectedFolder}
-            />
-          ) : (
-            <div
-              className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-3 ${
-                viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0"
-                  : ""
-              }`}
-            >
-              {filteredMessages.map((message) => {
-                const isSentFolder =
-                  selectedFolder?.id === "SENT" ||
-                  selectedFolder?.id === "sentitems" ||
-                  selectedFolder?.name === "SENT" ||
-                  message.labelIds?.includes("SENT");
+            )}
+          </div>
 
-                return (
-                  <MessageListItem
-                    key={getDisplayId(message, selectedMailbox?.type)}
-                    message={message}
-                    isSelected={selectedMessages.includes(
-                      getMessageId(message, selectedMailbox?.type),
-                    )}
-                    onSelect={onSelectMessage}
-                    onCheck={onCheckMessage}
-                    viewMode={viewMode}
-                    formatDate={formatMessageDate}
-                    getSender={getSender}
-                    getSubject={getSubject}
-                    getPreview={getPreview}
-                    getInitials={getInitials}
-                    mailboxType={selectedMailbox?.type}
-                    isSent={isSentFolder}
-                  />
-                );
-              })}
-            </div>
-          )}
-
-          {/* Pagination - Bottom Bar */}
-          {filteredMessages.length > 0 && (
+          {/* Pagination - Bottom Bar (Always Fixed at bottom of the list area if paging info exists) */}
+          {(totalMessages > 0 || (isLoadingMessages && pagination.currentPage > 1)) && (
             <div className="bg-white/50 backdrop-blur-md border-t border-slate-200/60 p-4">
               <Pagination
                 currentPage={pagination.currentPage}
@@ -216,4 +231,5 @@ const MessagesView = ({
     </div>
   );
 };
+
 export default MessagesView;

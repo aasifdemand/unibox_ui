@@ -9,6 +9,7 @@ import {
   MessageSquare,
   ChevronDown,
   User,
+  X,
 } from "lucide-react";
 import Input from "../../../../../components/ui/input";
 import HtmlEmailEditor from "../../../../../components/shared/html-editor";
@@ -225,8 +226,8 @@ const Step1Design = ({
     let newValue =
       lastTwoChars === "{{"
         ? textBeforeCursor.slice(0, -2) +
-          `{{${placeholderKey}}}` +
-          textAfterCursor
+        `{{${placeholderKey}}}` +
+        textAfterCursor
         : textBeforeCursor + `{{${placeholderKey}}}` + textAfterCursor;
 
     setSubjectInputValue(newValue);
@@ -262,10 +263,10 @@ const Step1Design = ({
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                Quick Start
+                Start with a Template
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Apply a pre-built template
+                Choose from your saved library
               </p>
             </div>
           </div>
@@ -363,18 +364,28 @@ const Step1Design = ({
                   if (e.key === "Enter") e.preventDefault();
                 }}
                 onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
-                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${
-                  errors.subject
-                    ? "border-rose-100 text-rose-600"
-                    : "border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500"
-                }`}
+                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${errors.subject
+                  ? "border-rose-100 text-rose-600"
+                  : "border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500"
+                  }`}
                 placeholder="e.g., Hi {{first_name}}!"
               />
               {showSubjectSuggestions && (
                 <div
                   ref={suggestionsRef}
-                  className="absolute z-50 mt-2 w-full bg-white rounded-3xl shadow-2xl border border-slate-100 p-2 animate-in fade-in slide-in-from-top-2"
+                  className="absolute z-50 mt-3 w-full bg-white rounded-[2rem] shadow-2xl border border-slate-200/60 p-4 animate-in fade-in slide-in-from-top-2"
                 >
+                  <div className="flex items-center justify-between mb-4 px-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                      Variables
+                    </span>
+                    <button
+                      onClick={() => setShowSubjectSuggestions(false)}
+                      className="p-1 hover:bg-slate-100 rounded-lg text-slate-400"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                   <div className="max-h-52 overflow-y-auto no-scrollbar">
                     {Object.entries(filteredSuggestions).map(([cat, items]) => (
                       <div key={cat} className="mb-2">
@@ -415,10 +426,10 @@ const Step1Design = ({
               </div>
               <div>
                 <h4 className="text-[11px] font-extrabold text-slate-800 uppercase tracking-widest">
-                  Active Variables
+                  Personalization
                 </h4>
                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">
-                  Detected in {selectedBatch.originalFilename}
+                  Variables available for this campaign
                 </p>
               </div>
             </div>
@@ -478,10 +489,10 @@ const Step1Design = ({
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                Email Design
+                Message Content
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                Compose your masterpiece
+                Design your email sequence
               </p>
             </div>
           </div>
@@ -491,11 +502,10 @@ const Step1Design = ({
               <button
                 key={mode}
                 onClick={() => setEditorMode(mode)}
-                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${
-                  editorMode === mode
-                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                    : "text-slate-400 hover:text-slate-600"
-                }`}
+                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${editorMode === mode
+                  ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
+                  : "text-slate-400 hover:text-slate-600"
+                  }`}
               >
                 {mode === "html" ? "Canvas" : "Raw Text"}
               </button>

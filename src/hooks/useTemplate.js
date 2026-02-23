@@ -79,17 +79,14 @@ export const useCreateTemplate = () => {
   return useMutation({
     mutationFn: createTemplate,
     onSuccess: (newTemplate) => {
-      // Update templates list cache
-      queryClient.setQueryData(templateKeys.lists(), (old = []) => {
-        return [newTemplate, ...old];
+      queryClient.invalidateQueries({
+        queryKey: templateKeys.lists(),
       });
-      // Set as current template in detail cache
+
       queryClient.setQueryData(
         templateKeys.detail(newTemplate.id),
         newTemplate,
       );
-      // Invalidate lists to ensure fresh data
-      queryClient.invalidateQueries({ queryKey: templateKeys.lists() });
     },
   });
 };
@@ -116,13 +113,10 @@ export const useUpdateTemplate = () => {
   return useMutation({
     mutationFn: updateTemplate,
     onSuccess: (updatedTemplate, { templateId }) => {
-      // Update in lists
-      queryClient.setQueryData(templateKeys.lists(), (old = []) => {
-        return old.map((template) =>
-          template.id === templateId ? updatedTemplate : template,
-        );
+      queryClient.invalidateQueries({
+        queryKey: templateKeys.lists(),
       });
-      // Update detail query
+
       queryClient.setQueryData(
         templateKeys.detail(templateId),
         updatedTemplate,
@@ -151,12 +145,13 @@ export const useDeleteTemplate = () => {
   return useMutation({
     mutationFn: deleteTemplate,
     onSuccess: (_, templateId) => {
-      // Remove from lists
-      queryClient.setQueryData(templateKeys.lists(), (old = []) => {
-        return old.filter((template) => template.id !== templateId);
+      queryClient.invalidateQueries({
+        queryKey: templateKeys.lists(),
       });
-      // Remove detail query
-      queryClient.removeQueries({ queryKey: templateKeys.detail(templateId) });
+
+      queryClient.removeQueries({
+        queryKey: templateKeys.detail(templateId),
+      });
     },
   });
 };
@@ -181,10 +176,9 @@ export const useDuplicateTemplate = () => {
 
   return useMutation({
     mutationFn: duplicateTemplate,
-    onSuccess: (newTemplate) => {
-      // Add to lists
-      queryClient.setQueryData(templateKeys.lists(), (old = []) => {
-        return [newTemplate, ...old];
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: templateKeys.lists(),
       });
     },
   });

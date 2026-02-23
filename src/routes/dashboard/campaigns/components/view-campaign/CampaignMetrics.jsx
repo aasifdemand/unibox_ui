@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Users,
-  Send,
-  Mail,
-  MessageCircle,
-  Target,
-  BarChart3,
-  MousePointer2,
-  Zap,
-} from "lucide-react";
+import { Users, Send, Mail, MessageCircle, Zap } from "lucide-react";
 
 const CampaignMetrics = ({ campaign, stats }) => {
   const metrics = [
+
     {
       label: "Total Recipients",
       value: stats.totalRecipients,
@@ -71,7 +63,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {metrics.map((metric, index) => (
+      {metrics?.map((metric, index) => (
         <div
           key={index}
           className={`premium-card p-7 border-none bg-linear-to-br ${themes[metric.theme]} transition-all duration-500 hover:shadow-2xl hover:translate-y-1 group`}

@@ -46,7 +46,8 @@ export const useSmtpData = (
         selectedFolder.name === "INBOX")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
     "INBOX",
   );
 
@@ -54,7 +55,8 @@ export const useSmtpData = (
     isSmtp && (selectedFolder?.id === "SENT" || selectedFolder?.name === "SENT")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
   );
 
   const smtpDraftsQuery = useSmtpDraftMessagesQuery(
@@ -62,7 +64,8 @@ export const useSmtpData = (
       (selectedFolder?.id === "DRAFTS" || selectedFolder?.name === "DRAFTS")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
   );
 
   const smtpTrashQuery = useSmtpTrashMessagesQuery(
@@ -70,14 +73,16 @@ export const useSmtpData = (
       (selectedFolder?.id === "TRASH" || selectedFolder?.name === "TRASH")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
   );
 
   const smtpSpamQuery = useSmtpSpamMessagesQuery(
     isSmtp && (selectedFolder?.id === "SPAM" || selectedFolder?.name === "SPAM")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
   );
 
   const smtpArchiveQuery = useSmtpArchiveMessagesQuery(
@@ -85,7 +90,8 @@ export const useSmtpData = (
       (selectedFolder?.id === "ARCHIVE" || selectedFolder?.name === "ARCHIVE")
       ? mailboxId
       : null,
-    currentPage,
+    currentPage || 1,
+    PAGE_SIZE,
   );
 
   const smtpFoldersQuery = useSmtpFoldersQuery(mailboxId);

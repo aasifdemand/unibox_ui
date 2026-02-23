@@ -269,7 +269,7 @@ export const useChangePassword = () => {
 // =========================
 const updateProfile = async (userData) => {
   const res = await fetch(`${API_URL}/users/profile`, {
-    method: "PUT",
+    method: "PATCH",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),

@@ -94,8 +94,9 @@ export const useCreateSmtpSender = () => {
       queryClient.setQueryData(senderKeys.lists(), (old = []) => {
         return [newSender, ...old];
       });
-      // Invalidate to ensure fresh data
+      // Invalidate both senders and mailboxes to ensure fresh data
       queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
     },
   });
 };
@@ -126,6 +127,8 @@ export const useDeleteSender = () => {
       });
       // Remove detail query
       queryClient.removeQueries({ queryKey: senderKeys.detail(senderId) });
+      // Invalidate mailboxes
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
     },
   });
 };
@@ -159,6 +162,8 @@ export const useUpdateSender = () => {
       });
       // Update detail query
       queryClient.setQueryData(senderKeys.detail(senderId), updatedSender);
+      // Invalidate mailboxes
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
     },
   });
 };
@@ -245,4 +250,62 @@ export const initiateGmailOAuth = () => {
 
 export const initiateOutlookOAuth = () => {
   window.location.href = `${API_URL}/senders/oauth/outlook`;
+};
+
+// =========================
+// BULK UPLOAD SENDERS
+// =========================
+const bulkUploadSenders = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_URL}/senders/bulk-upload`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Bulk upload failed");
+  return data;
+};
+
+export const useBulkUploadSenders = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: bulkUploadSenders,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+    },
+  });
+};
+
+// =========================
+// BULK DELETE SENDERS
+// =========================
+const bulkDeleteSenders = async (senderIds) => {
+  const res = await fetch(`${API_URL}/senders/bulk-delete`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ senderIds }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Bulk delete failed");
+  return data;
+};
+
+export const useBulkDeleteSenders = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: bulkDeleteSenders,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+    },
+  });
 };

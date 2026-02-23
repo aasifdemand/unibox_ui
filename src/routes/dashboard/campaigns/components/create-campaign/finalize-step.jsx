@@ -37,7 +37,7 @@ const Step3Finalize = ({
                 Campaign Summary
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Review your configuration before launch
+                Review your settings before launch
               </p>
             </div>
           </div>
@@ -160,7 +160,7 @@ const Step3Finalize = ({
           {watchScheduleType === "later" && (
             <div className="animate-in fade-in slide-in-from-top-4 duration-500">
               <Input
-                label="Dispatch Date & Time"
+                label="Send Date & Time"
                 type="datetime-local"
                 {...register("scheduledAt")}
                 error={errors.scheduledAt?.message}
@@ -213,11 +213,10 @@ const Step3Finalize = ({
             ].map((setting) => (
               <label
                 key={setting.id}
-                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${
-                  setting.highlight
+                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${setting.highlight
                     ? "bg-amber-50/30 border-amber-100 hover:border-amber-200"
                     : "bg-white border-slate-100 hover:border-blue-200"
-                }`}
+                  }`}
               >
                 <div>
                   <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">

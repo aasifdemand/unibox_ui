@@ -6,44 +6,46 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Query keys
 export const mailboxKeys = {
   all: ["mailboxes"],
-  lists: () => [...mailboxKeys.all, "list"],
+  lists: (params) => [...mailboxKeys.all, "list", params],
   detail: (id) => [...mailboxKeys.all, "detail", id],
 };
 
-// Fetch all senders (internal function)
-const fetchSenders = async () => {
-  const res = await fetch(`${API_URL}/senders`, {
+// Fetch mailboxes with pagination and search
+const fetchMailboxes = async ({ search = "", page = 1, limit = 10, type = "all" } = {}) => {
+  const queryParams = new URLSearchParams({
+    search,
+    page: page.toString(),
+    limit: limit.toString(),
+    type,
+  });
+
+  const res = await fetch(`${API_URL}/mailboxes?${queryParams}`, {
     credentials: "include",
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch senders");
+    throw new Error("Failed to fetch mailboxes");
   }
 
-  const data = await res.json();
-  return data.data || [];
+  return await res.json();
 };
 
-// Transform sender to mailbox format - WITH PROPER TYPE DETECTION
+// Transform sender to mailbox format
 const transformSenderToMailbox = (sender) => {
   // Determine the correct type based on the sender's properties
-  let type = sender.type; // Default from API
+  let type = sender.type;
 
-  // Override with more reliable detection
   if (sender.microsoftId) {
     type = "outlook";
-    console.log(`📧 Fixed: ${sender.email} is Outlook (has microsoftId)`);
   } else if (sender.googleId) {
     type = "gmail";
-    console.log(`📧 Fixed: ${sender.email} is Gmail (has googleId)`);
   } else if (sender.smtpHost) {
     type = "smtp";
-    console.log(`📧 Fixed: ${sender.email} is SMTP (has smtpHost)`);
   }
 
   return {
     id: sender.id,
-    type: type, // Use the corrected type
+    type: type,
     email: sender.email,
     displayName: sender.displayName,
     domain: sender.domain,
@@ -56,65 +58,57 @@ const transformSenderToMailbox = (sender) => {
     stats: {
       dailySent: sender.dailySentCount || 0,
     },
-    // Include detection fields for debugging
-    _debug: {
-      hasMicrosoftId: !!sender.microsoftId,
-      hasGoogleId: !!sender.googleId,
-      hasSmtpHost: !!sender.smtpHost,
-      originalType: sender.type,
-    },
   };
 };
 
-// Fetch all mailboxes
-export const useMailboxes = () => {
+// Fetch mailboxes with pagination
+export const useMailboxes = ({
+  search = "",
+  page = 1,
+  limit = 10,
+  type = "all",
+  enabled = true,
+} = {}) => {
   return useQuery({
-    queryKey: mailboxKeys.lists(),
+    queryKey: mailboxKeys.lists({ search, page, limit, type }),
     queryFn: async () => {
-      const senders = await fetchSenders();
+      const response = await fetchMailboxes({ search, page, limit, type });
+      const { data, meta } = response;
 
-      const mailboxes = senders.map(transformSenderToMailbox);
+      const transformedData = (data || []).map(transformSenderToMailbox);
 
-      return mailboxes.sort(
-        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
-      );
+      return {
+        mailboxes: transformedData,
+        meta: meta || {
+          total: transformedData.length,
+          page,
+          limit,
+          totalPages: 1,
+        },
+      };
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    enabled,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     retry: 1,
   });
 };
 
 // Get mailbox by ID
 export const useMailbox = (mailboxId) => {
-  const queryClient = useQueryClient();
-
   return useQuery({
     queryKey: mailboxKeys.detail(mailboxId),
     queryFn: async () => {
-      // Try to get from cache first
-      const mailboxes = queryClient.getQueryData(mailboxKeys.lists());
-      let mailbox = mailboxes?.find((m) => m.id === mailboxId);
+      const res = await fetch(`${API_URL}/mailboxes/${mailboxId}`, {
+        credentials: "include",
+      });
 
-      if (!mailbox) {
-        // If not in cache, fetch all senders
-        const senders = await fetchSenders();
-        const sender = senders.find((s) => s.id === mailboxId);
-
-        if (!sender) {
-          throw new Error("Mailbox not found");
-        }
-
-        mailbox = transformSenderToMailbox(sender);
-
-        // Remove stats for single mailbox
-        const { _debug, ...mailboxWithoutStats } = mailbox;
-        return mailboxWithoutStats;
+      if (!res.ok) {
+        throw new Error("Mailbox not found");
       }
 
-      // Remove stats for single mailbox
-      const { _debug, ...mailboxWithoutStats } = mailbox;
-      return mailboxWithoutStats;
+      const response = await res.json();
+      return transformSenderToMailbox(response.data);
     },
     enabled: !!mailboxId,
     staleTime: 5 * 60 * 1000,

@@ -7,16 +7,11 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import CustomTooltip from "./custom-tooltip";
 
 const ActivityTimeline = ({ data, hasValidData }) => {
-  console.log("ActivityTimeline data:", data);
-  console.log("hasValidData:", hasValidData);
-
-  const chartData = Array.isArray(data) ? data : [];
-  const hasData = chartData.length > 0 && hasValidData;
+  console.log(data);
 
   return (
     <div className="premium-card p-8 h-full">
@@ -39,7 +34,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
           </div>
           <div className="w-px h-4 bg-slate-200"></div>
           <div className="flex items-center gap-2 px-3">
-            <div className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(147,51,234,0.4)]"></div>
+            <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
             <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">
               Replies
             </span>
@@ -48,29 +43,22 @@ const ActivityTimeline = ({ data, hasValidData }) => {
       </div>
 
       <div className="h-80 w-full relative">
-        {hasData ? (
+        {hasValidData ? (
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={chartData}
-              margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+              data={data}
+              margin={{ top: 0, right: 0, left: -25, bottom: 0 }}
             >
               <defs>
-                <linearGradient id="sentGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.05} />
+                <linearGradient id="colorSent" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                 </linearGradient>
-                <linearGradient
-                  id="repliesGradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
+                <linearGradient id="colorReplies" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                 </linearGradient>
               </defs>
-
               <CartesianGrid
                 vertical={false}
                 strokeDasharray="8 8"
@@ -89,40 +77,25 @@ const ActivityTimeline = ({ data, hasValidData }) => {
                 tick={{ fontSize: 10, fill: "#94a3b8", fontWeight: 700 }}
               />
               <Tooltip
-                cursor={{
-                  stroke: "#94a3b8",
-                  strokeWidth: 1,
-                  strokeDasharray: "5 5",
-                }}
+                cursor={{ stroke: "#e2e8f0", strokeWidth: 1, strokeDasharray: "4 4", fill: "transparent" }}
                 content={<CustomTooltip />}
-              />
-              <Legend
-                verticalAlign="top"
-                height={36}
-                iconType="circle"
-                iconSize={8}
-                wrapperStyle={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  color: "#64748b",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                }}
               />
               <Area
                 type="monotone"
                 dataKey="sent"
                 stroke="#3B82F6"
-                strokeWidth={2}
-                fill="url(#sentGradient)"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorSent)"
                 name="Sent"
               />
               <Area
                 type="monotone"
                 dataKey="replies"
-                stroke="#8B5CF6"
-                strokeWidth={2}
-                fill="url(#repliesGradient)"
+                stroke="#10B981"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorReplies)"
                 name="Replies"
               />
             </AreaChart>
@@ -130,10 +103,10 @@ const ActivityTimeline = ({ data, hasValidData }) => {
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-4">
             <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center border border-slate-100">
-              <AreaChart className="w-8 h-8 opacity-20" />
+              <span className="w-8 h-8 opacity-20 block bg-slate-300 rounded-md"></span>
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-slate-300">
-              No activity data available
+              Loading activity data...
             </p>
           </div>
         )}
@@ -143,3 +116,6 @@ const ActivityTimeline = ({ data, hasValidData }) => {
 };
 
 export default ActivityTimeline;
+
+
+

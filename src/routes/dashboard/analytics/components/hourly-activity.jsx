@@ -2,7 +2,6 @@ import React from "react";
 import {
   LineChart,
   Line,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -29,7 +28,7 @@ const HourlyActivity = ({ data }) => {
         </div>
       </div>
 
-      <div className="h-64 w-full flex-1">
+      <div className="h-62.5 w-full flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={data}
@@ -55,24 +54,16 @@ const HourlyActivity = ({ data }) => {
             <Tooltip content={<CustomTooltip />} />
             <defs>
               <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.16} />
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.1} />
                 <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Area
-              type="monotone"
-              dataKey="count"
-              stroke="none"
-              fillOpacity={1}
-              fill="url(#colorCount)"
-              isAnimationActive={true}
-            />
             <Line
               type="monotone"
               dataKey="count"
               stroke="#f59e0b"
-              strokeWidth={3}
-              dot={false}
+              strokeWidth={4}
+              dot={{ r: 4, fill: "#fff", strokeWidth: 3, stroke: "#f59e0b" }}
               activeDot={{ r: 6, strokeWidth: 0, fill: "#f59e0b" }}
               name="Volume"
             />

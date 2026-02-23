@@ -5,21 +5,25 @@ import {
   Server,
   RefreshCw,
   AlertCircle,
-  X,
-  ChevronRight,
   Shield,
   Zap,
   Eye,
   EyeOff,
+  Loader2,
+  FileSpreadsheet,
+  Upload,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Modal from "../components/shared/modal";
 import { Microsoft } from "../icons/microsoft";
 import { Google } from "../icons/google";
 import Button from "../components/ui/button";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import * as XLSX from "xlsx";
 
 // Import React Query hooks
-import { useTestSmtp, useTestImap } from "../hooks/useSenders";
+import { useTestSmtp, useTestImap, useBulkUploadSenders } from "../hooks/useSenders";
 
 const ShowSender = ({
   setShowSenderModal,
@@ -41,6 +45,121 @@ const ShowSender = ({
   // React Query hooks
   const testSmtp = useTestSmtp();
   const testImap = useTestImap();
+  const bulkUpload = useBulkUploadSenders();
+
+  const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadResult, setUploadResult] = useState(null);
+  const [fileHeaders, setFileHeaders] = useState([]);
+  const [fileRows, setFileRows] = useState([]);
+  const [mapping, setMapping] = useState({
+    email: "",
+    domain: "",
+    password: "",
+    type: "",
+    first_name: "",
+    last_name: "",
+  });
+  const [isMapping, setIsMapping] = useState(false);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        // Get all data
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        if (jsonData.length === 0) {
+          toast.error("The selected file is empty");
+          return;
+        }
+
+        const headers = jsonData[0] || [];
+        const rows = jsonData.slice(1);
+
+        if (headers.length === 0) {
+          toast.error("The selected file has no headers");
+          return;
+        }
+
+        const cleanHeaders = headers.map(h => h?.toString()?.toLowerCase()?.trim());
+
+        setFileHeaders(headers);
+        setFileRows(rows);
+        setSelectedFile(file);
+
+        // Auto-mapping logic
+        const newMapping = {
+          email: "",
+          domain: "",
+          password: "",
+          type: "",
+          first_name: "",
+          last_name: "",
+        };
+
+        cleanHeaders.forEach((h, index) => {
+          if (["email", "email_address", "user_email", "mail"].includes(h)) newMapping.email = index.toString();
+          if (["domain", "site_domain", "host"].includes(h)) newMapping.domain = index.toString();
+          if (["password", "pass", "smtp_password", "pw"].includes(h)) newMapping.password = index.toString();
+          if (["type", "sender_type", "account_type", "provider"].includes(h)) newMapping.type = index.toString();
+          if (["first_name", "fname", "firstname", "first"].includes(h)) newMapping.first_name = index.toString();
+          if (["last_name", "lname", "lastname", "last"].includes(h)) newMapping.last_name = index.toString();
+        });
+
+        setMapping(newMapping);
+        setIsMapping(true);
+      } catch (err) {
+        console.error("File validation error:", err);
+        toast.error("Failed to read file");
+        e.target.value = "";
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  const onBulkUploadSubmit = async () => {
+    if (!mapping.email || !mapping.domain || !mapping.password || !mapping.type) {
+      toast.error("Please map all required fields (Email, Domain, Password, Type)");
+      return;
+    }
+
+    try {
+      // Transform data based on mapping
+      const mappedData = fileRows.map(row => ({
+        email: row[parseInt(mapping.email)]?.toString() || "",
+        domain: row[parseInt(mapping.domain)]?.toString() || "",
+        password: row[parseInt(mapping.password)]?.toString() || "",
+        type: row[parseInt(mapping.type)]?.toString() || "",
+        first_name: mapping.first_name ? (row[parseInt(mapping.first_name)]?.toString() || "") : "",
+        last_name: mapping.last_name ? (row[parseInt(mapping.last_name)]?.toString() || "") : "",
+      }));
+
+      // Create a new Excel file to send to the backend
+      const worksheet = XLSX.utils.json_to_sheet(mappedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Senders");
+
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const finalFile = new File([blob], "bulk_senders.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+      const response = await bulkUpload.mutateAsync(finalFile);
+      setUploadResult(response.data);
+      toast.success(response.message || "Bulk upload successful!");
+      setIsMapping(false);
+      setSelectedFile(null);
+    } catch (err) {
+      toast.error(err.message || "Bulk upload failed");
+    }
+  };
 
   // Test SMTP connection only
   const testSmtpConnection = async (e) => {
@@ -147,7 +266,7 @@ const ShowSender = ({
 
       <div className="p-8">
         {/* Sender Type Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
             {
               type: "gmail",
@@ -176,6 +295,15 @@ const ShowSender = ({
               text: "text-slate-600",
               desc: "Manual setup",
             },
+            {
+              type: "bulk",
+              label: "Bulk SMTP",
+              icon: FileSpreadsheet,
+              color: "indigo",
+              bg: "bg-indigo-50",
+              text: "text-indigo-600",
+              desc: "XLSX Upload",
+            },
           ].map((item) => (
             <button
               key={item.type}
@@ -184,11 +312,10 @@ const ShowSender = ({
                 clearTestResults();
               }}
               disabled={isSubmitting}
-              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${
-                senderType === item.type
-                  ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
-                  : "border-slate-50 bg-white hover:border-slate-200"
-              } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${senderType === item.type
+                ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
+                : "border-slate-50 bg-white hover:border-slate-200"
+                } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="flex flex-col items-center text-center">
                 <div
@@ -285,11 +412,10 @@ const ShowSender = ({
                         ? handleGmailOAuth
                         : handleOutlookOAuth
                     }
-                    className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
-                      senderType === "gmail"
-                        ? "bg-rose-600 shadow-rose-600/30"
-                        : "bg-blue-600 shadow-blue-600/30"
-                    }`}
+                    className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${senderType === "gmail"
+                      ? "bg-rose-600 shadow-rose-600/30"
+                      : "bg-blue-600 shadow-blue-600/30"
+                      }`}
                   >
                     {senderType === "gmail" ? (
                       <Google className="w-5 h-5" />
@@ -369,11 +495,10 @@ const ShowSender = ({
                     type="button"
                     onClick={() => setSettingsTab(tab.id)}
                     disabled={isSubmitting}
-                    className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${
-                      settingsTab === tab.id
-                        ? "bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100"
-                        : "text-slate-400 hover:text-slate-600"
-                    }`}
+                    className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${settingsTab === tab.id
+                      ? "bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100"
+                      : "text-slate-400 hover:text-slate-600"
+                      }`}
                   >
                     <tab.icon className="w-4 h-4" />
                     <span className="text-[10px] font-extrabold uppercase tracking-widest">
@@ -510,11 +635,10 @@ const ShowSender = ({
 
                   {smtpTestResult && (
                     <div
-                      className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                        smtpTestResult.success
-                          ? "bg-emerald-50/50 border-emerald-100"
-                          : "bg-rose-50/50 border-rose-100"
-                      }`}
+                      className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${smtpTestResult.success
+                        ? "bg-emerald-50/50 border-emerald-100"
+                        : "bg-rose-50/50 border-rose-100"
+                        }`}
                     >
                       <div className="flex items-start gap-4">
                         <div
@@ -663,11 +787,10 @@ const ShowSender = ({
 
                   {imapTestResult && (
                     <div
-                      className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                        imapTestResult.success
-                          ? "bg-emerald-50/50 border-emerald-100"
-                          : "bg-rose-50/50 border-rose-100"
-                      }`}
+                      className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${imapTestResult.success
+                        ? "bg-emerald-50/50 border-emerald-100"
+                        : "bg-rose-50/50 border-rose-100"
+                        }`}
                     >
                       <div className="flex items-start gap-4">
                         <div
@@ -701,6 +824,204 @@ const ShowSender = ({
                       <p className="text-[11px] font-bold text-blue-700 leading-relaxed uppercase tracking-tight">
                         If you leave these empty, we'll try to use your sending
                         settings automatically.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : senderType === "bulk" ? (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-6">
+              <div className="text-center space-y-3 mb-8">
+                <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest">
+                  Bulk Upload Accounts
+                </h4>
+                <p className="text-xs text-slate-400 font-medium">
+                  Upload an Excel file (.xlsx) with columns: email, domain, password, type (aapanel/postal), first_name, last_name.
+                </p>
+              </div>
+
+              {isMapping ? (
+                <div className="space-y-8 animate-in fade-in zoom-in duration-500">
+                  <div className="flex items-center justify-between px-2">
+                    <div>
+                      <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
+                        Column Mapping
+                      </h4>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                        Map your spreadsheet headers to our fields
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsMapping(false);
+                        setSelectedFile(null);
+                        setFileHeaders([]);
+                        setFileRows([]);
+                      }}
+                      className="text-[10px] font-black text-indigo-600 hover:text-indigo-700 uppercase tracking-widest px-4 py-2 bg-indigo-50 rounded-xl transition-all"
+                    >
+                      Change File
+                    </button>
+                  </div>
+
+                  {/* Table Preview */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between px-1">
+                      <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
+                        Data Preview ({fileRows.length} Records)
+                      </p>
+                    </div>
+                    <div className="rounded-[2rem] border-2 border-slate-100 bg-white shadow-sm overflow-hidden">
+                      <div className="max-h-60 overflow-y-auto no-scrollbar overflow-x-auto">
+                        <table className="w-full text-left border-collapse min-w-full">
+                          <thead className="sticky top-0 z-10">
+                            <tr className="bg-slate-50">
+                              {fileHeaders.map((header, i) => (
+                                <th key={i} className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 whitespace-nowrap bg-slate-50">
+                                  {header}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {fileRows.slice(0, 10).map((row, rowIndex) => (
+                              <tr key={rowIndex} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors">
+                                {fileHeaders.map((_, colIndex) => (
+                                  <td key={colIndex} className="px-6 py-4 text-[11px] font-bold text-slate-600 whitespace-nowrap max-w-[200px] truncate">
+                                    {row[colIndex]?.toString() || "-"}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                            {fileRows.length > 10 && (
+                              <tr className="bg-slate-50/30">
+                                <td colSpan={fileHeaders.length} className="px-6 py-3 text-[9px] font-black text-slate-400 text-center uppercase tracking-widest italic">
+                                  And {fileRows.length - 10} more rows...
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mapping Selects */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[
+                      { key: "email", label: "Email Address", required: true },
+                      { key: "domain", label: "Domain", required: true },
+                      { key: "password", label: "Password", required: true },
+                      { key: "type", label: "Account Type", required: true, desc: "aapanel/postal" },
+                      { key: "first_name", label: "First Name", required: false },
+                      { key: "last_name", label: "Last Name", required: false },
+                    ].map((field) => (
+                      <div key={field.key} className="space-y-2 group">
+                        <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
+                          <span>{field.label} {field.required && <span className="text-rose-500">*</span>}</span>
+                          {field.desc && <span className="text-[8px] font-bold text-slate-300 italic">{field.desc}</span>}
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={mapping[field.key]}
+                            onChange={(e) => setMapping({ ...mapping, [field.key]: e.target.value })}
+                            className="w-full h-14 pl-6 pr-12 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-indigo-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
+                          >
+                            <option value="">-- Select Column --</option>
+                            {fileHeaders.map((header, i) => (
+                              <option key={i} value={i.toString()}>
+                                {header}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                            <RefreshCw className="w-4 h-4" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-indigo-50/50 p-6 rounded-3xl border border-indigo-100 flex gap-4">
+                    <Shield className="w-5 h-5 text-indigo-500 shrink-0" />
+                    <p className="text-[10px] font-bold text-indigo-700 leading-relaxed uppercase tracking-tight">
+                      We'll automatically transform your file data based on these mappings before uploading.
+                    </p>
+                  </div>
+                </div>
+              ) : uploadResult ? (
+                <div className="bg-emerald-50/50 p-8 rounded-[2.5rem] border-2 border-emerald-100 animate-in zoom-in duration-500">
+                  <div className="flex flex-col items-center text-center gap-4">
+                    <div className="w-16 h-16 bg-emerald-500 rounded-3xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                      <CheckCircle className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h5 className="text-lg font-extrabold text-emerald-800 uppercase tracking-tighter">
+                        Upload Complete
+                      </h5>
+                      <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-widest mt-1">
+                        {uploadResult.successCount} accounts added successfully
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 w-full mt-4">
+                      <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
+                        <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Success</p>
+                        <p className="text-2xl font-black text-emerald-600">{uploadResult.successCount}</p>
+                      </div>
+                      <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
+                        <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Failed</p>
+                        <p className="text-2xl font-black text-rose-600">{uploadResult.failedCount}</p>
+                      </div>
+                    </div>
+
+                    {uploadResult.errors?.length > 0 && (
+                      <div className="w-full text-left mt-4 max-h-40 overflow-y-auto p-4 bg-rose-50/50 rounded-2xl border border-rose-100 no-scrollbar">
+                        <p className="text-[10px] font-extrabold text-rose-600 uppercase tracking-widest mb-2">Errors</p>
+                        <ul className="space-y-1">
+                          {uploadResult.errors.map((err, i) => (
+                            <li key={i} className="text-[10px] font-bold text-rose-700 list-disc ml-4 leading-tight">{err}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => setUploadResult(null)}
+                      className="mt-4 text-[10px] font-extrabold text-blue-600 uppercase tracking-widest hover:underline"
+                    >
+                      Upload Another File
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="group relative border-2 border-dashed border-slate-100 rounded-[2.5rem] p-12 hover:border-indigo-400/50 hover:bg-indigo-50/10 cursor-pointer transition-all duration-500"
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+
+                  <div className="flex flex-col items-center gap-6">
+                    <div className="w-20 h-20 bg-slate-50 rounded-4xl flex items-center justify-center group-hover:scale-110 group-hover:bg-indigo-50 transition-all duration-500">
+                      {selectedFile ? (
+                        <FileSpreadsheet className="w-8 h-8 text-indigo-500" />
+                      ) : (
+                        <Upload className="w-8 h-8 text-slate-300 group-hover:text-indigo-500" />
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
+                        {selectedFile ? selectedFile.name : "Click to Upload"}
+                      </p>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                        {selectedFile ? `${(selectedFile.size / 1024).toFixed(1)} KB` : "or drag and drop your XLSX file"}
                       </p>
                     </div>
                   </div>
@@ -751,6 +1072,31 @@ const ShowSender = ({
                   <Zap className="w-4 h-4" />
                 )}
                 Add Sender
+              </Button>
+            )}
+            {senderType === "bulk" && !uploadResult && (
+              <Button
+                type="button"
+                onClick={isMapping ? onBulkUploadSubmit : () => fileInputRef.current?.click()}
+                disabled={bulkUpload.isPending}
+                variant="primary"
+                className="px-10 py-4 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest bg-indigo-600 shadow-xl shadow-indigo-600/20 hover:shadow-indigo-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 text-white"
+              >
+                {bulkUpload.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    {isMapping ? (
+                      <Zap className="w-4 h-4" />
+                    ) : (
+                      <Upload className="w-4 h-4" />
+                    )}
+                    {isMapping ? "Complete Upload" : "Select File"}
+                  </>
+                )}
               </Button>
             )}
           </div>

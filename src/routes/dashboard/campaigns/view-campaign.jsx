@@ -41,58 +41,56 @@ const ViewCampaign = () => {
     actions,
   } = useCampaignAnalytics(id);
 
-  const viewReply = (reply) => {
-    setSelectedReply(reply);
+  const viewReply = (replyOrId) => {
+    if (typeof replyOrId === "string") {
+      // Find reply by matching recipient ID or email from the replies array
+      const reply = (replies || []).find(
+        (r) =>
+          r.recipientId === replyOrId ||
+          r.recipient?.id === replyOrId ||
+          r.replyFrom ===
+          campaign.CampaignRecipients?.find((rcp) => rcp.id === replyOrId)
+            ?.email,
+      );
+      setSelectedReply(reply);
+    } else {
+      setSelectedReply(replyOrId);
+    }
     setShowReplyModal(true);
   };
 
   if (isLoading && !campaign) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center animate-in fade-in duration-700">
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <div className="relative">
-          <div className="w-20 h-20 border-[6px] border-slate-100 border-t-indigo-600 rounded-full animate-spin"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-2 h-2 bg-indigo-600 rounded-full animate-ping"></div>
-          </div>
+          <div className="w-20 h-20 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
         </div>
-        <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">
-          Syncing Mission Intelligence...
-        </p>
+        <p className="mt-4 text-sm text-gray-500">Loading...</p>
       </div>
     );
   }
 
   if (error || !campaign) {
     return (
-      <div className="max-w-400 mx-auto p-4 sm:p-6 lg:p-20">
-        <div className="premium-card bg-rose-50 border-rose-100 p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-75 bg-rose-500/5 rounded-full blur-[100px] -mt-40"></div>
-
-          <div className="relative mb-10">
-            <div className="w-24 h-24 bg-rose-600 rounded-4xl flex items-center justify-center rotate-3 shadow-2xl shadow-rose-900/20">
-              <XCircle className="w-10 h-10 text-white" />
-            </div>
-          </div>
-
-          <h3 className="text-3xl font-black text-rose-900 tracking-tighter mb-4">
-            Signal Lost
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-red-50 border border-red-100 rounded-lg p-12 text-center">
+          <h3 className="text-xl font-semibold text-red-800 mb-2">
+            Campaign Not Found
           </h3>
-          <p className="text-sm font-medium text-rose-700/60 max-w-sm mb-10 leading-relaxed uppercase tracking-widest text-[10px]">
-            The requested mission protocol could not be located in the current
-            operational matrix.
+          <p className="text-sm text-red-600 mb-6">
+            We couldn't find the campaign you're looking for.
           </p>
 
           <button
             onClick={() => navigate("/dashboard/campaigns")}
-            className="btn-primary py-4 px-10 bg-rose-600 hover:bg-rose-700 text-white font-black uppercase tracking-widest text-xs shadow-2xl shadow-rose-500/20 active:scale-95 transition-all"
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
           >
-            Return to Command Center
+            Back to Campaigns
           </button>
         </div>
       </div>
     );
   }
-
   return (
     <div className="max-w-400 mx-auto p-4 sm:p-6 lg:p-10 space-y-2 animate-in fade-in duration-700">
       {showDeleteModal && (
@@ -144,11 +142,10 @@ const ViewCampaign = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${
-                  activeTab === tab.id
+                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${activeTab === tab.id
                     ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
                     : "text-slate-400 hover:text-slate-600 hover:bg-white"
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>

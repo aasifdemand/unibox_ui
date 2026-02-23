@@ -6,18 +6,10 @@ import {
   useOutlookArchiveMessagesQuery,
   useOutlookOutboxMessagesQuery,
   useOutlookDraftsQuery,
-  useOutlookFoldersQuery,
   useOutlookMessageQuery,
-  useOutlookAttachmentsQuery,
-  useOutlookProfileQuery,
+  useOutlookFoldersQuery,
   useOutlookSearchQuery,
-  useMarkOutlookAsReadMutation,
-  useMarkOutlookAsUnreadMutation,
-  useDeleteOutlookMessageMutation,
-  useMoveOutlookMessageMutation,
-  useCopyOutlookMessageMutation,
-  useToggleOutlookFlagMutation,
-  useBatchOutlookOperationsMutation,
+  useOutlookAttachmentsQuery,
   useSendOutlookMessageMutation,
   useReplyToOutlookMessageMutation,
   useForwardOutlookMessageMutation,
@@ -25,36 +17,33 @@ import {
   useUpdateOutlookDraftMutation,
   useDeleteOutlookDraftMutation,
   useSendOutlookDraftMutation,
-  useCreateOutlookFolderMutation,
-  useUpdateOutlookFolderMutation,
-  useDeleteOutlookFolderMutation,
+  useMarkOutlookAsReadMutation,
+  useMarkOutlookAsUnreadMutation,
+  useToggleOutlookFlagMutation,
+  useDeleteOutlookMessageMutation,
+  useMoveOutlookMessageMutation,
+  useCopyOutlookMessageMutation,
+  useBatchOutlookOperationsMutation,
   useDownloadOutlookAttachment,
   useSyncOutlookMailboxMutation,
-  useRefreshOutlookTokenMutation,
   useDisconnectOutlookMailboxMutation,
-  useCreateOutlookReplyDraftMutation,
-  useCreateOutlookForwardDraftMutation,
+  useRefreshOutlookTokenMutation,
 } from "../../../../hooks/useOutlook";
 
-export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId, PAGE_SIZE, searchQuery) => {
+export const useOutlookData = (
+  selectedMailbox,
+  selectedFolder,
+  currentMessageId,
+  PAGE_SIZE,
+  searchQuery,
+) => {
   const isOutlook = selectedMailbox?.type === "outlook";
   const mailboxId = isOutlook ? selectedMailbox.id : null;
 
   // Queries
   const outlookMessagesQuery = useOutlookMessagesQuery(
-    isOutlook &&
-      (!selectedFolder ||
-        ![
-          "sentitems",
-          "deleteditems",
-          "junkemail",
-          "archive",
-          "outbox",
-          "drafts",
-        ].includes(selectedFolder.id))
-      ? mailboxId
-      : null,
-    selectedFolder ? selectedFolder.id || "" : "inbox",
+    isOutlook && !selectedFolder ? mailboxId : null,
+    "inbox",
     PAGE_SIZE,
   );
 
@@ -62,22 +51,27 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
     isOutlook && selectedFolder?.id === "sentitems" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const outlookTrashQuery = useOutlookTrashMessagesQuery(
     isOutlook && selectedFolder?.id === "deleteditems" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const outlookSpamQuery = useOutlookSpamMessagesQuery(
     isOutlook && selectedFolder?.id === "junkemail" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const outlookArchiveQuery = useOutlookArchiveMessagesQuery(
     isOutlook && selectedFolder?.id === "archive" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const outlookOutboxQuery = useOutlookOutboxMessagesQuery(
     isOutlook && selectedFolder?.id === "outbox" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const outlookDraftsQuery = useOutlookDraftsQuery(
     isOutlook && selectedFolder?.id === "drafts" ? mailboxId : null,
     PAGE_SIZE,
@@ -95,8 +89,6 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
     currentMessageId,
   );
 
-  const outlookProfileQuery = useOutlookProfileQuery(mailboxId);
-
   const outlookSearchQuery = useOutlookSearchQuery(
     isOutlook && searchQuery ? mailboxId : null,
     searchQuery,
@@ -104,13 +96,6 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
   );
 
   // Mutations
-  const markOutlookAsRead = useMarkOutlookAsReadMutation();
-  const markOutlookAsUnread = useMarkOutlookAsUnreadMutation();
-  const deleteOutlookMessage = useDeleteOutlookMessageMutation();
-  const moveOutlookMessage = useMoveOutlookMessageMutation();
-  const copyOutlookMessage = useCopyOutlookMessageMutation();
-  const toggleOutlookFlag = useToggleOutlookFlagMutation();
-  const batchOutlookOperations = useBatchOutlookOperationsMutation();
   const sendOutlookMessage = useSendOutlookMessageMutation();
   const replyToOutlookMessage = useReplyToOutlookMessageMutation();
   const forwardOutlookMessage = useForwardOutlookMessageMutation();
@@ -118,15 +103,17 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
   const updateOutlookDraft = useUpdateOutlookDraftMutation();
   const deleteOutlookDraft = useDeleteOutlookDraftMutation();
   const sendOutlookDraft = useSendOutlookDraftMutation();
-  const createOutlookFolder = useCreateOutlookFolderMutation();
-  const updateOutlookFolder = useUpdateOutlookFolderMutation();
-  const deleteOutlookFolder = useDeleteOutlookFolderMutation();
+  const markOutlookAsRead = useMarkOutlookAsReadMutation();
+  const markOutlookAsUnread = useMarkOutlookAsUnreadMutation();
+  const toggleOutlookFlag = useToggleOutlookFlagMutation();
+  const deleteOutlookMessage = useDeleteOutlookMessageMutation();
+  const moveOutlookMessage = useMoveOutlookMessageMutation();
+  const copyOutlookMessage = useCopyOutlookMessageMutation();
+  const batchOutlookOperations = useBatchOutlookOperationsMutation();
   const downloadOutlookAttachment = useDownloadOutlookAttachment();
   const syncOutlookMailbox = useSyncOutlookMailboxMutation();
-  const refreshOutlookToken = useRefreshOutlookTokenMutation();
   const disconnectOutlookMailbox = useDisconnectOutlookMailboxMutation();
-  const createOutlookReplyDraft = useCreateOutlookReplyDraftMutation();
-  const createOutlookForwardDraft = useCreateOutlookForwardDraftMutation();
+  const refreshOutlookToken = useRefreshOutlookTokenMutation();
 
   return {
     queries: {
@@ -140,17 +127,9 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
       folders: outlookFoldersQuery,
       message: currentOutlookMessageQuery,
       attachments: outlookAttachmentsQuery,
-      profile: outlookProfileQuery,
       search: outlookSearchQuery,
     },
     mutations: {
-      markAsRead: markOutlookAsRead,
-      markAsUnread: markOutlookAsUnread,
-      deleteMessage: deleteOutlookMessage,
-      moveMessage: moveOutlookMessage,
-      copyMessage: copyOutlookMessage,
-      toggleFlag: toggleOutlookFlag,
-      batchOperations: batchOutlookOperations,
       sendMessage: sendOutlookMessage,
       reply: replyToOutlookMessage,
       forward: forwardOutlookMessage,
@@ -158,15 +137,17 @@ export const useOutlookData = (selectedMailbox, selectedFolder, currentMessageId
       updateDraft: updateOutlookDraft,
       deleteDraft: deleteOutlookDraft,
       sendDraft: sendOutlookDraft,
-      createFolder: createOutlookFolder,
-      updateFolder: updateOutlookFolder,
-      deleteFolder: deleteOutlookFolder,
+      markAsRead: markOutlookAsRead,
+      markAsUnread: markOutlookAsUnread,
+      toggleFlag: toggleOutlookFlag,
+      deleteMessage: deleteOutlookMessage,
+      moveMessage: moveOutlookMessage,
+      copyMessage: copyOutlookMessage,
+      batchOperations: batchOutlookOperations,
       downloadAttachment: downloadOutlookAttachment,
       sync: syncOutlookMailbox,
-      refreshToken: refreshOutlookToken,
       disconnect: disconnectOutlookMailbox,
-      createReplyDraft: createOutlookReplyDraft,
-      createForwardDraft: createOutlookForwardDraft,
+      refreshToken: refreshOutlookToken,
     },
   };
 };

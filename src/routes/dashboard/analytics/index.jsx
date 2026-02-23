@@ -19,6 +19,7 @@ import HourlyActivity from "./components/hourly-activity";
 import TopCampaigns from "./components/top-campaigns";
 import RecentReplies from "./components/recent-replies";
 import OverallPerformance from "./components/overall-performance";
+import SmartInsights from "./components/smart-insights";
 
 // Hooks
 import { useAnalyticsData } from "./hooks/use-analytics-data";
@@ -185,7 +186,11 @@ const Analytics = () => {
       {/* Main Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <ActivityTimeline data={timelineData} hasValidData={hasValidData} />
+          <ActivityTimeline
+            data={timelineData}
+            hasValidData={hasValidData}
+            isLoading={isLoading.timeline}
+          />
         </div>
         <div className="lg:col-span-1">
           <SenderDistribution data={senderPieData} COLORS={COLORS} />
@@ -194,7 +199,7 @@ const Analytics = () => {
 
       {/* Secondary Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <HourlyActivity data={hourlyData} />
+        <SmartInsights metrics={metrics} overview={overview} />
         <TopCampaigns
           campaigns={topCampaigns}
           isLoading={isLoading.topCampaigns}

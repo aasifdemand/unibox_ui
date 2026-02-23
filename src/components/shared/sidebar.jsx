@@ -27,9 +27,8 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 transition-all duration-500 z-30 flex flex-col ${
-          sidebarCollapsed ? "w-20" : "w-70"
-        }`}
+        className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 transition-all duration-500 z-30 flex flex-col ${sidebarCollapsed ? "w-20" : "w-70"
+          }`}
       >
         {/* Superior Logo Section - Removed toggle button */}
         <div className="flex items-center h-20 px-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
@@ -69,7 +68,7 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                   <p className="text-xs font-bold text-white leading-relaxed opacity-90">
                     Reach 5k more leads today with AI automation.
                   </p>
-                  <button className="mt-4 w-full py-2 bg-white text-blue-600 rounded-xl text-[10px] font-extrabold uppercase tracking-widest hover:bg-blue-50 transition-colors shadow-lg shadow-black/5">
+                  <button onClick={() => navigate("/dashboard/subscription")} className="mt-4 w-full py-2 bg-white text-blue-600 rounded-xl text-[10px] font-extrabold uppercase tracking-widest hover:bg-blue-50 transition-colors shadow-lg shadow-black/5">
                     Upgrade Now
                   </button>
                 </div>
@@ -93,19 +92,17 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                   to={item.path}
                   onMouseEnter={() => setActiveHover(item.path)}
                   onMouseLeave={() => setActiveHover(null)}
-                  className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${
-                    isActive
-                      ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
-                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
-                  }`}
+                  className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${isActive
+                    ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
+                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                    }`}
                 >
                   <div className="relative flex items-center justify-center shrink-0">
                     <Icon
-                      className={`w-5 h-5 transition-all duration-300 ${
-                        isActive
-                          ? "scale-110"
-                          : "group-hover:text-blue-500 group-hover:scale-110"
-                      }`}
+                      className={`w-5 h-5 transition-all duration-300 ${isActive
+                        ? "scale-110"
+                        : "group-hover:text-blue-500 group-hover:scale-110"
+                        }`}
                     />
                     {isActive && (
                       <div className="absolute -left-5 w-1 h-6 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)]"></div>
@@ -120,11 +117,10 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                       </span>
                       {item.badge && (
                         <span
-                          className={`px-1.5 py-0.5 text-[9px] font-extrabold rounded-lg uppercase tracking-widest ${
-                            isActive
-                              ? "bg-blue-500 text-white"
-                              : "bg-blue-50 text-blue-600"
-                          }`}
+                          className={`px-1.5 py-0.5 text-[9px] font-extrabold rounded-lg uppercase tracking-widest ${isActive
+                            ? "bg-blue-500 text-white"
+                            : "bg-blue-50 text-blue-600"
+                            }`}
                         >
                           {item.badge}
                         </span>
@@ -145,11 +141,10 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
         {/* Ultra Premium User Profile */}
         <div className="p-4 border-t border-slate-100 bg-white/80 backdrop-blur-xl">
           <div
-            className={`p-3 rounded-3xl transition-all duration-300 border border-transparent flex items-center gap-3 ${
-              sidebarCollapsed
-                ? "justify-center"
-                : "hover:bg-slate-50 hover:border-slate-100 group cursor-pointer shadow-xs active:scale-[0.98]"
-            }`}
+            className={`p-3 rounded-3xl transition-all duration-300 border border-transparent flex items-center gap-3 ${sidebarCollapsed
+              ? "justify-center"
+              : "hover:bg-slate-50 hover:border-slate-100 group cursor-pointer shadow-xs active:scale-[0.98]"
+              }`}
           >
             <div className="relative shrink-0">
               <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-slate-100 to-slate-200 p-0.5 border border-slate-200 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">

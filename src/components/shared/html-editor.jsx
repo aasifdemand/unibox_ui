@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -192,17 +192,17 @@ const FontSize = TextStyle.extend({
       ...this.parent?.(),
       setFontSize:
         (fontSize) =>
-        ({ chain }) => {
-          return chain().setMark("textStyle", { fontSize }).run();
-        },
+          ({ chain }) => {
+            return chain().setMark("textStyle", { fontSize }).run();
+          },
       unsetFontSize:
         () =>
-        ({ chain }) => {
-          return chain()
-            .setMark("textStyle", { fontSize: null })
-            .removeEmptyTextStyle()
-            .run();
-        },
+          ({ chain }) => {
+            return chain()
+              .setMark("textStyle", { fontSize: null })
+              .removeEmptyTextStyle()
+              .run();
+          },
     };
   },
 });
@@ -265,6 +265,7 @@ function findVariables(doc) {
 
 const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   const [showTokens, setShowTokens] = useState(false);
+  const tokenRef = useRef(null);
   const [previewMode, setPreviewMode] = useState(false);
   const [previewContent, setPreviewContent] = useState(value || "");
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -394,6 +395,21 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
     }
   }, [value, editor]);
 
+  // Handle click outside for tokens
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tokenRef.current && !tokenRef.current.contains(event.target)) {
+        setShowTokens(false);
+      }
+    };
+    if (showTokens) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showTokens]);
+
   const insertToken = (token) => {
     if (!editor) return;
     editor.chain().focus().insertContent(token).run();
@@ -454,35 +470,18 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
     ">$&</span>`,
     );
 
-    // ✅ FIXED: Better paragraph handling
-    html = html.replace(/<p><\/p>/g, "<br>");
-    html = html.replace(/<p>/g, '<div style="margin-bottom: 16px;">');
-    html = html.replace(/<\/p>/g, "</div>");
-
-    // Add spacing around lists
-    html = html.replace(
-      /(<ul[^>]*>)/g,
-      `<div style="margin-top:16px;"></div>$1`,
-    );
-    html = html.replace(
-      /(<\/ul>)/g,
-      `$1<div style="margin-bottom:16px;"></div>`,
-    );
-    html = html.replace(
-      /(<ol[^>]*>)/g,
-      `<div style="margin-top:16px;"></div>$1`,
-    );
-    html = html.replace(
-      /(<\/ol>)/g,
-      `$1<div style="margin-bottom:16px;"></div>`,
-    );
-
-    // Fix list items
-    html = html.replace(/<li>/g, '<li style="margin-bottom: 8px;">');
+    // Filter out trailing empty paragraphs that add extra space
+    html = html.trim().replace(/(<p>&nbsp;<\/p>|<p><\/p>)+$/, "");
 
     return `
     <div style="background:#f9fafb; font-family:Arial, Helvetica, sans-serif; padding:20px;">
-      <div style="
+      <style>
+        .preview-body p { margin-top: 0; margin-bottom: 16px; }
+        .preview-body p:last-child { margin-bottom: 0; }
+        .preview-body ul, .preview-body ol { margin-top: 16px; margin-bottom: 16px; }
+        .preview-body li { margin-bottom: 8px; }
+      </style>
+      <div class="preview-body" style="
         max-width:600px;
         margin:0 auto;
         padding:32px;
@@ -545,11 +544,11 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               type="button"
               onClick={() => setShowFontPicker(!showFontPicker)}
               className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontPicker ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "hover:bg-slate-100 text-slate-600"}`}
-              title="Typography"
+              title="Font Family"
             >
               <TypeOutline className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Typography
+                Font
               </span>
             </button>
             {showFontPicker && (
@@ -582,11 +581,11 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               type="button"
               onClick={() => setShowFontSizePicker(!showFontSizePicker)}
               className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontSizePicker ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20" : "hover:bg-slate-100 text-slate-600"}`}
-              title="Scaling"
+              title="Font Size"
             >
               <Hash className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Scale
+                Size
               </span>
             </button>
             {showFontSizePicker && (
@@ -618,11 +617,11 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               type="button"
               onClick={() => setShowColorPicker(!showColorPicker)}
               className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showColorPicker ? "bg-rose-600 text-white shadow-lg shadow-rose-500/20" : "hover:bg-slate-100 text-slate-600"}`}
-              title="Color Spectrum"
+              title="Text Color"
             >
               <Palette className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Chroma
+                Color
               </span>
             </button>
             {showColorPicker && (
@@ -703,15 +702,15 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
             type="button"
             onClick={() => setShowTableModal(true)}
             className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-500 transition-all"
-            title="Data Matrix"
+            title="Insert Table"
           >
             <TableIcon className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => setShowTokens(!showTokens)}
-            className={`p-2.5 rounded-xl transition-all ${showTokens ? "bg-purple-600 text-white" : "hover:bg-slate-100 text-slate-500"}`}
-            title="Personalization Layer"
+            className={`p-2.5 rounded-xl transition-all ${showTokens ? "bg-purple-600 text-white shadow-lg shadow-purple-500/20" : "hover:bg-slate-100 text-slate-500"}`}
+            title="Insert Variables"
           >
             <Tag className="w-4 h-4" />
           </button>
@@ -736,7 +735,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               type="button"
               onClick={clearContent}
               className="p-2.5 text-slate-400 hover:text-rose-600 transition-colors"
-              title="Wipe Engine"
+              title="Clear Content"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -764,17 +763,18 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               <div className="flex items-center gap-6">
                 <span className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>{" "}
-                  INTEL: {editor.getText().length} CHR
+                  {editor.getText().length} Characters
                 </span>
                 <span className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>{" "}
-                  CORPUS: {editor.getText().split(/\s+/).filter(Boolean).length}{" "}
-                  WRD
+                  {editor.getText().split(/\s+/).filter(Boolean).length} Words
                 </span>
                 <span className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>{" "}
-                  VARIABLES:{" "}
-                  {(previewContent.match(/\{\{([^}]+)\}\}/g) || []).length}
+                  {
+                    (previewContent.match(/\{\{([^}]+)\}\}/g) || []).length
+                  }{" "}
+                  Variables
                 </span>
               </div>
               <div className="hidden md:flex items-center gap-2 text-blue-500/60 lowercase italic font-medium tracking-normal text-xs">
@@ -794,7 +794,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
                   <LinkIcon className="w-5 h-5 text-blue-600" />{" "}
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
-                  Establish Link
+                  Insert Link
                 </h3>
               </div>
               <input
@@ -832,7 +832,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
                   <ImageIcon className="w-5 h-5 text-emerald-600" />{" "}
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
-                  Import Asset
+                  Insert Image
                 </h3>
               </div>
               <input
@@ -870,7 +870,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
                   <TableIcon className="w-5 h-5 text-indigo-600" />{" "}
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
-                  Construct Matrix
+                  Insert Table
                 </h3>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-8">
@@ -920,10 +920,14 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
         )}
 
         {showTokens && (
-          <div className="absolute bottom-16 right-6 z-50 animate-in slide-in-from-bottom-6 duration-300">
+          <div
+            ref={tokenRef}
+            className="absolute bottom-16 right-6 z-50 animate-in slide-in-from-bottom-6 duration-300 w-full max-w-sm md:max-w-md lg:max-w-xl"
+          >
             <PersonalizationTokens
               onInsertToken={insertToken}
               userFields={userFields}
+              onClose={() => setShowTokens(false)}
             />
           </div>
         )}

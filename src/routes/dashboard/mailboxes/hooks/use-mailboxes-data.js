@@ -15,6 +15,7 @@ import {
 } from "../utils/utils";
 
 import { useMailboxes } from "../../../../hooks/useMailboxes";
+import { useBulkDeleteSenders } from "../../../../hooks/useSenders";
 import { useGmailData } from "./use-gmail-data";
 import { useOutlookData } from "./use-outlook-data";
 import { useSmtpData } from "./use-smtp-data";
@@ -48,7 +49,15 @@ export const useMailboxesData = () => {
   const [replyToMessage, setReplyToMessage] = useState(null);
   const [forwardMessage, setForwardMessage] = useState(null);
 
-  // Pagination state
+  // Mailbox list state
+  const [mailboxPage, setMailboxPage] = useState(1);
+  const [mailboxSearch, setMailboxSearch] = useState("");
+  const [mailboxViewMode, setMailboxViewMode] = useState("grid");
+  const [mailboxTypeFilter, setMailboxTypeFilter] = useState("all");
+  const [selectedSenderIds, setSelectedSenderIds] = useState([]);
+  const MAILBOX_PAGE_SIZE = 10;
+
+  // Pagination state (for messages)
   const [currentPage, setCurrentPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
@@ -58,10 +67,20 @@ export const useMailboxesData = () => {
   // MAILBOXES
   // =========================
   const {
-    data: mailboxes = [],
+    data: mailboxResponse = { mailboxes: [], meta: {} },
     isLoading: isLoadingMailboxes,
     refetch: refetchMailboxes,
-  } = useMailboxes();
+  } = useMailboxes({
+    page: mailboxPage,
+    limit: MAILBOX_PAGE_SIZE,
+    search: mailboxSearch,
+    type: mailboxTypeFilter,
+  });
+
+  const bulkDeleteSenders = useBulkDeleteSenders();
+
+  const mailboxes = mailboxResponse.mailboxes;
+  const mailboxMeta = mailboxResponse.meta;
 
   // =========================
   // PROVIDER DATA HOOKS
@@ -153,14 +172,14 @@ export const useMailboxesData = () => {
     }
 
     if (selectedMailbox.type === "smtp") {
+      const fn = selectedFolder?.name?.toUpperCase();
+      const fi = selectedFolder?.id?.toUpperCase();
       if (!selectedFolder) return q.messages.data?.messages || [];
-      if (selectedFolder.name === "SENT") return q.sent.data?.messages || [];
-      if (selectedFolder.name === "DRAFTS")
-        return q.drafts.data?.messages || [];
-      if (selectedFolder.name === "TRASH") return q.trash.data?.messages || [];
-      if (selectedFolder.name === "SPAM") return q.spam.data?.messages || [];
-      if (selectedFolder.name === "ARCHIVE")
-        return q.archive.data?.messages || [];
+      if (fn === "SENT" || fi === "SENT") return q.sent.data?.messages || [];
+      if (fn === "DRAFTS" || fi === "DRAFTS" || fn === "DRAFT" || fi === "DRAFT") return q.drafts.data?.messages || [];
+      if (fn === "TRASH" || fi === "TRASH" || fn === "DELETED" || fi === "DELETED") return q.trash.data?.messages || [];
+      if (fn === "SPAM" || fi === "SPAM" || fn === "JUNK" || fi === "JUNK") return q.spam.data?.messages || [];
+      if (fn === "ARCHIVE" || fi === "ARCHIVE") return q.archive.data?.messages || [];
       return q.messages.data?.messages || [];
     }
 
@@ -243,9 +262,8 @@ export const useMailboxesData = () => {
                     ? q.drafts
                     : q.messages;
 
-      total = query.data?.pages[0]?.totalResults || 0;
-      hasNext =
-        query.hasNextPage || currentPage < (query.data?.pages.length || 0);
+      total = query.data?.pages?.reduce((acc, p) => acc + (p?.messages?.length || 0), 0) || 0;
+      hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === "outlook") {
       const query = !selectedFolder
         ? q.messages
@@ -263,21 +281,22 @@ export const useMailboxesData = () => {
                     ? q.drafts
                     : q.messages;
 
-      total = query.data?.pages[0]?.totalResults || 0; // Outlook might not provide totalResults in standard way, use fallback
-      hasNext =
-        query.hasNextPage || currentPage < (query.data?.pages.length || 0);
+      total = query.data?.pages?.reduce((acc, p) => acc + (p?.messages?.length || 0), 0) || 0; // Outlook might not provide totalResults in standard way, use fallback
+      hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === "smtp") {
+      const fn = selectedFolder?.name?.toUpperCase();
+      const fi = selectedFolder?.id?.toUpperCase();
       const query = !selectedFolder
         ? q.messages
-        : selectedFolder.name === "SENT"
+        : (fn === "SENT" || fi === "SENT")
           ? q.sent
-          : selectedFolder.name === "DRAFTS"
+          : (fn === "DRAFTS" || fi === "DRAFTS" || fn === "DRAFT" || fi === "DRAFT")
             ? q.drafts
-            : selectedFolder.name === "TRASH"
+            : (fn === "TRASH" || fi === "TRASH" || fn === "DELETED" || fi === "DELETED")
               ? q.trash
-              : selectedFolder.name === "SPAM"
+              : (fn === "SPAM" || fi === "SPAM" || fn === "JUNK" || fi === "JUNK")
                 ? q.spam
-                : selectedFolder.name === "ARCHIVE"
+                : (fn === "ARCHIVE" || fi === "ARCHIVE")
                   ? q.archive
                   : q.messages;
 
@@ -307,6 +326,24 @@ export const useMailboxesData = () => {
     setCurrentPage(1);
     setSelectedMessages([]);
     setSearchQuery("");
+  }, []);
+
+  const handleMailboxPageChange = useCallback((page) => {
+    setMailboxPage(page);
+  }, []);
+
+  const handleMailboxSearchChange = useCallback((search) => {
+    setMailboxSearch(search);
+    setMailboxPage(1);
+  }, []);
+
+  const handleMailboxTypeChange = useCallback((type) => {
+    setMailboxTypeFilter(type);
+    setMailboxPage(1);
+  }, []);
+
+  const handleToggleMailboxViewMode = useCallback(() => {
+    setMailboxViewMode((prev) => (prev === "grid" ? "list" : "grid"));
   }, []);
 
   const handleSelectFolder = useCallback((folder) => {
@@ -631,32 +668,116 @@ export const useMailboxesData = () => {
   }, [selectedMailbox, provider]);
 
   const handleNextPage = useCallback(() => {
-    if (hasNextPage) setCurrentPage((prev) => prev + 1);
-  }, [hasNextPage]);
+    if (!hasNextPage) return;
+
+    if (
+      selectedMailbox?.type === "gmail" ||
+      selectedMailbox?.type === "outlook"
+    ) {
+      const q = provider?.queries;
+      let activeQuery = null;
+
+      if (searchQuery && q?.search) {
+        activeQuery = q.search;
+      } else if (selectedMailbox.type === "gmail") {
+        activeQuery = !selectedFolder
+          ? q.messages
+          : selectedFolder.id === "SENT"
+            ? q.sent
+            : selectedFolder.id === "TRASH"
+              ? q.trash
+              : selectedFolder.id === "SPAM"
+                ? q.spam
+                : selectedFolder.id === "STARRED"
+                  ? q.starred
+                  : selectedFolder.id === "IMPORTANT"
+                    ? q.important
+                    : selectedFolder.id === "DRAFT"
+                      ? q.drafts
+                      : q.messages;
+      } else if (selectedMailbox.type === "outlook") {
+        activeQuery = !selectedFolder
+          ? q.messages
+          : selectedFolder.id === "sentitems"
+            ? q.sent
+            : selectedFolder.id === "deleteditems"
+              ? q.trash
+              : selectedFolder.id === "junkemail"
+                ? q.spam
+                : selectedFolder.id === "archive"
+                  ? q.archive
+                  : selectedFolder.id === "outbox"
+                    ? q.outbox
+                    : selectedFolder.id === "drafts"
+                      ? q.drafts
+                      : q.messages;
+      }
+
+      if (activeQuery && typeof activeQuery.fetchNextPage === "function") {
+        const pagesLength = activeQuery.data?.pages?.length || 0;
+        // Fetch the next page if we haven't already fetched it
+        if (currentPage >= pagesLength) {
+          activeQuery.fetchNextPage();
+        }
+      }
+    }
+
+    setCurrentPage((prev) => prev + 1);
+  }, [
+    hasNextPage,
+    selectedMailbox,
+    provider,
+    searchQuery,
+    selectedFolder,
+    currentPage,
+  ]);
 
   const handlePreviousPage = useCallback(() => {
     if (hasPreviousPage) setCurrentPage((prev) => prev - 1);
   }, [hasPreviousPage]);
 
-  const handleBulkDelete = useCallback(
-    async () => {
-      if (!selectedMailbox || !provider || selectedMessages.length === 0)
-        return;
-      try {
-        await provider.mutations.batchOperations.mutateAsync({
-          mailboxId: selectedMailbox.id,
-          messageIds: selectedMessages,
-          operation: "delete",
-          folder: selectedFolder?.name,
-        });
-        toast.success("Messages deleted");
-        setSelectedMessages([]);
-      } catch (e) {
-        toast.error("Failed to delete messages");
-      }
-    },
-    [selectedMailbox, provider, selectedMessages, selectedFolder],
-  );
+  const handleBulkDelete = useCallback(async () => {
+    if (!selectedMailbox || !provider || selectedMessages.length === 0) return;
+    try {
+      await provider.mutations.batchOperations.mutateAsync({
+        mailboxId: selectedMailbox.id,
+        messageIds: selectedMessages,
+        operation: "delete",
+        folder: selectedFolder?.name,
+      });
+      toast.success("Messages deleted");
+      setSelectedMessages([]);
+    } catch (e) {
+      toast.error("Failed to delete messages");
+    }
+  }, [selectedMailbox, provider, selectedMessages, selectedFolder]);
+
+  const handleBulkDeleteSenders = useCallback(async () => {
+    if (selectedSenderIds.length === 0) return;
+    try {
+      await bulkDeleteSenders.mutateAsync(selectedSenderIds);
+      toast.success("Mailboxes deleted");
+      setSelectedSenderIds([]);
+    } catch (e) {
+      toast.error("Failed to delete mailboxes");
+    }
+  }, [selectedSenderIds, bulkDeleteSenders]);
+
+  const handleCheckSender = useCallback((senderId, type, checked) => {
+    setSelectedSenderIds((prev) =>
+      checked
+        ? [...prev, { id: senderId, type }]
+        : prev.filter((item) => item.id !== senderId),
+    );
+  }, []);
+
+  const handleCheckAllSenders = useCallback((checked) => {
+    if (checked) {
+      setSelectedSenderIds(mailboxes.map((m) => ({ id: m.id, type: m.type })));
+    } else {
+      setSelectedSenderIds([]);
+    }
+  }, [mailboxes]);
 
   const handleBulkMarkRead = useCallback(async () => {
     if (!selectedMailbox || !provider || selectedMessages.length === 0) return;
@@ -710,6 +831,7 @@ export const useMailboxesData = () => {
       selectedFolder,
       showAllFolders,
       selectedMessages,
+      selectedSenderIds,
       viewMode,
       showStats,
       currentMessageId,
@@ -718,6 +840,10 @@ export const useMailboxesData = () => {
       filterAttachments,
       searchQuery,
       dateRange,
+      mailboxPage,
+      mailboxSearch,
+      mailboxTypeFilter,
+      mailboxViewMode,
       currentPage,
       hasNextPage,
       hasPreviousPage,
@@ -728,6 +854,7 @@ export const useMailboxesData = () => {
     },
     data: {
       mailboxes,
+      mailboxMeta,
       messages,
       folders,
       currentMessage,
@@ -768,15 +895,25 @@ export const useMailboxesData = () => {
         const q = provider.queries;
         return (
           q.messages.isLoading ||
+          q.messages.isFetchingNextPage ||
           q.sent.isLoading ||
+          q.sent.isFetchingNextPage ||
           q.trash.isLoading ||
+          q.trash.isFetchingNextPage ||
           q.spam.isLoading ||
+          q.spam.isFetchingNextPage ||
           q.starred?.isLoading ||
+          q.starred?.isFetchingNextPage ||
           q.important?.isLoading ||
+          q.important?.isFetchingNextPage ||
           q.drafts?.isLoading ||
+          q.drafts?.isFetchingNextPage ||
           q.archive?.isLoading ||
+          q.archive?.isFetchingNextPage ||
           q.outbox?.isLoading ||
-          q.search?.isLoading
+          q.outbox?.isFetchingNextPage ||
+          q.search?.isLoading ||
+          q.search?.isFetchingNextPage
         );
       })(),
       isMessageLoading: provider?.queries.message?.isLoading,
@@ -789,6 +926,7 @@ export const useMailboxesData = () => {
       setSelectedFolder,
       setShowAllFolders,
       setSelectedMessages,
+      setSelectedSenderIds,
       setViewMode,
       setShowStats,
       setCurrentMessageId,
@@ -798,6 +936,10 @@ export const useMailboxesData = () => {
       setSearchQuery,
       setDateRange,
       setCurrentPage,
+      setMailboxPage,
+      setMailboxSearch,
+      setMailboxTypeFilter,
+      setMailboxViewMode,
     },
     handlers: {
       handleSelectMailbox,
@@ -827,9 +969,16 @@ export const useMailboxesData = () => {
       handleBulkDelete,
       handleBulkMarkRead,
       handleBulkMarkUnread,
+      handleBulkDeleteSenders,
+      handleCheckSender,
+      handleCheckAllSenders,
       handleCheckMessage,
       handleResetQueries,
       refetchMailboxes,
+      handleMailboxPageChange,
+      handleMailboxSearchChange,
+      handleToggleMailboxViewMode,
+      handleMailboxTypeChange,
     },
     utils: {
       formatMessageDate,

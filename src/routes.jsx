@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
 
 import AuthLayout from "./layouts/auth.layout";
 import Signup from "./routes/auth/signup";
@@ -17,20 +16,11 @@ import Settings from "./routes/dashboard/settings";
 import CreateCampaign from "./routes/dashboard/campaigns/create-campaign";
 import Audience from "./routes/dashboard/audience";
 import ViewCampaign from "./routes/dashboard/campaigns/view-campaign";
+import Subscription from "./routes/dashboard/subscription";
 import Mailboxes from "./routes/dashboard/mailboxes";
-
-// Import React Query hooks
-import { useCurrentUser } from "./hooks/useAuth";
 import VerifyAccount from "./routes/auth/verify-account";
 
 const AppRoutes = () => {
-  const { refetch: refetchUser } = useCurrentUser();
-
-  // Check auth on mount
-  useEffect(() => {
-    refetchUser();
-  }, [refetchUser]);
-
   return (
     <Routes>
       {/* Auth routes (ONLY for logged-out users) */}
@@ -66,6 +56,7 @@ const AppRoutes = () => {
         <Route path="audience" element={<Audience />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="templates" element={<Templates />} />
+        <Route path="subscription" element={<Subscription />} />
         <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>

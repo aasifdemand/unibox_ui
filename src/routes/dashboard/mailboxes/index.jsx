@@ -9,10 +9,14 @@ import Loader from "./components/loader";
 import { AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import Dialog from "../../../components/ui/dialog";
+import Pagination from "./components/pagination";
 
 const Mailboxes = () => {
   const { state, data, isLoading, error, setters, handlers, utils } =
     useMailboxesData();
+
+
+
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteContext, setDeleteContext] = useState(null);
@@ -20,10 +24,22 @@ const Mailboxes = () => {
   const {
     handleDisconnect: disconnectAction,
     handleBulkDelete: bulkDeleteAction,
+    handleBulkDeleteSenders: bulkSenderDeleteAction,
+    handleCheckSender,
+    handleCheckAllSenders,
   } = handlers;
 
   const handleRequestDisconnect = () => {
     setDeleteContext({ type: "disconnect" });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleRequestBulkSenderDelete = () => {
+    if (!state.selectedSenderIds || state.selectedSenderIds.length === 0) return;
+    setDeleteContext({
+      type: "bulkSenderDelete",
+      count: state.selectedSenderIds.length,
+    });
     setDeleteDialogOpen(true);
   };
 
@@ -42,6 +58,8 @@ const Mailboxes = () => {
       await disconnectAction();
     } else if (deleteContext.type === "bulkDelete") {
       await bulkDeleteAction();
+    } else if (deleteContext.type === "bulkSenderDelete") {
+      await bulkSenderDeleteAction();
     }
     setDeleteDialogOpen(false);
     setDeleteContext(null);
@@ -96,6 +114,15 @@ const Mailboxes = () => {
           handlers.handleDeleteMessage(state.currentMessageId)
         }
         showMessageActions={state.view === "message"}
+        mailboxViewMode={state.mailboxViewMode}
+        onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
+        mailboxSearch={state.mailboxSearch}
+        onMailboxSearchChange={handlers.handleMailboxSearchChange}
+        mailboxTypeFilter={state.mailboxTypeFilter}
+        onMailboxTypeChange={handlers.handleMailboxTypeChange}
+        selectedSenderIds={state.selectedSenderIds}
+        onBulkSenderDelete={handleRequestBulkSenderDelete}
+        onClearSenderSelection={() => setters.setSelectedSenderIds([])}
       />
 
       {error && (
@@ -115,13 +142,45 @@ const Mailboxes = () => {
 
       <div className="flex-1 overflow-hidden">
         {state.view === "list" && (
-          <MailboxList
-            mailboxes={data.mailboxes}
-            onSelect={handlers.handleSelectMailbox}
-            getProviderIcon={utils.getProviderIcon}
-            timeAgo={utils.timeAgo}
-            format={format}
-          />
+          <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 overflow-y-auto">
+              <MailboxList
+                mailboxes={data.mailboxes}
+                onSelect={handlers.handleSelectMailbox}
+                getProviderIcon={utils.getProviderIcon}
+                timeAgo={utils.timeAgo}
+                format={format}
+                viewMode={state.mailboxViewMode}
+                selectedSenderIds={state.selectedSenderIds}
+                onCheckSender={handleCheckSender}
+                onCheckAllSenders={handleCheckAllSenders}
+              />
+            </div>
+            {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (
+              <div className="bg-white border-t border-slate-200 p-4 shrink-0">
+                <Pagination
+                  currentPage={state.mailboxPage}
+                  hasNextPage={state.mailboxPage < data.mailboxMeta.totalPages}
+                  hasPreviousPage={state.mailboxPage > 1}
+                  isLoadingMessages={isLoading.isMailboxes}
+                  onNextPage={() =>
+                    handlers.handleMailboxPageChange(state.mailboxPage + 1)
+                  }
+                  onPrevPage={() =>
+                    handlers.handleMailboxPageChange(state.mailboxPage - 1)
+                  }
+                  totalMessages={data.mailboxMeta.total}
+                  startMessageCount={
+                    (state.mailboxPage - 1) * data.mailboxMeta.limit + 1
+                  }
+                  endMessageCount={Math.min(
+                    state.mailboxPage * data.mailboxMeta.limit,
+                    data.mailboxMeta.total,
+                  )}
+                />
+              </div>
+            )}
+          </div>
         )}
 
         {state.view === "messages" && state.selectedMailbox && (
@@ -236,14 +295,18 @@ const Mailboxes = () => {
             ? "Disconnect Mailbox"
             : deleteContext?.type === "bulkDelete"
               ? "Delete Messages"
-              : "Confirm Action"
+              : deleteContext?.type === "bulkSenderDelete"
+                ? "Delete Mailboxes"
+                : "Confirm Action"
         }
         description={
           deleteContext?.type === "disconnect"
             ? "Are u sure u want to selete this mailbox connection? This action cannot be undone."
             : deleteContext?.type === "bulkDelete"
               ? `Are u sure u want to selete ${deleteContext.count || 0} messages? This action cannot be undone.`
-              : ""
+              : deleteContext?.type === "bulkSenderDelete"
+                ? `Are u sure u want to delete ${deleteContext.count || 0} mailboxes? This will permanently remove them from your account.`
+                : ""
         }
         confirmText="Confirm"
         confirmVariant="danger"

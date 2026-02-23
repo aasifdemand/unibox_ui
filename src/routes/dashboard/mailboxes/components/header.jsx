@@ -5,6 +5,11 @@ import {
   Reply,
   Send,
   Trash2,
+  Search,
+  LayoutGrid,
+  List,
+  Filter,
+  XCircle,
 } from "lucide-react";
 import MessageActionsHeader from "./messageactions-header";
 import { useAudienceData } from "../../audience/hooks/use-audience-data";
@@ -43,6 +48,15 @@ const Header = ({
   onForward,
   onDeleteMessage,
   showMessageActions,
+  mailboxViewMode,
+  onToggleMailboxViewMode,
+  mailboxSearch,
+  onMailboxSearchChange,
+  mailboxTypeFilter,
+  onMailboxTypeChange,
+  selectedSenderIds,
+  onBulkSenderDelete,
+  onClearSenderSelection,
 }) => {
   const {
     senderType,
@@ -150,25 +164,108 @@ const Header = ({
 
         <div className="flex items-center gap-3">
           {view === "list" && (
-            <>
+            <div className="flex items-center gap-3 bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200/80">
+              <div className="relative group flex items-center bg-slate-50/50 rounded-xl px-3 py-1.5 border border-slate-200/50 min-w-[200px] shadow-inner transition-all focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50">
+                <Search className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Search mailboxes..."
+                  value={mailboxSearch}
+                  onChange={(e) => onMailboxSearchChange(e.target.value)}
+                  className="w-full pl-2 bg-transparent text-sm font-bold placeholder:text-slate-400 focus:outline-none transition-all text-slate-700"
+                />
+              </div>
+
+              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
+
+              <div className="relative flex items-center min-w-[130px]">
+                <Filter className="absolute left-3 w-4 h-4 text-slate-400 pointer-events-none" />
+                <select
+                  value={mailboxTypeFilter}
+                  onChange={(e) => onMailboxTypeChange(e.target.value)}
+                  className="appearance-none w-full pl-9 pr-8 py-2 min-h-[36px] bg-slate-50/50 hover:bg-slate-100/80 border border-slate-200/80 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer shadow-sm"
+                >
+                  <option value="all">ALL PROVIDERS</option>
+                  <option value="gmail">GMAIL</option>
+                  <option value="outlook">OUTLOOK</option>
+                  <option value="smtp">SMTP</option>
+                </select>
+                <ChevronRight className="absolute right-3 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+              </div>
+
+              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
+
+              <div className="flex items-center gap-1 bg-slate-50/80 p-1 rounded-xl border border-slate-200/50 shadow-inner">
+                <button
+                  onClick={() => mailboxViewMode !== "grid" && onToggleMailboxViewMode()}
+                  className={`p-1.5 rounded-lg transition-all ${mailboxViewMode === "grid"
+                    ? "bg-white shadow-sm ring-1 ring-slate-200/50 text-blue-600"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
+                    }`}
+                  title="Grid View"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => mailboxViewMode !== "list" && onToggleMailboxViewMode()}
+                  className={`p-1.5 rounded-lg transition-all ${mailboxViewMode === "list"
+                    ? "bg-white shadow-sm ring-1 ring-slate-200/50 text-blue-600"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
+                    }`}
+                  title="List View"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
+
               <button
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="btn-secondary flex items-center py-2 px-4 shadow-sm"
+                className="p-2 bg-slate-50/50 hover:bg-slate-100 rounded-xl border border-slate-200/80 transition-all shadow-sm group"
+                title="Refresh Mailboxes"
               >
                 <RefreshCw
-                  className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin text-blue-500" : "text-slate-400"}`}
+                  className={`w-4 h-4 ${isLoading ? "animate-spin text-blue-500" : "text-slate-500 group-hover:text-blue-600"
+                    }`}
                 />
-                <span className="text-sm">Refresh List</span>
               </button>
 
-              <button
-                onClick={() => setShowSenderModal(true)}
-                className="btn-primary flex items-center py-2 px-4"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                <span className="text-sm">Add Mailbox</span>
-              </button>
+              {selectedSenderIds?.length > 0 ? (
+                <div className="flex items-center gap-1.5 bg-rose-600 px-3 py-1.5 rounded-xl shadow-lg shadow-rose-500/20 animate-in zoom-in duration-300">
+                  <div className="flex items-center justify-center bg-white/20 px-2.5 py-1 rounded-lg">
+                    <span className="text-[10px] font-black text-white">
+                      {selectedSenderIds.length}
+                    </span>
+                  </div>
+                  <div className="w-px h-4 bg-white/20 mx-1"></div>
+                  <button
+                    onClick={onBulkSenderDelete}
+                    className="flex items-center gap-2 px-3 py-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all text-[11px] font-black uppercase tracking-widest"
+                    title="Delete Selected Mailboxes"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete</span>
+                  </button>
+                  <button
+                    onClick={onClearSenderSelection}
+                    className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all ml-1"
+                    title="Clear Selection"
+                  >
+                    <XCircle className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowSenderModal(true)}
+                  className="btn-primary flex items-center py-2 px-4 whitespace-nowrap"
+                >
+                  <Plus className="w-4 h-4 mr-2 shrink-0" />
+                  <span className="text-sm">Add Mailbox</span>
+                </button>
+              )}
+
               {/* Add Sender Modal */}
               {showSenderModal && (
                 <ShowSender
@@ -183,7 +280,7 @@ const Header = ({
                   isSubmitting={isLoading.creatingSender}
                 />
               )}
-            </>
+            </div>
           )}
 
           {view === "messages" && selectedMailbox && (

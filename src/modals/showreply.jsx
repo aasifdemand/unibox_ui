@@ -1,6 +1,7 @@
 import Modal from "../components/shared/modal";
 import { Mail, Calendar, MessageCircle, Reply, AtSign } from "lucide-react";
 import Button from "../components/ui/button";
+import DOMPurify from "dompurify";
 
 const ShowReply = ({
   isOpen,
@@ -10,46 +11,45 @@ const ShowReply = ({
   setSelectedRecipientId,
   formatDate,
 }) => {
-  // Function to clean up reply body by removing quoted content
-  const cleanReplyBody = (body) => {
-    if (!body) return "";
+  const getSafeBody = () => {
+    if (!reply) return "";
 
-    let cleanBody = body;
+    const raw = reply.body || reply.html || reply.text || "";
 
-    // First, try to find where the quoted message begins with "On ... wrote:"
-    const quotePattern = /On .+ wrote:/i;
-    const match = cleanBody.match(quotePattern);
+    // Check if the content is HTML
+    const isHtml = /<[a-z][\s\S]*>/i.test(raw);
 
-    if (match) {
-      // Remove everything from the match onwards
-      cleanBody = cleanBody.substring(0, match.index).trim();
-    } else {
-      // If no "On ... wrote:" pattern, try to remove lines starting with '>'
-      cleanBody = cleanBody
-        .split("\n")
-        .filter((line) => !line.trim().startsWith(">"))
-        .join("\n");
-
-      // Also try to remove common email separators
-      const otherPatterns = [
-        /-----Original Message-----/i,
-        /From:.*Sent:.*To:.*Subject:.*/i,
-      ];
-
-      for (const pattern of otherPatterns) {
-        const otherMatch = cleanBody.match(pattern);
-        if (otherMatch) {
-          cleanBody = cleanBody.substring(0, otherMatch.index).trim();
-          break;
-        }
-      }
+    // If HTML exists → sanitize only
+    if (isHtml) {
+      return DOMPurify.sanitize(raw);
     }
 
-    // Remove any trailing whitespace and return
-    return cleanBody.trim() || body;
+    // Clean plain text replies
+    let cleaned = raw;
+
+    // Remove "On ... wrote:"
+    cleaned = cleaned.split(/On .* wrote:/i)[0];
+
+    // Remove quoted lines starting with >
+    cleaned = cleaned
+      .split("\n")
+      .filter((line) => !line.trim().startsWith(">"))
+      .join("\n");
+
+    // Remove excessive > > > markers
+    cleaned = cleaned.replace(/(>\s*)+/g, "");
+
+    // Convert to clean paragraphs
+    const formatted = cleaned
+      .trim()
+      .replace(/\n{2,}/g, "</p><p>")
+      .replace(/\n/g, "<br/>");
+
+    const finished = `<p>${formatted}</p>`;
+    return DOMPurify.sanitize(finished);
   };
 
-  const cleanedBody = reply ? cleanReplyBody(reply.body) : "";
+  const safeBody = getSafeBody();
 
   return (
     <Modal
@@ -61,6 +61,7 @@ const ShowReply = ({
       maxWidth="max-w-3xl"
       closeOnBackdrop={true}
     >
+      {/* Header */}
       <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Reply className="w-16 h-16 text-white" />
@@ -95,7 +96,7 @@ const ShowReply = ({
           </div>
         ) : reply ? (
           <div className="space-y-6">
-            {/* Sender Info Card */}
+            {/* Sender Info */}
             <div className="bg-linear-to-br from-indigo-50 to-blue-50 rounded-4xl p-6 border border-indigo-100">
               <div className="flex items-start gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-white shadow-lg shadow-indigo-500/10 flex items-center justify-center border border-indigo-200">
@@ -110,17 +111,17 @@ const ShowReply = ({
                   <p className="text-lg font-extrabold text-slate-800">
                     {reply.replyFrom}
                   </p>
-                  {reply.recipient && (
+                  {reply.replyTo && (
                     <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
                       <span className="w-1 h-1 rounded-full bg-indigo-400"></span>
-                      To: {reply?.replyTo}
+                      To: {reply.replyTo}
                     </p>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Metadata Grid */}
+            {/* Metadata */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
                 <div className="flex items-center gap-3 mb-3">
@@ -151,7 +152,7 @@ const ShowReply = ({
               </div>
             </div>
 
-            {/* Message Card */}
+            {/* Message */}
             <div className="bg-slate-50 rounded-4xl p-6 border border-slate-100">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
@@ -161,11 +162,13 @@ const ShowReply = ({
                   Message
                 </span>
               </div>
+
               <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm min-h-37.5">
-                {cleanedBody ? (
-                  <div className="prose prose-sm max-w-none whitespace-pre-wrap">
-                    {cleanedBody}
-                  </div>
+                {safeBody ? (
+                  <div
+                    className="prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: safeBody }}
+                  />
                 ) : (
                   <p className="text-sm text-slate-400 italic">
                     No message content available
@@ -174,7 +177,7 @@ const ShowReply = ({
               </div>
             </div>
 
-            {/* Original Email Info (if available) */}
+            {/* Original Email */}
             {reply.email && (
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                 <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">

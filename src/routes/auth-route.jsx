@@ -1,8 +1,13 @@
-import { Navigate } from "react-router-dom";
+// routes/auth-route.jsx
+import { Navigate, Outlet } from "react-router-dom";
 import { useCurrentUser } from "../hooks/useAuth";
+import AuthLayout from "../layouts/auth.layout";
 
-const AuthRoute = ({ children }) => {
-  const { data: user, isLoading } = useCurrentUser();
+const AuthRoute = () => {
+  const { data: user, isLoading } = useCurrentUser({
+    // Only fetch if we're on auth routes
+    retry: false,
+  });
 
   if (isLoading) {
     return (
@@ -28,8 +33,8 @@ const AuthRoute = ({ children }) => {
     );
   }
 
-  // Not logged in → show auth page
-  return children;
+  // Not logged in → render auth layout with nested routes
+  return <AuthLayout />;
 };
 
 export default AuthRoute;

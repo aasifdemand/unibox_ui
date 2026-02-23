@@ -6,15 +6,10 @@ import {
   useGmailStarredMessagesQuery,
   useGmailImportantMessagesQuery,
   useGmailDraftsQuery,
-  useGmailLabelsQuery,
   useGmailMessageQuery,
+  useGmailLabelsQuery,
+  useGmailSearchQuery,
   useGmailAttachmentsQuery,
-  useMarkGmailAsReadMutation,
-  useMarkGmailAsUnreadMutation,
-  useDeleteGmailMessageMutation,
-  usePermanentlyDeleteGmailMessageMutation,
-  useToggleGmailStarMutation,
-  useToggleGmailImportantMutation,
   useSendGmailMessageMutation,
   useReplyToGmailMessageMutation,
   useForwardGmailMessageMutation,
@@ -22,31 +17,33 @@ import {
   useUpdateGmailDraftMutation,
   useDeleteGmailDraftMutation,
   useSendGmailDraftMutation,
-  useDownloadGmailAttachment,
-  useSyncGmailMailboxMutation,
-  useRefreshGmailTokenMutation,
-  useDisconnectGmailMailboxMutation,
+  useMarkGmailAsReadMutation,
+  useMarkGmailAsUnreadMutation,
+  useToggleGmailStarMutation,
+  useToggleGmailImportantMutation,
+  useDeleteGmailMessageMutation,
   useModifyGmailLabelsMutation,
   useBatchGmailOperationsMutation,
-  useGmailSearchQuery,
-  useGmailThreadsQuery,
-  useGmailProfileQuery,
+  useDownloadGmailAttachment,
+  useSyncGmailMailboxMutation,
+  useDisconnectGmailMailboxMutation,
+  useRefreshGmailTokenMutation,
 } from "../../../../hooks/useGmail";
 
-export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, PAGE_SIZE, searchQuery) => {
+export const useGmailData = (
+  selectedMailbox,
+  selectedFolder,
+  currentMessageId,
+  PAGE_SIZE,
+  searchQuery,
+) => {
   const isGmail = selectedMailbox?.type === "gmail";
   const mailboxId = isGmail ? selectedMailbox.id : null;
 
   // Queries
   const gmailMessagesQuery = useGmailMessagesQuery(
-    isGmail &&
-      (!selectedFolder ||
-        !["SENT", "TRASH", "SPAM", "STARRED", "IMPORTANT", "DRAFT"].includes(
-          selectedFolder.id,
-        ))
-      ? mailboxId
-      : null,
-    selectedFolder ? (selectedFolder.id ? [selectedFolder.id] : []) : ["INBOX"],
+    isGmail && !selectedFolder ? mailboxId : null,
+    ["INBOX"],
     PAGE_SIZE,
   );
 
@@ -54,22 +51,27 @@ export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, 
     isGmail && selectedFolder?.id === "SENT" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const gmailTrashQuery = useGmailTrashMessagesQuery(
     isGmail && selectedFolder?.id === "TRASH" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const gmailSpamQuery = useGmailSpamMessagesQuery(
     isGmail && selectedFolder?.id === "SPAM" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const gmailStarredQuery = useGmailStarredMessagesQuery(
     isGmail && selectedFolder?.id === "STARRED" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const gmailImportantQuery = useGmailImportantMessagesQuery(
     isGmail && selectedFolder?.id === "IMPORTANT" ? mailboxId : null,
     PAGE_SIZE,
   );
+
   const gmailDraftsQuery = useGmailDraftsQuery(
     isGmail && selectedFolder?.id === "DRAFT" ? mailboxId : null,
     PAGE_SIZE,
@@ -87,13 +89,13 @@ export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, 
     currentMessageId,
   );
 
+  const gmailSearchQuery = useGmailSearchQuery(
+    isGmail && searchQuery ? mailboxId : null,
+    searchQuery,
+    PAGE_SIZE,
+  );
+
   // Mutations
-  const markGmailAsRead = useMarkGmailAsReadMutation();
-  const markGmailAsUnread = useMarkGmailAsUnreadMutation();
-  const deleteGmailMessage = useDeleteGmailMessageMutation();
-  const permanentlyDeleteGmailMessage = usePermanentlyDeleteGmailMessageMutation();
-  const toggleGmailStar = useToggleGmailStarMutation();
-  const toggleGmailImportant = useToggleGmailImportantMutation();
   const sendGmailMessage = useSendGmailMessageMutation();
   const replyToGmailMessage = useReplyToGmailMessageMutation();
   const forwardGmailMessage = useForwardGmailMessageMutation();
@@ -101,26 +103,17 @@ export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, 
   const updateGmailDraft = useUpdateGmailDraftMutation();
   const deleteGmailDraft = useDeleteGmailDraftMutation();
   const sendGmailDraft = useSendGmailDraftMutation();
-  const downloadGmailAttachment = useDownloadGmailAttachment();
-  const syncGmailMailbox = useSyncGmailMailboxMutation();
-  const refreshGmailToken = useRefreshGmailTokenMutation();
-  const disconnectGmailMailbox = useDisconnectGmailMailboxMutation();
+  const markGmailAsRead = useMarkGmailAsReadMutation();
+  const markGmailAsUnread = useMarkGmailAsUnreadMutation();
+  const toggleGmailStar = useToggleGmailStarMutation();
+  const toggleGmailImportant = useToggleGmailImportantMutation();
+  const deleteGmailMessage = useDeleteGmailMessageMutation();
   const modifyGmailLabels = useModifyGmailLabelsMutation();
   const batchGmailOperations = useBatchGmailOperationsMutation();
-
-  const gmailSearchQuery = useGmailSearchQuery(
-    isGmail && searchQuery ? mailboxId : null,
-    searchQuery,
-    PAGE_SIZE,
-  );
-
-  const gmailThreadsQuery = useGmailThreadsQuery(
-    mailboxId,
-    selectedFolder?.id ? [selectedFolder.id] : ["INBOX"],
-    PAGE_SIZE,
-  );
-
-  const gmailProfileQuery = useGmailProfileQuery(mailboxId);
+  const downloadGmailAttachment = useDownloadGmailAttachment();
+  const syncGmailMailbox = useSyncGmailMailboxMutation();
+  const disconnectGmailMailbox = useDisconnectGmailMailboxMutation();
+  const refreshGmailToken = useRefreshGmailTokenMutation();
 
   return {
     queries: {
@@ -135,16 +128,8 @@ export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, 
       message: currentGmailMessageQuery,
       attachments: gmailAttachmentsQuery,
       search: gmailSearchQuery,
-      threads: gmailThreadsQuery,
-      profile: gmailProfileQuery,
     },
     mutations: {
-      markAsRead: markGmailAsRead,
-      markAsUnread: markGmailAsUnread,
-      deleteMessage: deleteGmailMessage,
-      permanentlyDelete: permanentlyDeleteGmailMessage,
-      toggleStar: toggleGmailStar,
-      toggleImportant: toggleGmailImportant,
       sendMessage: sendGmailMessage,
       reply: replyToGmailMessage,
       forward: forwardGmailMessage,
@@ -152,12 +137,17 @@ export const useGmailData = (selectedMailbox, selectedFolder, currentMessageId, 
       updateDraft: updateGmailDraft,
       deleteDraft: deleteGmailDraft,
       sendDraft: sendGmailDraft,
-      downloadAttachment: downloadGmailAttachment,
-      sync: syncGmailMailbox,
-      refreshToken: refreshGmailToken,
-      disconnect: disconnectGmailMailbox,
+      markAsRead: markGmailAsRead,
+      markAsUnread: markGmailAsUnread,
+      toggleStar: toggleGmailStar,
+      toggleImportant: toggleGmailImportant,
+      deleteMessage: deleteGmailMessage,
       modifyLabels: modifyGmailLabels,
       batchOperations: batchGmailOperations,
+      downloadAttachment: downloadGmailAttachment,
+      sync: syncGmailMailbox,
+      disconnect: disconnectGmailMailbox,
+      refreshToken: refreshGmailToken,
     },
   };
 };

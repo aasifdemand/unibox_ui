@@ -28,13 +28,13 @@ const AudienceHeader = ({
             <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
               <Users className="w-4 h-4 text-blue-600" />
             </div>
-            <h1 className="text-3xl font-extrabold text-slate-800 tracking-tighter">
-              Audience
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tighter">
+              Recipients & Senders
             </h1>
           </div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-            Manage your contacts and email senders
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+            Manage your mailing lists and sending accounts
           </p>
         </div>
 
@@ -56,7 +56,7 @@ const AudienceHeader = ({
               >
                 <Upload className="w-4 h-4" />
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-white">
-                  Upload Contacts
+                  Add Contacts
                 </span>
               </button>
             </>
@@ -86,7 +86,7 @@ const AudienceHeader = ({
               {totalContacts.toLocaleString()}
             </span>
             <span className="text-[10px] font-extrabold text-white/60 mb-1.5">
-              CONTACTS
+              RECIPIENTS
             </span>
           </div>
           <div className="mt-6 w-full h-1 bg-white/10 rounded-full overflow-hidden">
@@ -105,7 +105,7 @@ const AudienceHeader = ({
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Verified Emails
+            Active & Verified
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {verified.toLocaleString()}
@@ -123,7 +123,7 @@ const AudienceHeader = ({
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Invalid Emails
+            Bounced or Invalid
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {invalid.toLocaleString()}
@@ -141,7 +141,7 @@ const AudienceHeader = ({
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Risky Emails
+            Needs Review
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {risky.toLocaleString()}

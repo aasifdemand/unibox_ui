@@ -37,12 +37,13 @@ export const smtpKeys = {
 export const useSmtpMessagesQuery = (
   mailboxId,
   page = 1,
+  limit = 10,
   folder = "INBOX",
 ) => {
   return useQuery({
-    queryKey: smtpKeys.messages(mailboxId, folder),
+    queryKey: smtpKeys.messages(mailboxId, folder, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages?page=${page}&limit=10&folder=${encodeURIComponent(folder)}`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages?page=${page}&limit=${limit}&folder=${encodeURIComponent(folder)}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch messages");
@@ -54,11 +55,11 @@ export const useSmtpMessagesQuery = (
 };
 
 // Get sent messages
-export const useSmtpSentMessagesQuery = (mailboxId, page = 1) => {
+export const useSmtpSentMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
-    queryKey: smtpKeys.sent(mailboxId),
+    queryKey: smtpKeys.sent(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/sent?page=${page}&limit=10`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/sent?page=${page}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok)
@@ -71,11 +72,11 @@ export const useSmtpSentMessagesQuery = (mailboxId, page = 1) => {
 };
 
 // Get draft messages
-export const useSmtpDraftMessagesQuery = (mailboxId, page = 1) => {
+export const useSmtpDraftMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
-    queryKey: smtpKeys.drafts(mailboxId),
+    queryKey: smtpKeys.drafts(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/drafts?page=${page}&limit=10`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/drafts?page=${page}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to fetch drafts");
@@ -87,11 +88,11 @@ export const useSmtpDraftMessagesQuery = (mailboxId, page = 1) => {
 };
 
 // Get trash messages
-export const useSmtpTrashMessagesQuery = (mailboxId, page = 1) => {
+export const useSmtpTrashMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
-    queryKey: smtpKeys.trash(mailboxId),
+    queryKey: smtpKeys.trash(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/trash?page=${page}&limit=10`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/trash?page=${page}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok)
@@ -104,11 +105,11 @@ export const useSmtpTrashMessagesQuery = (mailboxId, page = 1) => {
 };
 
 // Get spam messages
-export const useSmtpSpamMessagesQuery = (mailboxId, page = 1) => {
+export const useSmtpSpamMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
-    queryKey: smtpKeys.spam(mailboxId),
+    queryKey: smtpKeys.spam(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/spam?page=${page}&limit=10`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/spam?page=${page}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok)
@@ -121,11 +122,11 @@ export const useSmtpSpamMessagesQuery = (mailboxId, page = 1) => {
 };
 
 // Get archive messages
-export const useSmtpArchiveMessagesQuery = (mailboxId, page = 1) => {
+export const useSmtpArchiveMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
-    queryKey: smtpKeys.archive(mailboxId),
+    queryKey: smtpKeys.archive(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/archive?page=${page}&limit=10`;
+      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/archive?page=${page}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
       const data = await res.json();
       if (!res.ok)
@@ -140,7 +141,7 @@ export const useSmtpArchiveMessagesQuery = (mailboxId, page = 1) => {
 // Get single message
 export const useSmtpMessageQuery = (mailboxId, messageId, folder = "INBOX") => {
   return useQuery({
-    queryKey: smtpKeys.message(mailboxId, messageId),
+    queryKey: [...smtpKeys.message(mailboxId, messageId), folder],
     queryFn: async () => {
       const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}?folder=${encodeURIComponent(folder)}`;
       const res = await fetch(url, { credentials: "include" });
@@ -196,7 +197,7 @@ export const useSmtpSearchQuery = (
   limit = 50,
 ) => {
   return useQuery({
-    queryKey: smtpKeys.search(mailboxId, query),
+    queryKey: [...smtpKeys.search(mailboxId, query), folder, limit],
     queryFn: async () => {
       const url = `${API_URL}/mailboxes/smtp/${mailboxId}/search?query=${encodeURIComponent(query)}&folder=${encodeURIComponent(folder)}&limit=${limit}`;
       const res = await fetch(url, { credentials: "include" });
@@ -216,7 +217,7 @@ export const useSmtpAttachmentsQuery = (
   folder = "INBOX",
 ) => {
   return useQuery({
-    queryKey: smtpKeys.attachments(mailboxId, messageId),
+    queryKey: [...smtpKeys.attachments(mailboxId, messageId), folder],
     queryFn: async () => {
       const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/attachments?folder=${encodeURIComponent(folder)}`;
       const res = await fetch(url, { credentials: "include" });

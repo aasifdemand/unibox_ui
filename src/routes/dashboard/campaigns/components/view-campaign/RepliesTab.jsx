@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   MessageCircle,
   Loader2,
@@ -10,10 +10,11 @@ import {
 import Button from "../../../../../components/ui/button";
 
 const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
-  const repliesList = Array.isArray(replies) ? replies : replies?.replies || [];
+  const repliesList = Array.isArray(replies) ? replies : [];
 
   return (
     <div className="space-y-10 pb-20 mt-4">
+
       <div className="premium-card bg-white border-slate-200/60 p-10 shadow-2xl shadow-slate-900/2">
         <div className="flex items-center justify-between mb-10">
           <div>
@@ -82,13 +83,13 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                         </p>
                         <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 italic">
                           "
-                          {reply.body
-                            ? reply.body
-                                .replace(/<[^>]*>/g, "")
-                                .substring(0, 200)
-                            : "No content"}
+                          {(reply.body || reply.text || reply.html || "")
+                            .replace(/<[^>]*>/g, "")
+                            .replace(/&nbsp;/g, " ")
+                            .substring(0, 200)}
                           ..."
                         </p>
+
                       </div>
 
                       <div className="flex items-center gap-4 pt-2">

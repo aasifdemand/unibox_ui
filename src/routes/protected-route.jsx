@@ -1,8 +1,13 @@
-import { Navigate } from "react-router-dom";
+// routes/protected-route.jsx
+import { Navigate, Outlet } from "react-router-dom";
 import { useCurrentUser } from "../hooks/useAuth";
+import DashboardLayout from "../layouts/dashboard.layout";
 
-const ProtectedRoute = ({ children }) => {
-  const { data: user, isLoading } = useCurrentUser();
+const ProtectedRoute = () => {
+  const { data: user, isLoading } = useCurrentUser({
+    // Only fetch when accessing protected routes
+    retry: false,
+  });
 
   if (isLoading) {
     return (
@@ -28,8 +33,8 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  // Logged in and verified → show protected page
-  return children;
+  // Logged in and verified → render dashboard layout with nested routes
+  return <DashboardLayout />;
 };
 
 export default ProtectedRoute;

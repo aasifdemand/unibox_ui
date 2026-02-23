@@ -190,38 +190,54 @@ const MessageDetailView = ({
 
     const decodeGmailData = (data) => {
       try {
-        return atob(data.replace(/-/g, "+").replace(/_/g, "/"));
+        // Convert URL-safe base64 to standard base64
+        const base64 = data.replace(/-/g, "+").replace(/_/g, "/");
+        // Decode to binary string
+        const binary = atob(base64);
+        // Convert binary string to a Uint8Array and decode as UTF-8
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return new TextDecoder("utf-8").decode(bytes);
       } catch (e) {
         console.error("Failed to decode base64:", e);
         return "";
       }
     };
 
-    // SMTP format
-    if (mailbox?.type === "smtp") {
-      if (message?.html) {
-        return <div dangerouslySetInnerHTML={{ __html: message.html }} />;
-      }
-      if (message?.text) {
-        return (
-          <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
-            {message.text}
-          </pre>
-        );
-      }
+    // Priority 1: Direct HTML property (Common for SMTP and updated models)
+    if (message?.html) {
+      return (
+        <div
+          className="mail-content-html"
+          dangerouslySetInnerHTML={{ __html: message.html }}
+        />
+      );
     }
+
     // Gmail format
-    else if (mailbox?.type === "gmail") {
+    if (mailbox?.type === "gmail") {
       if (message?.payload?.body?.data) {
         const html = decodeGmailData(message.payload.body.data);
-        return <div dangerouslySetInnerHTML={{ __html: html }} />;
+        return (
+          <div
+            className="mail-content-html"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        );
       }
       if (message?.payload?.parts) {
         const bodyPart = findGmailBody(message.payload.parts);
         if (bodyPart) {
           const content = decodeGmailData(bodyPart.data);
           if (bodyPart.mimeType === "text/html") {
-            return <div dangerouslySetInnerHTML={{ __html: content }} />;
+            return (
+              <div
+                className="mail-content-html"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+            );
           }
           return (
             <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
@@ -231,11 +247,15 @@ const MessageDetailView = ({
         }
       }
     }
+
     // Outlook format
-    else if (mailbox?.type === "outlook") {
+    if (mailbox?.type === "outlook") {
       if (message?.body?.content) {
         return (
-          <div dangerouslySetInnerHTML={{ __html: message.body.content }} />
+          <div
+            className="mail-content-html"
+            dangerouslySetInnerHTML={{ __html: message.body.content }}
+          />
         );
       }
       if (message?.bodyPreview) {
@@ -246,6 +266,16 @@ const MessageDetailView = ({
         );
       }
     }
+
+    // Fallback to text property
+    if (message?.text || message?.body) {
+      return (
+        <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
+          {message.text || message.body}
+        </pre>
+      );
+    }
+
     return (
       <p className="text-slate-400 font-bold uppercase tracking-widest text-center py-20 italic">
         No Content Available

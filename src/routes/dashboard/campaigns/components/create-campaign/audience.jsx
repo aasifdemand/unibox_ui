@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Users, Mail, Check, Loader2, FileSpreadsheet } from "lucide-react";
+import React, { useState, useRef, useMemo } from "react";
+import { Users, Mail, Check, Loader2, FileSpreadsheet, ChevronLeft, ChevronRight } from "lucide-react";
 import Button from "../../../../../components/ui/button";
 import * as XLSX from "xlsx";
 
@@ -31,6 +31,17 @@ const Step2Audience = ({
   const [senderType, setSenderType] = useState("gmail");
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showSenderModal, setShowSenderModal] = useState(false);
+
+  // Pagination for senders
+  const [sendersPage, setSendersPage] = useState(1);
+  const sendersPerPage = 9;
+  const totalSendersPages = Math.ceil(senders.length / sendersPerPage);
+
+  const currentSenders = useMemo(() => {
+    const indexOfLastSender = sendersPage * sendersPerPage;
+    const indexOfFirstSender = indexOfLastSender - sendersPerPage;
+    return senders.slice(indexOfFirstSender, indexOfLastSender);
+  }, [senders, sendersPage]);
 
   const [uploadStep, setUploadStep] = useState(1);
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -216,10 +227,10 @@ const Step2Audience = ({
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
-                Audience & Senders
+                Recipients & Senders
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Manage your dispatch configuration
+                Set up your campaign audience and accounts
               </p>
             </div>
           </div>
@@ -262,17 +273,17 @@ const Step2Audience = ({
           <div className="flex flex-col items-center justify-center py-16 bg-slate-50/30 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Loader2 className="w-8 h-8 text-blue-500/20 animate-spin" />
             <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest mt-4">
-              Syncing...
+              Loading...
             </p>
           </div>
         ) : verifiedBatches.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/20 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Users className="w-12 h-12 text-slate-200 mx-auto mb-4" />
             <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-              Empty Library
+              Your contact library is empty
             </h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
-              Upload your first CSV or Excel list
+              Upload a CSV or Excel list to get started
             </p>
             <Button
               onClick={() => setShowUploadModal(true)}
@@ -287,11 +298,10 @@ const Step2Audience = ({
               <div
                 key={batch.id}
                 onClick={() => handleBatchSelect(batch.id)}
-                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${
-                  watchListBatchId === batch.id
-                    ? "border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0"
-                    : "border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1"
-                }`}
+                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${watchListBatchId === batch.id
+                  ? "border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0"
+                  : "border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1"
+                  }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
@@ -327,65 +337,107 @@ const Step2Audience = ({
       </div>
 
       {/* Senders Section */}
-      <div className="pt-8 border-t border-slate-100 space-y-6">
-        <div className="flex items-center justify-between px-2">
+      <div className="pt-10 border-t border-slate-100 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
-              <Mail className="w-4 h-4 text-blue-600" />
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center">
+              <Mail className="w-5 h-5 text-blue-600" />
             </div>
-            <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              Dispatch Account
-            </h4>
+            <div>
+              <h4 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+                Sending Accounts
+              </h4>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                Choose which account will deliver these emails
+              </p>
+            </div>
           </div>
+
+          {totalSendersPages > 1 && (
+            <div className="flex items-center gap-3 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
+              <button
+                disabled={sendersPage === 1}
+                onClick={() => setSendersPage((p) => p - 1)}
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
+              >
+                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+              </button>
+              <div className="flex items-center gap-1.5 px-3">
+                <span className="text-[10px] font-black text-blue-600 bg-blue-50 w-6 h-6 rounded-lg flex items-center justify-center">
+                  {sendersPage}
+                </span>
+                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">of</span>
+                <span className="text-[10px] font-black text-slate-500 w-6 h-6 rounded-lg flex items-center justify-center">
+                  {totalSendersPages}
+                </span>
+              </div>
+              <button
+                disabled={sendersPage === totalSendersPages}
+                onClick={() => setSendersPage((p) => p + 1)}
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
+              >
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
+          )}
         </div>
 
         {isLoadingSenders ? (
-          <div className="py-12 bg-slate-50/20 rounded-4xl border border-slate-100 flex flex-col items-center">
-            <Loader2 className="w-6 h-6 text-blue-500/20 animate-spin" />
-            <p className="text-[10px] font-extrabold text-slate-300 uppercase mt-4">
-              Syncing...
+          <div className="py-20 bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200 flex flex-col items-center">
+            <Loader2 className="w-10 h-10 text-blue-500/20 animate-spin" />
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-6 animate-pulse">
+              Syncing accounts...
             </p>
           </div>
         ) : senders.length === 0 ? (
-          <div className="p-12 text-center bg-slate-50/30 rounded-[2.5rem] border-2 border-dashed border-slate-100">
-            <Button onClick={() => setShowSenderModal(true)} variant="outline">
-              Connect First Account
+          <div className="py-20 text-center bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200">
+            <Mail className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-2">
+              No sending accounts found
+            </h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
+              Connect your first Gmail, Outlook or SMTP account
+            </p>
+            <Button onClick={() => setShowSenderModal(true)} className="rounded-2xl px-10">
+              Connect Account
             </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {senders.map((sender) => {
+            {currentSenders.map((sender) => {
               const isSelected = watchSenderId === sender.id;
-              const sType = sender.senderType || sender.type;
+              const sType = (sender.senderType || sender.type || 'smtp').toLowerCase();
 
               return (
                 <div
                   key={sender.id}
                   onClick={() => handleSenderSelect(sender.id, sType)}
-                  className={`group relative p-5 rounded-4xl border-2 transition-all duration-300 cursor-pointer flex items-center gap-4 ${
-                    isSelected
-                      ? "border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5"
-                      : "border-slate-100 bg-white hover:border-blue-200"
-                  }`}
+                  className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${isSelected
+                    ? "border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1"
+                    : "border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5 hover:shadow-md"
+                    }`}
                 >
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center text-sm font-extrabold transition-all ${isSelected ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"}`}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black transition-all shadow-sm ${isSelected
+                      ? "bg-blue-600 text-white shadow-blue-500/40"
+                      : "bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"
+                      }`}
                   >
                     {sType.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`text-[10px] font-extrabold uppercase tracking-tight truncate ${isSelected ? "text-blue-900" : "text-slate-800"}`}
+                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? "text-blue-900" : "text-slate-800"}`}
                     >
                       {sender.displayName}
                     </p>
-                    <p className="text-[9px] text-slate-400 font-bold truncate">
+                    <p className="text-[10px] text-slate-400 font-bold truncate opacity-80 uppercase tracking-widest">
                       {sender.email}
                     </p>
                   </div>
                   {isSelected && (
-                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30">
-                      <Check className="w-3 h-3 text-white" />
+                    <div className="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30 ring-4 ring-white">
+                      <Check className="w-4 h-4 text-white" />
                     </div>
                   )}
                 </div>
