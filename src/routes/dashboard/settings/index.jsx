@@ -197,17 +197,17 @@ const Settings = () => {
             ))}
           </div>
 
-          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-indigo-950 text-white shadow-2xl shadow-indigo-500/10 relative overflow-hidden group">
+          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-2xl shadow-blue-500/20 relative overflow-hidden group">
             <div className="relative z-10">
               <h4 className="text-sm font-black uppercase tracking-widest mb-2">Need help?</h4>
-              <p className="text-[10px] text-blue-100/60 mb-6 font-bold uppercase tracking-widest leading-loose">
+              <p className="text-[10px] text-blue-50/70 mb-6 font-bold uppercase tracking-widest leading-loose">
                 Check our documentation or contact support for advanced settings.
               </p>
-              <button className="text-[10px] font-black uppercase tracking-widest bg-white/10 hover:bg-white text-white hover:text-slate-900 border border-white/10 px-6 py-2.5 rounded-2xl transition-all duration-300 active:scale-95 shadow-lg">
+              <button className="text-[10px] font-black uppercase tracking-widest bg-white/20 hover:bg-white text-white hover:text-blue-600 border border-white/20 px-6 py-2.5 rounded-2xl transition-all duration-300 active:scale-95 shadow-lg">
                 Docs & Support
               </button>
             </div>
-            <SettingsIcon className="absolute -right-6 -bottom-6 w-32 h-32 text-white/5 rotate-12 group-hover:rotate-45 transition-transform duration-[2000ms] pointer-events-none" />
+            <SettingsIcon className="absolute -right-6 -bottom-6 w-32 h-32 text-white/10 rotate-12 group-hover:rotate-45 transition-transform duration-[2000ms] pointer-events-none" />
           </div>
         </aside>
 
