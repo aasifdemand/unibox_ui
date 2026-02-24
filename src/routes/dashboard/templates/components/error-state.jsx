@@ -1,5 +1,5 @@
-import React from "react";
-import { AlertCircle } from "lucide-react";
+import React from 'react';
+import { AlertCircle } from 'lucide-react';
 
 const ErrorState = ({ error, onRetry }) => {
   return (
@@ -15,7 +15,7 @@ const ErrorState = ({ error, onRetry }) => {
             </h3>
             <p className="text-sm font-bold text-rose-700 max-w-md leading-relaxed">
               {error?.message ||
-                "Something went wrong while loading your templates. Please try again."}
+                'Something went wrong while loading your templates. Please try again.'}
             </p>
           </div>
         </div>

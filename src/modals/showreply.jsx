@@ -1,22 +1,15 @@
-import Modal from "../components/shared/modal";
-import { motion, AnimatePresence } from "motion/react";
-import { Mail, Calendar, MessageCircle, Reply, AtSign } from "lucide-react";
-import Button from "../components/ui/button";
-import DOMPurify from "dompurify";
+import Modal from '../components/shared/modal';
+import { motion, AnimatePresence } from 'motion/react';
+import { Mail, Calendar, MessageCircle, Reply, AtSign } from 'lucide-react';
+import Button from '../components/ui/button';
+import DOMPurify from 'dompurify';
 
-const ShowReply = ({
-  isOpen,
-  setIsOpen,
-  loading,
-  reply,
-  setSelectedRecipientId,
-  formatDate,
-}) => {
+const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, formatDate }) => {
   const renderMessageBody = () => {
     if (!reply) return null;
 
-    const html = reply.html || "";
-    const text = reply.body || reply.text || "";
+    const html = reply.html || '';
+    const text = reply.body || reply.text || '';
 
     // Determine the content to display and if it's HTML
     const displayContent = html || text;
@@ -46,7 +39,6 @@ const ShowReply = ({
       </p>
     );
   };
-
 
   return (
     <Modal
@@ -119,9 +111,7 @@ const ShowReply = ({
                         From
                       </span>
                     </div>
-                    <p className="text-lg font-extrabold text-slate-800">
-                      {reply.replyFrom}
-                    </p>
+                    <p className="text-lg font-extrabold text-slate-800">{reply.replyFrom}</p>
                     {reply.replyTo && (
                       <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
                         <span className="w-1 h-1 rounded-full bg-indigo-400"></span>
@@ -143,9 +133,7 @@ const ShowReply = ({
                       Subject
                     </span>
                   </div>
-                  <p className="text-sm font-bold text-slate-800 line-clamp-2">
-                    {reply.subject}
-                  </p>
+                  <p className="text-sm font-bold text-slate-800 line-clamp-2">{reply.subject}</p>
                 </div>
 
                 <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 h-full">
@@ -157,9 +145,7 @@ const ShowReply = ({
                       Received
                     </span>
                   </div>
-                  <p className="text-sm font-bold text-slate-800">
-                    {formatDate(reply.receivedAt)}
-                  </p>
+                  <p className="text-sm font-bold text-slate-800">{formatDate(reply.receivedAt)}</p>
                 </div>
               </div>
 
@@ -178,9 +164,7 @@ const ShowReply = ({
                   <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                     <MessageCircle className="w-24 h-24 text-slate-900" />
                   </div>
-                  <div className="prose prose-slate max-w-none">
-                    {renderMessageBody()}
-                  </div>
+                  <div className="prose prose-slate max-w-none">{renderMessageBody()}</div>
                 </div>
               </div>
 
@@ -190,9 +174,7 @@ const ShowReply = ({
                   <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
                     Original Email
                   </p>
-                  <p className="text-xs text-slate-600">
-                    Sent: {formatDate(reply.email.sentAt)}
-                  </p>
+                  <p className="text-xs text-slate-600">Sent: {formatDate(reply.email.sentAt)}</p>
                 </div>
               )}
             </motion.div>
@@ -211,7 +193,7 @@ const ShowReply = ({
                 No Reply Found
               </h4>
               <p className="text-xs text-slate-400 font-medium">
-                This recipient hasn't replied yet.
+                This recipient hasn&apos;t replied yet.
               </p>
             </motion.div>
           )}

@@ -1,6 +1,6 @@
-import React from "react";
-import { Calendar, CheckCircle, FileEdit, Layers, Zap } from "lucide-react";
-import { motion } from "motion/react";
+import React from 'react';
+import { Calendar, CheckCircle, FileEdit, Layers, Zap } from 'lucide-react';
+import { motion } from 'motion/react';
 
 const CampaignStats = ({
   totalCampaigns,
@@ -11,50 +11,48 @@ const CampaignStats = ({
 }) => {
   const stats = [
     {
-      label: "Total Campaigns",
+      label: 'Total Campaigns',
       value: totalCampaigns,
       icon: <Layers className="w-5 h-5" />,
-      theme: "indigo",
-      description: "ALL CAMPAIGNS",
+      theme: 'indigo',
+      description: 'ALL CAMPAIGNS',
     },
     {
-      label: "Active",
+      label: 'Active',
       value: activeCampaigns,
       icon: <Zap className="w-5 h-5" />,
-      theme: "emerald",
-      description: "CURRENTLY RUNNING",
+      theme: 'emerald',
+      description: 'CURRENTLY RUNNING',
     },
     {
-      label: "Scheduled",
+      label: 'Scheduled',
       value: scheduledCampaigns,
       icon: <Calendar className="w-5 h-5" />,
-      theme: "amber",
-      description: "SCHEDULED",
+      theme: 'amber',
+      description: 'SCHEDULED',
     },
     {
-      label: "Drafts",
+      label: 'Drafts',
       value: draftCampaigns,
       icon: <FileEdit className="w-5 h-5" />,
-      theme: "slate",
-      description: "IN PROGRESS",
+      theme: 'slate',
+      description: 'IN PROGRESS',
     },
     {
-      label: "Completed",
+      label: 'Completed',
       value: completedCampaigns,
       icon: <CheckCircle className="w-5 h-5" />,
-      theme: "blue",
-      description: "FINISHED",
+      theme: 'blue',
+      description: 'FINISHED',
     },
   ];
 
   const themes = {
-    indigo:
-      "bg-indigo-50/50 border-indigo-100 text-indigo-600 shadow-indigo-500/5",
-    emerald:
-      "bg-emerald-50/50 border-emerald-100 text-emerald-600 shadow-emerald-500/5",
-    amber: "bg-amber-50/50 border-amber-100 text-amber-600 shadow-amber-500/5",
-    slate: "bg-slate-50/50 border-slate-100 text-slate-600 shadow-slate-500/5",
-    blue: "bg-blue-50/50 border-blue-100 text-blue-600 shadow-blue-500/5",
+    indigo: 'bg-indigo-50/50 border-indigo-100 text-indigo-600 shadow-indigo-500/5',
+    emerald: 'bg-emerald-50/50 border-emerald-100 text-emerald-600 shadow-emerald-500/5',
+    amber: 'bg-amber-50/50 border-amber-100 text-amber-600 shadow-amber-500/5',
+    slate: 'bg-slate-50/50 border-slate-100 text-slate-600 shadow-slate-500/5',
+    blue: 'bg-blue-50/50 border-blue-100 text-blue-600 shadow-blue-500/5',
   };
 
   return (
@@ -68,9 +66,7 @@ const CampaignStats = ({
           className={`premium-card p-6 border transition-all duration-300 hover:shadow-xl hover:translate-y-1 ${themes[stat.theme]}`}
         >
           <div className="flex items-center justify-between mb-4">
-            <div className={`p-2 rounded-xl bg-white/80 shadow-sm`}>
-              {stat.icon}
-            </div>
+            <div className={`p-2 rounded-xl bg-white/80 shadow-sm`}>{stat.icon}</div>
             <span className="text-[8px] font-extrabold uppercase tracking-[0.2em] opacity-40">
               {stat.description}
             </span>

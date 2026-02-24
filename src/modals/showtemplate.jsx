@@ -1,4 +1,4 @@
-import Modal from "../components/shared/modal";
+import Modal from '../components/shared/modal';
 import {
   FileText,
   Save,
@@ -14,11 +14,11 @@ import {
   Shield,
   Layout,
   Settings,
-} from "lucide-react";
-import HtmlEmailEditor from "../components/shared/html-editor";
-import Button from "../components/ui/button";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+} from 'lucide-react';
+import HtmlEmailEditor from '../components/shared/html-editor';
+import Button from '../components/ui/button';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const ShowTemplate = ({
   showTemplateModal,
@@ -34,10 +34,7 @@ const ShowTemplate = ({
   const [currentStep, setCurrentStep] = useState(1);
 
   // Add sender_name to default user fields if not already present
-  const allUserFields = [
-    ...defaultUserFields,
-    { fieldName: "sender_name", fieldType: "text" },
-  ];
+  const allUserFields = [...defaultUserFields, { fieldName: 'sender_name', fieldType: 'text' }];
 
   if (!showTemplateModal) return null;
 
@@ -45,17 +42,17 @@ const ShowTemplate = ({
   const steps = [
     {
       id: 1,
-      name: "Details",
+      name: 'Details',
       icon: Settings,
     },
     {
       id: 2,
-      name: "Content",
+      name: 'Content',
       icon: Layout,
     },
     {
       id: 3,
-      name: "Review",
+      name: 'Review',
       icon: Eye,
     },
   ];
@@ -64,11 +61,11 @@ const ShowTemplate = ({
   const handleNextStep = () => {
     if (currentStep === 1) {
       if (!formData.name.trim()) {
-        alert("Template name is required");
+        alert('Template name is required');
         return;
       }
       if (!formData.subject.trim()) {
-        alert("Subject line is required");
+        alert('Subject line is required');
         return;
       }
     }
@@ -109,9 +106,7 @@ const ShowTemplate = ({
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full h-14 pl-12 pr-6 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none"
                     placeholder="e.g., Welcome Campaign"
                   />
@@ -129,9 +124,7 @@ const ShowTemplate = ({
                   <input
                     type="text"
                     value={formData.subject}
-                    onChange={(e) =>
-                      setFormData({ ...formData, subject: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full h-14 pl-12 pr-6 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none"
                     placeholder="e.g., Hi {{first_name}}, welcome aboard!"
                   />
@@ -141,38 +134,36 @@ const ShowTemplate = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-1 bg-slate-50 border-2 border-slate-100 rounded-3xl">
                   <div
-                    className={`p-4 rounded-2xl transition-all ${formData.status === "active"
-                      ? "bg-white shadow-sm ring-1 ring-slate-200"
-                      : ""
-                      }`}
+                    className={`p-4 rounded-2xl transition-all ${
+                      formData.status === 'active' ? 'bg-white shadow-sm ring-1 ring-slate-200' : ''
+                    }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${formData.status === "active"
-                            ? "bg-blue-50 text-blue-600"
-                            : "bg-slate-100 text-slate-400"
-                            }`}
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                            formData.status === 'active'
+                              ? 'bg-blue-50 text-blue-600'
+                              : 'bg-slate-100 text-slate-400'
+                          }`}
                         >
                           <Zap className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-800">
-                            Status
-                          </p>
+                          <p className="text-sm font-bold text-slate-800">Status</p>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            {formData.status === "active" ? "Active" : "Draft"}
+                            {formData.status === 'active' ? 'Active' : 'Draft'}
                           </p>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={formData.status === "active"}
+                          checked={formData.status === 'active'}
                           onChange={(e) =>
                             setFormData({
                               ...formData,
-                              status: e.target.checked ? "active" : "draft",
+                              status: e.target.checked ? 'active' : 'draft',
                             })
                           }
                           className="sr-only peer"
@@ -185,29 +176,25 @@ const ShowTemplate = ({
 
                 <div className="p-1 bg-slate-50 border-2 border-slate-100 rounded-3xl">
                   <div
-                    className={`p-4 rounded-2xl transition-all ${formData.isDefault
-                      ? "bg-white shadow-sm ring-1 ring-slate-200"
-                      : ""
-                      }`}
+                    className={`p-4 rounded-2xl transition-all ${
+                      formData.isDefault ? 'bg-white shadow-sm ring-1 ring-slate-200' : ''
+                    }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${formData.isDefault
-                            ? "bg-purple-50 text-purple-600"
-                            : "bg-slate-100 text-slate-400"
-                            }`}
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                            formData.isDefault
+                              ? 'bg-purple-50 text-purple-600'
+                              : 'bg-slate-100 text-slate-400'
+                          }`}
                         >
                           <Shield className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-800">
-                            Primary
-                          </p>
+                          <p className="text-sm font-bold text-slate-800">Primary</p>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            {formData.isDefault
-                              ? "Default Template"
-                              : "Standard"}
+                            {formData.isDefault ? 'Default Template' : 'Standard'}
                           </p>
                         </div>
                       </div>
@@ -245,21 +232,23 @@ const ShowTemplate = ({
             <div className="flex items-center justify-between bg-slate-50 p-2 rounded-2xl border border-slate-200">
               <div className="flex gap-1">
                 <button
-                  onClick={() => setEditorMode("rich")}
-                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${editorMode === "rich"
-                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                    : "text-slate-400 hover:text-slate-600"
-                    }`}
+                  onClick={() => setEditorMode('rich')}
+                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${
+                    editorMode === 'rich'
+                      ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                      : 'text-slate-400 hover:text-slate-600'
+                  }`}
                 >
                   <Sparkles className="w-4 h-4 inline mr-2" />
                   Visual Editor
                 </button>
                 <button
-                  onClick={() => setEditorMode("text")}
-                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${editorMode === "text"
-                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                    : "text-slate-400 hover:text-slate-600"
-                    }`}
+                  onClick={() => setEditorMode('text')}
+                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${
+                    editorMode === 'text'
+                      ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                      : 'text-slate-400 hover:text-slate-600'
+                  }`}
                 >
                   HTML / Text
                 </button>
@@ -278,10 +267,8 @@ const ShowTemplate = ({
                   key={index}
                   onClick={() => {
                     const token = `{{${field.fieldName}}}`;
-                    if (editorMode === "text") {
-                      const textarea = document.querySelector(
-                        'textarea[name="htmlContent"]',
-                      );
+                    if (editorMode === 'text') {
+                      const textarea = document.querySelector('textarea[name="htmlContent"]');
                       if (textarea) {
                         const start = textarea.selectionStart;
                         const end = textarea.selectionEnd;
@@ -298,27 +285,23 @@ const ShowTemplate = ({
                   }}
                   className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-blue-600 font-mono text-[10px] font-bold hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer"
                 >
-                  {"{{"} {field.fieldName} {"}}"}
+                  {'{{'} {field.fieldName} {'}}'}
                 </button>
               ))}
             </div>
 
             <div className="border border-slate-200 rounded-3xl bg-white overflow-hidden min-h-100">
-              {editorMode === "rich" ? (
+              {editorMode === 'rich' ? (
                 <HtmlEmailEditor
                   value={formData.htmlContent}
-                  onChange={(html) =>
-                    setFormData({ ...formData, htmlContent: html })
-                  }
+                  onChange={(html) => setFormData({ ...formData, htmlContent: html })}
                   userFields={allUserFields}
                 />
               ) : (
                 <textarea
                   name="htmlContent"
                   value={formData.htmlContent}
-                  onChange={(e) =>
-                    setFormData({ ...formData, htmlContent: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, htmlContent: e.target.value })}
                   className="w-full h-100 p-6 font-mono text-sm bg-slate-900 text-slate-300 outline-none resize-none"
                   placeholder="Enter your email content here... Use {{sender_name}} for the sender's name"
                 />
@@ -343,30 +326,23 @@ const ShowTemplate = ({
                 </p>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-3 border-b border-slate-200">
-                    <span className="text-xs font-bold text-slate-500">
-                      Name
-                    </span>
-                    <span className="text-sm font-extrabold text-slate-800">
-                      {formData.name}
-                    </span>
+                    <span className="text-xs font-bold text-slate-500">Name</span>
+                    <span className="text-sm font-extrabold text-slate-800">{formData.name}</span>
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b border-slate-200">
-                    <span className="text-xs font-bold text-slate-500">
-                      Subject
-                    </span>
+                    <span className="text-xs font-bold text-slate-500">Subject</span>
                     <span className="text-sm font-extrabold text-slate-800 truncate max-w-50">
                       {formData.subject}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-slate-500">
-                      Status
-                    </span>
+                    <span className="text-xs font-bold text-slate-500">Status</span>
                     <span
-                      className={`px-3 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${formData.status === "active"
-                        ? "bg-emerald-100 text-emerald-600"
-                        : "bg-blue-100 text-blue-600"
-                        }`}
+                      className={`px-3 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${
+                        formData.status === 'active'
+                          ? 'bg-emerald-100 text-emerald-600'
+                          : 'bg-blue-100 text-blue-600'
+                      }`}
                     >
                       {formData.status}
                     </span>
@@ -381,21 +357,18 @@ const ShowTemplate = ({
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.isDefault
-                        ? "bg-purple-100 text-purple-600"
-                        : "bg-slate-200 text-slate-400"
-                        }`}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        formData.isDefault
+                          ? 'bg-purple-100 text-purple-600'
+                          : 'bg-slate-200 text-slate-400'
+                      }`}
                     >
                       <Shield className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-800">
-                        Default Template
-                      </p>
+                      <p className="text-xs font-bold text-slate-800">Default Template</p>
                       <p className="text-[10px] text-slate-400">
-                        {formData.isDefault
-                          ? "Default Template"
-                          : "Not set as default"}
+                        {formData.isDefault ? 'Default Template' : 'Not set as default'}
                       </p>
                     </div>
                   </div>
@@ -420,9 +393,9 @@ const ShowTemplate = ({
                   dangerouslySetInnerHTML={{
                     __html: formData.htmlContent
                       ? formData.htmlContent.replace(
-                        /\{\{([^}]+)\}\}/g,
-                        `<span class="bg-amber-100/80 text-amber-800 px-1.5 py-0.5 rounded-md font-mono text-sm font-bold border border-amber-200/60 leading-none shadow-sm pb-1 inline-block">$&</span>`
-                      )
+                          /\{\{([^}]+)\}\}/g,
+                          `<span class="bg-amber-100/80 text-amber-800 px-1.5 py-0.5 rounded-md font-mono text-sm font-bold border border-amber-200/60 leading-none shadow-sm pb-1 inline-block">$&</span>`,
+                        )
                       : "<p class='text-slate-400 italic'>No content to preview</p>",
                   }}
                 />
@@ -451,13 +424,12 @@ const ShowTemplate = ({
               </div>
               <div>
                 <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
-                  {editingTemplate ? "Edit Template" : "New Template"}
+                  {editingTemplate ? 'Edit Template' : 'New Template'}
                 </h3>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Step {currentStep} of {steps.length}:{" "}
-                    {steps[currentStep - 1].name}
+                    Step {currentStep} of {steps.length}: {steps[currentStep - 1].name}
                   </p>
                 </div>
               </div>
@@ -473,12 +445,13 @@ const ShowTemplate = ({
                   <button
                     key={step.id}
                     onClick={() => isCompleted && setCurrentStep(step.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${isActive
-                      ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                      : isCompleted
-                        ? "text-emerald-600 hover:bg-emerald-50"
-                        : "text-slate-300 opacity-50 cursor-not-allowed"
-                      }`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                        : isCompleted
+                          ? 'text-emerald-600 hover:bg-emerald-50'
+                          : 'text-slate-300 opacity-50 cursor-not-allowed'
+                    }`}
                   >
                     {isCompleted ? (
                       <CheckCircle className="w-4 h-4" />
@@ -496,9 +469,7 @@ const ShowTemplate = ({
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto no-scrollbar px-8 py-6">
-          {renderStep()}
-        </div>
+        <div className="flex-1 overflow-y-auto no-scrollbar px-8 py-6">{renderStep()}</div>
 
         {/* Improved Footer */}
         <div className="px-8 py-6 border-t border-slate-100 bg-slate-50/30 flex items-center justify-between">
@@ -533,14 +504,12 @@ const ShowTemplate = ({
               <button
                 onClick={handleSaveTemplate}
                 disabled={
-                  !formData.name.trim() ||
-                  !formData.subject.trim() ||
-                  !formData.htmlContent.trim()
+                  !formData.name.trim() || !formData.subject.trim() || !formData.htmlContent.trim()
                 }
                 className="px-10 py-3 bg-blue-600 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-blue-600/20 hover:shadow-blue-600/30 hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
               >
                 <Save className="w-4 h-4" />
-                {editingTemplate ? "Update Template" : "Save Template"}
+                {editingTemplate ? 'Update Template' : 'Save Template'}
               </button>
             )}
           </div>

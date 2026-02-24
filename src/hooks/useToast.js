@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 
 export const useToast = () => {
   const success = (message) => {
@@ -13,7 +13,7 @@ export const useToast = () => {
     });
   };
 
-  const loading = (message = "Please wait...") => {
+  const loading = (message = 'Please wait...') => {
     return toast.loading(message);
   };
 

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   useCampaign,
   useDeleteCampaign,
@@ -7,11 +7,11 @@ import {
   useResumeCampaign,
   useCampaignReplies,
   useRecipientReply,
-} from "../../../../hooks/useCampaign";
-import { Edit, Clock, Send, CheckCircle, Pause } from "lucide-react";
-import { unescapeHtml } from "../../../../utils/html-utils";
-import { useMemo, useState } from "react";
-import toast from "react-hot-toast";
+} from '../../../../hooks/useCampaign';
+import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
+import { unescapeHtml } from '../../../../utils/html-utils';
+import { useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 // Helper function to extract all placeholders from text
 export const extractPlaceholders = (text) => {
@@ -25,10 +25,10 @@ export const replaceWithRecipientData = (text, recipient) => {
   if (!text || !recipient) return text;
 
   const data = {
-    name: recipient.name || "",
-    email: recipient.email || "",
-    first_name: recipient.name?.split(" ")[0] || "",
-    last_name: recipient.name?.split(" ").slice(1).join(" ") || "",
+    name: recipient.name || '',
+    email: recipient.email || '',
+    first_name: recipient.name?.split(' ')[0] || '',
+    last_name: recipient.name?.split(' ').slice(1).join(' ') || '',
     ...(recipient.metadata || {}),
   };
 
@@ -44,26 +44,24 @@ const getSampleRecipient = (campaign) => {
   if (recipients.length > 0) return recipients[0];
 
   return {
-    name: "John Doe",
-    email: "john@example.com",
+    name: 'John Doe',
+    email: 'john@example.com',
     metadata: {
-      first_name: "John",
-      last_name: "Doe",
-      company: "Acme Inc",
-      city: "New York",
-      country: "USA",
-      phone: "+1 234 567 8900",
+      first_name: 'John',
+      last_name: 'Doe',
+      company: 'Acme Inc',
+      city: 'New York',
+      country: 'USA',
+      phone: '+1 234 567 8900',
     },
   };
 };
 
 // Calculate average response time
 export const calculateAvgResponseTime = (recipients) => {
-  const replied = recipients?.filter(
-    (r) => r.status === "replied" && r.lastSentAt && r.repliedAt,
-  );
+  const replied = recipients?.filter((r) => r.status === 'replied' && r.lastSentAt && r.repliedAt);
 
-  if (!replied?.length) return "N/A";
+  if (!replied?.length) return 'N/A';
 
   const totalTime = replied.reduce((acc, r) => {
     const sentTime = new Date(r.lastSentAt).getTime();
@@ -77,53 +75,52 @@ export const calculateAvgResponseTime = (recipients) => {
 
 export const useCampaignAnalytics = (id) => {
   const navigate = useNavigate();
-  const [selectedRecipientForPreview, setSelectedRecipientForPreview] =
-    useState(null);
+  const [selectedRecipientForPreview, setSelectedRecipientForPreview] = useState(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState(null);
 
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case "draft":
+      case 'draft':
         return (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200">
             <Edit className="w-4 h-4 mr-1.5" />
             Draft
           </span>
         );
-      case "scheduled":
+      case 'scheduled':
         return (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800 border border-amber-200">
             <Clock className="w-4 h-4 mr-1.5" />
             Scheduled
           </span>
         );
-      case "running":
-      case "sending":
+      case 'running':
+      case 'sending':
         return (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200">
             <Send className="w-4 h-4 mr-1.5" />
             Running
           </span>
         );
-      case "completed":
+      case 'completed':
         return (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
             <CheckCircle className="w-4 h-4 mr-1.5" />
             Completed
           </span>
         );
-      case "paused":
+      case 'paused':
         return (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 border border-red-200">
             <Pause className="w-4 h-4 mr-1.5" />
@@ -140,14 +137,8 @@ export const useCampaignAnalytics = (id) => {
   };
 
   // Queries
-  const {
-    data: campaign,
-    isLoading,
-    error,
-    refetch: refetchCampaign,
-  } = useCampaign(id);
-  const { data: repliesResponse = [], isLoading: repliesLoading } =
-    useCampaignReplies(id);
+  const { data: campaign, isLoading, error, refetch: refetchCampaign } = useCampaign(id);
+  const { data: repliesResponse = [], isLoading: repliesLoading } = useCampaignReplies(id);
 
   // Extract replies list robustly
   const replies = useMemo(() => {
@@ -180,13 +171,12 @@ export const useCampaignAnalytics = (id) => {
     const totalSent =
       campaign.totalSent !== undefined
         ? campaign.totalSent
-        : recipients.filter((r) => r.status === "sent" || r.status === "replied")
-          .length;
+        : recipients.filter((r) => r.status === 'sent' || r.status === 'replied').length;
 
     const totalReplied =
       campaign.totalReplied !== undefined
         ? campaign.totalReplied
-        : recipients.filter((r) => r.status === "replied").length;
+        : recipients.filter((r) => r.status === 'replied').length;
 
     const totalOpened =
       campaign.totalOpens !== undefined
@@ -222,15 +212,9 @@ export const useCampaignAnalytics = (id) => {
     if (!campaign) return {};
     return {
       subject: replaceWithRecipientData(campaign.subject, sampleRecipient),
-      html: replaceWithRecipientData(
-        unescapeHtml(campaign.htmlBody),
-        sampleRecipient,
-      ),
+      html: replaceWithRecipientData(unescapeHtml(campaign.htmlBody), sampleRecipient),
       text: replaceWithRecipientData(campaign.textBody, sampleRecipient),
-      previewText: replaceWithRecipientData(
-        campaign.previewText,
-        sampleRecipient,
-      ),
+      previewText: replaceWithRecipientData(campaign.previewText, sampleRecipient),
       campaignName: replaceWithRecipientData(campaign.name, sampleRecipient),
     };
   }, [campaign, sampleRecipient]);
@@ -283,29 +267,12 @@ export const useCampaignAnalytics = (id) => {
       activate: activateCampaign,
       pause: pauseCampaign,
       handleDelete: () =>
-        handleAction(
-          deleteCampaign,
-          "Campaign deleted successfully",
-          "Failed to delete campaign",
-        ),
+        handleAction(deleteCampaign, 'Campaign deleted successfully', 'Failed to delete campaign'),
       handleActivate: () =>
-        handleAction(
-          activateCampaign,
-          "Campaign activated",
-          "Failed to activate campaign",
-        ),
-      handlePause: () =>
-        handleAction(
-          pauseCampaign,
-          "Campaign paused",
-          "Failed to pause campaign",
-        ),
+        handleAction(activateCampaign, 'Campaign activated', 'Failed to activate campaign'),
+      handlePause: () => handleAction(pauseCampaign, 'Campaign paused', 'Failed to pause campaign'),
       handleResume: () =>
-        handleAction(
-          resumeCampaign,
-          "Campaign resumed",
-          "Failed to resume campaign",
-        ),
+        handleAction(resumeCampaign, 'Campaign resumed', 'Failed to resume campaign'),
     },
   };
 };

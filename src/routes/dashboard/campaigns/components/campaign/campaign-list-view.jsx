@@ -1,27 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-  Calendar,
-  Edit,
-  Eye,
-  Loader2,
-  Pause,
-  Play,
-  Plus,
-  Send,
-  Trash2,
-  TrendingUp,
-  Users,
-  Zap,
-  BarChart3,
-  MousePointer2,
-  Target,
-} from "lucide-react";
-import {
-  calculateOpenRate,
-  formatDate,
-  getStatusInfo,
-} from "../../campaign-utils";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Pause, Send, Trash2, TrendingUp, Zap, BarChart3, Target } from 'lucide-react';
+import { calculateOpenRate, formatDate, getStatusInfo } from '../../campaign-utils';
 
 const CampaignListView = ({
   campaigns,
@@ -51,7 +31,7 @@ const CampaignListView = ({
           Matrix scan complete. No campaign assets found.
         </p>
         <Link
-          to={"/dashboard/campaigns/create"}
+          to={'/dashboard/campaigns/create'}
           className="btn-primary py-3 px-8 text-white font-extrabold uppercase tracking-widest text-[10px]"
         >
           Launch Protocol
@@ -69,10 +49,7 @@ const CampaignListView = ({
               <th className="py-6 px-6 bg-slate-50/50 first:rounded-tl-2xl border-b border-slate-100">
                 <input
                   type="checkbox"
-                  checked={
-                    selectedCampaigns.length === campaigns.length &&
-                    campaigns.length > 0
-                  }
+                  checked={selectedCampaigns.length === campaigns.length && campaigns.length > 0}
                   onChange={(e) => handleSelectAll(e.target.checked)}
                   className="w-5 h-5 text-indigo-600 rounded-lg border-slate-300 focus:ring-indigo-500 cursor-pointer"
                   disabled={isAnyLoading}
@@ -139,14 +116,14 @@ const CampaignListView = ({
                           {campaign.name}
                         </p>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest line-clamp-1 max-w-50">
-                          {campaign.subject || "NO SUBJECT"}
+                          {campaign.subject || 'NO SUBJECT'}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td className="py-5 px-6">
                     <span
-                      className={`px-2.5 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1.5 border w-fit ${color.replace("bg-", "text-").replace("-100", "-600").replace("-50", "-100")}`}
+                      className={`px-2.5 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1.5 border w-fit ${color.replace('bg-', 'text-').replace('-100', '-600').replace('-50', '-100')}`}
                     >
                       {icon}
                       {label}
@@ -157,7 +134,7 @@ const CampaignListView = ({
                       <div className="flex items-center gap-2 mb-0.5">
                         <Target className="w-3 h-3 text-slate-400" />
                         <span className="text-sm font-extrabold text-slate-800 tabular-nums">
-                          {campaign.totalRecipients?.toLocaleString() || "0"}
+                          {campaign.totalRecipients?.toLocaleString() || '0'}
                         </span>
                       </div>
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
@@ -171,7 +148,7 @@ const CampaignListView = ({
                         <span className="text-sm font-extrabold text-indigo-600 tabular-nums">
                           {openRate}
                         </span>
-                        {openRate !== "-" && parseFloat(openRate) > 30 && (
+                        {openRate !== '-' && parseFloat(openRate) > 30 && (
                           <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
                         )}
                       </div>
@@ -192,7 +169,7 @@ const CampaignListView = ({
                   </td>
                   <td className="py-5 px-6 text-right">
                     <div className="flex items-center justify-end gap-1">
-                      {campaign.status === "draft" && (
+                      {campaign.status === 'draft' && (
                         <button
                           onClick={() => handleActivateCampaign(campaign.id)}
                           disabled={isLoadingAction.activate}
@@ -202,7 +179,7 @@ const CampaignListView = ({
                         </button>
                       )}
 
-                      {campaign.status === "running" && (
+                      {campaign.status === 'running' && (
                         <button
                           onClick={() => handlePauseCampaign(campaign.id)}
                           disabled={isLoadingAction.pause}

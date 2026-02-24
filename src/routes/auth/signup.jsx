@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../../components/ui/button";
-import Input from "../../components/ui/input";
-import Checkbox from "../../components/ui/checkbox";
-import { User, Mail } from "lucide-react";
-import { useSignup, useCurrentUser } from "../../hooks/useAuth";
-import { signupSchema } from "../../validators/signup.schema";
-import { useToast } from "../../hooks/useToast";
-import { mapZodErrors } from "../../utils/map-zod";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from '../../components/ui/input';
+import Checkbox from '../../components/ui/checkbox';
+import { User, Mail } from 'lucide-react';
+import { useSignup, useCurrentUser } from '../../hooks/useAuth';
+import { signupSchema } from '../../validators/signup.schema';
+import { useToast } from '../../hooks/useToast';
+import { mapZodErrors } from '../../utils/map-zod';
 
 const Signup = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     acceptTerms: false,
     marketingEmails: true,
   });
@@ -29,7 +28,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      navigate('/dashboard');
     }
   }, [user, navigate]);
 
@@ -69,7 +68,7 @@ const Signup = () => {
       return;
     }
 
-    const toastId = toast.loading("Creating your account...");
+    const toastId = toast.loading('Creating your account...');
 
     try {
       await signup.mutateAsync({
@@ -79,15 +78,15 @@ const Signup = () => {
       });
 
       toast.dismiss(toastId);
-      toast.success("Account created! Please verify your email.");
+      toast.success('Account created! Please verify your email.');
 
       // Navigate to verification page with email
-      navigate("/auth/verify-account", {
+      navigate('/auth/verify-account', {
         state: { email: formData.email },
       });
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || "Signup failed. Please try again.");
+      toast.error(error.message || 'Signup failed. Please try again.');
     }
   };
 
@@ -166,11 +165,11 @@ const Signup = () => {
             onChange={handleCheckboxChange}
             label={
               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider leading-relaxed">
-                I agree to the{" "}
+                I agree to the{' '}
                 <Link to="/terms" className="text-blue-600 hover:underline">
                   Terms
-                </Link>{" "}
-                and{" "}
+                </Link>{' '}
+                and{' '}
                 <Link to="/privacy" className="text-blue-600 hover:underline">
                   Privacy Policy
                 </Link>
@@ -190,7 +189,7 @@ const Signup = () => {
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
-            "Sign Up"
+            'Sign Up'
           )}
         </button>
       </form>
@@ -213,11 +212,7 @@ const Signup = () => {
           <button
             type="button"
             className="w-full py-4 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-700 uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95 disabled:opacity-50"
-            onClick={() =>
-              (window.location.href = `${
-                import.meta.env.VITE_API_URL
-              }/auth/google`)
-            }
+            onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)}
             disabled={isLoading}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -245,7 +240,7 @@ const Signup = () => {
 
       <div className="mt-10 text-center">
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             to="/auth/login"
             className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ml-1"

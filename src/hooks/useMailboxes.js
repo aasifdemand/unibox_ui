@@ -1,17 +1,17 @@
 // hooks/useMailboxes.js
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const mailboxKeys = {
-  all: ["mailboxes"],
-  lists: (params) => [...mailboxKeys.all, "list", params],
-  detail: (id) => [...mailboxKeys.all, "detail", id],
+  all: ['mailboxes'],
+  lists: (params) => [...mailboxKeys.all, 'list', params],
+  detail: (id) => [...mailboxKeys.all, 'detail', id],
 };
 
 // Fetch mailboxes with pagination and search
-const fetchMailboxes = async ({ search = "", page = 1, limit = 10, type = "all" } = {}) => {
+const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' } = {}) => {
   const queryParams = new URLSearchParams({
     search,
     page: page.toString(),
@@ -20,11 +20,11 @@ const fetchMailboxes = async ({ search = "", page = 1, limit = 10, type = "all" 
   });
 
   const res = await fetch(`${API_URL}/mailboxes?${queryParams}`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch mailboxes");
+    throw new Error('Failed to fetch mailboxes');
   }
 
   return await res.json();
@@ -36,11 +36,11 @@ const transformSenderToMailbox = (sender) => {
   let type = sender.type;
 
   if (sender.microsoftId) {
-    type = "outlook";
+    type = 'outlook';
   } else if (sender.googleId) {
-    type = "gmail";
+    type = 'gmail';
   } else if (sender.smtpHost) {
-    type = "smtp";
+    type = 'smtp';
   }
 
   return {
@@ -63,10 +63,10 @@ const transformSenderToMailbox = (sender) => {
 
 // Fetch mailboxes with pagination
 export const useMailboxes = ({
-  search = "",
+  search = '',
   page = 1,
   limit = 10,
-  type = "all",
+  type = 'all',
   enabled = true,
 } = {}) => {
   return useQuery({
@@ -100,11 +100,11 @@ export const useMailbox = (mailboxId) => {
     queryKey: mailboxKeys.detail(mailboxId),
     queryFn: async () => {
       const res = await fetch(`${API_URL}/mailboxes/${mailboxId}`, {
-        credentials: "include",
+        credentials: 'include',
       });
 
       if (!res.ok) {
-        throw new Error("Mailbox not found");
+        throw new Error('Mailbox not found');
       }
 
       const response = await res.json();

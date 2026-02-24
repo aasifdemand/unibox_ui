@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   TrendingUp,
   MailOpen,
   Clock,
-  BarChart3,
-  PieChart,
-  Eye,
   Edit,
   ChevronRight,
   Sparkles,
@@ -18,8 +15,8 @@ import {
   Users,
   Loader2,
   Plus,
-} from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+} from 'lucide-react';
+import { motion } from 'motion/react';
 import {
   AreaChart,
   Area,
@@ -28,16 +25,16 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 // Import React Query hooks
-import { useCampaigns } from "../../hooks/useCampaign";
-import { useSenders } from "../../hooks/useSenders";
-import { useTemplate } from "../../hooks/useTemplate";
-import { useBatches, useVerificationTotals } from "../../hooks/useBatches";
+import { useCampaigns } from '../../hooks/useCampaign';
+import { useSenders } from '../../hooks/useSenders';
+import { useTemplate } from '../../hooks/useTemplate';
+import { useBatches, useVerificationTotals } from '../../hooks/useBatches';
 
 const Dashboard = () => {
-  const [timeRange, setTimeRange] = useState("30");
+  const [timeRange, setTimeRange] = useState('30');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // React Query hooks
@@ -55,14 +52,9 @@ const Dashboard = () => {
 
   const senders = senderResponse.data || [];
 
-  const { isLoading: templatesLoading, refetch: refetchTemplates } =
-    useTemplate();
+  const { isLoading: templatesLoading, refetch: refetchTemplates } = useTemplate();
 
-  const {
-    data: batches = [],
-    isLoading: batchesLoading,
-    refetch: refetchBatches,
-  } = useBatches();
+  const { data: batches = [], isLoading: batchesLoading, refetch: refetchBatches } = useBatches();
 
   // Get verification totals using the hook
   const verificationTotals = useVerificationTotals();
@@ -70,50 +62,33 @@ const Dashboard = () => {
   // Handle refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await Promise.all([
-      refetchCampaigns(),
-      refetchSenders(),
-      refetchTemplates(),
-      refetchBatches(),
-    ]);
+    await Promise.all([refetchCampaigns(), refetchSenders(), refetchTemplates(), refetchBatches()]);
     setIsRefreshing(false);
   };
 
   // Calculate real stats
   const totalCampaigns = campaigns.length;
   const activeCampaigns = campaigns.filter(
-    (c) => c.status === "running" || c.status === "sending",
+    (c) => c.status === 'running' || c.status === 'sending',
   ).length;
-  const scheduledCampaigns = campaigns.filter(
-    (c) => c.status === "scheduled",
-  ).length;
+  const scheduledCampaigns = campaigns.filter((c) => c.status === 'scheduled').length;
 
   // Calculate email stats
   const totalSent = campaigns.reduce((sum, c) => sum + (c.totalSent || 0), 0);
   const totalOpens = campaigns.reduce((sum, c) => sum + (c.totalOpens || 0), 0);
-  const totalReplied = campaigns.reduce(
-    (sum, c) => sum + (c.totalReplied || 0),
-    0,
-  );
+  const totalReplied = campaigns.reduce((sum, c) => sum + (c.totalReplied || 0), 0);
 
   // Calculate rates
-  const avgOpenRate =
-    totalSent > 0 ? ((totalOpens / totalSent) * 100).toFixed(1) : "0.0";
+  const avgOpenRate = totalSent > 0 ? ((totalOpens / totalSent) * 100).toFixed(1) : '0.0';
   const avgClickRate =
     campaigns.length > 0
-      ? (
-        campaigns.reduce((sum, c) => sum + (c.clickRate || 0), 0) /
-        campaigns.length
-      ).toFixed(1)
-      : "0.0";
-  const avgReplyRate =
-    totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : "0.0";
+      ? (campaigns.reduce((sum, c) => sum + (c.clickRate || 0), 0) / campaigns.length).toFixed(1)
+      : '0.0';
+  const avgReplyRate = totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : '0.0';
 
   // Contact stats
   const totalContacts =
-    verificationTotals.verified +
-    verificationTotals.invalid +
-    verificationTotals.unverified;
+    verificationTotals.verified + verificationTotals.invalid + verificationTotals.unverified;
 
   // Sender stats
   const totalSenders = senders.length;
@@ -124,50 +99,45 @@ const Dashboard = () => {
     .slice(0, 5)
     .map((campaign) => {
       const progress = campaign.totalRecipients
-        ? Math.min(
-          100,
-          Math.round(
-            ((campaign.totalSent || 0) / campaign.totalRecipients) * 100,
-          ),
-        )
+        ? Math.min(100, Math.round(((campaign.totalSent || 0) / campaign.totalRecipients) * 100))
         : 0;
 
       const openRate = campaign.totalSent
         ? `${Math.round(((campaign.totalOpens || 0) / campaign.totalSent) * 100)}%`
-        : "-";
+        : '-';
       const clickRate = campaign.totalSent
         ? `${Math.round(((campaign.totalClicks || 0) / campaign.totalSent) * 100)}%`
-        : "-";
+        : '-';
 
-      let statusColor = "";
+      let statusColor = '';
       let statusIcon = null;
       let statusLabel = campaign.status;
 
       switch (campaign.status) {
-        case "draft":
-          statusColor = "bg-gray-100 text-gray-800";
+        case 'draft':
+          statusColor = 'bg-gray-100 text-gray-800';
           statusIcon = <Edit className="w-4 h-4" />;
           break;
-        case "scheduled":
-          statusColor = "bg-amber-100 text-amber-800";
+        case 'scheduled':
+          statusColor = 'bg-amber-100 text-amber-800';
           statusIcon = <Clock className="w-4 h-4" />;
           break;
-        case "running":
-        case "sending":
-          statusColor = "bg-green-100 text-green-800";
+        case 'running':
+        case 'sending':
+          statusColor = 'bg-green-100 text-green-800';
           statusIcon = <Send className="w-4 h-4" />;
-          statusLabel = "active";
+          statusLabel = 'active';
           break;
-        case "completed":
-          statusColor = "bg-blue-100 text-blue-800";
+        case 'completed':
+          statusColor = 'bg-blue-100 text-blue-800';
           statusIcon = <CheckCircle className="w-4 h-4" />;
           break;
-        case "paused":
-          statusColor = "bg-red-100 text-red-800";
+        case 'paused':
+          statusColor = 'bg-red-100 text-red-800';
           statusIcon = <Pause className="w-4 h-4" />;
           break;
         default:
-          statusColor = "bg-gray-100 text-gray-800";
+          statusColor = 'bg-gray-100 text-gray-800';
           statusIcon = <Edit className="w-4 h-4" />;
       }
 
@@ -178,22 +148,22 @@ const Dashboard = () => {
         statusLabel,
         statusColor,
         statusIcon,
-        recipients: campaign.totalRecipients?.toLocaleString() || "0",
+        recipients: campaign.totalRecipients?.toLocaleString() || '0',
         openRate,
         clickRate,
         sentDate: campaign.scheduledAt
-          ? new Date(campaign.scheduledAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
-          : campaign.status === "draft"
-            ? "Draft"
-            : new Date(campaign.createdAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
+          ? new Date(campaign.scheduledAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : campaign.status === 'draft'
+            ? 'Draft'
+            : new Date(campaign.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              }),
         progress,
       };
     });
@@ -203,31 +173,22 @@ const Dashboard = () => {
   const campaignsThisMonth = campaigns.filter((c) => {
     const createdAt = new Date(c.createdAt);
     const now = new Date();
-    return (
-      createdAt.getMonth() === now.getMonth() &&
-      createdAt.getFullYear() === now.getFullYear()
-    );
+    return createdAt.getMonth() === now.getMonth() && createdAt.getFullYear() === now.getFullYear();
   }).length;
-  const goalProgress = Math.min(
-    100,
-    Math.round((campaignsThisMonth / monthlyGoal) * 100),
-  );
+  const goalProgress = Math.min(100, Math.round((campaignsThisMonth / monthlyGoal) * 100));
 
   // Get next scheduled campaign
   const nextCampaign = campaigns
-    .filter((c) => c.status === "scheduled" && c.scheduledAt)
+    .filter((c) => c.status === 'scheduled' && c.scheduledAt)
     .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))[0];
 
   const daysUntilNext = nextCampaign
-    ? Math.ceil(
-      (new Date(nextCampaign.scheduledAt) - new Date()) /
-      (1000 * 60 * 60 * 24),
-    )
+    ? Math.ceil((new Date(nextCampaign.scheduledAt) - new Date()) / (1000 * 60 * 60 * 24))
     : null;
 
   // Aggregate real performance data from campaigns for the last 7 days
-  const performanceData = React.useMemo(() => {
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const performanceData = (() => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const now = new Date();
     const result = [];
 
@@ -235,13 +196,11 @@ const Dashboard = () => {
       const date = new Date(now);
       date.setDate(now.getDate() - i);
       const dayName = days[date.getDay()];
-      const dateString = date.toISOString().split("T")[0];
+      const dateString = date.toISOString().split('T')[0];
 
       const dailyStats = campaigns
         .filter((c) => {
-          const cDate = new Date(c.createdAt || c.updatedAt)
-            .toISOString()
-            .split("T")[0];
+          const cDate = new Date(c.createdAt || c.updatedAt).toISOString().split('T')[0];
           return cDate === dateString;
         })
         .reduce(
@@ -261,85 +220,85 @@ const Dashboard = () => {
       });
     }
     return result;
-  }, [campaigns]);
+  })();
 
   // Stats cards data
   const stats = [
     {
-      title: "Total Campaigns",
+      title: 'Total Campaigns',
       value: totalCampaigns.toString(),
       change: `+${campaignsThisMonth} this month`,
       icon: <Send className="w-6 h-6 text-blue-600" />,
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-50',
       description: `${activeCampaigns} active, ${scheduledCampaigns} scheduled`,
-      trend: "up",
+      trend: 'up',
     },
     {
-      title: "Open Rate",
+      title: 'Open Rate',
       value: `${avgOpenRate}%`,
       change: `${totalOpens.toLocaleString()} total opens`,
       icon: <MailOpen className="w-6 h-6 text-green-600" />,
-      color: "from-green-500 to-emerald-600",
-      bgColor: "bg-green-50",
+      color: 'from-green-500 to-emerald-600',
+      bgColor: 'bg-green-50',
       description: `${(totalSent || 0).toLocaleString()} emails sent`,
-      trend: "up",
+      trend: 'up',
     },
     {
-      title: "Reply Rate",
+      title: 'Reply Rate',
       value: `${avgReplyRate}%`,
       change: `${totalReplied.toLocaleString()} total replies`,
       icon: <TrendingUp className="w-6 h-6 text-purple-600" />,
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-      description: "Campaign engagement",
-      trend: "up",
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-purple-50',
+      description: 'Campaign engagement',
+      trend: 'up',
     },
     {
-      title: "Contacts",
+      title: 'Contacts',
       value: totalContacts.toLocaleString(),
       change: `${verificationTotals.verified.toLocaleString()} verified`,
       icon: <Users className="w-6 h-6 text-amber-600" />,
-      color: "from-amber-500 to-amber-600",
-      bgColor: "bg-amber-50",
+      color: 'from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-50',
       description: `${totalSenders} senders ready`,
-      trend: "up",
+      trend: 'up',
     },
   ];
 
   // Quick Actions
   const quickActions = [
     {
-      title: "Create Campaign",
-      description: "Start a new email campaign",
+      title: 'Create Campaign',
+      description: 'Start a new email campaign',
       icon: <Sparkles className="w-5 h-5" />,
-      color: "from-blue-500 to-indigo-600",
-      bgColor: "bg-linear-to-br from-blue-50 to-indigo-50",
-      link: "/dashboard/campaigns/create",
+      color: 'from-blue-500 to-indigo-600',
+      bgColor: 'bg-linear-to-br from-blue-50 to-indigo-50',
+      link: '/dashboard/campaigns/create',
     },
     {
-      title: "Import Contacts",
-      description: "Add new subscribers",
+      title: 'Import Contacts',
+      description: 'Add new subscribers',
       icon: <Users className="w-5 h-5" />,
-      color: "from-green-500 to-emerald-600",
-      bgColor: "bg-linear-to-br from-green-50 to-emerald-50",
-      link: "/dashboard/audience",
+      color: 'from-green-500 to-emerald-600',
+      bgColor: 'bg-linear-to-br from-green-50 to-emerald-50',
+      link: '/dashboard/audience',
     },
     {
-      title: "Create Template",
-      description: "Design email templates",
+      title: 'Create Template',
+      description: 'Design email templates',
       icon: <Edit className="w-5 h-5" />,
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-linear-to-br from-purple-50 to-purple-50",
-      link: "/dashboard/templates/create",
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-linear-to-br from-purple-50 to-purple-50',
+      link: '/dashboard/templates/create',
     },
     {
-      title: "Add Sender",
-      description: "Connect email account",
+      title: 'Add Sender',
+      description: 'Connect email account',
       icon: <Send className="w-5 h-5" />,
-      color: "from-amber-500 to-amber-600",
-      bgColor: "bg-linear-to-br from-amber-50 to-amber-50",
-      link: "/dashboard/audience",
+      color: 'from-amber-500 to-amber-600',
+      bgColor: 'bg-linear-to-br from-amber-50 to-amber-50',
+      link: '/dashboard/audience',
     },
   ];
 
@@ -347,27 +306,26 @@ const Dashboard = () => {
   const recentActivity = [
     ...campaigns.slice(0, 3).map((c) => ({
       id: `campaign-${c.id}`,
-      type: "campaign",
+      type: 'campaign',
       title:
-        c.status === "completed"
+        c.status === 'completed'
           ? `Campaign "${c.name}" completed`
           : `Campaign "${c.name}" ${c.status}`,
       time: new Date(c.updatedAt || c.createdAt).toLocaleString(),
-      icon: c.status === "completed" ? "bg-green-500" : "bg-blue-500",
+      icon: c.status === 'completed' ? 'bg-green-500' : 'bg-blue-500',
     })),
     ...batches.slice(0, 2).map((b) => ({
       id: `batch-${b.id}`,
-      type: "batch",
-      title: `List "${b.originalFilename || "Upload"}" ${b.status}`,
+      type: 'batch',
+      title: `List "${b.originalFilename || 'Upload'}" ${b.status}`,
       time: new Date(b.createdAt).toLocaleString(),
-      icon: "bg-purple-500",
+      icon: 'bg-purple-500',
     })),
   ]
     .sort((a, b) => new Date(b.time) - new Date(a.time))
     .slice(0, 3);
 
-  const isLoading =
-    campaignsLoading || sendersLoading || templatesLoading || batchesLoading;
+  const isLoading = campaignsLoading || sendersLoading || templatesLoading || batchesLoading;
 
   if (isLoading && campaigns.length === 0) {
     return (
@@ -387,12 +345,10 @@ const Dashboard = () => {
         <div>
           <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center">
             Dashboard <span className="text-gradient ml-3">Overview</span>
-            {isRefreshing && (
-              <Loader2 className="w-5 h-5 ml-4 animate-spin text-blue-500" />
-            )}
+            {isRefreshing && <Loader2 className="w-5 h-5 ml-4 animate-spin text-blue-500" />}
           </h1>
           <p className="text-slate-500 font-medium mt-1">
-            Welcome back! Here's a summary of your workspace performance.
+            Welcome back! Here&apos;s a summary of your workspace performance.
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -415,7 +371,7 @@ const Dashboard = () => {
             className="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-[10px] font-extrabold uppercase tracking-widest transition-all shadow-xl shadow-blue-500/20 active:scale-95 disabled:opacity-50"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 mr-2.5" />}
-            {isRefreshing ? "Syncing..." : "Refresh Data"}
+            {isRefreshing ? 'Syncing...' : 'Refresh Data'}
           </button>
         </div>
       </div>
@@ -466,14 +422,14 @@ const Dashboard = () => {
                     {stat.value}
                   </h3>
                   <div
-                    className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-extrabold mb-0.5 ${stat.trend === "up" ? "text-blue-600 bg-blue-50" : "text-slate-400 bg-slate-50"}`}
+                    className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-extrabold mb-0.5 ${stat.trend === 'up' ? 'text-blue-600 bg-blue-50' : 'text-slate-400 bg-slate-50'}`}
                   >
-                    {stat.trend === "up" ? (
+                    {stat.trend === 'up' ? (
                       <TrendingUp className="w-3 h-3" />
                     ) : (
                       <Clock className="w-3 h-3" />
                     )}
-                    {stat.change.split(" ")[0]}
+                    {stat.change.split(' ')[0]}
                   </div>
                 </div>
 
@@ -491,8 +447,8 @@ const Dashboard = () => {
                 </div>
                 <div className="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden border border-slate-100/50 p-px">
                   <div
-                    className={`h-full bg-linear-to-r ${stat.color} rounded-full transition-all duration-[2000ms] ease-out shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
-                    style={{ width: "84%" }}
+                    className={`h-full bg-linear-to-r ${stat.color} rounded-full transition-all duration-2000 ease-out shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
+                    style={{ width: '84%' }}
                   ></div>
                 </div>
               </div>
@@ -514,14 +470,15 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="flex bg-slate-100 p-1 rounded-xl self-start">
-                {["7", "30", "90"].map((range) => (
+                {['7', '30', '90'].map((range) => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
-                    className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${timeRange === range
-                      ? "bg-white text-blue-600 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
-                      }`}
+                    className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                      timeRange === range
+                        ? 'bg-white text-blue-600 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
                   >
                     {range}D
                   </button>
@@ -546,9 +503,7 @@ const Dashboard = () => {
                     tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }}
                     dy={10}
                   />
-                  <YAxis
-                    hide
-                  />
+                  <YAxis hide />
                   <Tooltip
                     contentStyle={{
                       borderRadius: '16px',
@@ -557,7 +512,7 @@ const Dashboard = () => {
                       fontSize: '10px',
                       fontWeight: 800,
                       textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
+                      letterSpacing: '0.05em',
                     }}
                   />
                   <Area
@@ -575,33 +530,31 @@ const Dashboard = () => {
             <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
               {[
                 {
-                  label: "Avg Open Rate",
+                  label: 'Avg Open Rate',
                   value: `${avgOpenRate}%`,
-                  color: "text-blue-600",
+                  color: 'text-blue-600',
                 },
                 {
-                  label: "Avg Click Rate",
+                  label: 'Avg Click Rate',
                   value: `${avgClickRate}%`,
-                  color: "text-green-600",
+                  color: 'text-green-600',
                 },
                 {
-                  label: "Avg Reply Rate",
+                  label: 'Avg Reply Rate',
                   value: `${avgReplyRate}%`,
-                  color: "text-purple-600",
+                  color: 'text-purple-600',
                 },
                 {
-                  label: "Deliverability",
-                  value: "98.2%",
-                  color: "text-emerald-600",
+                  label: 'Deliverability',
+                  value: '98.2%',
+                  color: 'text-emerald-600',
                 },
               ].map((stat, i) => (
                 <div key={i} className="text-center md:text-left">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                     {stat.label}
                   </p>
-                  <div
-                    className={`text-xl font-extrabold ${stat.color} tracking-tight`}
-                  >
+                  <div className={`text-xl font-extrabold ${stat.color} tracking-tight`}>
                     {stat.value}
                   </div>
                 </div>
@@ -650,9 +603,7 @@ const Dashboard = () => {
             </div>
 
             <div className="premium-card p-6 flex-1">
-              <h3 className="text-lg font-bold text-slate-800 mb-6">
-                Activity Timeline
-              </h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-6">Activity Timeline</h3>
               <div className="space-y-8 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
                 {recentActivity.length > 0 ? (
                   recentActivity.map((activity, idx) => (
@@ -680,9 +631,7 @@ const Dashboard = () => {
                 ) : (
                   <div className="text-center py-8">
                     <Clock className="w-10 h-10 text-slate-200 mx-auto mb-3" />
-                    <p className="text-sm text-slate-400 font-medium">
-                      No recent activity
-                    </p>
+                    <p className="text-sm text-slate-400 font-medium">No recent activity</p>
                   </div>
                 )}
               </div>
@@ -693,9 +642,7 @@ const Dashboard = () => {
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                       Total Senders
                     </p>
-                    <div className="text-xl font-extrabold text-slate-800">
-                      {totalSenders}
-                    </div>
+                    <div className="text-xl font-extrabold text-slate-800">{totalSenders}</div>
                   </div>
                   <div className="flex -space-x-2">
                     {[1, 2, 3].map((i) => (
@@ -703,7 +650,7 @@ const Dashboard = () => {
                         key={i}
                         className="w-8 h-8 rounded-full bg-white border-2 border-slate-50 flex items-center justify-center text-[10px] font-bold text-blue-600 shadow-sm"
                       >
-                        {i === 3 ? "+" : "S"}
+                        {i === 3 ? '+' : 'S'}
                       </div>
                     ))}
                   </div>
@@ -768,19 +715,14 @@ const Dashboard = () => {
               <tbody className="divide-y divide-slate-50">
                 {recentCampaigns.length > 0 ? (
                   recentCampaigns.map((campaign) => (
-                    <tr
-                      key={campaign.id}
-                      className="group hover:bg-blue-50/30 transition-colors"
-                    >
+                    <tr key={campaign.id} className="group hover:bg-blue-50/30 transition-colors">
                       <td className="px-8 py-5">
                         <div className="flex items-center">
                           <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                             <Send className="w-5 h-5 text-blue-500" />
                           </div>
                           <div>
-                            <p className="text-sm font-bold text-slate-800 mb-1">
-                              {campaign.name}
-                            </p>
+                            <p className="text-sm font-bold text-slate-800 mb-1">{campaign.name}</p>
                             <div className="w-32 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-blue-500 rounded-full transition-all duration-1000"
@@ -859,13 +801,9 @@ const Dashboard = () => {
                         No campaigns launched yet
                       </h3>
                       <p className="text-slate-500 font-medium mb-8 max-w-xs mx-auto">
-                        Start your outreach by creating your first personalized
-                        campaign.
+                        Start your outreach by creating your first personalized campaign.
                       </p>
-                      <Link
-                        to="/dashboard/campaigns/create"
-                        className="btn-primary"
-                      >
+                      <Link to="/dashboard/campaigns/create" className="btn-primary">
                         Create First Campaign
                       </Link>
                     </td>
@@ -893,10 +831,10 @@ const Dashboard = () => {
 
             <h3 className="text-xl font-bold mb-2">Workspace Growth</h3>
             <p className="text-blue-100 text-sm font-medium mb-6">
-              You've completed{" "}
-              <span className="text-white font-bold">{campaignsThisMonth}</span>{" "}
-              of your <span className="text-white font-bold">{monthlyGoal}</span>{" "}
-              campaigns goal for this month.
+              You&apos;ve completed{' '}
+              <span className="text-white font-bold">{campaignsThisMonth}</span> of your{' '}
+              <span className="text-white font-bold">{monthlyGoal}</span> campaigns goal for this
+              month.
             </p>
 
             <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
@@ -919,20 +857,16 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <h3 className="text-xl font-bold text-slate-800 mb-2">
-              Next Scheduled Launch
-            </h3>
+            <h3 className="text-xl font-bold text-slate-800 mb-2">Next Scheduled Launch</h3>
 
             {nextCampaign ? (
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-500 text-sm font-medium mb-4 italic">
-                    "{nextCampaign.name}"
+                    &quot;{nextCampaign.name}&quot;
                   </p>
                   <div className="text-3xl font-extrabold text-slate-800">
-                    {daysUntilNext === 0
-                      ? "Launching Today"
-                      : `In ${daysUntilNext} Days`}
+                    {daysUntilNext === 0 ? 'Launching Today' : `In ${daysUntilNext} Days`}
                   </div>
                 </div>
                 <Link
@@ -944,9 +878,7 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <p className="text-slate-500 font-medium italic">
-                  No campaigns scheduled yet.
-                </p>
+                <p className="text-slate-500 font-medium italic">No campaigns scheduled yet.</p>
                 <Link
                   to="/dashboard/campaigns/create"
                   className="text-blue-600 font-bold text-sm hover:underline"

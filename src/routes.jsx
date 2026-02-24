@@ -1,24 +1,24 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
 
-import AuthLayout from "./layouts/auth.layout";
-import Signup from "./routes/auth/signup";
-import Login from "./routes/auth/login";
-import ForgotPassword from "./routes/auth/forgot-password";
-import ResetPassword from "./routes/auth/reset-password";
-import Dashboard from "./routes/dashboard";
-import ProtectedRoute from "./routes/protected-route";
-import AuthRoute from "./routes/auth-route";
-import DashboardLayout from "./layouts/dashboard.layout";
-import Campaigns from "./routes/dashboard/campaigns";
-import Analytics from "./routes/dashboard/analytics";
-import Templates from "./routes/dashboard/templates";
-import Settings from "./routes/dashboard/settings";
-import CreateCampaign from "./routes/dashboard/campaigns/create-campaign";
-import Audience from "./routes/dashboard/audience";
-import ViewCampaign from "./routes/dashboard/campaigns/view-campaign";
-import Subscription from "./routes/dashboard/subscription";
-import Mailboxes from "./routes/dashboard/mailboxes";
-import VerifyAccount from "./routes/auth/verify-account";
+import AuthLayout from './layouts/auth.layout';
+import Signup from './routes/auth/signup';
+import Login from './routes/auth/login';
+import ForgotPassword from './routes/auth/forgot-password';
+import ResetPassword from './routes/auth/reset-password';
+import Dashboard from './routes/dashboard';
+import ProtectedRoute from './routes/protected-route';
+import AuthRoute from './routes/auth-route';
+import DashboardLayout from './layouts/dashboard.layout';
+import Campaigns from './routes/dashboard/campaigns';
+import Analytics from './routes/dashboard/analytics';
+import Templates from './routes/dashboard/templates';
+import Settings from './routes/dashboard/settings';
+import CreateCampaign from './routes/dashboard/campaigns/create-campaign';
+import Audience from './routes/dashboard/audience';
+import ViewCampaign from './routes/dashboard/campaigns/view-campaign';
+import Subscription from './routes/dashboard/subscription';
+import Mailboxes from './routes/dashboard/mailboxes';
+import VerifyAccount from './routes/auth/verify-account';
 
 const AppRoutes = () => {
   return (

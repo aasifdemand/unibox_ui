@@ -1,6 +1,6 @@
-import React from "react";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import CustomTooltip from "./custom-tooltip";
+import React from 'react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import CustomTooltip from './custom-tooltip';
 
 const SenderDistribution = ({ data, COLORS }) => {
   const totalEmails = data.reduce((sum, s) => sum + (Number(s.sent) || Number(s.value) || 0), 0);
@@ -37,9 +37,9 @@ const SenderDistribution = ({ data, COLORS }) => {
                     <Cell
                       key={`cell-${index}`}
                       fill={
-                        entry.type === "gmail"
+                        entry.type === 'gmail'
                           ? COLORS.gmail
-                          : entry.type === "outlook"
+                          : entry.type === 'outlook'
                             ? COLORS.outlook
                             : COLORS.smtp
                       }
@@ -57,9 +57,7 @@ const SenderDistribution = ({ data, COLORS }) => {
                 Total
               </span>
               <span className="text-xl font-black text-slate-900 leading-none mt-1">
-                {totalEmails > 1000
-                  ? `${(totalEmails / 1000).toFixed(1)}k`
-                  : totalEmails}
+                {totalEmails > 1000 ? `${(totalEmails / 1000).toFixed(1)}k` : totalEmails}
               </span>
             </div>
           </div>
@@ -74,9 +72,9 @@ const SenderDistribution = ({ data, COLORS }) => {
                       className="w-2.5 h-2.5 rounded-full shadow-sm"
                       style={{
                         backgroundColor:
-                          item.type === "gmail"
+                          item.type === 'gmail'
                             ? COLORS.gmail
-                            : item.type === "outlook"
+                            : item.type === 'outlook'
                               ? COLORS.outlook
                               : COLORS.smtp,
                       }}
@@ -96,9 +94,9 @@ const SenderDistribution = ({ data, COLORS }) => {
                     style={{
                       width: `${item.percentage}%`,
                       backgroundColor:
-                        item.type === "gmail"
+                        item.type === 'gmail'
                           ? COLORS.gmail
-                          : item.type === "outlook"
+                          : item.type === 'outlook'
                             ? COLORS.outlook
                             : COLORS.smtp,
                     }}
@@ -106,9 +104,7 @@ const SenderDistribution = ({ data, COLORS }) => {
                 </div>
 
                 <div className="flex justify-between mt-1.5 px-0.5">
-                  <span className="text-[10px] font-bold text-slate-400">
-                    {item.count} Active
-                  </span>
+                  <span className="text-[10px] font-bold text-slate-400">{item.count} Active</span>
                   <span className="text-[10px] font-bold text-slate-500">
                     {(item.sent || 0).toLocaleString()} Sent
                   </span>

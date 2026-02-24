@@ -1,13 +1,13 @@
 // hooks/useSenders.js
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const senderKeys = {
-  all: ["senders"],
-  lists: () => [...senderKeys.all, "list"],
-  detail: (id) => [...senderKeys.all, "detail", id],
+  all: ['senders'],
+  lists: () => [...senderKeys.all, 'list'],
+  detail: (id) => [...senderKeys.all, 'detail', id],
 };
 
 // =========================
@@ -15,14 +15,14 @@ export const senderKeys = {
 // =========================
 const fetchSenders = async (params = {}) => {
   const queryParams = new URLSearchParams();
-  if (params.page) queryParams.append("page", params.page);
-  if (params.limit) queryParams.append("limit", params.limit);
+  if (params.page) queryParams.append('page', params.page);
+  if (params.limit) queryParams.append('limit', params.limit);
 
   const res = await fetch(`${API_URL}/senders?${queryParams.toString()}`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch senders");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch senders');
   return data;
 };
 
@@ -40,10 +40,10 @@ export const useSenders = (params = {}) => {
 // =========================
 const fetchSender = async (senderId) => {
   const res = await fetch(`${API_URL}/senders/${senderId}`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch sender");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch sender');
   return data.data;
 };
 
@@ -68,23 +68,22 @@ const createSmtpSender = async (senderData) => {
     smtpSecure: senderData.secure,
     smtpUser: senderData.username,
     smtpPassword: senderData.password,
-    imapHost: senderData.imapHost || senderData.host.replace("smtp", "imap"),
+    imapHost: senderData.imapHost || senderData.host.replace('smtp', 'imap'),
     imapPort: senderData.imapPort || 993,
-    imapSecure:
-      senderData.imapSecure !== undefined ? senderData.imapSecure : true,
+    imapSecure: senderData.imapSecure !== undefined ? senderData.imapSecure : true,
     imapUser: senderData.imapUser || senderData.username,
     imapPassword: senderData.imapPassword || senderData.password,
   };
 
   const res = await fetch(`${API_URL}/senders/create`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formattedData),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to create SMTP sender");
+  if (!res.ok) throw new Error(data.message || 'Failed to create SMTP sender');
   return data.data;
 };
 
@@ -100,7 +99,7 @@ export const useCreateSmtpSender = () => {
       });
       // Invalidate both senders and mailboxes to ensure fresh data
       queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 };
@@ -109,13 +108,13 @@ export const useCreateSmtpSender = () => {
 // DELETE SENDER
 // =========================
 const deleteSender = async ({ senderId, senderType }) => {
-  const url = `${API_URL}/senders/${senderId}${senderType ? `?type=${senderType}` : ""}`;
+  const url = `${API_URL}/senders/${senderId}${senderType ? `?type=${senderType}` : ''}`;
   const res = await fetch(url, {
-    method: "DELETE",
-    credentials: "include",
+    method: 'DELETE',
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete sender");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete sender');
   return { senderId, message: data.message };
 };
 
@@ -132,7 +131,7 @@ export const useDeleteSender = () => {
       // Remove detail query
       queryClient.removeQueries({ queryKey: senderKeys.detail(senderId) });
       // Invalidate mailboxes
-      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 };
@@ -142,13 +141,13 @@ export const useDeleteSender = () => {
 // =========================
 const updateSender = async ({ senderId, ...updateData }) => {
   const res = await fetch(`${API_URL}/senders/${senderId}`, {
-    method: "PUT",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updateData),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to update sender");
+  if (!res.ok) throw new Error(data.message || 'Failed to update sender');
   return data.data;
 };
 
@@ -167,7 +166,7 @@ export const useUpdateSender = () => {
       // Update detail query
       queryClient.setQueryData(senderKeys.detail(senderId), updatedSender);
       // Invalidate mailboxes
-      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 };
@@ -177,9 +176,9 @@ export const useUpdateSender = () => {
 // =========================
 const testSmtp = async (smtpConfig) => {
   const res = await fetch(`${API_URL}/senders/test-smtp`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       host: smtpConfig.host,
       port: smtpConfig.port,
@@ -189,7 +188,7 @@ const testSmtp = async (smtpConfig) => {
     }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "SMTP connection failed");
+  if (!res.ok) throw new Error(data.message || 'SMTP connection failed');
   return data;
 };
 
@@ -204,9 +203,9 @@ export const useTestSmtp = () => {
 // =========================
 const testImap = async (imapConfig) => {
   const res = await fetch(`${API_URL}/senders/test-imap`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       host: imapConfig.host,
       port: imapConfig.port,
@@ -216,7 +215,7 @@ const testImap = async (imapConfig) => {
     }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "IMAP connection failed");
+  if (!res.ok) throw new Error(data.message || 'IMAP connection failed');
   return data;
 };
 
@@ -231,11 +230,11 @@ export const useTestImap = () => {
 // =========================
 const testSender = async (senderId) => {
   const res = await fetch(`${API_URL}/senders/${senderId}/test`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to test sender");
+  if (!res.ok) throw new Error(data.message || 'Failed to test sender');
   return data;
 };
 
@@ -261,16 +260,16 @@ export const initiateOutlookOAuth = () => {
 // =========================
 const bulkUploadSenders = async (file) => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append('file', file);
 
   const res = await fetch(`${API_URL}/senders/bulk-upload`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     body: formData,
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Bulk upload failed");
+  if (!res.ok) throw new Error(data.message || 'Bulk upload failed');
   return data;
 };
 
@@ -281,7 +280,7 @@ export const useBulkUploadSenders = () => {
     mutationFn: bulkUploadSenders,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 };
@@ -291,14 +290,14 @@ export const useBulkUploadSenders = () => {
 // =========================
 const bulkDeleteSenders = async (senderIds) => {
   const res = await fetch(`${API_URL}/senders/bulk-delete`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ senderIds }),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Bulk delete failed");
+  if (!res.ok) throw new Error(data.message || 'Bulk delete failed');
   return data;
 };
 
@@ -309,7 +308,7 @@ export const useBulkDeleteSenders = () => {
     mutationFn: bulkDeleteSenders,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 };

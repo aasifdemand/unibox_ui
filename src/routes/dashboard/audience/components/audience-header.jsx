@@ -1,15 +1,5 @@
-import React from "react";
-import Button from "../../../../components/ui/button";
-import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle,
-  Plus,
-  RefreshCcw,
-  Upload,
-  Users,
-  XCircle,
-} from "lucide-react";
+import React from 'react';
+import { AlertTriangle, CheckCircle, Plus, RefreshCcw, Upload, Users, XCircle } from 'lucide-react';
 
 const AudienceHeader = ({
   activeTab,
@@ -39,7 +29,7 @@ const AudienceHeader = ({
         </div>
 
         <div className="flex items-center gap-3">
-          {activeTab === "contacts" ? (
+          {activeTab === 'contacts' ? (
             <>
               <button
                 onClick={() => window.location.reload()}
@@ -85,9 +75,7 @@ const AudienceHeader = ({
             <span className="text-3xl font-extrabold tracking-tight tabular-nums">
               {totalContacts.toLocaleString()}
             </span>
-            <span className="text-[10px] font-extrabold text-white/60 mb-1.5">
-              RECIPIENTS
-            </span>
+            <span className="text-[10px] font-extrabold text-white/60 mb-1.5">RECIPIENTS</span>
           </div>
           <div className="mt-6 w-full h-1 bg-white/10 rounded-full overflow-hidden">
             <div className="h-full bg-white/40 w-full"></div>

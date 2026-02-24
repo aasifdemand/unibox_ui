@@ -1,5 +1,5 @@
-import React from "react";
-import { FileText, Plus } from "lucide-react";
+import React from 'react';
+import { FileText, Plus } from 'lucide-react';
 
 const Header = ({ onCreateNew, isPending }) => {
   return (

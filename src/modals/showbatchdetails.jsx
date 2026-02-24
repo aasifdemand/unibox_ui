@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useCallback } from "react";
-import { motion } from "motion/react";
+import React, { useState, useMemo, useCallback } from 'react';
+import { motion } from 'motion/react';
 import {
   FileSpreadsheet,
   CheckCircle,
@@ -7,7 +7,6 @@ import {
   XCircle,
   ChevronLeft,
   ChevronRight,
-  Loader2,
   Mail,
   Search,
   Download,
@@ -15,31 +14,20 @@ import {
   Shield,
   Zap,
   Filter,
-} from "lucide-react";
-import Button from "../components/ui/button";
-import {
-  formatDate,
-  getPaginatedData,
-} from "../routes/dashboard/audience/audience-service";
-import Modal from "../components/shared/modal";
-import { useExportVerificationResults } from "../hooks/useBatches";
+} from 'lucide-react';
+import Button from '../components/ui/button';
+import { formatDate, getPaginatedData } from '../routes/dashboard/audience/audience-service';
+import Modal from '../components/shared/modal';
+import { useExportVerificationResults } from '../hooks/useBatches';
 
-const ShowBatchDetails = ({
-  selectedBatch,
-  closeBatchModal,
-  batchStatus,
-  isLoading,
-}) => {
+const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [verificationFilter, setVerificationFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [verificationFilter, setVerificationFilter] = useState('all');
 
   // Get all records from batchStatus
-  const allRecords = useMemo(
-    () => batchStatus?.allRecords || [],
-    [batchStatus],
-  );
+  const allRecords = useMemo(() => batchStatus?.allRecords || [], [batchStatus]);
 
   // Filter records based on search and filter
   const filteredRecords = useMemo(() => {
@@ -52,24 +40,18 @@ const ShowBatchDetails = ({
 
       // Status filter
       const matchesStatus =
-        verificationFilter === "all" ||
-        record.verificationStatus === verificationFilter;
+        verificationFilter === 'all' || record.verificationStatus === verificationFilter;
 
       return matchesSearch && matchesStatus;
     });
   }, [allRecords, searchTerm, verificationFilter]);
 
   // Pagination
-  const {
-    totalPages,
-    totalRecords,
-    indexOfFirstRecord,
-    indexOfLastRecord,
-    currentRecords,
-  } = useMemo(
-    () => getPaginatedData(filteredRecords, currentPage, recordsPerPage),
-    [filteredRecords, currentPage, recordsPerPage],
-  );
+  const { totalPages, totalRecords, indexOfFirstRecord, indexOfLastRecord, currentRecords } =
+    useMemo(
+      () => getPaginatedData(filteredRecords, currentPage, recordsPerPage),
+      [filteredRecords, currentPage, recordsPerPage],
+    );
 
   // Handle page change
   const handlePageChange = useCallback((newPage) => {
@@ -90,11 +72,11 @@ const ShowBatchDetails = ({
 
   const getVerificationIcon = useCallback((status) => {
     switch (status) {
-      case "valid":
+      case 'valid':
         return <CheckCircle className="w-4 h-4 text-emerald-500" />;
-      case "invalid":
+      case 'invalid':
         return <XCircle className="w-4 h-4 text-rose-500" />;
-      case "risky":
+      case 'risky':
         return <AlertCircle className="w-4 h-4 text-amber-500" />;
       default:
         return <AlertCircle className="w-4 h-4 text-slate-400" />;
@@ -103,14 +85,14 @@ const ShowBatchDetails = ({
 
   const getVerificationBadgeClass = useCallback((status) => {
     switch (status) {
-      case "valid":
-        return "bg-emerald-50 text-emerald-600 border border-emerald-100";
-      case "invalid":
-        return "bg-rose-50 text-rose-600 border border-rose-100";
-      case "risky":
-        return "bg-amber-50 text-amber-600 border border-amber-100";
+      case 'valid':
+        return 'bg-emerald-50 text-emerald-600 border border-emerald-100';
+      case 'invalid':
+        return 'bg-rose-50 text-rose-600 border border-rose-100';
+      case 'risky':
+        return 'bg-amber-50 text-amber-600 border border-amber-100';
       default:
-        return "bg-slate-50 text-slate-500 border border-slate-100";
+        return 'bg-slate-50 text-slate-500 border border-slate-100';
     }
   }, []);
 
@@ -118,7 +100,7 @@ const ShowBatchDetails = ({
 
   const handleExport = useCallback(() => {
     if (!selectedBatch?.id) return;
-    exportVerification.mutate({ batchId: selectedBatch.id, format: "csv" });
+    exportVerification.mutate({ batchId: selectedBatch.id, format: 'csv' });
   }, [exportVerification, selectedBatch]);
 
   return (
@@ -173,9 +155,7 @@ const ShowBatchDetails = ({
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 flex items-center gap-2">
                     <span>Batch ID: {selectedBatch?.id}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                    <span>
-                      Uploaded: {formatDate(selectedBatch?.createdAt)}
-                    </span>
+                    <span>Uploaded: {formatDate(selectedBatch?.createdAt)}</span>
                   </p>
                 </div>
               </div>
@@ -184,36 +164,36 @@ const ShowBatchDetails = ({
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                 {[
                   {
-                    label: "Total",
+                    label: 'Total',
                     value: batchStatus?.batch?.totalRecords || 0,
                     icon: FileSpreadsheet,
-                    color: "indigo",
+                    color: 'indigo',
                   },
                   {
-                    label: "Valid",
+                    label: 'Valid',
                     value: batchStatus?.verification?.valid || 0,
                     icon: CheckCircle,
-                    color: "emerald",
+                    color: 'emerald',
                   },
                   {
-                    label: "Risky",
+                    label: 'Risky',
                     value: batchStatus?.verification?.risky || 0,
                     icon: AlertCircle,
-                    color: "amber",
+                    color: 'amber',
                   },
                   {
-                    label: "Invalid",
+                    label: 'Invalid',
                     value: batchStatus?.verification?.invalid || 0,
                     icon: XCircle,
-                    color: "rose",
+                    color: 'rose',
                   },
                   {
-                    label: "Success Rate",
+                    label: 'Success Rate',
                     value: batchStatus?.batch?.totalRecords
                       ? `${(((batchStatus?.verification?.valid || 0) / batchStatus.batch.totalRecords) * 100).toFixed(1)}%`
-                      : "0%",
+                      : '0%',
                     icon: Zap,
-                    color: "indigo",
+                    color: 'indigo',
                   },
                 ].map((stat, index) => (
                   <motion.div
@@ -224,16 +204,16 @@ const ShowBatchDetails = ({
                     className={`bg-slate-50 rounded-2xl p-4 border border-slate-100 group hover:border-${stat.color}-200 hover:shadow-lg transition-all`}
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <div className={`w-8 h-8 rounded-xl bg-${stat.color}-50 flex items-center justify-center`}>
+                      <div
+                        className={`w-8 h-8 rounded-xl bg-${stat.color}-50 flex items-center justify-center`}
+                      >
                         <stat.icon className={`w-4 h-4 text-${stat.color}-600`} />
                       </div>
                       <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
                         {stat.label}
                       </span>
                     </div>
-                    <p className="text-2xl font-extrabold text-slate-800">
-                      {stat.value}
-                    </p>
+                    <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
                   </motion.div>
                 ))}
               </div>
@@ -323,12 +303,12 @@ const ShowBatchDetails = ({
                               <Mail className="w-4 h-4 text-slate-500 group-hover:text-indigo-600" />
                             </div>
                             <span className="text-sm font-bold text-slate-700 group-hover:text-slate-800">
-                              {record.email || "—"}
+                              {record.email || '—'}
                             </span>
                           </div>
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-slate-600">
-                          {record.name || "—"}
+                          {record.name || '—'}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
@@ -338,20 +318,18 @@ const ShowBatchDetails = ({
                                 record.verificationStatus,
                               )}`}
                             >
-                              {record.verificationStatus || "unverified"}
+                              {record.verificationStatus || 'unverified'}
                             </span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm font-bold text-slate-600">
-                            {record.verificationReason?.raw?.score || "—"}
+                            {record.verificationReason?.raw?.score || '—'}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm font-bold text-slate-600">
-                            {record.verifiedAt
-                              ? formatDate(record.verifiedAt)
-                              : "Never"}
+                            {record.verifiedAt ? formatDate(record.verifiedAt) : 'Never'}
                           </span>
                         </td>
                         <td className="px-6 py-4">
@@ -368,9 +346,7 @@ const ShowBatchDetails = ({
                             <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">
                               <FileSpreadsheet className="w-8 h-8 text-slate-300" />
                             </div>
-                            <p className="text-sm font-bold text-slate-400">
-                              No records found
-                            </p>
+                            <p className="text-sm font-bold text-slate-400">No records found</p>
                             <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-1">
                               Try adjusting your filters
                             </p>
@@ -387,8 +363,7 @@ const ShowBatchDetails = ({
             {totalPages > 1 && (
               <div className="flex items-center justify-between pt-8 mt-6 border-t-2 border-slate-100">
                 <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Showing {indexOfFirstRecord + 1} to {indexOfLastRecord} of{" "}
-                  {totalRecords} records
+                  Showing {indexOfFirstRecord + 1} to {indexOfLastRecord} of {totalRecords} records
                 </div>
                 <div className="flex items-center gap-3">
                   <button

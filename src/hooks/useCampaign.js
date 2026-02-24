@@ -1,20 +1,20 @@
 // hooks/useCampaigns.js
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryClient } from "../lib/query-client";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryClient } from '../lib/query-client';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const campaignKeys = {
-  all: ["campaigns"],
-  lists: () => [...campaignKeys.all, "list"],
+  all: ['campaigns'],
+  lists: () => [...campaignKeys.all, 'list'],
   list: (filters) => [...campaignKeys.lists(), { filters }],
-  details: () => [...campaignKeys.all, "detail"],
+  details: () => [...campaignKeys.all, 'detail'],
   detail: (id) => [...campaignKeys.details(), id],
-  replies: (id) => [...campaignKeys.detail(id), "replies"],
+  replies: (id) => [...campaignKeys.detail(id), 'replies'],
   recipientReplies: (campaignId, recipientId) => [
     ...campaignKeys.all,
-    "replies",
+    'replies',
     { campaignId, recipientId },
   ],
 };
@@ -24,10 +24,10 @@ export const campaignKeys = {
 // =========================
 const fetchCampaigns = async () => {
   const res = await fetch(`${API_URL}/campaigns`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch campaigns");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch campaigns');
   return data.data || [];
 };
 
@@ -45,10 +45,10 @@ export const useCampaigns = () => {
 // =========================
 const fetchCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch campaign');
   return data.data;
 };
 
@@ -66,10 +66,10 @@ export const useCampaign = (campaignId) => {
 // =========================
 const fetchCampaignReplies = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/replies`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch replies");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch replies');
   return data.data || [];
 };
 
@@ -82,10 +82,8 @@ export const useCampaignReplies = (campaignId) => {
     refetchInterval: () => {
       // Refetch if there are pending replies or campaign is running
 
-      const campaign = queryClient.getQueryData(
-        campaignKeys.detail(campaignId),
-      );
-      if (campaign?.status === "running" || campaign?.status === "sending") {
+      const campaign = queryClient.getQueryData(campaignKeys.detail(campaignId));
+      if (campaign?.status === 'running' || campaign?.status === 'sending') {
         return 10000; // 10 seconds
       }
       return false;
@@ -97,15 +95,11 @@ export const useCampaignReplies = (campaignId) => {
 // FETCH RECIPIENT REPLY
 // =========================
 const fetchRecipientReply = async ({ campaignId, recipientId }) => {
-  const res = await fetch(
-    `${API_URL}/campaigns/${campaignId}/replies?recipientId=${recipientId}`,
-    {
-      credentials: "include",
-    },
-  );
+  const res = await fetch(`${API_URL}/campaigns/${campaignId}/replies?recipientId=${recipientId}`, {
+    credentials: 'include',
+  });
   const data = await res.json();
-  if (!res.ok)
-    throw new Error(data.message || "Failed to fetch recipient reply");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch recipient reply');
   return data.data;
 };
 
@@ -123,15 +117,15 @@ export const useRecipientReply = (campaignId, recipientId) => {
 // =========================
 const createCampaign = async (campaignData) => {
   const res = await fetch(`${API_URL}/campaigns/create`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(campaignData),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to create campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to create campaign');
   return data.data;
 };
 
@@ -146,10 +140,7 @@ export const useCreateCampaign = () => {
         return [newCampaign, ...old];
       });
       // Set as current campaign
-      queryClient.setQueryData(
-        campaignKeys.detail(newCampaign.id),
-        newCampaign,
-      );
+      queryClient.setQueryData(campaignKeys.detail(newCampaign.id), newCampaign);
     },
   });
 };
@@ -159,15 +150,15 @@ export const useCreateCampaign = () => {
 // =========================
 const updateCampaign = async ({ campaignId, ...updateData }) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}`, {
-    method: "PUT",
-    credentials: "include",
+    method: 'PUT',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(updateData),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to update campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to update campaign');
   return data.data;
 };
 
@@ -180,16 +171,11 @@ export const useUpdateCampaign = () => {
       // Update in lists
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaign.id === campaignId
-            ? { ...campaign, ...updatedCampaign }
-            : campaign,
+          campaign.id === campaignId ? { ...campaign, ...updatedCampaign } : campaign,
         );
       });
       // Update detail query
-      queryClient.setQueryData(
-        campaignKeys.detail(campaignId),
-        updatedCampaign,
-      );
+      queryClient.setQueryData(campaignKeys.detail(campaignId), updatedCampaign);
     },
   });
 };
@@ -199,11 +185,11 @@ export const useUpdateCampaign = () => {
 // =========================
 const deleteCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}`, {
-    method: "DELETE",
-    credentials: "include",
+    method: 'DELETE',
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete campaign');
   return { campaignId, message: data.message };
 };
 
@@ -230,14 +216,14 @@ export const useDeleteCampaign = () => {
 // =========================
 const activateCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/activate`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to activate campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to activate campaign');
   return data.data;
 };
 
@@ -253,7 +239,7 @@ export const useActivateCampaign = () => {
           campaign.id === campaignId
             ? {
                 ...campaign,
-                status: "scheduled",
+                status: 'scheduled',
                 scheduledAt: data.scheduledAt,
                 totalRecipients: data.recipientsCount,
                 pendingRecipients: data.recipientsCount,
@@ -264,7 +250,7 @@ export const useActivateCampaign = () => {
       // Update detail query
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
-        status: "scheduled",
+        status: 'scheduled',
         scheduledAt: data.scheduledAt,
         totalRecipients: data.recipientsCount,
         pendingRecipients: data.recipientsCount,
@@ -278,14 +264,14 @@ export const useActivateCampaign = () => {
 // =========================
 const pauseCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/pause`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to pause campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to pause campaign');
   return data;
 };
 
@@ -295,35 +281,33 @@ export const usePauseCampaign = () => {
   return useMutation({
     mutationFn: pauseCampaign,
     onSuccess: (data, campaignId) => {
-      console.log("✅ Campaign paused successfully, invalidating cache");
+      console.log('✅ Campaign paused successfully, invalidating cache');
 
       // Force refetch of all campaign queries
       queryClient.invalidateQueries({
         queryKey: campaignKeys.lists(),
-        refetchType: "active",
+        refetchType: 'active',
       });
 
       queryClient.invalidateQueries({
         queryKey: campaignKeys.detail(campaignId),
-        refetchType: "active",
+        refetchType: 'active',
       });
 
       // Also directly update the cache for immediate UI feedback
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaign.id === campaignId
-            ? { ...campaign, status: "paused" }
-            : campaign,
+          campaign.id === campaignId ? { ...campaign, status: 'paused' } : campaign,
         );
       });
 
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
-        status: "paused",
+        status: 'paused',
       }));
     },
     onError: (error) => {
-      console.error("❌ Failed to pause campaign:", error);
+      console.error('❌ Failed to pause campaign:', error);
     },
   });
 };
@@ -333,14 +317,14 @@ export const usePauseCampaign = () => {
 // =========================
 const resumeCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/resume`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to resume campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to resume campaign');
   return data;
 };
 
@@ -353,14 +337,12 @@ export const useResumeCampaign = () => {
       // Update campaign status
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaign.id === campaignId
-            ? { ...campaign, status: "running" }
-            : campaign,
+          campaign.id === campaignId ? { ...campaign, status: 'running' } : campaign,
         );
       });
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
-        status: "running",
+        status: 'running',
       }));
     },
   });
@@ -371,14 +353,14 @@ export const useResumeCampaign = () => {
 // =========================
 const duplicateCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/duplicate`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to duplicate campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to duplicate campaign');
   return data.data;
 };
 
@@ -401,26 +383,23 @@ export const useDuplicateCampaign = () => {
 // =========================
 const fetchCampaignStats = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/stats`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok)
-    throw new Error(data.message || "Failed to fetch campaign stats");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch campaign stats');
   return data.data;
 };
 
 export const useCampaignStats = (campaignId) => {
   return useQuery({
-    queryKey: [...campaignKeys.detail(campaignId), "stats"],
+    queryKey: [...campaignKeys.detail(campaignId), 'stats'],
     queryFn: () => fetchCampaignStats(campaignId),
     enabled: !!campaignId,
     staleTime: 30 * 1000, // 30 seconds
     refetchInterval: () => {
       // Refetch if campaign is running
-      const campaign = queryClient.getQueryData(
-        campaignKeys.detail(campaignId),
-      );
-      if (campaign?.status === "running" || campaign?.status === "sending") {
+      const campaign = queryClient.getQueryData(campaignKeys.detail(campaignId));
+      if (campaign?.status === 'running' || campaign?.status === 'sending') {
         return 10000; // 10 seconds
       }
       return false;
@@ -433,15 +412,15 @@ export const useCampaignStats = (campaignId) => {
 // =========================
 const bulkDeleteCampaigns = async (campaignIds) => {
   const res = await fetch(`${API_URL}/campaigns/bulk/delete`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ campaignIds }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete campaigns");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete campaigns');
   return { campaignIds, message: data.message };
 };
 
@@ -466,15 +445,15 @@ export const useBulkDeleteCampaigns = () => {
 
 const bulkPauseCampaigns = async (campaignIds) => {
   const res = await fetch(`${API_URL}/campaigns/bulk/pause`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ campaignIds }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to pause campaigns");
+  if (!res.ok) throw new Error(data.message || 'Failed to pause campaigns');
   return { campaignIds, message: data.message };
 };
 
@@ -487,16 +466,14 @@ export const useBulkPauseCampaigns = () => {
       // Update status in lists
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaignIds.includes(campaign.id)
-            ? { ...campaign, status: "paused" }
-            : campaign,
+          campaignIds.includes(campaign.id) ? { ...campaign, status: 'paused' } : campaign,
         );
       });
       // Update individual detail queries
       campaignIds.forEach((id) => {
         queryClient.setQueryData(campaignKeys.detail(id), (old) => ({
           ...old,
-          status: "paused",
+          status: 'paused',
         }));
       });
     },
@@ -505,15 +482,15 @@ export const useBulkPauseCampaigns = () => {
 
 const bulkResumeCampaigns = async (campaignIds) => {
   const res = await fetch(`${API_URL}/campaigns/bulk/resume`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ campaignIds }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to resume campaigns");
+  if (!res.ok) throw new Error(data.message || 'Failed to resume campaigns');
   return { campaignIds, message: data.message };
 };
 
@@ -526,16 +503,14 @@ export const useBulkResumeCampaigns = () => {
       // Update status in lists
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaignIds.includes(campaign.id)
-            ? { ...campaign, status: "running" }
-            : campaign,
+          campaignIds.includes(campaign.id) ? { ...campaign, status: 'running' } : campaign,
         );
       });
       // Update individual detail queries
       campaignIds.forEach((id) => {
         queryClient.setQueryData(campaignKeys.detail(id), (old) => ({
           ...old,
-          status: "running",
+          status: 'running',
         }));
       });
     },
@@ -547,14 +522,14 @@ export const useBulkResumeCampaigns = () => {
 // =========================
 const archiveCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/archive`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to archive campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to archive campaign');
   return data;
 };
 
@@ -567,14 +542,12 @@ export const useArchiveCampaign = () => {
       // Update status
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaign.id === campaignId
-            ? { ...campaign, status: "archived" }
-            : campaign,
+          campaign.id === campaignId ? { ...campaign, status: 'archived' } : campaign,
         );
       });
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
-        status: "archived",
+        status: 'archived',
       }));
     },
   });
@@ -582,14 +555,14 @@ export const useArchiveCampaign = () => {
 
 const unarchiveCampaign = async (campaignId) => {
   const res = await fetch(`${API_URL}/campaigns/${campaignId}/unarchive`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to unarchive campaign");
+  if (!res.ok) throw new Error(data.message || 'Failed to unarchive campaign');
   return data;
 };
 
@@ -602,14 +575,12 @@ export const useUnarchiveCampaign = () => {
       // Update status
       queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
         return old.map((campaign) =>
-          campaign.id === campaignId
-            ? { ...campaign, status: "draft" }
-            : campaign,
+          campaign.id === campaignId ? { ...campaign, status: 'draft' } : campaign,
         );
       });
       queryClient.setQueryData(campaignKeys.detail(campaignId), (old) => ({
         ...old,
-        status: "draft",
+        status: 'draft',
       }));
     },
   });

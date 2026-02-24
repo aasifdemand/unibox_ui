@@ -1,22 +1,7 @@
-import React from "react";
-import {
-  Activity,
-  Target,
-  ExternalLink,
-  Zap,
-  ShieldCheck,
-  Database,
-  Clock,
-  Settings2,
-} from "lucide-react";
+import React from 'react';
+import { Activity, Target, ExternalLink, ShieldCheck, Database, Settings2 } from 'lucide-react';
 
-const OverviewTab = ({
-  campaign,
-  stats,
-  previews,
-  placeholders,
-  formatDate,
-}) => {
+const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
       {/* Left Column: Progress & Details */}
@@ -88,38 +73,19 @@ const OverviewTab = ({
                 label="Subject Line"
                 value={previews.subject}
                 subValue={
-                  placeholders.length > 0
-                    ? `Variables used: ${placeholders.join(", ")}`
-                    : null
+                  placeholders.length > 0 ? `Variables used: ${placeholders.join(', ')}` : null
                 }
               />
-              <DetailItem
-                label="Preview Text"
-                value={previews.previewText || "Not set"}
-              />
-              <DetailItem
-                label="Sender Type"
-                value={campaign.senderType || "Standard"}
-                uppercase
-              />
+              <DetailItem label="Preview Text" value={previews.previewText || 'Not set'} />
+              <DetailItem label="Sender Type" value={campaign.senderType || 'Standard'} uppercase />
             </div>
             <div className="space-y-6">
-              <DetailItem
-                label="Created Date"
-                value={formatDate(campaign.createdAt)}
-              />
+              <DetailItem label="Created Date" value={formatDate(campaign.createdAt)} />
               <DetailItem
                 label="Scheduled For"
-                value={
-                  campaign.scheduledAt
-                    ? formatDate(campaign.scheduledAt)
-                    : "Immediate"
-                }
+                value={campaign.scheduledAt ? formatDate(campaign.scheduledAt) : 'Immediate'}
               />
-              <DetailItem
-                label="Last Updated"
-                value={formatDate(campaign.updatedAt)}
-              />
+              <DetailItem label="Last Updated" value={formatDate(campaign.updatedAt)} />
               <DetailItem
                 label="Sending Rate"
                 value={`${campaign.throttlePerMinute || 10} emails / min`}
@@ -185,7 +151,7 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
       {label}
     </p>
     <p
-      className={`text-sm font-bold text-slate-800 tracking-tight ${uppercase ? "uppercase" : ""}`}
+      className={`text-sm font-bold text-slate-800 tracking-tight ${uppercase ? 'uppercase' : ''}`}
     >
       {value}
     </p>
@@ -200,7 +166,7 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
 const SettingItem = ({ icon, label, status, desc }) => (
   <div className="flex items-start gap-4 group">
     <div
-      className={`p-3 rounded-xl transition-all duration-300 ${status ? "bg-emerald-50 text-emerald-600 scale-110 shadow-lg shadow-emerald-100" : "bg-slate-50 text-slate-400 opacity-50"}`}
+      className={`p-3 rounded-xl transition-all duration-300 ${status ? 'bg-emerald-50 text-emerald-600 scale-110 shadow-lg shadow-emerald-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
     >
       {icon}
     </div>
@@ -210,9 +176,9 @@ const SettingItem = ({ icon, label, status, desc }) => (
           {label}
         </p>
         <span
-          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-400"}`}
+          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}
         >
-          {status ? "Active" : "Disabled"}
+          {status ? 'Active' : 'Disabled'}
         </span>
       </div>
       <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 transition-colors">

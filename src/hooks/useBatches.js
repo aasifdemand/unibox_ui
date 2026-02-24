@@ -1,17 +1,17 @@
 // hooks/useBatches.js
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const batchKeys = {
-  all: ["batches"],
-  lists: () => [...batchKeys.all, "list"],
+  all: ['batches'],
+  lists: () => [...batchKeys.all, 'list'],
   list: (filters) => [...batchKeys.lists(), { filters }],
-  details: () => [...batchKeys.all, "detail"],
+  details: () => [...batchKeys.all, 'detail'],
   detail: (id) => [...batchKeys.details(), id],
-  status: (id) => [...batchKeys.all, "status", id],
-  results: (id) => [...batchKeys.all, "results", id],
+  status: (id) => [...batchKeys.all, 'status', id],
+  results: (id) => [...batchKeys.all, 'results', id],
 };
 
 // =========================
@@ -19,10 +19,10 @@ export const batchKeys = {
 // =========================
 const fetchBatches = async () => {
   const res = await fetch(`${API_URL}/lists/batches`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch batches");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch batches');
   return data.data || [];
 };
 
@@ -40,10 +40,10 @@ export const useBatches = () => {
 // =========================
 const fetchBatchStatus = async (batchId) => {
   const res = await fetch(`${API_URL}/lists/batch/${batchId}/status`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch batch status");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch batch status');
   return data.data;
 };
 
@@ -76,9 +76,7 @@ export const useVerificationResults = (batchId, filters = {}) => {
 
   // Filter by verification status
   if (filters.status) {
-    filtered = filtered.filter(
-      (record) => record.verificationStatus === filters.status,
-    );
+    filtered = filtered.filter((record) => record.verificationStatus === filters.status);
   }
 
   // Filter by email search
@@ -93,16 +91,13 @@ export const useVerificationResults = (batchId, filters = {}) => {
 
   // Filter by risk level
   if (filters.riskLevel) {
-    filtered = filtered.filter(
-      (record) => record.verificationMeta?.risk === filters.riskLevel,
-    );
+    filtered = filtered.filter((record) => record.verificationMeta?.risk === filters.riskLevel);
   }
 
   // Filter by deliverability
   if (filters.deliverability) {
     filtered = filtered.filter(
-      (record) =>
-        record.verificationMeta?.deliverability === filters.deliverability,
+      (record) => record.verificationMeta?.deliverability === filters.deliverability,
     );
   }
 
@@ -139,13 +134,11 @@ export const useVerificationDistribution = (batchId) => {
 
   if (!batchStatus?.verificationBreakdown) return [];
 
-  return Object.entries(batchStatus.verificationBreakdown).map(
-    ([status, count]) => ({
-      status,
-      count,
-      percentage: ((count / batchStatus.batch.totalRecords) * 100).toFixed(1),
-    }),
-  );
+  return Object.entries(batchStatus.verificationBreakdown).map(([status, count]) => ({
+    status,
+    count,
+    percentage: ((count / batchStatus.batch.totalRecords) * 100).toFixed(1),
+  }));
 };
 
 // =========================
@@ -158,10 +151,10 @@ export const useHighRiskEmails = (batchId) => {
 
   return batchStatus.allRecords.filter(
     (record) =>
-      record.verificationStatus === "invalid" ||
-      record.verificationStatus === "risky" ||
-      record.verificationMeta?.risk === "high" ||
-      record.verificationMeta?.deliverability === "low",
+      record.verificationStatus === 'invalid' ||
+      record.verificationStatus === 'risky' ||
+      record.verificationMeta?.risk === 'high' ||
+      record.verificationMeta?.deliverability === 'low',
   );
 };
 
@@ -175,12 +168,12 @@ export const useValidEmailsForSending = (batchId) => {
 
   return batchStatus.allRecords.filter(
     (record) =>
-      record.verificationStatus === "valid" &&
-      record.verificationStatus !== "risky" &&
-      record.verificationStatus !== "invalid" &&
+      record.verificationStatus === 'valid' &&
+      record.verificationStatus !== 'risky' &&
+      record.verificationStatus !== 'invalid' &&
       (!record.verificationMeta ||
-        (record.verificationMeta?.risk !== "high" &&
-          record.verificationMeta?.deliverability !== "low")),
+        (record.verificationMeta?.risk !== 'high' &&
+          record.verificationMeta?.deliverability !== 'low')),
   );
 };
 
@@ -207,12 +200,12 @@ export const useVerificationTotals = () => {
 // =========================
 const uploadBatch = async (formData) => {
   const res = await fetch(`${API_URL}/lists/upload`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     body: formData,
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Upload failed");
+  if (!res.ok) throw new Error(data.message || 'Upload failed');
   return data;
 };
 
@@ -232,11 +225,11 @@ export const useUploadBatch = () => {
 // =========================
 const deleteBatch = async (batchId) => {
   const res = await fetch(`${API_URL}/lists/batch/${batchId}`, {
-    method: "DELETE",
-    credentials: "include",
+    method: 'DELETE',
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete batch");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete batch');
   return data;
 };
 
@@ -258,11 +251,11 @@ export const useDeleteBatch = () => {
 // =========================
 const retryBatch = async (batchId) => {
   const res = await fetch(`${API_URL}/lists/batch/${batchId}/retry`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to retry batch");
+  if (!res.ok) throw new Error(data.message || 'Failed to retry batch');
   return data;
 };
 
@@ -281,18 +274,15 @@ export const useRetryBatch = () => {
 // =========================
 // EXPORT BATCH
 // =========================
-const exportBatch = async ({ batchId, format = "csv" }) => {
-  const res = await fetch(
-    `${API_URL}/lists/batch/${batchId}/export?format=${format}`,
-    {
-      method: "GET",
-      credentials: "include",
-    },
-  );
+const exportBatch = async ({ batchId, format = 'csv' }) => {
+  const res = await fetch(`${API_URL}/lists/batch/${batchId}/export?format=${format}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
-    throw new Error(error.message || "Failed to export batch");
+    throw new Error(error.message || 'Failed to export batch');
   }
 
   return { blob: await res.blob(), batchId, format };
@@ -304,7 +294,7 @@ export const useExportBatch = () => {
     onSuccess: ({ blob, batchId, format }) => {
       // Trigger download
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = `batch-${batchId}.${format}`;
       document.body.appendChild(a);
@@ -326,49 +316,42 @@ export const clearBatchDetails = (queryClient) => {
 // EXPORT VERIFICATION RESULTS (client-side)
 // =========================
 const convertToCSV = (data) => {
-  if (!data.length) return "";
+  if (!data.length) return '';
 
-  const headers = Object.keys(data[0]).join(",");
+  const headers = Object.keys(data[0]).join(',');
   const rows = data.map((item) =>
     Object.values(item)
-      .map((value) =>
-        typeof value === "string" ? `"${value.replace(/"/g, '""')}"` : value,
-      )
-      .join(","),
+      .map((value) => (typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value))
+      .join(','),
   );
 
-  return [headers, ...rows].join("\n");
+  return [headers, ...rows].join('\n');
 };
 
 export const useExportVerificationResults = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ batchId, format = "csv" }) => {
+    mutationFn: async ({ batchId, format = 'csv' }) => {
       // Get batch status from cache or fetch it
       const batchStatus = queryClient.getQueryData(batchKeys.status(batchId));
 
       if (!batchStatus?.allRecords) {
-        throw new Error("No verification results found");
+        throw new Error('No verification results found');
       }
 
       const results = batchStatus.allRecords;
 
       // Format results for export
       const exportData = results.map((record) => ({
-        Email: record.email || "",
-        Name: record.name || "",
-        Status: record.status || "",
-        VerificationStatus: record.verificationStatus || "unverified",
-        VerifiedAt: record.verifiedAt
-          ? new Date(record.verifiedAt).toLocaleString()
-          : "",
-        FailureReason: record.failureReason || "",
-        CreatedAt: record.createdAt
-          ? new Date(record.createdAt).toLocaleString()
-          : "",
-        ...(record.verificationMeta &&
-        typeof record.verificationMeta === "object"
+        Email: record.email || '',
+        Name: record.name || '',
+        Status: record.status || '',
+        VerificationStatus: record.verificationStatus || 'unverified',
+        VerifiedAt: record.verifiedAt ? new Date(record.verifiedAt).toLocaleString() : '',
+        FailureReason: record.failureReason || '',
+        CreatedAt: record.createdAt ? new Date(record.createdAt).toLocaleString() : '',
+        ...(record.verificationMeta && typeof record.verificationMeta === 'object'
           ? Object.keys(record.verificationMeta).reduce((acc, key) => {
               acc[`Verification_${key}`] = record.verificationMeta[key];
               return acc;
@@ -379,18 +362,18 @@ export const useExportVerificationResults = () => {
       let content, fileName, mimeType;
 
       switch (format.toLowerCase()) {
-        case "csv":
+        case 'csv':
           content = convertToCSV(exportData);
           fileName = `verification-results-${batchId}.csv`;
-          mimeType = "text/csv";
+          mimeType = 'text/csv';
           break;
-        case "json":
+        case 'json':
           content = JSON.stringify(exportData, null, 2);
           fileName = `verification-results-${batchId}.json`;
-          mimeType = "application/json";
+          mimeType = 'application/json';
           break;
         default:
-          throw new Error("Unsupported export format");
+          throw new Error('Unsupported export format');
       }
 
       return { content, fileName, mimeType };
@@ -399,7 +382,7 @@ export const useExportVerificationResults = () => {
       // Trigger download
       const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = fileName;
       document.body.appendChild(a);

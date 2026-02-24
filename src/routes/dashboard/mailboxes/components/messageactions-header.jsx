@@ -1,15 +1,4 @@
-import {
-  BarChart3,
-  EyeOff,
-  Grid,
-  List,
-  MailCheck,
-  MailQuestion,
-  RefreshCw,
-  Send,
-  Trash2,
-  XCircle,
-} from "lucide-react";
+import { EyeOff, MailCheck, MailQuestion, RefreshCw, Send, Trash2, XCircle } from 'lucide-react';
 
 const MessageActionsHeader = ({
   selectedMessages,
@@ -30,9 +19,7 @@ const MessageActionsHeader = ({
       {selectedMessages?.length > 0 ? (
         <div className="flex items-center gap-1.5 bg-blue-600 px-3 py-2 rounded-2xl shadow-lg shadow-blue-500/20 animate-in zoom-in duration-300">
           <div className="flex items-center justify-center bg-white/20 px-2.5 py-1 rounded-xl">
-            <span className="text-xs font-black text-white">
-              {selectedMessages.length}
-            </span>
+            <span className="text-xs font-black text-white">{selectedMessages.length}</span>
           </div>
           <div className="w-px h-4 bg-white/20 mx-1"></div>
           <button
@@ -74,23 +61,19 @@ const MessageActionsHeader = ({
           onClick={onSync}
           disabled={isSyncing}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-            isSyncing
-              ? "bg-white text-blue-600 shadow-sm"
-              : "text-slate-500 hover:text-slate-900"
+            isSyncing ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
           }`}
         >
-          <RefreshCw
-            className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin" : ""}`}
-          />
-          <span>{isSyncing ? "Syncing" : "Sync"}</span>
+          <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+          <span>{isSyncing ? 'Syncing' : 'Sync'}</span>
         </button>
 
         <button
           onClick={onFilterUnread}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
             filterUnreadActive
-              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
-              : "text-slate-500 hover:text-slate-900"
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
+              : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           <MailQuestion className="w-3.5 h-3.5" />

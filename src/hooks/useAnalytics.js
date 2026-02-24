@@ -1,25 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const analyticsKeys = {
-  all: ["analytics"],
-  global: ["analytics", "global"],
-  overview: () => [...analyticsKeys.global, "overview"],
-  performance: () => [...analyticsKeys.global, "performance"],
-  timeline: () => [...analyticsKeys.global, "timeline"],
-  topCampaigns: () => [...analyticsKeys.global, "top-campaigns"],
-  recentReplies: () => [...analyticsKeys.global, "recent-replies"],
-  senderStats: () => [...analyticsKeys.global, "sender-stats"],
-  hourly: () => [...analyticsKeys.global, "hourly"],
+  all: ['analytics'],
+  global: ['analytics', 'global'],
+  overview: () => [...analyticsKeys.global, 'overview'],
+  performance: () => [...analyticsKeys.global, 'performance'],
+  timeline: () => [...analyticsKeys.global, 'timeline'],
+  topCampaigns: () => [...analyticsKeys.global, 'top-campaigns'],
+  recentReplies: () => [...analyticsKeys.global, 'recent-replies'],
+  senderStats: () => [...analyticsKeys.global, 'sender-stats'],
+  hourly: () => [...analyticsKeys.global, 'hourly'],
 
   // Keep per-campaign keys for detail view
-  campaign: (campaignId) => [...analyticsKeys.all, "campaign", campaignId],
-  campaignOverview: (campaignId) => [
-    ...analyticsKeys.campaign(campaignId),
-    "overview",
-  ],
+  campaign: (campaignId) => [...analyticsKeys.all, 'campaign', campaignId],
+  campaignOverview: (campaignId) => [...analyticsKeys.campaign(campaignId), 'overview'],
 };
 
 // =========================
@@ -32,11 +29,10 @@ export const analyticsKeys = {
  */
 const fetchGlobalOverview = async () => {
   const response = await fetch(`${API_URL}/analytics/overview`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch global overview");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch global overview');
   return data.data;
 };
 
@@ -55,11 +51,10 @@ export const useGlobalOverview = () => {
  */
 const fetchPerformanceMetrics = async () => {
   const response = await fetch(`${API_URL}/analytics/performance`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch performance metrics");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch performance metrics');
   return data.data;
 };
 
@@ -75,20 +70,16 @@ export const usePerformanceMetrics = () => {
  * GET /api/v1/analytics/timeline?period=week|month|year
  * Returns campaign activity over time
  */
-const fetchTimelineData = async (period = "week") => {
-  const response = await fetch(
-    `${API_URL}/analytics/timeline?period=${period}`,
-    {
-      credentials: "include",
-    },
-  );
+const fetchTimelineData = async (period = 'week') => {
+  const response = await fetch(`${API_URL}/analytics/timeline?period=${period}`, {
+    credentials: 'include',
+  });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch timeline data");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch timeline data');
   return data.data;
 };
 
-export const useTimelineData = (period = "week") => {
+export const useTimelineData = (period = 'week') => {
   return useQuery({
     queryKey: [...analyticsKeys.timeline(), period],
     queryFn: () => fetchTimelineData(period),
@@ -101,15 +92,11 @@ export const useTimelineData = (period = "week") => {
  * Returns top performing campaigns
  */
 const fetchTopCampaigns = async (limit = 5) => {
-  const response = await fetch(
-    `${API_URL}/analytics/top-campaigns?limit=${limit}`,
-    {
-      credentials: "include",
-    },
-  );
+  const response = await fetch(`${API_URL}/analytics/top-campaigns?limit=${limit}`, {
+    credentials: 'include',
+  });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch top campaigns");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch top campaigns');
   return data.data;
 };
 
@@ -126,15 +113,11 @@ export const useTopCampaigns = (limit = 5) => {
  * Returns most recent replies across all campaigns
  */
 const fetchRecentReplies = async (limit = 10) => {
-  const response = await fetch(
-    `${API_URL}/analytics/recent-replies?limit=${limit}`,
-    {
-      credentials: "include",
-    },
-  );
+  const response = await fetch(`${API_URL}/analytics/recent-replies?limit=${limit}`, {
+    credentials: 'include',
+  });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch recent replies");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch recent replies');
   return data.data;
 };
 
@@ -153,11 +136,10 @@ export const useRecentReplies = (limit = 10) => {
  */
 const fetchSenderStats = async () => {
   const response = await fetch(`${API_URL}/analytics/sender-stats`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch sender stats");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch sender stats');
   return data.data;
 };
 
@@ -175,11 +157,10 @@ export const useSenderStats = () => {
  */
 const fetchHourlyStats = async () => {
   const response = await fetch(`${API_URL}/analytics/hourly`, {
-    credentials: "include",
+    credentials: 'include',
   });
   const data = await response.json();
-  if (!response.ok)
-    throw new Error(data.message || "Failed to fetch hourly stats");
+  if (!response.ok) throw new Error(data.message || 'Failed to fetch hourly stats');
   return data.data;
 };
 

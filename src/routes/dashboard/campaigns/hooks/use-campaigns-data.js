@@ -1,29 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   useCampaigns,
   useActivateCampaign,
   usePauseCampaign,
   useResumeCampaign,
   useDeleteCampaign,
-} from "../../../../hooks/useCampaign";
+} from '../../../../hooks/useCampaign';
 
 export const useCampaignsData = () => {
   const navigate = useNavigate();
   const [selectedCampaigns, setSelectedCampaigns] = useState([]);
-  const [viewMode, setViewMode] = useState("grid");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [viewMode, setViewMode] = useState('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState(null);
 
   // React Query hooks
-  const {
-    data: campaigns = [],
-    isLoading,
-    refetch: refetchCampaigns,
-  } = useCampaigns();
+  const { data: campaigns = [], isLoading, refetch: refetchCampaigns } = useCampaigns();
 
   const activateCampaign = useActivateCampaign();
   const pauseCampaign = usePauseCampaign();
@@ -33,12 +29,11 @@ export const useCampaignsData = () => {
   // Filter campaigns
   const filteredCampaigns = campaigns.filter((campaign) => {
     const matchesSearch =
-      searchTerm === "" ||
+      searchTerm === '' ||
       campaign.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       campaign.subject?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus =
-      statusFilter === "all" || campaign.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || campaign.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -46,24 +41,20 @@ export const useCampaignsData = () => {
   // Calculate stats
   const totalCampaigns = campaigns.length;
   const activeCampaigns = campaigns.filter(
-    (c) => c.status === "running" || c.status === "sending",
+    (c) => c.status === 'running' || c.status === 'sending',
   ).length;
-  const scheduledCampaigns = campaigns.filter(
-    (c) => c.status === "scheduled",
-  ).length;
-  const draftCampaigns = campaigns.filter((c) => c.status === "draft").length;
-  const completedCampaigns = campaigns.filter(
-    (c) => c.status === "completed",
-  ).length;
+  const scheduledCampaigns = campaigns.filter((c) => c.status === 'scheduled').length;
+  const draftCampaigns = campaigns.filter((c) => c.status === 'draft').length;
+  const completedCampaigns = campaigns.filter((c) => c.status === 'completed').length;
 
   // Status options
   const statusOptions = [
-    { label: "All Status", value: "all" },
-    { label: "Draft", value: "draft" },
-    { label: "Scheduled", value: "scheduled" },
-    { label: "Running", value: "running" },
-    { label: "Paused", value: "paused" },
-    { label: "Completed", value: "completed" },
+    { label: 'All Status', value: 'all' },
+    { label: 'Draft', value: 'draft' },
+    { label: 'Scheduled', value: 'scheduled' },
+    { label: 'Running', value: 'running' },
+    { label: 'Paused', value: 'paused' },
+    { label: 'Completed', value: 'completed' },
   ];
 
   // Selection handlers
@@ -87,30 +78,30 @@ export const useCampaignsData = () => {
   const handleActivateCampaign = async (campaignId) => {
     try {
       await activateCampaign.mutateAsync(campaignId);
-      toast.success("Campaign activated successfully!");
+      toast.success('Campaign activated successfully!');
       refetchCampaigns();
     } catch (error) {
-      toast.error(error.message || "Failed to activate campaign");
+      toast.error(error.message || 'Failed to activate campaign');
     }
   };
 
   const handlePauseCampaign = async (campaignId) => {
     try {
       await pauseCampaign.mutateAsync(campaignId);
-      toast.success("Campaign paused successfully");
+      toast.success('Campaign paused successfully');
       refetchCampaigns();
     } catch (error) {
-      toast.error(error.message || "Failed to pause campaign");
+      toast.error(error.message || 'Failed to pause campaign');
     }
   };
 
   const handleResumeCampaign = async (campaignId) => {
     try {
       await resumeCampaign.mutateAsync(campaignId);
-      toast.success("Campaign resumed successfully");
+      toast.success('Campaign resumed successfully');
       refetchCampaigns();
     } catch (error) {
-      toast.error(error.message || "Failed to resume campaign");
+      toast.error(error.message || 'Failed to resume campaign');
     }
   };
 
@@ -124,12 +115,12 @@ export const useCampaignsData = () => {
 
     try {
       await deleteCampaign.mutateAsync(campaignToDelete.id);
-      toast.success("Campaign deleted successfully");
+      toast.success('Campaign deleted successfully');
       setShowDeleteModal(false);
       setCampaignToDelete(null);
       refetchCampaigns();
     } catch (error) {
-      toast.error(error.message || "Failed to delete campaign");
+      toast.error(error.message || 'Failed to delete campaign');
     }
   };
 
@@ -170,7 +161,7 @@ export const useCampaignsData = () => {
       refetchCampaigns();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to delete selected campaigns");
+      toast.error('Failed to delete selected campaigns');
     }
   };
 
@@ -184,7 +175,7 @@ export const useCampaignsData = () => {
 
       for (const id of selectedCampaigns) {
         const campaign = campaigns.find((c) => c.id === id);
-        if (campaign?.status === "running" || campaign?.status === "sending") {
+        if (campaign?.status === 'running' || campaign?.status === 'sending') {
           try {
             await pauseCampaign.mutateAsync(id);
             successCount++;
@@ -205,7 +196,7 @@ export const useCampaignsData = () => {
       refetchCampaigns();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to pause selected campaigns");
+      toast.error('Failed to pause selected campaigns');
     }
   };
 
@@ -219,7 +210,7 @@ export const useCampaignsData = () => {
 
       for (const id of selectedCampaigns) {
         const campaign = campaigns.find((c) => c.id === id);
-        if (campaign?.status === "draft") {
+        if (campaign?.status === 'draft') {
           try {
             await activateCampaign.mutateAsync(id);
             successCount++;
@@ -240,7 +231,7 @@ export const useCampaignsData = () => {
       refetchCampaigns();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to activate selected campaigns");
+      toast.error('Failed to activate selected campaigns');
     }
   };
 

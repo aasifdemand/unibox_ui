@@ -1,7 +1,7 @@
 // routes/protected-route.jsx
-import { Navigate, Outlet } from "react-router-dom";
-import { useCurrentUser } from "../hooks/useAuth";
-import DashboardLayout from "../layouts/dashboard.layout";
+import { Navigate } from 'react-router-dom';
+import { useCurrentUser } from '../hooks/useAuth';
+import DashboardLayout from '../layouts/dashboard.layout';
 
 const ProtectedRoute = () => {
   const { data: user, isLoading } = useCurrentUser({
@@ -24,13 +24,7 @@ const ProtectedRoute = () => {
 
   // Logged in but not verified → redirect to verification page
   if (!user.isVerified) {
-    return (
-      <Navigate
-        to="/auth/verify-account"
-        state={{ email: user.email }}
-        replace
-      />
-    );
+    return <Navigate to="/auth/verify-account" state={{ email: user.email }} replace />;
   }
 
   // Logged in and verified → render dashboard layout with nested routes

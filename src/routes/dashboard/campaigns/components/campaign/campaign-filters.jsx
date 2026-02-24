@@ -1,12 +1,5 @@
-import React from "react";
-import {
-  ChevronDown,
-  Search,
-  Send,
-  LayoutGrid,
-  List,
-  Filter,
-} from "lucide-react";
+import React from 'react';
+import { ChevronDown, Search, Send, LayoutGrid, List, Filter } from 'lucide-react';
 
 const CampaignFilters = ({
   searchTerm,
@@ -41,26 +34,26 @@ const CampaignFilters = ({
 
         <div className="flex items-center gap-6">
           <div className="flex items-center">
-            <span className="text-xs font-medium text-slate-500 mr-4 hidden sm:block">
-              View
-            </span>
+            <span className="text-xs font-medium text-slate-500 mr-4 hidden sm:block">View</span>
             <div className="flex bg-white/80 p-1 rounded-2xl border border-slate-200/50 shadow-sm">
               <button
-                onClick={() => setViewMode("grid")}
-                className={`p-2 rounded-xl transition-all ${viewMode === "grid"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-slate-400 hover:text-slate-800"
-                  }`}
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-xl transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-800'
+                }`}
                 title="Grid view"
               >
                 <LayoutGrid className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setViewMode("list")}
-                className={`p-2 rounded-xl transition-all ${viewMode === "list"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-slate-400 hover:text-slate-800"
-                  }`}
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-xl transition-all ${
+                  viewMode === 'list'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-800'
+                }`}
                 title="List view"
               >
                 <List className="w-4 h-4" />
@@ -85,9 +78,7 @@ const CampaignFilters = ({
           </div>
 
           <div className="text-right">
-            <span className="text-lg font-semibold text-indigo-600">
-              {filteredCount}
-            </span>
+            <span className="text-lg font-semibold text-indigo-600">{filteredCount}</span>
             <span className="text-sm text-slate-500 ml-1">campaigns</span>
           </div>
         </div>

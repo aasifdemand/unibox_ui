@@ -1,16 +1,9 @@
-import {
-  ChevronRight,
-  Loader2,
-  Paperclip,
-  Search,
-  Star,
-  X,
-} from "lucide-react";
-import Pagination from "./pagination";
-import MessageListItem from "./messagelist-item";
-import EmptyMessages from "./empty-messages";
-import FolderTree from "./folder-tree";
-import { getDisplayId, getMessageId } from "../utils/getmessage-id";
+import { ChevronRight, Paperclip, Search, Star, X } from 'lucide-react';
+import Pagination from './pagination';
+import MessageListItem from './messagelist-item';
+import EmptyMessages from './empty-messages';
+import FolderTree from './folder-tree';
+import { getDisplayId, getMessageId } from '../utils/getmessage-id';
 
 const MessagesView = ({
   selectedMailbox,
@@ -89,26 +82,28 @@ const MessagesView = ({
 
             <button
               onClick={onFilterStarred}
-              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${filterStarred
-                ? "bg-amber-500 text-white border-amber-600 shadow-lg shadow-amber-500/20"
-                : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                }`}
+              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
+                filterStarred
+                  ? 'bg-amber-500 text-white border-amber-600 shadow-lg shadow-amber-500/20'
+                  : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+              }`}
             >
               <Star
-                className={`w-3.5 h-3.5 mr-2 ${filterStarred ? "fill-white" : "text-slate-400"}`}
+                className={`w-3.5 h-3.5 mr-2 ${filterStarred ? 'fill-white' : 'text-slate-400'}`}
               />
               Starred
             </button>
 
             <button
               onClick={onFilterAttachments}
-              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${filterAttachments
-                ? "bg-purple-600 text-white border-purple-700 shadow-lg shadow-purple-500/20"
-                : "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                }`}
+              className={`px-5 py-3 rounded-2xl flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
+                filterAttachments
+                  ? 'bg-purple-600 text-white border-purple-700 shadow-lg shadow-purple-500/20'
+                  : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+              }`}
             >
               <Paperclip
-                className={`w-3.5 h-3.5 mr-2 ${filterAttachments ? "text-white" : "text-slate-400"}`}
+                className={`w-3.5 h-3.5 mr-2 ${filterAttachments ? 'text-white' : 'text-slate-400'}`}
               />
               Files
             </button>
@@ -173,17 +168,18 @@ const MessagesView = ({
                   </div>
                 )}
                 <div
-                  className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-3 ${viewMode === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0"
-                    : ""
-                    }`}
+                  className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-3 ${
+                    viewMode === 'grid'
+                      ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0'
+                      : ''
+                  }`}
                 >
                   {filteredMessages.map((message) => {
                     const isSentFolder =
-                      selectedFolder?.id === "SENT" ||
-                      selectedFolder?.id === "sentitems" ||
-                      selectedFolder?.name === "SENT" ||
-                      message.labelIds?.includes("SENT");
+                      selectedFolder?.id === 'SENT' ||
+                      selectedFolder?.id === 'sentitems' ||
+                      selectedFolder?.name === 'SENT' ||
+                      message.labelIds?.includes('SENT');
 
                     return (
                       <MessageListItem

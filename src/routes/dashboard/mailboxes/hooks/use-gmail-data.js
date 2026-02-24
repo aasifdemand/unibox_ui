@@ -28,7 +28,7 @@ import {
   useSyncGmailMailboxMutation,
   useDisconnectGmailMailboxMutation,
   useRefreshGmailTokenMutation,
-} from "../../../../hooks/useGmail";
+} from '../../../../hooks/useGmail';
 
 export const useGmailData = (
   selectedMailbox,
@@ -37,58 +37,53 @@ export const useGmailData = (
   PAGE_SIZE,
   searchQuery,
 ) => {
-  const isGmail = selectedMailbox?.type === "gmail";
+  const isGmail = selectedMailbox?.type === 'gmail';
   const mailboxId = isGmail ? selectedMailbox.id : null;
 
   // Queries
   const isSpecialFolder =
     selectedFolder &&
-    ["SENT", "TRASH", "SPAM", "STARRED", "IMPORTANT", "DRAFT"].includes(
-      selectedFolder.id,
-    );
+    ['SENT', 'TRASH', 'SPAM', 'STARRED', 'IMPORTANT', 'DRAFT'].includes(selectedFolder.id);
 
   const gmailMessagesQuery = useGmailMessagesQuery(
     isGmail && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
-    selectedFolder?.id ? [selectedFolder.id] : ["INBOX"],
+    selectedFolder?.id ? [selectedFolder.id] : ['INBOX'],
     PAGE_SIZE,
   );
 
   const gmailSentQuery = useGmailSentMessagesQuery(
-    isGmail && selectedFolder?.id === "SENT" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'SENT' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailTrashQuery = useGmailTrashMessagesQuery(
-    isGmail && selectedFolder?.id === "TRASH" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'TRASH' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailSpamQuery = useGmailSpamMessagesQuery(
-    isGmail && selectedFolder?.id === "SPAM" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'SPAM' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailStarredQuery = useGmailStarredMessagesQuery(
-    isGmail && selectedFolder?.id === "STARRED" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'STARRED' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailImportantQuery = useGmailImportantMessagesQuery(
-    isGmail && selectedFolder?.id === "IMPORTANT" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'IMPORTANT' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailDraftsQuery = useGmailDraftsQuery(
-    isGmail && selectedFolder?.id === "DRAFT" ? mailboxId : null,
+    isGmail && selectedFolder?.id === 'DRAFT' ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailLabelsQuery = useGmailLabelsQuery(mailboxId);
 
-  const currentGmailMessageQuery = useGmailMessageQuery(
-    mailboxId,
-    currentMessageId,
-  );
+  const currentGmailMessageQuery = useGmailMessageQuery(mailboxId, currentMessageId);
 
   const gmailAttachmentsQuery = useGmailAttachmentsQuery(
     isGmail && currentMessageId ? mailboxId : null,

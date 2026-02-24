@@ -1,4 +1,4 @@
-import { Inbox } from "lucide-react";
+import { Inbox } from 'lucide-react';
 
 const EmptyMessages = ({
   searchQuery,
@@ -8,12 +8,12 @@ const EmptyMessages = ({
   selectedFolder,
 }) => {
   const getEmptyMessage = () => {
-    if (searchQuery) return "Try a different search term";
-    if (filterUnread) return "No unread messages";
-    if (filterStarred) return "No starred messages";
-    if (filterAttachments) return "No messages with attachments";
+    if (searchQuery) return 'Try a different search term';
+    if (filterUnread) return 'No unread messages';
+    if (filterStarred) return 'No starred messages';
+    if (filterAttachments) return 'No messages with attachments';
     if (selectedFolder) return `${selectedFolder.name} is empty`;
-    return "Inbox is empty";
+    return 'Inbox is empty';
   };
 
   return (

@@ -1,19 +1,27 @@
-import React, { useState, useRef, useMemo } from "react";
-import { Users, Mail, Check, Loader2, FileSpreadsheet, ChevronLeft, ChevronRight } from "lucide-react";
-import Button from "../../../../../components/ui/button";
-import * as XLSX from "xlsx";
+import React, { useState, useRef, useMemo } from 'react';
+import {
+  Users,
+  Mail,
+  Check,
+  Loader2,
+  FileSpreadsheet,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
+import Button from '../../../../../components/ui/button';
+import * as XLSX from 'xlsx';
 
 // Import modal components
-import ShowUpload from "../../../../../modals/showupload";
-import ShowSender from "../../../../../modals/showsender";
+import ShowUpload from '../../../../../modals/showupload';
+import ShowSender from '../../../../../modals/showsender';
 
 // Import React Query hooks
-import { useUploadBatch } from "../../../../../hooks/useBatches";
+import { useUploadBatch } from '../../../../../hooks/useBatches';
 import {
   useCreateSmtpSender,
   initiateGmailOAuth,
   initiateOutlookOAuth,
-} from "../../../../../hooks/useSenders";
+} from '../../../../../hooks/useSenders';
 
 const Step2Audience = ({
   setValue,
@@ -28,7 +36,7 @@ const Step2Audience = ({
   refetchBatches,
   refetchSenders,
 }) => {
-  const [senderType, setSenderType] = useState("gmail");
+  const [senderType, setSenderType] = useState('gmail');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showSenderModal, setShowSenderModal] = useState(false);
 
@@ -48,34 +56,34 @@ const Step2Audience = ({
   const [uploadedData, setUploadedData] = useState([]);
   const [fileHeaders, setFileHeaders] = useState([]);
   const [mapping, setMapping] = useState({
-    email: "",
-    name: "",
-    firstName: "",
-    lastName: "",
-    company: "",
-    phone: "",
-    city: "",
-    country: "",
-    role: "",
-    industry: "",
+    email: '',
+    name: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    phone: '',
+    city: '',
+    country: '',
+    role: '',
+    industry: '',
   });
   const fileInputRef = useRef(null);
 
   // SMTP form state
   const [smtpData, setSmtpData] = useState({
-    displayName: "",
-    email: "",
-    host: "",
-    port: "587",
-    username: "",
-    password: "",
+    displayName: '',
+    email: '',
+    host: '',
+    port: '587',
+    username: '',
+    password: '',
     secure: true,
-    imapHost: "",
-    imapPort: "993",
+    imapHost: '',
+    imapPort: '993',
     imapSecure: true,
-    imapUser: "",
-    imapPassword: "",
-    provider: "custom",
+    imapUser: '',
+    imapPassword: '',
+    provider: 'custom',
   });
 
   const uploadBatch = useUploadBatch();
@@ -89,26 +97,26 @@ const Step2Audience = ({
     const autoMapping = {};
     headers.forEach((header) => {
       const lowerHeader = header.toLowerCase();
-      if (lowerHeader.includes("email")) autoMapping.email = header;
+      if (lowerHeader.includes('email')) autoMapping.email = header;
       if (
-        lowerHeader.includes("name") &&
-        !lowerHeader.includes("first") &&
-        !lowerHeader.includes("last")
+        lowerHeader.includes('name') &&
+        !lowerHeader.includes('first') &&
+        !lowerHeader.includes('last')
       )
         autoMapping.name = header;
-      if (lowerHeader.includes("first")) autoMapping.firstName = header;
-      if (lowerHeader.includes("last")) autoMapping.lastName = header;
-      if (lowerHeader.includes("company")) autoMapping.company = header;
-      if (lowerHeader.includes("phone")) autoMapping.phone = header;
-      if (lowerHeader.includes("city")) autoMapping.city = header;
-      if (lowerHeader.includes("country")) autoMapping.country = header;
+      if (lowerHeader.includes('first')) autoMapping.firstName = header;
+      if (lowerHeader.includes('last')) autoMapping.lastName = header;
+      if (lowerHeader.includes('company')) autoMapping.company = header;
+      if (lowerHeader.includes('phone')) autoMapping.phone = header;
+      if (lowerHeader.includes('city')) autoMapping.city = header;
+      if (lowerHeader.includes('country')) autoMapping.country = header;
       if (
-        lowerHeader.includes("role") ||
-        lowerHeader.includes("title") ||
-        lowerHeader.includes("job")
+        lowerHeader.includes('role') ||
+        lowerHeader.includes('title') ||
+        lowerHeader.includes('job')
       )
         autoMapping.role = header;
-      if (lowerHeader.includes("industry") || lowerHeader.includes("sector"))
+      if (lowerHeader.includes('industry') || lowerHeader.includes('sector'))
         autoMapping.industry = header;
     });
     setMapping((prev) => ({ ...prev, ...autoMapping }));
@@ -120,7 +128,7 @@ const Step2Audience = ({
     reader.onload = (e) => {
       try {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        const workbook = XLSX.read(data, { type: 'array' });
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
         if (jsonData.length > 0) {
@@ -128,14 +136,14 @@ const Step2Audience = ({
           const rows = jsonData.slice(1).map((row, index) => {
             const rowObj = {};
             headers.forEach((header, colIndex) => {
-              rowObj[header] = row[colIndex] || "";
+              rowObj[header] = row[colIndex] || '';
             });
             return { id: index + 1, ...rowObj };
           });
           setUploadedData(rows);
         }
       } catch (error) {
-        console.error("Error parsing Excel file:", error);
+        console.error('Error parsing Excel file:', error);
       }
     };
     reader.readAsArrayBuffer(file);
@@ -143,24 +151,24 @@ const Step2Audience = ({
 
   const handleContactsUpload = async () => {
     if (!uploadedFile || !mapping.email) {
-      alert("Please map the email column before uploading");
+      alert('Please map the email column before uploading');
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("file", uploadedFile);
-      formData.append("mapping", JSON.stringify(mapping));
-      formData.append("totalRows", uploadedData.length.toString());
+      formData.append('file', uploadedFile);
+      formData.append('mapping', JSON.stringify(mapping));
+      formData.append('totalRows', uploadedData.length.toString());
       const result = await uploadBatch.mutateAsync(formData);
       setShowUploadModal(false);
       resetUploadState();
       if (refetchBatches) refetchBatches();
       if (result.data?.batchId) {
-        setValue("listBatchId", result.data.batchId, { shouldValidate: true });
+        setValue('listBatchId', result.data.batchId, { shouldValidate: true });
       }
     } catch (error) {
-      alert(error.message || "Upload failed. Please try again.");
+      alert(error.message || 'Upload failed. Please try again.');
     }
   };
 
@@ -170,25 +178,25 @@ const Step2Audience = ({
     setUploadedData([]);
     setFileHeaders([]);
     setMapping({
-      email: "",
-      name: "",
-      firstName: "",
-      lastName: "",
-      company: "",
-      phone: "",
-      city: "",
-      country: "",
-      role: "",
-      industry: "",
+      email: '',
+      name: '',
+      firstName: '',
+      lastName: '',
+      company: '',
+      phone: '',
+      city: '',
+      country: '',
+      role: '',
+      industry: '',
     });
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSmtpSubmit = async (e) => {
     e.preventDefault();
     const formData = { ...smtpData };
     if (!formData.imapHost && formData.host)
-      formData.imapHost = formData.host.replace("smtp", "imap");
+      formData.imapHost = formData.host.replace('smtp', 'imap');
     if (!formData.imapUser) formData.imapUser = formData.username;
     if (!formData.imapPassword) formData.imapPassword = formData.password;
 
@@ -196,19 +204,19 @@ const Step2Audience = ({
       await createSmtpSender.mutateAsync(formData);
       setShowSenderModal(false);
       setSmtpData({
-        displayName: "",
-        email: "",
-        host: "",
-        port: "587",
-        username: "",
-        password: "",
+        displayName: '',
+        email: '',
+        host: '',
+        port: '587',
+        username: '',
+        password: '',
         secure: true,
-        imapHost: "",
-        imapPort: "993",
+        imapHost: '',
+        imapPort: '993',
         imapSecure: true,
-        imapUser: "",
-        imapPassword: "",
-        provider: "custom",
+        imapUser: '',
+        imapPassword: '',
+        provider: 'custom',
       });
       if (refetchSenders) refetchSenders();
     } catch (error) {
@@ -285,10 +293,7 @@ const Step2Audience = ({
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
               Upload a CSV or Excel list to get started
             </p>
-            <Button
-              onClick={() => setShowUploadModal(true)}
-              className="rounded-2xl px-10"
-            >
+            <Button onClick={() => setShowUploadModal(true)} className="rounded-2xl px-10">
               Upload Now
             </Button>
           </div>
@@ -298,17 +303,18 @@ const Step2Audience = ({
               <div
                 key={batch.id}
                 onClick={() => handleBatchSelect(batch.id)}
-                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${watchListBatchId === batch.id
-                  ? "border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0"
-                  : "border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1"
-                  }`}
+                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${
+                  watchListBatchId === batch.id
+                    ? 'border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0'
+                    : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1'
+                }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? "bg-blue-600" : "bg-slate-50"}`}
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? 'bg-blue-600' : 'bg-slate-50'}`}
                   >
                     <FileSpreadsheet
-                      className={`w-5 h-5 ${watchListBatchId === batch.id ? "text-white" : "text-emerald-500"}`}
+                      className={`w-5 h-5 ${watchListBatchId === batch.id ? 'text-white' : 'text-emerald-500'}`}
                     />
                   </div>
                   {watchListBatchId === batch.id && (
@@ -318,7 +324,7 @@ const Step2Audience = ({
                   )}
                 </div>
                 <h4
-                  className={`font-extrabold truncate text-[11px] uppercase tracking-tight mb-1 ${watchListBatchId === batch.id ? "text-blue-900" : "text-slate-800"}`}
+                  className={`font-extrabold truncate text-[11px] uppercase tracking-tight mb-1 ${watchListBatchId === batch.id ? 'text-blue-900' : 'text-slate-800'}`}
                 >
                   {batch.originalFilename}
                 </h4>
@@ -366,7 +372,9 @@ const Step2Audience = ({
                 <span className="text-[10px] font-black text-blue-600 bg-blue-50 w-6 h-6 rounded-lg flex items-center justify-center">
                   {sendersPage}
                 </span>
-                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">of</span>
+                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">
+                  of
+                </span>
                 <span className="text-[10px] font-black text-slate-500 w-6 h-6 rounded-lg flex items-center justify-center">
                   {totalSendersPages}
                 </span>
@@ -412,22 +420,24 @@ const Step2Audience = ({
                 <div
                   key={sender.id}
                   onClick={() => handleSenderSelect(sender.id, sType)}
-                  className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${isSelected
-                    ? "border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1"
-                    : "border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5 hover:shadow-md"
-                    }`}
+                  className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${
+                    isSelected
+                      ? 'border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1'
+                      : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5 hover:shadow-md'
+                  }`}
                 >
                   <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black transition-all shadow-sm ${isSelected
-                      ? "bg-blue-600 text-white shadow-blue-500/40"
-                      : "bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500"
-                      }`}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black transition-all shadow-sm ${
+                      isSelected
+                        ? 'bg-blue-600 text-white shadow-blue-500/40'
+                        : 'bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500'
+                    }`}
                   >
                     {sType.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? "text-blue-900" : "text-slate-800"}`}
+                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? 'text-blue-900' : 'text-slate-800'}`}
                     >
                       {sender.displayName}
                     </p>

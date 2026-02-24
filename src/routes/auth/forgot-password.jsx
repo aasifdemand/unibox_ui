@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../../components/ui/button";
-import Input from "../../components/ui/input";
-import { Mail, ArrowLeft } from "lucide-react";
-import { useForgotPassword } from "../../hooks/useAuth";
-import { forgotPasswordSchema } from "../../validators/forgot-password.schema";
-import { useToast } from "../../hooks/useToast";
-import { mapZodErrors } from "../../utils/map-zod";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from '../../components/ui/input';
+import { Mail } from 'lucide-react';
+import { useForgotPassword } from '../../hooks/useAuth';
+import { forgotPasswordSchema } from '../../validators/forgot-password.schema';
+import { useToast } from '../../hooks/useToast';
+import { mapZodErrors } from '../../utils/map-zod';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ const ForgotPassword = () => {
 
   const forgotPassword = useForgotPassword();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -28,17 +27,17 @@ const ForgotPassword = () => {
       return;
     }
 
-    const toastId = toast.loading("Sending reset instructions...");
+    const toastId = toast.loading('Sending reset instructions...');
 
     try {
       await forgotPassword.mutateAsync(email);
       toast.dismiss(toastId);
-      toast.success("Reset instructions sent!");
+      toast.success('Reset instructions sent!');
       setIsSubmitted(true);
       setErrors({});
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || "Failed to send reset email");
+      toast.error(error.message || 'Failed to send reset email');
     }
   };
 
@@ -52,7 +51,7 @@ const ForgotPassword = () => {
           Reset <span className="text-gradient">Password</span>
         </h2>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
-          We'll send you instructions
+          We&apos;ll send you instructions
         </p>
       </div>
 
@@ -84,7 +83,7 @@ const ForgotPassword = () => {
             {forgotPassword.isPending ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
-              "Send Instructions"
+              'Send Instructions'
             )}
           </button>
         </form>
@@ -95,14 +94,14 @@ const ForgotPassword = () => {
               Check your email
             </p>
             <p className="text-xs text-emerald-700 mt-2 font-medium">
-              We've sent reset instructions to <br />
+              We&apos;ve sent reset instructions to <br />
               <strong className="text-emerald-900">{email}</strong>
             </p>
           </div>
 
           <div className="space-y-4">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-loose">
-              Didn't receive it? Check your spam folder or try again.
+              Didn&apos;t receive it? Check your spam folder or try again.
             </p>
 
             <div className="flex flex-col gap-3">
@@ -117,7 +116,7 @@ const ForgotPassword = () => {
               <button
                 type="button"
                 className="w-full py-3 text-xs font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 transition-colors"
-                onClick={() => navigate("/auth/login")}
+                onClick={() => navigate('/auth/login')}
               >
                 Back to sign in
               </button>

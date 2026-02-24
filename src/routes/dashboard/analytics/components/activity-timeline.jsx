@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   AreaChart,
   Area,
@@ -7,8 +7,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import CustomTooltip from './custom-tooltip';
 
 const ActivityTimeline = ({ data, hasValidData }) => {
   console.log(data);
@@ -45,10 +45,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
       <div className="h-80 w-full relative">
         {hasValidData ? (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={data}
-              margin={{ top: 0, right: 0, left: -25, bottom: 0 }}
-            >
+            <AreaChart data={data} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorSent" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
@@ -59,25 +56,26 @@ const ActivityTimeline = ({ data, hasValidData }) => {
                   <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid
-                vertical={false}
-                strokeDasharray="8 8"
-                stroke="#f1f5f9"
-              />
+              <CartesianGrid vertical={false} strokeDasharray="8 8" stroke="#f1f5f9" />
               <XAxis
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 10, fill: "#94a3b8", fontWeight: 700 }}
+                tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
                 dy={10}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 10, fill: "#94a3b8", fontWeight: 700 }}
+                tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
               />
               <Tooltip
-                cursor={{ stroke: "#e2e8f0", strokeWidth: 1, strokeDasharray: "4 4", fill: "transparent" }}
+                cursor={{
+                  stroke: '#e2e8f0',
+                  strokeWidth: 1,
+                  strokeDasharray: '4 4',
+                  fill: 'transparent',
+                }}
                 content={<CustomTooltip />}
               />
               <Area
@@ -116,6 +114,3 @@ const ActivityTimeline = ({ data, hasValidData }) => {
 };
 
 export default ActivityTimeline;
-
-
-

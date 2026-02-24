@@ -1,20 +1,12 @@
-import React, { useMemo } from "react";
-import {
-  MessageCircle,
-  Loader2,
-  Eye,
-  Reply,
-  ShieldCheck,
-  Mail,
-} from "lucide-react";
-import Button from "../../../../../components/ui/button";
+import React from 'react';
+import { MessageCircle, Eye, Reply, ShieldCheck } from 'lucide-react';
+import Button from '../../../../../components/ui/button';
 
 const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
   const repliesList = Array.isArray(replies) ? replies : [];
 
   return (
     <div className="space-y-10 pb-20 mt-4">
-
       <div className="premium-card bg-white border-slate-200/60 p-10 shadow-2xl shadow-slate-900/2">
         <div className="flex items-center justify-between mb-10">
           <div>
@@ -67,36 +59,33 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                         </div>
                         <div>
                           <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-tight">
-                            {recipient?.name ||
-                              reply.replyFrom?.split("@")[0] ||
-                              "Unknown"}
+                            {recipient?.name || reply.replyFrom?.split('@')[0] || 'Unknown'}
                           </h4>
                           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            {reply.replyFrom || "No Email"}
+                            {reply.replyFrom || 'No Email'}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-1">
                         <p className="text-sm font-black text-slate-800 tracking-tight">
-                          {reply.subject || "No Subject"}
+                          {reply.subject || 'No Subject'}
                         </p>
                         <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 italic">
-                          "
-                          {(reply.body || reply.text || reply.html || "")
-                            .replace(/<[^>]*>/g, "")
-                            .replace(/&nbsp;/g, " ")
+                          &quot;
+                          {(reply.body || reply.text || reply.html || '')
+                            .replace(/<[^>]*>/g, '')
+                            .replace(/&nbsp;/g, ' ')
                             .substring(0, 200)}
-                          ..."
+                          ...&quot;
                         </p>
-
                       </div>
 
                       <div className="flex items-center gap-4 pt-2">
                         <div className="flex items-center gap-1.5 px-3 py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
                           <ShieldCheck className="w-3 h-3 text-emerald-500" />
                           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                            {recipient?.status || "Replied"}
+                            {recipient?.status || 'Replied'}
                           </span>
                         </div>
                         <span className="text-[11px] font-black text-slate-300 tabular-nums uppercase">
@@ -133,12 +122,9 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                 <ShieldCheck className="w-5 h-5 text-indigo-200" />
               </div>
             </div>
-            <h4 className="text-xl font-black text-slate-900 tracking-tight">
-              No replies yet
-            </h4>
+            <h4 className="text-xl font-black text-slate-900 tracking-tight">No replies yet</h4>
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
-              When you receive replies from this campaign, they will appear
-              here.
+              When you receive replies from this campaign, they will appear here.
             </p>
           </div>
         )}

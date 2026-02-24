@@ -1,8 +1,8 @@
 // mailboxes/hooks.js
-import { AlertCircle } from "lucide-react";
-import { useState } from "react";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 // ============================================================================
 // PAGINATION HOOK
@@ -66,8 +66,7 @@ export const useMessageFilters = ({
 }) => {
   const parseMessageDate = (message) => {
     try {
-      if (message?.internalDate)
-        return new Date(parseInt(message.internalDate, 10));
+      if (message?.internalDate) return new Date(parseInt(message.internalDate, 10));
       if (message?.receivedDateTime) return new Date(message.receivedDateTime);
       if (message?.date) return new Date(message.date);
       return null;
@@ -88,56 +87,48 @@ export const useMessageFilters = ({
   const getSenderInfo = (message) => {
     try {
       if (message?.payload?.headers) {
-        const from =
-          message.payload.headers.find((h) => h.name === "From")?.value || "";
+        const from = message.payload.headers.find((h) => h.name === 'From')?.value || '';
         const match = from.match(/<([^>]+)>/);
         const email = match ? match[1] : from;
         const nameMatch = from.match(/^([^<]+)/);
-        const name = nameMatch
-          ? nameMatch[1].trim().replace(/"/g, "")
-          : email.split("@")[0];
-        return { name: name || email.split("@")[0] || "Unknown" };
+        const name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
+        return { name: name || email.split('@')[0] || 'Unknown' };
       }
       if (message?.from?.emailAddress) {
         return {
-          name:
-            message.from.emailAddress.name ||
-            message.from.emailAddress.address.split("@")[0],
+          name: message.from.emailAddress.name || message.from.emailAddress.address.split('@')[0],
         };
       }
       if (message?.from?.email) {
-        return { name: message.from.name || message.from.email.split("@")[0] };
+        return { name: message.from.name || message.from.email.split('@')[0] };
       }
     } catch (e) {
-      console.error("Error parsing sender:", e);
+      console.error('Error parsing sender:', e);
     }
-    return { name: "Unknown" };
+    return { name: 'Unknown' };
   };
 
   const getSubject = (message) => {
     try {
       if (message?.subject) return message.subject;
       if (message?.payload?.headers) {
-        return (
-          message.payload.headers.find((h) => h.name === "Subject")?.value ||
-          "(no subject)"
-        );
+        return message.payload.headers.find((h) => h.name === 'Subject')?.value || '(no subject)';
       }
     } catch (e) {
-      console.error("Error getting subject:", e);
+      console.error('Error getting subject:', e);
     }
-    return "(no subject)";
+    return '(no subject)';
   };
 
   const getPreview = (message) => {
     try {
       if (message?.bodyPreview) return message.bodyPreview;
       if (message?.snippet) return message.snippet;
-      if (message?.text) return message.text.substring(0, 100) + "...";
+      if (message?.text) return message.text.substring(0, 100) + '...';
     } catch (e) {
-      console.error("Error getting preview:", e);
+      console.error('Error getting preview:', e);
     }
-    return "";
+    return '';
   };
 
   const apply = () => {
@@ -148,15 +139,11 @@ export const useMessageFilters = ({
     }
 
     if (filterStarred) {
-      filtered = filtered.filter(
-        (m) => m.isStarred || m.labelIds?.includes("STARRED"),
-      );
+      filtered = filtered.filter((m) => m.isStarred || m.labelIds?.includes('STARRED'));
     }
 
     if (filterAttachments) {
-      filtered = filtered.filter(
-        (m) => m.hasAttachments || m.attachmentCount > 0,
-      );
+      filtered = filtered.filter((m) => m.hasAttachments || m.attachmentCount > 0);
     }
 
     if (searchQuery.trim()) {
@@ -165,15 +152,11 @@ export const useMessageFilters = ({
         const subject = getSubject(m).toLowerCase();
         const sender = getSenderInfo(m).name.toLowerCase();
         const preview = getPreview(m).toLowerCase();
-        return (
-          subject.includes(query) ||
-          sender.includes(query) ||
-          preview.includes(query)
-        );
+        return subject.includes(query) || sender.includes(query) || preview.includes(query);
       });
     }
 
-    if (dateRange !== "all") {
+    if (dateRange !== 'all') {
       const now = new Date();
       const weekAgo = new Date(now);
       weekAgo.setDate(weekAgo.getDate() - 7);
@@ -185,9 +168,9 @@ export const useMessageFilters = ({
         const date = parseMessageDate(m);
         if (!date) return false;
 
-        if (dateRange === "today") return isToday(date);
-        if (dateRange === "week") return date >= weekAgo;
-        if (dateRange === "month") return date >= monthAgo;
+        if (dateRange === 'today') return isToday(date);
+        if (dateRange === 'week') return date >= weekAgo;
+        if (dateRange === 'month') return date >= monthAgo;
 
         return true;
       });
@@ -206,68 +189,45 @@ export const useMessageActions = (store, selectedMailbox) => {
   const fetchMessage = async (messageId, folderName) => {
     if (!selectedMailbox) return null;
 
-    if (selectedMailbox.type === "gmail") {
+    if (selectedMailbox.type === 'gmail') {
       return await store.getGmailMessage(selectedMailbox.id, messageId);
-    } else if (selectedMailbox.type === "outlook") {
+    } else if (selectedMailbox.type === 'outlook') {
       return await store.getOutlookMessage(selectedMailbox.id, messageId);
-    } else if (selectedMailbox.type === "smtp") {
-      return await store.getSmtpMessage(
-        selectedMailbox.id,
-        messageId,
-        folderName || "INBOX",
-      );
+    } else if (selectedMailbox.type === 'smtp') {
+      return await store.getSmtpMessage(selectedMailbox.id, messageId, folderName || 'INBOX');
     }
   };
 
   const markAsRead = async (messageId, folderName) => {
     if (!selectedMailbox) return false;
 
-    if (selectedMailbox.type === "gmail") {
-      return (await store.markGmailAsRead(selectedMailbox.id, messageId))
+    if (selectedMailbox.type === 'gmail') {
+      return (await store.markGmailAsRead(selectedMailbox.id, messageId))?.success;
+    } else if (selectedMailbox.type === 'outlook') {
+      return (await store.markOutlookAsRead(selectedMailbox.id, messageId))?.success;
+    } else if (selectedMailbox.type === 'smtp') {
+      return (await store.markSmtpAsRead(selectedMailbox.id, messageId, folderName || 'INBOX'))
         ?.success;
-    } else if (selectedMailbox.type === "outlook") {
-      return (await store.markOutlookAsRead(selectedMailbox.id, messageId))
-        ?.success;
-    } else if (selectedMailbox.type === "smtp") {
-      return (
-        await store.markSmtpAsRead(
-          selectedMailbox.id,
-          messageId,
-          folderName || "INBOX",
-        )
-      )?.success;
     }
     return false;
   };
 
   const markAsUnread = async (messageId, folderName) => {
-    if (!selectedMailbox || selectedMailbox.type !== "smtp") return false;
-    return (
-      await store.markSmtpAsUnread(
-        selectedMailbox.id,
-        messageId,
-        folderName || "INBOX",
-      )
-    )?.success;
+    if (!selectedMailbox || selectedMailbox.type !== 'smtp') return false;
+    return (await store.markSmtpAsUnread(selectedMailbox.id, messageId, folderName || 'INBOX'))
+      ?.success;
   };
 
   const deleteMessage = async (messageId, folderName) => {
     if (!selectedMailbox) return false;
 
-    if (selectedMailbox.type === "gmail") {
-      return (await store.deleteGmailMessage(selectedMailbox.id, messageId))
+    if (selectedMailbox.type === 'gmail') {
+      return (await store.deleteGmailMessage(selectedMailbox.id, messageId))?.success;
+    } else if (selectedMailbox.type === 'outlook') {
+      return (await store.deleteOutlookMessage(selectedMailbox.id, messageId))?.success;
+    } else if (selectedMailbox.type === 'smtp') {
+      return (await store.deleteSmtpMessage(selectedMailbox.id, messageId, folderName || 'INBOX'))
         ?.success;
-    } else if (selectedMailbox.type === "outlook") {
-      return (await store.deleteOutlookMessage(selectedMailbox.id, messageId))
-        ?.success;
-    } else if (selectedMailbox.type === "smtp") {
-      return (
-        await store.deleteSmtpMessage(
-          selectedMailbox.id,
-          messageId,
-          folderName || "INBOX",
-        )
-      )?.success;
     }
     return false;
   };
@@ -279,99 +239,79 @@ export const useMessageActions = (store, selectedMailbox) => {
 // MAILBOX ACTIONS HOOK
 // ============================================================================
 export const useMailboxActions = (store, deleteSender) => {
-  const handleSync = async (
-    selectedMailbox,
-    selectedFolder,
-    currentPage,
-    fetchMessages,
-  ) => {
+  const handleSync = async (selectedMailbox, selectedFolder, currentPage, fetchMessages) => {
     if (!selectedMailbox) return;
 
     let success = false;
     const folderId =
       selectedFolder?.id ||
-      (selectedFolder?.name?.toLowerCase().includes("sent")
-        ? "SENT"
-        : selectedFolder?.name?.toLowerCase().includes("trash")
-          ? "TRASH"
-          : selectedFolder?.name?.toLowerCase().includes("spam")
-            ? "SPAM"
-            : "INBOX");
+      (selectedFolder?.name?.toLowerCase().includes('sent')
+        ? 'SENT'
+        : selectedFolder?.name?.toLowerCase().includes('trash')
+          ? 'TRASH'
+          : selectedFolder?.name?.toLowerCase().includes('spam')
+            ? 'SPAM'
+            : 'INBOX');
 
     try {
-      if (selectedMailbox.type === "gmail") {
-        success = (await store.syncGmailMailbox(selectedMailbox.id, folderId))
-          .success;
-      } else if (selectedMailbox.type === "outlook") {
+      if (selectedMailbox.type === 'gmail') {
+        success = (await store.syncGmailMailbox(selectedMailbox.id, folderId)).success;
+      } else if (selectedMailbox.type === 'outlook') {
         const folderMap = {
-          sent: "sentitems",
-          trash: "deleteditems",
-          spam: "junkemail",
-          archive: "archive",
-          outbox: "outbox",
-          inbox: "inbox",
+          sent: 'sentitems',
+          trash: 'deleteditems',
+          spam: 'junkemail',
+          archive: 'archive',
+          outbox: 'outbox',
+          inbox: 'inbox',
         };
-        const outlookFolderId =
-          folderMap[selectedFolder?.name?.toLowerCase()] || folderId;
-        success = (
-          await store.syncOutlookMailbox(selectedMailbox.id, outlookFolderId)
-        ).success;
-      } else if (selectedMailbox.type === "smtp") {
-        success = (
-          await store.syncSmtpMailbox(
-            selectedMailbox.id,
-            selectedFolder?.name || "INBOX",
-          )
-        ).success;
+        const outlookFolderId = folderMap[selectedFolder?.name?.toLowerCase()] || folderId;
+        success = (await store.syncOutlookMailbox(selectedMailbox.id, outlookFolderId)).success;
+      } else if (selectedMailbox.type === 'smtp') {
+        success = (await store.syncSmtpMailbox(selectedMailbox.id, selectedFolder?.name || 'INBOX'))
+          .success;
       }
 
       if (success) {
         toast.success(`${selectedMailbox.type} mailbox synced`);
-        await fetchMessages(selectedFolder, currentPage, "next");
+        await fetchMessages(selectedFolder, currentPage, 'next');
       }
     } catch (error) {
-      console.error("Sync error:", error);
-      toast.error("Failed to sync mailbox");
+      console.error('Sync error:', error);
+      toast.error('Failed to sync mailbox');
     }
   };
 
   const handleRefreshToken = async (selectedMailbox) => {
     if (!selectedMailbox) return;
-    if (selectedMailbox.type === "smtp") {
-      toast.error("Token refresh not supported for SMTP");
+    if (selectedMailbox.type === 'smtp') {
+      toast.error('Token refresh not supported for SMTP');
       return;
     }
 
     const result =
-      selectedMailbox.type === "gmail"
+      selectedMailbox.type === 'gmail'
         ? await store.refreshGmailToken(selectedMailbox.id)
         : await store.refreshOutlookToken(selectedMailbox.id);
 
-    if (result?.success) toast.success("Token refreshed successfully");
+    if (result?.success) toast.success('Token refreshed successfully');
   };
 
-  const handleDisconnect = async (
-    mailbox,
-    setSelectedMailbox,
-    setView,
-    clearCurrentMailbox,
-  ) => {
+  const handleDisconnect = async (mailbox, setSelectedMailbox, setView, clearCurrentMailbox) => {
     if (!window.confirm(`Disconnect ${mailbox.email}?`)) return;
 
     let result;
-    if (mailbox.type === "gmail")
-      result = await store.disconnectGmailMailbox(mailbox.id);
-    else if (mailbox.type === "outlook")
-      result = await store.disconnectOutlookMailbox(mailbox.id);
+    if (mailbox.type === 'gmail') result = await store.disconnectGmailMailbox(mailbox.id);
+    else if (mailbox.type === 'outlook') result = await store.disconnectOutlookMailbox(mailbox.id);
     else result = await store.disconnectSmtpMailbox(mailbox.id);
 
     if (result?.success) {
-      toast.success("Mailbox disconnected");
+      toast.success('Mailbox disconnected');
       await deleteSender(mailbox.id, mailbox.type);
 
       if (setSelectedMailbox && setView) {
         setSelectedMailbox(null);
-        setView("list");
+        setView('list');
         clearCurrentMailbox();
       }
     }
@@ -385,13 +325,11 @@ export const useMailboxActions = (store, deleteSender) => {
 // ============================================================================
 export const useTokenWarning = (selectedMailbox, onRefresh) => {
   useEffect(() => {
-    if (!selectedMailbox?.expiresAt || selectedMailbox.type === "smtp") return;
+    if (!selectedMailbox?.expiresAt || selectedMailbox.type === 'smtp') return;
 
     const expiryDate = new Date(selectedMailbox.expiresAt);
     const now = new Date();
-    const daysUntilExpiry = Math.ceil(
-      (expiryDate - now) / (1000 * 60 * 60 * 24),
-    );
+    const daysUntilExpiry = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
 
     if (daysUntilExpiry <= 3 && daysUntilExpiry > 0) {
       toast(
@@ -401,8 +339,7 @@ export const useTokenWarning = (selectedMailbox, onRefresh) => {
             <div>
               <p className="font-medium">Token expiring soon</p>
               <p className="text-sm text-gray-600">
-                Your {selectedMailbox.type} token expires in {daysUntilExpiry}{" "}
-                days
+                Your {selectedMailbox.type} token expires in {daysUntilExpiry} days
               </p>
               <button
                 onClick={() => {

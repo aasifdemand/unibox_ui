@@ -1,6 +1,6 @@
-import Logo from "../components/shared/logo";
-import { Outlet } from "react-router-dom";
-import { motion } from "motion/react";
+import Logo from '../components/shared/logo';
+import { Outlet } from 'react-router-dom';
+import { motion } from 'motion/react';
 
 const AuthLayout = () => {
   return (

@@ -1,12 +1,12 @@
 // hooks/useAuth.js
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const authKeys = {
-  all: ["auth"],
-  user: () => [...authKeys.all, "user"],
+  all: ['auth'],
+  user: () => [...authKeys.all, 'user'],
 };
 
 // =========================
@@ -14,7 +14,7 @@ export const authKeys = {
 // =========================
 const fetchCurrentUser = async () => {
   const res = await fetch(`${API_URL}/users/me`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   if (!res.ok) {
@@ -22,7 +22,7 @@ const fetchCurrentUser = async () => {
       return null;
     }
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.message || "Failed to fetch user");
+    throw new Error(data.message || 'Failed to fetch user');
   }
 
   const response = await res.json();
@@ -44,16 +44,16 @@ export const useCurrentUser = () => {
 // =========================
 const loginUser = async ({ email, password, rememberMe }) => {
   const res = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, rememberMe }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Login failed");
+    throw new Error(data.message || 'Login failed');
   }
 
   return data;
@@ -75,16 +75,16 @@ export const useLogin = () => {
 // =========================
 const signupUser = async ({ name, email, password }) => {
   const res = await fetch(`${API_URL}/auth/signup`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Signup failed");
+    throw new Error(data.message || 'Signup failed');
   }
 
   return data; // Returns { message, data: { email, requiresVerification } }
@@ -102,16 +102,16 @@ export const useSignup = () => {
 // =========================
 const verifyAccount = async ({ email, otp }) => {
   const res = await fetch(`${API_URL}/auth/verify-account`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, otp }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Verification failed");
+    throw new Error(data.message || 'Verification failed');
   }
 
   return data;
@@ -134,16 +134,16 @@ export const useVerifyAccount = () => {
 // =========================
 const resendVerification = async (email) => {
   const res = await fetch(`${API_URL}/auth/resend-verification`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to resend verification code");
+    throw new Error(data.message || 'Failed to resend verification code');
   }
 
   return data;
@@ -160,13 +160,13 @@ export const useResendVerification = () => {
 // =========================
 const logoutUser = async () => {
   const res = await fetch(`${API_URL}/auth/logout`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
   });
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.message || "Logout failed");
+    throw new Error(data.message || 'Logout failed');
   }
 
   return true;
@@ -191,16 +191,16 @@ export const useLogout = () => {
 // =========================
 const forgotPassword = async (email) => {
   const res = await fetch(`${API_URL}/auth/forgot-password`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to send reset email");
+    throw new Error(data.message || 'Failed to send reset email');
   }
 
   return data;
@@ -217,16 +217,16 @@ export const useForgotPassword = () => {
 // =========================
 const resetPassword = async ({ email, otp, newPassword }) => {
   const res = await fetch(`${API_URL}/auth/reset-password`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, otp, newPassword }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to reset password");
+    throw new Error(data.message || 'Failed to reset password');
   }
 
   return data;
@@ -243,16 +243,16 @@ export const useResetPassword = () => {
 // =========================
 const changePassword = async ({ currentPassword, newPassword }) => {
   const res = await fetch(`${API_URL}/users/change-password`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ currentPassword, newPassword }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to change password");
+    throw new Error(data.message || 'Failed to change password');
   }
 
   return data;
@@ -269,16 +269,16 @@ export const useChangePassword = () => {
 // =========================
 const updateProfile = async (userData) => {
   const res = await fetch(`${API_URL}/users/profile`, {
-    method: "PATCH",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'PATCH',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to update profile");
+    throw new Error(data.message || 'Failed to update profile');
   }
 
   return data.data;
@@ -300,14 +300,14 @@ export const useUpdateProfile = () => {
 // =========================
 const refreshToken = async () => {
   const res = await fetch(`${API_URL}/auth/refresh-token`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Failed to refresh token");
+    throw new Error(data.message || 'Failed to refresh token');
   }
 
   return data;
@@ -333,16 +333,16 @@ export const useOAuthCallback = () => {
   return useMutation({
     mutationFn: async ({ provider, code, state }) => {
       const res = await fetch(`${API_URL}/auth/${provider}/callback`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, state }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "OAuth authentication failed");
+        throw new Error(data.message || 'OAuth authentication failed');
       }
 
       return data;

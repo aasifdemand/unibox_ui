@@ -1,37 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Download, Loader2, MessageCircle, Eye } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Download, Loader2, MessageCircle, Eye } from 'lucide-react';
 
 const RecentReplies = ({ replies, isLoading }) => {
   const handleExport = () => {
     if (!replies || !replies.length) return;
 
-    const headers = ["From", "RecipientEmail", "Subject", "CampaignName", "ReceivedAt"];
+    const headers = ['From', 'RecipientEmail', 'Subject', 'CampaignName', 'ReceivedAt'];
     const rows = replies.map((reply) => [
-      reply.from || "",
-      reply.recipientEmail || "",
-      reply.subject || "",
-      reply.campaignName || "",
-      reply.receivedAt ? new Date(reply.receivedAt).toISOString() : "",
+      reply.from || '',
+      reply.recipientEmail || '',
+      reply.subject || '',
+      reply.campaignName || '',
+      reply.receivedAt ? new Date(reply.receivedAt).toISOString() : '',
     ]);
 
     const csvContent = [headers, ...rows]
       .map((row) =>
         row
-          .map((value) =>
-            typeof value === "string"
-              ? `"${value.replace(/"/g, '""')}"`
-              : value,
-          )
-          .join(","),
+          .map((value) => (typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value))
+          .join(','),
       )
-      .join("\n");
+      .join('\n');
 
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "recent-replies.csv";
+    a.download = 'recent-replies.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -53,9 +49,7 @@ const RecentReplies = ({ replies, isLoading }) => {
           className="btn-secondary py-2 px-4 shadow-xs flex items-center gap-2"
         >
           <Download className="w-4 h-4 text-slate-400" />
-          <span className="text-[10px] font-extrabold uppercase tracking-widest">
-            Export
-          </span>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest">Export</span>
         </button>
       </div>
 
@@ -90,10 +84,7 @@ const RecentReplies = ({ replies, isLoading }) => {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {replies.map((reply) => (
-                <tr
-                  key={reply.id}
-                  className="group hover:bg-violet-50/30 transition-colors"
-                >
+                <tr key={reply.id} className="group hover:bg-violet-50/30 transition-colors">
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform">
@@ -132,8 +123,8 @@ const RecentReplies = ({ replies, isLoading }) => {
                     </p>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       {new Date(reply.receivedAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
+                        hour: '2-digit',
+                        minute: '2-digit',
                       })}
                     </p>
                   </td>
@@ -155,11 +146,9 @@ const RecentReplies = ({ replies, isLoading }) => {
           <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-100 shadow-inner">
             <MessageCircle className="w-8 h-8 text-slate-300" />
           </div>
-          <h4 className="text-xl font-extrabold text-slate-800 mb-2">
-            No Replies Yet
-          </h4>
+          <h4 className="text-xl font-extrabold text-slate-800 mb-2">No Replies Yet</h4>
           <p className="text-sm text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
-            When recipients reply to your campaigns, they'll appear here.
+            When recipients reply to your campaigns, they&apos;ll appear here.
           </p>
         </div>
       )}

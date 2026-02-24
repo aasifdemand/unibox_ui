@@ -1,12 +1,7 @@
-import React from "react";
-import { Mail, Layout, Type, ShieldCheck, Database, Eye } from "lucide-react";
+import React from 'react';
+import { Mail, ShieldCheck, Database, Eye } from 'lucide-react';
 
-const ContentTab = ({
-  previews,
-  placeholders,
-  sampleRecipient,
-  selectedRecipientForPreview,
-}) => {
+const ContentTab = ({ previews, placeholders, sampleRecipient, selectedRecipientForPreview }) => {
   return (
     <div className="space-y-10 pb-20 mt-4">
       {/* Email Content Preview */}
@@ -25,9 +20,7 @@ const ContentTab = ({
             <div className="px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center gap-2 animate-in fade-in zoom-in duration-500">
               <Eye className="w-4 h-4 text-indigo-600" />
               <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">
-                Recipient:{" "}
-                {selectedRecipientForPreview.name ||
-                  selectedRecipientForPreview.email}
+                Recipient: {selectedRecipientForPreview.name || selectedRecipientForPreview.email}
               </span>
             </div>
           )}
@@ -39,9 +32,7 @@ const ContentTab = ({
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">
                 Subject Line
               </span>
-              <p className="text-sm font-bold text-slate-900 tracking-tight">
-                {previews.subject}
-              </p>
+              <p className="text-sm font-bold text-slate-900 tracking-tight">{previews.subject}</p>
             </div>
             {previews.previewText && (
               <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100">
@@ -49,7 +40,7 @@ const ContentTab = ({
                   Preview Text
                 </span>
                 <p className="text-sm font-medium text-slate-600 italic">
-                  "{previews.previewText}"
+                  &quot;{previews.previewText}&quot;
                 </p>
               </div>
             )}
@@ -107,11 +98,8 @@ const ContentTab = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {placeholders.map((placeholder) => {
-            const key = placeholder.replace(/{{|}}/g, "").trim();
-            const sampleValue =
-              sampleRecipient?.metadata?.[key] ||
-              sampleRecipient?.[key] ||
-              null;
+            const key = placeholder.replace(/{{|}}/g, '').trim();
+            const sampleValue = sampleRecipient?.metadata?.[key] || sampleRecipient?.[key] || null;
 
             return (
               <div
@@ -126,9 +114,7 @@ const ContentTab = ({
                     Sample Value:
                   </span>
                   <p className="text-[13px] font-bold text-slate-700 tracking-tight truncate">
-                    {sampleValue || (
-                      <span className="text-slate-300 italic">None</span>
-                    )}
+                    {sampleValue || <span className="text-slate-300 italic">None</span>}
                   </p>
                 </div>
               </div>
@@ -146,8 +132,8 @@ const ContentTab = ({
               Variable Check
             </p>
             <p className="text-sm font-medium text-slate-300 leading-snug">
-              All variables are verified. Data will be automatically inserted
-              into your emails when sending.
+              All variables are verified. Data will be automatically inserted into your emails when
+              sending.
             </p>
           </div>
         </div>

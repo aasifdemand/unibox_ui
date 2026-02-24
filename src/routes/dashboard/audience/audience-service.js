@@ -1,29 +1,19 @@
-import * as XLSX from "xlsx";
+import * as XLSX from 'xlsx';
 
 // File upload handlers
-export const handleFileUpload = (
-  e,
-  setUploadedFile,
-  setFileHeaders,
-  setUploadStep,
-  setMapping,
-) => {
+export const handleFileUpload = (e, setUploadedFile, setFileHeaders, setUploadStep, setMapping) => {
   const file = e.target.files[0];
   if (!file) return;
 
   const validTypes = [
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "application/vnd.ms-excel",
-    ".xlsx",
-    ".xls",
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel',
+    '.xlsx',
+    '.xls',
   ];
 
-  if (
-    !validTypes.some(
-      (type) => file.type.includes(type) || file.name.endsWith(type),
-    )
-  ) {
-    alert("Please upload an Excel file (.xlsx or .xls)");
+  if (!validTypes.some((type) => file.type.includes(type) || file.name.endsWith(type))) {
+    alert('Please upload an Excel file (.xlsx or .xls)');
     return;
   }
 
@@ -31,18 +21,13 @@ export const handleFileUpload = (
   parseExcelFile(file, setFileHeaders, setUploadStep, setMapping);
 };
 
-export const parseExcelFile = (
-  file,
-  setFileHeaders,
-  setUploadStep,
-  setMapping,
-) => {
+export const parseExcelFile = (file, setFileHeaders, setUploadStep, setMapping) => {
   const reader = new FileReader();
 
   reader.onload = (e) => {
     try {
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
+      const workbook = XLSX.read(data, { type: 'array' });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
@@ -55,24 +40,24 @@ export const parseExcelFile = (
         const autoMapping = {};
         headers.forEach((header) => {
           const lowerHeader = header.toLowerCase();
-          if (lowerHeader.includes("email")) autoMapping.email = header;
+          if (lowerHeader.includes('email')) autoMapping.email = header;
           if (
-            lowerHeader.includes("name") &&
-            !lowerHeader.includes("first") &&
-            !lowerHeader.includes("last")
+            lowerHeader.includes('name') &&
+            !lowerHeader.includes('first') &&
+            !lowerHeader.includes('last')
           )
             autoMapping.name = header;
-          if (lowerHeader.includes("first")) autoMapping.firstName = header;
-          if (lowerHeader.includes("last")) autoMapping.lastName = header;
-          if (lowerHeader.includes("company")) autoMapping.company = header;
-          if (lowerHeader.includes("phone")) autoMapping.phone = header;
-          if (lowerHeader.includes("city")) autoMapping.city = header;
-          if (lowerHeader.includes("country")) autoMapping.country = header;
+          if (lowerHeader.includes('first')) autoMapping.firstName = header;
+          if (lowerHeader.includes('last')) autoMapping.lastName = header;
+          if (lowerHeader.includes('company')) autoMapping.company = header;
+          if (lowerHeader.includes('phone')) autoMapping.phone = header;
+          if (lowerHeader.includes('city')) autoMapping.city = header;
+          if (lowerHeader.includes('country')) autoMapping.country = header;
         });
         setMapping(autoMapping);
       }
     } catch (error) {
-      console.error("Error parsing Excel file:", error);
+      console.error('Error parsing Excel file:', error);
       alert("Error reading Excel file. Please ensure it's a valid Excel file.");
     }
   };
@@ -96,7 +81,7 @@ export const fetchBatchDetails = async (
       setBatchStats(batchData.counts || {});
     }
   } catch (error) {
-    console.error("Error loading batch details:", error);
+    console.error('Error loading batch details:', error);
     setBatchRecords([]);
     setBatchStats({});
   } finally {
@@ -108,12 +93,11 @@ export const fetchBatchDetails = async (
 export const filterBatches = (batches, searchTerm, filterStatus) => {
   return batches.filter((batch) => {
     const matchesSearch =
-      searchTerm === "" ||
+      searchTerm === '' ||
       batch.originalFilename.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (batch.id && batch.id.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    const matchesStatus =
-      filterStatus === "all" || batch.status === filterStatus;
+    const matchesStatus = filterStatus === 'all' || batch.status === filterStatus;
 
     return matchesSearch && matchesStatus;
   });
@@ -137,36 +121,36 @@ export const calculateVerificationTotals = (batches) => {
 // Get status badge class
 export const getStatusBadgeClass = (status) => {
   switch (status?.toLowerCase()) {
-    case "completed":
-      return "bg-green-100 text-green-800";
-    case "processing":
-      return "bg-yellow-100 text-yellow-800";
-    case "failed":
-      return "bg-red-100 text-red-800";
-    case "uploaded":
-      return "bg-blue-100 text-blue-800";
+    case 'completed':
+      return 'bg-green-100 text-green-800';
+    case 'processing':
+      return 'bg-yellow-100 text-yellow-800';
+    case 'failed':
+      return 'bg-red-100 text-red-800';
+    case 'uploaded':
+      return 'bg-blue-100 text-blue-800';
     default:
-      return "bg-gray-100 text-gray-800";
+      return 'bg-gray-100 text-gray-800';
   }
 };
 
 // Get record status badge class
 export const getRecordStatusBadgeClass = (status) => {
   switch (status?.toLowerCase()) {
-    case "parsed":
-      return "bg-green-100 text-green-800";
-    case "duplicate":
-      return "bg-yellow-100 text-yellow-800";
-    case "invalid":
-      return "bg-red-100 text-red-800";
+    case 'parsed':
+      return 'bg-green-100 text-green-800';
+    case 'duplicate':
+      return 'bg-yellow-100 text-yellow-800';
+    case 'invalid':
+      return 'bg-red-100 text-red-800';
     default:
-      return "bg-gray-100 text-gray-800";
+      return 'bg-gray-100 text-gray-800';
   }
 };
 
 // Format date
 export const formatDate = (dateString) => {
-  if (!dateString) return "-";
+  if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString();
 };
 
@@ -184,23 +168,18 @@ export const getPaginatedData = (data, currentPage, recordsPerPage) => {
 };
 
 // Reset upload state
-export const resetUploadState = (
-  setUploadStep,
-  setUploadedFile,
-  setFileHeaders,
-  setMapping,
-) => {
+export const resetUploadState = (setUploadStep, setUploadedFile, setFileHeaders, setMapping) => {
   setUploadStep(1);
   setUploadedFile(null);
   setFileHeaders([]);
   setMapping({
-    email: "",
-    name: "",
-    firstName: "",
-    lastName: "",
-    company: "",
-    phone: "",
-    city: "",
-    country: "",
+    email: '',
+    name: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    phone: '',
+    city: '',
+    country: '',
   });
 };

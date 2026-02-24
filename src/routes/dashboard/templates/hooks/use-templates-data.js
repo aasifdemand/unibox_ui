@@ -1,14 +1,14 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from 'react';
 import {
   useTemplates,
   useCreateTemplate,
   useUpdateTemplate,
   useDeleteTemplate,
-} from "../../../../hooks/useTemplate";
+} from '../../../../hooks/useTemplate';
 
 export const useTemplatesData = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterActive, setFilterActive] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterActive, setFilterActive] = useState('all');
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 8;
@@ -16,18 +16,13 @@ export const useTemplatesData = () => {
   const [formData, setFormData] = useState({
     isActive: true,
     isDefault: false,
-    status: "draft",
+    status: 'draft',
     variables: [],
   });
-  const [editorMode, setEditorMode] = useState("rich");
+  const [editorMode, setEditorMode] = useState('rich');
 
   // React Query hooks
-  const {
-    data: templates = [],
-    isLoading,
-    error,
-    refetch: refetchTemplates,
-  } = useTemplates();
+  const { data: templates = [], isLoading, error, refetch: refetchTemplates } = useTemplates();
 
   const createTemplate = useCreateTemplate();
   const updateTemplate = useUpdateTemplate();
@@ -37,31 +32,31 @@ export const useTemplatesData = () => {
   const defaultUserFields = useMemo(
     () => [
       {
-        fieldName: "first_name",
-        displayName: "First Name",
-        sampleValue: "John",
+        fieldName: 'first_name',
+        displayName: 'First Name',
+        sampleValue: 'John',
       },
-      { fieldName: "last_name", displayName: "Last Name", sampleValue: "Doe" },
+      { fieldName: 'last_name', displayName: 'Last Name', sampleValue: 'Doe' },
       {
-        fieldName: "email",
-        displayName: "Email",
-        sampleValue: "john@example.com",
-      },
-      {
-        fieldName: "company",
-        displayName: "Company",
-        sampleValue: "Acme Corp",
-      },
-      { fieldName: "city", displayName: "City", sampleValue: "New York" },
-      {
-        fieldName: "job_title",
-        displayName: "Job Title",
-        sampleValue: "Manager",
+        fieldName: 'email',
+        displayName: 'Email',
+        sampleValue: 'john@example.com',
       },
       {
-        fieldName: "unsubscribe_link",
-        displayName: "Unsubscribe Link",
-        sampleValue: "#",
+        fieldName: 'company',
+        displayName: 'Company',
+        sampleValue: 'Acme Corp',
+      },
+      { fieldName: 'city', displayName: 'City', sampleValue: 'New York' },
+      {
+        fieldName: 'job_title',
+        displayName: 'Job Title',
+        sampleValue: 'Manager',
+      },
+      {
+        fieldName: 'unsubscribe_link',
+        displayName: 'Unsubscribe Link',
+        sampleValue: '#',
       },
     ],
     [],
@@ -70,16 +65,16 @@ export const useTemplatesData = () => {
   // Open create template modal
   const handleCreateNew = useCallback(() => {
     setFormData({
-      name: "New Template",
-      subject: "",
+      name: 'New Template',
+      subject: '',
       htmlContent: `<p>Hello {{first_name}},</p>\n<p>We're excited to share our latest updates with you!</p>\n<p>Best regards,<br>Your Team</p>`,
       isActive: true,
       isDefault: false,
-      status: "draft",
+      status: 'draft',
       variables: [],
     });
     setEditingTemplate(null);
-    setEditorMode("rich");
+    setEditorMode('rich');
     setShowTemplateModal(true);
   }, []);
 
@@ -87,18 +82,18 @@ export const useTemplatesData = () => {
   const handleEditTemplate = useCallback((template, e) => {
     e?.stopPropagation();
     setFormData({
-      name: template.name || "",
-      subject: template.subject || "",
+      name: template.name || '',
+      subject: template.subject || '',
       htmlContent:
         template.htmlContent ||
         `<p>Hello {{first_name}},</p>\n<p>We're excited to share our latest updates with you!</p>\n<p>Best regards,<br>Your Team</p>`,
       isActive: template.isActive || template.status === 'active' || true,
       isDefault: template.isDefault || false,
-      status: template.status || "draft",
+      status: template.status || 'draft',
       variables: template.variables || [],
     });
     setEditingTemplate(template);
-    setEditorMode("rich");
+    setEditorMode('rich');
     setShowTemplateModal(true);
   }, []);
 
@@ -106,7 +101,7 @@ export const useTemplatesData = () => {
   const handleSaveTemplate = useCallback(async () => {
     try {
       if (!formData.name.trim()) {
-        alert("Template name is required");
+        alert('Template name is required');
         return;
       }
 
@@ -123,16 +118,10 @@ export const useTemplatesData = () => {
       setEditingTemplate(null);
       refetchTemplates();
     } catch (err) {
-      console.error("Failed to save template:", err);
+      console.error('Failed to save template:', err);
       alert(`Failed to save template: ${err.message}`);
     }
-  }, [
-    formData,
-    editingTemplate,
-    updateTemplate,
-    createTemplate,
-    refetchTemplates,
-  ]);
+  }, [formData, editingTemplate, updateTemplate, createTemplate, refetchTemplates]);
 
   // Handle template deletion (without UI confirmation)
   const handleDeleteTemplate = useCallback(
@@ -141,7 +130,7 @@ export const useTemplatesData = () => {
         await deleteTemplate.mutateAsync(template.id);
         refetchTemplates();
       } catch (err) {
-        console.error("Failed to delete template:", err);
+        console.error('Failed to delete template:', err);
         alert(`Failed to delete template: ${err.message}`);
       }
     },
@@ -155,9 +144,10 @@ export const useTemplatesData = () => {
         template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         template.subject?.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesFilter =
-        filterActive === "all" ||
-        (filterActive === "active" && (template.status === "active" || template.status === "draft")) ||
-        (filterActive === "inactive" && template.status === "inactive");
+        filterActive === 'all' ||
+        (filterActive === 'active' &&
+          (template.status === 'active' || template.status === 'draft')) ||
+        (filterActive === 'inactive' && template.status === 'inactive');
       return matchesSearch && matchesFilter;
     });
   }, [templates, searchTerm, filterActive]);
@@ -170,9 +160,7 @@ export const useTemplatesData = () => {
 
   // Check if any mutation is pending
   const isPending =
-    createTemplate.isPending ||
-    updateTemplate.isPending ||
-    deleteTemplate.isPending;
+    createTemplate.isPending || updateTemplate.isPending || deleteTemplate.isPending;
 
   return {
     state: {

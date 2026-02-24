@@ -10,10 +10,10 @@ import {
   List,
   Filter,
   XCircle,
-} from "lucide-react";
-import MessageActionsHeader from "./messageactions-header";
-import { useAudienceData } from "../../audience/hooks/use-audience-data";
-import ShowSender from "../../../../modals/showsender";
+} from 'lucide-react';
+import MessageActionsHeader from './messageactions-header';
+import { useAudienceData } from '../../audience/hooks/use-audience-data';
+import ShowSender from '../../../../modals/showsender';
 
 const Header = ({
   view,
@@ -73,7 +73,7 @@ const Header = ({
     <div className="bg-white/90 backdrop-blur-2xl border-b border-slate-200/60 px-4 md:px-8 py-5 sticky top-0 z-20 shadow-xs">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full mx-auto">
         <div className="flex items-center gap-6">
-          {view !== "list" && (
+          {view !== 'list' && (
             <button
               onClick={onBack}
               className="group p-2.5 bg-slate-50 hover:bg-white rounded-2xl transition-all border border-slate-200 shadow-xs hover:shadow-md hover:-translate-x-0.5 active:translate-x-0 group"
@@ -86,22 +86,20 @@ const Header = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">
-                {view === "list" && (
+                {view === 'list' && (
                   <>
                     Mail<span className="text-gradient">boxes</span>
                   </>
                 )}
-                {view === "messages" && (
+                {view === 'messages' && (
                   <span className="truncate max-w-50 md:max-w-md">
-                    {selectedFolder?.name ||
-                      selectedMailbox?.displayName ||
-                      "Inbox"}
+                    {selectedFolder?.name || selectedMailbox?.displayName || 'Inbox'}
                   </span>
                 )}
-                {view === "message" && "Conversation"}
+                {view === 'message' && 'Conversation'}
               </h1>
 
-              {view === "messages" && selectedMailbox && (
+              {view === 'messages' && selectedMailbox && (
                 <div className="hidden sm:flex items-center gap-2">
                   <div className="w-1 h-1 rounded-full bg-slate-300"></div>
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-xs">
@@ -112,7 +110,7 @@ const Header = ({
             </div>
 
             <div className="flex items-center gap-3 mt-1.5 font-sans">
-              {view === "list" && (
+              {view === 'list' && (
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
                   <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-[0.2em]">
@@ -121,7 +119,7 @@ const Header = ({
                 </div>
               )}
 
-              {view === "messages" && selectedMailbox && (
+              {view === 'messages' && selectedMailbox && (
                 <div className="flex items-center flex-wrap gap-2">
                   <div className="flex items-center gap-1.5">
                     {selectedFolder && (
@@ -145,7 +143,7 @@ const Header = ({
                     <div className="flex items-center gap-2 ml-1">
                       <div className="w-1 h-1 rounded-full bg-slate-200"></div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        Displaying {startMessageCount}-{endMessageCount} of{" "}
+                        Displaying {startMessageCount}-{endMessageCount} of{' '}
                         {totalMessages.toLocaleString()}
                       </span>
                     </div>
@@ -153,7 +151,7 @@ const Header = ({
                 </div>
               )}
 
-              {view === "message" && currentMessage && (
+              {view === 'message' && currentMessage && (
                 <p className="text-xs font-bold text-slate-400 opacity-80 max-w-sm truncate italic">
                   Re: {getSubject(currentMessage)}
                 </p>
@@ -163,9 +161,9 @@ const Header = ({
         </div>
 
         <div className="flex items-center gap-3">
-          {view === "list" && (
+          {view === 'list' && (
             <div className="flex items-center gap-3">
-              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 min-w-[240px] transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
+              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 min-w-60 transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
                 <Search className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors shrink-0" />
                 <input
                   type="text"
@@ -176,12 +174,12 @@ const Header = ({
                 />
               </div>
 
-              <div className="relative flex items-center min-w-[160px]">
+              <div className="relative flex items-center min-w-40">
                 <Filter className="absolute left-4 w-4 h-4 text-slate-400 pointer-events-none" />
                 <select
                   value={mailboxTypeFilter}
                   onChange={(e) => onMailboxTypeChange(e.target.value)}
-                  className="appearance-none w-full pl-10 pr-10 py-2.5 bg-slate-50 h-[42px] border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/40 focus:bg-white transition-all cursor-pointer"
+                  className="appearance-none w-full pl-10 pr-10 py-2.5 bg-slate-50 h-10.5 border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/40 focus:bg-white transition-all cursor-pointer"
                 >
                   <option value="all">ALL PROVIDERS</option>
                   <option value="gmail">GMAIL</option>
@@ -193,21 +191,23 @@ const Header = ({
 
               <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-2xl border border-slate-200">
                 <button
-                  onClick={() => mailboxViewMode !== "grid" && onToggleMailboxViewMode()}
-                  className={`p-2 rounded-xl transition-all ${mailboxViewMode === "grid"
-                    ? "bg-white shadow-sm ring-1 ring-slate-200 text-blue-600"
-                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
-                    }`}
+                  onClick={() => mailboxViewMode !== 'grid' && onToggleMailboxViewMode()}
+                  className={`p-2 rounded-xl transition-all ${
+                    mailboxViewMode === 'grid'
+                      ? 'bg-white shadow-sm ring-1 ring-slate-200 text-blue-600'
+                      : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200/50'
+                  }`}
                   title="Grid View"
                 >
                   <LayoutGrid className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => mailboxViewMode !== "list" && onToggleMailboxViewMode()}
-                  className={`p-2 rounded-xl transition-all ${mailboxViewMode === "list"
-                    ? "bg-white shadow-sm ring-1 ring-slate-200 text-blue-600"
-                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
-                    }`}
+                  onClick={() => mailboxViewMode !== 'list' && onToggleMailboxViewMode()}
+                  className={`p-2 rounded-xl transition-all ${
+                    mailboxViewMode === 'list'
+                      ? 'bg-white shadow-sm ring-1 ring-slate-200 text-blue-600'
+                      : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200/50'
+                  }`}
                   title="List View"
                 >
                   <List className="w-4 h-4" />
@@ -221,11 +221,13 @@ const Header = ({
                 title="Refresh Mailboxes"
               >
                 <RefreshCw
-                  className={`w-4 h-4 ${isLoading ? "animate-spin text-blue-500" : "text-slate-500 group-hover:text-blue-600"
-                    }`}
+                  className={`w-4 h-4 ${
+                    isLoading
+                      ? 'animate-spin text-blue-500'
+                      : 'text-slate-500 group-hover:text-blue-600'
+                  }`}
                 />
               </button>
-
 
               {selectedSenderIds?.length > 0 ? (
                 <div className="flex items-center gap-1.5 bg-rose-600 px-3 py-1.5 rounded-xl shadow-lg shadow-rose-500/20 animate-in zoom-in duration-300">
@@ -257,7 +259,9 @@ const Header = ({
                   className="btn-primary flex items-center py-2.5 px-6 whitespace-nowrap shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
                 >
                   <Plus className="w-4 h-4 mr-2 shrink-0" />
-                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">Add Mailbox</span>
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">
+                    Add Mailbox
+                  </span>
                 </button>
               )}
 
@@ -278,7 +282,7 @@ const Header = ({
             </div>
           )}
 
-          {view === "messages" && selectedMailbox && (
+          {view === 'messages' && selectedMailbox && (
             <MessageActionsHeader
               selectedMessages={selectedMessages}
               onBulkMarkRead={onBulkMarkRead}
@@ -297,7 +301,7 @@ const Header = ({
             />
           )}
 
-          {view === "message" && showMessageActions && (
+          {view === 'message' && showMessageActions && (
             <div className="flex items-center gap-2">
               <button
                 onClick={onReply}

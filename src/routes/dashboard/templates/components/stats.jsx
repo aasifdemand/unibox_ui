@@ -1,41 +1,35 @@
-import React from "react";
-import { Sparkles } from "lucide-react";
+import React from 'react';
+import { Sparkles } from 'lucide-react';
 
 const Stats = ({ templates }) => {
   const formatDate = (dateString) => {
     try {
-      return new Date(dateString).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+      return new Date(dateString).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       });
     } catch {
-      return "Never Updated";
+      return 'Never Updated';
     }
   };
 
-  const activeTemplatesCount = templates.filter(
-    (t) => t.status === "active",
-  ).length;
+  const activeTemplatesCount = templates.filter((t) => t.status === 'active').length;
   const totalTemplatesCount = templates.length;
   const activePercentage =
-    totalTemplatesCount > 0
-      ? (activeTemplatesCount / totalTemplatesCount) * 100
-      : 0;
+    totalTemplatesCount > 0 ? (activeTemplatesCount / totalTemplatesCount) * 100 : 0;
 
   const averageVariables =
     totalTemplatesCount > 0
       ? Math.round(
-        templates.reduce((sum, t) => sum + (t.variables?.length || 0), 0) /
-        totalTemplatesCount,
-      )
+          templates.reduce((sum, t) => sum + (t.variables?.length || 0), 0) / totalTemplatesCount,
+        )
       : 0;
 
-  const lastUpdated =
-    totalTemplatesCount > 0 ? formatDate(templates[0].updatedAt) : "Never";
+  const lastUpdated = totalTemplatesCount > 0 ? formatDate(templates[0].updatedAt) : 'Never';
 
   return (
-    <div className="premium-card bg-gradient-to-br from-indigo-600 to-blue-700 rounded-[2.5rem] p-10 shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
+    <div className="premium-card bg-linear-to-br from-indigo-600 to-blue-700 rounded-[2.5rem] p-10 shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full -mr-32 -mt-32 blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
 
       <div className="relative">
@@ -103,8 +97,8 @@ const Stats = ({ templates }) => {
                 Pro Tip
               </p>
               <p className="text-xs font-medium text-slate-400 leading-relaxed">
-                Use variables like {"{{first_name}}"} to personalize your emails
-                and improve engagement.
+                Use variables like {'{{first_name}}'} to personalize your emails and improve
+                engagement.
               </p>
             </div>
           </div>

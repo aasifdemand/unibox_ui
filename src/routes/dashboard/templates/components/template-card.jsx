@@ -1,19 +1,13 @@
-import React from "react";
-import { FileText, Edit3, Trash2, Loader2, ChevronRight } from "lucide-react";
+import React from 'react';
+import { FileText, Edit3, Trash2, Loader2, ChevronRight } from 'lucide-react';
 
-const TemplateCard = ({
-  template,
-  onEdit,
-  onDelete,
-  isPending,
-  isDeletePending,
-  formatDate,
-}) => {
+const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, formatDate }) => {
   return (
     <div
       onClick={(e) => onEdit(template, e)}
-      className={`group relative overflow-hidden premium-card bg-white border-slate-200/60 p-6 hover:shadow-2xl hover:shadow-blue-500/8 transition-all duration-500 cursor-pointer ${isDeletePending ? "opacity-50 pointer-events-none" : ""
-        }`}
+      className={`group relative overflow-hidden premium-card bg-white border-slate-200/60 p-6 hover:shadow-2xl hover:shadow-blue-500/8 transition-all duration-500 cursor-pointer ${
+        isDeletePending ? 'opacity-50 pointer-events-none' : ''
+      }`}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-blue-500/10 transition-colors duration-500"></div>
 
@@ -28,14 +22,15 @@ const TemplateCard = ({
             </h4>
             <div className="flex items-center gap-2 mt-1">
               <span
-                className={`px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest ${template.status === "active"
-                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                    : template.status === "draft"
-                      ? "bg-blue-50 text-blue-600 border border-blue-100"
-                      : "bg-slate-50 text-slate-500 border border-slate-100"
-                  }`}
+                className={`px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest ${
+                  template.status === 'active'
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                    : template.status === 'draft'
+                      ? 'bg-blue-50 text-blue-600 border border-blue-100'
+                      : 'bg-slate-50 text-slate-500 border border-slate-100'
+                }`}
               >
-                {template.status || "Draft"}
+                {template.status || 'Draft'}
               </span>
               {template.isDefault && (
                 <span className="px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest bg-violet-50 text-violet-600 border border-violet-100">
@@ -76,7 +71,7 @@ const TemplateCard = ({
 
       <div className="mb-6 h-12">
         <p className="text-sm font-bold text-slate-500 line-clamp-2 leading-relaxed">
-          {template.subject || "No subject line defined"}
+          {template.subject || 'No subject line defined'}
         </p>
       </div>
 

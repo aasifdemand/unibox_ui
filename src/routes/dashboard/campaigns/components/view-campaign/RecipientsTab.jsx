@@ -1,14 +1,5 @@
-import React from "react";
-import {
-  Download,
-  MessageCircle,
-  Eye,
-  Users,
-  Search,
-  Filter,
-  Mail,
-  ShieldCheck,
-} from "lucide-react";
+import React from 'react';
+import { Download, MessageCircle, Eye, Users, Mail, ShieldCheck } from 'lucide-react';
 
 const RecipientsTab = ({
   campaign,
@@ -22,30 +13,26 @@ const RecipientsTab = ({
   const handleExportCsv = () => {
     if (!recipients.length) return;
 
-    const headers = ["Email", "Name", "Status", "LastSentAt", "RepliedAt"];
+    const headers = ['Email', 'Name', 'Status', 'LastSentAt', 'RepliedAt'];
     const rows = recipients.map((recipient) => [
-      recipient.email || "",
-      recipient.name || "",
-      recipient.status || "",
-      recipient.lastSentAt ? formatDate(recipient.lastSentAt) : "",
-      recipient.repliedAt ? formatDate(recipient.repliedAt) : "",
+      recipient.email || '',
+      recipient.name || '',
+      recipient.status || '',
+      recipient.lastSentAt ? formatDate(recipient.lastSentAt) : '',
+      recipient.repliedAt ? formatDate(recipient.repliedAt) : '',
     ]);
 
     const csvContent = [headers, ...rows]
       .map((row) =>
         row
-          .map((value) =>
-            typeof value === "string"
-              ? `"${value.replace(/"/g, '""')}"`
-              : value,
-          )
-          .join(","),
+          .map((value) => (typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value))
+          .join(','),
       )
-      .join("\n");
+      .join('\n');
 
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `campaign-${campaign.id}-recipients.csv`;
     document.body.appendChild(a);
@@ -63,9 +50,7 @@ const RecipientsTab = ({
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-black text-slate-900 tracking-tight">
-                Recipients
-              </h3>
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">Recipients</h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
                 Manage campaign recipients
               </p>
@@ -126,17 +111,14 @@ const RecipientsTab = ({
             </thead>
             <tbody className="divide-y divide-slate-50">
               {recipients.map((recipient) => (
-                <tr
-                  key={recipient.id}
-                  className="hover:bg-slate-50/50 transition-colors group"
-                >
+                <tr key={recipient.id} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="py-5 px-6">
                     <div className="flex flex-col">
                       <span className="text-sm font-bold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
                         {recipient.email}
                       </span>
                       <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
-                        {recipient.name || "N/A"}
+                        {recipient.name || 'N/A'}
                       </span>
                     </div>
                   </td>
@@ -145,21 +127,17 @@ const RecipientsTab = ({
                   </td>
                   <td className="py-5 px-6">
                     <span className="text-[11px] font-black text-slate-500 tabular-nums uppercase">
-                      {recipient.lastSentAt
-                        ? formatDate(recipient.lastSentAt)
-                        : "Pending"}
+                      {recipient.lastSentAt ? formatDate(recipient.lastSentAt) : 'Pending'}
                     </span>
                   </td>
                   <td className="py-5 px-6">
                     <span className="text-[11px] font-black text-slate-500 tabular-nums uppercase">
-                      {recipient.repliedAt
-                        ? formatDate(recipient.repliedAt)
-                        : "—"}
+                      {recipient.repliedAt ? formatDate(recipient.repliedAt) : '—'}
                     </span>
                   </td>
                   <td className="py-5 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      {recipient.status === "replied" ? (
+                      {recipient.status === 'replied' ? (
                         <button
                           onClick={() => viewReply(recipient.id)}
                           className="h-8 px-4 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-xl font-black uppercase tracking-widest text-[9px] transition-all flex items-center gap-1.5"
@@ -173,9 +151,7 @@ const RecipientsTab = ({
                         </div>
                       )}
                       <button
-                        onClick={() =>
-                          setSelectedRecipientForPreview(recipient)
-                        }
+                        onClick={() => setSelectedRecipientForPreview(recipient)}
                         className="w-8 h-8 flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition-all"
                       >
                         <Eye className="w-4 h-4" />
@@ -198,9 +174,7 @@ const RecipientsTab = ({
                 <ShieldCheck className="w-5 h-5 text-indigo-200" />
               </div>
             </div>
-            <h4 className="text-xl font-black text-slate-900 tracking-tight">
-              No Recipients
-            </h4>
+            <h4 className="text-xl font-black text-slate-900 tracking-tight">No Recipients</h4>
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
               Recipients will appear here once the campaign starts sending.
             </p>
@@ -214,33 +188,31 @@ const RecipientsTab = ({
 const RecipientStatusBadge = ({ status }) => {
   const configs = {
     replied: {
-      bg: "bg-emerald-50 text-emerald-700 border-emerald-100",
+      bg: 'bg-emerald-50 text-emerald-700 border-emerald-100',
       icon: <MessageCircle className="w-3 h-3" />,
-      label: "Replied",
+      label: 'Replied',
     },
     sent: {
-      bg: "bg-blue-50 text-blue-700 border-blue-100",
+      bg: 'bg-blue-50 text-blue-700 border-blue-100',
       icon: <Mail className="w-3 h-3" />,
-      label: "Sent",
+      label: 'Sent',
     },
     bounced: {
-      bg: "bg-rose-50 text-rose-700 border-rose-100",
+      bg: 'bg-rose-50 text-rose-700 border-rose-100',
       icon: <ShieldCheck className="w-3 h-3" />,
-      label: "Bounced",
+      label: 'Bounced',
     },
     default: {
-      bg: "bg-slate-50 text-slate-500 border-slate-100",
+      bg: 'bg-slate-50 text-slate-500 border-slate-100',
       icon: <Users className="w-3 h-3" />,
-      label: "Pending",
+      label: 'Pending',
     },
   };
 
   const config = configs[status] || configs.default;
 
   return (
-    <div
-      className={`px-3 py-1.5 rounded-xl border ${config.bg} flex items-center gap-2 w-fit`}
-    >
+    <div className={`px-3 py-1.5 rounded-xl border ${config.bg} flex items-center gap-2 w-fit`}>
       {config.icon}
       <span className="text-[9px] font-black uppercase tracking-widest leading-none">
         {config.label}

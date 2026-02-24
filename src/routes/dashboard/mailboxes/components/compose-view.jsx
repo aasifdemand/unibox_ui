@@ -1,20 +1,9 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from "react";
-import {
-  X,
-  Send,
-  Paperclip,
-  Image as ImageIcon,
-  Trash2,
-  ChevronLeft,
-} from "lucide-react";
-import HtmlEmailEditor from "../../../../components/shared/html-editor";
-import toast from "react-hot-toast";
-import {
-  getSenderInfo,
-  getFullMessageBody,
-  parseMessageDate,
-} from "../utils/utils";
+import React, { useState, useEffect } from 'react';
+import { X, Send, Paperclip, Image as ImageIcon, ChevronLeft } from 'lucide-react';
+import HtmlEmailEditor from '../../../../components/shared/html-editor';
+import toast from 'react-hot-toast';
+import { getSenderInfo, getFullMessageBody, parseMessageDate } from '../utils/utils';
 
 const ComposeView = ({
   selectedMailbox,
@@ -24,29 +13,29 @@ const ComposeView = ({
   forwardMessage,
   onSaveDraft,
 }) => {
-  const [to, setTo] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
+  const [to, setTo] = useState('');
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
 
   useEffect(() => {
     if (replyToMessage) {
       const sender = getSenderInfo(replyToMessage);
       const date = parseMessageDate(replyToMessage);
-      const formattedDate = date ? date.toLocaleString() : "Unknown Date";
+      const formattedDate = date ? date.toLocaleString() : 'Unknown Date';
 
       setTo(sender.email);
       setSubject(
-        replyToMessage.subject?.toLowerCase().startsWith("re:")
+        replyToMessage.subject?.toLowerCase().startsWith('re:')
           ? replyToMessage.subject
-          : `Re: ${replyToMessage.subject || "(no subject)"}`,
+          : `Re: ${replyToMessage.subject || '(no subject)'}`,
       );
 
       // Extract body and format as clean HTML for the rich editor
       const rawBody = getFullMessageBody(replyToMessage);
       const htmlBody = rawBody
-        .split("\n")
+        .split('\n')
         .map((line) => line.trim())
-        .join("<br />");
+        .join('<br />');
 
       // Premium quote style: top space for typing, then attribution, then styled blockquote
       const quote = `
@@ -63,20 +52,20 @@ const ComposeView = ({
       setBody(quote);
     } else if (forwardMessage) {
       setSubject(
-        forwardMessage.subject?.toLowerCase().startsWith("fwd:")
+        forwardMessage.subject?.toLowerCase().startsWith('fwd:')
           ? forwardMessage.subject
-          : `Fwd: ${forwardMessage.subject || "(no subject)"}`,
+          : `Fwd: ${forwardMessage.subject || '(no subject)'}`,
       );
 
       const sender = getSenderInfo(forwardMessage);
       const date = parseMessageDate(forwardMessage);
-      const formattedDate = date ? date.toLocaleString() : "Unknown Date";
+      const formattedDate = date ? date.toLocaleString() : 'Unknown Date';
 
       const rawBody = getFullMessageBody(forwardMessage);
       const htmlBody = rawBody
-        .split("\n")
+        .split('\n')
         .map((line) => line.trim())
-        .join("<br />");
+        .join('<br />');
 
       const quote = `
         <p><br /></p>
@@ -98,25 +87,25 @@ const ComposeView = ({
 
   const handleSend = () => {
     if (!to) {
-      toast.error("Please specify at least one recipient.");
+      toast.error('Please specify at least one recipient.');
       return;
     }
 
     onSend({
-      to: to.split(",").map((e) => e.trim()),
+      to: to.split(',').map((e) => e.trim()),
       subject,
       html: body,
-      body: body.replace(/<[^>]*>/g, ""),
+      body: body.replace(/<[^>]*>/g, ''),
     });
   };
 
   const handleSaveDraft = () => {
     onSaveDraft?.({
-      to: to.split(",").map((e) => e.trim()),
+      to: to.split(',').map((e) => e.trim()),
       subject,
       html: body,
     });
-    toast.success("Draft saved");
+    toast.success('Draft saved');
   };
 
   return (
@@ -132,11 +121,7 @@ const ComposeView = ({
           </button>
           <div>
             <h2 className="text-lg font-medium text-slate-900">
-              {replyToMessage
-                ? "Reply"
-                : forwardMessage
-                  ? "Forward"
-                  : "New Message"}
+              {replyToMessage ? 'Reply' : forwardMessage ? 'Forward' : 'New Message'}
             </h2>
             <p className="text-sm text-slate-500">{selectedMailbox?.email}</p>
           </div>
@@ -165,9 +150,7 @@ const ComposeView = ({
           </div>
 
           <div className="flex items-center gap-4 border border-slate-200 rounded-lg px-4 py-2 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
-            <span className="text-sm font-medium text-slate-500 w-12">
-              Subject:
-            </span>
+            <span className="text-sm font-medium text-slate-500 w-12">Subject:</span>
             <input
               type="text"
               value={subject}

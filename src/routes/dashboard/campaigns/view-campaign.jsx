@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { XCircle } from "lucide-react";
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 
-import ShowDelete from "../../../modals/showdelete";
-import ShowReply from "../../../modals/showreply";
+import ShowDelete from '../../../modals/showdelete';
+import ShowReply from '../../../modals/showreply';
 
 // Import hooks and components
-import { useCampaignAnalytics } from "./hooks/use-campaign-analytics";
-import CampaignHeader from "./components/view-campaign/CampaignHeader";
-import CampaignMetrics from "./components/view-campaign/CampaignMetrics";
-import OverviewTab from "./components/view-campaign/OverviewTab";
-import AnalyticsTab from "./components/view-campaign/AnalyticsTab";
-import RecipientsTab from "./components/view-campaign/RecipientsTab";
-import RepliesTab from "./components/view-campaign/RepliesTab";
-import ContentTab from "./components/view-campaign/ContentTab";
+import { useCampaignAnalytics } from './hooks/use-campaign-analytics';
+import CampaignHeader from './components/view-campaign/CampaignHeader';
+import CampaignMetrics from './components/view-campaign/CampaignMetrics';
+import OverviewTab from './components/view-campaign/OverviewTab';
+import AnalyticsTab from './components/view-campaign/AnalyticsTab';
+import RecipientsTab from './components/view-campaign/RecipientsTab';
+import RepliesTab from './components/view-campaign/RepliesTab';
+import ContentTab from './components/view-campaign/ContentTab';
 
 const ViewCampaign = () => {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState('overview');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [selectedReply, setSelectedReply] = useState(null);
@@ -43,15 +42,13 @@ const ViewCampaign = () => {
   } = useCampaignAnalytics(id);
 
   const viewReply = (replyOrId) => {
-    if (typeof replyOrId === "string") {
+    if (typeof replyOrId === 'string') {
       // Find reply by matching recipient ID or email from the replies array
       const reply = (replies || []).find(
         (r) =>
           r.recipientId === replyOrId ||
           r.recipient?.id === replyOrId ||
-          r.replyFrom ===
-          campaign.CampaignRecipients?.find((rcp) => rcp.id === replyOrId)
-            ?.email,
+          r.replyFrom === campaign.CampaignRecipients?.find((rcp) => rcp.id === replyOrId)?.email,
       );
       setSelectedReply(reply);
     } else {
@@ -75,15 +72,13 @@ const ViewCampaign = () => {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-red-50 border border-red-100 rounded-lg p-12 text-center">
-          <h3 className="text-xl font-semibold text-red-800 mb-2">
-            Campaign Not Found
-          </h3>
+          <h3 className="text-xl font-semibold text-red-800 mb-2">Campaign Not Found</h3>
           <p className="text-sm text-red-600 mb-6">
-            We couldn't find the campaign you're looking for.
+            We couldn&apos;t find the campaign you&apos;re looking for.
           </p>
 
           <button
-            onClick={() => navigate("/dashboard/campaigns")}
+            onClick={() => navigate('/dashboard/campaigns')}
             className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
           >
             Back to Campaigns
@@ -100,7 +95,7 @@ const ViewCampaign = () => {
             const success = await actions.handleDelete();
             if (success) {
               setShowDeleteModal(false);
-              navigate("/dashboard/campaigns");
+              navigate('/dashboard/campaigns');
             }
           }}
           setShowDeleteModal={setShowDeleteModal}
@@ -145,19 +140,20 @@ const ViewCampaign = () => {
         <div className="space-y-8">
           <div className="flex items-center gap-1 p-1 bg-slate-100/50 backdrop-blur-md rounded-2xl w-fit border border-slate-200/50 shadow-sm">
             {[
-              { id: "overview", label: "Overview" },
-              { id: "analytics", label: "Analytics" },
-              { id: "recipients", label: "Recipients" },
-              { id: "replies", label: `Replies (${stats.totalReplied})` },
-              { id: "content", label: "Content" },
+              { id: 'overview', label: 'Overview' },
+              { id: 'analytics', label: 'Analytics' },
+              { id: 'recipients', label: 'Recipients' },
+              { id: 'replies', label: `Replies (${stats.totalReplied})` },
+              { id: 'content', label: 'Content' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${activeTab === tab.id
-                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
-                  : "text-slate-400 hover:text-slate-600 hover:bg-white"
-                  }`}
+                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${
+                  activeTab === tab.id
+                    ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-white'
+                }`}
               >
                 {tab.label}
               </button>
@@ -172,7 +168,7 @@ const ViewCampaign = () => {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              {activeTab === "overview" && (
+              {activeTab === 'overview' && (
                 <OverviewTab
                   campaign={campaign}
                   stats={stats}
@@ -181,10 +177,8 @@ const ViewCampaign = () => {
                   formatDate={formatDate}
                 />
               )}
-              {activeTab === "analytics" && (
-                <AnalyticsTab campaign={campaign} stats={stats} />
-              )}
-              {activeTab === "recipients" && (
+              {activeTab === 'analytics' && <AnalyticsTab campaign={campaign} stats={stats} />}
+              {activeTab === 'recipients' && (
                 <RecipientsTab
                   campaign={campaign}
                   stats={stats}
@@ -193,7 +187,7 @@ const ViewCampaign = () => {
                   setSelectedRecipientForPreview={setSelectedRecipientForPreview}
                 />
               )}
-              {activeTab === "replies" && (
+              {activeTab === 'replies' && (
                 <RepliesTab
                   campaign={campaign}
                   replies={replies}
@@ -202,7 +196,7 @@ const ViewCampaign = () => {
                   viewReply={viewReply}
                 />
               )}
-              {activeTab === "content" && (
+              {activeTab === 'content' && (
                 <ContentTab
                   campaign={campaign}
                   previews={previews}

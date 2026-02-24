@@ -11,11 +11,11 @@ import {
   Send,
   Star,
   Trash2,
-} from "lucide-react";
-import { formatFileSize } from "../utils/utils";
-import { format } from "date-fns";
-import { useState } from "react";
-import { getMessageId } from "../utils/getmessage-id";
+} from 'lucide-react';
+import { formatFileSize } from '../utils/utils';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import { getMessageId } from '../utils/getmessage-id';
 
 const MessageDetailView = ({
   message,
@@ -34,55 +34,52 @@ const MessageDetailView = ({
   const realMessageId = getMessageId(message, mailbox?.type);
 
   const getSenderInfo = (msg) => {
-    let email = "",
-      name = "";
+    let email = '',
+      name = '';
 
     try {
       // Outlook format (from your API response)
       if (msg?.from?.emailAddress) {
-        email = msg.from.emailAddress.address || "";
-        name = msg.from.emailAddress.name || "";
+        email = msg.from.emailAddress.address || '';
+        name = msg.from.emailAddress.name || '';
       }
       // SMTP format (from your API response)
-      else if (msg?.from && typeof msg.from === "string") {
+      else if (msg?.from && typeof msg.from === 'string') {
         // Parse "Nathaniel Pierce" <nathaniel.pierce@cubetvolt.info>
         const match = msg.from.match(/^(?:"?(.+?)"?\s*)?(?:<(.+?)>)?$/);
         if (match) {
-          name = match[1] || "";
+          name = match[1] || '';
           email = match[2] || msg.from;
         }
         // If no match, use the whole string as email
         if (!email) {
           email = msg.from;
-          name = email.split("@")[0];
+          name = email.split('@')[0];
         }
       }
       // Gmail format
       else if (msg?.payload?.headers) {
-        const from =
-          msg.payload.headers.find((h) => h.name === "From")?.value || "";
+        const from = msg.payload.headers.find((h) => h.name === 'From')?.value || '';
         const match = from.match(/<([^>]+)>/);
         email = match ? match[1] : from;
         const nameMatch = from.match(/^([^<]+)/);
-        name = nameMatch
-          ? nameMatch[1].trim().replace(/"/g, "")
-          : email.split("@")[0];
+        name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
       }
       // Direct from string (fallback)
       else if (msg?.from) {
         email = msg.from;
-        name = email.split("@")[0];
+        name = email.split('@')[0];
       }
     } catch (e) {
-      console.error("Error parsing sender:", e);
+      console.error('Error parsing sender:', e);
     }
 
     // Clean up name
     if (name) {
-      name = name.replace(/^["']|["']$/g, "").trim();
+      name = name.replace(/^["']|["']$/g, '').trim();
     }
     if (!name && email) {
-      name = email.split("@")[0];
+      name = email.split('@')[0];
     }
 
     return { email, name };
@@ -93,20 +90,18 @@ const MessageDetailView = ({
     if (msg?.to) {
       // Parse comma-separated list
       return msg.to
-        .split(",")
+        .split(',')
         .map((t) => t.trim())
         .filter(Boolean);
     }
     // Outlook format
     if (msg?.toRecipients) {
-      return msg.toRecipients
-        .map((r) => r.emailAddress?.address)
-        .filter(Boolean);
+      return msg.toRecipients.map((r) => r.emailAddress?.address).filter(Boolean);
     }
     // Gmail format
     if (msg?.payload?.headers) {
-      const to = msg.payload.headers.find((h) => h.name === "To")?.value || "";
-      return to.split(",").map((t) => t.trim());
+      const to = msg.payload.headers.find((h) => h.name === 'To')?.value || '';
+      return to.split(',').map((t) => t.trim());
     }
     return [];
   };
@@ -115,20 +110,18 @@ const MessageDetailView = ({
     // SMTP format (from your API response)
     if (msg?.cc) {
       return msg.cc
-        .split(",")
+        .split(',')
         .map((t) => t.trim())
         .filter(Boolean);
     }
     // Outlook format
     if (msg?.ccRecipients) {
-      return msg.ccRecipients
-        .map((r) => r.emailAddress?.address)
-        .filter(Boolean);
+      return msg.ccRecipients.map((r) => r.emailAddress?.address).filter(Boolean);
     }
     // Gmail format
     if (msg?.payload?.headers) {
-      const cc = msg.payload.headers.find((h) => h.name === "Cc")?.value || "";
-      return cc.split(",").map((t) => t.trim());
+      const cc = msg.payload.headers.find((h) => h.name === 'Cc')?.value || '';
+      return cc.split(',').map((t) => t.trim());
     }
     return [];
   };
@@ -137,12 +130,11 @@ const MessageDetailView = ({
     if (msg?.subject) return msg.subject;
     if (msg?.payload?.headers) {
       return (
-        msg.payload.headers.find(
-          (h) => h.name === "Subject" || h.name === "subject",
-        )?.value || "(No Subject)"
+        msg.payload.headers.find((h) => h.name === 'Subject' || h.name === 'subject')?.value ||
+        '(No Subject)'
       );
     }
-    return "(No Subject)";
+    return '(No Subject)';
   };
 
   const getDate = (msg) => {
@@ -169,8 +161,8 @@ const MessageDetailView = ({
 
       // Try to find HTML first
       for (const part of parts) {
-        if (part.mimeType === "text/html" && part.body?.data) {
-          return { data: part.body.data, mimeType: "text/html" };
+        if (part.mimeType === 'text/html' && part.body?.data) {
+          return { data: part.body.data, mimeType: 'text/html' };
         }
         if (part.parts) {
           const result = findGmailBody(part.parts);
@@ -180,8 +172,8 @@ const MessageDetailView = ({
 
       // Try to find plain text if no HTML found
       for (const part of parts) {
-        if (part.mimeType === "text/plain" && part.body?.data) {
-          return { data: part.body.data, mimeType: "text/plain" };
+        if (part.mimeType === 'text/plain' && part.body?.data) {
+          return { data: part.body.data, mimeType: 'text/plain' };
         }
       }
 
@@ -191,7 +183,7 @@ const MessageDetailView = ({
     const decodeGmailData = (data) => {
       try {
         // Convert URL-safe base64 to standard base64
-        const base64 = data.replace(/-/g, "+").replace(/_/g, "/");
+        const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
         // Decode to binary string
         const binary = atob(base64);
         // Convert binary string to a Uint8Array and decode as UTF-8
@@ -199,44 +191,33 @@ const MessageDetailView = ({
         for (let i = 0; i < binary.length; i++) {
           bytes[i] = binary.charCodeAt(i);
         }
-        return new TextDecoder("utf-8").decode(bytes);
+        return new TextDecoder('utf-8').decode(bytes);
       } catch (e) {
-        console.error("Failed to decode base64:", e);
-        return "";
+        console.error('Failed to decode base64:', e);
+        return '';
       }
     };
 
     // Priority 1: Direct HTML property (Common for SMTP and updated models)
     if (message?.html) {
       return (
-        <div
-          className="mail-content-html"
-          dangerouslySetInnerHTML={{ __html: message.html }}
-        />
+        <div className="mail-content-html" dangerouslySetInnerHTML={{ __html: message.html }} />
       );
     }
 
     // Gmail format
-    if (mailbox?.type === "gmail") {
+    if (mailbox?.type === 'gmail') {
       if (message?.payload?.body?.data) {
         const html = decodeGmailData(message.payload.body.data);
-        return (
-          <div
-            className="mail-content-html"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-        );
+        return <div className="mail-content-html" dangerouslySetInnerHTML={{ __html: html }} />;
       }
       if (message?.payload?.parts) {
         const bodyPart = findGmailBody(message.payload.parts);
         if (bodyPart) {
           const content = decodeGmailData(bodyPart.data);
-          if (bodyPart.mimeType === "text/html") {
+          if (bodyPart.mimeType === 'text/html') {
             return (
-              <div
-                className="mail-content-html"
-                dangerouslySetInnerHTML={{ __html: content }}
-              />
+              <div className="mail-content-html" dangerouslySetInnerHTML={{ __html: content }} />
             );
           }
           return (
@@ -249,7 +230,7 @@ const MessageDetailView = ({
     }
 
     // Outlook format
-    if (mailbox?.type === "outlook") {
+    if (mailbox?.type === 'outlook') {
       if (message?.body?.content) {
         return (
           <div
@@ -303,17 +284,11 @@ const MessageDetailView = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={onReply}
-              className="btn-primary flex items-center px-4 py-2 group"
-            >
+            <button onClick={onReply} className="btn-primary flex items-center px-4 py-2 group">
               <Reply className="w-4 h-4 mr-2 group-hover:-translate-x-0.5 transition-transform" />
               Reply
             </button>
-            <button
-              onClick={onForward}
-              className="btn-secondary flex items-center px-4 py-2"
-            >
+            <button onClick={onForward} className="btn-secondary flex items-center px-4 py-2">
               <Send className="w-4 h-4 mr-2" />
               Forward
             </button>
@@ -357,9 +332,9 @@ const MessageDetailView = ({
                     className="w-full px-4 py-2.5 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center transition-colors"
                   >
                     <Star
-                      className={`w-4 h-4 mr-3 ${message?.isStarred ? "fill-amber-400 text-amber-500" : "text-slate-400"}`}
+                      className={`w-4 h-4 mr-3 ${message?.isStarred ? 'fill-amber-400 text-amber-500' : 'text-slate-400'}`}
                     />
-                    {message?.isStarred ? "Unstar Message" : "Star Message"}
+                    {message?.isStarred ? 'Unstar Message' : 'Star Message'}
                   </button>
                   <div className="h-px bg-slate-100 mx-2 my-2"></div>
                   <button
@@ -422,13 +397,9 @@ const MessageDetailView = ({
                       {getSubject(message)}
                     </h1>
                     <div className="flex items-center gap-2 mt-2">
-                      <p className="text-lg font-bold text-slate-700">
-                        {sender.name}
-                      </p>
+                      <p className="text-lg font-bold text-slate-700">{sender.name}</p>
                       <span className="text-slate-300">•</span>
-                      <p className="text-sm font-medium text-slate-500">
-                        {sender.email}
-                      </p>
+                      <p className="text-sm font-medium text-slate-500">{sender.email}</p>
                     </div>
                   </div>
                   <div className="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 text-right shrink-0">
@@ -489,7 +460,7 @@ const MessageDetailView = ({
                     </span>
                   )}
                   <span className="inline-flex items-center px-3 py-1 bg-slate-50 text-slate-500 text-[10px] font-bold rounded-full uppercase tracking-wider border border-slate-100">
-                    {mailbox?.type || "Direct"} Account
+                    {mailbox?.type || 'Direct'} Account
                   </span>
                 </div>
               </div>
@@ -508,10 +479,7 @@ const MessageDetailView = ({
                   <div
                     key={idx}
                     onClick={() =>
-                      onDownload?.(
-                        att.id || att.attachmentId || att.partId,
-                        att.filename,
-                      )
+                      onDownload?.(att.id || att.attachmentId || att.partId, att.filename)
                     }
                     className="premium-card p-4 hover:shadow-blue-500/10 hover:border-blue-200 cursor-pointer transition-all group/att"
                   >
@@ -544,9 +512,7 @@ const MessageDetailView = ({
                 Email Content Canvas
               </div>
             </div>
-            <div className="p-8 md:p-12 prose max-w-none text-slate-800">
-              {renderMessageBody()}
-            </div>
+            <div className="p-8 md:p-12 prose max-w-none text-slate-800">{renderMessageBody()}</div>
           </div>
 
           {/* Quick Footer */}

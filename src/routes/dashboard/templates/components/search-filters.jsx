@@ -1,14 +1,7 @@
-import React from "react";
-import { Search, Filter } from "lucide-react";
-import Button from "../../../../components/ui/button";
+import React from 'react';
+import { Search, Filter } from 'lucide-react';
 
-const SearchFilters = ({
-  searchTerm,
-  setSearchTerm,
-  filterActive,
-  setFilterActive,
-  isPending,
-}) => {
+const SearchFilters = ({ searchTerm, setSearchTerm, filterActive, setFilterActive, isPending }) => {
   return (
     <div className="premium-card p-6 border-none bg-slate-100/40 backdrop-blur-xl mb-10 shadow-2xl shadow-slate-900/2">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -32,15 +25,16 @@ const SearchFilters = ({
               Status Filter
             </span>
             <div className="flex bg-white/80 p-1 rounded-2xl border border-slate-200/50 shadow-sm transition-all duration-300">
-              {["all", "active", "draft"].map((status) => (
+              {['all', 'active', 'draft'].map((status) => (
                 <button
                   key={status}
                   onClick={() => setFilterActive(status)}
                   disabled={isPending}
-                  className={`px-5 py-2 text-[10px] font-extrabold uppercase tracking-widest rounded-xl transition-all duration-300 ${filterActive === status
-                      ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
-                      : "text-slate-400 hover:text-slate-800"
-                    } disabled:opacity-50`}
+                  className={`px-5 py-2 text-[10px] font-extrabold uppercase tracking-widest rounded-xl transition-all duration-300 ${
+                    filterActive === status
+                      ? 'bg-blue-600 text-white shadow-xl shadow-slate-900/10'
+                      : 'text-slate-400 hover:text-slate-800'
+                  } disabled:opacity-50`}
                 >
                   {status}
                 </button>

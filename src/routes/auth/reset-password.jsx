@@ -1,12 +1,11 @@
-import { useState, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import OTPInput from "react-otp-input";
-import Button from "../../components/ui/button";
-import Input from "../../components/ui/input";
-import { Mail, KeyRound } from "lucide-react";
-import { useResetPassword, useForgotPassword } from "../../hooks/useAuth";
-import { resetPasswordSchema } from "../../validators/reset-password.schema";
-import { useToast } from "../../hooks/useToast";
+import { useState, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import OTPInput from 'react-otp-input';
+import Input from '../../components/ui/input';
+import { Mail, KeyRound } from 'lucide-react';
+import { useResetPassword, useForgotPassword } from '../../hooks/useAuth';
+import { resetPasswordSchema } from '../../validators/reset-password.schema';
+import { useToast } from '../../hooks/useToast';
 
 const mapZodErrors = (zodError) => {
   if (!zodError || !Array.isArray(zodError.issues)) return {};
@@ -27,12 +26,12 @@ const ResetPassword = () => {
   const resetPassword = useResetPassword();
   const forgotPassword = useForgotPassword();
 
-  const initialEmail = location.state?.email || "";
+  const initialEmail = location.state?.email || '';
 
   const [formData, setFormData] = useState({
     email: initialEmail,
-    otp: "",
-    newPassword: "",
+    otp: '',
+    newPassword: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -59,7 +58,7 @@ const ResetPassword = () => {
       return;
     }
 
-    const toastId = toast.loading("Resetting password...");
+    const toastId = toast.loading('Resetting password...');
 
     try {
       await resetPassword.mutateAsync({
@@ -69,11 +68,11 @@ const ResetPassword = () => {
       });
 
       toast.dismiss(toastId);
-      toast.success("Password reset successful!");
-      navigate("/auth/login");
+      toast.success('Password reset successful!');
+      navigate('/auth/login');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || "Invalid or expired code");
+      toast.error(error.message || 'Invalid or expired code');
     }
   };
 
@@ -96,26 +95,26 @@ const ResetPassword = () => {
 
   const handleResendOTP = async () => {
     if (!formData.email) {
-      setErrors({ email: "Email is required" });
+      setErrors({ email: 'Email is required' });
       return;
     }
 
     startResendTimer();
 
-    const toastId = toast.loading("Resending code...");
+    const toastId = toast.loading('Resending code...');
 
     try {
       await forgotPassword.mutateAsync(formData.email);
       toast.dismiss(toastId);
-      toast.success("Code resent successfully");
+      toast.success('Code resent successfully');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || "Failed to resend code");
+      toast.error(error.message || 'Failed to resend code');
     }
   };
 
   const formatTime = (s) =>
-    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
   const isLoading = resetPassword.isPending || forgotPassword.isPending;
 
@@ -157,9 +156,7 @@ const ResetPassword = () => {
               disabled={showResendTimer || isLoading}
               className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 disabled:text-slate-300 transition-colors"
             >
-              {showResendTimer
-                ? `Resend in ${formatTime(resendCountdown)}`
-                : "Resend code"}
+              {showResendTimer ? `Resend in ${formatTime(resendCountdown)}` : 'Resend code'}
             </button>
           </div>
 
@@ -174,9 +171,7 @@ const ResetPassword = () => {
                 disabled={isLoading}
                 className="w-full h-14 text-xl font-bold text-center border-2 rounded-xl transition-all outline-none focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/5 disabled:bg-slate-50 disabled:cursor-not-allowed bg-slate-50/30"
                 style={{
-                  borderColor: errors.otp
-                    ? "#f87171"
-                    : "rgba(226, 232, 240, 0.6)",
+                  borderColor: errors.otp ? '#f87171' : 'rgba(226, 232, 240, 0.6)',
                 }}
               />
             )}
@@ -208,7 +203,7 @@ const ResetPassword = () => {
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
-            "Reset Password"
+            'Reset Password'
           )}
         </button>
       </form>

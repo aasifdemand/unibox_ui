@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Pagination = ({
   currentPage,
@@ -17,7 +17,8 @@ const Pagination = ({
         Page <span className="text-slate-800">{currentPage}</span>
         {totalMessages > 0 && (
           <span className="ml-2 px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-md">
-            Showing {startMessageCount} - {endMessageCount} <span className="text-slate-300">/</span> {totalMessages}
+            Showing {startMessageCount} - {endMessageCount}{' '}
+            <span className="text-slate-300">/</span> {totalMessages}
           </span>
         )}
       </div>

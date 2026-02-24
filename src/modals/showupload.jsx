@@ -7,16 +7,15 @@ import {
   Phone,
   Upload,
   User,
-  X,
   Briefcase,
   Factory,
   Loader2,
   Zap,
-} from "lucide-react";
-import { useRef } from "react";
-import Modal from "../components/shared/modal";
-import * as XLSX from "xlsx";
-import { motion, AnimatePresence } from "motion/react";
+} from 'lucide-react';
+import { useRef } from 'react';
+import Modal from '../components/shared/modal';
+import * as XLSX from 'xlsx';
+import { motion, AnimatePresence } from 'motion/react';
 
 const ShowUpload = ({
   setShowUploadModal,
@@ -38,18 +37,14 @@ const ShowUpload = ({
     if (!file) return;
 
     const validTypes = [
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/vnd.ms-excel",
-      ".xlsx",
-      ".xls",
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-excel',
+      '.xlsx',
+      '.xls',
     ];
 
-    if (
-      !validTypes.some(
-        (type) => file.type.includes(type) || file.name.endsWith(type),
-      )
-    ) {
-      alert("Please upload an Excel file (.xlsx or .xls)");
+    if (!validTypes.some((type) => file.type.includes(type) || file.name.endsWith(type))) {
+      alert('Please upload an Excel file (.xlsx or .xls)');
       return;
     }
 
@@ -58,7 +53,7 @@ const ShowUpload = ({
     reader.onload = (e) => {
       try {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        const workbook = XLSX.read(data, { type: 'array' });
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
@@ -72,29 +67,26 @@ const ShowUpload = ({
           const autoMapping = {};
           headers.forEach((header) => {
             const lowerHeader = header.toLowerCase();
-            if (lowerHeader.includes("email")) autoMapping.email = header;
+            if (lowerHeader.includes('email')) autoMapping.email = header;
             if (
-              lowerHeader.includes("name") &&
-              !lowerHeader.includes("first") &&
-              !lowerHeader.includes("last")
+              lowerHeader.includes('name') &&
+              !lowerHeader.includes('first') &&
+              !lowerHeader.includes('last')
             )
               autoMapping.name = header;
-            if (lowerHeader.includes("first")) autoMapping.firstName = header;
-            if (lowerHeader.includes("last")) autoMapping.lastName = header;
-            if (lowerHeader.includes("company")) autoMapping.company = header;
-            if (lowerHeader.includes("phone")) autoMapping.phone = header;
-            if (lowerHeader.includes("city")) autoMapping.city = header;
-            if (lowerHeader.includes("country")) autoMapping.country = header;
+            if (lowerHeader.includes('first')) autoMapping.firstName = header;
+            if (lowerHeader.includes('last')) autoMapping.lastName = header;
+            if (lowerHeader.includes('company')) autoMapping.company = header;
+            if (lowerHeader.includes('phone')) autoMapping.phone = header;
+            if (lowerHeader.includes('city')) autoMapping.city = header;
+            if (lowerHeader.includes('country')) autoMapping.country = header;
             if (
-              lowerHeader.includes("role") ||
-              lowerHeader.includes("title") ||
-              lowerHeader.includes("job")
+              lowerHeader.includes('role') ||
+              lowerHeader.includes('title') ||
+              lowerHeader.includes('job')
             )
               autoMapping.role = header;
-            if (
-              lowerHeader.includes("industry") ||
-              lowerHeader.includes("sector")
-            )
+            if (lowerHeader.includes('industry') || lowerHeader.includes('sector'))
               autoMapping.industry = header;
           });
 
@@ -102,10 +94,8 @@ const ShowUpload = ({
           setUploadStep(2);
         }
       } catch (error) {
-        console.error("Error parsing Excel file:", error);
-        alert(
-          "Error reading Excel file. Please ensure it's a valid Excel file.",
-        );
+        console.error('Error parsing Excel file:', error);
+        alert("Error reading Excel file. Please ensure it's a valid Excel file.");
       }
     };
     reader.readAsArrayBuffer(file);
@@ -234,45 +224,21 @@ const ShowUpload = ({
                   >
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
-                        {field === "email" && (
-                          <Mail className="w-4 h-4 text-rose-500" />
-                        )}
-                        {field === "name" && (
-                          <User className="w-4 h-4 text-emerald-500" />
-                        )}
-                        {field === "firstName" && (
-                          <User className="w-4 h-4 text-emerald-500" />
-                        )}
-                        {field === "lastName" && (
-                          <User className="w-4 h-4 text-emerald-500" />
-                        )}
-                        {field === "company" && (
-                          <Building className="w-4 h-4 text-indigo-500" />
-                        )}
-                        {field === "phone" && (
-                          <Phone className="w-4 h-4 text-blue-500" />
-                        )}
-                        {field === "city" && (
-                          <MapPin className="w-4 h-4 text-amber-500" />
-                        )}
-                        {field === "country" && (
-                          <Globe className="w-4 h-4 text-sky-500" />
-                        )}
-                        {field === "role" && (
-                          <Briefcase className="w-4 h-4 text-slate-500" />
-                        )}
-                        {field === "industry" && (
-                          <Factory className="w-4 h-4 text-orange-500" />
-                        )}
+                        {field === 'email' && <Mail className="w-4 h-4 text-rose-500" />}
+                        {field === 'name' && <User className="w-4 h-4 text-emerald-500" />}
+                        {field === 'firstName' && <User className="w-4 h-4 text-emerald-500" />}
+                        {field === 'lastName' && <User className="w-4 h-4 text-emerald-500" />}
+                        {field === 'company' && <Building className="w-4 h-4 text-indigo-500" />}
+                        {field === 'phone' && <Phone className="w-4 h-4 text-blue-500" />}
+                        {field === 'city' && <MapPin className="w-4 h-4 text-amber-500" />}
+                        {field === 'country' && <Globe className="w-4 h-4 text-sky-500" />}
+                        {field === 'role' && <Briefcase className="w-4 h-4 text-slate-500" />}
+                        {field === 'industry' && <Factory className="w-4 h-4 text-orange-500" />}
                       </div>
                       <div>
                         <p className="text-[10px] font-extrabold text-slate-800 uppercase tracking-tight">
-                          {field === "email"
-                            ? "Email"
-                            : field.replace(/([A-Z])/g, " $1").trim()}
-                          {field === "email" && (
-                            <span className="text-rose-500 ml-1">*</span>
-                          )}
+                          {field === 'email' ? 'Email' : field.replace(/([A-Z])/g, ' $1').trim()}
+                          {field === 'email' && <span className="text-rose-500 ml-1">*</span>}
                         </p>
                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
                           Select column
@@ -281,9 +247,7 @@ const ShowUpload = ({
                     </div>
                     <select
                       value={mapping[field]}
-                      onChange={(e) =>
-                        setMapping({ ...mapping, [field]: e.target.value })
-                      }
+                      onChange={(e) => setMapping({ ...mapping, [field]: e.target.value })}
                       className="w-full h-12 px-4 bg-white border-2 border-slate-100 rounded-2xl text-[11px] font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all outline-none appearance-none cursor-pointer"
                     >
                       <option value="">Select a column...</option>
@@ -321,7 +285,7 @@ const ShowUpload = ({
                     ) : (
                       <Zap className="w-4 h-4" />
                     )}
-                    {uploading ? "Uploading..." : "Upload Contacts"}
+                    {uploading ? 'Uploading...' : 'Upload Contacts'}
                   </button>
                 </div>
               </div>

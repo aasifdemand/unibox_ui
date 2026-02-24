@@ -1,24 +1,18 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
-const Modal = ({
-  isOpen,
-  onClose,
-  children,
-  maxWidth = "max-w-6xl",
-  closeOnBackdrop = true,
-}) => {
+const Modal = ({ isOpen, onClose, children, maxWidth = 'max-w-6xl', closeOnBackdrop = true }) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add("modal-open");
+      document.body.classList.add('modal-open');
     } else {
-      document.body.classList.remove("modal-open");
+      document.body.classList.remove('modal-open');
     }
 
     return () => {
-      document.body.classList.remove("modal-open");
+      document.body.classList.remove('modal-open');
     };
   }, [isOpen]);
 
@@ -43,7 +37,7 @@ const Modal = ({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{
               duration: 0.4,
-              ease: [0.23, 1, 0.32, 1]
+              ease: [0.23, 1, 0.32, 1],
             }}
             className={`relative w-full ${maxWidth} max-h-[95vh] flex flex-col shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] rounded-[2.5rem] overflow-hidden bg-white`}
           >

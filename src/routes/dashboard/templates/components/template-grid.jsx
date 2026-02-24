@@ -1,7 +1,7 @@
-import React from "react";
-import TemplateCard from "./template-card";
-import QuickActions from "./quick-actions";
-import Stats from "./stats";
+import React from 'react';
+import TemplateCard from './template-card';
+import QuickActions from './quick-actions';
+import Stats from './stats';
 
 const TemplateGrid = ({
   templates,
@@ -36,10 +36,7 @@ const TemplateGrid = ({
               onEdit={onEdit}
               onDelete={onDelete}
               isPending={isPending}
-              isDeletePending={
-                deleteMutation.isPending &&
-                deleteMutation.variables === template.id
-              }
+              isDeletePending={deleteMutation.isPending && deleteMutation.variables === template.id}
               formatDate={formatDate}
             />
           ))}

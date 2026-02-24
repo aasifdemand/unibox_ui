@@ -1,16 +1,6 @@
-import React from "react";
-import {
-  Clock,
-  Shield,
-  Zap,
-  Activity,
-  Gauge,
-  FileText,
-  User,
-  Mail,
-  Database,
-} from "lucide-react";
-import Input from "../../../../../components/ui/input";
+import React from 'react';
+import { Clock, Shield, Zap, Activity, Gauge, User, Mail, Database } from 'lucide-react';
+import Input from '../../../../../components/ui/input';
 
 const Step3Finalize = ({
   register,
@@ -20,8 +10,8 @@ const Step3Finalize = ({
   selectedBatch,
   selectedSender,
 }) => {
-  const campaignName = watch("name");
-  const subject = watch("subject");
+  const campaignName = watch('name');
+  const subject = watch('subject');
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -62,7 +52,7 @@ const Step3Finalize = ({
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {campaignName || "Untitled Campaign"}
+                  {campaignName || 'Untitled Campaign'}
                 </p>
               </div>
 
@@ -76,7 +66,7 @@ const Step3Finalize = ({
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 line-clamp-1">
-                  {subject || "No subject set"}
+                  {subject || 'No subject set'}
                 </p>
               </div>
             </div>
@@ -92,7 +82,7 @@ const Step3Finalize = ({
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedBatch?.originalFilename || "No list selected"}
+                  {selectedBatch?.originalFilename || 'No list selected'}
                 </p>
               </div>
 
@@ -106,7 +96,7 @@ const Step3Finalize = ({
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedSender?.email || "No sender selected"}
+                  {selectedSender?.email || 'No sender selected'}
                 </p>
               </div>
             </div>
@@ -128,20 +118,20 @@ const Step3Finalize = ({
 
           <div className="grid grid-cols-1 gap-3">
             {[
-              { id: "now", title: "Send Now", desc: "Process immediately" },
+              { id: 'now', title: 'Send Now', desc: 'Process immediately' },
               {
-                id: "later",
-                title: "Schedule for Later",
-                desc: "Choose specific time",
+                id: 'later',
+                title: 'Schedule for Later',
+                desc: 'Choose specific time',
               },
             ].map((option) => (
               <label
                 key={option.id}
-                className={`group relative flex items-center p-5 bg-white border-2 rounded-4xl cursor-pointer transition-all duration-300 hover:border-blue-200 ${watch("scheduleType") === option.id ? "border-blue-500 bg-blue-50/20 ring-4 ring-blue-500/5 shadow-sm" : "border-slate-100"}`}
+                className={`group relative flex items-center p-5 bg-white border-2 rounded-4xl cursor-pointer transition-all duration-300 hover:border-blue-200 ${watch('scheduleType') === option.id ? 'border-blue-500 bg-blue-50/20 ring-4 ring-blue-500/5 shadow-sm' : 'border-slate-100'}`}
               >
                 <input
                   type="radio"
-                  {...register("scheduleType")}
+                  {...register('scheduleType')}
                   value={option.id}
                   className="w-5 h-5 appearance-none border-2 border-slate-200 rounded-full checked:border-blue-500 checked:bg-blue-500 transition-all"
                 />
@@ -157,12 +147,12 @@ const Step3Finalize = ({
             ))}
           </div>
 
-          {watchScheduleType === "later" && (
+          {watchScheduleType === 'later' && (
             <div className="animate-in fade-in slide-in-from-top-4 duration-500">
               <Input
                 label="Send Date & Time"
                 type="datetime-local"
-                {...register("scheduledAt")}
+                {...register('scheduledAt')}
                 error={errors.scheduledAt?.message}
                 required
                 className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
@@ -173,7 +163,7 @@ const Step3Finalize = ({
           <Input
             label="Sending Rate (emails/min)"
             type="number"
-            {...register("throttlePerMinute", { valueAsNumber: true })}
+            {...register('throttlePerMinute', { valueAsNumber: true })}
             error={errors.throttlePerMinute?.message}
             icon={Gauge}
             className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
@@ -195,28 +185,29 @@ const Step3Finalize = ({
           <div className="space-y-3">
             {[
               {
-                id: "trackOpens",
-                title: "Open Tracking",
-                desc: "Monitor views",
+                id: 'trackOpens',
+                title: 'Open Tracking',
+                desc: 'Monitor views',
               },
               {
-                id: "trackClicks",
-                title: "Click Tracking",
-                desc: "Monitor link activity",
+                id: 'trackClicks',
+                title: 'Click Tracking',
+                desc: 'Monitor link activity',
               },
               {
-                id: "unsubscribeLink",
-                title: "Unsubscribe Link",
-                desc: "CAN-SPAM Compliance",
+                id: 'unsubscribeLink',
+                title: 'Unsubscribe Link',
+                desc: 'CAN-SPAM Compliance',
                 highlight: true,
               },
             ].map((setting) => (
               <label
                 key={setting.id}
-                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${setting.highlight
-                    ? "bg-amber-50/30 border-amber-100 hover:border-amber-200"
-                    : "bg-white border-slate-100 hover:border-blue-200"
-                  }`}
+                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${
+                  setting.highlight
+                    ? 'bg-amber-50/30 border-amber-100 hover:border-amber-200'
+                    : 'bg-white border-slate-100 hover:border-blue-200'
+                }`}
               >
                 <div>
                   <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">
@@ -227,11 +218,7 @@ const Step3Finalize = ({
                   </p>
                 </div>
                 <div className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    {...register(setting.id)}
-                    className="sr-only peer"
-                  />
+                  <input type="checkbox" {...register(setting.id)} className="sr-only peer" />
                   <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
                 </div>
               </label>
@@ -242,8 +229,8 @@ const Step3Finalize = ({
             <div className="flex gap-4">
               <Shield className="w-5 h-5 text-blue-600 shrink-0" />
               <p className="text-[10px] font-bold text-blue-800 leading-relaxed uppercase tracking-widest">
-                By launching, you agree to follow anti-spam laws and ensure you
-                have permission to contact these recipients.
+                By launching, you agree to follow anti-spam laws and ensure you have permission to
+                contact these recipients.
               </p>
             </div>
           </div>

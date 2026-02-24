@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -7,9 +7,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { Clock } from "lucide-react";
-import CustomTooltip from "./custom-tooltip";
+} from 'recharts';
+import { Clock } from 'lucide-react';
+import CustomTooltip from './custom-tooltip';
 
 const HourlyActivity = ({ data }) => {
   return (
@@ -30,26 +30,19 @@ const HourlyActivity = ({ data }) => {
 
       <div className="h-62.5 w-full flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data}
-            margin={{ top: 0, right: 10, left: -25, bottom: 0 }}
-          >
-            <CartesianGrid
-              vertical={false}
-              strokeDasharray="8 8"
-              stroke="#f1f5f9"
-            />
+          <LineChart data={data} margin={{ top: 0, right: 10, left: -25, bottom: 0 }}>
+            <CartesianGrid vertical={false} strokeDasharray="8 8" stroke="#f1f5f9" />
             <XAxis
               dataKey="hour"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: "#94a3b8", fontWeight: 700 }}
+              tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
               dy={10}
             />
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: "#94a3b8", fontWeight: 700 }}
+              tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
             />
             <Tooltip content={<CustomTooltip />} />
             <defs>
@@ -63,8 +56,8 @@ const HourlyActivity = ({ data }) => {
               dataKey="count"
               stroke="#f59e0b"
               strokeWidth={4}
-              dot={{ r: 4, fill: "#fff", strokeWidth: 3, stroke: "#f59e0b" }}
-              activeDot={{ r: 6, strokeWidth: 0, fill: "#f59e0b" }}
+              dot={{ r: 4, fill: '#fff', strokeWidth: 3, stroke: '#f59e0b' }}
+              activeDot={{ r: 6, strokeWidth: 0, fill: '#f59e0b' }}
               name="Volume"
             />
           </LineChart>
@@ -73,11 +66,9 @@ const HourlyActivity = ({ data }) => {
 
       <div className="mt-8 p-4 bg-amber-50/50 rounded-2xl border border-amber-100/50">
         <p className="text-[10px] font-bold text-amber-700 leading-relaxed">
-          <span className="font-black uppercase tracking-widest mr-2">
-            Peak Times:
-          </span>
-          Engagement peaks between 09:00 - 11:00 UTC. Schedule your campaigns
-          during this window for best results.
+          <span className="font-black uppercase tracking-widest mr-2">Peak Times:</span>
+          Engagement peaks between 09:00 - 11:00 UTC. Schedule your campaigns during this window for
+          best results.
         </p>
       </div>
     </div>

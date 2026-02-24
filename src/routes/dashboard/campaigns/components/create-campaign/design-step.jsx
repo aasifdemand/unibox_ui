@@ -1,90 +1,79 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
-import {
-  Sparkles,
-  FileText,
-  Layout,
-  Loader2,
-  Database,
-  Tag,
-  MessageSquare,
-  ChevronDown,
-  User,
-  X,
-} from "lucide-react";
-import Input from "../../../../../components/ui/input";
-import HtmlEmailEditor from "../../../../../components/shared/html-editor";
-import { useTemplates } from "../../../../../hooks/useTemplate";
-import { Link } from "react-router-dom";
-import Button from "../../../../../components/ui/button";
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { FileText, Layout, Loader2, Database, Tag, User, X } from 'lucide-react';
+import Input from '../../../../../components/ui/input';
+import HtmlEmailEditor from '../../../../../components/shared/html-editor';
+import { useTemplates } from '../../../../../hooks/useTemplate';
+import { Link } from 'react-router-dom';
+import Button from '../../../../../components/ui/button';
 
 const PLACEHOLDER_SUGGESTIONS = [
   {
-    key: "first_name",
-    label: "First Name",
-    example: "John",
-    category: "Basic",
+    key: 'first_name',
+    label: 'First Name',
+    example: 'John',
+    category: 'Basic',
   },
-  { key: "last_name", label: "Last Name", example: "Doe", category: "Basic" },
+  { key: 'last_name', label: 'Last Name', example: 'Doe', category: 'Basic' },
   {
-    key: "name",
-    label: "Full Name",
-    example: "John Doe",
-    category: "Basic",
-  },
-  {
-    key: "email",
-    label: "Email",
-    example: "john@example.com",
-    category: "Basic",
+    key: 'name',
+    label: 'Full Name',
+    example: 'John Doe',
+    category: 'Basic',
   },
   {
-    key: "company",
-    label: "Company",
-    example: "Acme Inc",
-    category: "Professional",
+    key: 'email',
+    label: 'Email',
+    example: 'john@example.com',
+    category: 'Basic',
   },
   {
-    key: "job_title",
-    label: "Job Title",
-    example: "Marketing Manager",
-    category: "Professional",
-  },
-  { key: "city", label: "City", example: "New York", category: "Location" },
-  {
-    key: "country",
-    label: "Country",
-    example: "USA",
-    category: "Location",
+    key: 'company',
+    label: 'Company',
+    example: 'Acme Inc',
+    category: 'Professional',
   },
   {
-    key: "phone",
-    label: "Phone",
-    example: "+1 234 567 890",
-    category: "Contact",
+    key: 'job_title',
+    label: 'Job Title',
+    example: 'Marketing Manager',
+    category: 'Professional',
+  },
+  { key: 'city', label: 'City', example: 'New York', category: 'Location' },
+  {
+    key: 'country',
+    label: 'Country',
+    example: 'USA',
+    category: 'Location',
   },
   {
-    key: "role",
-    label: "Role / Job Title",
-    example: "CEO",
-    category: "Professional",
+    key: 'phone',
+    label: 'Phone',
+    example: '+1 234 567 890',
+    category: 'Contact',
   },
   {
-    key: "industry",
-    label: "Industry",
-    example: "Software",
-    category: "Professional",
+    key: 'role',
+    label: 'Role / Job Title',
+    example: 'CEO',
+    category: 'Professional',
   },
   {
-    key: "sender_name",
-    label: "Sender Name",
-    example: "Your Name",
-    category: "System",
+    key: 'industry',
+    label: 'Industry',
+    example: 'Software',
+    category: 'Professional',
   },
   {
-    key: "unsubscribe_link",
-    label: "Unsubscribe Link",
-    example: "[unsubscribe link]",
-    category: "System",
+    key: 'sender_name',
+    label: 'Sender Name',
+    example: 'Your Name',
+    category: 'System',
+  },
+  {
+    key: 'unsubscribe_link',
+    label: 'Unsubscribe Link',
+    example: '[unsubscribe link]',
+    category: 'System',
   },
 ];
 
@@ -99,7 +88,7 @@ const Step1Design = ({
   selectedSender, // Add this prop
 }) => {
   const [showSubjectSuggestions, setShowSubjectSuggestions] = useState(false);
-  const [subjectInputValue, setSubjectInputValue] = useState("");
+  const [subjectInputValue, setSubjectInputValue] = useState('');
   const [cursorPosition, setCursorPosition] = useState(0);
 
   const subjectInputRef = useRef(null);
@@ -107,22 +96,19 @@ const Step1Design = ({
 
   const { data: templates = [], isLoading: templatesLoading } = useTemplates();
 
-  const subjectValue = watch("subject") || "";
-  const htmlBody = watch("htmlBody") || "";
-  const campaignName = watch("name");
+  const subjectValue = watch('subject') || '';
+  const htmlBody = watch('htmlBody') || '';
+  const campaignName = watch('name');
 
   // Update content when sender changes
   useEffect(() => {
     if (selectedSender?.displayName && htmlBody) {
       // Replace {{sender_name}} with actual sender name
-      const updatedBody = htmlBody.replace(
-        /\{\{sender_name\}\}/g,
-        selectedSender.displayName,
-      );
+      const updatedBody = htmlBody.replace(/\{\{sender_name\}\}/g, selectedSender.displayName);
 
       // Only update if there was a change
       if (updatedBody !== htmlBody) {
-        setValue("htmlBody", updatedBody, { shouldValidate: true });
+        setValue('htmlBody', updatedBody, { shouldValidate: true });
       }
     }
   }, [selectedSender, htmlBody, setValue]);
@@ -131,19 +117,19 @@ const Step1Design = ({
   const availableColumns = useMemo(() => {
     if (!selectedBatch) return [];
     const meta = selectedBatch.mapping || {};
-    const columns = Object.values(meta).filter((v) => v && v !== "");
+    const columns = Object.values(meta).filter((v) => v && v !== '');
     if (columns.length === 0) {
       return [
-        "email",
-        "name",
-        "first_name",
-        "last_name",
-        "company",
-        "role",
-        "industry",
-        "city",
-        "country",
-        "phone",
+        'email',
+        'name',
+        'first_name',
+        'last_name',
+        'company',
+        'role',
+        'industry',
+        'city',
+        'country',
+        'phone',
       ];
     }
     return [...new Set(columns)];
@@ -155,14 +141,14 @@ const Step1Design = ({
 
     // Add dynamic columns from batch
     const dynamicItems = availableColumns.map((col) => {
-      const lowerCol = col.toLowerCase().replace(/\s+/g, "_");
+      const lowerCol = col.toLowerCase().replace(/\s+/g, '_');
       const existing = PLACEHOLDER_SUGGESTIONS.find((s) => s.key === lowerCol);
       if (existing) return existing;
       return {
         key: lowerCol,
         label: col,
         example: `[${col}]`,
-        category: "Custom Field",
+        category: 'Custom Field',
       };
     });
 
@@ -192,31 +178,27 @@ const Step1Design = ({
         setShowSubjectSuggestions(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const applyTemplate = (template) => {
     if (template.name && !campaignName) {
-      setValue("name", `${template.name} Campaign`, { shouldValidate: true });
+      setValue('name', `${template.name} Campaign`, { shouldValidate: true });
     }
     if (template.subject) {
-      setValue("subject", template.subject, { shouldValidate: true });
+      setValue('subject', template.subject, { shouldValidate: true });
     }
     const content =
-      template.htmlContent ||
-      template.htmlBody ||
-      template.content ||
-      template.html ||
-      "";
-    setValue("htmlBody", content, { shouldValidate: true });
+      template.htmlContent || template.htmlBody || template.content || template.html || '';
+    setValue('htmlBody', content, { shouldValidate: true });
   };
 
   const handleSubjectChange = (e) => {
     const value = e.target.value;
     setSubjectInputValue(value);
-    setValue("subject", value, { shouldValidate: true });
-    if (value.slice(-2) === "{{") setShowSubjectSuggestions(true);
+    setValue('subject', value, { shouldValidate: true });
+    if (value.slice(-2) === '{{') setShowSubjectSuggestions(true);
   };
 
   const insertPlaceholder = (placeholderKey) => {
@@ -224,14 +206,12 @@ const Step1Design = ({
     const textAfterCursor = subjectInputValue.slice(cursorPosition);
     const lastTwoChars = textBeforeCursor.slice(-2);
     let newValue =
-      lastTwoChars === "{{"
-        ? textBeforeCursor.slice(0, -2) +
-        `{{${placeholderKey}}}` +
-        textAfterCursor
+      lastTwoChars === '{{'
+        ? textBeforeCursor.slice(0, -2) + `{{${placeholderKey}}}` + textAfterCursor
         : textBeforeCursor + `{{${placeholderKey}}}` + textAfterCursor;
 
     setSubjectInputValue(newValue);
-    setValue("subject", newValue, { shouldValidate: true });
+    setValue('subject', newValue, { shouldValidate: true });
     setShowSubjectSuggestions(false);
 
     setTimeout(() => {
@@ -239,7 +219,7 @@ const Step1Design = ({
         const newCursorPos =
           textBeforeCursor.length +
           `{{${placeholderKey}}}`.length -
-          (lastTwoChars === "{{" ? 2 : 0);
+          (lastTwoChars === '{{' ? 2 : 0);
         subjectInputRef.current.focus();
         subjectInputRef.current.setSelectionRange(newCursorPos, newCursorPos);
       }
@@ -250,8 +230,7 @@ const Step1Design = ({
     <div
       className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700"
       onKeyDown={(e) => {
-        if (e.key === "Enter" && e.target.tagName !== "TEXTAREA")
-          e.preventDefault();
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
       }}
     >
       {/* Premium Template Selection */}
@@ -297,8 +276,8 @@ const Step1Design = ({
                   <div className="bg-white rounded-3xl border-2 border-slate-100 p-4 hover:border-blue-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div className="h-20 bg-slate-50 rounded-xl mb-3 p-3 overflow-hidden relative">
                       <p className="text-[8px] text-slate-400 leading-tight">
-                        {(template.htmlContent || template.htmlBody || "")
-                          .replace(/<[^>]*>/g, "")
+                        {(template.htmlContent || template.htmlBody || '')
+                          .replace(/<[^>]*>/g, '')
                           .substring(0, 60)}
                         ...
                       </p>
@@ -308,7 +287,7 @@ const Step1Design = ({
                       {template.name}
                     </h5>
                     <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest truncate mt-1">
-                      {template.subject || "No Subject"}
+                      {template.subject || 'No Subject'}
                     </p>
                   </div>
                 </div>
@@ -332,7 +311,7 @@ const Step1Design = ({
           <Input
             label="Campaign Name"
             placeholder="e.g., Growth Campaign"
-            {...register("name")}
+            {...register('name')}
             error={errors.name?.message}
             required
             className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
@@ -345,9 +324,7 @@ const Step1Design = ({
               </label>
               <button
                 type="button"
-                onClick={() =>
-                  setShowSubjectSuggestions(!showSubjectSuggestions)
-                }
+                onClick={() => setShowSubjectSuggestions(!showSubjectSuggestions)}
                 className="text-[9px] font-extrabold uppercase tracking-widest text-blue-600 flex items-center gap-1.5"
               >
                 <Tag className="w-3 h-3" /> Insert Variable
@@ -361,19 +338,20 @@ const Step1Design = ({
                 onChange={handleSubjectChange}
                 onKeyDown={(e) => {
                   setCursorPosition(e.target.selectionStart);
-                  if (e.key === "Enter") e.preventDefault();
+                  if (e.key === 'Enter') e.preventDefault();
                 }}
                 onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
-                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${errors.subject
-                  ? "border-rose-100 text-rose-600"
-                  : "border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500"
-                  }`}
+                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${
+                  errors.subject
+                    ? 'border-rose-100 text-rose-600'
+                    : 'border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500'
+                }`}
                 placeholder="e.g., Hi {{first_name}}!"
               />
               {showSubjectSuggestions && (
                 <div
                   ref={suggestionsRef}
-                  className="absolute z-50 mt-3 w-full bg-white rounded-[2rem] shadow-2xl border border-slate-200/60 p-4 animate-in fade-in slide-in-from-top-2"
+                  className="absolute z-50 mt-3 w-full bg-white rounded-4xl shadow-2xl border border-slate-200/60 p-4 animate-in fade-in slide-in-from-top-2"
                 >
                   <div className="flex items-center justify-between mb-4 px-2">
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
@@ -399,9 +377,9 @@ const Step1Design = ({
                             className="w-full text-left px-3 py-2 hover:bg-slate-50 rounded-xl flex items-center justify-between group/item transition-all"
                           >
                             <span className="font-mono text-[10px] text-blue-600 font-bold">
-                              {"{{"}
+                              {'{{'}
                               {item.key}
-                              {"}}"}
+                              {'}}'}
                             </span>
                             <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
                               {item.label}
@@ -442,22 +420,22 @@ const Step1Design = ({
                 >
                   <div className="w-1 h-1 rounded-full bg-blue-400"></div>
                   <code className="text-[9px] font-extrabold text-slate-600 font-mono">
-                    {"{{"}
-                    {col.toLowerCase().replace(/\s+/g, "_")}
-                    {"}}"}
+                    {'{{'}
+                    {col.toLowerCase().replace(/\s+/g, '_')}
+                    {'}}'}
                   </code>
                 </div>
               ))}
               <div className="px-3 py-1.5 bg-purple-50 border border-purple-100 rounded-xl flex items-center gap-2 shadow-sm">
                 <div className="w-1 h-1 rounded-full bg-purple-400"></div>
                 <code className="text-[9px] font-extrabold text-purple-600 font-mono">
-                  {"{{"}sender_name{"}}"}
+                  {'{{'}sender_name{'}}'}
                 </code>
               </div>
               <div className="px-3 py-1.5 bg-rose-50 border border-rose-100 rounded-xl flex items-center gap-2 shadow-sm">
                 <div className="w-1 h-1 rounded-full bg-rose-400"></div>
                 <code className="text-[9px] font-extrabold text-rose-600 font-mono">
-                  {"{{"}unsubscribe_link{"}}"}
+                  {'{{'}unsubscribe_link{'}}'}
                 </code>
               </div>
             </div>
@@ -471,9 +449,7 @@ const Step1Design = ({
                   <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
                     Active Sender
                   </p>
-                  <p className="text-xs font-bold text-slate-800">
-                    {selectedSender.displayName}
-                  </p>
+                  <p className="text-xs font-bold text-slate-800">{selectedSender.displayName}</p>
                 </div>
               </div>
             )}
@@ -498,39 +474,38 @@ const Step1Design = ({
           </div>
 
           <div className="flex bg-slate-100/50 p-1 rounded-xl border border-slate-200/50">
-            {["html", "text"].map((mode) => (
+            {['html', 'text'].map((mode) => (
               <button
                 key={mode}
                 onClick={() => setEditorMode(mode)}
-                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${editorMode === mode
-                  ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                  : "text-slate-400 hover:text-slate-600"
-                  }`}
+                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${
+                  editorMode === mode
+                    ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
               >
-                {mode === "html" ? "Canvas" : "Raw Text"}
+                {mode === 'html' ? 'Canvas' : 'Raw Text'}
               </button>
             ))}
           </div>
         </div>
 
         <div className="border-2 border-slate-100 rounded-[2.5rem] bg-white overflow-hidden shadow-sm shadow-slate-200/20">
-          {editorMode === "html" ? (
+          {editorMode === 'html' ? (
             <HtmlEmailEditor
               value={htmlBody}
-              onChange={(html) =>
-                setValue("htmlBody", html, { shouldValidate: true })
-              }
+              onChange={(html) => setValue('htmlBody', html, { shouldValidate: true })}
               userFields={[
                 ...availableColumns.map((col) => ({
-                  fieldName: col.toLowerCase().replace(/\s+/g, "_"),
+                  fieldName: col.toLowerCase().replace(/\s+/g, '_'),
                   displayName: col,
                 })),
-                { fieldName: "sender_name", displayName: "Sender Name" },
+                { fieldName: 'sender_name', displayName: 'Sender Name' },
               ]}
             />
           ) : (
             <textarea
-              {...register("htmlBody")}
+              {...register('htmlBody')}
               rows={15}
               className="w-full p-8 bg-slate-900 text-slate-300 font-mono text-sm border-0 focus:ring-0 resize-none outline-none"
               placeholder="Start typing your email here... Use {{sender_name}} for the sender's name"

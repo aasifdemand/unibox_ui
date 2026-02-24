@@ -1,37 +1,37 @@
-import React from "react";
-import { ChevronRight, Sparkles, Download, Eye } from "lucide-react";
+import React from 'react';
+import { ChevronRight, Sparkles, Download, Eye } from 'lucide-react';
 
 const QuickActions = ({ onCreateNew, isPending }) => {
   const actions = [
     {
-      title: "Create Template",
-      description: "Build a new email template from scratch",
+      title: 'Create Template',
+      description: 'Build a new email template from scratch',
       icon: <Sparkles className="w-5 h-5" />,
-      theme: "blue",
+      theme: 'blue',
       onClick: onCreateNew,
     },
     {
-      title: "Import Template",
-      description: "Upload an existing template file",
+      title: 'Import Template',
+      description: 'Upload an existing template file',
       icon: <Download className="w-5 h-5" />,
-      theme: "emerald",
-      onClick: () => console.log("Import"),
+      theme: 'emerald',
+      onClick: () => console.log('Import'),
     },
     {
-      title: "View Analytics",
-      description: "See how your templates are performing",
+      title: 'View Analytics',
+      description: 'See how your templates are performing',
       icon: <Eye className="w-5 h-5" />,
-      theme: "violet",
-      onClick: () => console.log("Analytics"),
+      theme: 'violet',
+      onClick: () => console.log('Analytics'),
     },
   ];
 
   const themes = {
-    blue: "bg-blue-50 text-blue-600 border-blue-100 group-hover:bg-blue-600 group-hover:text-white",
+    blue: 'bg-blue-50 text-blue-600 border-blue-100 group-hover:bg-blue-600 group-hover:text-white',
     emerald:
-      "bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white",
+      'bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white',
     violet:
-      "bg-violet-50 text-violet-600 border-violet-100 group-hover:bg-violet-600 group-hover:text-white",
+      'bg-violet-50 text-violet-600 border-violet-100 group-hover:bg-violet-600 group-hover:text-white',
   };
 
   return (

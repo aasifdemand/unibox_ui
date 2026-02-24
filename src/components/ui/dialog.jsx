@@ -1,16 +1,16 @@
-import React from "react";
-import Button from "./button";
-import { X, AlertCircle, Shield, CheckCircle, Info } from "lucide-react";
-import Modal from "../shared/modal";
-import { motion } from "motion/react";
+import React from 'react';
+
+import { AlertCircle, Shield, CheckCircle, Info } from 'lucide-react';
+import Modal from '../shared/modal';
+import { motion } from 'motion/react';
 
 const Dialog = ({
   open,
   title,
   description,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
-  confirmVariant = "danger",
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  confirmVariant = 'danger',
   isLoading = false,
   onConfirm,
   onCancel,
@@ -19,45 +19,45 @@ const Dialog = ({
   // Get variant-specific styles
   const getVariantStyles = () => {
     switch (confirmVariant) {
-      case "danger":
+      case 'danger':
         return {
           icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
-          bg: "bg-rose-50",
-          border: "border-rose-100",
-          button: "bg-rose-600 hover:bg-rose-700 shadow-rose-600/20",
-          gradient: "from-rose-600 to-red-600",
+          bg: 'bg-rose-50',
+          border: 'border-rose-100',
+          button: 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20',
+          gradient: 'from-rose-600 to-red-600',
         };
-      case "warning":
+      case 'warning':
         return {
           icon: <AlertCircle className="w-6 h-6 text-amber-500" />,
-          bg: "bg-amber-50",
-          border: "border-amber-100",
-          button: "bg-amber-600 hover:bg-amber-700 shadow-amber-600/20",
-          gradient: "from-amber-600 to-orange-600",
+          bg: 'bg-amber-50',
+          border: 'border-amber-100',
+          button: 'bg-amber-600 hover:bg-amber-700 shadow-amber-600/20',
+          gradient: 'from-amber-600 to-orange-600',
         };
-      case "success":
+      case 'success':
         return {
           icon: <CheckCircle className="w-6 h-6 text-emerald-500" />,
-          bg: "bg-emerald-50",
-          border: "border-emerald-100",
-          button: "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20",
-          gradient: "from-emerald-600 to-green-600",
+          bg: 'bg-emerald-50',
+          border: 'border-emerald-100',
+          button: 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20',
+          gradient: 'from-emerald-600 to-green-600',
         };
-      case "info":
+      case 'info':
         return {
           icon: <Info className="w-6 h-6 text-blue-500" />,
-          bg: "bg-blue-50",
-          border: "border-blue-100",
-          button: "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20",
-          gradient: "from-blue-600 to-indigo-600",
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          button: 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/20',
+          gradient: 'from-blue-600 to-indigo-600',
         };
       default:
         return {
           icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
-          bg: "bg-rose-50",
-          border: "border-rose-100",
-          button: "bg-rose-600 hover:bg-rose-700 shadow-rose-600/20",
-          gradient: "from-rose-600 to-red-600",
+          bg: 'bg-rose-50',
+          border: 'border-rose-100',
+          button: 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20',
+          gradient: 'from-rose-600 to-red-600',
         };
     }
   };
@@ -65,17 +65,10 @@ const Dialog = ({
   const styles = getVariantStyles();
 
   return (
-    <Modal
-      isOpen={open}
-      onClose={() => setOpen(false)}
-      maxWidth="max-w-md"
-      closeOnBackdrop={true}
-    >
+    <Modal isOpen={open} onClose={() => setOpen(false)} maxWidth="max-w-md" closeOnBackdrop={true}>
       <div className="bg-inherit rounded-3xl overflow-hidden shadow-2xl">
         {/* Premium Header - Dynamic based on variant */}
-        <div
-          className={`bg-linear-to-r ${styles.gradient} p-8 relative overflow-hidden group`}
-        >
+        <div className={`bg-linear-to-r ${styles.gradient} p-8 relative overflow-hidden group`}>
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -102,12 +95,10 @@ const Dialog = ({
                   Confirmation
                 </h3>
                 <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-0.5">
-                  {confirmVariant === "danger" &&
-                    "This action cannot be undone"}
-                  {confirmVariant === "warning" &&
-                    "Please review before proceeding"}
-                  {confirmVariant === "success" && "Confirm your action"}
-                  {confirmVariant === "info" && "Additional information"}
+                  {confirmVariant === 'danger' && 'This action cannot be undone'}
+                  {confirmVariant === 'warning' && 'Please review before proceeding'}
+                  {confirmVariant === 'success' && 'Confirm your action'}
+                  {confirmVariant === 'info' && 'Additional information'}
                 </p>
               </motion.div>
             </div>
@@ -121,7 +112,7 @@ const Dialog = ({
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 260, damping: 20 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 260, damping: 20 }}
               className={`w-12 h-12 rounded-2xl ${styles.bg} flex items-center justify-center shrink-0 border ${styles.border}`}
             >
               {styles.icon}
@@ -135,15 +126,13 @@ const Dialog = ({
                 {title}
               </h4>
               {description && (
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {description}
-                </p>
+                <p className="text-sm text-slate-600 leading-relaxed">{description}</p>
               )}
             </motion.div>
           </div>
 
           {/* Warning Message for Danger variant */}
-          {confirmVariant === "danger" && (
+          {confirmVariant === 'danger' && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -153,8 +142,8 @@ const Dialog = ({
               <div className="flex gap-3">
                 <Shield className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
                 <p className="text-[11px] font-bold text-rose-700 leading-relaxed">
-                  This action is permanent and cannot be reversed. Please ensure
-                  you want to proceed.
+                  This action is permanent and cannot be reversed. Please ensure you want to
+                  proceed.
                 </p>
               </div>
             </motion.div>
@@ -218,10 +207,10 @@ const Dialog = ({
             className="mt-6 pt-4 border-t border-slate-100"
           >
             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
-              {confirmVariant === "danger" && "⚠️ This action is permanent"}
-              {confirmVariant === "warning" && "Please verify your choice"}
-              {confirmVariant === "success" && "Click confirm to proceed"}
-              {confirmVariant === "info" && "Review the information above"}
+              {confirmVariant === 'danger' && '⚠️ This action is permanent'}
+              {confirmVariant === 'warning' && 'Please verify your choice'}
+              {confirmVariant === 'success' && 'Click confirm to proceed'}
+              {confirmVariant === 'info' && 'Review the information above'}
             </p>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 // routes/auth-route.jsx
-import { Navigate, Outlet } from "react-router-dom";
-import { useCurrentUser } from "../hooks/useAuth";
-import AuthLayout from "../layouts/auth.layout";
+import { Navigate } from 'react-router-dom';
+import { useCurrentUser } from '../hooks/useAuth';
+import AuthLayout from '../layouts/auth.layout';
 
 const AuthRoute = () => {
   const { data: user, isLoading } = useCurrentUser({
@@ -24,13 +24,7 @@ const AuthRoute = () => {
 
   // If user is logged in but NOT verified → redirect to verification page
   if (user && !user.isVerified) {
-    return (
-      <Navigate
-        to="/auth/verify-account"
-        state={{ email: user.email }}
-        replace
-      />
-    );
+    return <Navigate to="/auth/verify-account" state={{ email: user.email }} replace />;
   }
 
   // Not logged in → render auth layout with nested routes

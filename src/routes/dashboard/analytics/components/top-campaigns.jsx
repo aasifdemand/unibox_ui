@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ChevronRight, ExternalLink, Loader2, Send } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronRight, ExternalLink, Loader2, Send } from 'lucide-react';
 
 const TopCampaigns = ({ campaigns, isLoading }) => {
   return (
@@ -89,9 +89,7 @@ const TopCampaigns = ({ campaigns, isLoading }) => {
           <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center mb-4 border border-slate-200 shadow-inner">
             <Send className="w-8 h-8 text-slate-300" />
           </div>
-          <h4 className="text-sm font-extrabold text-slate-800 mb-1">
-            No Campaigns Yet
-          </h4>
+          <h4 className="text-sm font-extrabold text-slate-800 mb-1">No Campaigns Yet</h4>
           <p className="text-xs text-slate-500 font-medium">
             Create your first campaign to see performance data.
           </p>

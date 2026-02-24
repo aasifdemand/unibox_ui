@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Loader2,
   Mail,
@@ -9,30 +9,29 @@ import {
   Sparkles,
   Clock,
   ChevronRight,
-} from "lucide-react";
+} from 'lucide-react';
 
 // Components
-import StatsGrid from "./components/stats-grid";
-import ActivityTimeline from "./components/activity-timeline";
-import SenderDistribution from "./components/sender-distribution";
-import HourlyActivity from "./components/hourly-activity";
-import TopCampaigns from "./components/top-campaigns";
-import RecentReplies from "./components/recent-replies";
-import OverallPerformance from "./components/overall-performance";
-import SmartInsights from "./components/smart-insights";
+import StatsGrid from './components/stats-grid';
+import ActivityTimeline from './components/activity-timeline';
+import SenderDistribution from './components/sender-distribution';
+import TopCampaigns from './components/top-campaigns';
+import RecentReplies from './components/recent-replies';
+import OverallPerformance from './components/overall-performance';
+import SmartInsights from './components/smart-insights';
 
 // Hooks
-import { useAnalyticsData } from "./hooks/use-analytics-data";
+import { useAnalyticsData } from './hooks/use-analytics-data';
 
 const COLORS = {
-  gmail: "#EA4335",
-  outlook: "#0078D4",
-  smtp: "#34A853",
-  opens: "#3B82F6",
-  replies: "#10B981",
-  bounce: "#EF4444",
-  pending: "#94A3B8",
-  sent: "#3B82F6",
+  gmail: '#EA4335',
+  outlook: '#0078D4',
+  smtp: '#34A853',
+  opens: '#3B82F6',
+  replies: '#10B981',
+  bounce: '#EF4444',
+  pending: '#94A3B8',
+  sent: '#3B82F6',
 };
 
 const Analytics = () => {
@@ -42,7 +41,6 @@ const Analytics = () => {
     topCampaigns,
     recentReplies,
     senderPieData,
-    hourlyData,
     timelineData,
     hasValidData,
     metrics,
@@ -82,10 +80,7 @@ const Analytics = () => {
           <p className="text-slate-500 font-medium mb-8 leading-relaxed">
             {error.overview.message}
           </p>
-          <button
-            onClick={handleRefresh}
-            className="btn-primary flex items-center mx-auto"
-          >
+          <button onClick={handleRefresh} className="btn-primary flex items-center mx-auto">
             <RefreshCw className="w-4 h-4 mr-2" />
             Try Again
           </button>
@@ -97,44 +92,44 @@ const Analytics = () => {
   // Stats cards configuration
   const stats = [
     {
-      title: "Total Campaigns",
-      value: overview?.totalCampaigns?.toString() || "0",
+      title: 'Total Campaigns',
+      value: overview?.totalCampaigns?.toString() || '0',
       change: `${overview?.activeCampaigns || 0} active`,
       icon: <Mail className="w-6 h-6 text-blue-600" />,
-      color: "from-blue-500 to-indigo-600",
-      bgColor: "bg-blue-50",
+      color: 'from-blue-500 to-indigo-600',
+      bgColor: 'bg-blue-50',
       description: `${overview?.completedCampaigns || 0} completed`,
-      trend: "up",
+      trend: 'up',
     },
     {
-      title: "Emails Sent",
-      value: overview?.totalEmailsSent?.toLocaleString() || "0",
+      title: 'Emails Sent',
+      value: overview?.totalEmailsSent?.toLocaleString() || '0',
       change: `${overview?.avgOpenRate || 0}% open rate`,
       icon: <Send className="w-6 h-6 text-emerald-600" />,
-      color: "from-emerald-500 to-teal-600",
-      bgColor: "bg-emerald-50",
+      color: 'from-emerald-500 to-teal-600',
+      bgColor: 'bg-emerald-50',
       description: `${overview?.totalOpens?.toLocaleString() || 0} opens`,
-      trend: "up",
+      trend: 'up',
     },
     {
-      title: "Total Replies",
-      value: overview?.totalReplies?.toString() || "0",
+      title: 'Total Replies',
+      value: overview?.totalReplies?.toString() || '0',
       change: `${metrics.replyRate}% reply rate`,
       icon: <MessageCircle className="w-6 h-6 text-violet-600" />,
-      color: "from-violet-500 to-purple-600",
-      bgColor: "bg-violet-50",
+      color: 'from-violet-500 to-purple-600',
+      bgColor: 'bg-violet-50',
       description: `${overview?.totalReplied || 0} unique replies`,
-      trend: "up",
+      trend: 'up',
     },
     {
-      title: "Bounce Rate",
+      title: 'Bounce Rate',
       value: `${metrics.bounceRate}%`,
       change: `${overview?.totalBounces || 0} bounces`,
       icon: <Inbox className="w-6 h-6 text-rose-600" />,
-      color: "from-rose-500 to-red-600",
-      bgColor: "bg-rose-50",
-      description: metrics.bounceRate > 5 ? "Needs attention" : "Good",
-      trend: "down",
+      color: 'from-rose-500 to-red-600',
+      bgColor: 'bg-rose-50',
+      description: metrics.bounceRate > 5 ? 'Needs attention' : 'Good',
+      trend: 'down',
     },
   ];
 
@@ -145,9 +140,7 @@ const Analytics = () => {
         <div>
           <h1 className="text-4xl font-extrabold text-slate-800 tracking-tighter flex items-center">
             Campaign <span className="text-gradient ml-3">Analytics</span>
-            {isRefreshing && (
-              <Loader2 className="w-6 h-6 ml-4 animate-spin text-blue-500" />
-            )}
+            {isRefreshing && <Loader2 className="w-6 h-6 ml-4 animate-spin text-blue-500" />}
           </h1>
           <p className="text-slate-500 font-medium mt-2 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
@@ -176,7 +169,7 @@ const Analytics = () => {
             className="btn-primary flex items-center px-6"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 mr-2" />}
-            {isRefreshing ? "Refreshing..." : "Refresh Data"}
+            {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
           </button>
         </div>
       </div>
@@ -200,10 +193,7 @@ const Analytics = () => {
       {/* Secondary Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <SmartInsights metrics={metrics} overview={overview} />
-        <TopCampaigns
-          campaigns={topCampaigns}
-          isLoading={isLoading.topCampaigns}
-        />
+        <TopCampaigns campaigns={topCampaigns} isLoading={isLoading.topCampaigns} />
       </div>
 
       {/* Recent Replies */}

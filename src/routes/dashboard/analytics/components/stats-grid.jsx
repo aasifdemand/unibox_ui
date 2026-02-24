@@ -1,5 +1,5 @@
-import { TrendingUp, Clock } from "lucide-react";
-import { motion } from "motion/react";
+import { TrendingUp, Clock } from 'lucide-react';
+import { motion } from 'motion/react';
 
 const StatsGrid = ({ stats }) => {
   return (
@@ -40,14 +40,14 @@ const StatsGrid = ({ stats }) => {
                 {stat.value}
               </h3>
               <div
-                className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-extrabold mb-0.5 ${stat.trend === "up" ? "text-blue-600 bg-blue-50" : "text-slate-400 bg-slate-50"}`}
+                className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-extrabold mb-0.5 ${stat.trend === 'up' ? 'text-blue-600 bg-blue-50' : 'text-slate-400 bg-slate-50'}`}
               >
-                {stat.trend === "up" ? (
+                {stat.trend === 'up' ? (
                   <TrendingUp className="w-3 h-3" />
                 ) : (
                   <Clock className="w-3 h-3" />
                 )}
-                {stat.change.split(" ")[0]}
+                {stat.change.split(' ')[0]}
               </div>
             </div>
 
@@ -66,7 +66,7 @@ const StatsGrid = ({ stats }) => {
             <div className="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden border border-slate-100/50 p-px">
               <div
                 className={`h-full bg-linear-to-r ${stat.color} rounded-full group-hover:translate-x-0 transition-transform duration-1000 ease-out`}
-                style={{ width: "92%", transform: "translateX(-10%)" }}
+                style={{ width: '92%', transform: 'translateX(-10%)' }}
               ></div>
             </div>
           </div>

@@ -1,5 +1,5 @@
-import React from "react";
-import { calculateAvgResponseTime } from "../../hooks/use-campaign-analytics";
+import React from 'react';
+import { calculateAvgResponseTime } from '../../hooks/use-campaign-analytics';
 import {
   BarChart3,
   TrendingUp,
@@ -8,18 +8,12 @@ import {
   Clock,
   ShieldCheck,
   Zap,
-} from "lucide-react";
+} from 'lucide-react';
 
 const AnalyticsTab = ({ campaign, stats }) => {
-  const openRate = stats.totalSent
-    ? Math.round((stats.totalOpened / stats.totalSent) * 100)
-    : 0;
-  const clickRate = stats.totalSent
-    ? Math.round((stats.totalClicked / stats.totalSent) * 100)
-    : 0;
-  const replyRate = stats.totalSent
-    ? Math.round((stats.totalReplied / stats.totalSent) * 100)
-    : 0;
+  const openRate = stats.totalSent ? Math.round((stats.totalOpened / stats.totalSent) * 100) : 0;
+  const clickRate = stats.totalSent ? Math.round((stats.totalClicked / stats.totalSent) * 100) : 0;
+  const replyRate = stats.totalSent ? Math.round((stats.totalReplied / stats.totalSent) * 100) : 0;
 
   return (
     <div className="space-y-10 pb-20 mt-4">
@@ -44,28 +38,24 @@ const AnalyticsTab = ({ campaign, stats }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <StatMini
-            label="Total Sent"
-            value={stats.totalSent.toLocaleString()}
-            theme="slate"
-          />
+          <StatMini label="Total Sent" value={stats.totalSent.toLocaleString()} theme="slate" />
           <StatMini
             label="Open Rate"
             value={`${openRate}%`}
             theme="indigo"
-            trend={openRate > 25 ? "Good" : "Stable"}
+            trend={openRate > 25 ? 'Good' : 'Stable'}
           />
           <StatMini
             label="Click Rate"
             value={`${clickRate}%`}
             theme="purple"
-            trend={clickRate > 5 ? "High" : "Stable"}
+            trend={clickRate > 5 ? 'High' : 'Stable'}
           />
           <StatMini
             label="Reply Rate"
             value={`${replyRate}%`}
             theme="emerald"
-            trend={replyRate > 2 ? "Active" : "Stable"}
+            trend={replyRate > 2 ? 'Active' : 'Stable'}
           />
         </div>
       </div>
@@ -161,14 +151,14 @@ const StatMini = ({ label, value, theme, trend }) => (
       {label}
     </p>
     <p
-      className={`text-3xl font-black tracking-tighter tabular-nums ${theme === "indigo" ? "text-indigo-600" : theme === "purple" ? "text-purple-600" : theme === "emerald" ? "text-emerald-600" : "text-slate-900"}`}
+      className={`text-3xl font-black tracking-tighter tabular-nums ${theme === 'indigo' ? 'text-indigo-600' : theme === 'purple' ? 'text-purple-600' : theme === 'emerald' ? 'text-emerald-600' : 'text-slate-900'}`}
     >
       {value}
     </p>
     {trend && (
       <div className="flex items-center gap-1.5 mt-2">
         <div
-          className={`w-1.5 h-1.5 rounded-full ${theme === "indigo" || theme === "emerald" ? "bg-emerald-500" : "bg-slate-300"}`}
+          className={`w-1.5 h-1.5 rounded-full ${theme === 'indigo' || theme === 'emerald' ? 'bg-emerald-500' : 'bg-slate-300'}`}
         ></div>
         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
           {trend}
@@ -180,15 +170,15 @@ const StatMini = ({ label, value, theme, trend }) => (
 
 const ProgressBar = ({ label, value, theme, icon }) => {
   const iconColors = {
-    indigo: "bg-indigo-50 text-indigo-600",
-    purple: "bg-purple-50 text-purple-600",
-    emerald: "bg-emerald-50 text-emerald-600",
+    indigo: 'bg-indigo-50 text-indigo-600',
+    purple: 'bg-purple-50 text-purple-600',
+    emerald: 'bg-emerald-50 text-emerald-600',
   };
 
   const barColors = {
-    indigo: "bg-indigo-600 shadow-indigo-200",
-    purple: "bg-purple-600 shadow-purple-200",
-    emerald: "bg-emerald-600 shadow-emerald-200",
+    indigo: 'bg-indigo-600 shadow-indigo-200',
+    purple: 'bg-purple-600 shadow-purple-200',
+    emerald: 'bg-emerald-600 shadow-emerald-200',
   };
 
   return (
@@ -204,9 +194,7 @@ const ProgressBar = ({ label, value, theme, icon }) => {
             {label}
           </span>
         </div>
-        <span className="text-sm font-black text-slate-900 tabular-nums">
-          {value}%
-        </span>
+        <span className="text-sm font-black text-slate-900 tabular-nums">{value}%</span>
       </div>
       <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40 p-0.5">
         <div

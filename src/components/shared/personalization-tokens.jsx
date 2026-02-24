@@ -1,110 +1,108 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   User,
   Mail,
   Calendar,
-  Hash,
   Tag,
   Building,
   Phone,
   MapPin,
   Globe,
-  Gift,
   ChevronDown,
   Search,
   X,
-} from "lucide-react";
+} from 'lucide-react';
 
 const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [showAllTokens, setShowAllTokens] = useState(false);
 
   // Default system tokens
   const systemTokens = [
     {
-      category: "Basic Info",
+      category: 'Basic Info',
       tokens: [
         {
-          token: "{{first_name}}",
-          label: "First Name",
+          token: '{{first_name}}',
+          label: 'First Name',
           icon: <User className="w-4 h-4" />,
           description: "Recipient's first name",
         },
         {
-          token: "{{last_name}}",
-          label: "Last Name",
+          token: '{{last_name}}',
+          label: 'Last Name',
           icon: <User className="w-4 h-4" />,
           description: "Recipient's last name",
         },
         {
-          token: "{{full_name}}",
-          label: "Full Name",
+          token: '{{full_name}}',
+          label: 'Full Name',
           icon: <User className="w-4 h-4" />,
           description: "Recipient's full name",
         },
         {
-          token: "{{email}}",
-          label: "Email Address",
+          token: '{{email}}',
+          label: 'Email Address',
           icon: <Mail className="w-4 h-4" />,
           description: "Recipient's email",
         },
         {
-          token: "{{company}}",
-          label: "Company",
+          token: '{{company}}',
+          label: 'Company',
           icon: <Building className="w-4 h-4" />,
           description: "Recipient's company",
         },
         {
-          token: "{{phone}}",
-          label: "Phone",
+          token: '{{phone}}',
+          label: 'Phone',
           icon: <Phone className="w-4 h-4" />,
           description: "Recipient's phone number",
         },
       ],
     },
     {
-      category: "Location",
+      category: 'Location',
       tokens: [
         {
-          token: "{{city}}",
-          label: "City",
+          token: '{{city}}',
+          label: 'City',
           icon: <MapPin className="w-4 h-4" />,
           description: "Recipient's city",
         },
         {
-          token: "{{country}}",
-          label: "Country",
+          token: '{{country}}',
+          label: 'Country',
           icon: <Globe className="w-4 h-4" />,
           description: "Recipient's country",
         },
         {
-          token: "{{state}}",
-          label: "State",
+          token: '{{state}}',
+          label: 'State',
           icon: <MapPin className="w-4 h-4" />,
           description: "Recipient's state",
         },
       ],
     },
     {
-      category: "System",
+      category: 'System',
       tokens: [
         {
-          token: "{{current_date}}",
-          label: "Current Date",
+          token: '{{current_date}}',
+          label: 'Current Date',
           icon: <Calendar className="w-4 h-4" />,
-          description: "Date when email is sent",
+          description: 'Date when email is sent',
         },
         {
-          token: "{{unsubscribe_link}}",
-          label: "Unsubscribe Link",
+          token: '{{unsubscribe_link}}',
+          label: 'Unsubscribe Link',
           icon: <X className="w-4 h-4" />,
-          description: "Link to unsubscribe",
+          description: 'Link to unsubscribe',
         },
         {
-          token: "{{web_version}}",
-          label: "Web Version",
+          token: '{{web_version}}',
+          label: 'Web Version',
           icon: <Globe className="w-4 h-4" />,
-          description: "Link to web version",
+          description: 'Link to web version',
         },
       ],
     },
@@ -114,17 +112,17 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
   const customTokens =
     userFields.length > 0
       ? [
-        {
-          category: "Custom Fields",
-          tokens: userFields.map((field) => ({
-            token: `{{${field.fieldName}}}`,
-            label: field.displayName || field.fieldName,
-            icon: <Tag className="w-4 h-4" />,
-            description: `Custom field: ${field.fieldName}`,
-            isCustom: true,
-          })),
-        },
-      ]
+          {
+            category: 'Custom Fields',
+            tokens: userFields.map((field) => ({
+              token: `{{${field.fieldName}}}`,
+              label: field.displayName || field.fieldName,
+              icon: <Tag className="w-4 h-4" />,
+              description: `Custom field: ${field.fieldName}`,
+              isCustom: true,
+            })),
+          },
+        ]
       : [];
 
   const allTokens = [...systemTokens, ...customTokens];
@@ -159,9 +157,9 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
               onClick={() => setShowAllTokens(!showAllTokens)}
               className="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest text-blue-600 hover:bg-blue-50 transition-all flex items-center gap-1.5"
             >
-              {showAllTokens ? "Common Only" : "View All"}
+              {showAllTokens ? 'Common Only' : 'View All'}
               <ChevronDown
-                className={`w-3 h-3 transition-transform ${showAllTokens ? "rotate-180" : ""}`}
+                className={`w-3 h-3 transition-transform ${showAllTokens ? 'rotate-180' : ''}`}
               />
             </button>
             {onClose && (
@@ -196,43 +194,42 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
               {category.category}
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {(showAllTokens
-                ? category.tokens
-                : category.tokens.slice(0, 4)
-              ).map((token, tokenIndex) => (
-                <button
-                  key={tokenIndex}
-                  onClick={() => handleTokenClick(token.token)}
-                  className={`flex items-start p-4 text-left rounded-2xl border transition-all duration-300 group ${token.isCustom
-                      ? "bg-purple-50/30 border-purple-100 hover:border-purple-300 hover:bg-purple-50"
-                      : "bg-slate-50/50 border-slate-100 hover:border-blue-300 hover:bg-blue-50"
+              {(showAllTokens ? category.tokens : category.tokens.slice(0, 4)).map(
+                (token, tokenIndex) => (
+                  <button
+                    key={tokenIndex}
+                    onClick={() => handleTokenClick(token.token)}
+                    className={`flex items-start p-4 text-left rounded-2xl border transition-all duration-300 group ${
+                      token.isCustom
+                        ? 'bg-purple-50/30 border-purple-100 hover:border-purple-300 hover:bg-purple-50'
+                        : 'bg-slate-50/50 border-slate-100 hover:border-blue-300 hover:bg-blue-50'
                     }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-110 ${token.isCustom ? "bg-purple-100/50" : "bg-blue-100/50"
-                      }`}
                   >
                     <div
-                      className={`${token.isCustom ? "text-purple-600" : "text-blue-600"}`}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-110 ${
+                        token.isCustom ? 'bg-purple-100/50' : 'bg-blue-100/50'
+                      }`}
                     >
-                      {token.icon}
+                      <div className={`${token.isCustom ? 'text-purple-600' : 'text-blue-600'}`}>
+                        {token.icon}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="font-bold text-slate-800 text-xs truncate">
-                        {token.label}
-                      </span>
-                      <code className="text-[10px] bg-white border border-slate-200 px-2 py-0.5 rounded-lg font-mono text-blue-600 font-bold">
-                        {token.token}
-                      </code>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="font-bold text-slate-800 text-xs truncate">
+                          {token.label}
+                        </span>
+                        <code className="text-[10px] bg-white border border-slate-200 px-2 py-0.5 rounded-lg font-mono text-blue-600 font-bold">
+                          {token.token}
+                        </code>
+                      </div>
+                      <p className="text-[10px] text-slate-500 font-medium leading-relaxed line-clamp-2">
+                        {token.description}
+                      </p>
                     </div>
-                    <p className="text-[10px] text-slate-500 font-medium leading-relaxed line-clamp-2">
-                      {token.description}
-                    </p>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ),
+              )}
             </div>
           </div>
         ))}
@@ -240,9 +237,7 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
         {filteredTokens.length === 0 && (
           <div className="text-center py-8">
             <Tag className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600">
-              No tokens found matching "{searchQuery}"
-            </p>
+            <p className="text-gray-600">No tokens found matching &quot;{searchQuery}&quot;</p>
           </div>
         )}
       </div>

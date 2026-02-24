@@ -1,17 +1,16 @@
-import ShowTemplate from "../../../modals/showtemplate";
-import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import Dialog from "../../../components/ui/dialog";
+import ShowTemplate from '../../../modals/showtemplate';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import Dialog from '../../../components/ui/dialog';
 
 // Import custom hook and components
-import { useTemplatesData } from "./hooks/use-templates-data";
-import Header from "./components/header";
-import SearchFilters from "./components/search-filters";
-import TemplateGrid from "./components/template-grid";
-import EmptyState from "./components/empty-state";
-import LoadingState from "./components/loading-state";
-import ErrorState from "./components/error-state";
+import { useTemplatesData } from './hooks/use-templates-data';
+import Header from './components/header';
+import SearchFilters from './components/search-filters';
+import TemplateGrid from './components/template-grid';
+import EmptyState from './components/empty-state';
+import LoadingState from './components/loading-state';
+import ErrorState from './components/error-state';
 
 const Templates = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -33,13 +32,8 @@ const Templates = () => {
   } = state;
 
   const { templates, filteredTemplates } = data;
-  const {
-    setSearchTerm,
-    setFilterActive,
-    setShowTemplateModal,
-    setFormData,
-    setEditorMode,
-  } = setters;
+  const { setSearchTerm, setFilterActive, setShowTemplateModal, setFormData, setEditorMode } =
+    setters;
   const {
     handleCreateNew,
     handleEditTemplate,
@@ -51,13 +45,13 @@ const Templates = () => {
   // Format date for display
   const formatDate = (dateString) => {
     try {
-      return new Date(dateString).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
+      return new Date(dateString).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
       });
     } catch {
-      return "Invalid date";
+      return 'Invalid date';
     }
   };
 
@@ -88,9 +82,7 @@ const Templates = () => {
         <Header onCreateNew={handleCreateNew} isPending={isPending} />
 
         <div className="space-y-8">
-          {error && (
-            <ErrorState error={error} onRetry={() => refetchTemplates()} />
-          )}
+          {error && <ErrorState error={error} onRetry={() => refetchTemplates()} />}
 
           <SearchFilters
             searchTerm={searchTerm}
@@ -147,10 +139,7 @@ const Templates = () => {
           setFormData={setFormData}
           editorMode={editorMode}
           setEditorMode={setEditorMode}
-          isSaving={
-            mutations.createTemplate.isPending ||
-            mutations.updateTemplate.isPending
-          }
+          isSaving={mutations.createTemplate.isPending || mutations.updateTemplate.isPending}
         />
       )}
 
@@ -161,7 +150,7 @@ const Templates = () => {
         description={
           templateToDelete
             ? `Are u sure u want to selete "${templateToDelete.name}"? This action cannot be undone.`
-            : ""
+            : ''
         }
         confirmText="Delete"
         confirmVariant="danger"

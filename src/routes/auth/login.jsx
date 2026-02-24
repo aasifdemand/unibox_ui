@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import Input from "../../components/ui/input";
-import Checkbox from "../../components/ui/checkbox";
-import { Mail } from "lucide-react";
-import { useLogin, useCurrentUser } from "../../hooks/useAuth";
-import { loginSchema } from "../../validators/login.schema";
-import { useToast } from "../../hooks/useToast";
-import { mapZodErrors } from "../../utils/map-zod";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Input from '../../components/ui/input';
+import Checkbox from '../../components/ui/checkbox';
+import { Mail } from 'lucide-react';
+import { useLogin, useCurrentUser } from '../../hooks/useAuth';
+import { loginSchema } from '../../validators/login.schema';
+import { useToast } from '../../hooks/useToast';
+import { mapZodErrors } from '../../utils/map-zod';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ const Login = () => {
   const toast = useToast();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     rememberMe: false,
   });
 
@@ -27,7 +27,7 @@ const Login = () => {
   // Handle OAuth errors from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const error = params.get("error");
+    const error = params.get('error');
 
     if (error) {
       // Decode the error message (in case it's encoded)
@@ -35,31 +35,29 @@ const Login = () => {
 
       // Show appropriate toast message based on error
       switch (errorMessage) {
-        case "google_auth_failed":
-          toast.error("Google authentication failed. Please try again.");
+        case 'google_auth_failed':
+          toast.error('Google authentication failed. Please try again.');
           break;
-        case "oauth_failed":
-          toast.error("OAuth authentication failed. Please try again.");
+        case 'oauth_failed':
+          toast.error('OAuth authentication failed. Please try again.');
           break;
-        case "LOCAL_ACCOUNT_EXISTS":
+        case 'LOCAL_ACCOUNT_EXISTS':
           toast.error(
-            "An account with this email already exists. Please login with your password.",
+            'An account with this email already exists. Please login with your password.',
           );
           break;
         default:
-          toast.error(
-            errorMessage || "Authentication failed. Please try again.",
-          );
+          toast.error(errorMessage || 'Authentication failed. Please try again.');
       }
 
       // Clean up the URL by removing the error parameter
-      navigate("/auth/login", { replace: true });
+      navigate('/auth/login', { replace: true });
     }
   }, [location.search, navigate, toast]);
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      navigate('/dashboard');
     }
   }, [user, navigate]);
 
@@ -95,7 +93,7 @@ const Login = () => {
       return;
     }
 
-    const toastId = toast.loading("Signing you in...");
+    const toastId = toast.loading('Signing you in...');
 
     try {
       await login.mutateAsync({
@@ -105,16 +103,16 @@ const Login = () => {
       });
 
       toast.dismiss(toastId);
-      toast.success("Welcome back!");
+      toast.success('Welcome back!');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || "Invalid email or password");
+      toast.error(error.message || 'Invalid email or password');
     }
   };
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    navigate("/auth/forgot-password");
+    navigate('/auth/forgot-password');
   };
 
   const isLoading = login.isPending || userLoading;
@@ -194,7 +192,7 @@ const Login = () => {
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
-            "Sign In"
+            'Sign In'
           )}
         </button>
       </form>
@@ -217,9 +215,7 @@ const Login = () => {
           <button
             type="button"
             className="w-full py-4 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-700 uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95 disabled:opacity-50"
-            onClick={() =>
-              (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)
-            }
+            onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)}
             disabled={isLoading}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -247,7 +243,7 @@ const Login = () => {
 
       <div className="mt-10 text-center">
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{' '}
           <Link
             to="/auth/signup"
             className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ml-1"

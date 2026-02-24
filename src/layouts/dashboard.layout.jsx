@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
 import {
   LayoutDashboard,
   Mail,
@@ -11,24 +11,23 @@ import {
   Search,
   HelpCircle,
   FileText,
-  TrendingUp,
   Zap,
   CreditCard,
   Mailbox,
   ChevronRight,
   PanelLeftClose,
   PanelLeftOpen,
-} from "lucide-react";
-import Sidebar from "../components/shared/sidebar";
-import { useCurrentUser } from "../hooks/useAuth";
-import { useCampaigns } from "../hooks/useCampaign";
-import { useTemplates } from "../hooks/useTemplate";
-import { useBatches } from "../hooks/useBatches";
-import { useMailboxes } from "../hooks/useMailboxes";
+} from 'lucide-react';
+import Sidebar from '../components/shared/sidebar';
+import { useCurrentUser } from '../hooks/useAuth';
+import { useCampaigns } from '../hooks/useCampaign';
+import { useTemplates } from '../hooks/useTemplate';
+import { useBatches } from '../hooks/useBatches';
+import { useMailboxes } from '../hooks/useMailboxes';
 
 const DashboardLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -38,17 +37,17 @@ const DashboardLayout = () => {
   // Keyboard shortcut for Cmd+K
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         setShowSearchResults(false);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Click outside to close search results
@@ -59,8 +58,8 @@ const DashboardLayout = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // React Query hooks
@@ -69,48 +68,48 @@ const DashboardLayout = () => {
   const { data: templates = [] } = useTemplates();
   const { data: batches = [] } = useBatches();
   const { data: mailboxResponse = { mailboxes: [] } } = useMailboxes();
-  const mailboxes = mailboxResponse.mailboxes || [];
+  const mailboxes = useMemo(() => mailboxResponse.mailboxes || [], [mailboxResponse.mailboxes]);
 
   const unreadMailCount = mailboxes.reduce((total, mailbox) => {
     return total + (mailbox.unreadCount || 0);
   }, 0);
 
   const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
-    { icon: BarChart3, label: "Analytics", path: "/dashboard/analytics" },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+    { icon: BarChart3, label: 'Analytics', path: '/dashboard/analytics' },
     {
       icon: Mailbox,
-      label: "Mailboxes",
-      path: "/dashboard/mailboxes",
+      label: 'Mailboxes',
+      path: '/dashboard/mailboxes',
       badge: unreadMailCount > 0 ? unreadMailCount.toString() : null,
     },
     {
       icon: Mail,
-      label: "Campaigns",
-      path: "/dashboard/campaigns",
+      label: 'Campaigns',
+      path: '/dashboard/campaigns',
       badge: campaigns.length > 0 ? campaigns.length.toString() : null,
     },
     {
       icon: Users,
-      label: "Audience",
-      path: "/dashboard/audience",
+      label: 'Audience',
+      path: '/dashboard/audience',
       badge: batches.length > 0 ? batches.length.toString() : null,
     },
     {
       icon: FileText,
-      label: "Templates",
-      path: "/dashboard/templates",
+      label: 'Templates',
+      path: '/dashboard/templates',
       badge: templates.length > 0 ? templates.length.toString() : null,
     },
-    { icon: CreditCard, label: "Subscription", path: "/dashboard/subscription" },
-    { icon: Settings, label: "Settings", path: "/dashboard/settings" },
+    { icon: CreditCard, label: 'Subscription', path: '/dashboard/subscription' },
+    { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
   ];
 
   // Derive active item for breadcrumbs
   const activeItem = navItems.find((item) => {
-    if (item.path === "/dashboard") return location.pathname === "/dashboard";
+    if (item.path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(item.path);
-  }) || { label: "System", icon: LayoutDashboard };
+  }) || { label: 'System', icon: LayoutDashboard };
 
   // Filtered search results
   const searchResults = useMemo(() => {
@@ -123,20 +122,19 @@ const DashboardLayout = () => {
         .map((c) => ({
           id: `c-${c.id}`,
           name: c.name,
-          type: "Campaign",
+          type: 'Campaign',
           path: `/dashboard/campaigns/${c.id}`,
           icon: <Mail className="w-4 h-4" />,
         })),
       ...mailboxes
         .filter(
           (m) =>
-            m.email?.toLowerCase().includes(query) ||
-            m.displayName?.toLowerCase().includes(query),
+            m.email?.toLowerCase().includes(query) || m.displayName?.toLowerCase().includes(query),
         )
         .map((m) => ({
           id: `m-${m.id}`,
           name: m.displayName || m.email,
-          type: "Mailbox",
+          type: 'Mailbox',
           path: `/dashboard/mailboxes`,
           icon: <Mailbox className="w-4 h-4" />,
         })),
@@ -145,7 +143,7 @@ const DashboardLayout = () => {
         .map((t) => ({
           id: `t-${t.id}`,
           name: t.name,
-          type: "Template",
+          type: 'Template',
           path: `/dashboard/templates`,
           icon: <FileText className="w-4 h-4" />,
         })),
@@ -158,7 +156,7 @@ const DashboardLayout = () => {
         .map((b) => ({
           id: `b-${b.id}`,
           name: b.name || b.originalFilename,
-          type: "Audience",
+          type: 'Audience',
           path: `/dashboard/audience`,
           icon: <Users className="w-4 h-4" />,
         })),
@@ -177,7 +175,7 @@ const DashboardLayout = () => {
 
       {/* Main Framework */}
       <div
-        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? "pl-20" : "pl-70"}`}
+        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'pl-20' : 'pl-70'}`}
       >
         {/* Superior Header - High Glassmorphism */}
         <header className="sticky top-0 z-40 h-20 px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2">
@@ -187,9 +185,7 @@ const DashboardLayout = () => {
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-slate-100/80 text-slate-500 hover:text-slate-800 transition-all active:scale-90 group relative"
-              aria-label={
-                sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
-              }
+              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {sidebarCollapsed ? (
                 <PanelLeftOpen className="w-5 h-5" />
@@ -197,9 +193,7 @@ const DashboardLayout = () => {
                 <PanelLeftClose className="w-5 h-5" />
               )}
               <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                {sidebarCollapsed
-                  ? "Expand sidebar (⌘+B)"
-                  : "Collapse sidebar (⌘+B)"}
+                {sidebarCollapsed ? 'Expand sidebar (⌘+B)' : 'Collapse sidebar (⌘+B)'}
               </span>
             </button>
 
@@ -270,7 +264,7 @@ const DashboardLayout = () => {
                         key={result.id}
                         onClick={() => {
                           navigate(result.path);
-                          setSearchQuery("");
+                          setSearchQuery('');
                           setShowSearchResults(false);
                         }}
                         className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all text-left group"
@@ -279,9 +273,7 @@ const DashboardLayout = () => {
                           {result.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-slate-800 truncate">
-                            {result.name}
-                          </p>
+                          <p className="text-sm font-bold text-slate-800 truncate">{result.name}</p>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
                             {result.type}
                           </p>
@@ -293,21 +285,17 @@ const DashboardLayout = () => {
                 </div>
               )}
 
-              {showSearchResults &&
-                searchQuery &&
-                searchResults.length === 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 p-8 z-50 text-center animate-in fade-in slide-in-from-top-2 duration-300">
-                    <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <Search className="w-6 h-6 text-slate-300" />
-                    </div>
-                    <p className="text-sm font-bold text-slate-800">
-                      No results found
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Try searching for campaigns or mailboxes
-                    </p>
+              {showSearchResults && searchQuery && searchResults.length === 0 && (
+                <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 p-8 z-50 text-center animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-6 h-6 text-slate-300" />
                   </div>
-                )}
+                  <p className="text-sm font-bold text-slate-800">No results found</p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Try searching for campaigns or mailboxes
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-2 pr-4 border-r border-slate-200/60">
@@ -325,7 +313,7 @@ const DashboardLayout = () => {
             {/* Micro Stats Card */}
             <div className="hidden sm:flex flex-col text-right">
               <span className="text-xs font-extrabold text-slate-800 leading-none">
-                {user?.name?.split(" ")[0] || "Aasif"} Inbox
+                {user?.name?.split(' ')[0] || 'Aasif'} Inbox
               </span>
               <div className="flex items-center justify-end gap-1.5 mt-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]"></div>

@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Eye, EyeOff, Search, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState } from 'react';
+import { Eye, EyeOff, Search, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const Input = ({
-  type = "text",
+  type = 'text',
   label,
   placeholder,
   value,
@@ -16,28 +16,28 @@ const Input = ({
   icon: Icon,
   required = false,
   disabled = false,
-  className = "",
+  className = '',
   showClearButton = false,
   onClear,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const inputId = name || label?.toLowerCase().replace(/\s+/g, "-");
+  const inputId = name || label?.toLowerCase().replace(/\s+/g, '-');
   const helperId = `${inputId}-help`;
 
-  const inputType = type === "password" && showPassword ? "text" : type;
+  const inputType = type === 'password' && showPassword ? 'text' : type;
 
   const baseStyles =
-    "w-full px-4 py-2 border rounded-lg focus:outline-none transition-all duration-300";
+    'w-full px-4 py-2 border rounded-lg focus:outline-none transition-all duration-300';
   const stateStyles = error
-    ? "border-red-300 focus:border-red-500 ring-red-500/10"
+    ? 'border-red-300 focus:border-red-500 ring-red-500/10'
     : success
-      ? "border-green-300 focus:border-green-500 ring-green-500/10"
-      : "border-gray-200 focus:border-blue-500 ring-blue-500/5";
+      ? 'border-green-300 focus:border-green-500 ring-green-500/10'
+      : 'border-gray-200 focus:border-blue-500 ring-blue-500/5';
   const disabledStyles = disabled
-    ? "bg-gray-50 cursor-not-allowed opacity-70"
-    : "bg-white/50 backdrop-blur-sm";
+    ? 'bg-gray-50 cursor-not-allowed opacity-70'
+    : 'bg-white/50 backdrop-blur-sm';
 
   return (
     <div className="space-y-2">
@@ -59,7 +59,9 @@ const Input = ({
         {/* Left Icon */}
         {Icon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-blue-500' : 'text-gray-400'}`} />
+            <Icon
+              className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-blue-500' : 'text-gray-400'}`}
+            />
           </div>
         )}
 
@@ -83,8 +85,8 @@ const Input = ({
             ${baseStyles}
             ${stateStyles}
             ${disabledStyles}
-            ${Icon ? "pl-10" : ""}
-            ${type === "password" || showClearButton ? "pr-10" : ""}
+            ${Icon ? 'pl-10' : ''}
+            ${type === 'password' || showClearButton ? 'pr-10' : ''}
             ${isFocused ? 'ring-4' : ''}
             ${className}
           `}
@@ -92,7 +94,7 @@ const Input = ({
         />
 
         {/* Password Toggle */}
-        {type === "password" && (
+        {type === 'password' && (
           <button
             type="button"
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
@@ -129,12 +131,9 @@ const Input = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             id={helperId}
-            className={`text-[10px] font-bold uppercase tracking-widest px-1 ${error
-                ? "text-red-500"
-                : success
-                  ? "text-green-500"
-                  : "text-slate-400"
-              }`}
+            className={`text-[10px] font-bold uppercase tracking-widest px-1 ${
+              error ? 'text-red-500' : success ? 'text-green-500' : 'text-slate-400'
+            }`}
           >
             {error || helperText}
           </motion.p>
@@ -145,10 +144,16 @@ const Input = ({
 };
 
 // Convenience exports
-Input.Password = (props) => <Input type="password" {...props} />;
-Input.Email = (props) => <Input type="email" {...props} />;
-Input.Search = (props) => (
-  <Input type="search" icon={Search} showClearButton {...props} />
-);
+const InputPassword = (props) => <Input type="password" {...props} />;
+const InputEmail = (props) => <Input type="email" {...props} />;
+const InputSearch = (props) => <Input type="search" icon={Search} showClearButton {...props} />;
+
+InputPassword.displayName = 'InputPassword';
+InputEmail.displayName = 'InputEmail';
+InputSearch.displayName = 'InputSearch';
+
+Input.Password = InputPassword;
+Input.Email = InputEmail;
+Input.Search = InputSearch;
 
 export default Input;

@@ -1,14 +1,14 @@
 // hooks/useTemplates.js
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Query keys
 export const templateKeys = {
-  all: ["templates"],
-  lists: () => [...templateKeys.all, "list"],
+  all: ['templates'],
+  lists: () => [...templateKeys.all, 'list'],
   list: (filters) => [...templateKeys.lists(), { filters }],
-  details: () => [...templateKeys.all, "detail"],
+  details: () => [...templateKeys.all, 'detail'],
   detail: (id) => [...templateKeys.details(), id],
 };
 
@@ -18,11 +18,11 @@ export const templateKeys = {
 const fetchTemplates = async (filters = {}) => {
   const params = new URLSearchParams(filters).toString();
   const res = await fetch(`${API_URL}/templates?${params}`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to load templates");
+  if (!res.ok) throw new Error(data.message || 'Failed to load templates');
   return data.data || [];
 };
 
@@ -40,11 +40,11 @@ export const useTemplates = (filters = {}) => {
 // =========================
 const fetchTemplateById = async (templateId) => {
   const res = await fetch(`${API_URL}/templates/${templateId}`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Template not found");
+  if (!res.ok) throw new Error(data.message || 'Template not found');
   return data.data;
 };
 
@@ -62,14 +62,14 @@ export const useTemplate = (templateId) => {
 // =========================
 const createTemplate = async (payload) => {
   const res = await fetch(`${API_URL}/templates`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to create template");
+  if (!res.ok) throw new Error(data.message || 'Failed to create template');
   return data.data;
 };
 
@@ -83,10 +83,7 @@ export const useCreateTemplate = () => {
         queryKey: templateKeys.lists(),
       });
 
-      queryClient.setQueryData(
-        templateKeys.detail(newTemplate.id),
-        newTemplate,
-      );
+      queryClient.setQueryData(templateKeys.detail(newTemplate.id), newTemplate);
     },
   });
 };
@@ -96,14 +93,14 @@ export const useCreateTemplate = () => {
 // =========================
 const updateTemplate = async ({ templateId, ...payload }) => {
   const res = await fetch(`${API_URL}/templates/${templateId}`, {
-    method: "PUT",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to update template");
+  if (!res.ok) throw new Error(data.message || 'Failed to update template');
   return data.data;
 };
 
@@ -117,10 +114,7 @@ export const useUpdateTemplate = () => {
         queryKey: templateKeys.lists(),
       });
 
-      queryClient.setQueryData(
-        templateKeys.detail(templateId),
-        updatedTemplate,
-      );
+      queryClient.setQueryData(templateKeys.detail(templateId), updatedTemplate);
     },
   });
 };
@@ -130,12 +124,12 @@ export const useUpdateTemplate = () => {
 // =========================
 const deleteTemplate = async (templateId) => {
   const res = await fetch(`${API_URL}/templates/${templateId}`, {
-    method: "DELETE",
-    credentials: "include",
+    method: 'DELETE',
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete template");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete template');
   return { templateId, message: data.message };
 };
 
@@ -161,13 +155,13 @@ export const useDeleteTemplate = () => {
 // =========================
 const duplicateTemplate = async (templateId) => {
   const res = await fetch(`${API_URL}/templates/${templateId}/duplicate`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to duplicate template");
+  if (!res.ok) throw new Error(data.message || 'Failed to duplicate template');
   return data.data;
 };
 
@@ -189,14 +183,14 @@ export const useDuplicateTemplate = () => {
 // =========================
 const bulkDeleteTemplates = async (templateIds) => {
   const res = await fetch(`${API_URL}/templates/bulk/delete`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ templateIds }),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to delete templates");
+  if (!res.ok) throw new Error(data.message || 'Failed to delete templates');
   return { templateIds, message: data.message };
 };
 
@@ -223,14 +217,14 @@ export const useBulkDeleteTemplates = () => {
 // =========================
 const fetchTemplatePreview = async ({ templateId, variables = {} }) => {
   const res = await fetch(`${API_URL}/templates/${templateId}/preview`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ variables }),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to generate preview");
+  if (!res.ok) throw new Error(data.message || 'Failed to generate preview');
   return data.data;
 };
 
@@ -245,18 +239,17 @@ export const useTemplatePreview = () => {
 // =========================
 const fetchTemplateStats = async (templateId) => {
   const res = await fetch(`${API_URL}/templates/${templateId}/stats`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok)
-    throw new Error(data.message || "Failed to fetch template stats");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch template stats');
   return data.data;
 };
 
 export const useTemplateStats = (templateId) => {
   return useQuery({
-    queryKey: [...templateKeys.detail(templateId), "stats"],
+    queryKey: [...templateKeys.detail(templateId), 'stats'],
     queryFn: () => fetchTemplateStats(templateId),
     enabled: !!templateId,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -269,17 +262,17 @@ export const useTemplateStats = (templateId) => {
 const searchTemplates = async ({ query, filters = {} }) => {
   const params = new URLSearchParams({ query, ...filters }).toString();
   const res = await fetch(`${API_URL}/templates/search?${params}`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to search templates");
+  if (!res.ok) throw new Error(data.message || 'Failed to search templates');
   return data.data || [];
 };
 
 export const useSearchTemplates = (query, filters = {}) => {
   return useQuery({
-    queryKey: [...templateKeys.lists(), "search", query, filters],
+    queryKey: [...templateKeys.lists(), 'search', query, filters],
     queryFn: () => searchTemplates({ query, filters }),
     enabled: !!query && query.length > 2,
     staleTime: 1 * 60 * 1000, // 1 minute
@@ -291,17 +284,17 @@ export const useSearchTemplates = (query, filters = {}) => {
 // =========================
 const fetchTemplateCategories = async () => {
   const res = await fetch(`${API_URL}/templates/categories`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to fetch categories");
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch categories');
   return data.data || [];
 };
 
 export const useTemplateCategories = () => {
   return useQuery({
-    queryKey: [...templateKeys.all, "categories"],
+    queryKey: [...templateKeys.all, 'categories'],
     queryFn: fetchTemplateCategories,
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
@@ -312,14 +305,14 @@ export const useTemplateCategories = () => {
 // =========================
 const renderTemplate = async ({ templateId, variables }) => {
   const res = await fetch(`${API_URL}/templates/${templateId}/render`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ variables }),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to render template");
+  if (!res.ok) throw new Error(data.message || 'Failed to render template');
   return data.data;
 };
 
@@ -334,14 +327,14 @@ export const useRenderTemplate = () => {
 // =========================
 const validateTemplate = async (content) => {
   const res = await fetch(`${API_URL}/templates/validate`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content }),
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Template validation failed");
+  if (!res.ok) throw new Error(data.message || 'Template validation failed');
   return data.data;
 };
 
@@ -354,17 +347,14 @@ export const useValidateTemplate = () => {
 // =========================
 // EXPORT TEMPLATE
 // =========================
-const exportTemplate = async ({ templateId, format = "html" }) => {
-  const res = await fetch(
-    `${API_URL}/templates/${templateId}/export?format=${format}`,
-    {
-      credentials: "include",
-    },
-  );
+const exportTemplate = async ({ templateId, format = 'html' }) => {
+  const res = await fetch(`${API_URL}/templates/${templateId}/export?format=${format}`, {
+    credentials: 'include',
+  });
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
-    throw new Error(error.message || "Failed to export template");
+    throw new Error(error.message || 'Failed to export template');
   }
 
   return { blob: await res.blob(), templateId, format };
@@ -376,7 +366,7 @@ export const useExportTemplate = () => {
     onSuccess: ({ blob, templateId, format }) => {
       // Trigger download
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = `template-${templateId}.${format}`;
       document.body.appendChild(a);
@@ -392,16 +382,16 @@ export const useExportTemplate = () => {
 // =========================
 const importTemplate = async (file) => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append('file', file);
 
   const res = await fetch(`${API_URL}/templates/import`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     body: formData,
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "Failed to import template");
+  if (!res.ok) throw new Error(data.message || 'Failed to import template');
   return data.data;
 };
 

@@ -1,27 +1,26 @@
 // mailboxes/utils.js
-import { format, isToday, isYesterday, isThisWeek } from "date-fns";
-import { Gmail } from "../../../../icons/gmail";
-import { MicrosoftOutlook } from "../../../../icons/outlook";
-import { Mail } from "lucide-react";
+import { format, isToday, isYesterday, isThisWeek } from 'date-fns';
+import { Gmail } from '../../../../icons/gmail';
+import { MicrosoftOutlook } from '../../../../icons/outlook';
+import { Mail } from 'lucide-react';
 
 export const formatMessageDate = (message) => {
   const date = parseMessageDate(message);
-  if (!date) return "";
+  if (!date) return '';
 
   try {
-    if (isToday(date)) return format(date, "h:mm a");
-    if (isYesterday(date)) return "Yesterday";
-    if (isThisWeek(date)) return format(date, "EEEE");
-    return format(date, "MMM d");
+    if (isToday(date)) return format(date, 'h:mm a');
+    if (isYesterday(date)) return 'Yesterday';
+    if (isThisWeek(date)) return format(date, 'EEEE');
+    return format(date, 'MMM d');
   } catch {
-    return "";
+    return '';
   }
 };
 
 export const parseMessageDate = (message) => {
   try {
-    if (message?.internalDate)
-      return new Date(parseInt(message.internalDate, 10));
+    if (message?.internalDate) return new Date(parseInt(message.internalDate, 10));
     if (message?.receivedDateTime) return new Date(message.receivedDateTime);
     if (message?.date) return new Date(message.date);
     return null;
@@ -31,54 +30,46 @@ export const parseMessageDate = (message) => {
 };
 
 export const getSenderInfo = (message, isSent = false) => {
-  let email = "",
-    name = "";
+  let email = '',
+    name = '';
   try {
     if (message?.payload?.headers) {
-      const headerName = isSent ? "To" : "From";
-      const headerValue =
-        message.payload.headers.find((h) => h.name === headerName)?.value || "";
+      const headerName = isSent ? 'To' : 'From';
+      const headerValue = message.payload.headers.find((h) => h.name === headerName)?.value || '';
       const match = headerValue.match(/<([^>]+)>/);
       email = match ? match[1] : headerValue;
       const nameMatch = headerValue.match(/^([^<]+)/);
-      name = nameMatch
-        ? nameMatch[1].trim().replace(/"/g, "")
-        : email.split("@")[0];
-    } else if (
-      isSent &&
-      (message?.toRecipients?.[0] || message?.to)
-    ) {
+      name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
+    } else if (isSent && (message?.toRecipients?.[0] || message?.to)) {
       let to = message.toRecipients?.[0]?.emailAddress || message.to;
       if (Array.isArray(to)) to = to[0];
 
-      if (typeof to === "string") {
+      if (typeof to === 'string') {
         const match = to.match(/<([^>]+)>/);
         email = match ? match[1] : to;
         const nameMatch = to.match(/^([^<]+)/);
-        name = nameMatch
-          ? nameMatch[1].trim().replace(/"/g, "")
-          : email.split("@")[0];
+        name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
       } else {
-        email = to?.address || to?.email || "";
-        name = to?.name || email.split("@")[0];
+        email = to?.address || to?.email || '';
+        name = to?.name || email.split('@')[0];
       }
     } else if (message?.from?.emailAddress) {
-      email = message.from.emailAddress.address || "";
-      name = message.from.emailAddress.name || email.split("@")[0];
+      email = message.from.emailAddress.address || '';
+      name = message.from.emailAddress.name || email.split('@')[0];
     } else if (message?.from?.email) {
       email = message.from.email;
-      name = message.from.name || email.split("@")[0];
-    } else if (typeof message?.from === "string") {
+      name = message.from.name || email.split('@')[0];
+    } else if (typeof message?.from === 'string') {
       email = message.from;
-      name = email.split("@")[0];
+      name = email.split('@')[0];
     }
   } catch (e) {
-    console.error("Error parsing sender:", e);
+    console.error('Error parsing sender:', e);
   }
   return {
     email,
-    name: name || email.split("@")[0] || "Unknown",
-    isSent: !!isSent
+    name: name || email.split('@')[0] || 'Unknown',
+    isSent: !!isSent,
   };
 };
 
@@ -86,26 +77,23 @@ export const getSubject = (message) => {
   try {
     if (message?.subject) return message.subject;
     if (message?.payload?.headers) {
-      return (
-        message.payload.headers.find((h) => h.name === "Subject")?.value ||
-        "(no subject)"
-      );
+      return message.payload.headers.find((h) => h.name === 'Subject')?.value || '(no subject)';
     }
   } catch (e) {
-    console.error("Error getting subject:", e);
+    console.error('Error getting subject:', e);
   }
-  return "(no subject)";
+  return '(no subject)';
 };
 
 export const getFullMessageBody = (message) => {
   try {
-    let text = "";
+    let text = '';
 
     // Try to get full content first from payload
     if (message?.payload) {
       const decodeBase64 = (data) => {
         try {
-          const base64 = data.replace(/-/g, "+").replace(/_/g, "/");
+          const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
           const decoded = atob(base64);
           try {
             return decodeURIComponent(escape(decoded));
@@ -113,20 +101,20 @@ export const getFullMessageBody = (message) => {
             return decoded;
           }
         } catch (e) {
-          console.error("Base64 decode error:", e);
-          return "";
+          console.error('Base64 decode error:', e);
+          return '';
         }
       };
 
       if (message.payload.parts && message.payload.parts.length > 0) {
         const textPart = message.payload.parts.find(
-          (part) => part.mimeType === "text/plain" && part.body?.data,
+          (part) => part.mimeType === 'text/plain' && part.body?.data,
         );
         if (textPart) {
           text = decodeBase64(textPart.body.data);
         } else {
           const htmlPart = message.payload.parts.find(
-            (part) => part.mimeType === "text/html" && part.body?.data,
+            (part) => part.mimeType === 'text/html' && part.body?.data,
           );
           if (htmlPart) text = decodeBase64(htmlPart.body.data);
         }
@@ -142,15 +130,15 @@ export const getFullMessageBody = (message) => {
         message.text ||
         message.bodyPreview ||
         message.snippet ||
-        "";
+        '';
     }
 
-    if (!text) return "";
+    if (!text) return '';
 
     // Standardize HTML to text if needed
-    if (text.includes("<") && (text.includes(">") || text.includes("&lt;"))) {
-      const doc = new DOMParser().parseFromString(text, "text/html");
-      text = doc.body.textContent || doc.body.innerText || "";
+    if (text.includes('<') && (text.includes('>') || text.includes('&lt;'))) {
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      text = doc.body.textContent || doc.body.innerText || '';
     }
 
     // Fix common encoding artifacts
@@ -159,54 +147,54 @@ export const getFullMessageBody = (message) => {
       .replace(/â\u0080\u0098/g, "'")
       .replace(/â\u0080\u009c/g, '"')
       .replace(/â\u0080\u009d/g, '"')
-      .replace(/â\u0080\u0093/g, "-")
-      .replace(/â\u0080\u0094/g, "--")
-      .replace(/â\u0080¦/g, "...")
-      .replace(/â\u0082¬/g, "€")
-      .replace(/Â/g, "")
-      .replace(/â¯/g, " ")
+      .replace(/â\u0080\u0093/g, '-')
+      .replace(/â\u0080\u0094/g, '--')
+      .replace(/â\u0080¦/g, '...')
+      .replace(/â\u0082¬/g, '€')
+      .replace(/Â/g, '')
+      .replace(/â¯/g, ' ')
       .replace(/â€™/g, "'")
       .replace(/â€˜/g, "'")
       .replace(/â€œ/g, '"')
       .replace(/â€\u009d/g, '"')
       .replace(/â€/g, '"')
-      .replace(/â€“/g, "-")
-      .replace(/â€”/g, "--")
-      .replace(/â€¦/g, "...")
-      .replace(/\r\n/g, "\n")
-      .replace(/\n{3,}/g, "\n\n");
+      .replace(/â€“/g, '-')
+      .replace(/â€”/g, '--')
+      .replace(/â€¦/g, '...')
+      .replace(/\r\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n');
 
-    const txt = document.createElement("textarea");
+    const txt = document.createElement('textarea');
     txt.innerHTML = text;
     text = txt.value;
 
     return text.trim();
   } catch (e) {
-    console.error("Error getting full message body:", e);
-    return "";
+    console.error('Error getting full message body:', e);
+    return '';
   }
 };
 
 export const getMessageBody = (message) => {
   let text = getFullMessageBody(message);
-  if (!text) return "";
+  if (!text) return '';
 
   // Remove quoted replies for a cleaner view/preview
-  const lines = text.split("\n");
+  const lines = text.split('\n');
   const cleanLines = [];
   let inQuote = false;
 
   for (const line of lines) {
-    if (line.trim().startsWith(">")) {
+    if (line.trim().startsWith('>')) {
       inQuote = true;
       continue;
     }
-    if (inQuote && line.trim() === "") continue;
+    if (inQuote && line.trim() === '') continue;
     inQuote = false;
     cleanLines.push(line);
   }
 
-  text = cleanLines.join("\n").trim();
+  text = cleanLines.join('\n').trim();
 
   // Remove "On ... wrote:" patterns
   const wroteIndex = text.search(/On .+ wrote:/);
@@ -223,19 +211,19 @@ export const getPreview = (message) => {
   if (officialPreview) return officialPreview;
 
   const body = getMessageBody(message);
-  if (!body) return "";
-  return body.substring(0, 100) + (body.length > 100 ? "..." : "");
+  if (!body) return '';
+  return body.substring(0, 100) + (body.length > 100 ? '...' : '');
 };
 
-export const getInitials = (name) => name?.charAt(0)?.toUpperCase() || "?";
+export const getInitials = (name) => name?.charAt(0)?.toUpperCase() || '?';
 
 export const getProviderIcon = (type) => {
   switch (type) {
-    case "gmail":
+    case 'gmail':
       return <Gmail className="w-6 h-6" />;
-    case "outlook":
+    case 'outlook':
       return <MicrosoftOutlook className="w-6 h-6" />;
-    case "smtp":
+    case 'smtp':
       return <Mail className="w-6 h-6 text-green-500" />;
     default:
       return <Mail className="w-6 h-6 text-gray-500" />;
@@ -255,16 +243,15 @@ export const timeAgo = (date) => {
 
   for (const [unit, secondsInUnit] of Object.entries(intervals)) {
     const interval = Math.floor(seconds / secondsInUnit);
-    if (interval >= 1)
-      return `${interval} ${unit}${interval === 1 ? "" : "s"} ago`;
+    if (interval >= 1) return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
   }
-  return "just now";
+  return 'just now';
 };
 
 export const formatFileSize = (bytes) => {
-  if (!bytes || bytes === 0) return "0 B";
+  if (!bytes || bytes === 0) return '0 B';
   const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
+  const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 };

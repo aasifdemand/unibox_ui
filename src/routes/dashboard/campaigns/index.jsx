@@ -1,16 +1,16 @@
-import React from "react";
-import { motion, AnimatePresence } from "motion/react";
-import ShowDelete from "../../../modals/showdelete";
+import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import ShowDelete from '../../../modals/showdelete';
 
 // Components
-import CampaignsHeader from "./components/campaign/campaigns-header";
-import CampaignStats from "./components/campaign/campaign-stats";
-import CampaignFilters from "./components/campaign/campaign-filters";
-import CampaignGridView from "./components/campaign/campaign-grid-view";
-import CampaignListView from "./components/campaign/campaign-list-view";
+import CampaignsHeader from './components/campaign/campaigns-header';
+import CampaignStats from './components/campaign/campaign-stats';
+import CampaignFilters from './components/campaign/campaign-filters';
+import CampaignGridView from './components/campaign/campaign-grid-view';
+import CampaignListView from './components/campaign/campaign-list-view';
 
 // Hooks
-import { useCampaignsData } from "./hooks/use-campaigns-data";
+import { useCampaignsData } from './hooks/use-campaigns-data';
 
 const Campaigns = () => {
   const {
@@ -38,12 +38,7 @@ const Campaigns = () => {
       action: isLoadingAction,
       bulkAction: isBulkActionLoading,
     },
-    setters: {
-      setViewMode,
-      setSearchTerm,
-      setStatusFilter,
-      setShowDeleteModal,
-    },
+    setters: { setViewMode, setSearchTerm, setStatusFilter, setShowDeleteModal },
     handlers: {
       handleSelectAll,
       handleSelectCampaign,
@@ -126,7 +121,7 @@ const Campaigns = () => {
         {/* Campaigns Grid/List View */}
         <div className="min-h-100 relative">
           <AnimatePresence mode="wait">
-            {viewMode === "grid" ? (
+            {viewMode === 'grid' ? (
               <motion.div
                 key="grid-view"
                 initial={{ opacity: 0, y: 20 }}

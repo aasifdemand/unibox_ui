@@ -1,23 +1,19 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { useMailboxesData } from "./hooks/use-mailboxes-data";
-import Header from "./components/header";
-import MailboxList from "./components/mailbox-list";
-import MessagesView from "./components/messages-view";
-import MessageDetailView from "./components/messagedetails-view";
-import ComposeView from "./components/compose-view";
-import Loader from "./components/loader";
-import { AlertCircle } from "lucide-react";
-import { format } from "date-fns";
-import Dialog from "../../../components/ui/dialog";
-import Pagination from "./components/pagination";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useMailboxesData } from './hooks/use-mailboxes-data';
+import Header from './components/header';
+import MailboxList from './components/mailbox-list';
+import MessagesView from './components/messages-view';
+import MessageDetailView from './components/messagedetails-view';
+import ComposeView from './components/compose-view';
+import Loader from './components/loader';
+import { AlertCircle } from 'lucide-react';
+import { format } from 'date-fns';
+import Dialog from '../../../components/ui/dialog';
+import Pagination from './components/pagination';
 
 const Mailboxes = () => {
-  const { state, data, isLoading, error, setters, handlers, utils } =
-    useMailboxesData();
-
-
-
+  const { state, data, isLoading, error, setters, handlers, utils } = useMailboxesData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteContext, setDeleteContext] = useState(null);
@@ -31,14 +27,14 @@ const Mailboxes = () => {
   } = handlers;
 
   const handleRequestDisconnect = () => {
-    setDeleteContext({ type: "disconnect" });
+    setDeleteContext({ type: 'disconnect' });
     setDeleteDialogOpen(true);
   };
 
   const handleRequestBulkSenderDelete = () => {
     if (!state.selectedSenderIds || state.selectedSenderIds.length === 0) return;
     setDeleteContext({
-      type: "bulkSenderDelete",
+      type: 'bulkSenderDelete',
       count: state.selectedSenderIds.length,
     });
     setDeleteDialogOpen(true);
@@ -47,7 +43,7 @@ const Mailboxes = () => {
   const handleRequestBulkDelete = () => {
     if (!state.selectedMessages || state.selectedMessages.length === 0) return;
     setDeleteContext({
-      type: "bulkDelete",
+      type: 'bulkDelete',
       count: state.selectedMessages.length,
     });
     setDeleteDialogOpen(true);
@@ -55,11 +51,11 @@ const Mailboxes = () => {
 
   const handleConfirmDelete = async () => {
     if (!deleteContext) return;
-    if (deleteContext.type === "disconnect") {
+    if (deleteContext.type === 'disconnect') {
       await disconnectAction();
-    } else if (deleteContext.type === "bulkDelete") {
+    } else if (deleteContext.type === 'bulkDelete') {
       await bulkDeleteAction();
-    } else if (deleteContext.type === "bulkSenderDelete") {
+    } else if (deleteContext.type === 'bulkSenderDelete') {
       await bulkSenderDeleteAction();
     }
     setDeleteDialogOpen(false);
@@ -67,9 +63,7 @@ const Mailboxes = () => {
   };
 
   if (isLoading.isMailboxes && data.mailboxes.length === 0) {
-    return (
-      <Loader isLoading={isLoading.isMailboxes} mailboxes={data.mailboxes} />
-    );
+    return <Loader isLoading={isLoading.isMailboxes} mailboxes={data.mailboxes} />;
   }
 
   return (
@@ -89,9 +83,7 @@ const Mailboxes = () => {
         endMessageCount={data.endMessageCount}
         getSubject={utils.getSubject}
         onBack={
-          state.view === "message"
-            ? handlers.handleBackToMessages
-            : handlers.handleBackToMailboxes
+          state.view === 'message' ? handlers.handleBackToMessages : handlers.handleBackToMailboxes
         }
         onRefresh={handlers.refetchMailboxes}
         isLoading={isLoading.isMailboxes}
@@ -101,7 +93,7 @@ const Mailboxes = () => {
         onFilterUnread={() => setters.setFilterUnread(!state.filterUnread)}
         filterUnreadActive={state.filterUnread}
         onRefreshToken={handlers.handleRefreshToken}
-        showRefreshToken={state.selectedMailbox?.type !== "smtp"}
+        showRefreshToken={state.selectedMailbox?.type !== 'smtp'}
         onDisconnect={handleRequestDisconnect}
         selectedMessages={state.selectedMessages}
         onBulkMarkRead={handlers.handleBulkMarkRead}
@@ -111,10 +103,8 @@ const Mailboxes = () => {
         mailboxType={state.selectedMailbox?.type}
         onReply={() => handlers.handleReply(data.currentMessage)}
         onForward={() => handlers.handleForward(data.currentMessage)}
-        onDeleteMessage={() =>
-          handlers.handleDeleteMessage(state.currentMessageId)
-        }
-        showMessageActions={state.view === "message"}
+        onDeleteMessage={() => handlers.handleDeleteMessage(state.currentMessageId)}
+        showMessageActions={state.view === 'message'}
         mailboxViewMode={state.mailboxViewMode}
         onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
         mailboxSearch={state.mailboxSearch}
@@ -143,7 +133,7 @@ const Mailboxes = () => {
 
       <div className="flex-1 overflow-hidden relative">
         <AnimatePresence mode="wait">
-          {state.view === "list" && (
+          {state.view === 'list' && (
             <motion.div
               key="mailbox-list"
               initial={{ opacity: 0, x: -20 }}
@@ -172,16 +162,10 @@ const Mailboxes = () => {
                     hasNextPage={state.mailboxPage < data.mailboxMeta.totalPages}
                     hasPreviousPage={state.mailboxPage > 1}
                     isLoadingMessages={isLoading.isMailboxes}
-                    onNextPage={() =>
-                      handlers.handleMailboxPageChange(state.mailboxPage + 1)
-                    }
-                    onPrevPage={() =>
-                      handlers.handleMailboxPageChange(state.mailboxPage - 1)
-                    }
+                    onNextPage={() => handlers.handleMailboxPageChange(state.mailboxPage + 1)}
+                    onPrevPage={() => handlers.handleMailboxPageChange(state.mailboxPage - 1)}
                     totalMessages={data.mailboxMeta.total}
-                    startMessageCount={
-                      (state.mailboxPage - 1) * data.mailboxMeta.limit + 1
-                    }
+                    startMessageCount={(state.mailboxPage - 1) * data.mailboxMeta.limit + 1}
                     endMessageCount={Math.min(
                       state.mailboxPage * data.mailboxMeta.limit,
                       data.mailboxMeta.total,
@@ -192,7 +176,7 @@ const Mailboxes = () => {
             </motion.div>
           )}
 
-          {state.view === "messages" && state.selectedMailbox && (
+          {state.view === 'messages' && state.selectedMailbox && (
             <motion.div
               key="messages-view"
               initial={{ opacity: 0, x: 20 }}
@@ -212,9 +196,7 @@ const Mailboxes = () => {
                 selectedMessages={state.selectedMessages}
                 onSelectFolder={handlers.handleSelectFolder}
                 showAllFolders={state.showAllFolders}
-                onToggleShowAllFolders={() =>
-                  setters.setShowAllFolders(!state.showAllFolders)
-                }
+                onToggleShowAllFolders={() => setters.setShowAllFolders(!state.showAllFolders)}
                 onSelectMessage={handlers.handleSelectMessage}
                 onCheckMessage={handlers.handleCheckMessage}
                 formatMessageDate={utils.formatMessageDate}
@@ -224,17 +206,13 @@ const Mailboxes = () => {
                 getInitials={utils.getInitials}
                 searchQuery={state.searchQuery}
                 onSearchChange={setters.setSearchQuery}
-                onSearchClear={() => setters.setSearchQuery("")}
+                onSearchClear={() => setters.setSearchQuery('')}
                 dateRange={state.dateRange}
                 onDateRangeChange={setters.setDateRange}
                 filterStarred={state.filterStarred}
-                onFilterStarred={() =>
-                  setters.setFilterStarred(!state.filterStarred)
-                }
+                onFilterStarred={() => setters.setFilterStarred(!state.filterStarred)}
                 filterAttachments={state.filterAttachments}
-                onFilterAttachments={() =>
-                  setters.setFilterAttachments(!state.filterAttachments)
-                }
+                onFilterAttachments={() => setters.setFilterAttachments(!state.filterAttachments)}
                 filterUnread={state.filterUnread}
                 pagination={{
                   currentPage: state.currentPage,
@@ -252,7 +230,7 @@ const Mailboxes = () => {
             </motion.div>
           )}
 
-          {state.view === "compose" && state.selectedMailbox && (
+          {state.view === 'compose' && state.selectedMailbox && (
             <motion.div
               key="compose-view"
               initial={{ opacity: 0, y: 20 }}
@@ -272,7 +250,7 @@ const Mailboxes = () => {
             </motion.div>
           )}
 
-          {state.view === "message" && isLoading.isMessageLoading && (
+          {state.view === 'message' && isLoading.isMessageLoading && (
             <motion.div
               key="message-loading"
               initial={{ opacity: 0 }}
@@ -283,16 +261,14 @@ const Mailboxes = () => {
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                 <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
               </div>
-              <h3 className="text-lg font-bold text-slate-800">
-                Loading Conversation...
-              </h3>
+              <h3 className="text-lg font-bold text-slate-800">Loading Conversation...</h3>
               <p className="text-sm text-slate-500 mt-2 font-medium">
                 Fetching encrypted message content
               </p>
             </motion.div>
           )}
 
-          {state.view === "message" &&
+          {state.view === 'message' &&
             data.currentMessage &&
             !isLoading.isMessageLoading &&
             state.selectedMailbox && (
@@ -308,22 +284,14 @@ const Mailboxes = () => {
                   message={data.currentMessage}
                   mailbox={state.selectedMailbox}
                   onBack={handlers.handleBackToMessages}
-                  onDelete={() =>
-                    handlers.handleDeleteMessage(state.currentMessageId)
-                  }
+                  onDelete={() => handlers.handleDeleteMessage(state.currentMessageId)}
                   onReply={() => handlers.handleReply(data.currentMessage)}
                   onForward={() => handlers.handleForward(data.currentMessage)}
-                  onMarkRead={() =>
-                    handlers.handleMarkMessageAsRead(state.currentMessageId)
-                  }
-                  onMarkUnread={() =>
-                    handlers.handleMarkMessageAsUnread(state.currentMessageId)
-                  }
+                  onMarkRead={() => handlers.handleMarkMessageAsRead(state.currentMessageId)}
+                  onMarkUnread={() => handlers.handleMarkMessageAsUnread(state.currentMessageId)}
                   onStar={(id, starred) => handlers.handleToggleStar(id, starred)}
                   onPrint={() => window.print()}
-                  onDownload={(id, filename) =>
-                    handlers.handleDownloadAttachment(id, filename)
-                  }
+                  onDownload={(id, filename) => handlers.handleDownloadAttachment(id, filename)}
                 />
               </motion.div>
             )}
@@ -334,22 +302,22 @@ const Mailboxes = () => {
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         title={
-          deleteContext?.type === "disconnect"
-            ? "Disconnect Mailbox"
-            : deleteContext?.type === "bulkDelete"
-              ? "Delete Messages"
-              : deleteContext?.type === "bulkSenderDelete"
-                ? "Delete Mailboxes"
-                : "Confirm Action"
+          deleteContext?.type === 'disconnect'
+            ? 'Disconnect Mailbox'
+            : deleteContext?.type === 'bulkDelete'
+              ? 'Delete Messages'
+              : deleteContext?.type === 'bulkSenderDelete'
+                ? 'Delete Mailboxes'
+                : 'Confirm Action'
         }
         description={
-          deleteContext?.type === "disconnect"
-            ? "Are u sure u want to selete this mailbox connection? This action cannot be undone."
-            : deleteContext?.type === "bulkDelete"
+          deleteContext?.type === 'disconnect'
+            ? 'Are u sure u want to selete this mailbox connection? This action cannot be undone.'
+            : deleteContext?.type === 'bulkDelete'
               ? `Are u sure u want to selete ${deleteContext.count || 0} messages? This action cannot be undone.`
-              : deleteContext?.type === "bulkSenderDelete"
+              : deleteContext?.type === 'bulkSenderDelete'
                 ? `Are u sure u want to delete ${deleteContext.count || 0} mailboxes? This will permanently remove them from your account.`
-                : ""
+                : ''
         }
         confirmText="Confirm"
         confirmVariant="danger"

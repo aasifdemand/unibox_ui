@@ -12,19 +12,18 @@ import {
   Loader2,
   FileSpreadsheet,
   Upload,
-} from "lucide-react";
-import { useState, useRef } from "react";
-import Modal from "../components/shared/modal";
-import { Microsoft } from "../icons/microsoft";
-import { Google } from "../icons/google";
-import Button from "../components/ui/button";
-import toast from "react-hot-toast";
-import { z } from "zod";
-import * as XLSX from "xlsx";
-import { motion, AnimatePresence } from "motion/react";
+} from 'lucide-react';
+import { useState, useRef } from 'react';
+import Modal from '../components/shared/modal';
+import { Microsoft } from '../icons/microsoft';
+import { Google } from '../icons/google';
+import Button from '../components/ui/button';
+import toast from 'react-hot-toast';
+import * as XLSX from 'xlsx';
+import { motion, AnimatePresence } from 'motion/react';
 
 // Import React Query hooks
-import { useTestSmtp, useTestImap, useBulkUploadSenders } from "../hooks/useSenders";
+import { useTestSmtp, useTestImap, useBulkUploadSenders } from '../hooks/useSenders';
 
 const ShowSender = ({
   setShowSenderModal,
@@ -37,7 +36,7 @@ const ShowSender = ({
   setSmtpData,
   isSubmitting = false,
 }) => {
-  const [settingsTab, setSettingsTab] = useState("smtp");
+  const [settingsTab, setSettingsTab] = useState('smtp');
   const [smtpTestResult, setSmtpTestResult] = useState(null);
   const [imapTestResult, setImapTestResult] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -54,12 +53,12 @@ const ShowSender = ({
   const [fileHeaders, setFileHeaders] = useState([]);
   const [fileRows, setFileRows] = useState([]);
   const [mapping, setMapping] = useState({
-    email: "",
-    domain: "",
-    password: "",
-    type: "",
-    first_name: "",
-    last_name: "",
+    email: '',
+    domain: '',
+    password: '',
+    type: '',
+    first_name: '',
+    last_name: '',
   });
   const [isMapping, setIsMapping] = useState(false);
 
@@ -71,14 +70,14 @@ const ShowSender = ({
     reader.onload = (event) => {
       try {
         const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
 
         // Get all data
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         if (jsonData.length === 0) {
-          toast.error("The selected file is empty");
+          toast.error('The selected file is empty');
           return;
         }
 
@@ -86,11 +85,11 @@ const ShowSender = ({
         const rows = jsonData.slice(1);
 
         if (headers.length === 0) {
-          toast.error("The selected file has no headers");
+          toast.error('The selected file has no headers');
           return;
         }
 
-        const cleanHeaders = headers.map(h => h?.toString()?.toLowerCase()?.trim());
+        const cleanHeaders = headers.map((h) => h?.toString()?.toLowerCase()?.trim());
 
         setFileHeaders(headers);
         setFileRows(rows);
@@ -98,29 +97,34 @@ const ShowSender = ({
 
         // Auto-mapping logic
         const newMapping = {
-          email: "",
-          domain: "",
-          password: "",
-          type: "",
-          first_name: "",
-          last_name: "",
+          email: '',
+          domain: '',
+          password: '',
+          type: '',
+          first_name: '',
+          last_name: '',
         };
 
         cleanHeaders.forEach((h, index) => {
-          if (["email", "email_address", "user_email", "mail"].includes(h)) newMapping.email = index.toString();
-          if (["domain", "site_domain", "host"].includes(h)) newMapping.domain = index.toString();
-          if (["password", "pass", "smtp_password", "pw"].includes(h)) newMapping.password = index.toString();
-          if (["type", "sender_type", "account_type", "provider"].includes(h)) newMapping.type = index.toString();
-          if (["first_name", "fname", "firstname", "first"].includes(h)) newMapping.first_name = index.toString();
-          if (["last_name", "lname", "lastname", "last"].includes(h)) newMapping.last_name = index.toString();
+          if (['email', 'email_address', 'user_email', 'mail'].includes(h))
+            newMapping.email = index.toString();
+          if (['domain', 'site_domain', 'host'].includes(h)) newMapping.domain = index.toString();
+          if (['password', 'pass', 'smtp_password', 'pw'].includes(h))
+            newMapping.password = index.toString();
+          if (['type', 'sender_type', 'account_type', 'provider'].includes(h))
+            newMapping.type = index.toString();
+          if (['first_name', 'fname', 'firstname', 'first'].includes(h))
+            newMapping.first_name = index.toString();
+          if (['last_name', 'lname', 'lastname', 'last'].includes(h))
+            newMapping.last_name = index.toString();
         });
 
         setMapping(newMapping);
         setIsMapping(true);
       } catch (err) {
-        console.error("File validation error:", err);
-        toast.error("Failed to read file");
-        e.target.value = "";
+        console.error('File validation error:', err);
+        toast.error('Failed to read file');
+        e.target.value = '';
       }
     };
     reader.readAsArrayBuffer(file);
@@ -128,37 +132,41 @@ const ShowSender = ({
 
   const onBulkUploadSubmit = async () => {
     if (!mapping.email || !mapping.domain || !mapping.password || !mapping.type) {
-      toast.error("Please map all required fields (Email, Domain, Password, Type)");
+      toast.error('Please map all required fields (Email, Domain, Password, Type)');
       return;
     }
 
     try {
       // Transform data based on mapping
-      const mappedData = fileRows.map(row => ({
-        email: row[parseInt(mapping.email)]?.toString() || "",
-        domain: row[parseInt(mapping.domain)]?.toString() || "",
-        password: row[parseInt(mapping.password)]?.toString() || "",
-        type: row[parseInt(mapping.type)]?.toString() || "",
-        first_name: mapping.first_name ? (row[parseInt(mapping.first_name)]?.toString() || "") : "",
-        last_name: mapping.last_name ? (row[parseInt(mapping.last_name)]?.toString() || "") : "",
+      const mappedData = fileRows.map((row) => ({
+        email: row[parseInt(mapping.email)]?.toString() || '',
+        domain: row[parseInt(mapping.domain)]?.toString() || '',
+        password: row[parseInt(mapping.password)]?.toString() || '',
+        type: row[parseInt(mapping.type)]?.toString() || '',
+        first_name: mapping.first_name ? row[parseInt(mapping.first_name)]?.toString() || '' : '',
+        last_name: mapping.last_name ? row[parseInt(mapping.last_name)]?.toString() || '' : '',
       }));
 
       // Create a new Excel file to send to the backend
       const worksheet = XLSX.utils.json_to_sheet(mappedData);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Senders");
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Senders');
 
       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      const finalFile = new File([blob], "bulk_senders.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const finalFile = new File([blob], 'bulk_senders.xlsx', {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
 
       const response = await bulkUpload.mutateAsync(finalFile);
       setUploadResult(response.data);
-      toast.success(response.message || "Bulk upload successful!");
+      toast.success(response.message || 'Bulk upload successful!');
       setIsMapping(false);
       setSelectedFile(null);
     } catch (err) {
-      toast.error(err.message || "Bulk upload failed");
+      toast.error(err.message || 'Bulk upload failed');
     }
   };
 
@@ -180,15 +188,12 @@ const ShowSender = ({
 
       setSmtpTestResult({
         success: true,
-        message:
-          result.message ||
-          "SMTP connection successful! Your outgoing mail settings work.",
+        message: result.message || 'SMTP connection successful! Your outgoing mail settings work.',
       });
     } catch (err) {
       setSmtpTestResult({
         success: false,
-        message:
-          err.message || "SMTP connection failed. Please check your settings.",
+        message: err.message || 'SMTP connection failed. Please check your settings.',
       });
     }
   };
@@ -201,8 +206,7 @@ const ShowSender = ({
     setImapTestResult(null);
 
     // Auto-fill IMAP host if not provided
-    const imapHost =
-      smtpData.imapHost || smtpData.host?.replace("smtp", "imap");
+    const imapHost = smtpData.imapHost || smtpData.host?.replace('smtp', 'imap');
 
     try {
       const result = await testImap.mutateAsync({
@@ -215,15 +219,12 @@ const ShowSender = ({
 
       setImapTestResult({
         success: true,
-        message:
-          result.message ||
-          "IMAP connection successful! Your incoming mail settings work.",
+        message: result.message || 'IMAP connection successful! Your incoming mail settings work.',
       });
     } catch (err) {
       setImapTestResult({
         success: false,
-        message:
-          err.message || "IMAP connection failed. Please check your settings.",
+        message: err.message || 'IMAP connection failed. Please check your settings.',
       });
     }
   };
@@ -270,40 +271,40 @@ const ShowSender = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
             {
-              type: "gmail",
-              label: "Gmail",
+              type: 'gmail',
+              label: 'Gmail',
               icon: Google,
-              color: "rose",
-              bg: "bg-rose-50",
-              text: "text-rose-600",
-              desc: "OAuth 2.0",
+              color: 'rose',
+              bg: 'bg-rose-50',
+              text: 'text-rose-600',
+              desc: 'OAuth 2.0',
             },
             {
-              type: "outlook",
-              label: "Outlook",
+              type: 'outlook',
+              label: 'Outlook',
               icon: Microsoft,
-              color: "blue",
-              bg: "bg-blue-50",
-              text: "text-blue-600",
-              desc: "Microsoft Graph",
+              color: 'blue',
+              bg: 'bg-blue-50',
+              text: 'text-blue-600',
+              desc: 'Microsoft Graph',
             },
             {
-              type: "smtp",
-              label: "Custom SMTP",
+              type: 'smtp',
+              label: 'Custom SMTP',
               icon: Server,
-              color: "slate",
-              bg: "bg-slate-100",
-              text: "text-slate-600",
-              desc: "Manual setup",
+              color: 'slate',
+              bg: 'bg-slate-100',
+              text: 'text-slate-600',
+              desc: 'Manual setup',
             },
             {
-              type: "bulk",
-              label: "Bulk SMTP",
+              type: 'bulk',
+              label: 'Bulk SMTP',
               icon: FileSpreadsheet,
-              color: "indigo",
-              bg: "bg-indigo-50",
-              text: "text-indigo-600",
-              desc: "XLSX Upload",
+              color: 'indigo',
+              bg: 'bg-indigo-50',
+              text: 'text-indigo-600',
+              desc: 'XLSX Upload',
             },
           ].map((item, index) => (
             <motion.button
@@ -316,10 +317,11 @@ const ShowSender = ({
                 clearTestResults();
               }}
               disabled={isSubmitting}
-              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${senderType === item.type
-                ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
-                : "border-slate-50 bg-white hover:border-slate-200"
-                } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${
+                senderType === item.type
+                  ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
+                  : 'border-slate-50 bg-white hover:border-slate-200'
+              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex flex-col items-center text-center">
                 <div
@@ -347,7 +349,7 @@ const ShowSender = ({
 
         <div className="space-y-6">
           <AnimatePresence mode="wait">
-            {senderType === "gmail" || senderType === "outlook" ? (
+            {senderType === 'gmail' || senderType === 'outlook' ? (
               <motion.div
                 key="oauth"
                 initial={{ opacity: 0, x: 20 }}
@@ -356,12 +358,12 @@ const ShowSender = ({
                 transition={{ duration: 0.3 }}
               >
                 <div
-                  className={`p-6 rounded-[2.5rem] border-2 ${senderType === "gmail" ? "bg-rose-50/20 border-rose-100" : "bg-blue-50/20 border-blue-100"} relative overflow-hidden`}
+                  className={`p-6 rounded-[2.5rem] border-2 ${senderType === 'gmail' ? 'bg-rose-50/20 border-rose-100' : 'bg-blue-50/20 border-blue-100'} relative overflow-hidden`}
                 >
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-xl border border-white/50">
                       <Shield
-                        className={`w-8 h-8 ${senderType === "gmail" ? "text-rose-500" : "text-blue-500"}`}
+                        className={`w-8 h-8 ${senderType === 'gmail' ? 'text-rose-500' : 'text-blue-500'}`}
                       />
                     </div>
                     <div>
@@ -378,23 +380,23 @@ const ShowSender = ({
                     {[
                       {
                         icon: Zap,
-                        label: "No Passwords",
-                        desc: "Secure token-based authentication",
+                        label: 'No Passwords',
+                        desc: 'Secure token-based authentication',
                       },
                       {
                         icon: CheckCircle,
-                        label: "High Deliverability",
-                        desc: "Verified sender reputation",
+                        label: 'High Deliverability',
+                        desc: 'Verified sender reputation',
                       },
                       {
                         icon: AtSign,
-                        label: "Real-time Tracking",
-                        desc: "Opens and clicks",
+                        label: 'Real-time Tracking',
+                        desc: 'Opens and clicks',
                       },
                       {
                         icon: Shield,
-                        label: "Fully Encrypted",
-                        desc: "OAuth 2.0 Security",
+                        label: 'Fully Encrypted',
+                        desc: 'OAuth 2.0 Security',
                       },
                     ].map((benefit, i) => (
                       <div
@@ -402,7 +404,7 @@ const ShowSender = ({
                         className="flex items-start gap-4 p-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-white/60"
                       >
                         <benefit.icon
-                          className={`w-5 h-5 mt-0.5 ${senderType === "gmail" ? "text-rose-400" : "text-blue-400"}`}
+                          className={`w-5 h-5 mt-0.5 ${senderType === 'gmail' ? 'text-rose-400' : 'text-blue-400'}`}
                         />
                         <div>
                           <p className="text-[11px] font-extrabold text-slate-800 uppercase tracking-tight">
@@ -418,27 +420,24 @@ const ShowSender = ({
 
                   <div className="mt-6 flex justify-center">
                     <button
-                      onClick={
-                        senderType === "gmail"
-                          ? handleGmailOAuth
-                          : handleOutlookOAuth
-                      }
-                      className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${senderType === "gmail"
-                        ? "bg-rose-600 shadow-rose-600/30"
-                        : "bg-blue-600 shadow-blue-600/30"
-                        }`}
+                      onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
+                      className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
+                        senderType === 'gmail'
+                          ? 'bg-rose-600 shadow-rose-600/30'
+                          : 'bg-blue-600 shadow-blue-600/30'
+                      }`}
                     >
-                      {senderType === "gmail" ? (
+                      {senderType === 'gmail' ? (
                         <Google className="w-5 h-5" />
                       ) : (
                         <Microsoft className="w-5 h-5" />
                       )}
-                      Connect {senderType === "gmail" ? "Gmail" : "Outlook"}
+                      Connect {senderType === 'gmail' ? 'Gmail' : 'Outlook'}
                     </button>
                   </div>
                 </div>
               </motion.div>
-            ) : senderType === "smtp" ? (
+            ) : senderType === 'smtp' ? (
               <motion.div
                 key="smtp"
                 initial={{ opacity: 0, x: 20 }}
@@ -486,9 +485,7 @@ const ShowSender = ({
                       <input
                         type="email"
                         value={smtpData.email}
-                        onChange={(e) =>
-                          setSmtpData({ ...smtpData, email: e.target.value })
-                        }
+                        onChange={(e) => setSmtpData({ ...smtpData, email: e.target.value })}
                         required
                         disabled={isSubmitting}
                         className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none"
@@ -500,12 +497,12 @@ const ShowSender = ({
 
                 <div className="bg-slate-50/50 p-2 rounded-4xl border-2 border-slate-100 flex gap-2">
                   {[
-                    { id: "smtp", label: "Outgoing (SMTP)", icon: Server },
+                    { id: 'smtp', label: 'Outgoing (SMTP)', icon: Server },
                     {
-                      id: "imap",
-                      label: "Receiving (IMAP)",
+                      id: 'imap',
+                      label: 'Receiving (IMAP)',
                       icon: Mail,
-                      tag: "Optional",
+                      tag: 'Optional',
                     },
                   ].map((tab) => (
                     <button
@@ -513,10 +510,11 @@ const ShowSender = ({
                       type="button"
                       onClick={() => setSettingsTab(tab.id)}
                       disabled={isSubmitting}
-                      className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${settingsTab === tab.id
-                        ? "bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100"
-                        : "text-slate-400 hover:text-slate-600"
-                        }`}
+                      className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${
+                        settingsTab === tab.id
+                          ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100'
+                          : 'text-slate-400 hover:text-slate-600'
+                      }`}
                     >
                       <tab.icon className="w-4 h-4" />
                       <span className="text-[10px] font-extrabold uppercase tracking-widest">
@@ -531,7 +529,7 @@ const ShowSender = ({
                   ))}
                 </div>
 
-                {settingsTab === "smtp" ? (
+                {settingsTab === 'smtp' ? (
                   <div className="animate-in fade-in duration-500 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -541,9 +539,7 @@ const ShowSender = ({
                         <input
                           type="text"
                           value={smtpData.host}
-                          onChange={(e) =>
-                            setSmtpData({ ...smtpData, host: e.target.value })
-                          }
+                          onChange={(e) => setSmtpData({ ...smtpData, host: e.target.value })}
                           required
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
                           placeholder="smtp.example.com"
@@ -556,9 +552,7 @@ const ShowSender = ({
                         <input
                           type="number"
                           value={smtpData.port}
-                          onChange={(e) =>
-                            setSmtpData({ ...smtpData, port: e.target.value })
-                          }
+                          onChange={(e) => setSmtpData({ ...smtpData, port: e.target.value })}
                           required
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
                           placeholder="587"
@@ -588,7 +582,7 @@ const ShowSender = ({
                         </p>
                         <div className="relative">
                           <input
-                            type={showPassword ? "text" : "password"}
+                            type={showPassword ? 'text' : 'password'}
                             value={smtpData.password}
                             onChange={(e) =>
                               setSmtpData({
@@ -639,28 +633,25 @@ const ShowSender = ({
                       <button
                         type="button"
                         onClick={testSmtpConnection}
-                        disabled={
-                          isSmtpTesting || !smtpData.host || !smtpData.password
-                        }
+                        disabled={isSmtpTesting || !smtpData.host || !smtpData.password}
                         className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95 disabled:opacity-50"
                       >
-                        <RefreshCw
-                          className={`w-4 h-4 ${isSmtpTesting ? "animate-spin" : ""}`}
-                        />
-                        {isSmtpTesting ? "Testing..." : "Test SMTP"}
+                        <RefreshCw className={`w-4 h-4 ${isSmtpTesting ? 'animate-spin' : ''}`} />
+                        {isSmtpTesting ? 'Testing...' : 'Test SMTP'}
                       </button>
                     </div>
 
                     {smtpTestResult && (
                       <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${smtpTestResult.success
-                          ? "bg-emerald-50/50 border-emerald-100"
-                          : "bg-rose-50/50 border-rose-100"
-                          }`}
+                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
+                          smtpTestResult.success
+                            ? 'bg-emerald-50/50 border-emerald-100'
+                            : 'bg-rose-50/50 border-rose-100'
+                        }`}
                       >
                         <div className="flex items-start gap-4">
                           <div
-                            className={`w-8 h-8 rounded-xl flex items-center justify-center ${smtpTestResult.success ? "bg-emerald-500" : "bg-rose-500"}`}
+                            className={`w-8 h-8 rounded-xl flex items-center justify-center ${smtpTestResult.success ? 'bg-emerald-500' : 'bg-rose-500'}`}
                           >
                             {smtpTestResult.success ? (
                               <CheckCircle className="w-5 h-5 text-white" />
@@ -670,12 +661,12 @@ const ShowSender = ({
                           </div>
                           <div>
                             <p
-                              className={`text-[10px] font-extrabold uppercase tracking-widest ${smtpTestResult.success ? "text-emerald-600" : "text-rose-600"}`}
+                              className={`text-[10px] font-extrabold uppercase tracking-widest ${smtpTestResult.success ? 'text-emerald-600' : 'text-rose-600'}`}
                             >
-                              {smtpTestResult.success ? "Success" : "Failed"}
+                              {smtpTestResult.success ? 'Success' : 'Failed'}
                             </p>
                             <p
-                              className={`text-xs font-bold mt-1 ${smtpTestResult.success ? "text-emerald-700" : "text-rose-700"}`}
+                              className={`text-xs font-bold mt-1 ${smtpTestResult.success ? 'text-emerald-700' : 'text-rose-700'}`}
                             >
                               {smtpTestResult.message}
                             </p>
@@ -693,7 +684,7 @@ const ShowSender = ({
                         </p>
                         <input
                           type="text"
-                          value={smtpData.imapHost || ""}
+                          value={smtpData.imapHost || ''}
                           onChange={(e) =>
                             setSmtpData({
                               ...smtpData,
@@ -710,7 +701,7 @@ const ShowSender = ({
                         </p>
                         <input
                           type="number"
-                          value={smtpData.imapPort || ""}
+                          value={smtpData.imapPort || ''}
                           onChange={(e) =>
                             setSmtpData({
                               ...smtpData,
@@ -727,7 +718,7 @@ const ShowSender = ({
                         </p>
                         <input
                           type="text"
-                          value={smtpData.imapUser || ""}
+                          value={smtpData.imapUser || ''}
                           onChange={(e) =>
                             setSmtpData({
                               ...smtpData,
@@ -744,8 +735,8 @@ const ShowSender = ({
                         </p>
                         <div className="relative">
                           <input
-                            type={showImapPassword ? "text" : "password"}
-                            value={smtpData.imapPassword || ""}
+                            type={showImapPassword ? 'text' : 'password'}
+                            value={smtpData.imapPassword || ''}
                             onChange={(e) =>
                               setSmtpData({
                                 ...smtpData,
@@ -796,23 +787,22 @@ const ShowSender = ({
                         onClick={testImapConnection}
                         className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95 disabled:opacity-50"
                       >
-                        <RefreshCw
-                          className={`w-4 h-4 ${isImapTesting ? "animate-spin" : ""}`}
-                        />
-                        {isImapTesting ? "Testing..." : "Test IMAP"}
+                        <RefreshCw className={`w-4 h-4 ${isImapTesting ? 'animate-spin' : ''}`} />
+                        {isImapTesting ? 'Testing...' : 'Test IMAP'}
                       </button>
                     </div>
 
                     {imapTestResult && (
                       <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${imapTestResult.success
-                          ? "bg-emerald-50/50 border-emerald-100"
-                          : "bg-rose-50/50 border-rose-100"
-                          }`}
+                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
+                          imapTestResult.success
+                            ? 'bg-emerald-50/50 border-emerald-100'
+                            : 'bg-rose-50/50 border-rose-100'
+                        }`}
                       >
                         <div className="flex items-start gap-4">
                           <div
-                            className={`w-8 h-8 rounded-xl flex items-center justify-center ${imapTestResult.success ? "bg-emerald-500" : "bg-rose-500"}`}
+                            className={`w-8 h-8 rounded-xl flex items-center justify-center ${imapTestResult.success ? 'bg-emerald-500' : 'bg-rose-500'}`}
                           >
                             {imapTestResult.success ? (
                               <CheckCircle className="w-5 h-5 text-white" />
@@ -822,12 +812,12 @@ const ShowSender = ({
                           </div>
                           <div>
                             <p
-                              className={`text-[10px] font-extrabold uppercase tracking-widest ${imapTestResult.success ? "text-emerald-600" : "text-rose-600"}`}
+                              className={`text-[10px] font-extrabold uppercase tracking-widest ${imapTestResult.success ? 'text-emerald-600' : 'text-rose-600'}`}
                             >
-                              {imapTestResult.success ? "Success" : "Failed"}
+                              {imapTestResult.success ? 'Success' : 'Failed'}
                             </p>
                             <p
-                              className={`text-xs font-bold mt-1 ${imapTestResult.success ? "text-emerald-700" : "text-rose-700"}`}
+                              className={`text-xs font-bold mt-1 ${imapTestResult.success ? 'text-emerald-700' : 'text-rose-700'}`}
                             >
                               {imapTestResult.message}
                             </p>
@@ -840,15 +830,15 @@ const ShowSender = ({
                       <div className="flex gap-4">
                         <Zap className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
                         <p className="text-[11px] font-bold text-blue-700 leading-relaxed uppercase tracking-tight">
-                          If you leave these empty, we'll try to use your sending
-                          settings automatically.
+                          If you leave these empty, we&apos;ll try to use your sending settings
+                          automatically.
                         </p>
                       </div>
                     </div>
                   </div>
                 )}
               </motion.div>
-            ) : senderType === "bulk" ? (
+            ) : senderType === 'bulk' ? (
               <motion.div
                 key="bulk"
                 initial={{ opacity: 0, x: 20 }}
@@ -862,7 +852,8 @@ const ShowSender = ({
                     Bulk Upload Accounts
                   </h4>
                   <p className="text-xs text-slate-400 font-medium">
-                    Upload an Excel file (.xlsx) with columns: email, domain, password, type (aapanel/postal), first_name, last_name.
+                    Upload an Excel file (.xlsx) with columns: email, domain, password, type
+                    (aapanel/postal), first_name, last_name.
                   </p>
                 </div>
 
@@ -897,13 +888,16 @@ const ShowSender = ({
                           Data Preview ({fileRows.length} Records)
                         </p>
                       </div>
-                      <div className="rounded-[2rem] border-2 border-slate-100 bg-white shadow-sm overflow-hidden">
+                      <div className="rounded-4xl border-2 border-slate-100 bg-white shadow-sm overflow-hidden">
                         <div className="max-h-60 overflow-y-auto no-scrollbar overflow-x-auto">
                           <table className="w-full text-left border-collapse min-w-full">
                             <thead className="sticky top-0 z-10">
                               <tr className="bg-slate-50">
                                 {fileHeaders.map((header, i) => (
-                                  <th key={i} className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 whitespace-nowrap bg-slate-50">
+                                  <th
+                                    key={i}
+                                    className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 whitespace-nowrap bg-slate-50"
+                                  >
                                     {header}
                                   </th>
                                 ))}
@@ -911,17 +905,26 @@ const ShowSender = ({
                             </thead>
                             <tbody>
                               {fileRows.slice(0, 10).map((row, rowIndex) => (
-                                <tr key={rowIndex} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors">
+                                <tr
+                                  key={rowIndex}
+                                  className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors"
+                                >
                                   {fileHeaders.map((_, colIndex) => (
-                                    <td key={colIndex} className="px-6 py-4 text-[11px] font-bold text-slate-600 whitespace-nowrap max-w-[200px] truncate">
-                                      {row[colIndex]?.toString() || "-"}
+                                    <td
+                                      key={colIndex}
+                                      className="px-6 py-4 text-[11px] font-bold text-slate-600 whitespace-nowrap max-w-50 truncate"
+                                    >
+                                      {row[colIndex]?.toString() || '-'}
                                     </td>
                                   ))}
                                 </tr>
                               ))}
                               {fileRows.length > 10 && (
                                 <tr className="bg-slate-50/30">
-                                  <td colSpan={fileHeaders.length} className="px-6 py-3 text-[9px] font-black text-slate-400 text-center uppercase tracking-widest italic">
+                                  <td
+                                    colSpan={fileHeaders.length}
+                                    className="px-6 py-3 text-[9px] font-black text-slate-400 text-center uppercase tracking-widest italic"
+                                  >
                                     And {fileRows.length - 10} more rows...
                                   </td>
                                 </tr>
@@ -935,22 +938,36 @@ const ShowSender = ({
                     {/* Mapping Selects */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {[
-                        { key: "email", label: "Email Address", required: true },
-                        { key: "domain", label: "Domain", required: true },
-                        { key: "password", label: "Password", required: true },
-                        { key: "type", label: "Account Type", required: true, desc: "aapanel/postal" },
-                        { key: "first_name", label: "First Name", required: false },
-                        { key: "last_name", label: "Last Name", required: false },
+                        { key: 'email', label: 'Email Address', required: true },
+                        { key: 'domain', label: 'Domain', required: true },
+                        { key: 'password', label: 'Password', required: true },
+                        {
+                          key: 'type',
+                          label: 'Account Type',
+                          required: true,
+                          desc: 'aapanel/postal',
+                        },
+                        { key: 'first_name', label: 'First Name', required: false },
+                        { key: 'last_name', label: 'Last Name', required: false },
                       ].map((field) => (
                         <div key={field.key} className="space-y-2 group">
                           <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
-                            <span>{field.label} {field.required && <span className="text-rose-500">*</span>}</span>
-                            {field.desc && <span className="text-[8px] font-bold text-slate-300 italic">{field.desc}</span>}
+                            <span>
+                              {field.label}{' '}
+                              {field.required && <span className="text-rose-500">*</span>}
+                            </span>
+                            {field.desc && (
+                              <span className="text-[8px] font-bold text-slate-300 italic">
+                                {field.desc}
+                              </span>
+                            )}
                           </label>
                           <div className="relative">
                             <select
                               value={mapping[field.key]}
-                              onChange={(e) => setMapping({ ...mapping, [field.key]: e.target.value })}
+                              onChange={(e) =>
+                                setMapping({ ...mapping, [field.key]: e.target.value })
+                              }
                               className="w-full h-14 pl-6 pr-12 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-indigo-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
                             >
                               <option value="">-- Select Column --</option>
@@ -971,7 +988,8 @@ const ShowSender = ({
                     <div className="bg-indigo-50/50 p-6 rounded-3xl border border-indigo-100 flex gap-4">
                       <Shield className="w-5 h-5 text-indigo-500 shrink-0" />
                       <p className="text-[10px] font-bold text-indigo-700 leading-relaxed uppercase tracking-tight">
-                        We'll automatically transform your file data based on these mappings before uploading.
+                        We&apos;ll automatically transform your file data based on these mappings
+                        before uploading.
                       </p>
                     </div>
                   </div>
@@ -992,21 +1010,36 @@ const ShowSender = ({
 
                       <div className="grid grid-cols-2 gap-4 w-full mt-4">
                         <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
-                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Success</p>
-                          <p className="text-2xl font-black text-emerald-600">{uploadResult.successCount}</p>
+                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
+                            Success
+                          </p>
+                          <p className="text-2xl font-black text-emerald-600">
+                            {uploadResult.successCount}
+                          </p>
                         </div>
                         <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
-                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">Failed</p>
-                          <p className="text-2xl font-black text-rose-600">{uploadResult.failedCount}</p>
+                          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
+                            Failed
+                          </p>
+                          <p className="text-2xl font-black text-rose-600">
+                            {uploadResult.failedCount}
+                          </p>
                         </div>
                       </div>
 
                       {uploadResult.errors?.length > 0 && (
                         <div className="w-full text-left mt-4 max-h-40 overflow-y-auto p-4 bg-rose-50/50 rounded-2xl border border-rose-100 no-scrollbar">
-                          <p className="text-[10px] font-extrabold text-rose-600 uppercase tracking-widest mb-2">Errors</p>
+                          <p className="text-[10px] font-extrabold text-rose-600 uppercase tracking-widest mb-2">
+                            Errors
+                          </p>
                           <ul className="space-y-1">
                             {uploadResult.errors.map((err, i) => (
-                              <li key={i} className="text-[10px] font-bold text-rose-700 list-disc ml-4 leading-tight">{err}</li>
+                              <li
+                                key={i}
+                                className="text-[10px] font-bold text-rose-700 list-disc ml-4 leading-tight"
+                              >
+                                {err}
+                              </li>
                             ))}
                           </ul>
                         </div>
@@ -1043,10 +1076,12 @@ const ShowSender = ({
                       </div>
                       <div className="text-center">
                         <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
-                          {selectedFile ? selectedFile.name : "Click to Upload"}
+                          {selectedFile ? selectedFile.name : 'Click to Upload'}
                         </p>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
-                          {selectedFile ? `${(selectedFile.size / 1024).toFixed(1)} KB` : "or drag and drop your XLSX file"}
+                          {selectedFile
+                            ? `${(selectedFile.size / 1024).toFixed(1)} KB`
+                            : 'or drag and drop your XLSX file'}
                         </p>
                       </div>
                     </div>
@@ -1090,7 +1125,7 @@ const ShowSender = ({
             >
               Cancel
             </button>
-            {senderType === "smtp" && (
+            {senderType === 'smtp' && (
               <Button
                 type="button"
                 onClick={handleSmtpSubmit}
@@ -1106,7 +1141,7 @@ const ShowSender = ({
                 Add Sender
               </Button>
             )}
-            {senderType === "bulk" && !uploadResult && (
+            {senderType === 'bulk' && !uploadResult && (
               <Button
                 type="button"
                 onClick={isMapping ? onBulkUploadSubmit : () => fileInputRef.current?.click()}
@@ -1121,12 +1156,8 @@ const ShowSender = ({
                   </>
                 ) : (
                   <>
-                    {isMapping ? (
-                      <Zap className="w-4 h-4" />
-                    ) : (
-                      <Upload className="w-4 h-4" />
-                    )}
-                    {isMapping ? "Complete Upload" : "Select File"}
+                    {isMapping ? <Zap className="w-4 h-4" /> : <Upload className="w-4 h-4" />}
+                    {isMapping ? 'Complete Upload' : 'Select File'}
                   </>
                 )}
               </Button>

@@ -1,64 +1,62 @@
-import React from "react";
-import { Users, Send, Mail, MessageCircle, Zap } from "lucide-react";
+import React from 'react';
+import { Users, Send, Mail, MessageCircle, Zap } from 'lucide-react';
 
 const CampaignMetrics = ({ campaign, stats }) => {
   const metrics = [
-
     {
-      label: "Total Recipients",
+      label: 'Total Recipients',
       value: stats.totalRecipients,
       icon: <Users className="w-5 h-5" />,
-      theme: "indigo",
-      description:
-        campaign.ListUploadBatch?.originalFilename || "Recipient List",
-      subLabel: "Total Reach",
+      theme: 'indigo',
+      description: campaign.ListUploadBatch?.originalFilename || 'Recipient List',
+      subLabel: 'Total Reach',
     },
     {
-      label: "Emails Sent",
+      label: 'Emails Sent',
       value: stats.totalSent,
       icon: <Send className="w-5 h-5" />,
-      theme: "emerald",
+      theme: 'emerald',
       description: `${stats.progress}% Completed`,
-      subLabel: "Current Status",
+      subLabel: 'Current Status',
     },
     {
-      label: "Total Opens",
+      label: 'Total Opens',
       value: stats.totalOpened,
       icon: <Mail className="w-5 h-5" />,
-      theme: "purple",
+      theme: 'purple',
       description: stats.totalSent
         ? `${Math.round((stats.totalOpened / stats.totalSent) * 100)}% Open Rate`
-        : "0% Open Rate",
-      subLabel: "Engagement",
+        : '0% Open Rate',
+      subLabel: 'Engagement',
     },
     {
-      label: "Total Replies",
+      label: 'Total Replies',
       value: stats.totalReplied,
       icon: <MessageCircle className="w-5 h-5" />,
-      theme: "amber",
+      theme: 'amber',
       description: stats.totalSent
         ? `${Math.round((stats.totalReplied / stats.totalSent) * 100)}% Reply Rate`
-        : "0% Reply Rate",
-      subLabel: "Responses",
+        : '0% Reply Rate',
+      subLabel: 'Responses',
     },
   ];
 
   const themes = {
     indigo:
-      "from-indigo-500/10 via-indigo-500/5 to-transparent border-indigo-200/50 hover:bg-indigo-50/50",
+      'from-indigo-500/10 via-indigo-500/5 to-transparent border-indigo-200/50 hover:bg-indigo-50/50',
     emerald:
-      "from-emerald-500/10 via-emerald-500/5 to-transparent border-emerald-200/50 hover:bg-emerald-50/50",
+      'from-emerald-500/10 via-emerald-500/5 to-transparent border-emerald-200/50 hover:bg-emerald-50/50',
     purple:
-      "from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50",
+      'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
     amber:
-      "from-amber-500/10 via-amber-500/5 to-transparent border-amber-200/50 hover:bg-amber-50/50",
+      'from-amber-500/10 via-amber-500/5 to-transparent border-amber-200/50 hover:bg-amber-50/50',
   };
 
   const iconColors = {
-    indigo: "bg-indigo-600 shadow-indigo-200",
-    emerald: "bg-emerald-600 shadow-emerald-200",
-    purple: "bg-purple-600 shadow-purple-200",
-    amber: "bg-amber-600 shadow-amber-200",
+    indigo: 'bg-indigo-600 shadow-indigo-200',
+    emerald: 'bg-emerald-600 shadow-emerald-200',
+    purple: 'bg-purple-600 shadow-purple-200',
+    amber: 'bg-amber-600 shadow-amber-200',
   };
 
   return (
@@ -74,7 +72,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
                 {metric.label}
               </span>
               <span
-                className={`text-[8px] font-bold uppercase tracking-widest ${metric.theme === "indigo" ? "text-indigo-500" : metric.theme === "emerald" ? "text-emerald-500" : metric.theme === "purple" ? "text-purple-500" : "text-amber-500"}`}
+                className={`text-[8px] font-bold uppercase tracking-widest ${metric.theme === 'indigo' ? 'text-indigo-500' : metric.theme === 'emerald' ? 'text-emerald-500' : metric.theme === 'purple' ? 'text-purple-500' : 'text-amber-500'}`}
               >
                 {metric.subLabel}
               </span>
@@ -92,7 +90,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
             </h4>
             <div className="flex items-center gap-2 pt-2">
               <Zap
-                className={`w-3 h-3 ${metric.theme === "indigo" ? "text-indigo-400" : metric.theme === "emerald" ? "text-emerald-400" : metric.theme === "purple" ? "text-purple-400" : "text-amber-400"}`}
+                className={`w-3 h-3 ${metric.theme === 'indigo' ? 'text-indigo-400' : metric.theme === 'emerald' ? 'text-emerald-400' : metric.theme === 'purple' ? 'text-purple-400' : 'text-amber-400'}`}
               />
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">
                 {metric.description}

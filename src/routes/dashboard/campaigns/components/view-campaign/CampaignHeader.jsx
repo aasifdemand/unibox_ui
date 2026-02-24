@@ -1,26 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  Send,
-  Edit,
-  Trash2,
-  Play,
-  Pause,
-  Download,
-  Loader2,
-  Rocket,
-  ShieldCheck,
-  Layout,
-} from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, Edit, Trash2, Play, Pause, Download, Loader2, Rocket } from 'lucide-react';
 
-const CampaignHeader = ({
-  campaign,
-  previews,
-  actions,
-  setShowDeleteModal,
-  getStatusBadge,
-}) => {
+const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getStatusBadge }) => {
   return (
     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 animate-in fade-in slide-in-from-top-4 duration-700">
       <div className="flex items-center gap-6">
@@ -36,24 +18,20 @@ const CampaignHeader = ({
             <h1 className="text-4xl font-black text-slate-900 tracking-tighter">
               {previews.campaignName}
             </h1>
-            <div className="scale-110 origin-left">
-              {getStatusBadge(campaign.status)}
-            </div>
+            <div className="scale-110 origin-left">{getStatusBadge(campaign.status)}</div>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
               Subject:
             </span>
-            <p className="text-sm font-bold text-slate-500 tracking-tight">
-              {previews.subject}
-            </p>
+            <p className="text-sm font-bold text-slate-500 tracking-tight">{previews.subject}</p>
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
         {/* Action buttons based on status */}
-        {campaign.status === "draft" && (
+        {campaign.status === 'draft' && (
           <button
             onClick={actions.handleActivate}
             disabled={actions.activate.isPending}
@@ -68,7 +46,7 @@ const CampaignHeader = ({
           </button>
         )}
 
-        {campaign.status === "running" && (
+        {campaign.status === 'running' && (
           <button
             onClick={actions.handlePause}
             disabled={actions.pause.isPending}
@@ -83,7 +61,7 @@ const CampaignHeader = ({
           </button>
         )}
 
-        {campaign.status === "paused" && (
+        {campaign.status === 'paused' && (
           <button
             onClick={actions.handleResume}
             // disabled={actions?.resume?.isPending}
@@ -98,7 +76,7 @@ const CampaignHeader = ({
           </button>
         )}
 
-        {(campaign.status === "draft" || campaign.status === "paused") && (
+        {(campaign.status === 'draft' || campaign.status === 'paused') && (
           <Link
             to={`/dashboard/campaigns/${campaign.id}/edit`}
             className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50/30 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all"

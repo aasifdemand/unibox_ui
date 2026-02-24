@@ -1,14 +1,14 @@
-import ShowUpload from "../../../modals/showupload";
-import ShowSender from "../../../modals/showsender";
-import ShowBatchDetails from "../../../modals/showbatchdetails";
-import AudienceHeader from "./components/audience-header";
-import AudienceTabs from "./components/audience-tabs";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import Dialog from "../../../components/ui/dialog";
+import ShowUpload from '../../../modals/showupload';
+import ShowSender from '../../../modals/showsender';
+import ShowBatchDetails from '../../../modals/showbatchdetails';
+import AudienceHeader from './components/audience-header';
+import AudienceTabs from './components/audience-tabs';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import Dialog from '../../../components/ui/dialog';
 
 // Hooks
-import { useAudienceData } from "./hooks/use-audience-data";
+import { useAudienceData } from './hooks/use-audience-data';
 
 const Audience = () => {
   const {
@@ -72,7 +72,7 @@ const Audience = () => {
 
   const handleDeleteSender = (sender) => {
     setDeleteContext({
-      type: "sender",
+      type: 'sender',
       sender,
     });
     setDeleteDialogOpen(true);
@@ -80,7 +80,7 @@ const Audience = () => {
 
   const handleDeleteBatch = (batchId) => {
     setDeleteContext({
-      type: "batch",
+      type: 'batch',
       batchId,
     });
     setDeleteDialogOpen(true);
@@ -88,9 +88,9 @@ const Audience = () => {
 
   const handleConfirmDelete = async () => {
     if (!deleteContext) return;
-    if (deleteContext.type === "sender" && deleteContext.sender) {
+    if (deleteContext.type === 'sender' && deleteContext.sender) {
       await deleteSenderAction(deleteContext.sender);
-    } else if (deleteContext.type === "batch" && deleteContext.batchId) {
+    } else if (deleteContext.type === 'batch' && deleteContext.batchId) {
       await deleteBatchAction(deleteContext.batchId);
     }
     setDeleteDialogOpen(false);
@@ -98,11 +98,7 @@ const Audience = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6 p-6"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -203,25 +199,25 @@ const Audience = () => {
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         title={
-          deleteContext?.type === "sender"
-            ? "Delete Sender"
-            : deleteContext?.type === "batch"
-              ? "Delete Contact List"
-              : "Delete Item"
+          deleteContext?.type === 'sender'
+            ? 'Delete Sender'
+            : deleteContext?.type === 'batch'
+              ? 'Delete Contact List'
+              : 'Delete Item'
         }
         description={
-          deleteContext?.type === "sender" && deleteContext.sender
+          deleteContext?.type === 'sender' && deleteContext.sender
             ? `Are u sure u want to selete ${deleteContext.sender.email} (${deleteContext.sender.type})? This action cannot be undone.`
-            : deleteContext?.type === "batch"
-              ? "Are u sure u want to selete this contact list? This action cannot be undone."
-              : ""
+            : deleteContext?.type === 'batch'
+              ? 'Are u sure u want to selete this contact list? This action cannot be undone.'
+              : ''
         }
         confirmText="Delete"
         confirmVariant="danger"
         isLoading={
-          deleteContext?.type === "sender"
+          deleteContext?.type === 'sender'
             ? isLoading.deletingSender
-            : deleteContext?.type === "batch"
+            : deleteContext?.type === 'batch'
               ? isLoading.deletingBatch
               : false
         }

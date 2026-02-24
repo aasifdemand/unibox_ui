@@ -23,20 +23,15 @@ export const fetchGmailMessages = async ({
 }) => {
   let pageToken = null;
 
-  if (direction === "next") pageToken = gmailPageTokens[page - 1];
-  else if (direction === "prev") pageToken = gmailPrevTokens[page];
+  if (direction === 'next') pageToken = gmailPageTokens[page - 1];
+  else if (direction === 'prev') pageToken = gmailPrevTokens[page];
 
   if (!folder) {
-    const labelIds = ["INBOX"];
-    if (filterUnread) labelIds.push("UNREAD");
-    if (filterStarred) labelIds.push("STARRED");
+    const labelIds = ['INBOX'];
+    if (filterUnread) labelIds.push('UNREAD');
+    if (filterStarred) labelIds.push('STARRED');
 
-    const result = await getGmailMessages(
-      mailboxId,
-      pageToken,
-      pageSize,
-      labelIds,
-    );
+    const result = await getGmailMessages(mailboxId, pageToken, pageSize, labelIds);
 
     if (result.success) {
       if (result.data?.nextPageToken) {
@@ -44,32 +39,29 @@ export const fetchGmailMessages = async ({
           ...prev,
           [page]: result.data.nextPageToken,
         }));
-        if (pageToken)
-          setGmailPrevTokens((prev) => ({ ...prev, [page + 1]: pageToken }));
+        if (pageToken) setGmailPrevTokens((prev) => ({ ...prev, [page + 1]: pageToken }));
         setHasNextPage(true);
       } else setHasNextPage(false);
       setHasPreviousPage(page > 1);
       setTotalMessages(result.data?.resultSizeEstimate || 0);
     }
   } else {
-    const folderName = folder.name?.toLowerCase() || "";
-    const folderId = folder.id || "";
+    const folderName = folder.name?.toLowerCase() || '';
+    const folderId = folder.id || '';
     let result;
 
-    if (folderName.includes("sent")) {
+    if (folderName.includes('sent')) {
       result = await getGmailSentMessages(mailboxId, pageToken, pageSize);
-    } else if (folderName.includes("trash")) {
+    } else if (folderName.includes('trash')) {
       result = await getGmailTrashMessages(mailboxId, pageToken, pageSize);
-    } else if (folderName.includes("spam")) {
+    } else if (folderName.includes('spam')) {
       result = await getGmailSpamMessages(mailboxId, pageToken, pageSize);
-    } else if (folderName.includes("star")) {
+    } else if (folderName.includes('star')) {
       result = await getGmailStarredMessages(mailboxId, pageToken, pageSize);
-    } else if (folderName.includes("important")) {
+    } else if (folderName.includes('important')) {
       result = await getGmailImportantMessages(mailboxId, pageToken, pageSize);
     } else {
-      result = await getGmailMessages(mailboxId, pageToken, pageSize, [
-        folderId,
-      ]);
+      result = await getGmailMessages(mailboxId, pageToken, pageSize, [folderId]);
     }
 
     if (result.success) {
@@ -78,8 +70,7 @@ export const fetchGmailMessages = async ({
           ...prev,
           [page]: result.data.nextPageToken,
         }));
-        if (pageToken)
-          setGmailPrevTokens((prev) => ({ ...prev, [page + 1]: pageToken }));
+        if (pageToken) setGmailPrevTokens((prev) => ({ ...prev, [page + 1]: pageToken }));
         setHasNextPage(true);
       } else setHasNextPage(false);
       setHasPreviousPage(page > 1);
@@ -110,16 +101,11 @@ export const fetchOutlookMessages = async ({
 }) => {
   let skipToken = null;
 
-  if (direction === "next") skipToken = outlookSkipTokens[page - 1];
-  else if (direction === "prev") skipToken = outlookPrevTokens[page];
+  if (direction === 'next') skipToken = outlookSkipTokens[page - 1];
+  else if (direction === 'prev') skipToken = outlookPrevTokens[page];
 
   if (!folder) {
-    const result = await getOutlookMessages(
-      mailboxId,
-      skipToken,
-      pageSize,
-      "inbox",
-    );
+    const result = await getOutlookMessages(mailboxId, skipToken, pageSize, 'inbox');
 
     if (result.success) {
       if (result.data?.nextSkipToken) {
@@ -127,35 +113,29 @@ export const fetchOutlookMessages = async ({
           ...prev,
           [page]: result.data.nextSkipToken,
         }));
-        if (skipToken)
-          setOutlookPrevTokens((prev) => ({ ...prev, [page + 1]: skipToken }));
+        if (skipToken) setOutlookPrevTokens((prev) => ({ ...prev, [page + 1]: skipToken }));
         setHasNextPage(true);
       } else setHasNextPage(false);
       setHasPreviousPage(page > 1);
       setTotalMessages(result.data?.count || 0);
     }
   } else {
-    const folderName = folder.name?.toLowerCase() || "";
-    const folderId = folder.id || "";
+    const folderName = folder.name?.toLowerCase() || '';
+    const folderId = folder.id || '';
     let result;
 
-    if (folderName.includes("sent")) {
+    if (folderName.includes('sent')) {
       result = await getOutlookSentMessages(mailboxId, skipToken, pageSize);
-    } else if (folderName.includes("trash")) {
+    } else if (folderName.includes('trash')) {
       result = await getOutlookTrashMessages(mailboxId, skipToken, pageSize);
-    } else if (folderName.includes("spam")) {
+    } else if (folderName.includes('spam')) {
       result = await getOutlookSpamMessages(mailboxId, skipToken, pageSize);
-    } else if (folderName.includes("archive")) {
+    } else if (folderName.includes('archive')) {
       result = await getOutlookArchiveMessages(mailboxId, skipToken, pageSize);
-    } else if (folderName.includes("outbox")) {
+    } else if (folderName.includes('outbox')) {
       result = await getOutlookOutboxMessages(mailboxId, skipToken, pageSize);
     } else {
-      result = await getOutlookMessages(
-        mailboxId,
-        skipToken,
-        pageSize,
-        folderId,
-      );
+      result = await getOutlookMessages(mailboxId, skipToken, pageSize, folderId);
     }
 
     if (result.success) {
@@ -164,8 +144,7 @@ export const fetchOutlookMessages = async ({
           ...prev,
           [page]: result.data.nextSkipToken,
         }));
-        if (skipToken)
-          setOutlookPrevTokens((prev) => ({ ...prev, [page + 1]: skipToken }));
+        if (skipToken) setOutlookPrevTokens((prev) => ({ ...prev, [page + 1]: skipToken }));
         setHasNextPage(true);
       } else setHasNextPage(false);
       setHasPreviousPage(page > 1);
@@ -185,7 +164,7 @@ export const fetchSmtpMessages = async ({
   page,
   pageSize,
 }) => {
-  const folderName = folder?.name || "INBOX";
+  const folderName = folder?.name || 'INBOX';
   const result = await getSmtpMessages(mailboxId, page, pageSize, folderName);
 
   if (result.success) {
