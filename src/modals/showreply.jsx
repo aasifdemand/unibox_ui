@@ -1,4 +1,5 @@
 import Modal from "../components/shared/modal";
+import { motion, AnimatePresence } from "motion/react";
 import { Mail, Calendar, MessageCircle, Reply, AtSign } from "lucide-react";
 import Button from "../components/ui/button";
 import DOMPurify from "dompurify";
@@ -11,45 +12,41 @@ const ShowReply = ({
   setSelectedRecipientId,
   formatDate,
 }) => {
-  const getSafeBody = () => {
-    if (!reply) return "";
+  const renderMessageBody = () => {
+    if (!reply) return null;
 
-    const raw = reply.body || reply.html || reply.text || "";
+    const html = reply.html || "";
+    const text = reply.body || reply.text || "";
 
-    // Check if the content is HTML
-    const isHtml = /<[a-z][\s\S]*>/i.test(raw);
+    // Determine the content to display and if it's HTML
+    const displayContent = html || text;
+    const isHtml = /<[a-z][\s\S]*>/i.test(displayContent);
 
-    // If HTML exists → sanitize only
     if (isHtml) {
-      return DOMPurify.sanitize(raw);
+      return (
+        <div
+          className="mail-content-html"
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayContent) }}
+        />
+      );
     }
 
-    // Clean plain text replies
-    let cleaned = raw;
+    // Fallback to text with professional pre-formatting
+    if (displayContent) {
+      return (
+        <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
+          {displayContent}
+        </pre>
+      );
+    }
 
-    // Remove "On ... wrote:"
-    cleaned = cleaned.split(/On .* wrote:/i)[0];
-
-    // Remove quoted lines starting with >
-    cleaned = cleaned
-      .split("\n")
-      .filter((line) => !line.trim().startsWith(">"))
-      .join("\n");
-
-    // Remove excessive > > > markers
-    cleaned = cleaned.replace(/(>\s*)+/g, "");
-
-    // Convert to clean paragraphs
-    const formatted = cleaned
-      .trim()
-      .replace(/\n{2,}/g, "</p><p>")
-      .replace(/\n/g, "<br/>");
-
-    const finished = `<p>${formatted}</p>`;
-    return DOMPurify.sanitize(finished);
+    return (
+      <p className="text-sm text-slate-400 italic flex items-center justify-center py-10">
+        No message content available
+      </p>
+    );
   };
 
-  const safeBody = getSafeBody();
 
   return (
     <Modal
@@ -84,124 +81,141 @@ const ShowReply = ({
       </div>
 
       <div className="p-6">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-slate-100 border-t-indigo-600 rounded-full animate-spin"></div>
-              <div className="absolute inset-0 bg-indigo-500/10 blur-2xl rounded-full"></div>
-            </div>
-            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-6">
-              Loading reply...
-            </p>
-          </div>
-        ) : reply ? (
-          <div className="space-y-6">
-            {/* Sender Info */}
-            <div className="bg-linear-to-br from-indigo-50 to-blue-50 rounded-4xl p-6 border border-indigo-100">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-lg shadow-indigo-500/10 flex items-center justify-center border border-indigo-200">
-                  <AtSign className="w-7 h-7 text-indigo-600" />
+        <AnimatePresence mode="wait">
+          {loading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-16"
+            >
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-slate-100 border-t-indigo-600 rounded-full animate-spin"></div>
+                <div className="absolute inset-0 bg-indigo-500/10 blur-2xl rounded-full"></div>
+              </div>
+              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-6">
+                Loading reply...
+              </p>
+            </motion.div>
+          ) : reply ? (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              {/* Sender Info */}
+              <div className="bg-linear-to-br from-indigo-50 to-blue-50 rounded-4xl p-6 border border-indigo-100">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-white shadow-lg shadow-indigo-500/10 flex items-center justify-center border border-indigo-200">
+                    <AtSign className="w-7 h-7 text-indigo-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-3 py-1 bg-white rounded-xl text-[9px] font-extrabold text-indigo-600 uppercase tracking-widest border border-indigo-200">
+                        From
+                      </span>
+                    </div>
+                    <p className="text-lg font-extrabold text-slate-800">
+                      {reply.replyFrom}
+                    </p>
+                    {reply.replyTo && (
+                      <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-indigo-400"></span>
+                        To: {reply.replyTo}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-3 py-1 bg-white rounded-xl text-[9px] font-extrabold text-indigo-600 uppercase tracking-widest border border-indigo-200">
-                      From
+              </div>
+
+              {/* Metadata */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 h-full">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
+                      <Mail className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
+                      Subject
                     </span>
                   </div>
-                  <p className="text-lg font-extrabold text-slate-800">
-                    {reply.replyFrom}
+                  <p className="text-sm font-bold text-slate-800 line-clamp-2">
+                    {reply.subject}
                   </p>
-                  {reply.replyTo && (
-                    <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-indigo-400"></span>
-                      To: {reply.replyTo}
-                    </p>
-                  )}
+                </div>
+
+                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 h-full">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Calendar className="w-4 h-4 text-amber-600" />
+                    </div>
+                    <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
+                      Received
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold text-slate-800">
+                    {formatDate(reply.receivedAt)}
+                  </p>
                 </div>
               </div>
-            </div>
 
-            {/* Metadata */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
-                    <Mail className="w-4 h-4 text-blue-600" />
+              {/* Message */}
+              <div className="bg-slate-50 rounded-4xl p-6 border border-slate-100">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
+                    <MessageCircle className="w-4 h-4 text-indigo-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Subject
+                    Message
                   </span>
                 </div>
-                <p className="text-sm font-bold text-slate-800 line-clamp-2">
-                  {reply.subject}
-                </p>
-              </div>
 
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center">
-                    <Calendar className="w-4 h-4 text-amber-600" />
+                <div className="bg-white/80 backdrop-blur-md rounded-3xl p-8 border border-white shadow-xl shadow-slate-200/50 min-h-40 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <MessageCircle className="w-24 h-24 text-slate-900" />
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Received
-                  </span>
+                  <div className="prose prose-slate max-w-none">
+                    {renderMessageBody()}
+                  </div>
                 </div>
-                <p className="text-sm font-bold text-slate-800">
-                  {formatDate(reply.receivedAt)}
-                </p>
-              </div>
-            </div>
-
-            {/* Message */}
-            <div className="bg-slate-50 rounded-4xl p-6 border border-slate-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-                  <MessageCircle className="w-4 h-4 text-indigo-600" />
-                </div>
-                <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Message
-                </span>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm min-h-37.5">
-                {safeBody ? (
-                  <div
-                    className="prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: safeBody }}
-                  />
-                ) : (
-                  <p className="text-sm text-slate-400 italic">
-                    No message content available
+              {/* Original Email */}
+              {reply.email && (
+                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
+                    Original Email
                   </p>
-                )}
+                  <p className="text-xs text-slate-600">
+                    Sent: {formatDate(reply.email.sentAt)}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center py-20"
+            >
+              <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-200">
+                <MessageCircle className="w-10 h-10 text-slate-300" />
               </div>
-            </div>
-
-            {/* Original Email */}
-            {reply.email && (
-              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
-                  Original Email
-                </p>
-                <p className="text-xs text-slate-600">
-                  Sent: {formatDate(reply.email.sentAt)}
-                </p>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-200">
-              <MessageCircle className="w-10 h-10 text-slate-300" />
-            </div>
-            <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-              No Reply Found
-            </h4>
-            <p className="text-xs text-slate-400 font-medium">
-              This recipient hasn't replied yet.
-            </p>
-          </div>
-        )}
+              <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-2">
+                No Reply Found
+              </h4>
+              <p className="text-xs text-slate-400 font-medium">
+                This recipient hasn't replied yet.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="pt-6 mt-8 border-t border-slate-100 flex justify-end">
           <Button

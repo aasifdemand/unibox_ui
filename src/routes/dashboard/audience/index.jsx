@@ -4,6 +4,7 @@ import ShowBatchDetails from "../../../modals/showbatchdetails";
 import AudienceHeader from "./components/audience-header";
 import AudienceTabs from "./components/audience-tabs";
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Dialog from "../../../components/ui/dialog";
 
 // Hooks
@@ -28,6 +29,7 @@ const Audience = () => {
     // Data
     filteredBatches,
     senders,
+    paginatedSenders,
     metrics,
     isLoading,
     batchStatus,
@@ -37,6 +39,14 @@ const Audience = () => {
     setSearchTerm,
     setFilterStatus,
     setSenderType,
+    setSenderPage,
+    setSenderViewMode,
+    senderPage,
+    senderViewMode,
+    hasNextSenderPage,
+    hasPrevSenderPage,
+    totalSenders,
+    SENDER_PAGE_SIZE,
     setUploadStep,
     setMapping,
     setSmtpData,
@@ -88,41 +98,66 @@ const Audience = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-6 p-6"
+    >
       {/* Header */}
-      <AudienceHeader
-        activeTab={activeTab}
-        invalid={metrics.invalid}
-        setShowSenderModal={setShowSenderModal}
-        setShowUploadModal={setShowUploadModal}
-        totalContacts={metrics.totalContacts}
-        unverified={metrics.unverified}
-        verified={metrics.valid}
-        risky={metrics.risky}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <AudienceHeader
+          activeTab={activeTab}
+          invalid={metrics.invalid}
+          setShowSenderModal={setShowSenderModal}
+          setShowUploadModal={setShowUploadModal}
+          totalContacts={metrics.totalContacts}
+          unverified={metrics.unverified}
+          verified={metrics.valid}
+          risky={metrics.risky}
+        />
+      </motion.div>
 
       {/* Tabs */}
-      <AudienceTabs
-        setActiveTab={setActiveTab}
-        activeTab={activeTab}
-        searchTerm={searchTerm}
-        filterStatus={filterStatus}
-        setFilterStatus={setFilterStatus}
-        setSearchTerm={setSearchTerm}
-        isLoadingBatches={isLoading.batches}
-        filteredBatches={filteredBatches}
-        setShowSenderModal={setShowSenderModal}
-        setShowUploadModal={setShowUploadModal}
-        handleDeleteBatch={handleDeleteBatch}
-        isLoadingSenders={isLoading.senders}
-        senders={senders}
-        handleDeleteSender={handleDeleteSender}
-        handleTestSender={handleTestSender}
-        openBatchDetails={openBatchDetails}
-        isDeletingBatch={isLoading.deletingBatch}
-        isDeletingSender={isLoading.deletingSender}
-        isTestingSender={isLoading.testingSender}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <AudienceTabs
+          setActiveTab={setActiveTab}
+          activeTab={activeTab}
+          searchTerm={searchTerm}
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+          setSearchTerm={setSearchTerm}
+          isLoadingBatches={isLoading.batches}
+          filteredBatches={filteredBatches}
+          setShowSenderModal={setShowSenderModal}
+          setShowUploadModal={setShowUploadModal}
+          handleDeleteBatch={handleDeleteBatch}
+          isLoadingSenders={isLoading.senders}
+          senders={senders}
+          paginatedSenders={paginatedSenders}
+          senderPage={senderPage}
+          senderViewMode={senderViewMode}
+          hasNextSenderPage={hasNextSenderPage}
+          hasPrevSenderPage={hasPrevSenderPage}
+          totalSenders={totalSenders}
+          SENDER_PAGE_SIZE={SENDER_PAGE_SIZE}
+          setSenderPage={setSenderPage}
+          setSenderViewMode={setSenderViewMode}
+          handleDeleteSender={handleDeleteSender}
+          handleTestSender={handleTestSender}
+          openBatchDetails={openBatchDetails}
+          isDeletingBatch={isLoading.deletingBatch}
+          isDeletingSender={isLoading.deletingSender}
+          isTestingSender={isLoading.testingSender}
+        />
+      </motion.div>
 
       {/* Upload Modal */}
       {showUploadModal && (
@@ -196,7 +231,7 @@ const Audience = () => {
         }}
         onConfirm={handleConfirmDelete}
       />
-    </div>
+    </motion.div>
   );
 };
 

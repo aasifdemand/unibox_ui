@@ -1,4 +1,5 @@
 import { AlertCircle, Loader2, X, Trash2, Shield } from "lucide-react";
+import { motion } from "motion/react";
 import Modal from "../components/shared/modal";
 
 const ShowDelete = ({
@@ -21,9 +22,14 @@ const ShowDelete = ({
         </div>
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm">
+            <motion.div
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm"
+            >
               <Trash2 className="w-6 h-6 text-white" />
-            </div>
+            </motion.div>
             <div>
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
                 Delete Campaign
@@ -79,19 +85,24 @@ const ShowDelete = ({
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="px-8 py-3 bg-rose-600 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-rose-600/20 hover:shadow-rose-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+            className="group relative px-8 py-3 bg-rose-600 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-rose-600/20 hover:shadow-rose-600/40 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 overflow-hidden"
           >
-            {isDeleting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
-                Deleting...
-              </>
-            ) : (
-              <>
-                <Trash2 className="w-4 h-4" />
-                Delete Campaign
-              </>
-            )}
+            <motion.div
+              layout
+              className="flex items-center gap-3"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-4 h-4" />
+                  Delete Campaign
+                </>
+              )}
+            </motion.div>
           </button>
         </div>
 

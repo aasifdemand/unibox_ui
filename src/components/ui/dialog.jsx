@@ -2,6 +2,7 @@ import React from "react";
 import Button from "./button";
 import { X, AlertCircle, Shield, CheckCircle, Info } from "lucide-react";
 import Modal from "../shared/modal";
+import { motion } from "motion/react";
 
 const Dialog = ({
   open,
@@ -15,8 +16,6 @@ const Dialog = ({
   onCancel,
   setOpen,
 }) => {
-  if (!open) return null;
-
   // Get variant-specific styles
   const getVariantStyles = () => {
     switch (confirmVariant) {
@@ -72,20 +71,33 @@ const Dialog = ({
       maxWidth="max-w-md"
       closeOnBackdrop={true}
     >
-      <div className="bg-inherit rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+      <div className="bg-inherit rounded-3xl overflow-hidden shadow-2xl">
         {/* Premium Header - Dynamic based on variant */}
         <div
           className={`bg-linear-to-r ${styles.gradient} p-8 relative overflow-hidden group`}
         >
-          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.1 }}
+            className="absolute top-0 right-0 p-8 group-hover:scale-110 transition-transform"
+          >
             <Shield className="w-20 h-20 text-white" />
-          </div>
+          </motion.div>
           <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm">
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm"
+              >
                 {styles.icon}
-              </div>
-              <div>
+              </motion.div>
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
                 <h3 className="text-xl font-black text-white uppercase tracking-tighter">
                   Confirmation
                 </h3>
@@ -97,7 +109,7 @@ const Dialog = ({
                   {confirmVariant === "success" && "Confirm your action"}
                   {confirmVariant === "info" && "Additional information"}
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -106,12 +118,19 @@ const Dialog = ({
         <div className="p-8">
           {/* Icon and Title Section */}
           <div className="flex items-start gap-4 mb-6">
-            <div
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 260, damping: 20 }}
               className={`w-12 h-12 rounded-2xl ${styles.bg} flex items-center justify-center shrink-0 border ${styles.border}`}
             >
               {styles.icon}
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight mb-2">
                 {title}
               </h4>
@@ -120,12 +139,17 @@ const Dialog = ({
                   {description}
                 </p>
               )}
-            </div>
+            </motion.div>
           </div>
 
           {/* Warning Message for Danger variant */}
           {confirmVariant === "danger" && (
-            <div className="bg-rose-50/50 p-5 rounded-2xl border border-rose-100 mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-rose-50/50 p-5 rounded-2xl border border-rose-100 mb-6"
+            >
               <div className="flex gap-3">
                 <Shield className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
                 <p className="text-[11px] font-bold text-rose-700 leading-relaxed">
@@ -133,11 +157,16 @@ const Dialog = ({
                   you want to proceed.
                 </p>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 mt-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center justify-end gap-3 mt-4"
+          >
             <button
               onClick={onCancel}
               disabled={isLoading}
@@ -179,17 +208,22 @@ const Dialog = ({
                 confirmText
               )}
             </button>
-          </div>
+          </motion.div>
 
           {/* Footer Note */}
-          <div className="mt-6 pt-4 border-t border-slate-100">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="mt-6 pt-4 border-t border-slate-100"
+          >
             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
               {confirmVariant === "danger" && "⚠️ This action is permanent"}
               {confirmVariant === "warning" && "Please verify your choice"}
               {confirmVariant === "success" && "Click confirm to proceed"}
               {confirmVariant === "info" && "Review the information above"}
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Modal>

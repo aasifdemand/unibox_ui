@@ -1,4 +1,5 @@
 import React from "react";
+import { motion, AnimatePresence } from "motion/react";
 import ShowDelete from "../../../modals/showdelete";
 
 // Components
@@ -61,7 +62,11 @@ const Campaigns = () => {
 
   if (isLoading && campaigns.length === 0) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center animate-in fade-in duration-700">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-[60vh] flex flex-col items-center justify-center"
+      >
         <div className="relative">
           <div className="w-20 h-20 border-[6px] border-slate-100 border-t-indigo-600 rounded-full animate-spin"></div>
           <div className="absolute inset-0 flex items-center justify-center">
@@ -71,7 +76,7 @@ const Campaigns = () => {
         <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">
           Loading campaigns...
         </p>
-      </div>
+      </motion.div>
     );
   }
 
@@ -119,39 +124,57 @@ const Campaigns = () => {
         />
 
         {/* Campaigns Grid/List View */}
-        <div className="min-h-100">
-          {viewMode === "grid" ? (
-            <CampaignGridView
-              campaigns={filteredCampaigns}
-              selectedCampaigns={selectedCampaigns}
-              handleSelectCampaign={handleSelectCampaign}
-              isAnyLoading={isAnyLoading}
-              handleActivateCampaign={handleActivateCampaign}
-              handlePauseCampaign={handlePauseCampaign}
-              handleResumeCampaign={handleResumeCampaign}
-              handleEditCampaign={handleEditCampaign}
-              handleViewCampaign={handleViewCampaign}
-              handleDeleteClick={handleDeleteClick}
-              isLoadingAction={isLoadingAction}
-              searchTerm={searchTerm}
-            />
-          ) : (
-            <CampaignListView
-              campaigns={filteredCampaigns}
-              selectedCampaigns={selectedCampaigns}
-              handleSelectAll={handleSelectAll}
-              handleSelectCampaign={handleSelectCampaign}
-              isAnyLoading={isAnyLoading}
-              handleActivateCampaign={handleActivateCampaign}
-              handlePauseCampaign={handlePauseCampaign}
-              handleResumeCampaign={handleResumeCampaign}
-              handleEditCampaign={handleEditCampaign}
-              handleViewCampaign={handleViewCampaign}
-              handleDeleteClick={handleDeleteClick}
-              isLoadingAction={isLoadingAction}
-              searchTerm={searchTerm}
-            />
-          )}
+        <div className="min-h-100 relative">
+          <AnimatePresence mode="wait">
+            {viewMode === "grid" ? (
+              <motion.div
+                key="grid-view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CampaignGridView
+                  campaigns={filteredCampaigns}
+                  selectedCampaigns={selectedCampaigns}
+                  handleSelectCampaign={handleSelectCampaign}
+                  isAnyLoading={isAnyLoading}
+                  handleActivateCampaign={handleActivateCampaign}
+                  handlePauseCampaign={handlePauseCampaign}
+                  handleResumeCampaign={handleResumeCampaign}
+                  handleEditCampaign={handleEditCampaign}
+                  handleViewCampaign={handleViewCampaign}
+                  handleDeleteClick={handleDeleteClick}
+                  isLoadingAction={isLoadingAction}
+                  searchTerm={searchTerm}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="list-view"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CampaignListView
+                  campaigns={filteredCampaigns}
+                  selectedCampaigns={selectedCampaigns}
+                  handleSelectAll={handleSelectAll}
+                  handleSelectCampaign={handleSelectCampaign}
+                  isAnyLoading={isAnyLoading}
+                  handleActivateCampaign={handleActivateCampaign}
+                  handlePauseCampaign={handlePauseCampaign}
+                  handleResumeCampaign={handleResumeCampaign}
+                  handleEditCampaign={handleEditCampaign}
+                  handleViewCampaign={handleViewCampaign}
+                  handleDeleteClick={handleDeleteClick}
+                  isLoadingAction={isLoadingAction}
+                  searchTerm={searchTerm}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

@@ -32,13 +32,7 @@ const MailboxList = ({
           Connect your organization's email accounts to centralize your outreach
           and management.
         </p>
-        <Link
-          to="/dashboard/audience"
-          className="btn-primary flex items-center shadow-blue-500/30"
-        >
-          <Mail className="w-4 h-4 mr-2" />
-          Link Your First Account
-        </Link>
+
       </div>
     );
   }

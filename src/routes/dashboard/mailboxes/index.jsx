@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { useMailboxesData } from "./hooks/use-mailboxes-data";
 import Header from "./components/header";
 import MailboxList from "./components/mailbox-list";
@@ -140,151 +141,193 @@ const Mailboxes = () => {
         </div>
       )}
 
-      <div className="flex-1 overflow-hidden">
-        {state.view === "list" && (
-          <div className="flex-1 flex flex-col min-h-0">
-            <div className="flex-1 overflow-y-auto">
-              <MailboxList
-                mailboxes={data.mailboxes}
-                onSelect={handlers.handleSelectMailbox}
-                getProviderIcon={utils.getProviderIcon}
-                timeAgo={utils.timeAgo}
-                format={format}
-                viewMode={state.mailboxViewMode}
-                selectedSenderIds={state.selectedSenderIds}
-                onCheckSender={handleCheckSender}
-                onCheckAllSenders={handleCheckAllSenders}
-              />
-            </div>
-            {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (
-              <div className="bg-white border-t border-slate-200 p-4 shrink-0">
-                <Pagination
-                  currentPage={state.mailboxPage}
-                  hasNextPage={state.mailboxPage < data.mailboxMeta.totalPages}
-                  hasPreviousPage={state.mailboxPage > 1}
-                  isLoadingMessages={isLoading.isMailboxes}
-                  onNextPage={() =>
-                    handlers.handleMailboxPageChange(state.mailboxPage + 1)
-                  }
-                  onPrevPage={() =>
-                    handlers.handleMailboxPageChange(state.mailboxPage - 1)
-                  }
-                  totalMessages={data.mailboxMeta.total}
-                  startMessageCount={
-                    (state.mailboxPage - 1) * data.mailboxMeta.limit + 1
-                  }
-                  endMessageCount={Math.min(
-                    state.mailboxPage * data.mailboxMeta.limit,
-                    data.mailboxMeta.total,
-                  )}
+      <div className="flex-1 overflow-hidden relative">
+        <AnimatePresence mode="wait">
+          {state.view === "list" && (
+            <motion.div
+              key="mailbox-list"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="flex-1 flex flex-col min-h-0 h-full"
+            >
+              <div className="flex-1 overflow-y-auto">
+                <MailboxList
+                  mailboxes={data.mailboxes}
+                  onSelect={handlers.handleSelectMailbox}
+                  getProviderIcon={utils.getProviderIcon}
+                  timeAgo={utils.timeAgo}
+                  format={format}
+                  viewMode={state.mailboxViewMode}
+                  selectedSenderIds={state.selectedSenderIds}
+                  onCheckSender={handleCheckSender}
+                  onCheckAllSenders={handleCheckAllSenders}
                 />
               </div>
-            )}
-          </div>
-        )}
-
-        {state.view === "messages" && state.selectedMailbox && (
-          <MessagesView
-            selectedMailbox={state.selectedMailbox}
-            selectedFolder={state.selectedFolder}
-            folders={data.folders}
-            showStats={state.showStats}
-            filteredMessages={data.filteredMessages}
-            isLoadingMessages={isLoading.isMessages}
-            viewMode={state.viewMode}
-            selectedMessages={state.selectedMessages}
-            onSelectFolder={handlers.handleSelectFolder}
-            showAllFolders={state.showAllFolders}
-            onToggleShowAllFolders={() =>
-              setters.setShowAllFolders(!state.showAllFolders)
-            }
-            onSelectMessage={handlers.handleSelectMessage}
-            onCheckMessage={handlers.handleCheckMessage}
-            formatMessageDate={utils.formatMessageDate}
-            getSender={utils.getSenderInfo}
-            getSubject={utils.getSubject}
-            getPreview={utils.getPreview}
-            getInitials={utils.getInitials}
-            searchQuery={state.searchQuery}
-            onSearchChange={setters.setSearchQuery}
-            onSearchClear={() => setters.setSearchQuery("")}
-            dateRange={state.dateRange}
-            onDateRangeChange={setters.setDateRange}
-            filterStarred={state.filterStarred}
-            onFilterStarred={() =>
-              setters.setFilterStarred(!state.filterStarred)
-            }
-            filterAttachments={state.filterAttachments}
-            onFilterAttachments={() =>
-              setters.setFilterAttachments(!state.filterAttachments)
-            }
-            filterUnread={state.filterUnread}
-            pagination={{
-              currentPage: state.currentPage,
-              hasNextPage: state.hasNextPage,
-              hasPreviousPage: state.hasPreviousPage,
-              totalMessages: state.totalMessages,
-            }}
-            onNextPage={handlers.handleNextPage}
-            onPrevPage={handlers.handlePreviousPage}
-            startMessageCount={data.startMessageCount}
-            endMessageCount={data.endMessageCount}
-            totalMessages={state.totalMessages}
-            onCompose={handlers.handleCompose}
-          />
-        )}
-
-        {state.view === "compose" && state.selectedMailbox && (
-          <ComposeView
-            selectedMailbox={state.selectedMailbox}
-            onClose={handlers.handleCloseCompose}
-            onSend={handlers.handleSendMessage}
-            replyToMessage={state.replyToMessage}
-            forwardMessage={state.forwardMessage}
-            onSaveDraft={handlers.handleSaveDraft}
-          />
-        )}
-
-        {state.view === "message" && isLoading.isMessageLoading && (
-          <div className="flex-1 flex flex-col items-center justify-center p-20 bg-white/50 animate-pulse">
-            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <h3 className="text-lg font-bold text-slate-800">
-              Loading Conversation...
-            </h3>
-            <p className="text-sm text-slate-500 mt-2 font-medium">
-              Fetching encrypted message content
-            </p>
-          </div>
-        )}
-
-        {state.view === "message" &&
-          data.currentMessage &&
-          !isLoading.isMessageLoading &&
-          state.selectedMailbox && (
-            <MessageDetailView
-              message={data.currentMessage}
-              mailbox={state.selectedMailbox}
-              onBack={handlers.handleBackToMessages}
-              onDelete={() =>
-                handlers.handleDeleteMessage(state.currentMessageId)
-              }
-              onReply={() => handlers.handleReply(data.currentMessage)}
-              onForward={() => handlers.handleForward(data.currentMessage)}
-              onMarkRead={() =>
-                handlers.handleMarkMessageAsRead(state.currentMessageId)
-              }
-              onMarkUnread={() =>
-                handlers.handleMarkMessageAsUnread(state.currentMessageId)
-              }
-              onStar={(id, starred) => handlers.handleToggleStar(id, starred)}
-              onPrint={() => window.print()}
-              onDownload={(id, filename) =>
-                handlers.handleDownloadAttachment(id, filename)
-              }
-            />
+              {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (
+                <div className="bg-white border-t border-slate-200 p-4 shrink-0">
+                  <Pagination
+                    currentPage={state.mailboxPage}
+                    hasNextPage={state.mailboxPage < data.mailboxMeta.totalPages}
+                    hasPreviousPage={state.mailboxPage > 1}
+                    isLoadingMessages={isLoading.isMailboxes}
+                    onNextPage={() =>
+                      handlers.handleMailboxPageChange(state.mailboxPage + 1)
+                    }
+                    onPrevPage={() =>
+                      handlers.handleMailboxPageChange(state.mailboxPage - 1)
+                    }
+                    totalMessages={data.mailboxMeta.total}
+                    startMessageCount={
+                      (state.mailboxPage - 1) * data.mailboxMeta.limit + 1
+                    }
+                    endMessageCount={Math.min(
+                      state.mailboxPage * data.mailboxMeta.limit,
+                      data.mailboxMeta.total,
+                    )}
+                  />
+                </div>
+              )}
+            </motion.div>
           )}
+
+          {state.view === "messages" && state.selectedMailbox && (
+            <motion.div
+              key="messages-view"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              <MessagesView
+                selectedMailbox={state.selectedMailbox}
+                selectedFolder={state.selectedFolder}
+                folders={data.folders}
+                showStats={state.showStats}
+                filteredMessages={data.filteredMessages}
+                isLoadingMessages={isLoading.isMessages}
+                viewMode={state.viewMode}
+                selectedMessages={state.selectedMessages}
+                onSelectFolder={handlers.handleSelectFolder}
+                showAllFolders={state.showAllFolders}
+                onToggleShowAllFolders={() =>
+                  setters.setShowAllFolders(!state.showAllFolders)
+                }
+                onSelectMessage={handlers.handleSelectMessage}
+                onCheckMessage={handlers.handleCheckMessage}
+                formatMessageDate={utils.formatMessageDate}
+                getSender={utils.getSenderInfo}
+                getSubject={utils.getSubject}
+                getPreview={utils.getPreview}
+                getInitials={utils.getInitials}
+                searchQuery={state.searchQuery}
+                onSearchChange={setters.setSearchQuery}
+                onSearchClear={() => setters.setSearchQuery("")}
+                dateRange={state.dateRange}
+                onDateRangeChange={setters.setDateRange}
+                filterStarred={state.filterStarred}
+                onFilterStarred={() =>
+                  setters.setFilterStarred(!state.filterStarred)
+                }
+                filterAttachments={state.filterAttachments}
+                onFilterAttachments={() =>
+                  setters.setFilterAttachments(!state.filterAttachments)
+                }
+                filterUnread={state.filterUnread}
+                pagination={{
+                  currentPage: state.currentPage,
+                  hasNextPage: state.hasNextPage,
+                  hasPreviousPage: state.hasPreviousPage,
+                  totalMessages: state.totalMessages,
+                }}
+                onNextPage={handlers.handleNextPage}
+                onPrevPage={handlers.handlePreviousPage}
+                startMessageCount={data.startMessageCount}
+                endMessageCount={data.endMessageCount}
+                totalMessages={state.totalMessages}
+                onCompose={handlers.handleCompose}
+              />
+            </motion.div>
+          )}
+
+          {state.view === "compose" && state.selectedMailbox && (
+            <motion.div
+              key="compose-view"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              <ComposeView
+                selectedMailbox={state.selectedMailbox}
+                onClose={handlers.handleCloseCompose}
+                onSend={handlers.handleSendMessage}
+                replyToMessage={state.replyToMessage}
+                forwardMessage={state.forwardMessage}
+                onSaveDraft={handlers.handleSaveDraft}
+              />
+            </motion.div>
+          )}
+
+          {state.view === "message" && isLoading.isMessageLoading && (
+            <motion.div
+              key="message-loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center p-20 bg-white/50 animate-pulse"
+            >
+              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+              <h3 className="text-lg font-bold text-slate-800">
+                Loading Conversation...
+              </h3>
+              <p className="text-sm text-slate-500 mt-2 font-medium">
+                Fetching encrypted message content
+              </p>
+            </motion.div>
+          )}
+
+          {state.view === "message" &&
+            data.currentMessage &&
+            !isLoading.isMessageLoading &&
+            state.selectedMailbox && (
+              <motion.div
+                key="message-detail"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.3 }}
+                className="h-full"
+              >
+                <MessageDetailView
+                  message={data.currentMessage}
+                  mailbox={state.selectedMailbox}
+                  onBack={handlers.handleBackToMessages}
+                  onDelete={() =>
+                    handlers.handleDeleteMessage(state.currentMessageId)
+                  }
+                  onReply={() => handlers.handleReply(data.currentMessage)}
+                  onForward={() => handlers.handleForward(data.currentMessage)}
+                  onMarkRead={() =>
+                    handlers.handleMarkMessageAsRead(state.currentMessageId)
+                  }
+                  onMarkUnread={() =>
+                    handlers.handleMarkMessageAsUnread(state.currentMessageId)
+                  }
+                  onStar={(id, starred) => handlers.handleToggleStar(id, starred)}
+                  onPrint={() => window.print()}
+                  onDownload={(id, filename) =>
+                    handlers.handleDownloadAttachment(id, filename)
+                  }
+                />
+              </motion.div>
+            )}
+        </AnimatePresence>
       </div>
 
       <Dialog

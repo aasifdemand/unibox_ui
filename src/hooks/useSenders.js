@@ -13,19 +13,23 @@ export const senderKeys = {
 // =========================
 // FETCH ALL SENDERS
 // =========================
-const fetchSenders = async () => {
-  const res = await fetch(`${API_URL}/senders`, {
+const fetchSenders = async (params = {}) => {
+  const queryParams = new URLSearchParams();
+  if (params.page) queryParams.append("page", params.page);
+  if (params.limit) queryParams.append("limit", params.limit);
+
+  const res = await fetch(`${API_URL}/senders?${queryParams.toString()}`, {
     credentials: "include",
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "Failed to fetch senders");
-  return data.data || [];
+  return data;
 };
 
-export const useSenders = () => {
+export const useSenders = (params = {}) => {
   return useQuery({
-    queryKey: senderKeys.lists(),
-    queryFn: fetchSenders,
+    queryKey: [...senderKeys.lists(), params],
+    queryFn: () => fetchSenders(params),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });

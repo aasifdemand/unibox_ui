@@ -1,5 +1,6 @@
 import React from "react";
 import { Calendar, CheckCircle, FileEdit, Layers, Zap } from "lucide-react";
+import { motion } from "motion/react";
 
 const CampaignStats = ({
   totalCampaigns,
@@ -59,8 +60,11 @@ const CampaignStats = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
       {stats.map((stat, index) => (
-        <div
+        <motion.div
           key={index}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: index * 0.08, ease: [0.23, 1, 0.32, 1] }}
           className={`premium-card p-6 border transition-all duration-300 hover:shadow-xl hover:translate-y-1 ${themes[stat.theme]}`}
         >
           <div className="flex items-center justify-between mb-4">
@@ -79,7 +83,7 @@ const CampaignStats = ({
               {stat.value}
             </h3>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

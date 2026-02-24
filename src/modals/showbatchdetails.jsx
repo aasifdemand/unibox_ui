@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
+import { motion } from "motion/react";
 import {
   FileSpreadsheet,
   CheckCircle,
@@ -181,77 +182,60 @@ const ShowBatchDetails = ({
 
               {/* Stats Grid - Premium Style */}
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 group hover:border-indigo-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-                      <FileSpreadsheet className="w-4 h-4 text-indigo-600" />
-                    </div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Total
-                    </span>
-                  </div>
-                  <p className="text-2xl font-extrabold text-slate-800">
-                    {batchStatus?.batch?.totalRecords || 0}
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 group hover:border-emerald-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-emerald-600" />
-                    </div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Valid
-                    </span>
-                  </div>
-                  <p className="text-2xl font-extrabold text-slate-800">
-                    {batchStatus?.verification?.valid || 0}
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 group hover:border-amber-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center">
-                      <AlertCircle className="w-4 h-4 text-amber-600" />
-                    </div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Risky
-                    </span>
-                  </div>
-                  <p className="text-2xl font-extrabold text-slate-800">
-                    {batchStatus?.verification?.risky || 0}
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 group hover:border-rose-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-rose-50 flex items-center justify-center">
-                      <XCircle className="w-4 h-4 text-rose-600" />
-                    </div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Invalid
-                    </span>
-                  </div>
-                  <p className="text-2xl font-extrabold text-slate-800">
-                    {batchStatus?.verification?.invalid || 0}
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 group hover:border-indigo-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-                      <Zap className="w-4 h-4 text-indigo-600" />
-                    </div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Success Rate
-                    </span>
-                  </div>
-                  <p className="text-2xl font-extrabold text-slate-800">
-                    {batchStatus?.batch?.totalRecords
+                {[
+                  {
+                    label: "Total",
+                    value: batchStatus?.batch?.totalRecords || 0,
+                    icon: FileSpreadsheet,
+                    color: "indigo",
+                  },
+                  {
+                    label: "Valid",
+                    value: batchStatus?.verification?.valid || 0,
+                    icon: CheckCircle,
+                    color: "emerald",
+                  },
+                  {
+                    label: "Risky",
+                    value: batchStatus?.verification?.risky || 0,
+                    icon: AlertCircle,
+                    color: "amber",
+                  },
+                  {
+                    label: "Invalid",
+                    value: batchStatus?.verification?.invalid || 0,
+                    icon: XCircle,
+                    color: "rose",
+                  },
+                  {
+                    label: "Success Rate",
+                    value: batchStatus?.batch?.totalRecords
                       ? `${(((batchStatus?.verification?.valid || 0) / batchStatus.batch.totalRecords) * 100).toFixed(1)}%`
-                      : "0%"}
-                  </p>
-                </div>
+                      : "0%",
+                    icon: Zap,
+                    color: "indigo",
+                  },
+                ].map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`bg-slate-50 rounded-2xl p-4 border border-slate-100 group hover:border-${stat.color}-200 hover:shadow-lg transition-all`}
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`w-8 h-8 rounded-xl bg-${stat.color}-50 flex items-center justify-center`}>
+                        <stat.icon className={`w-4 h-4 text-${stat.color}-600`} />
+                      </div>
+                      <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {stat.label}
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-slate-800">
+                      {stat.value}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
             </div>
 
@@ -325,9 +309,12 @@ const ShowBatchDetails = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {currentRecords.map((record) => (
-                      <tr
+                    {currentRecords.map((record, index) => (
+                      <motion.tr
                         key={record.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
                         className="group hover:bg-indigo-50/30 transition-colors"
                       >
                         <td className="px-6 py-4">
@@ -372,7 +359,7 @@ const ShowBatchDetails = ({
                             {formatDate(record.createdAt)}
                           </span>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))}
                     {currentRecords.length === 0 && (
                       <tr>

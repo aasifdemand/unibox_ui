@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
 import { XCircle } from "lucide-react";
 
 import ShowDelete from "../../../modals/showdelete";
@@ -119,7 +120,12 @@ const ViewCampaign = () => {
         />
       )}
 
-      <div className="space-y-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="space-y-10"
+      >
         <CampaignHeader
           campaign={campaign}
           previews={previews}
@@ -128,7 +134,13 @@ const ViewCampaign = () => {
           getStatusBadge={getStatusBadge}
         />
 
-        <CampaignMetrics campaign={campaign} stats={stats} />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          <CampaignMetrics campaign={campaign} stats={stats} />
+        </motion.div>
 
         <div className="space-y-8">
           <div className="flex items-center gap-1 p-1 bg-slate-100/50 backdrop-blur-md rounded-2xl w-fit border border-slate-200/50 shadow-sm">
@@ -143,8 +155,8 @@ const ViewCampaign = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${activeTab === tab.id
-                    ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
-                    : "text-slate-400 hover:text-slate-600 hover:bg-white"
+                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
+                  : "text-slate-400 hover:text-slate-600 hover:bg-white"
                   }`}
               >
                 {tab.label}
@@ -152,49 +164,57 @@ const ViewCampaign = () => {
             ))}
           </div>
 
-          <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-            {activeTab === "overview" && (
-              <OverviewTab
-                campaign={campaign}
-                stats={stats}
-                previews={previews}
-                placeholders={placeholders}
-                formatDate={formatDate}
-              />
-            )}
-            {activeTab === "analytics" && (
-              <AnalyticsTab campaign={campaign} stats={stats} />
-            )}
-            {activeTab === "recipients" && (
-              <RecipientsTab
-                campaign={campaign}
-                stats={stats}
-                formatDate={formatDate}
-                viewReply={viewReply}
-                setSelectedRecipientForPreview={setSelectedRecipientForPreview}
-              />
-            )}
-            {activeTab === "replies" && (
-              <RepliesTab
-                campaign={campaign}
-                replies={replies}
-                repliesLoading={repliesLoading}
-                formatDate={formatDate}
-                viewReply={viewReply}
-              />
-            )}
-            {activeTab === "content" && (
-              <ContentTab
-                campaign={campaign}
-                previews={previews}
-                placeholders={placeholders}
-                sampleRecipient={sampleRecipient}
-                selectedRecipientForPreview={selectedRecipientForPreview}
-              />
-            )}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              {activeTab === "overview" && (
+                <OverviewTab
+                  campaign={campaign}
+                  stats={stats}
+                  previews={previews}
+                  placeholders={placeholders}
+                  formatDate={formatDate}
+                />
+              )}
+              {activeTab === "analytics" && (
+                <AnalyticsTab campaign={campaign} stats={stats} />
+              )}
+              {activeTab === "recipients" && (
+                <RecipientsTab
+                  campaign={campaign}
+                  stats={stats}
+                  formatDate={formatDate}
+                  viewReply={viewReply}
+                  setSelectedRecipientForPreview={setSelectedRecipientForPreview}
+                />
+              )}
+              {activeTab === "replies" && (
+                <RepliesTab
+                  campaign={campaign}
+                  replies={replies}
+                  repliesLoading={repliesLoading}
+                  formatDate={formatDate}
+                  viewReply={viewReply}
+                />
+              )}
+              {activeTab === "content" && (
+                <ContentTab
+                  campaign={campaign}
+                  previews={previews}
+                  placeholders={placeholders}
+                  sampleRecipient={sampleRecipient}
+                  selectedRecipientForPreview={selectedRecipientForPreview}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -164,42 +164,38 @@ const Header = ({
 
         <div className="flex items-center gap-3">
           {view === "list" && (
-            <div className="flex items-center gap-3 bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200/80">
-              <div className="relative group flex items-center bg-slate-50/50 rounded-xl px-3 py-1.5 border border-slate-200/50 min-w-[200px] shadow-inner transition-all focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500/50">
+            <div className="flex items-center gap-3">
+              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 min-w-[240px] transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
                 <Search className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors shrink-0" />
                 <input
                   type="text"
                   placeholder="Search mailboxes..."
                   value={mailboxSearch}
                   onChange={(e) => onMailboxSearchChange(e.target.value)}
-                  className="w-full pl-2 bg-transparent text-sm font-bold placeholder:text-slate-400 focus:outline-none transition-all text-slate-700"
+                  className="w-full pl-3 bg-transparent text-sm font-bold placeholder:text-slate-400 focus:outline-none text-slate-700"
                 />
               </div>
 
-              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
-
-              <div className="relative flex items-center min-w-[130px]">
-                <Filter className="absolute left-3 w-4 h-4 text-slate-400 pointer-events-none" />
+              <div className="relative flex items-center min-w-[160px]">
+                <Filter className="absolute left-4 w-4 h-4 text-slate-400 pointer-events-none" />
                 <select
                   value={mailboxTypeFilter}
                   onChange={(e) => onMailboxTypeChange(e.target.value)}
-                  className="appearance-none w-full pl-9 pr-8 py-2 min-h-[36px] bg-slate-50/50 hover:bg-slate-100/80 border border-slate-200/80 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer shadow-sm"
+                  className="appearance-none w-full pl-10 pr-10 py-2.5 bg-slate-50 h-[42px] border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/40 focus:bg-white transition-all cursor-pointer"
                 >
                   <option value="all">ALL PROVIDERS</option>
                   <option value="gmail">GMAIL</option>
                   <option value="outlook">OUTLOOK</option>
                   <option value="smtp">SMTP</option>
                 </select>
-                <ChevronRight className="absolute right-3 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+                <ChevronRight className="absolute right-4 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
               </div>
 
-              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
-
-              <div className="flex items-center gap-1 bg-slate-50/80 p-1 rounded-xl border border-slate-200/50 shadow-inner">
+              <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-2xl border border-slate-200">
                 <button
                   onClick={() => mailboxViewMode !== "grid" && onToggleMailboxViewMode()}
-                  className={`p-1.5 rounded-lg transition-all ${mailboxViewMode === "grid"
-                    ? "bg-white shadow-sm ring-1 ring-slate-200/50 text-blue-600"
+                  className={`p-2 rounded-xl transition-all ${mailboxViewMode === "grid"
+                    ? "bg-white shadow-sm ring-1 ring-slate-200 text-blue-600"
                     : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
                     }`}
                   title="Grid View"
@@ -208,8 +204,8 @@ const Header = ({
                 </button>
                 <button
                   onClick={() => mailboxViewMode !== "list" && onToggleMailboxViewMode()}
-                  className={`p-1.5 rounded-lg transition-all ${mailboxViewMode === "list"
-                    ? "bg-white shadow-sm ring-1 ring-slate-200/50 text-blue-600"
+                  className={`p-2 rounded-xl transition-all ${mailboxViewMode === "list"
+                    ? "bg-white shadow-sm ring-1 ring-slate-200 text-blue-600"
                     : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
                     }`}
                   title="List View"
@@ -218,12 +214,10 @@ const Header = ({
                 </button>
               </div>
 
-              <div className="h-6 w-px bg-slate-200/80 mx-1 shrink-0"></div>
-
               <button
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="p-2 bg-slate-50/50 hover:bg-slate-100 rounded-xl border border-slate-200/80 transition-all shadow-sm group"
+                className="p-2.5 bg-slate-50 hover:bg-white rounded-2xl border border-slate-200 transition-all shadow-xs group"
                 title="Refresh Mailboxes"
               >
                 <RefreshCw
@@ -231,6 +225,7 @@ const Header = ({
                     }`}
                 />
               </button>
+
 
               {selectedSenderIds?.length > 0 ? (
                 <div className="flex items-center gap-1.5 bg-rose-600 px-3 py-1.5 rounded-xl shadow-lg shadow-rose-500/20 animate-in zoom-in duration-300">
@@ -259,10 +254,10 @@ const Header = ({
               ) : (
                 <button
                   onClick={() => setShowSenderModal(true)}
-                  className="btn-primary flex items-center py-2 px-4 whitespace-nowrap"
+                  className="btn-primary flex items-center py-2.5 px-6 whitespace-nowrap shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
                 >
                   <Plus className="w-4 h-4 mr-2 shrink-0" />
-                  <span className="text-sm">Add Mailbox</span>
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">Add Mailbox</span>
                 </button>
               )}
 

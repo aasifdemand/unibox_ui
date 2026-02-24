@@ -80,32 +80,32 @@ const CampaignListView = ({
               </th>
               <th className="py-6 px-6 bg-slate-50/50 border-b border-slate-100 text-left">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Mission Data
+                  Campaign
                 </span>
               </th>
               <th className="py-6 px-6 bg-slate-50/50 border-b border-slate-100 text-left">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Deployment State
+                  Status
                 </span>
               </th>
               <th className="py-6 px-6 bg-slate-50/50 border-b border-slate-100 text-left">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Operational Scope
+                  Recipients
                 </span>
               </th>
               <th className="py-6 px-6 bg-slate-50/50 border-b border-slate-100 text-right">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Performance Index
+                  Open Rate
                 </span>
               </th>
               <th className="py-6 px-6 bg-slate-50/50 border-b border-slate-100 text-right">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Timeline
+                  Date
                 </span>
               </th>
               <th className="py-6 px-6 bg-slate-50/50 last:rounded-tr-2xl border-b border-slate-100 text-right">
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">
-                  Command Console
+                  Actions
                 </span>
               </th>
             </tr>
@@ -161,7 +161,7 @@ const CampaignListView = ({
                         </span>
                       </div>
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-                        Active Targets
+                        Total Recipients
                       </span>
                     </div>
                   </td>
@@ -176,7 +176,7 @@ const CampaignListView = ({
                         )}
                       </div>
                       <span className="text-[8px] font-extrabold text-slate-300 uppercase tracking-widest">
-                        Open Efficiency
+                        Efficiency
                       </span>
                     </div>
                   </td>
@@ -186,7 +186,7 @@ const CampaignListView = ({
                         {formatDate(campaign.createdAt)}
                       </span>
                       <span className="text-[8px] font-bold text-slate-300 uppercase tracking-widest mt-0.5">
-                        ORCHESTRATED
+                        CREATED
                       </span>
                     </div>
                   </td>

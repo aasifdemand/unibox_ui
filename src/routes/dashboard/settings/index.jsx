@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   User,
   Shield,
@@ -33,7 +34,8 @@ const Settings = () => {
   const { data: user, isLoading: userLoading } = useCurrentUser();
 
   // Fetch Resources Data
-  const { data: senders = [], isLoading: sendersLoading } = useSenders();
+  const { data: senderResponse = { data: [] }, isLoading: sendersLoading } = useSenders({ limit: 1000 });
+  const senders = senderResponse.data || [];
   const { data: templates = [], isLoading: templatesLoading } = useTemplates();
   const { data: batches = [], isLoading: batchesLoading } = useBatches();
   const { data: campaigns = [], isLoading: campaignsLoading } = useCampaigns();
@@ -128,65 +130,66 @@ const Settings = () => {
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="max-w-400 mx-auto p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
       {/* Page Header */}
-      <div className="premium-card bg-white border-slate-200/60 p-6 md:p-8 flex items-center justify-between shadow-2xl shadow-slate-900/2">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-            <SettingsIcon className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Settings
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+              <SettingsIcon className="w-4 h-4 text-blue-600" />
+            </div>
+            <h1 className="text-3xl font-extrabold text-slate-800 tracking-tighter">
+              Account <span className="text-blue-600">Settings</span>
             </h1>
-            <p className="text-[11px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
-              Personal account · Workspace resources · Security controls
-            </p>
           </div>
+          <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+            Personal account · Workspace resources · Security controls
+          </p>
         </div>
-        <div className="hidden md:flex items-center gap-3">
-          <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100">
+
+        <div className="flex items-center gap-3">
+          <span className="px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50 shadow-sm shadow-emerald-500/5">
             Account Ready
           </span>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
         {/* Navigation Sidebar */}
-        <aside className="lg:w-72 shrink-0 space-y-6">
-          <div className="premium-card bg-white border-slate-200/60 p-3 space-y-1 shadow-2xl shadow-slate-900/3">
+        <aside className="lg:w-80 shrink-0 space-y-6 lg:sticky lg:top-24">
+          <div className="bg-white/40 backdrop-blur-2xl border border-slate-200/50 p-2.5 rounded-[2.5rem] shadow-2xl shadow-slate-900/5">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => !item.disabled && setActiveMenu(item.id)}
                 disabled={item.disabled}
-                className={`w-full flex items-center p-3 rounded-2xl transition-all duration-200 group ${
-                  activeMenu === item.id
-                    ? "bg-blue-50 text-blue-700 shadow-sm shadow-blue-500/10"
-                    : item.disabled
-                      ? "opacity-50 cursor-not-allowed grayscale"
-                      : "text-slate-500 hover:bg-slate-50"
-                }`}
+                className={`w-full flex items-center p-3.5 rounded-[1.75rem] transition-all duration-300 group mb-1 last:mb-0 ${activeMenu === item.id
+                  ? "bg-white text-blue-600 shadow-xl shadow-slate-900/5 ring-1 ring-slate-100"
+                  : item.disabled
+                    ? "opacity-40 cursor-not-allowed grayscale"
+                    : "text-slate-500 hover:bg-white/60 hover:text-slate-900"
+                  }`}
               >
                 <div
-                  className={`p-2 rounded-xl mr-3 transition-colors ${
-                    activeMenu === item.id
-                      ? "bg-white shadow-sm text-blue-600"
-                      : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
-                  }`}
+                  className={`p-2.5 rounded-2xl mr-4 transition-all duration-300 ${activeMenu === item.id
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                    : "bg-slate-50 border border-slate-100 text-slate-400 group-hover:bg-white group-hover:text-blue-500 group-hover:border-blue-100"
+                    }`}
                 >
-                  <item.icon className="w-5 h-5" />
+                  <item.icon className="w-4.5 h-4.5" />
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-sm tracking-tight">
+                  <p className={`font-black tracking-tight text-xs uppercase ${activeMenu === item.id ? "text-slate-900" : "text-slate-500"
+                    }`}>
                     {item.label}
                   </p>
-                  <p className="text-[10px] font-medium text-slate-400">
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5 opacity-60">
                     {item.description}
                   </p>
                 </div>
                 {item.disabled && (
-                  <span className="ml-auto text-[8px] bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-widest">
+                  <span className="ml-auto text-[7px] bg-slate-200/50 text-slate-500 px-2 py-0.5 rounded-full font-black uppercase tracking-[0.1em]">
                     Soon
                   </span>
                 )}
@@ -194,42 +197,71 @@ const Settings = () => {
             ))}
           </div>
 
-          <div className="p-6 rounded-3xl bg-linear-to-br from-indigo-900 to-blue-900 text-white shadow-xl relative overflow-hidden group">
+          <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-indigo-950 text-white shadow-2xl shadow-indigo-500/10 relative overflow-hidden group">
             <div className="relative z-10">
-              <h4 className="font-bold mb-1">Need help?</h4>
-              <p className="text-xs text-blue-100 mb-4 opacity-80 font-medium">
-                Check our documentation or contact support for advanced
-                settings.
+              <h4 className="text-sm font-black uppercase tracking-widest mb-2">Need help?</h4>
+              <p className="text-[10px] text-blue-100/60 mb-6 font-bold uppercase tracking-widest leading-loose">
+                Check our documentation or contact support for advanced settings.
               </p>
-              <button className="text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition duration-300">
-                Open Support
+              <button className="text-[10px] font-black uppercase tracking-widest bg-white/10 hover:bg-white text-white hover:text-slate-900 border border-white/10 px-6 py-2.5 rounded-2xl transition-all duration-300 active:scale-95 shadow-lg">
+                Docs & Support
               </button>
             </div>
-            <SettingsIcon className="absolute -right-4 -bottom-4 w-24 h-24 text-white/5 rotate-12 group-hover:rotate-45 transition-transform duration-700" />
+            <SettingsIcon className="absolute -right-6 -bottom-6 w-32 h-32 text-white/5 rotate-12 group-hover:rotate-45 transition-transform duration-[2000ms] pointer-events-none" />
           </div>
         </aside>
 
         {/* Content Area */}
         <main className="flex-1 min-w-0">
-          <div className="premium-card bg-white rounded-4xl border border-slate-200/60 shadow-2xl shadow-slate-900/2 min-h-150 overflow-hidden">
-            {activeMenu === "profile" && <ProfileTab user={user} />}
-            {activeMenu === "security" && <SecurityTab />}
-            {activeMenu === "workspace" && (
-              <ResourcesTab
-                senders={senders}
-                templates={templates}
-                batches={batches}
-                campaigns={campaigns}
-                loading={{
-                  senders: sendersLoading,
-                  templates: templatesLoading,
-                  batches: batchesLoading,
-                  campaigns: campaignsLoading,
-                }}
-                onDeleteSender={handleOnDeleteSender}
-                onDeleteTemplate={handleOnDeleteTemplate}
-              />
-            )}
+          <div className="bg-white/40 backdrop-blur-2xl border border-slate-200/50 rounded-[3rem] shadow-2xl shadow-slate-900/5 min-h-[500px] overflow-hidden">
+            <AnimatePresence mode="wait">
+              {activeMenu === "profile" && (
+                <motion.div
+                  key="profile"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ProfileTab user={user} />
+                </motion.div>
+              )}
+              {activeMenu === "security" && (
+                <motion.div
+                  key="security"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <SecurityTab />
+                </motion.div>
+              )}
+              {activeMenu === "workspace" && (
+                <motion.div
+                  key="workspace"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ResourcesTab
+                    senders={senders}
+                    templates={templates}
+                    batches={batches}
+                    campaigns={campaigns}
+                    loading={{
+                      senders: sendersLoading,
+                      templates: templatesLoading,
+                      batches: batchesLoading,
+                      campaigns: campaignsLoading,
+                    }}
+                    onDeleteSender={handleOnDeleteSender}
+                    onDeleteTemplate={handleOnDeleteTemplate}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </main>
       </div>

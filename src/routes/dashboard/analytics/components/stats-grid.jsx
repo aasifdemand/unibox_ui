@@ -1,11 +1,15 @@
 import { TrendingUp, Clock } from "lucide-react";
+import { motion } from "motion/react";
 
 const StatsGrid = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
-        <div
+        <motion.div
           key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
           className="premium-card p-6 overflow-hidden relative group cursor-pointer hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500"
         >
           {/* Dynamic Decorative Elements */}
@@ -66,7 +70,7 @@ const StatsGrid = ({ stats }) => {
               ></div>
             </div>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

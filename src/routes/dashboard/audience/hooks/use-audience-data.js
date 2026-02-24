@@ -30,6 +30,11 @@ export const useAudienceData = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [senderType, setSenderType] = useState("gmail");
 
+  // Senders pagination and view state
+  const [senderPage, setSenderPage] = useState(1);
+  const [senderViewMode, setSenderViewMode] = useState("grid");
+  const SENDER_PAGE_SIZE = 10;
+
   // Contacts state
   const [uploadStep, setUploadStep] = useState(1);
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -72,10 +77,13 @@ export const useAudienceData = () => {
   } = useBatches();
 
   const {
-    data: senders = [],
+    data: senderResponse = { data: [], pagination: {} },
     isLoading: isLoadingSenders,
     refetch: refetchSenders,
-  } = useSenders();
+  } = useSenders({ page: senderPage, limit: SENDER_PAGE_SIZE });
+
+  const senders = senderResponse.data || [];
+  const senderMeta = senderResponse.pagination || {};
 
   const uploadBatch = useUploadBatch();
   const deleteBatch = useDeleteBatch();
@@ -98,6 +106,14 @@ export const useAudienceData = () => {
 
   // Filter batches using service function
   const filteredBatches = filterBatches(batches, searchTerm, filterStatus);
+
+  // Paginate senders (Server-side metadata)
+  const totalSenders = senderMeta.total || 0;
+  const totalSenderPages = senderMeta.pages || 0;
+  const hasNextSenderPage = senderPage < totalSenderPages;
+  const hasPrevSenderPage = senderPage > 1;
+
+  const paginatedSenders = senders;
 
   // Open batch details
   const openBatchDetails = (batch) => {
@@ -280,6 +296,12 @@ export const useAudienceData = () => {
     searchTerm,
     filterStatus,
     senderType,
+    senderPage,
+    senderViewMode,
+    hasNextSenderPage,
+    hasPrevSenderPage,
+    totalSenders,
+    SENDER_PAGE_SIZE,
     uploadStep,
     uploadedFile,
     fileHeaders,
@@ -294,6 +316,7 @@ export const useAudienceData = () => {
     batches,
     filteredBatches,
     senders,
+    paginatedSenders,
     batchStatus, // Add this
     metrics: { valid, invalid, risky, unverified, totalContacts },
 
@@ -314,6 +337,8 @@ export const useAudienceData = () => {
     setSearchTerm,
     setFilterStatus,
     setSenderType,
+    setSenderPage,
+    setSenderViewMode,
     setUploadStep,
     setMapping,
     setSmtpData,

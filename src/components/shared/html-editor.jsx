@@ -449,7 +449,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   const renderEmailPreview = (content) => {
     if (!content || content.trim() === "") {
       return `
-      <div style="padding:40px; color:#9ca3af; font-style:italic; text-align:center;">
+      <div class="text-sm text-slate-400 italic flex items-center justify-center py-10">
         No content to preview
       </div>
     `;
@@ -460,42 +460,13 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
     // Highlight tokens
     html = html.replace(
       /\{\{([^}]+)\}\}/g,
-      `<span style="
-      background:#FEF3C7;
-      color:#92400E;
-      padding:2px 4px;
-      border-radius:4px;
-      font-family:monospace;
-      font-size:0.9em;
-    ">$&</span>`,
+      `<span class="bg-amber-100/80 text-amber-800 px-1.5 py-0.5 rounded-md font-mono text-sm font-bold border border-amber-200/60 leading-none shadow-sm pb-1 inline-block">$&</span>`,
     );
 
     // Filter out trailing empty paragraphs that add extra space
     html = html.trim().replace(/(<p>&nbsp;<\/p>|<p><\/p>)+$/, "");
 
-    return `
-    <div style="background:#f9fafb; font-family:Arial, Helvetica, sans-serif; padding:20px;">
-      <style>
-        .preview-body p { margin-top: 0; margin-bottom: 16px; }
-        .preview-body p:last-child { margin-bottom: 0; }
-        .preview-body ul, .preview-body ol { margin-top: 16px; margin-bottom: 16px; }
-        .preview-body li { margin-bottom: 8px; }
-      </style>
-      <div class="preview-body" style="
-        max-width:600px;
-        margin:0 auto;
-        padding:32px;
-        background:#ffffff;
-        color:#111827;
-        font-size:16px;
-        line-height:1.6;
-        border-radius:8px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.05);
-      ">
-        ${html}
-      </div>
-    </div>
-  `;
+    return html;
   };
 
   if (!editor) {
@@ -745,13 +716,25 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
 
       <div className="relative flex-1 bg-slate-50/30">
         {previewMode ? (
-          <div className="p-8 h-full overflow-y-auto animate-in fade-in duration-500">
-            <div
-              className="max-w-3xl mx-auto"
-              dangerouslySetInnerHTML={{
-                __html: renderEmailPreview(previewContent),
-              }}
-            />
+          <div className="p-4 md:p-8 h-full overflow-y-auto animate-in fade-in duration-500 custom-scrollbar">
+            <div className="max-w-4xl mx-auto premium-card bg-white min-h-[500px] overflow-hidden flex flex-col">
+              <div className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 flex-none px-6 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-rose-400 border border-slate-200 shadow-inner"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-slate-200 shadow-inner"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 border border-slate-200 shadow-inner"></div>
+                </div>
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
+                  Email Content Canvas
+                </div>
+              </div>
+              <div
+                className="flex-1 p-8 md:p-10 lg:p-12 prose prose-slate max-w-none text-slate-800 mail-content-html"
+                dangerouslySetInnerHTML={{
+                  __html: renderEmailPreview(previewContent),
+                }}
+              />
+            </div>
           </div>
         ) : (
           <div className="h-full flex flex-col">

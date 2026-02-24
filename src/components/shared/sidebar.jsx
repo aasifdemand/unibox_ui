@@ -1,6 +1,7 @@
 import { LogOut, Mail, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 import { useCurrentUser, useLogout } from "../../hooks/useAuth";
 import Dialog from "../../components/ui/dialog";
 
@@ -27,12 +28,17 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 transition-all duration-500 z-30 flex flex-col ${sidebarCollapsed ? "w-20" : "w-70"
+        className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 transition-all duration-500 z-30 flex flex-col no-scrollbar ${sidebarCollapsed ? "w-20" : "w-70"
           }`}
       >
         {/* Superior Logo Section - Removed toggle button */}
         <div className="flex items-center h-20 px-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
-          <div className="flex items-center gap-3 group cursor-pointer">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            className="flex items-center gap-3 group cursor-pointer"
+          >
             <div className="relative">
               <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-blue-600 via-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/30 group-hover:scale-105 transition-transform duration-500">
                 <Mail className="w-5 h-5 text-white" />
@@ -40,7 +46,7 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             {!sidebarCollapsed && (
-              <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
+              <div className="flex flex-col">
                 <span className="text-xl font-extrabold text-slate-800 tracking-tighter leading-none">
                   Unibox<span className="text-blue-600">.</span>
                 </span>
@@ -49,11 +55,11 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                 </span>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
 
         {/* Premium Navigation */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden py-6 px-4 space-y-8 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden py-6 px-4 space-y-8 no-scrollbar">
           {!sidebarCollapsed && (
             <div className="px-2">
               <div className="bg-linear-to-br from-blue-500 to-indigo-600 rounded-3xl p-5 shadow-2xl shadow-blue-500/20 relative overflow-hidden group">
@@ -82,57 +88,66 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                 Main Dashboard
               </div>
             )}
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
               return (
-                <Link
+                <motion.div
                   key={item.path}
-                  to={item.path}
-                  onMouseEnter={() => setActiveHover(item.path)}
-                  onMouseLeave={() => setActiveHover(null)}
-                  className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${isActive
-                    ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
-                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
-                    }`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 + index * 0.05, ease: [0.23, 1, 0.32, 1] }}
                 >
-                  <div className="relative flex items-center justify-center shrink-0">
-                    <Icon
-                      className={`w-5 h-5 transition-all duration-300 ${isActive
-                        ? "scale-110"
-                        : "group-hover:text-blue-500 group-hover:scale-110"
-                        }`}
-                    />
-                    {isActive && (
-                      <div className="absolute -left-5 w-1 h-6 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)]"></div>
-                    )}
-                  </div>
-                  {!sidebarCollapsed && (
-                    <div className="ml-4 flex-1 flex items-center justify-between overflow-hidden">
-                      <span
-                        className={`text-sm tracking-tight transition-all duration-300 ${isActive ? "font-extrabold opacity-100" : "font-bold opacity-80 group-hover:opacity-100"}`}
-                      >
-                        {item.label}
-                      </span>
-                      {item.badge && (
-                        <span
-                          className={`px-1.5 py-0.5 text-[9px] font-extrabold rounded-lg uppercase tracking-widest ${isActive
-                            ? "bg-blue-500 text-white"
-                            : "bg-blue-50 text-blue-600"
-                            }`}
-                        >
-                          {item.badge}
-                        </span>
+                  <Link
+                    to={item.path}
+                    onMouseEnter={() => setActiveHover(item.path)}
+                    onMouseLeave={() => setActiveHover(null)}
+                    className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${isActive
+                      ? "bg-blue-600 text-white shadow-xl shadow-slate-900/10"
+                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                      }`}
+                  >
+                    <div className="relative flex items-center justify-center shrink-0">
+                      <Icon
+                        className={`w-5 h-5 transition-all duration-300 ${isActive
+                          ? "scale-110"
+                          : "group-hover:text-blue-500 group-hover:scale-110"
+                          }`}
+                      />
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeNavIndicator"
+                          className="absolute -left-5 w-1 h-6 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)]"
+                        />
                       )}
                     </div>
-                  )}
-                  {sidebarCollapsed && activeHover === item.path && (
-                    <div className="absolute left-full ml-4 px-3 py-2 bg-blue-600 text-white text-[10px] font-extrabold uppercase tracking-widest rounded-xl shadow-2xl z-50 animate-in fade-in slide-in-from-left-2 duration-200 pointer-events-none whitespace-nowrap">
-                      {item.label}
-                    </div>
-                  )}
-                </Link>
+                    {!sidebarCollapsed && (
+                      <div className="ml-4 flex-1 flex items-center justify-between overflow-hidden">
+                        <span
+                          className={`text-sm tracking-tight transition-all duration-300 ${isActive ? "font-extrabold opacity-100" : "font-bold opacity-80 group-hover:opacity-100"}`}
+                        >
+                          {item.label}
+                        </span>
+                        {item.badge && (
+                          <span
+                            className={`px-1.5 py-0.5 text-[9px] font-extrabold rounded-lg uppercase tracking-widest ${isActive
+                              ? "bg-blue-500 text-white"
+                              : "bg-blue-50 text-blue-600"
+                              }`}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {sidebarCollapsed && activeHover === item.path && (
+                      <div className="absolute left-full ml-4 px-3 py-2 bg-blue-600 text-white text-[10px] font-extrabold uppercase tracking-widest rounded-xl shadow-2xl z-50 animate-in fade-in slide-in-from-left-2 duration-200 pointer-events-none whitespace-nowrap">
+                        {item.label}
+                      </div>
+                    )}
+                  </Link>
+                </motion.div>
               );
             })}
           </nav>

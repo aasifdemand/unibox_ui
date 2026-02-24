@@ -1,6 +1,7 @@
 import ShowTemplate from "../../../modals/showtemplate";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Dialog from "../../../components/ui/dialog";
 
 // Import custom hook and components
@@ -79,7 +80,11 @@ const Templates = () => {
 
   return (
     <>
-      <div className="max-w-400 mx-auto p-4 sm:p-6 lg:p-10 space-y-2 animate-in fade-in duration-700">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="max-w-400 mx-auto p-4 sm:p-6 lg:p-10 space-y-2"
+      >
         <Header onCreateNew={handleCreateNew} isPending={isPending} />
 
         <div className="space-y-8">
@@ -100,16 +105,22 @@ const Templates = () => {
           ) : (
             !isLoading &&
             templates.length > 0 && (
-              <TemplateGrid
-                templates={templates}
-                filteredTemplates={filteredTemplates}
-                onEdit={handleEditTemplate}
-                onDelete={handleRequestDeleteTemplate}
-                onCreateNew={handleCreateNew}
-                isPending={isPending}
-                deleteMutation={mutations.deleteTemplate}
-                formatDate={formatDate}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <TemplateGrid
+                  templates={templates}
+                  filteredTemplates={filteredTemplates}
+                  onEdit={handleEditTemplate}
+                  onDelete={handleRequestDeleteTemplate}
+                  onCreateNew={handleCreateNew}
+                  isPending={isPending}
+                  deleteMutation={mutations.deleteTemplate}
+                  formatDate={formatDate}
+                />
+              </motion.div>
             )
           )}
 
@@ -123,7 +134,7 @@ const Templates = () => {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {showTemplateModal && (
         <ShowTemplate

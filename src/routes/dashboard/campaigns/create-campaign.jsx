@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useNavigate } from "react-router-dom";
 import { Send, Sparkles, AlertCircle, Loader2, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import CampaignStepper from "./components/create-campaign/campaign-stepper";
 import Step1Design from "./components/create-campaign/design-step";
 import Step2Audience from "./components/create-campaign/audience";
@@ -63,10 +64,12 @@ const CreateCampaign = () => {
   // React Query hooks
   const createCampaign = useCreateCampaign();
   const {
-    data: senders = [],
+    data: senderResponse = { data: [] },
     isLoading: isLoadingSenders,
     refetch: refetchSenders,
-  } = useSenders();
+  } = useSenders({ limit: 1000 });
+
+  const senders = senderResponse.data || [];
 
   const {
     data: batches = [],
@@ -265,11 +268,41 @@ const CreateCampaign = () => {
 
     switch (currentStep) {
       case 1:
-        return <Step2Audience {...stepProps} />;
+        return (
+          <motion.div
+            key="step1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Step2Audience {...stepProps} />
+          </motion.div>
+        );
       case 2:
-        return <Step1Design {...stepProps} />;
+        return (
+          <motion.div
+            key="step2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Step1Design {...stepProps} />
+          </motion.div>
+        );
       case 3:
-        return <Step3Finalize {...stepProps} />;
+        return (
+          <motion.div
+            key="step3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Step3Finalize {...stepProps} />
+          </motion.div>
+        );
       default:
         return <Step2Audience {...stepProps} />;
     }
@@ -349,7 +382,9 @@ const CreateCampaign = () => {
                 }
               }}
             >
-              {renderStepContent()}
+              <AnimatePresence mode="wait">
+                {renderStepContent()}
+              </AnimatePresence>
 
               <div className="flex items-center justify-between pt-12 mt-12 border-t border-slate-100">
                 <div className="min-w-35">

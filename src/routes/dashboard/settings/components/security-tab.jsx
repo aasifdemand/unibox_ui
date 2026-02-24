@@ -7,6 +7,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
+import { motion } from "motion/react";
 import Input from "../../../../components/ui/input";
 import Button from "../../../../components/ui/button";
 import { useChangePassword } from "../../../../hooks/useAuth";
@@ -77,35 +78,43 @@ const SecurityTab = () => {
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-2xl">
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+      className="p-10 md:p-12 overflow-y-auto max-h-[70vh]"
+    >
+      <div className="max-w-4xl">
+        <div className="mb-12">
+          <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">
             Security Settings
           </h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
             Ensure your account is secure by using a strong password.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="grid gap-10">
           {/* Current Password */}
-          <Input.Password
-            label="Current Password"
-            icon={Lock}
-            placeholder="••••••••"
-            value={formData.currentPassword}
-            onChange={(e) =>
-              setFormData({ ...formData, currentPassword: e.target.value })
-            }
-            required
-          />
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Current Password</label>
+            <Input.Password
+              icon={Lock}
+              placeholder="••••••••"
+              value={formData.currentPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, currentPassword: e.target.value })
+              }
+              required
+              className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
+            />
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* New Password */}
-            <div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">New Password</label>
               <Input.Password
-                label="New Password"
                 icon={ShieldCheck}
                 placeholder="••••••••"
                 value={formData.newPassword}
@@ -113,70 +122,61 @@ const SecurityTab = () => {
                   setFormData({ ...formData, newPassword: e.target.value })
                 }
                 required
+                className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
               />
 
               {/* Password Strength Indicator */}
               {formData.newPassword && (
-                <div className="mt-3 space-y-2">
+                <div className="mt-6 space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-gray-600">
-                      Password Strength: {getStrengthText()}
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                      Strength: {getStrengthText()}
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-[10px] font-black text-slate-400">
                       {passwordStrength}/5
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
                     <div
-                      className={`h-full ${getStrengthColor()} transition-all duration-300`}
+                      className={`h-full ${getStrengthColor()} transition-all duration-300 shadow-sm`}
                       style={{ width: `${strengthPercentage}%` }}
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mt-3">
-                    <div className="flex items-center gap-1.5">
+                  <div className="grid grid-cols-1 gap-2.5 mt-4">
+                    <div className="flex items-center gap-3">
                       {passwordChecks.minLength ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-gray-300" />
+                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
-                      <span className="text-xs text-gray-600">
+                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                         Min 8 characters
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-3">
                       {passwordChecks.hasUpperCase ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-gray-300" />
+                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
-                      <span className="text-xs text-gray-600">Uppercase</span>
+                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Uppercase letter</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-3">
                       {passwordChecks.hasLowerCase ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-gray-300" />
+                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
-                      <span className="text-xs text-gray-600">Lowercase</span>
+                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Lowercase letter</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-3">
                       {passwordChecks.hasNumber ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-gray-300" />
+                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
-                      <span className="text-xs text-gray-600">Number</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 col-span-2">
-                      {passwordChecks.hasSpecialChar ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-gray-300" />
-                      )}
-                      <span className="text-xs text-gray-600">
-                        Special character (!@#$%^&*)
-                      </span>
+                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">A number</span>
                     </div>
                   </div>
                 </div>
@@ -184,9 +184,9 @@ const SecurityTab = () => {
             </div>
 
             {/* Confirm New Password */}
-            <div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Confirm New Password</label>
               <Input.Password
-                label="Confirm New Password"
                 icon={ShieldCheck}
                 placeholder="••••••••"
                 value={formData.confirmPassword}
@@ -194,22 +194,23 @@ const SecurityTab = () => {
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
                 required
+                className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
               />
 
               {/* Password Match Indicator */}
               {formData.confirmPassword && (
-                <div className="mt-2 flex items-center gap-1.5">
+                <div className="mt-4 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/50 border border-slate-100/50">
                   {formData.newPassword === formData.confirmPassword ? (
                     <>
-                      <CheckCircle className="w-3.5 h-3.5 text-green-500" />
-                      <span className="text-xs text-green-600">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
                         Passwords match
                       </span>
                     </>
                   ) : (
                     <>
                       <XCircle className="w-3.5 h-3.5 text-red-500" />
-                      <span className="text-xs text-red-600">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-red-600">
                         Passwords do not match
                       </span>
                     </>
@@ -219,20 +220,20 @@ const SecurityTab = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-100 mt-8 flex justify-end">
+          <div className="pt-10 mt-6 border-t border-slate-100/50 flex justify-end">
             <Button
               type="submit"
               disabled={changePassword.isPending}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-black text-white px-10 py-6 rounded-[1.5rem] shadow-xl shadow-blue-500/20 hover:shadow-black/20 transition-all duration-300 active:scale-95 text-[11px] font-black uppercase tracking-widest"
             >
               {changePassword.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 mr-3 animate-spin" />
                   Updating...
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4 mr-2" />
+                  <Save className="w-4 h-4 mr-3" />
                   Change Password
                 </>
               )}
@@ -240,7 +241,7 @@ const SecurityTab = () => {
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

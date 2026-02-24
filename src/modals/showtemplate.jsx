@@ -18,6 +18,7 @@ import {
 import HtmlEmailEditor from "../components/shared/html-editor";
 import Button from "../components/ui/button";
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 const ShowTemplate = ({
   showTemplateModal,
@@ -85,10 +86,17 @@ const ShowTemplate = ({
 
   // Render step content
   const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    return (
+      <AnimatePresence mode="wait">
+        {currentStep === 1 && (
+          <motion.div
+            key="step1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
             <div className="grid grid-cols-1 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest px-1">
@@ -133,20 +141,18 @@ const ShowTemplate = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-1 bg-slate-50 border-2 border-slate-100 rounded-3xl">
                   <div
-                    className={`p-4 rounded-2xl transition-all ${
-                      formData.status === "active"
-                        ? "bg-white shadow-sm ring-1 ring-slate-200"
-                        : ""
-                    }`}
+                    className={`p-4 rounded-2xl transition-all ${formData.status === "active"
+                      ? "bg-white shadow-sm ring-1 ring-slate-200"
+                      : ""
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            formData.status === "active"
-                              ? "bg-blue-50 text-blue-600"
-                              : "bg-slate-100 text-slate-400"
-                          }`}
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${formData.status === "active"
+                            ? "bg-blue-50 text-blue-600"
+                            : "bg-slate-100 text-slate-400"
+                            }`}
                         >
                           <Zap className="w-5 h-5" />
                         </div>
@@ -179,20 +185,18 @@ const ShowTemplate = ({
 
                 <div className="p-1 bg-slate-50 border-2 border-slate-100 rounded-3xl">
                   <div
-                    className={`p-4 rounded-2xl transition-all ${
-                      formData.isDefault
-                        ? "bg-white shadow-sm ring-1 ring-slate-200"
-                        : ""
-                    }`}
+                    className={`p-4 rounded-2xl transition-all ${formData.isDefault
+                      ? "bg-white shadow-sm ring-1 ring-slate-200"
+                      : ""
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            formData.isDefault
-                              ? "bg-purple-50 text-purple-600"
-                              : "bg-slate-100 text-slate-400"
-                          }`}
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${formData.isDefault
+                            ? "bg-purple-50 text-purple-600"
+                            : "bg-slate-100 text-slate-400"
+                            }`}
                         >
                           <Shield className="w-5 h-5" />
                         </div>
@@ -226,32 +230,36 @@ const ShowTemplate = ({
                 </div>
               </div>
             </div>
-          </div>
-        );
+          </motion.div>
+        )}
 
-      case 2:
-        return (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {currentStep === 2 && (
+          <motion.div
+            key="step2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
             <div className="flex items-center justify-between bg-slate-50 p-2 rounded-2xl border border-slate-200">
               <div className="flex gap-1">
                 <button
                   onClick={() => setEditorMode("rich")}
-                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${
-                    editorMode === "rich"
-                      ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                      : "text-slate-400 hover:text-slate-600"
-                  }`}
+                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${editorMode === "rich"
+                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
+                    : "text-slate-400 hover:text-slate-600"
+                    }`}
                 >
                   <Sparkles className="w-4 h-4 inline mr-2" />
                   Visual Editor
                 </button>
                 <button
                   onClick={() => setEditorMode("text")}
-                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${
-                    editorMode === "text"
-                      ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                      : "text-slate-400 hover:text-slate-600"
-                  }`}
+                  className={`px-6 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest transition-all ${editorMode === "text"
+                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
+                    : "text-slate-400 hover:text-slate-600"
+                    }`}
                 >
                   HTML / Text
                 </button>
@@ -316,12 +324,18 @@ const ShowTemplate = ({
                 />
               )}
             </div>
-          </div>
-        );
+          </motion.div>
+        )}
 
-      case 3:
-        return (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {currentStep === 3 && (
+          <motion.div
+            key="step3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                 <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">
@@ -349,11 +363,10 @@ const ShowTemplate = ({
                       Status
                     </span>
                     <span
-                      className={`px-3 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${
-                        formData.status === "active"
-                          ? "bg-emerald-100 text-emerald-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}
+                      className={`px-3 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${formData.status === "active"
+                        ? "bg-emerald-100 text-emerald-600"
+                        : "bg-blue-100 text-blue-600"
+                        }`}
                     >
                       {formData.status}
                     </span>
@@ -368,11 +381,10 @@ const ShowTemplate = ({
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        formData.isDefault
-                          ? "bg-purple-100 text-purple-600"
-                          : "bg-slate-200 text-slate-400"
-                      }`}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${formData.isDefault
+                        ? "bg-purple-100 text-purple-600"
+                        : "bg-slate-200 text-slate-400"
+                        }`}
                     >
                       <Shield className="w-4 h-4" />
                     </div>
@@ -382,7 +394,7 @@ const ShowTemplate = ({
                       </p>
                       <p className="text-[10px] text-slate-400">
                         {formData.isDefault
-                          ? "Set as default for new campaigns"
+                          ? "Default Template"
                           : "Not set as default"}
                       </p>
                     </div>
@@ -391,34 +403,35 @@ const ShowTemplate = ({
               </div>
             </div>
 
-            <div className="border border-slate-200 rounded-3xl bg-white overflow-hidden shadow-sm">
-              <div className="bg-slate-50 px-6 py-3 border-b border-slate-200 flex items-center justify-between">
-                <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Preview
-                </p>
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+            <div className="border border-slate-200 rounded-3xl bg-white overflow-hidden shadow-sm flex flex-col">
+              <div className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 px-6 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-rose-400"></div>
+                  <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                </div>
+                <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
+                  Email Content Canvas
                 </div>
               </div>
-              <div className="p-8 min-h-62.5 max-h-100 overflow-y-auto">
+              <div className="p-8 md:p-10 min-h-62.5 max-h-100 overflow-y-auto custom-scrollbar">
                 <div
-                  className="prose prose-sm max-w-none"
+                  className="prose prose-slate max-w-none text-slate-800 mail-content-html preview-content"
                   dangerouslySetInnerHTML={{
-                    __html:
-                      formData.htmlContent ||
-                      "<p class='text-slate-400 italic'>No content to preview</p>",
+                    __html: formData.htmlContent
+                      ? formData.htmlContent.replace(
+                        /\{\{([^}]+)\}\}/g,
+                        `<span class="bg-amber-100/80 text-amber-800 px-1.5 py-0.5 rounded-md font-mono text-sm font-bold border border-amber-200/60 leading-none shadow-sm pb-1 inline-block">$&</span>`
+                      )
+                      : "<p class='text-slate-400 italic'>No content to preview</p>",
                   }}
                 />
               </div>
             </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
   };
 
   return (
@@ -460,13 +473,12 @@ const ShowTemplate = ({
                   <button
                     key={step.id}
                     onClick={() => isCompleted && setCurrentStep(step.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
-                      isActive
-                        ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
-                        : isCompleted
-                          ? "text-emerald-600 hover:bg-emerald-50"
-                          : "text-slate-300 opacity-50 cursor-not-allowed"
-                    }`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${isActive
+                      ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
+                      : isCompleted
+                        ? "text-emerald-600 hover:bg-emerald-50"
+                        : "text-slate-300 opacity-50 cursor-not-allowed"
+                      }`}
                   >
                     {isCompleted ? (
                       <CheckCircle className="w-4 h-4" />

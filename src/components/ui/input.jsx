@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff, Search, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 const Input = ({
   type = "text",
@@ -21,39 +22,44 @@ const Input = ({
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const inputId = name || label?.toLowerCase().replace(/\s+/g, "-");
   const helperId = `${inputId}-help`;
 
   const inputType = type === "password" && showPassword ? "text" : type;
 
   const baseStyles =
-    "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition";
+    "w-full px-4 py-2 border rounded-lg focus:outline-none transition-all duration-300";
   const stateStyles = error
-    ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+    ? "border-red-300 focus:border-red-500 ring-red-500/10"
     : success
-      ? "border-green-300 focus:border-green-500 focus:ring-green-500"
-      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500";
+      ? "border-green-300 focus:border-green-500 ring-green-500/10"
+      : "border-gray-200 focus:border-blue-500 ring-blue-500/5";
   const disabledStyles = disabled
-    ? "bg-gray-100 cursor-not-allowed opacity-70"
-    : "bg-white";
+    ? "bg-gray-50 cursor-not-allowed opacity-70"
+    : "bg-white/50 backdrop-blur-sm";
 
   return (
     <div className="space-y-2">
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-gray-700"
+          className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1"
         >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
 
-      <div className="relative">
+      <motion.div
+        animate={isFocused ? { scale: 1.01 } : { scale: 1 }}
+        transition={{ duration: 0.2 }}
+        className="relative"
+      >
         {/* Left Icon */}
         {Icon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon className="h-5 w-5 text-gray-400" />
+            <Icon className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-blue-500' : 'text-gray-400'}`} />
           </div>
         )}
 
@@ -63,7 +69,11 @@ const Input = ({
           type={inputType}
           value={value}
           onChange={onChange}
-          onBlur={onBlur} // ✅ Zod-friendly
+          onBlur={(e) => {
+            setIsFocused(false);
+            onBlur?.(e);
+          }}
+          onFocus={() => setIsFocused(true)}
           name={name}
           placeholder={placeholder}
           disabled={disabled}
@@ -75,6 +85,7 @@ const Input = ({
             ${disabledStyles}
             ${Icon ? "pl-10" : ""}
             ${type === "password" || showClearButton ? "pr-10" : ""}
+            ${isFocused ? 'ring-4' : ''}
             ${className}
           `}
           {...props}
@@ -89,9 +100,9 @@ const Input = ({
             tabIndex={-1}
           >
             {showPassword ? (
-              <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors" />
             ) : (
-              <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors" />
             )}
           </button>
         )}
@@ -104,26 +115,31 @@ const Input = ({
             onClick={onClear}
             tabIndex={-1}
           >
-            <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+            <X className="h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors" />
           </button>
         )}
-      </div>
+      </motion.div>
 
       {/* Helper Text / Error */}
-      {(helperText || error) && (
-        <p
-          id={helperId}
-          className={`text-sm ${
-            error
-              ? "text-red-600"
-              : success
-                ? "text-green-600"
-                : "text-gray-500"
-          }`}
-        >
-          {error || helperText}
-        </p>
-      )}
+      <AnimatePresence mode="wait">
+        {(helperText || error) && (
+          <motion.p
+            key={error ? 'error' : 'helper'}
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            id={helperId}
+            className={`text-[10px] font-bold uppercase tracking-widest px-1 ${error
+                ? "text-red-500"
+                : success
+                  ? "text-green-500"
+                  : "text-slate-400"
+              }`}
+          >
+            {error || helperText}
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

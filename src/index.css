@@ -82,23 +82,6 @@ h6 {
   @apply bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent;
 }
 
-/* Custom scrollbar for sidebar */
-aside nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-aside nav::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-aside nav::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-aside nav::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
 
 /* Modal styles */
 body.modal-open {
@@ -209,6 +192,7 @@ body.modal-open {
   line-height: 1.6;
   color: var(--text-main);
   word-wrap: break-word;
+  white-space: normal;
 }
 
 .mail-content-html img {
@@ -236,4 +220,14 @@ body.modal-open {
 
 .mail-content-html p {
   margin-bottom: 1em;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }

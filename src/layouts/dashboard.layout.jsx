@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 import {
   LayoutDashboard,
   Mail,
@@ -337,11 +338,17 @@ const DashboardLayout = () => {
         </header>
 
         {/* Intelligence Surface */}
-        <main className="p-4 md:p-8 w-full animate-in fade-in duration-500">
+        <motion.main
+          key={location.pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+          className="p-4 md:p-8 w-full"
+        >
           <div className="w-full min-h-[calc(100vh-144px)]">
             <Outlet />
           </div>
-        </main>
+        </motion.main>
 
         {/* Refined Footer */}
         <footer className="px-10 py-8 mt-auto border-t border-slate-200/40 bg-white/30 backdrop-blur-sm">
