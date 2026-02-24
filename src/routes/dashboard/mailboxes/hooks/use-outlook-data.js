@@ -41,9 +41,15 @@ export const useOutlookData = (
   const mailboxId = isOutlook ? selectedMailbox.id : null;
 
   // Queries
+  const isSpecialFolder =
+    selectedFolder &&
+    ["sentitems", "deleteditems", "junkemail", "archive", "outbox", "drafts"].includes(
+      selectedFolder.id,
+    );
+  
   const outlookMessagesQuery = useOutlookMessagesQuery(
-    isOutlook && !selectedFolder ? mailboxId : null,
-    "inbox",
+    isOutlook && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
+    selectedFolder?.id || "inbox",
     PAGE_SIZE,
   );
 

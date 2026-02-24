@@ -41,9 +41,15 @@ export const useGmailData = (
   const mailboxId = isGmail ? selectedMailbox.id : null;
 
   // Queries
+  const isSpecialFolder =
+    selectedFolder &&
+    ["SENT", "TRASH", "SPAM", "STARRED", "IMPORTANT", "DRAFT"].includes(
+      selectedFolder.id,
+    );
+
   const gmailMessagesQuery = useGmailMessagesQuery(
-    isGmail && !selectedFolder ? mailboxId : null,
-    ["INBOX"],
+    isGmail && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
+    selectedFolder?.id ? [selectedFolder.id] : ["INBOX"],
     PAGE_SIZE,
   );
 

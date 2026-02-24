@@ -39,16 +39,17 @@ export const useSmtpData = (
   const mailboxId = isSmtp ? selectedMailbox.id : null;
 
   // Queries
+  const isSpecialFolder =
+    selectedFolder &&
+    ["SENT", "DRAFTS", "TRASH", "SPAM", "ARCHIVE"].includes(
+      selectedFolder.id?.toUpperCase() || selectedFolder.name?.toUpperCase(),
+    );
+
   const smtpMessagesQuery = useSmtpMessagesQuery(
-    isSmtp &&
-      (!selectedFolder ||
-        selectedFolder.id === "INBOX" ||
-        selectedFolder.name === "INBOX")
-      ? mailboxId
-      : null,
+    isSmtp && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
-    "INBOX",
+    selectedFolder?.name || "INBOX",
   );
 
   const smtpSentQuery = useSmtpSentMessagesQuery(
