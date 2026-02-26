@@ -62,7 +62,7 @@ export const ErrorAlert = ({
   return (
     <div className={`p-4 m-6 ${styles.bg} border ${styles.border} rounded-lg ${className}`}>
       <div className="flex items-start">
-        <div className="shrink-0 mr-3 mt-0.5">{styles.icon}</div>
+        <div className="shrink-0 ltr:mr-3 rtl:ml-3 mt-0.5">{styles.icon}</div>
         <div className="flex-1">
           <h3 className={`font-semibold ${styles.text} mb-1`}>{title}</h3>
           <p className={`text-sm ${styles.text} opacity-90`}>{message}</p>
@@ -80,7 +80,7 @@ export const ErrorAlert = ({
         {dismissible && onClear && (
           <button
             onClick={onClear}
-            className={`ml-auto p-1.5 rounded-lg transition ${styles.buttonBg} ${styles.buttonHover}`}
+            className={`ltr:ml-auto ltr:mr-auto rtl:ml-auto p-1.5 rounded-lg transition ${styles.buttonBg} ${styles.buttonHover}`}
             aria-label="Dismiss"
           >
             <X className={`w-4 h-4 ${styles.text}`} />
@@ -108,7 +108,7 @@ export const ToastAlert = ({ error, onClear, variant = 'error', duration = 5000 
   if (!error || !visible) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 animate-slide-in">
+    <div className="fixed top-4 ltr:right-4 rtl:left-4 z-50 animate-slide-in">
       <ErrorAlert
         error={error}
         onClear={() => {
@@ -158,7 +158,7 @@ export const BannerAlert = ({ error, onClear, variant = 'error', title, classNam
         <div className="flex items-center space-x-3">
           {styles.icon}
           <div>
-            {title && <span className="font-semibold mr-2">{title}:</span>}
+            {title && <span className="font-semibold ltr:mr-2 rtl:ml-2">{title}:</span>}
             <span className="text-sm">{message}</span>
           </div>
         </div>
@@ -181,7 +181,7 @@ export const FieldError = ({ error, className = '' }) => {
 
   return (
     <p className={`text-xs text-red-600 mt-1 flex items-center ${className}`}>
-      <AlertCircle className="w-3 h-3 mr-1" />
+      <AlertCircle className="w-3 h-3 ltr:mr-1 rtl:ml-1" />
       {error}
     </p>
   );

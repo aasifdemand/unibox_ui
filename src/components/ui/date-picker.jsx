@@ -40,12 +40,12 @@ const DatePicker = ({
       {label && (
         <label htmlFor={inputId} className="block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
         </label>
       )}
 
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <div className="absolute inset-y-0 ltr:left-0 ltr:right-0 rtl:left-0 ltr:pl-3 ltr:pr-3 rtl:pl-3 flex items-center pointer-events-none">
           <Calendar className="h-5 w-5 text-gray-400" />
         </div>
         <input
@@ -58,7 +58,7 @@ const DatePicker = ({
           min={minDate ? formatDateTimeLocal(minDate) : undefined}
           max={maxDate ? formatDateTimeLocal(maxDate) : undefined}
           className={`
-            pl-10 w-full px-4 py-3 border rounded-lg focus:ring-2 focus:outline-none transition
+            ltr:pl-10 ltr:pr-10 rtl:pl-10 w-full px-4 py-3 border rounded-lg focus:ring-2 focus:outline-none transition
             ${
               error
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500'

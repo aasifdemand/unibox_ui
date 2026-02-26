@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Calendar, CheckCircle, FileEdit, Layers, Zap } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -9,41 +10,42 @@ const CampaignStats = ({
   draftCampaigns,
   completedCampaigns,
 }) => {
+  const { t } = useTranslation();
   const stats = [
     {
-      label: 'Total Campaigns',
+      label: t('campaigns.stats_total'),
       value: totalCampaigns,
       icon: <Layers className="w-5 h-5" />,
       theme: 'indigo',
-      description: 'ALL CAMPAIGNS',
+      description: t('campaigns.desc_all'),
     },
     {
-      label: 'Active',
+      label: t('campaigns.status_active'),
       value: activeCampaigns,
       icon: <Zap className="w-5 h-5" />,
       theme: 'emerald',
-      description: 'CURRENTLY RUNNING',
+      description: t('campaigns.desc_running'),
     },
     {
-      label: 'Scheduled',
+      label: t('campaigns.status_scheduled'),
       value: scheduledCampaigns,
       icon: <Calendar className="w-5 h-5" />,
       theme: 'amber',
-      description: 'SCHEDULED',
+      description: t('campaigns.desc_scheduled'),
     },
     {
-      label: 'Drafts',
+      label: t('campaigns.status_draft'),
       value: draftCampaigns,
       icon: <FileEdit className="w-5 h-5" />,
       theme: 'slate',
-      description: 'IN PROGRESS',
+      description: t('campaigns.desc_in_progress'),
     },
     {
-      label: 'Completed',
+      label: t('campaigns.status_completed'),
       value: completedCampaigns,
       icon: <CheckCircle className="w-5 h-5" />,
       theme: 'blue',
-      description: 'FINISHED',
+      description: t('campaigns.desc_finished'),
     },
   ];
 

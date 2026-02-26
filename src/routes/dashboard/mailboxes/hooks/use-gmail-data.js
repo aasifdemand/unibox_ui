@@ -29,6 +29,7 @@ import {
   useDisconnectGmailMailboxMutation,
   useRefreshGmailTokenMutation,
 } from '../../../../hooks/useGmail';
+import { isFolderType } from '../utils/folder-utils';
 
 export const useGmailData = (
   selectedMailbox,
@@ -43,7 +44,12 @@ export const useGmailData = (
   // Queries
   const isSpecialFolder =
     selectedFolder &&
-    ['SENT', 'TRASH', 'SPAM', 'STARRED', 'IMPORTANT', 'DRAFT'].includes(selectedFolder.id);
+    (isFolderType(selectedFolder, 'sent') ||
+      isFolderType(selectedFolder, 'trash') ||
+      isFolderType(selectedFolder, 'spam') ||
+      isFolderType(selectedFolder, 'starred') ||
+      isFolderType(selectedFolder, 'important') ||
+      isFolderType(selectedFolder, 'drafts'));
 
   const gmailMessagesQuery = useGmailMessagesQuery(
     isGmail && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
@@ -52,32 +58,32 @@ export const useGmailData = (
   );
 
   const gmailSentQuery = useGmailSentMessagesQuery(
-    isGmail && selectedFolder?.id === 'SENT' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'sent') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailTrashQuery = useGmailTrashMessagesQuery(
-    isGmail && selectedFolder?.id === 'TRASH' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'trash') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailSpamQuery = useGmailSpamMessagesQuery(
-    isGmail && selectedFolder?.id === 'SPAM' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'spam') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailStarredQuery = useGmailStarredMessagesQuery(
-    isGmail && selectedFolder?.id === 'STARRED' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'starred') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailImportantQuery = useGmailImportantMessagesQuery(
-    isGmail && selectedFolder?.id === 'IMPORTANT' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'important') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const gmailDraftsQuery = useGmailDraftsQuery(
-    isGmail && selectedFolder?.id === 'DRAFT' ? mailboxId : null,
+    isGmail && isFolderType(selectedFolder, 'drafts') ? mailboxId : null,
     PAGE_SIZE,
   );
 

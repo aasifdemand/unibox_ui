@@ -13,10 +13,12 @@ import {
   FileSpreadsheet,
   Upload,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useState, useRef } from 'react';
 import Modal from '../components/shared/modal';
 import { Microsoft } from '../icons/microsoft';
 import { Google } from '../icons/google';
+import { Smtp } from '../icons/smtp';
 import Button from '../components/ui/button';
 import toast from 'react-hot-toast';
 import * as XLSX from 'xlsx';
@@ -36,6 +38,7 @@ const ShowSender = ({
   setSmtpData,
   isSubmitting = false,
 }) => {
+  const { t } = useTranslation();
   const [settingsTab, setSettingsTab] = useState('smtp');
   const [smtpTestResult, setSmtpTestResult] = useState(null);
   const [imapTestResult, setImapTestResult] = useState(null);
@@ -77,7 +80,7 @@ const ShowSender = ({
         // Get all data
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         if (jsonData.length === 0) {
-          toast.error('The selected file is empty');
+          toast.error(t('modals.sender.err_empty'));
           return;
         }
 
@@ -85,7 +88,7 @@ const ShowSender = ({
         const rows = jsonData.slice(1);
 
         if (headers.length === 0) {
-          toast.error('The selected file has no headers');
+          toast.error(t('modals.sender.err_no_headers'));
           return;
         }
 
@@ -123,7 +126,7 @@ const ShowSender = ({
         setIsMapping(true);
       } catch (err) {
         console.error('File validation error:', err);
-        toast.error('Failed to read file');
+        toast.error(t('modals.sender.err_read_fail'));
         e.target.value = '';
       }
     };
@@ -132,7 +135,7 @@ const ShowSender = ({
 
   const onBulkUploadSubmit = async () => {
     if (!mapping.email || !mapping.domain || !mapping.password || !mapping.type) {
-      toast.error('Please map all required fields (Email, Domain, Password, Type)');
+      toast.error(t('modals.sender.err_map_required'));
       return;
     }
 
@@ -162,11 +165,11 @@ const ShowSender = ({
 
       const response = await bulkUpload.mutateAsync(finalFile);
       setUploadResult(response.data);
-      toast.success(response.message || 'Bulk upload successful!');
+      toast.success(response.message || t('modals.sender.bulk_success'));
       setIsMapping(false);
       setSelectedFile(null);
     } catch (err) {
-      toast.error(err.message || 'Bulk upload failed');
+      toast.error(err.message || t('modals.sender.bulk_error'));
     }
   };
 
@@ -188,12 +191,12 @@ const ShowSender = ({
 
       setSmtpTestResult({
         success: true,
-        message: result.message || 'SMTP connection successful! Your outgoing mail settings work.',
+        message: result.message || t('modals.sender.smtp_success'),
       });
     } catch (err) {
       setSmtpTestResult({
         success: false,
-        message: err.message || 'SMTP connection failed. Please check your settings.',
+        message: err.message || t('modals.sender.smtp_fail'),
       });
     }
   };
@@ -219,12 +222,12 @@ const ShowSender = ({
 
       setImapTestResult({
         success: true,
-        message: result.message || 'IMAP connection successful! Your incoming mail settings work.',
+        message: result.message || t('modals.sender.imap_success'),
       });
     } catch (err) {
       setImapTestResult({
         success: false,
-        message: err.message || 'IMAP connection failed. Please check your settings.',
+        message: err.message || t('modals.sender.imap_fail'),
       });
     }
   };
@@ -248,7 +251,7 @@ const ShowSender = ({
       closeOnBackdrop={true}
     >
       <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-8 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Mail className="w-20 h-20 text-blue-400" />
         </div>
         <div className="relative flex items-center gap-4">
@@ -257,10 +260,10 @@ const ShowSender = ({
           </div>
           <div>
             <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-              Add Sender
+              {t('modals.sender.title.new')}
             </h3>
-            <p className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest mt-0.5">
-              Choose your email provider
+            <p className="text-[10px] font-bold text-blue-100/60 uppercase tracking-widest mt-0.5">
+              {t('modals.sender.subtitle')}
             </p>
           </div>
         </div>
@@ -272,7 +275,7 @@ const ShowSender = ({
           {[
             {
               type: 'gmail',
-              label: 'Gmail',
+              label: t('modals.sender.types.gmail'),
               icon: Google,
               color: 'rose',
               bg: 'bg-rose-50',
@@ -281,7 +284,7 @@ const ShowSender = ({
             },
             {
               type: 'outlook',
-              label: 'Outlook',
+              label: t('modals.sender.types.outlook'),
               icon: Microsoft,
               color: 'blue',
               bg: 'bg-blue-50',
@@ -290,21 +293,21 @@ const ShowSender = ({
             },
             {
               type: 'smtp',
-              label: 'Custom SMTP',
-              icon: Server,
+              label: t('modals.sender.types.smtp'),
+              icon: Smtp,
               color: 'slate',
               bg: 'bg-slate-100',
               text: 'text-slate-600',
-              desc: 'Manual setup',
+              desc: t('modals.sender.types.smtp_desc'),
             },
             {
               type: 'bulk',
-              label: 'Bulk SMTP',
+              label: t('modals.sender.types.bulk'),
               icon: FileSpreadsheet,
               color: 'indigo',
               bg: 'bg-indigo-50',
               text: 'text-indigo-600',
-              desc: 'XLSX Upload',
+              desc: t('modals.sender.types.bulk_desc'),
             },
           ].map((item, index) => (
             <motion.button
@@ -317,11 +320,10 @@ const ShowSender = ({
                 clearTestResults();
               }}
               disabled={isSubmitting}
-              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${
-                senderType === item.type
-                  ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
-                  : 'border-slate-50 bg-white hover:border-slate-200'
-              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${senderType === item.type
+                ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
+                : 'border-slate-50 bg-white hover:border-slate-200'
+                } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex flex-col items-center text-center">
                 <div
@@ -337,7 +339,7 @@ const ShowSender = ({
                 </p>
               </div>
               {senderType === item.type && (
-                <div className="absolute top-4 right-4 animate-in zoom-in">
+                <div className="absolute top-4 ltr:right-4 rtl:left-4 animate-in zoom-in">
                   <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/40">
                     <CheckCircle className="w-3.5 h-3.5 text-white" />
                   </div>
@@ -368,10 +370,10 @@ const ShowSender = ({
                     </div>
                     <div>
                       <h4 className="text-lg font-extrabold text-slate-800 uppercase tracking-tighter">
-                        Secure Connection
+                        {t('modals.sender.secure_title')}
                       </h4>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        Connect your account safely
+                        {t('modals.sender.secure_desc')}
                       </p>
                     </div>
                   </div>
@@ -380,23 +382,23 @@ const ShowSender = ({
                     {[
                       {
                         icon: Zap,
-                        label: 'No Passwords',
-                        desc: 'Secure token-based authentication',
+                        label: t('modals.sender.benefits.no_passwords.title'),
+                        desc: t('modals.sender.benefits.no_passwords.desc'),
                       },
                       {
                         icon: CheckCircle,
-                        label: 'High Deliverability',
-                        desc: 'Verified sender reputation',
+                        label: t('modals.sender.benefits.deliverability.title'),
+                        desc: t('modals.sender.benefits.deliverability.desc'),
                       },
                       {
                         icon: AtSign,
-                        label: 'Real-time Tracking',
-                        desc: 'Opens and clicks',
+                        label: t('modals.sender.benefits.tracking.title'),
+                        desc: t('modals.sender.benefits.tracking.desc'),
                       },
                       {
                         icon: Shield,
-                        label: 'Fully Encrypted',
-                        desc: 'OAuth 2.0 Security',
+                        label: t('modals.sender.benefits.encryption.title'),
+                        desc: t('modals.sender.benefits.encryption.desc'),
                       },
                     ].map((benefit, i) => (
                       <div
@@ -421,18 +423,17 @@ const ShowSender = ({
                   <div className="mt-6 flex justify-center">
                     <button
                       onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
-                      className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
-                        senderType === 'gmail'
-                          ? 'bg-rose-600 shadow-rose-600/30'
-                          : 'bg-blue-600 shadow-blue-600/30'
-                      }`}
+                      className={`px-12 py-5 rounded-2xl text-[11px] font-extrabold uppercase tracking-widest text-white shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${senderType === 'gmail'
+                        ? 'bg-rose-600 shadow-rose-600/30'
+                        : 'bg-blue-600 shadow-blue-600/30'
+                        }`}
                     >
                       {senderType === 'gmail' ? (
                         <Google className="w-5 h-5" />
                       ) : (
                         <Microsoft className="w-5 h-5" />
                       )}
-                      Connect {senderType === 'gmail' ? 'Gmail' : 'Outlook'}
+                      {senderType === 'gmail' ? t('modals.sender.btn_connect_gmail') : t('modals.sender.btn_connect_outlook')}
                     </button>
                   </div>
                 </div>
@@ -450,10 +451,10 @@ const ShowSender = ({
                   <div className="flex items-center justify-between px-2">
                     <div>
                       <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                        Sender Information
+                        {t('modals.sender.info_title')}
                       </h4>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        Basic details
+                        {t('modals.sender.info_subtitle')}
                       </p>
                     </div>
                   </div>
@@ -461,7 +462,7 @@ const ShowSender = ({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group space-y-2">
                       <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                        Display Name
+                        {t('modals.sender.fields.from_name')}
                       </p>
                       <input
                         type="text"
@@ -480,7 +481,7 @@ const ShowSender = ({
                     </div>
                     <div className="group space-y-2">
                       <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                        Email Address
+                        {t('modals.sender.fields.email')}
                       </p>
                       <input
                         type="email"
@@ -497,12 +498,12 @@ const ShowSender = ({
 
                 <div className="bg-slate-50/50 p-2 rounded-4xl border-2 border-slate-100 flex gap-2">
                   {[
-                    { id: 'smtp', label: 'Outgoing (SMTP)', icon: Server },
+                    { id: 'smtp', label: t('modals.sender.tabs.smtp'), icon: Smtp },
                     {
                       id: 'imap',
-                      label: 'Receiving (IMAP)',
+                      label: t('modals.sender.tabs.imap'),
                       icon: Mail,
-                      tag: 'Optional',
+                      tag: t('common.optional'),
                     },
                   ].map((tab) => (
                     <button
@@ -510,11 +511,10 @@ const ShowSender = ({
                       type="button"
                       onClick={() => setSettingsTab(tab.id)}
                       disabled={isSubmitting}
-                      className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${
-                        settingsTab === tab.id
-                          ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100'
-                          : 'text-slate-400 hover:text-slate-600'
-                      }`}
+                      className={`flex-1 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all ${settingsTab === tab.id
+                        ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/50 border border-slate-100'
+                        : 'text-slate-400 hover:text-slate-600'
+                        }`}
                     >
                       <tab.icon className="w-4 h-4" />
                       <span className="text-[10px] font-extrabold uppercase tracking-widest">
@@ -533,34 +533,43 @@ const ShowSender = ({
                   <div className="animate-in fade-in duration-500 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          SMTP Host
-                        </p>
-                        <input
-                          type="text"
-                          value={smtpData.host}
-                          onChange={(e) => setSmtpData({ ...smtpData, host: e.target.value })}
-                          required
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="smtp.example.com"
-                        />
+                        <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
+                          {t('modals.sender.fields.host')}
+                        </label>
+                        <div className="relative group/field">
+                          <div className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-blue-500 transition-colors">
+                            <Server className="w-4 h-4" />
+                          </div>
+                          <input
+                            type="text"
+                            value={smtpData.host}
+                            onChange={(e) => setSmtpData({ ...smtpData, host: e.target.value })}
+                            className="w-full h-14 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-6 rtl:pl-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
+                            placeholder={t('modals.sender.fields.placeholder_host_smtp')}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
+                          {t('modals.sender.fields.port')}
+                        </label>
+                        <div className="relative group/field">
+                          <div className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-blue-500 transition-colors">
+                            <Zap className="w-4 h-4" />
+                          </div>
+                          <input
+                            type="text"
+                            value={smtpData.port}
+                            onChange={(e) => setSmtpData({ ...smtpData, port: e.target.value })}
+                            className="w-full h-14 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
+                            placeholder={t('modals.sender.fields.placeholder_port_smtp')}
+                          />
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          SMTP Port
-                        </p>
-                        <input
-                          type="number"
-                          value={smtpData.port}
-                          onChange={(e) => setSmtpData({ ...smtpData, port: e.target.value })}
-                          required
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="587"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          Username
+                          {t('modals.sender.fields.username')}
                         </p>
                         <input
                           type="text"
@@ -573,12 +582,12 @@ const ShowSender = ({
                           }
                           required
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="username@example.com"
+                          placeholder={t('modals.sender.fields.placeholder_email')}
                         />
                       </div>
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          Password
+                          {t('modals.sender.fields.password')}
                         </p>
                         <div className="relative">
                           <input
@@ -591,13 +600,13 @@ const ShowSender = ({
                               })
                             }
                             required
-                            className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none pr-14"
-                            placeholder="••••••••"
+                            className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none ltr:pr-14 rtl:pl-14"
+                            placeholder={t('modals.sender.fields.placeholder_pass')}
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                           >
                             {showPassword ? (
                               <EyeOff className="w-5 h-5" />
@@ -623,10 +632,10 @@ const ShowSender = ({
                             }
                             className="sr-only peer"
                           />
-                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
+                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
                         </div>
                         <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">
-                          Use SSL/TLS
+                          {t('modals.sender.fields.secure')}
                         </span>
                       </label>
 
@@ -637,17 +646,16 @@ const ShowSender = ({
                         className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95 disabled:opacity-50"
                       >
                         <RefreshCw className={`w-4 h-4 ${isSmtpTesting ? 'animate-spin' : ''}`} />
-                        {isSmtpTesting ? 'Testing...' : 'Test SMTP'}
+                        {isSmtpTesting ? t('modals.sender.btn.connecting') : t('modals.sender.btn.test')}
                       </button>
                     </div>
 
                     {smtpTestResult && (
                       <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                          smtpTestResult.success
-                            ? 'bg-emerald-50/50 border-emerald-100'
-                            : 'bg-rose-50/50 border-rose-100'
-                        }`}
+                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${smtpTestResult.success
+                          ? 'bg-emerald-50/50 border-emerald-100'
+                          : 'bg-rose-50/50 border-rose-100'
+                          }`}
                       >
                         <div className="flex items-start gap-4">
                           <div
@@ -663,7 +671,7 @@ const ShowSender = ({
                             <p
                               className={`text-[10px] font-extrabold uppercase tracking-widest ${smtpTestResult.success ? 'text-emerald-600' : 'text-rose-600'}`}
                             >
-                              {smtpTestResult.success ? 'Success' : 'Failed'}
+                              {smtpTestResult.success ? t('common.success') : t('common.failed')}
                             </p>
                             <p
                               className={`text-xs font-bold mt-1 ${smtpTestResult.success ? 'text-emerald-700' : 'text-rose-700'}`}
@@ -680,7 +688,7 @@ const ShowSender = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          IMAP Host
+                          {t('modals.sender.fields.host')}
                         </p>
                         <input
                           type="text"
@@ -692,12 +700,12 @@ const ShowSender = ({
                             })
                           }
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="imap.example.com"
+                          placeholder={t('modals.sender.fields.placeholder_host_imap')}
                         />
                       </div>
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          IMAP Port
+                          {t('modals.sender.fields.port')}
                         </p>
                         <input
                           type="number"
@@ -709,12 +717,12 @@ const ShowSender = ({
                             })
                           }
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="993"
+                          placeholder={t('modals.sender.fields.placeholder_port_imap')}
                         />
                       </div>
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          IMAP Username
+                          {t('modals.sender.fields.username')}
                         </p>
                         <input
                           type="text"
@@ -726,12 +734,12 @@ const ShowSender = ({
                             })
                           }
                           className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
-                          placeholder="username@example.com"
+                          placeholder={t('modals.sender.fields.placeholder_email')}
                         />
                       </div>
                       <div className="space-y-2">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          IMAP Password
+                          {t('modals.sender.fields.password')}
                         </p>
                         <div className="relative">
                           <input
@@ -743,13 +751,13 @@ const ShowSender = ({
                                 imapPassword: e.target.value,
                               })
                             }
-                            className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none pr-14"
-                            placeholder="••••••••"
+                            className="w-full h-14 ltr:pl-6 ltr:pr-6 rtl:pl-6 ltr:pr-12 rtl:pl-12 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-blue-500 transition-all outline-none"
+                            placeholder={t('modals.sender.fields.placeholder_pass')}
                           />
                           <button
                             type="button"
                             onClick={() => setShowImapPassword(!showImapPassword)}
-                            className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                           >
                             {showImapPassword ? (
                               <EyeOff className="w-5 h-5" />
@@ -775,10 +783,10 @@ const ShowSender = ({
                             }
                             className="sr-only peer"
                           />
-                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
+                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
                         </div>
                         <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">
-                          Use SSL/TLS
+                          {t('modals.sender.fields.secure')}
                         </span>
                       </label>
 
@@ -788,17 +796,16 @@ const ShowSender = ({
                         className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95 disabled:opacity-50"
                       >
                         <RefreshCw className={`w-4 h-4 ${isImapTesting ? 'animate-spin' : ''}`} />
-                        {isImapTesting ? 'Testing...' : 'Test IMAP'}
+                        {isImapTesting ? t('modals.sender.btn.connecting') : t('modals.sender.btn.test')}
                       </button>
                     </div>
 
                     {imapTestResult && (
                       <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                          imapTestResult.success
-                            ? 'bg-emerald-50/50 border-emerald-100'
-                            : 'bg-rose-50/50 border-rose-100'
-                        }`}
+                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${imapTestResult.success
+                          ? 'bg-emerald-50/50 border-emerald-100'
+                          : 'bg-rose-50/50 border-rose-100'
+                          }`}
                       >
                         <div className="flex items-start gap-4">
                           <div
@@ -814,7 +821,7 @@ const ShowSender = ({
                             <p
                               className={`text-[10px] font-extrabold uppercase tracking-widest ${imapTestResult.success ? 'text-emerald-600' : 'text-rose-600'}`}
                             >
-                              {imapTestResult.success ? 'Success' : 'Failed'}
+                              {imapTestResult.success ? t('common.success') : t('common.failed')}
                             </p>
                             <p
                               className={`text-xs font-bold mt-1 ${imapTestResult.success ? 'text-emerald-700' : 'text-rose-700'}`}
@@ -849,11 +856,10 @@ const ShowSender = ({
               >
                 <div className="text-center space-y-3 mb-8">
                   <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest">
-                    Bulk Upload Accounts
+                    {t('modals.sender.bulk.title')}
                   </h4>
                   <p className="text-xs text-slate-400 font-medium">
-                    Upload an Excel file (.xlsx) with columns: email, domain, password, type
-                    (aapanel/postal), first_name, last_name.
+                    {t('modals.sender.bulk.desc')}
                   </p>
                 </div>
 
@@ -862,10 +868,10 @@ const ShowSender = ({
                     <div className="flex items-center justify-between px-2">
                       <div>
                         <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                          Column Mapping
+                          {t('modals.sender.bulk.mapping_title')}
                         </h4>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                          Map your spreadsheet headers to our fields
+                          {t('modals.sender.bulk.mapping_subtitle')}
                         </p>
                       </div>
                       <button
@@ -877,7 +883,7 @@ const ShowSender = ({
                         }}
                         className="text-[10px] font-black text-indigo-600 hover:text-indigo-700 uppercase tracking-widest px-4 py-2 bg-indigo-50 rounded-xl transition-all"
                       >
-                        Change File
+                        {t('modals.sender.bulk.change_file')}
                       </button>
                     </div>
 
@@ -885,12 +891,12 @@ const ShowSender = ({
                     <div className="space-y-4">
                       <div className="flex items-center justify-between px-1">
                         <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
-                          Data Preview ({fileRows.length} Records)
+                          {t('modals.sender.bulk.preview_title', { count: fileRows.length })}
                         </p>
                       </div>
                       <div className="rounded-4xl border-2 border-slate-100 bg-white shadow-sm overflow-hidden">
                         <div className="max-h-60 overflow-y-auto no-scrollbar overflow-x-auto">
-                          <table className="w-full text-left border-collapse min-w-full">
+                          <table className="w-full ltr:text-left ltr:text-right rtl:text-left border-collapse min-w-full">
                             <thead className="sticky top-0 z-10">
                               <tr className="bg-slate-50">
                                 {fileHeaders.map((header, i) => (
@@ -925,7 +931,7 @@ const ShowSender = ({
                                     colSpan={fileHeaders.length}
                                     className="px-6 py-3 text-[9px] font-black text-slate-400 text-center uppercase tracking-widest italic"
                                   >
-                                    And {fileRows.length - 10} more rows...
+                                    {t('modals.sender.bulk.more_rows', { count: fileRows.length - 10 })}
                                   </td>
                                 </tr>
                               )}
@@ -938,17 +944,17 @@ const ShowSender = ({
                     {/* Mapping Selects */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {[
-                        { key: 'email', label: 'Email Address', required: true },
-                        { key: 'domain', label: 'Domain', required: true },
-                        { key: 'password', label: 'Password', required: true },
+                        { key: 'email', label: t('modals.sender.fields.email'), required: true },
+                        { key: 'domain', label: t('modals.sender.fields.domain'), required: true },
+                        { key: 'password', label: t('modals.sender.fields.password'), required: true },
                         {
                           key: 'type',
-                          label: 'Account Type',
+                          label: t('modals.sender.fields.type'),
                           required: true,
                           desc: 'aapanel/postal',
                         },
-                        { key: 'first_name', label: 'First Name', required: false },
-                        { key: 'last_name', label: 'Last Name', required: false },
+                        { key: 'first_name', label: t('modals.sender.fields.first_name'), required: false },
+                        { key: 'last_name', label: t('modals.sender.fields.last_name'), required: false },
                       ].map((field) => (
                         <div key={field.key} className="space-y-2 group">
                           <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
@@ -968,16 +974,16 @@ const ShowSender = ({
                               onChange={(e) =>
                                 setMapping({ ...mapping, [field.key]: e.target.value })
                               }
-                              className="w-full h-14 pl-6 pr-12 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-indigo-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
+                              className="w-full h-14 ltr:pl-6 ltr:pr-6 rtl:pl-6 ltr:pr-12 rtl:pl-12 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold text-slate-700 focus:border-indigo-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
                             >
-                              <option value="">-- Select Column --</option>
+                              <option value="">{t('modals.sender.bulk.select_col')}</option>
                               {fileHeaders.map((header, i) => (
                                 <option key={i} value={i.toString()}>
                                   {header}
                                 </option>
                               ))}
                             </select>
-                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                            <div className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                               <RefreshCw className="w-4 h-4" />
                             </div>
                           </div>
@@ -988,8 +994,7 @@ const ShowSender = ({
                     <div className="bg-indigo-50/50 p-6 rounded-3xl border border-indigo-100 flex gap-4">
                       <Shield className="w-5 h-5 text-indigo-500 shrink-0" />
                       <p className="text-[10px] font-bold text-indigo-700 leading-relaxed uppercase tracking-tight">
-                        We&apos;ll automatically transform your file data based on these mappings
-                        before uploading.
+                        {t('modals.sender.bulk.transform_note')}
                       </p>
                     </div>
                   </div>
@@ -1001,17 +1006,17 @@ const ShowSender = ({
                       </div>
                       <div>
                         <h5 className="text-lg font-extrabold text-emerald-800 uppercase tracking-tighter">
-                          Upload Complete
+                          {t('modals.sender.bulk.upload_complete')}
                         </h5>
                         <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-widest mt-1">
-                          {uploadResult.successCount} accounts added successfully
+                          {t('modals.sender.bulk.upload_summary', { count: uploadResult.successCount })}
                         </p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 w-full mt-4">
                         <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
                           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                            Success
+                            {t('common.success')}
                           </p>
                           <p className="text-2xl font-black text-emerald-600">
                             {uploadResult.successCount}
@@ -1019,7 +1024,7 @@ const ShowSender = ({
                         </div>
                         <div className="p-4 bg-white/60 rounded-2xl border border-emerald-100">
                           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                            Failed
+                            {t('common.failed')}
                           </p>
                           <p className="text-2xl font-black text-rose-600">
                             {uploadResult.failedCount}
@@ -1028,15 +1033,15 @@ const ShowSender = ({
                       </div>
 
                       {uploadResult.errors?.length > 0 && (
-                        <div className="w-full text-left mt-4 max-h-40 overflow-y-auto p-4 bg-rose-50/50 rounded-2xl border border-rose-100 no-scrollbar">
+                        <div className="w-full ltr:text-left ltr:text-right rtl:text-left mt-4 max-h-40 overflow-y-auto p-4 bg-rose-50/50 rounded-2xl border border-rose-100 no-scrollbar">
                           <p className="text-[10px] font-extrabold text-rose-600 uppercase tracking-widest mb-2">
-                            Errors
+                            {t('modals.sender.bulk.errors')}
                           </p>
                           <ul className="space-y-1">
                             {uploadResult.errors.map((err, i) => (
                               <li
                                 key={i}
-                                className="text-[10px] font-bold text-rose-700 list-disc ml-4 leading-tight"
+                                className="text-[10px] font-bold text-rose-700 list-disc ltr:ml-4 ltr:mr-4 rtl:ml-4 leading-tight"
                               >
                                 {err}
                               </li>
@@ -1049,7 +1054,7 @@ const ShowSender = ({
                         onClick={() => setUploadResult(null)}
                         className="mt-4 text-[10px] font-extrabold text-blue-600 uppercase tracking-widest hover:underline"
                       >
-                        Upload Another File
+                        {t('modals.sender.bulk.upload_another')}
                       </button>
                     </div>
                   </div>
@@ -1076,12 +1081,12 @@ const ShowSender = ({
                       </div>
                       <div className="text-center">
                         <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
-                          {selectedFile ? selectedFile.name : 'Click to Upload'}
+                          {selectedFile ? selectedFile.name : t('modals.sender.bulk.click_upload')}
                         </p>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
                           {selectedFile
                             ? `${(selectedFile.size / 1024).toFixed(1)} KB`
-                            : 'or drag and drop your XLSX file'}
+                            : t('modals.sender.bulk.drag_drop')}
                         </p>
                       </div>
                     </div>
@@ -1100,10 +1105,10 @@ const ShowSender = ({
                   <Mail className="w-10 h-10 text-slate-200" />
                 </div>
                 <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-                  Select a Provider
+                  {t('modals.sender.empty_provider')}
                 </h4>
                 <p className="text-xs text-slate-400 font-medium italic">
-                  Choose Gmail, Outlook, or Custom SMTP above.
+                  {t('modals.sender.empty_desc')}
                 </p>
               </motion.div>
             )}
@@ -1114,7 +1119,7 @@ const ShowSender = ({
           <div className="flex items-center gap-3">
             <Shield className="w-4 h-4 text-emerald-500" />
             <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-              End-to-end encrypted
+              {t('modals.sender.encrypted_note')}
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -1123,7 +1128,7 @@ const ShowSender = ({
               onClick={() => setShowSenderModal(false)}
               className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
             >
-              Cancel
+              {t('common.cancel')}
             </button>
             {senderType === 'smtp' && (
               <Button
@@ -1138,7 +1143,7 @@ const ShowSender = ({
                 ) : (
                   <Zap className="w-4 h-4" />
                 )}
-                Add Sender
+                {t('modals.sender.btn.add')}
               </Button>
             )}
             {senderType === 'bulk' && !uploadResult && (
@@ -1152,12 +1157,12 @@ const ShowSender = ({
                 {bulkUpload.isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>Uploading...</span>
+                    <span>{t('sender.bulk.uploading')}</span>
                   </>
                 ) : (
                   <>
                     {isMapping ? <Zap className="w-4 h-4" /> : <Upload className="w-4 h-4" />}
-                    {isMapping ? 'Complete Upload' : 'Select File'}
+                    {isMapping ? t('sender.bulk.complete_btn') : t('sender.bulk.select_btn')}
                   </>
                 )}
               </Button>

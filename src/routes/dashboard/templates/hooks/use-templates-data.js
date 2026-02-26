@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import { toast } from 'react-hot-toast';
 import {
   useTemplates,
   useCreateTemplate,
@@ -101,7 +102,7 @@ export const useTemplatesData = () => {
   const handleSaveTemplate = useCallback(async () => {
     try {
       if (!formData.name.trim()) {
-        alert('Template name is required');
+        toast.error('Template name is required');
         return;
       }
 
@@ -117,9 +118,10 @@ export const useTemplatesData = () => {
       setShowTemplateModal(false);
       setEditingTemplate(null);
       refetchTemplates();
+      toast.success(editingTemplate ? 'Template updated' : 'Template created');
     } catch (err) {
       console.error('Failed to save template:', err);
-      alert(`Failed to save template: ${err.message}`);
+      toast.error(`Failed to save template: ${err.message}`);
     }
   }, [formData, editingTemplate, updateTemplate, createTemplate, refetchTemplates]);
 
@@ -129,9 +131,10 @@ export const useTemplatesData = () => {
       try {
         await deleteTemplate.mutateAsync(template.id);
         refetchTemplates();
+        toast.success('Template deleted');
       } catch (err) {
         console.error('Failed to delete template:', err);
-        alert(`Failed to delete template: ${err.message}`);
+        toast.error(`Failed to delete template: ${err.message}`);
       }
     },
     [deleteTemplate, refetchTemplates],

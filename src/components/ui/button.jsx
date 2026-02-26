@@ -52,7 +52,7 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      {isLoading && <Loader2 className="animate-spin h-5 w-5 mr-2" />}
+      {isLoading && <Loader2 className="animate-spin h-5 w-5 ltr:mr-2 rtl:ml-2" />}
       {children}
     </motion.button>
   );

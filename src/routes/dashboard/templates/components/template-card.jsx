@@ -1,15 +1,15 @@
-import React from 'react';
 import { FileText, Edit3, Trash2, Loader2, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, formatDate }) => {
+  const { t } = useTranslation();
   return (
     <div
       onClick={(e) => onEdit(template, e)}
-      className={`group relative overflow-hidden premium-card bg-white border-slate-200/60 p-6 hover:shadow-2xl hover:shadow-blue-500/8 transition-all duration-500 cursor-pointer ${
-        isDeletePending ? 'opacity-50 pointer-events-none' : ''
-      }`}
+      className={`group relative overflow-hidden premium-card bg-white border-slate-200/60 p-6 hover:shadow-2xl hover:shadow-blue-500/8 transition-all duration-500 cursor-pointer ${isDeletePending ? 'opacity-50 pointer-events-none' : ''
+        }`}
     >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-blue-500/10 transition-colors duration-500"></div>
+      <div className="absolute top-0 ltr:right-0 rtl:left-0 w-32 h-32 bg-blue-500/5 rounded-full -ltr:mr-16 rtl:ml-16 -mt-16 blur-2xl group-hover:bg-blue-500/10 transition-colors duration-500"></div>
 
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -22,19 +22,18 @@ const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, 
             </h4>
             <div className="flex items-center gap-2 mt-1">
               <span
-                className={`px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest ${
-                  template.status === 'active'
+                className={`px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest ${template.status === 'active'
                     ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                     : template.status === 'draft'
                       ? 'bg-blue-50 text-blue-600 border border-blue-100'
                       : 'bg-slate-50 text-slate-500 border border-slate-100'
-                }`}
+                  }`}
               >
-                {template.status || 'Draft'}
+                {template.status ? t(`templates.${template.status}`) : t('templates.draft')}
               </span>
               {template.isDefault && (
                 <span className="px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest bg-violet-50 text-violet-600 border border-violet-100">
-                  Default
+                  {t('templates.default')}
                 </span>
               )}
             </div>
@@ -71,7 +70,7 @@ const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, 
 
       <div className="mb-6 h-12">
         <p className="text-sm font-bold text-slate-500 line-clamp-2 leading-relaxed">
-          {template.subject || 'No subject line defined'}
+          {template.subject || t('templates.no_subject')}
         </p>
       </div>
 
@@ -79,7 +78,7 @@ const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, 
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
             <span className="text-[8px] font-extrabold text-slate-300 uppercase tracking-widest">
-              Updated
+              {t('templates.updated')}
             </span>
             <span className="text-[10px] font-bold text-slate-500">
               {formatDate(template.updatedAt)}
@@ -87,7 +86,7 @@ const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, 
           </div>
           <div className="flex flex-col">
             <span className="text-[8px] font-extrabold text-slate-300 uppercase tracking-widest">
-              Variables
+              {t('templates.variables')}
             </span>
             <span className="text-[10px] font-bold text-slate-800">
               {template.variables?.length || 0}
@@ -96,7 +95,7 @@ const TemplateCard = ({ template, onEdit, onDelete, isPending, isDeletePending, 
         </div>
 
         <div className="flex items-center text-[10px] font-extrabold uppercase tracking-widest text-blue-600 group-hover:gap-2 transition-all">
-          Edit
+          {t('templates.edit')}
           <ChevronRight className="w-3.5 h-3.5" />
         </div>
       </div>

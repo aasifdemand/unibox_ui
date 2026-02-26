@@ -1,13 +1,23 @@
-// routes/auth-route.jsx
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useCurrentUser } from '../hooks/useAuth';
-import AuthLayout from '../layouts/auth.layout';
 
 const AuthRoute = () => {
-  const { data: user, isLoading } = useCurrentUser({
-    // Only fetch if we're on auth routes
+  const navigate = useNavigate();
+  const { data: user, isLoading, isError } = useCurrentUser({
     retry: false,
   });
+
+  useEffect(() => {
+    // ONLY redirect if we successfully fetched a user who is already authorized
+    if (!isLoading && !isError) {
+      if (user?.isVerified) {
+        navigate('/dashboard', { replace: true });
+      } else if (user && !user.isVerified) {
+        navigate('/auth/verify-account', { state: { email: user.email }, replace: true });
+      }
+    }
+  }, [user, isLoading, isError, navigate]);
 
   if (isLoading) {
     return (
@@ -17,18 +27,11 @@ const AuthRoute = () => {
     );
   }
 
-  // If user is logged in AND verified → redirect to dashboard
-  if (user?.isVerified) {
-    return <Navigate to="/dashboard" replace />;
+  if (user) {
+    return null;
   }
 
-  // If user is logged in but NOT verified → redirect to verification page
-  if (user && !user.isVerified) {
-    return <Navigate to="/auth/verify-account" state={{ email: user.email }} replace />;
-  }
-
-  // Not logged in → render auth layout with nested routes
-  return <AuthLayout />;
+  return <Outlet />;
 };
 
 export default AuthRoute;

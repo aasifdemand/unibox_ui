@@ -3,6 +3,7 @@ import React from 'react';
 import { AlertCircle, Shield, CheckCircle, Info } from 'lucide-react';
 import Modal from '../shared/modal';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 const Dialog = ({
   open,
@@ -16,6 +17,8 @@ const Dialog = ({
   onCancel,
   setOpen,
 }) => {
+  const { t } = useTranslation();
+
   // Get variant-specific styles
   const getVariantStyles = () => {
     switch (confirmVariant) {
@@ -72,7 +75,7 @@ const Dialog = ({
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
-            className="absolute top-0 right-0 p-8 group-hover:scale-110 transition-transform"
+            className="absolute top-0 ltr:right-0 rtl:left-0 p-8 group-hover:scale-110 transition-transform"
           >
             <Shield className="w-20 h-20 text-white" />
           </motion.div>
@@ -92,13 +95,13 @@ const Dialog = ({
                 transition={{ delay: 0.2 }}
               >
                 <h3 className="text-xl font-black text-white uppercase tracking-tighter">
-                  Confirmation
+                  {t('dialog.confirmation')}
                 </h3>
                 <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-0.5">
-                  {confirmVariant === 'danger' && 'This action cannot be undone'}
-                  {confirmVariant === 'warning' && 'Please review before proceeding'}
-                  {confirmVariant === 'success' && 'Confirm your action'}
-                  {confirmVariant === 'info' && 'Additional information'}
+                  {confirmVariant === 'danger' && t('dialog.danger_desc')}
+                  {confirmVariant === 'warning' && t('dialog.warning_desc')}
+                  {confirmVariant === 'success' && t('dialog.success_desc')}
+                  {confirmVariant === 'info' && t('dialog.info_desc')}
                 </p>
               </motion.div>
             </div>
@@ -142,8 +145,7 @@ const Dialog = ({
               <div className="flex gap-3">
                 <Shield className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
                 <p className="text-[11px] font-bold text-rose-700 leading-relaxed">
-                  This action is permanent and cannot be reversed. Please ensure you want to
-                  proceed.
+                  {t('dialog.permanent_warning')}
                 </p>
               </div>
             </motion.div>
@@ -191,7 +193,7 @@ const Dialog = ({
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Processing...
+                  {t('dialog.processing')}
                 </>
               ) : (
                 confirmText
@@ -207,10 +209,10 @@ const Dialog = ({
             className="mt-6 pt-4 border-t border-slate-100"
           >
             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">
-              {confirmVariant === 'danger' && '⚠️ This action is permanent'}
-              {confirmVariant === 'warning' && 'Please verify your choice'}
-              {confirmVariant === 'success' && 'Click confirm to proceed'}
-              {confirmVariant === 'info' && 'Review the information above'}
+              {confirmVariant === 'danger' && t('dialog.danger_footer')}
+              {confirmVariant === 'warning' && t('dialog.warning_footer')}
+              {confirmVariant === 'success' && t('dialog.success_footer')}
+              {confirmVariant === 'info' && t('dialog.info_footer')}
             </p>
           </motion.div>
         </div>

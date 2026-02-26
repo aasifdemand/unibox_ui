@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getPersistentFolders, setPersistentFolders } from '../routes/dashboard/mailboxes/utils/persistent-cache';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -136,7 +138,7 @@ export const useSmtpMessageQuery = (mailboxId, messageId, folder = 'INBOX') => {
 
 // Get folders
 export const useSmtpFoldersQuery = (mailboxId) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: smtpKeys.folders(mailboxId),
     queryFn: async () => {
       const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/folders`, {
@@ -148,7 +150,16 @@ export const useSmtpFoldersQuery = (mailboxId) => {
     },
     staleTime: 10 * 60 * 1000,
     enabled: !!mailboxId,
+    placeholderData: () => getPersistentFolders('smtp', mailboxId),
   });
+
+  useEffect(() => {
+    if (query.data && !query.isPlaceholderData) {
+      setPersistentFolders('smtp', mailboxId, query.data);
+    }
+  }, [query.data, query.isPlaceholderData, mailboxId]);
+
+  return query;
 };
 
 // Get mailbox status

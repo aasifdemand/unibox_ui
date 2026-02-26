@@ -7,11 +7,13 @@ import { useLogin, useCurrentUser } from '../../hooks/useAuth';
 import { loginSchema } from '../../validators/login.schema';
 import { useToast } from '../../hooks/useToast';
 import { mapZodErrors } from '../../utils/map-zod';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -30,30 +32,25 @@ const Login = () => {
     const error = params.get('error');
 
     if (error) {
-      // Decode the error message (in case it's encoded)
       const errorMessage = decodeURIComponent(error);
 
-      // Show appropriate toast message based on error
       switch (errorMessage) {
         case 'google_auth_failed':
-          toast.error('Google authentication failed. Please try again.');
+          toast.error(t('auth.login.error_google_failed'));
           break;
         case 'oauth_failed':
-          toast.error('OAuth authentication failed. Please try again.');
+          toast.error(t('auth.login.error_oauth_failed'));
           break;
         case 'LOCAL_ACCOUNT_EXISTS':
-          toast.error(
-            'An account with this email already exists. Please login with your password.',
-          );
+          toast.error(t('auth.login.error_account_exists'));
           break;
         default:
-          toast.error(errorMessage || 'Authentication failed. Please try again.');
+          toast.error(errorMessage || t('auth.login.error_auth_failed'));
       }
 
-      // Clean up the URL by removing the error parameter
       navigate('/auth/login', { replace: true });
     }
-  }, [location.search, navigate, toast]);
+  }, [location.search, navigate, toast, t]);
 
   useEffect(() => {
     if (user) {
@@ -63,50 +60,35 @@ const Login = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
   };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const result = loginSchema.safeParse(formData);
-
     if (!result.success) {
       setErrors(mapZodErrors(result.error));
       return;
     }
 
-    const toastId = toast.loading('Signing you in...');
-
+    const toastId = toast.loading(t('auth.login.signing_in'));
     try {
       await login.mutateAsync({
         email: formData.email,
         password: formData.password,
         rememberMe: formData.rememberMe,
       });
-
       toast.dismiss(toastId);
-      toast.success('Welcome back!');
+      toast.success(t('auth.login.welcome_back_toast'));
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || 'Invalid email or password');
+      toast.error(error.message || t('auth.login.error_invalid'));
     }
   };
 
@@ -121,21 +103,21 @@ const Login = () => {
     <>
       <div className="text-center mb-10">
         <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
-          Welcome <span className="text-gradient">Back</span>
+          {t('auth.login.title')} <span className="text-gradient">{t('auth.login.title_span')}</span>
         </h2>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
-          Sign in to your account
+          {t('auth.login.subtitle')}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <Input
-          label="Email"
+          label={t('auth.login.email_label')}
           type="email"
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          placeholder="name@example.com"
+          placeholder={t('auth.login.email_placeholder')}
           required
           icon={Mail}
           error={errors.email}
@@ -146,7 +128,7 @@ const Login = () => {
         <div className="space-y-2">
           <div className="flex justify-between items-center px-1">
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              Password
+              {t('auth.login.password_label')}
             </label>
             <button
               onClick={handleForgotPassword}
@@ -154,7 +136,7 @@ const Login = () => {
               type="button"
               disabled={isLoading}
             >
-              Forgot password?
+              {t('auth.login.forgot_password')}
             </button>
           </div>
 
@@ -177,7 +159,7 @@ const Login = () => {
             onChange={handleCheckboxChange}
             label={
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                Remember me
+                {t('auth.login.remember_me')}
               </span>
             }
             disabled={isLoading}
@@ -192,7 +174,7 @@ const Login = () => {
           {isLoading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
-            'Sign In'
+            t('auth.login.sign_in_btn')
           )}
         </button>
       </form>
@@ -205,7 +187,7 @@ const Login = () => {
           </div>
           <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]">
             <span className="px-4 bg-white/70 backdrop-blur-md text-slate-400">
-              Or continue with
+              {t('auth.login.or_continue_with')}
             </span>
           </div>
         </div>
@@ -219,22 +201,10 @@ const Login = () => {
             disabled={isLoading}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-              />
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
             Google
           </button>
@@ -243,12 +213,12 @@ const Login = () => {
 
       <div className="mt-10 text-center">
         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-          Don&apos;t have an account?{' '}
+          {t('auth.login.no_account')}{' '}
           <Link
             to="/auth/signup"
-            className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ml-1"
+            className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ltr:ml-1 rtl:mr-1"
           >
-            Sign up
+            {t('auth.login.sign_up_link')}
           </Link>
         </p>
       </div>

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
 import { Lock, ShieldCheck, Save, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Input from '../../../../components/ui/input';
 import Button from '../../../../components/ui/button';
 import { useChangePassword } from '../../../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 const SecurityTab = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -35,22 +37,22 @@ const SecurityTab = () => {
   };
 
   const getStrengthText = () => {
-    if (passwordStrength <= 2) return 'Weak';
-    if (passwordStrength <= 3) return 'Fair';
-    if (passwordStrength <= 4) return 'Good';
-    return 'Strong';
+    if (passwordStrength <= 2) return t('settings.security.levels.weak');
+    if (passwordStrength <= 3) return t('settings.security.levels.fair');
+    if (passwordStrength <= 4) return t('settings.security.levels.good');
+    return t('settings.security.levels.strong');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.newPassword !== formData.confirmPassword) {
-      toast.error('New passwords do not match');
+      toast.error(t('settings.security.err_match'));
       return;
     }
 
     if (passwordStrength < 3) {
-      toast.error('Please choose a stronger password');
+      toast.error(t('settings.security.err_strong'));
       return;
     }
 
@@ -59,14 +61,14 @@ const SecurityTab = () => {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       });
-      toast.success('Password changed successfully');
+      toast.success(t('settings.security.success'));
       setFormData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
     } catch (error) {
-      toast.error(error.message || 'Failed to change password');
+      toast.error(error.message || t('settings.security.error'));
     }
   };
 
@@ -80,18 +82,18 @@ const SecurityTab = () => {
       <div className="max-w-4xl">
         <div className="mb-12">
           <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">
-            Security Settings
+            {t('settings.security.title')}
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-            Ensure your account is secure by using a strong password.
+            {t('settings.security.subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="grid gap-10">
           {/* Current Password */}
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-              Current Password
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+              {t('settings.security.current_password')}
             </label>
             <Input.Password
               icon={Lock}
@@ -106,8 +108,8 @@ const SecurityTab = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {/* New Password */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-                New Password
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+                {t('settings.security.new_password')}
               </label>
               <Input.Password
                 icon={ShieldCheck}
@@ -123,7 +125,7 @@ const SecurityTab = () => {
                 <div className="mt-6 space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                      Strength: {getStrengthText()}
+                      {t('settings.security.strength', { level: getStrengthText() })}
                     </span>
                     <span className="text-[10px] font-black text-slate-400">
                       {passwordStrength}/5
@@ -144,7 +146,7 @@ const SecurityTab = () => {
                         <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        Min 8 characters
+                        {t('settings.security.checks.min_chars')}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -154,7 +156,7 @@ const SecurityTab = () => {
                         <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        Uppercase letter
+                        {t('settings.security.checks.upper')}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -164,7 +166,7 @@ const SecurityTab = () => {
                         <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        Lowercase letter
+                        {t('settings.security.checks.lower')}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -174,7 +176,7 @@ const SecurityTab = () => {
                         <XCircle className="w-3.5 h-3.5 text-slate-200" />
                       )}
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        A number
+                        {t('settings.security.checks.number')}
                       </span>
                     </div>
                   </div>
@@ -184,8 +186,8 @@ const SecurityTab = () => {
 
             {/* Confirm New Password */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-                Confirm New Password
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+                {t('settings.security.confirm_password')}
               </label>
               <Input.Password
                 icon={ShieldCheck}
@@ -203,14 +205,14 @@ const SecurityTab = () => {
                     <>
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
-                        Passwords match
+                        {t('settings.security.match')}
                       </span>
                     </>
                   ) : (
                     <>
                       <XCircle className="w-3.5 h-3.5 text-red-500" />
                       <span className="text-[10px] font-black uppercase tracking-widest text-red-600">
-                        Passwords do not match
+                        {t('settings.security.mismatch')}
                       </span>
                     </>
                   )}
@@ -227,13 +229,13 @@ const SecurityTab = () => {
             >
               {changePassword.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-3 animate-spin" />
-                  Updating...
+                  <Loader2 className="w-4 h-4 ltr:mr-3 rtl:ml-3 animate-spin" />
+                  {t('settings.security.updating')}
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4 mr-3" />
-                  Change Password
+                  <Save className="w-4 h-4 ltr:mr-3 rtl:ml-3" />
+                  {t('settings.security.change_password')}
                 </>
               )}
             </Button>

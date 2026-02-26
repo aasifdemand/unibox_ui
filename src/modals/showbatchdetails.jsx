@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import {
   FileSpreadsheet,
@@ -21,6 +22,7 @@ import Modal from '../components/shared/modal';
 import { useExportVerificationResults } from '../hooks/useBatches';
 
 const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoading }) => {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -111,7 +113,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
       closeOnBackdrop={true}
     >
       <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-8 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Users className="w-20 h-20 text-blue-400" />
         </div>
         <div className="relative flex items-center gap-4">
@@ -120,10 +122,10 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
           </div>
           <div>
             <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-              Batch Details
+              {t('modals.details.batch')}
             </h3>
             <p className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest mt-0.5">
-              Contact verification results
+              {t('modals.details.subtitle')}
             </p>
           </div>
         </div>
@@ -137,7 +139,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <div className="absolute inset-0 bg-indigo-500/10 blur-2xl rounded-full"></div>
             </div>
             <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-8">
-              Loading batch data...
+              {t('modals.details.loading_batch')}
             </p>
           </div>
         ) : (
@@ -153,9 +155,9 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     {selectedBatch?.originalFilename}
                   </h4>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 flex items-center gap-2">
-                    <span>Batch ID: {selectedBatch?.id}</span>
+                    <span>{t('modals.details.batch_id')}: {selectedBatch?.id}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                    <span>Uploaded: {formatDate(selectedBatch?.createdAt)}</span>
+                    <span>{t('modals.details.uploaded')}: {formatDate(selectedBatch?.createdAt)}</span>
                   </p>
                 </div>
               </div>
@@ -164,31 +166,31 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                 {[
                   {
-                    label: 'Total',
+                    label: t('modals.details.stats.total'),
                     value: batchStatus?.batch?.totalRecords || 0,
                     icon: FileSpreadsheet,
                     color: 'indigo',
                   },
                   {
-                    label: 'Valid',
+                    label: t('modals.details.stats.valid'),
                     value: batchStatus?.verification?.valid || 0,
                     icon: CheckCircle,
                     color: 'emerald',
                   },
                   {
-                    label: 'Risky',
+                    label: t('modals.details.stats.risky'),
                     value: batchStatus?.verification?.risky || 0,
                     icon: AlertCircle,
                     color: 'amber',
                   },
                   {
-                    label: 'Invalid',
+                    label: t('modals.details.stats.invalid'),
                     value: batchStatus?.verification?.invalid || 0,
                     icon: XCircle,
                     color: 'rose',
                   },
                   {
-                    label: 'Success Rate',
+                    label: t('modals.details.stats.success_rate'),
                     value: batchStatus?.batch?.totalRecords
                       ? `${(((batchStatus?.verification?.valid || 0) / batchStatus.batch.totalRecords) * 100).toFixed(1)}%`
                       : '0%',
@@ -224,13 +226,13 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <div className="relative group">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                    <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                     <input
                       type="text"
-                      placeholder="Search by email or name..."
+                      placeholder={t('modals.details.filters.search_placeholder')}
                       value={searchTerm}
                       onChange={handleSearchChange}
-                      className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 outline-none transition-all"
+                      className="w-full ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -240,14 +242,14 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     <select
                       value={verificationFilter}
                       onChange={handleFilterChange}
-                      className="appearance-none pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none"
+                      className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none"
                     >
-                      <option value="all">All Status</option>
-                      <option value="valid">Valid</option>
-                      <option value="invalid">Invalid</option>
-                      <option value="risky">Risky</option>
+                      <option value="all">{t('modals.details.filters.all_status')}</option>
+                      <option value="valid">{t('audience.valid')}</option>
+                      <option value="invalid">{t('audience.invalid')}</option>
+                      <option value="risky">{t('audience.risky')}</option>
                     </select>
-                    <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <Filter className="absolute ltr:left-3.5 ltr:right-3.5 rtl:left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                   </div>
 
                   <Button
@@ -256,7 +258,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     className="px-6 py-3 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />
-                    Export
+                    {t('common.export')}
                   </Button>
                 </div>
               </div>
@@ -268,23 +270,23 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                 <table className="w-full">
                   <thead>
                     <tr className="bg-slate-50 border-b-2 border-slate-100">
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Email
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.email')}
                       </th>
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Name
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.name')}
                       </th>
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Status
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.status')}
                       </th>
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Score
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.score')}
                       </th>
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Verified On
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.verified_on')}
                       </th>
-                      <th className="px-6 py-4 text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        Added On
+                      <th className="px-6 py-4 ltr:text-left ltr:text-right rtl:text-left text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                        {t('modals.details.table.added_on')}
                       </th>
                     </tr>
                   </thead>
@@ -318,7 +320,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                                 record.verificationStatus,
                               )}`}
                             >
-                              {record.verificationStatus || 'unverified'}
+                              {record.verificationStatus ? t(`audience.${record.verificationStatus}`) : t('modals.details.table.unverified')}
                             </span>
                           </div>
                         </td>
@@ -329,7 +331,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm font-bold text-slate-600">
-                            {record.verifiedAt ? formatDate(record.verifiedAt) : 'Never'}
+                            {record.verifiedAt ? formatDate(record.verifiedAt) : t('modals.details.table.never')}
                           </span>
                         </td>
                         <td className="px-6 py-4">
@@ -346,9 +348,9 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                             <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">
                               <FileSpreadsheet className="w-8 h-8 text-slate-300" />
                             </div>
-                            <p className="text-sm font-bold text-slate-400">No records found</p>
+                            <p className="text-sm font-bold text-slate-400">{t('modals.details.table.no_records')}</p>
                             <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-1">
-                              Try adjusting your filters
+                              {t('modals.details.table.try_adjusting')}
                             </p>
                           </div>
                         </td>
@@ -363,7 +365,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
             {totalPages > 1 && (
               <div className="flex items-center justify-between pt-8 mt-6 border-t-2 border-slate-100">
                 <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Showing {indexOfFirstRecord + 1} to {indexOfLastRecord} of {totalRecords} records
+                  {t('modals.details.pagination.showing', { start: indexOfFirstRecord + 1, end: indexOfLastRecord, total: totalRecords })}
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -374,7 +376,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <span className="text-sm font-extrabold text-slate-800 px-4">
-                    Page {currentPage} of {totalPages}
+                    {t('modals.details.pagination.page_status', { current: currentPage, total: totalPages })}
                   </span>
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
@@ -392,7 +394,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <div className="flex items-center gap-3">
                 <Shield className="w-4 h-4 text-emerald-500" />
                 <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  {filteredRecords.length} records verified
+                  {t('modals.details.footer.records_verified', { count: filteredRecords.length })}
                 </span>
               </div>
               <Button
@@ -401,7 +403,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                 className="px-8 py-3 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3"
               >
                 <Download className="w-4 h-4" />
-                Export All Records
+                {t('modals.details.footer.export_all')}
               </Button>
             </div>
           </>

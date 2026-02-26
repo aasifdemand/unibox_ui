@@ -175,13 +175,13 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+          <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
           <input
             type="text"
             placeholder="Search variables..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold placeholder:text-slate-400 outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all"
+            className="w-full ltr:pl-11 ltr:pr-11 rtl:pl-11 ltr:pr-4 rtl:pl-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold placeholder:text-slate-400 outline-none focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all"
           />
         </div>
       </div>
@@ -199,14 +199,14 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose }) => {
                   <button
                     key={tokenIndex}
                     onClick={() => handleTokenClick(token.token)}
-                    className={`flex items-start p-4 text-left rounded-2xl border transition-all duration-300 group ${
+                    className={`flex items-start p-4 ltr:text-left ltr:text-right rtl:text-left rounded-2xl border transition-all duration-300 group ${
                       token.isCustom
                         ? 'bg-purple-50/30 border-purple-100 hover:border-purple-300 hover:bg-purple-50'
                         : 'bg-slate-50/50 border-slate-100 hover:border-blue-300 hover:bg-blue-50'
                     }`}
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-110 ${
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center ltr:mr-4 rtl:ml-4 shrink-0 transition-transform group-hover:scale-110 ${
                         token.isCustom ? 'bg-purple-100/50' : 'bg-blue-100/50'
                       }`}
                     >

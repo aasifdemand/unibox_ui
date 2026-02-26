@@ -58,7 +58,7 @@ const RecipientsTab = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex flex-col items-end mr-4">
+            <div className="flex flex-col items-end ltr:mr-4 rtl:ml-4">
               <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest leading-none">
                 {stats.totalRecipients} Total
               </span>
@@ -82,27 +82,27 @@ const RecipientsTab = ({
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="py-5 px-6 text-left">
+                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     Recipient Info
                   </span>
                 </th>
-                <th className="py-5 px-6 text-left">
+                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     Status
                   </span>
                 </th>
-                <th className="py-5 px-6 text-left">
+                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     Last Sent
                   </span>
                 </th>
-                <th className="py-5 px-6 text-left">
+                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     Replied At
                   </span>
                 </th>
-                <th className="py-5 px-6 text-right">
+                <th className="py-5 px-6 ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     Actions
                   </span>
@@ -135,7 +135,7 @@ const RecipientsTab = ({
                       {recipient.repliedAt ? formatDate(recipient.repliedAt) : '—'}
                     </span>
                   </td>
-                  <td className="py-5 px-6 text-right">
+                  <td className="py-5 px-6 ltr:text-right rtl:text-left">
                     <div className="flex items-center justify-end gap-2">
                       {recipient.status === 'replied' ? (
                         <button
@@ -170,7 +170,7 @@ const RecipientsTab = ({
               <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center rotate-3 border border-slate-100">
                 <Users className="w-10 h-10 text-slate-200" />
               </div>
-              <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 rotate-12">
+              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 rotate-12">
                 <ShieldCheck className="w-5 h-5 text-indigo-200" />
               </div>
             </div>

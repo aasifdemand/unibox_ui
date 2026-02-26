@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { getPersistentFolders, setPersistentFolders } from '../routes/dashboard/mailboxes/utils/persistent-cache';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -183,7 +185,7 @@ export const useOutlookMessageQuery = (mailboxId, messageId) => {
 
 // Get folders
 export const useOutlookFoldersQuery = (mailboxId) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: outlookKeys.folders(mailboxId),
     queryFn: async () => {
       const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/folders`, {
@@ -195,7 +197,16 @@ export const useOutlookFoldersQuery = (mailboxId) => {
     },
     staleTime: 10 * 60 * 1000,
     enabled: !!mailboxId,
+    placeholderData: () => getPersistentFolders('outlook', mailboxId),
   });
+
+  useEffect(() => {
+    if (query.data && !query.isPlaceholderData) {
+      setPersistentFolders('outlook', mailboxId, query.data);
+    }
+  }, [query.data, query.isPlaceholderData, mailboxId]);
+
+  return query;
 };
 
 // Get profile

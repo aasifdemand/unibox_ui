@@ -1,10 +1,53 @@
 import Modal from '../components/shared/modal';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Calendar, MessageCircle, Reply, AtSign } from 'lucide-react';
 import Button from '../components/ui/button';
 import DOMPurify from 'dompurify';
 
 const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, formatDate }) => {
+  const { t } = useTranslation();
+  const formatPlainText = (text) => {
+    if (!text) return null;
+
+    // Handle collapsed "On ... wrote:" patterns and other common reply headers
+    // More flexible regex for different date formats and languages
+    let processedText = text.replace(/([^\n])\s*(On\s+.*wrote:)/gi, '$1\n\n$2');
+    // Ensure newlines before blockquotes
+    processedText = processedText.replace(/([^\n])\s*(>)/g, '$1\n$2');
+
+    const lines = processedText.split(/\r?\n/);
+    const elements = [];
+    let currentBlockquote = [];
+
+    const flushBlockquote = () => {
+      if (currentBlockquote.length > 0) {
+        elements.push(
+          <blockquote key={`bq-${elements.length}`} className="border-l-4 border-indigo-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-2xl">
+            {currentBlockquote.map((line, i) => (
+              <div key={i}>{line || '\u00A0'}</div>
+            ))}
+          </blockquote>
+        );
+        currentBlockquote = [];
+      }
+    };
+
+    lines.forEach((line, index) => {
+      const trimmedLine = line.trim();
+      // Detect quote lines or empty lines between quote lines
+      if (trimmedLine.startsWith('>') || (trimmedLine === '' && currentBlockquote.length > 0 && index < lines.length - 1 && lines[index + 1].trim().startsWith('>'))) {
+        currentBlockquote.push(line.replace(/^>\s?/, ''));
+      } else {
+        flushBlockquote();
+        elements.push(<div key={index} className="min-h-[1.5em]">{line}</div>);
+      }
+    });
+
+    flushBlockquote();
+    return <div className="text-slate-700 leading-relaxed font-sans">{elements}</div>;
+  };
+
   const renderMessageBody = () => {
     if (!reply) return null;
 
@@ -13,12 +56,13 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
 
     // Determine the content to display and if it's HTML
     const displayContent = html || text;
-    const isHtml = /<[a-z][\s\S]*>/i.test(displayContent);
+    // Refined HTML detection: Look for actual tags, ignore email addresses in brackets
+    const isHtml = /<(?:p|div|br|table|html|body|span|b|i|strong|em|h[1-6]|hr|ul|ol|li)[^>]*?>/i.test(displayContent);
 
     if (isHtml) {
       return (
         <div
-          className="mail-content-html"
+          className="mail-content-html prose prose-slate max-w-none"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayContent) }}
         />
       );
@@ -26,16 +70,12 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
 
     // Fallback to text with professional pre-formatting
     if (displayContent) {
-      return (
-        <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
-          {displayContent}
-        </pre>
-      );
+      return formatPlainText(displayContent);
     }
 
     return (
       <p className="text-sm text-slate-400 italic flex items-center justify-center py-10">
-        No message content available
+        {t('modals.reply.no_content')}
       </p>
     );
   };
@@ -52,7 +92,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
     >
       {/* Header */}
       <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-6 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Reply className="w-16 h-16 text-white" />
         </div>
         <div className="relative flex items-center justify-between">
@@ -62,10 +102,10 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-                Reply Details
+                {t('modals.reply.title')}
               </h3>
               <p className="text-[10px] font-bold text-indigo-100/70 uppercase tracking-widest mt-0.5">
-                View recipient response
+                {t('modals.reply.subtitle')}
               </p>
             </div>
           </div>
@@ -87,7 +127,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                 <div className="absolute inset-0 bg-indigo-500/10 blur-2xl rounded-full"></div>
               </div>
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-6">
-                Loading reply...
+                {t('modals.reply.loading')}
               </p>
             </motion.div>
           ) : reply ? (
@@ -108,14 +148,14 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="px-3 py-1 bg-white rounded-xl text-[9px] font-extrabold text-indigo-600 uppercase tracking-widest border border-indigo-200">
-                        From
+                        {t('modals.reply.from')}
                       </span>
                     </div>
                     <p className="text-lg font-extrabold text-slate-800">{reply.replyFrom}</p>
                     {reply.replyTo && (
                       <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
                         <span className="w-1 h-1 rounded-full bg-indigo-400"></span>
-                        To: {reply.replyTo}
+                        {t('modals.reply.to')}: {reply.replyTo}
                       </p>
                     )}
                   </div>
@@ -130,7 +170,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                       <Mail className="w-4 h-4 text-blue-600" />
                     </div>
                     <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Subject
+                      {t('modals.reply.subject')}
                     </span>
                   </div>
                   <p className="text-sm font-bold text-slate-800 line-clamp-2">{reply.subject}</p>
@@ -142,7 +182,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                       <Calendar className="w-4 h-4 text-amber-600" />
                     </div>
                     <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                      Received
+                      {t('modals.reply.received')}
                     </span>
                   </div>
                   <p className="text-sm font-bold text-slate-800">{formatDate(reply.receivedAt)}</p>
@@ -156,12 +196,12 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                     <MessageCircle className="w-4 h-4 text-indigo-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Message
+                    {t('modals.reply.message')}
                   </span>
                 </div>
 
                 <div className="bg-white/80 backdrop-blur-md rounded-3xl p-8 border border-white shadow-xl shadow-slate-200/50 min-h-40 overflow-hidden relative">
-                  <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                  <div className="absolute top-0 ltr:right-0 rtl:left-0 p-4 opacity-5 pointer-events-none">
                     <MessageCircle className="w-24 h-24 text-slate-900" />
                   </div>
                   <div className="prose prose-slate max-w-none">{renderMessageBody()}</div>
@@ -172,9 +212,9 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               {reply.email && (
                 <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                   <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
-                    Original Email
+                    {t('modals.reply.original')}
                   </p>
-                  <p className="text-xs text-slate-600">Sent: {formatDate(reply.email.sentAt)}</p>
+                  <p className="text-xs text-slate-600">{t('modals.reply.sent')}: {formatDate(reply.email.sentAt)}</p>
                 </div>
               )}
             </motion.div>
@@ -190,10 +230,10 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                 <MessageCircle className="w-10 h-10 text-slate-300" />
               </div>
               <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-                No Reply Found
+                {t('modals.reply.no_reply')}
               </h4>
               <p className="text-xs text-slate-400 font-medium">
-                This recipient hasn&apos;t replied yet.
+                {t('modals.reply.no_reply_desc')}
               </p>
             </motion.div>
           )}
@@ -208,7 +248,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
             variant="primary"
             className="px-8 py-3 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all active:scale-95"
           >
-            Close
+            {t('common.close')}
           </Button>
         </div>
       </div>

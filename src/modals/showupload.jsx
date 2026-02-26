@@ -12,10 +12,12 @@ import {
   Loader2,
   Zap,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
 import Modal from '../components/shared/modal';
 import * as XLSX from 'xlsx';
 import { motion, AnimatePresence } from 'motion/react';
+import { toast } from 'react-hot-toast';
 
 const ShowUpload = ({
   setShowUploadModal,
@@ -29,6 +31,7 @@ const ShowUpload = ({
   handleContactsUpload,
   uploading,
 }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef(null);
 
   // Handle file upload locally to show preview
@@ -38,13 +41,13 @@ const ShowUpload = ({
 
     const validTypes = [
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel',
+      'application/vnd.ltr:ml-excel ltr:mr-excel rtl:ml-excel',
       '.xlsx',
       '.xls',
     ];
 
     if (!validTypes.some((type) => file.type.includes(type) || file.name.endsWith(type))) {
-      alert('Please upload an Excel file (.xlsx or .xls)');
+      toast.error(t('modals.upload.err_format'));
       return;
     }
 
@@ -95,7 +98,7 @@ const ShowUpload = ({
         }
       } catch (error) {
         console.error('Error parsing Excel file:', error);
-        alert("Error reading Excel file. Please ensure it's a valid Excel file.");
+        toast.error(t('modals.upload.err_read'));
       }
     };
     reader.readAsArrayBuffer(file);
@@ -112,7 +115,7 @@ const ShowUpload = ({
       closeOnBackdrop={true}
     >
       <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-8 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <FileSpreadsheet className="w-20 h-20 text-blue-400" />
         </div>
         <div className="relative flex items-center justify-between">
@@ -122,10 +125,10 @@ const ShowUpload = ({
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-                Upload Contacts
+                {t('modals.upload.title')}
               </h3>
               <p className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest mt-0.5">
-                Import your contact list
+                {t('modals.upload.subtitle')}
               </p>
             </div>
           </div>
@@ -145,10 +148,10 @@ const ShowUpload = ({
             >
               <div className="text-center space-y-3">
                 <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest">
-                  Select File
+                  {t('modals.upload.select_file')}
                 </h4>
                 <p className="text-xs text-slate-400 font-medium">
-                  Upload an Excel file (.xlsx or .xls) containing your contacts.
+                  {t('modals.upload.drop_desc')}
                 </p>
               </div>
 
@@ -170,10 +173,10 @@ const ShowUpload = ({
                   </div>
                   <div className="text-center">
                     <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
-                      Click to Upload
+                      {t('modals.upload.btn_click')}
                     </p>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
-                      or drag and drop files here
+                      {t('modals.upload.drop_title')}
                     </p>
                   </div>
                   <div className="flex items-center gap-3 mt-2">
@@ -199,16 +202,16 @@ const ShowUpload = ({
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">
                 <div>
                   <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                    Map Columns
+                    {t('modals.upload.mapping')}
                   </h4>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                    Match spreadsheet columns to contact fields
+                    {t('modals.upload.mapping_desc')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span className="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">
-                    File Loaded
+                    {t('common.file_loaded')}
                   </span>
                 </div>
               </div>
@@ -237,11 +240,11 @@ const ShowUpload = ({
                       </div>
                       <div>
                         <p className="text-[10px] font-extrabold text-slate-800 uppercase tracking-tight">
-                          {field === 'email' ? 'Email' : field.replace(/([A-Z])/g, ' $1').trim()}
-                          {field === 'email' && <span className="text-rose-500 ml-1">*</span>}
+                          {field === 'email' ? t('common.email') : t(`modals.details.${field.replace(/([A-Z])/g, '_$1').toLowerCase()}`)}
+                          {field === 'email' && <span className="text-rose-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
                         </p>
                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                          Select column
+                          {t('modals.upload.select_col')}
                         </p>
                       </div>
                     </div>
@@ -250,7 +253,7 @@ const ShowUpload = ({
                       onChange={(e) => setMapping({ ...mapping, [field]: e.target.value })}
                       className="w-full h-12 px-4 bg-white border-2 border-slate-100 rounded-2xl text-[11px] font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all outline-none appearance-none cursor-pointer"
                     >
-                      <option value="">Select a column...</option>
+                      <option value="">{t('modals.upload.select_placeholder')}</option>
                       {fileHeaders.map((header) => (
                         <option key={header} value={header}>
                           {header}
@@ -266,14 +269,14 @@ const ShowUpload = ({
                   onClick={() => setUploadStep(1)}
                   className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
                 >
-                  Back
+                  {t('common.back')}
                 </button>
                 <div className="flex items-center gap-4">
                   <button
                     onClick={resetUploadState}
                     className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-rose-500 hover:border-rose-100 transition-all active:scale-95"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                   <button
                     onClick={handleContactsUpload}
@@ -285,7 +288,7 @@ const ShowUpload = ({
                     ) : (
                       <Zap className="w-4 h-4" />
                     )}
-                    {uploading ? 'Uploading...' : 'Upload Contacts'}
+                    {uploading ? t('modals.upload.uploading') : t('modals.upload.finish')}
                   </button>
                 </div>
               </div>

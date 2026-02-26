@@ -21,7 +21,7 @@ const Textarea = ({
       {label && (
         <label htmlFor={textareaId} className="block text-sm font-medium text-gray-700">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
         </label>
       )}
 

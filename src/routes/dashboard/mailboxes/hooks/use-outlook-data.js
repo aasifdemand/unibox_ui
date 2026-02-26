@@ -29,6 +29,7 @@ import {
   useDisconnectOutlookMailboxMutation,
   useRefreshOutlookTokenMutation,
 } from '../../../../hooks/useOutlook';
+import { isFolderType } from '../utils/folder-utils';
 
 export const useOutlookData = (
   selectedMailbox,
@@ -43,9 +44,12 @@ export const useOutlookData = (
   // Queries
   const isSpecialFolder =
     selectedFolder &&
-    ['sentitems', 'deleteditems', 'junkemail', 'archive', 'outbox', 'drafts'].includes(
-      selectedFolder.id,
-    );
+    (isFolderType(selectedFolder, 'sent') ||
+      isFolderType(selectedFolder, 'trash') ||
+      isFolderType(selectedFolder, 'spam') ||
+      isFolderType(selectedFolder, 'archive') ||
+      isFolderType(selectedFolder, 'outbox') ||
+      isFolderType(selectedFolder, 'drafts'));
 
   const outlookMessagesQuery = useOutlookMessagesQuery(
     isOutlook && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
@@ -54,32 +58,32 @@ export const useOutlookData = (
   );
 
   const outlookSentQuery = useOutlookSentMessagesQuery(
-    isOutlook && selectedFolder?.id === 'sentitems' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'sent') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const outlookTrashQuery = useOutlookTrashMessagesQuery(
-    isOutlook && selectedFolder?.id === 'deleteditems' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'trash') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const outlookSpamQuery = useOutlookSpamMessagesQuery(
-    isOutlook && selectedFolder?.id === 'junkemail' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'spam') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const outlookArchiveQuery = useOutlookArchiveMessagesQuery(
-    isOutlook && selectedFolder?.id === 'archive' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'archive') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const outlookOutboxQuery = useOutlookOutboxMessagesQuery(
-    isOutlook && selectedFolder?.id === 'outbox' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'outbox') ? mailboxId : null,
     PAGE_SIZE,
   );
 
   const outlookDraftsQuery = useOutlookDraftsQuery(
-    isOutlook && selectedFolder?.id === 'drafts' ? mailboxId : null,
+    isOutlook && isFolderType(selectedFolder, 'drafts') ? mailboxId : null,
     PAGE_SIZE,
   );
 

@@ -18,7 +18,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) =>
                 Live Sending Progress
               </p>
             </div>
-            <div className="text-right">
+            <div className="ltr:text-right rtl:text-left">
               <span className="text-3xl font-black text-indigo-600 tabular-nums">
                 {stats.progress}%
               </span>
@@ -47,7 +47,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) =>
                   {(stats.totalRecipients - stats.totalSent).toLocaleString()}
                 </span>
               </div>
-              <div className="flex flex-col text-right">
+              <div className="flex flex-col ltr:text-right rtl:text-left">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
                   Total Sent
                 </span>

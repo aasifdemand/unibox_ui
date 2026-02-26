@@ -1,4 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-hot-toast';
 import {
   Users,
   Mail,
@@ -10,6 +12,9 @@ import {
 } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
 import * as XLSX from 'xlsx';
+import { Gmail } from '../../../../../icons/gmail';
+import { MicrosoftOutlook } from '../../../../../icons/outlook';
+import { Smtp } from '../../../../../icons/smtp';
 
 // Import modal components
 import ShowUpload from '../../../../../modals/showupload';
@@ -36,6 +41,7 @@ const Step2Audience = ({
   refetchBatches,
   refetchSenders,
 }) => {
+  const { t } = useTranslation();
   const [senderType, setSenderType] = useState('gmail');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showSenderModal, setShowSenderModal] = useState(false);
@@ -151,7 +157,7 @@ const Step2Audience = ({
 
   const handleContactsUpload = async () => {
     if (!uploadedFile || !mapping.email) {
-      alert('Please map the email column before uploading');
+      toast.error(t('campaigns.err_map_email'));
       return;
     }
 
@@ -167,8 +173,9 @@ const Step2Audience = ({
       if (result.data?.batchId) {
         setValue('listBatchId', result.data.batchId, { shouldValidate: true });
       }
+      toast.success(t('campaigns.msg_upload_success'));
     } catch (error) {
-      alert(error.message || 'Upload failed. Please try again.');
+      toast.error(t('campaigns.msg_upload_failed'));
     }
   };
 
@@ -219,8 +226,9 @@ const Step2Audience = ({
         provider: 'custom',
       });
       if (refetchSenders) refetchSenders();
+      toast.success(t('campaigns.msg_smtp_success'));
     } catch (error) {
-      alert(`Failed: ${error.message}`);
+      toast.error(t('campaigns.msg_smtp_failed', { message: error.message }));
     }
   };
 
@@ -235,10 +243,10 @@ const Step2Audience = ({
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
-                Recipients & Senders
+                {t('campaigns.recipients_senders')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Set up your campaign audience and accounts
+                {t('campaigns.setup_audience')}
               </p>
             </div>
           </div>
@@ -247,13 +255,13 @@ const Step2Audience = ({
               onClick={() => setShowUploadModal(true)}
               className="px-6 py-2.5 bg-white border-2 border-slate-100 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm"
             >
-              Add Contacts
+              {t('campaigns.add_contacts')}
             </button>
             <button
               onClick={() => setShowSenderModal(true)}
               className="px-6 py-2.5 bg-blue-600 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
             >
-              Add Sender
+              {t('campaigns.add_sender')}
             </button>
           </div>
         </div>
@@ -267,12 +275,12 @@ const Step2Audience = ({
               <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
             </div>
             <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              Selected Audience
+              {t('campaigns.selected_audience')}
             </h4>
           </div>
           {verifiedBatches.length > 0 && (
             <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
-              {verifiedBatches.length} Lists Available
+              {verifiedBatches.length} {t('campaigns.lists_available')}
             </span>
           )}
         </div>
@@ -281,20 +289,20 @@ const Step2Audience = ({
           <div className="flex flex-col items-center justify-center py-16 bg-slate-50/30 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Loader2 className="w-8 h-8 text-blue-500/20 animate-spin" />
             <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest mt-4">
-              Loading...
+              {t('campaigns.loading')}
             </p>
           </div>
         ) : verifiedBatches.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/20 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Users className="w-12 h-12 text-slate-200 mx-auto mb-4" />
             <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-              Your contact library is empty
+              {t('campaigns.contact_library_empty')}
             </h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
-              Upload a CSV or Excel list to get started
+              {t('campaigns.upload_hint')}
             </p>
             <Button onClick={() => setShowUploadModal(true)} className="rounded-2xl px-10">
-              Upload Now
+              {t('campaigns.upload_now')}
             </Button>
           </div>
         ) : (
@@ -303,11 +311,10 @@ const Step2Audience = ({
               <div
                 key={batch.id}
                 onClick={() => handleBatchSelect(batch.id)}
-                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${
-                  watchListBatchId === batch.id
-                    ? 'border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0'
-                    : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1'
-                }`}
+                className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${watchListBatchId === batch.id
+                  ? 'border-blue-500 bg-white shadow-xl ring-4 ring-blue-500/5 rotate-0'
+                  : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-1'
+                  }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
@@ -351,10 +358,10 @@ const Step2Audience = ({
             </div>
             <div>
               <h4 className="text-sm font-black text-slate-800 uppercase tracking-widest">
-                Sending Accounts
+                {t('campaigns.sending_accounts')}
               </h4>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Choose which account will deliver these emails
+                {t('campaigns.choose_sender')}
               </p>
             </div>
           </div>
@@ -373,7 +380,7 @@ const Step2Audience = ({
                   {sendersPage}
                 </span>
                 <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">
-                  of
+                  {t('campaigns.pagination_of')}
                 </span>
                 <span className="text-[10px] font-black text-slate-500 w-6 h-6 rounded-lg flex items-center justify-center">
                   {totalSendersPages}
@@ -394,20 +401,20 @@ const Step2Audience = ({
           <div className="py-20 bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200 flex flex-col items-center">
             <Loader2 className="w-10 h-10 text-blue-500/20 animate-spin" />
             <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-6 animate-pulse">
-              Syncing accounts...
+              {t('campaigns.syncing_accounts')}
             </p>
           </div>
         ) : senders.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200">
             <Mail className="w-12 h-12 text-slate-200 mx-auto mb-4" />
             <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-2">
-              No sending accounts found
+              {t('campaigns.no_senders_found')}
             </h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
-              Connect your first Gmail, Outlook or SMTP account
+              {t('campaigns.connect_sender_hint')}
             </p>
             <Button onClick={() => setShowSenderModal(true)} className="rounded-2xl px-10">
-              Connect Account
+              {t('campaigns.connect_account')}
             </Button>
           </div>
         ) : (
@@ -420,20 +427,24 @@ const Step2Audience = ({
                 <div
                   key={sender.id}
                   onClick={() => handleSenderSelect(sender.id, sType)}
-                  className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${
-                    isSelected
-                      ? 'border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1'
-                      : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5 hover:shadow-md'
-                  }`}
+                  className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${isSelected
+                    ? 'border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1'
+                    : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5 hover:shadow-md'
+                    }`}
                 >
                   <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black transition-all shadow-sm ${
-                      isSelected
-                        ? 'bg-blue-600 text-white shadow-blue-500/40'
-                        : 'bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500'
-                    }`}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-sm ${isSelected
+                      ? 'bg-blue-600 text-white shadow-blue-500/40'
+                      : sType === 'gmail' ? 'bg-rose-50' : sType === 'outlook' ? 'bg-blue-50' : 'bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500'
+                      }`}
                   >
-                    {sType.charAt(0).toUpperCase()}
+                    {sType === 'gmail' ? (
+                      <Gmail className="w-10 h-10" />
+                    ) : sType === 'outlook' ? (
+                      <MicrosoftOutlook className="w-10 h-10" />
+                    ) : (
+                      <Smtp className="w-10 h-10" />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p

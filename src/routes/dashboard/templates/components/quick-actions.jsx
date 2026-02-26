@@ -1,25 +1,26 @@
-import React from 'react';
 import { ChevronRight, Sparkles, Download, Eye } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const QuickActions = ({ onCreateNew, isPending }) => {
+  const { t } = useTranslation();
   const actions = [
     {
-      title: 'Create Template',
-      description: 'Build a new email template from scratch',
+      title: t('templates.create_template'),
+      description: t('templates.create_template_desc'),
       icon: <Sparkles className="w-5 h-5" />,
       theme: 'blue',
       onClick: onCreateNew,
     },
     {
-      title: 'Import Template',
-      description: 'Upload an existing template file',
+      title: t('templates.import_template'),
+      description: t('templates.import_template_desc'),
       icon: <Download className="w-5 h-5" />,
       theme: 'emerald',
       onClick: () => console.log('Import'),
     },
     {
-      title: 'View Analytics',
-      description: 'See how your templates are performing',
+      title: t('templates.view_analytics'),
+      description: t('templates.view_analytics_desc'),
       icon: <Eye className="w-5 h-5" />,
       theme: 'violet',
       onClick: () => console.log('Analytics'),
@@ -38,7 +39,7 @@ const QuickActions = ({ onCreateNew, isPending }) => {
     <div className="premium-card p-8 border-none bg-white/80 backdrop-blur-xl shadow-2xl shadow-slate-900/3">
       <h3 className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-3">
         <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
-        Quick Actions
+        {t('templates.quick_actions')}
       </h3>
 
       <div className="space-y-4">
@@ -47,7 +48,7 @@ const QuickActions = ({ onCreateNew, isPending }) => {
             key={index}
             onClick={action.onClick}
             disabled={isPending}
-            className="w-full p-5 rounded-2xl bg-white border border-slate-100 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group text-left disabled:opacity-50"
+            className="w-full p-5 rounded-2xl bg-white border border-slate-100 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group ltr:text-left ltr:text-right rtl:text-left disabled:opacity-50"
           >
             <div className="flex items-center gap-5">
               <div

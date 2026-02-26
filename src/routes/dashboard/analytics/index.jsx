@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Loader2,
   Mail,
@@ -18,7 +19,7 @@ import SenderDistribution from './components/sender-distribution';
 import TopCampaigns from './components/top-campaigns';
 import RecentReplies from './components/recent-replies';
 import OverallPerformance from './components/overall-performance';
-import SmartInsights from './components/smart-insights';
+import MetricPulse from './components/metric-pulse';
 
 // Hooks
 import { useAnalyticsData } from './hooks/use-analytics-data';
@@ -51,6 +52,7 @@ const Analytics = () => {
     isRefreshing,
     handleRefresh,
   } = useAnalyticsData();
+  const { t } = useTranslation();
 
   // console.log("timeline Data: ", timelineData);
 
@@ -60,7 +62,7 @@ const Analytics = () => {
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-lg shadow-blue-500/20"></div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-            Loading analytics...
+            {t('analytics.loading_analytics')}
           </p>
         </div>
       </div>
@@ -75,14 +77,14 @@ const Analytics = () => {
             <Inbox className="w-10 h-10 text-red-500" />
           </div>
           <h3 className="text-2xl font-extrabold text-slate-800 mb-3 tracking-tight">
-            Failed to Load Data
+            {t('analytics.failed_to_load')}
           </h3>
           <p className="text-slate-500 font-medium mb-8 leading-relaxed">
             {error.overview.message}
           </p>
           <button onClick={handleRefresh} className="btn-primary flex items-center mx-auto">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Try Again
+            <RefreshCw className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
+            {t('analytics.try_again')}
           </button>
         </div>
       </div>
@@ -92,43 +94,43 @@ const Analytics = () => {
   // Stats cards configuration
   const stats = [
     {
-      title: 'Total Campaigns',
+      title: t('analytics.total_campaigns'),
       value: overview?.totalCampaigns?.toString() || '0',
-      change: `${overview?.activeCampaigns || 0} active`,
+      change: t('analytics.active_count', { count: overview?.activeCampaigns || 0 }),
       icon: <Mail className="w-6 h-6 text-blue-600" />,
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'bg-blue-50',
-      description: `${overview?.completedCampaigns || 0} completed`,
+      description: t('analytics.completed_count', { count: overview?.completedCampaigns || 0 }),
       trend: 'up',
     },
     {
-      title: 'Emails Sent',
+      title: t('analytics.emails_sent'),
       value: overview?.totalEmailsSent?.toLocaleString() || '0',
-      change: `${overview?.avgOpenRate || 0}% open rate`,
+      change: t('analytics.open_rate_value', { percentage: overview?.avgOpenRate || 0 }),
       icon: <Send className="w-6 h-6 text-emerald-600" />,
       color: 'from-emerald-500 to-teal-600',
       bgColor: 'bg-emerald-50',
-      description: `${overview?.totalOpens?.toLocaleString() || 0} opens`,
+      description: t('analytics.opens_count', { count: overview?.totalOpens?.toLocaleString() || 0 }),
       trend: 'up',
     },
     {
-      title: 'Total Replies',
+      title: t('analytics.total_replies'),
       value: overview?.totalReplies?.toString() || '0',
-      change: `${metrics.replyRate}% reply rate`,
+      change: t('analytics.reply_rate_value', { percentage: metrics.replyRate }),
       icon: <MessageCircle className="w-6 h-6 text-violet-600" />,
       color: 'from-violet-500 to-purple-600',
       bgColor: 'bg-violet-50',
-      description: `${overview?.totalReplied || 0} unique replies`,
+      description: t('analytics.unique_replies_count', { count: overview?.totalReplied || 0 }),
       trend: 'up',
     },
     {
-      title: 'Bounce Rate',
+      title: t('analytics.bounce_rate'),
       value: `${metrics.bounceRate}%`,
-      change: `${overview?.totalBounces || 0} bounces`,
+      change: t('analytics.bounces_count', { count: overview?.totalBounces || 0 }),
       icon: <Inbox className="w-6 h-6 text-rose-600" />,
       color: 'from-rose-500 to-red-600',
       bgColor: 'bg-rose-50',
-      description: metrics.bounceRate > 5 ? 'Needs attention' : 'Good',
+      description: metrics.bounceRate > 5 ? t('analytics.needs_attention') : t('analytics.good_status'),
       trend: 'down',
     },
   ];
@@ -139,12 +141,12 @@ const Analytics = () => {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
           <h1 className="text-4xl font-extrabold text-slate-800 tracking-tighter flex items-center">
-            Campaign <span className="text-gradient ml-3">Analytics</span>
-            {isRefreshing && <Loader2 className="w-6 h-6 ml-4 animate-spin text-blue-500" />}
+            {t('analytics.campaign_title')} <span className="text-gradient ltr:ml-3 ltr:mr-3 rtl:ml-3">{t('analytics.analytics_title')}</span>
+            {isRefreshing && <Loader2 className="w-6 h-6 ltr:ml-4 ltr:mr-4 rtl:ml-4 animate-spin text-blue-500" />}
           </h1>
           <p className="text-slate-500 font-medium mt-2 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
-            Track your campaign performance and engagement metrics.
+            {t('analytics.analytics_description')}
           </p>
         </div>
 
@@ -153,14 +155,14 @@ const Analytics = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none pl-10 pr-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
+              className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
             >
-              <option value="7">Last 7 Days</option>
-              <option value="30">Last 30 Days</option>
-              <option value="90">Last 90 Days</option>
+              <option value="7">{t('analytics.last_7_days')}</option>
+              <option value="30">{t('analytics.last_30_days')}</option>
+              <option value="90">{t('analytics.last_90_days')}</option>
             </select>
-            <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <ChevronRight className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 rotate-90" />
+            <Clock className="absolute ltr:left-3.5 ltr:right-3.5 rtl:left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <ChevronRight className="absolute ltr:right-3.5 rtl:left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 rotate-90" />
           </div>
 
           <button
@@ -168,8 +170,8 @@ const Analytics = () => {
             disabled={isRefreshing}
             className="btn-primary flex items-center px-6"
           >
-            {!isRefreshing && <RefreshCw className="w-4 h-4 mr-2" />}
-            {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
+            {!isRefreshing && <RefreshCw className="w-4 h-4 ltr:mr-2 rtl:ml-2" />}
+            {isRefreshing ? t('analytics.refreshing') : t('analytics.refresh_data')}
           </button>
         </div>
       </div>
@@ -192,7 +194,7 @@ const Analytics = () => {
 
       {/* Secondary Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <SmartInsights metrics={metrics} overview={overview} />
+        <MetricPulse metrics={metrics} overview={overview} />
         <TopCampaigns campaigns={topCampaigns} isLoading={isLoading.topCampaigns} />
       </div>
 

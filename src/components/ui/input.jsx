@@ -44,10 +44,10 @@ const Input = ({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1"
+          className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1"
         >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
         </label>
       )}
 
@@ -58,7 +58,7 @@ const Input = ({
       >
         {/* Left Icon */}
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 ltr:left-0 ltr:right-0 rtl:left-0 ltr:pl-3 ltr:pr-3 rtl:pl-3 flex items-center pointer-events-none">
             <Icon
               className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-blue-500' : 'text-gray-400'}`}
             />
@@ -85,8 +85,8 @@ const Input = ({
             ${baseStyles}
             ${stateStyles}
             ${disabledStyles}
-            ${Icon ? 'pl-10' : ''}
-            ${type === 'password' || showClearButton ? 'pr-10' : ''}
+            ${Icon ? 'ltr:pl-10 ltr:pr-10 rtl:pl-10' : ''}
+            ${type === 'password' || showClearButton ? 'ltr:pr-10 rtl:pl-10' : ''}
             ${isFocused ? 'ring-4' : ''}
             ${className}
           `}
@@ -97,7 +97,7 @@ const Input = ({
         {type === 'password' && (
           <button
             type="button"
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            className="absolute inset-y-0 ltr:right-0 rtl:left-0 ltr:pr-3 rtl:pl-3 flex items-center"
             onClick={() => setShowPassword(!showPassword)}
             tabIndex={-1}
           >
@@ -113,7 +113,7 @@ const Input = ({
         {showClearButton && value && !disabled && (
           <button
             type="button"
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            className="absolute inset-y-0 ltr:right-0 rtl:left-0 ltr:pr-3 rtl:pl-3 flex items-center"
             onClick={onClear}
             tabIndex={-1}
           >

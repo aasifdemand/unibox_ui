@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { calculateVerificationTotals, filterBatches, resetUploadState } from '../audience-service';
 import {
   useBatches,
@@ -20,7 +21,9 @@ export const useAudienceData = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showSenderModal, setShowSenderModal] = useState(false);
   const [showBatchModal, setShowBatchModal] = useState(false);
+  const [showSenderDetailsModal, setShowSenderDetailsModal] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
+  const [selectedSender, setSelectedSender] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -118,10 +121,21 @@ export const useAudienceData = () => {
     setSelectedBatch(null);
   };
 
+  // Sender details modal handlers
+  const openSenderDetails = (sender) => {
+    setSelectedSender(sender);
+    setShowSenderDetailsModal(true);
+  };
+
+  const closeSenderDetailsModal = () => {
+    setShowSenderDetailsModal(false);
+    setSelectedSender(null);
+  };
+
   // Handle contacts upload
   const handleContactsUpload = async () => {
     if (!uploadedFile || !mapping.email) {
-      alert('Please map the email column before uploading');
+      toast.error('Please map the email column before uploading');
       return;
     }
 
@@ -134,9 +148,9 @@ export const useAudienceData = () => {
       setShowUploadModal(false);
       resetUploadState(setUploadStep, setUploadedFile, setFileHeaders, setMapping);
       refetchBatches();
-      alert('Upload successful!');
+      toast.success('Upload successful!');
     } catch (error) {
-      alert(`Upload failed: ${error.message}`);
+      toast.error(`Upload failed: ${error.message}`);
     }
   };
 
@@ -210,9 +224,9 @@ export const useAudienceData = () => {
         provider: 'custom',
       });
       refetchSenders();
-      alert('SMTP sender created successfully!');
+      toast.success('SMTP sender created successfully!');
     } catch (error) {
-      alert(`Failed to create SMTP sender: ${error.message}`);
+      toast.error(`Failed to create SMTP sender: ${error.message}`);
     }
   };
 
@@ -223,19 +237,19 @@ export const useAudienceData = () => {
         senderId: sender.id,
         senderType: sender.type,
       });
-      alert(`${sender.type} sender deleted successfully`);
+      toast.success(`${sender.type} sender deleted successfully`);
       refetchSenders();
     } catch (error) {
-      alert(error.message || 'Failed to delete sender');
+      toast.error(error.message || 'Failed to delete sender');
     }
   };
 
   const handleTestSender = async (senderId) => {
     try {
       await testSender.mutateAsync(senderId);
-      alert('Sender test successful!');
+      toast.success('Sender test successful!');
     } catch (error) {
-      alert(`Sender test failed: ${error.message}`);
+      toast.error(`Sender test failed: ${error.message}`);
     }
   };
 
@@ -243,9 +257,9 @@ export const useAudienceData = () => {
     try {
       await deleteBatch.mutateAsync(batchId);
       refetchBatches();
-      alert('Batch deleted successfully');
+      toast.success('Batch deleted successfully');
     } catch (error) {
-      alert(`Failed to delete batch: ${error.message}`);
+      toast.error(`Failed to delete batch: ${error.message}`);
     }
   };
 
@@ -257,7 +271,7 @@ export const useAudienceData = () => {
     const senderId = urlParams.get('senderId');
 
     if (success && senderId) {
-      alert(`${success === 'gmail_connected' ? 'Gmail' : 'Outlook'} connected successfully!`);
+      toast.success(`${success === 'gmail_connected' ? 'Gmail' : 'Outlook'} connected successfully!`);
       refetchSenders();
 
       // Clean URL
@@ -266,7 +280,7 @@ export const useAudienceData = () => {
     }
 
     if (error) {
-      alert(`Connection failed: ${error}`);
+      toast.error(`Connection failed: ${error}`);
 
       // Clean URL
       const cleanUrl = window.location.pathname;
@@ -294,7 +308,9 @@ export const useAudienceData = () => {
     showUploadModal,
     showSenderModal,
     showBatchModal,
+    showSenderDetailsModal,
     selectedBatch,
+    selectedSender,
 
     // Data
     batches,
@@ -329,7 +345,9 @@ export const useAudienceData = () => {
     setShowUploadModal,
     setShowSenderModal,
     setShowBatchModal,
+    setShowSenderDetailsModal,
     setSelectedBatch,
+    setSelectedSender,
     setUploadedFile,
     setFileHeaders,
 
@@ -346,6 +364,8 @@ export const useAudienceData = () => {
     handleDeleteBatch,
     openBatchDetails,
     closeBatchModal,
+    openSenderDetails,
+    closeSenderDetailsModal,
     refetchBatchStatus, // Add this
   };
 };

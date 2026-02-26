@@ -26,6 +26,7 @@ import {
   useSyncSmtpMailboxMutation,
   useDisconnectSmtpMailboxMutation,
 } from '../../../../hooks/useSmtp';
+import { isFolderType } from '../utils/folder-utils';
 
 export const useSmtpData = (
   selectedMailbox,
@@ -41,9 +42,11 @@ export const useSmtpData = (
   // Queries
   const isSpecialFolder =
     selectedFolder &&
-    ['SENT', 'DRAFTS', 'TRASH', 'SPAM', 'ARCHIVE'].includes(
-      selectedFolder.id?.toUpperCase() || selectedFolder.name?.toUpperCase(),
-    );
+    (isFolderType(selectedFolder, 'sent') ||
+      isFolderType(selectedFolder, 'drafts') ||
+      isFolderType(selectedFolder, 'trash') ||
+      isFolderType(selectedFolder, 'spam') ||
+      isFolderType(selectedFolder, 'archive'));
 
   const smtpMessagesQuery = useSmtpMessagesQuery(
     isSmtp && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
@@ -53,37 +56,31 @@ export const useSmtpData = (
   );
 
   const smtpSentQuery = useSmtpSentMessagesQuery(
-    isSmtp && (selectedFolder?.id === 'SENT' || selectedFolder?.name === 'SENT') ? mailboxId : null,
+    isSmtp && isFolderType(selectedFolder, 'sent') ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
   );
 
   const smtpDraftsQuery = useSmtpDraftMessagesQuery(
-    isSmtp && (selectedFolder?.id === 'DRAFTS' || selectedFolder?.name === 'DRAFTS')
-      ? mailboxId
-      : null,
+    isSmtp && isFolderType(selectedFolder, 'drafts') ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
   );
 
   const smtpTrashQuery = useSmtpTrashMessagesQuery(
-    isSmtp && (selectedFolder?.id === 'TRASH' || selectedFolder?.name === 'TRASH')
-      ? mailboxId
-      : null,
+    isSmtp && isFolderType(selectedFolder, 'trash') ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
   );
 
   const smtpSpamQuery = useSmtpSpamMessagesQuery(
-    isSmtp && (selectedFolder?.id === 'SPAM' || selectedFolder?.name === 'SPAM') ? mailboxId : null,
+    isSmtp && isFolderType(selectedFolder, 'spam') ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
   );
 
   const smtpArchiveQuery = useSmtpArchiveMessagesQuery(
-    isSmtp && (selectedFolder?.id === 'ARCHIVE' || selectedFolder?.name === 'ARCHIVE')
-      ? mailboxId
-      : null,
+    isSmtp && isFolderType(selectedFolder, 'archive') ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
   );

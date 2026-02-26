@@ -20,6 +20,7 @@ import { useGmailData } from './use-gmail-data';
 import { useOutlookData } from './use-outlook-data';
 import { useSmtpData } from './use-smtp-data';
 import { getProviderMessageId } from '../utils/getmessage-id';
+import { isFolderType } from '../utils/folder-utils';
 
 const PAGE_SIZE = 10;
 
@@ -137,40 +138,38 @@ export const useMailboxesData = () => {
 
     if (selectedMailbox.type === 'gmail') {
       if (!selectedFolder) return q.messages.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'SENT') return q.sent.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'TRASH') return q.trash.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'SPAM') return q.spam.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'STARRED') return q.starred.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'IMPORTANT')
+      if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'trash')) return q.trash.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'spam')) return q.spam.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'starred')) return q.starred.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'important'))
         return q.important.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'DRAFT') return q.drafts.data?.pages[pageIndex]?.drafts || [];
+      if (isFolderType(selectedFolder, 'drafts')) return q.drafts.data?.pages[pageIndex]?.drafts || [];
       return q.messages.data?.pages[pageIndex]?.messages || [];
     }
 
     if (selectedMailbox.type === 'outlook') {
       if (!selectedFolder) return q.messages.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'sentitems') return q.sent.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'deleteditems')
+      if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'trash'))
         return q.trash.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'junkemail') return q.spam.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'archive') return q.archive.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'outbox') return q.outbox.data?.pages[pageIndex]?.messages || [];
-      if (selectedFolder.id === 'drafts') return q.drafts.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'spam')) return q.spam.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'archive')) return q.archive.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'outbox')) return q.outbox.data?.pages[pageIndex]?.messages || [];
+      if (isFolderType(selectedFolder, 'drafts')) return q.drafts.data?.pages[pageIndex]?.messages || [];
       return q.messages.data?.pages[pageIndex]?.messages || [];
     }
 
     if (selectedMailbox.type === 'smtp') {
-      const fn = selectedFolder?.name?.toUpperCase();
-      const fi = selectedFolder?.id?.toUpperCase();
       if (!selectedFolder) return q.messages.data?.messages || [];
-      if (fn === 'SENT' || fi === 'SENT') return q.sent.data?.messages || [];
-      if (fn === 'DRAFTS' || fi === 'DRAFTS' || fn === 'DRAFT' || fi === 'DRAFT')
+      if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.messages || [];
+      if (isFolderType(selectedFolder, 'drafts'))
         return q.drafts.data?.messages || [];
-      if (fn === 'TRASH' || fi === 'TRASH' || fn === 'DELETED' || fi === 'DELETED')
+      if (isFolderType(selectedFolder, 'trash'))
         return q.trash.data?.messages || [];
-      if (fn === 'SPAM' || fi === 'SPAM' || fn === 'JUNK' || fi === 'JUNK')
+      if (isFolderType(selectedFolder, 'spam'))
         return q.spam.data?.messages || [];
-      if (fn === 'ARCHIVE' || fi === 'ARCHIVE') return q.archive.data?.messages || [];
+      if (isFolderType(selectedFolder, 'archive')) return q.archive.data?.messages || [];
       return q.messages.data?.messages || [];
     }
 
@@ -230,17 +229,17 @@ export const useMailboxesData = () => {
     if (selectedMailbox.type === 'gmail') {
       const query = !selectedFolder
         ? q.messages
-        : selectedFolder.id === 'SENT'
+        : isFolderType(selectedFolder, 'sent')
           ? q.sent
-          : selectedFolder.id === 'TRASH'
+          : isFolderType(selectedFolder, 'trash')
             ? q.trash
-            : selectedFolder.id === 'SPAM'
+            : isFolderType(selectedFolder, 'spam')
               ? q.spam
-              : selectedFolder.id === 'STARRED'
+              : isFolderType(selectedFolder, 'starred')
                 ? q.starred
-                : selectedFolder.id === 'IMPORTANT'
+                : isFolderType(selectedFolder, 'important')
                   ? q.important
-                  : selectedFolder.id === 'DRAFT'
+                  : isFolderType(selectedFolder, 'drafts')
                     ? q.drafts
                     : q.messages;
 
@@ -249,36 +248,34 @@ export const useMailboxesData = () => {
     } else if (selectedMailbox.type === 'outlook') {
       const query = !selectedFolder
         ? q.messages
-        : selectedFolder.id === 'sentitems'
+        : isFolderType(selectedFolder, 'sent')
           ? q.sent
-          : selectedFolder.id === 'deleteditems'
+          : isFolderType(selectedFolder, 'trash')
             ? q.trash
-            : selectedFolder.id === 'junkemail'
+            : isFolderType(selectedFolder, 'spam')
               ? q.spam
-              : selectedFolder.id === 'archive'
+              : isFolderType(selectedFolder, 'archive')
                 ? q.archive
-                : selectedFolder.id === 'outbox'
+                : isFolderType(selectedFolder, 'outbox')
                   ? q.outbox
-                  : selectedFolder.id === 'drafts'
+                  : isFolderType(selectedFolder, 'drafts')
                     ? q.drafts
                     : q.messages;
 
       total = query.data?.pages?.reduce((acc, p) => acc + (p?.messages?.length || 0), 0) || 0; // Outlook might not provide totalResults in standard way, use fallback
       hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === 'smtp') {
-      const fn = selectedFolder?.name?.toUpperCase();
-      const fi = selectedFolder?.id?.toUpperCase();
       const query = !selectedFolder
         ? q.messages
-        : fn === 'SENT' || fi === 'SENT'
+        : isFolderType(selectedFolder, 'sent')
           ? q.sent
-          : fn === 'DRAFTS' || fi === 'DRAFTS' || fn === 'DRAFT' || fi === 'DRAFT'
+          : isFolderType(selectedFolder, 'drafts')
             ? q.drafts
-            : fn === 'TRASH' || fi === 'TRASH' || fn === 'DELETED' || fi === 'DELETED'
+            : isFolderType(selectedFolder, 'trash')
               ? q.trash
-              : fn === 'SPAM' || fi === 'SPAM' || fn === 'JUNK' || fi === 'JUNK'
+              : isFolderType(selectedFolder, 'spam')
                 ? q.spam
-                : fn === 'ARCHIVE' || fi === 'ARCHIVE'
+                : isFolderType(selectedFolder, 'archive')
                   ? q.archive
                   : q.messages;
 
@@ -642,33 +639,33 @@ export const useMailboxesData = () => {
       } else if (selectedMailbox.type === 'gmail') {
         activeQuery = !selectedFolder
           ? q.messages
-          : selectedFolder.id === 'SENT'
+          : isFolderType(selectedFolder, 'sent')
             ? q.sent
-            : selectedFolder.id === 'TRASH'
+            : isFolderType(selectedFolder, 'trash')
               ? q.trash
-              : selectedFolder.id === 'SPAM'
+              : isFolderType(selectedFolder, 'spam')
                 ? q.spam
-                : selectedFolder.id === 'STARRED'
+                : isFolderType(selectedFolder, 'starred')
                   ? q.starred
-                  : selectedFolder.id === 'IMPORTANT'
+                  : isFolderType(selectedFolder, 'important')
                     ? q.important
-                    : selectedFolder.id === 'DRAFT'
+                    : isFolderType(selectedFolder, 'drafts')
                       ? q.drafts
                       : q.messages;
       } else if (selectedMailbox.type === 'outlook') {
         activeQuery = !selectedFolder
           ? q.messages
-          : selectedFolder.id === 'sentitems'
+          : isFolderType(selectedFolder, 'sent')
             ? q.sent
-            : selectedFolder.id === 'deleteditems'
+            : isFolderType(selectedFolder, 'trash')
               ? q.trash
-              : selectedFolder.id === 'junkemail'
+              : isFolderType(selectedFolder, 'spam')
                 ? q.spam
-                : selectedFolder.id === 'archive'
+                : isFolderType(selectedFolder, 'archive')
                   ? q.archive
-                  : selectedFolder.id === 'outbox'
+                  : isFolderType(selectedFolder, 'outbox')
                     ? q.outbox
-                    : selectedFolder.id === 'drafts'
+                    : isFolderType(selectedFolder, 'drafts')
                       ? q.drafts
                       : q.messages;
       }
@@ -819,16 +816,19 @@ export const useMailboxesData = () => {
       getFolderUnreadCount: () => {
         if (!selectedMailbox) return 0;
         const f = folders || [];
-        console.log(f);
 
+        const inboxFolder = f.find(item => isFolderType(item, 'inbox'));
         if (selectedMailbox.type === 'gmail') {
-          return f.find((item) => item.id === 'INBOX')?.messagesUnread || 0;
+          return inboxFolder?.messagesUnread || 0;
         }
         if (selectedMailbox.type === 'outlook') {
-          return f.find((item) => item.id === 'inbox')?.unreadItemCount || 0;
+          return inboxFolder?.unreadItemCount || 0;
         }
         if (selectedMailbox.type === 'smtp') {
-          return f.folders?.find((item) => item.name === 'INBOX')?.unreadCount || 0;
+          // SMTP folders are structured differently in the API response sometimes
+          const smtpFolders = f.folders || f;
+          const smtpInbox = Array.isArray(smtpFolders) ? smtpFolders.find(item => isFolderType(item, 'inbox')) : null;
+          return smtpInbox?.unreadCount || 0;
         }
         return 0;
       },
@@ -845,28 +845,21 @@ export const useMailboxesData = () => {
       isMessages: (() => {
         if (!provider) return false;
         const q = provider.queries;
-        return (
-          q.messages.isLoading ||
-          q.messages.isFetchingNextPage ||
-          q.sent.isLoading ||
-          q.sent.isFetchingNextPage ||
-          q.trash.isLoading ||
-          q.trash.isFetchingNextPage ||
-          q.spam.isLoading ||
-          q.spam.isFetchingNextPage ||
-          q.starred?.isLoading ||
-          q.starred?.isFetchingNextPage ||
-          q.important?.isLoading ||
-          q.important?.isFetchingNextPage ||
-          q.drafts?.isLoading ||
-          q.drafts?.isFetchingNextPage ||
-          q.archive?.isLoading ||
-          q.archive?.isFetchingNextPage ||
-          q.outbox?.isLoading ||
-          q.outbox?.isFetchingNextPage ||
-          q.search?.isLoading ||
-          q.search?.isFetchingNextPage
-        );
+        if (searchQuery) return q.search?.isLoading || q.search?.isFetchingNextPage;
+
+        const activeQuery = !selectedFolder
+          ? q.messages
+          : isFolderType(selectedFolder, 'sent') ? q.sent
+            : isFolderType(selectedFolder, 'trash') ? q.trash
+              : isFolderType(selectedFolder, 'spam') ? q.spam
+                : isFolderType(selectedFolder, 'starred') ? q.starred
+                  : isFolderType(selectedFolder, 'important') ? q.important
+                    : isFolderType(selectedFolder, 'drafts') ? q.drafts
+                      : isFolderType(selectedFolder, 'archive') ? q.archive
+                        : isFolderType(selectedFolder, 'outbox') ? q.outbox
+                          : q.messages;
+
+        return activeQuery?.isLoading || activeQuery?.isFetchingNextPage;
       })(),
       isMessageLoading: provider?.queries.message?.isLoading,
       isSyncing: provider?.mutations.sync.isLoading,

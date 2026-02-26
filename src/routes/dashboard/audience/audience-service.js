@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx';
+import { toast } from 'react-hot-toast';
 
 // File upload handlers
 export const handleFileUpload = (e, setUploadedFile, setFileHeaders, setUploadStep, setMapping) => {
@@ -7,13 +8,13 @@ export const handleFileUpload = (e, setUploadedFile, setFileHeaders, setUploadSt
 
   const validTypes = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-excel',
+    'application/vnd.ltr:ml-excel ltr:mr-excel rtl:ml-excel',
     '.xlsx',
     '.xls',
   ];
 
   if (!validTypes.some((type) => file.type.includes(type) || file.name.endsWith(type))) {
-    alert('Please upload an Excel file (.xlsx or .xls)');
+    toast.error('Please upload an Excel file (.xlsx or .xls)');
     return;
   }
 
@@ -58,7 +59,7 @@ export const parseExcelFile = (file, setFileHeaders, setUploadStep, setMapping) 
       }
     } catch (error) {
       console.error('Error parsing Excel file:', error);
-      alert("Error reading Excel file. Please ensure it's a valid Excel file.");
+      toast.error("Error reading Excel file. Please ensure it's a valid Excel file.");
     }
   };
 

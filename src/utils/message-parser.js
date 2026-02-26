@@ -1,6 +1,8 @@
+import i18n from '../i18n';
+
 export const getSenderInfo = (message) => {
-  let email = 'Unknown';
-  let name = 'Unknown';
+  let email = i18n.t('mailboxes.unknown_sender', 'Unknown');
+  let name = i18n.t('mailboxes.unknown_sender', 'Unknown');
 
   try {
     if (message?.payload?.headers) {
@@ -13,7 +15,7 @@ export const getSenderInfo = (message) => {
       email = message.from.email;
       name = message.from.name || email.split('@')[0];
     } else if (message?.from?.emailAddress) {
-      email = message.from.emailAddress.address || 'Unknown';
+      email = message.from.emailAddress.address || i18n.t('mailboxes.unknown_sender', 'Unknown');
       name = message.from.emailAddress.name || email.split('@')[0];
     } else if (typeof message?.from === 'string') {
       const match = message.from.match(/<([^>]+)>/);
@@ -36,7 +38,7 @@ export const getSubject = (message) => {
     if (subjectHeader) return subjectHeader;
   }
 
-  return '(no subject)';
+  return i18n.t('mailboxes.no_subject', '(no subject)');
 };
 
 export const getPreview = (message) => {
@@ -74,7 +76,7 @@ export const getDate = (message) => {
 };
 
 export const formatDate = (dateString) => {
-  if (!dateString) return 'Unknown';
+  if (!dateString) return i18n.t('mailboxes.unknown_date', 'Unknown');
   try {
     const date = new Date(dateString);
     const now = new Date();

@@ -1,7 +1,7 @@
-import React from 'react';
 import TemplateCard from './template-card';
 import QuickActions from './quick-actions';
 import Stats from './stats';
+import { useTranslation } from 'react-i18next';
 
 const TemplateGrid = ({
   templates,
@@ -13,6 +13,7 @@ const TemplateGrid = ({
   deleteMutation,
   formatDate,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
       {/* Templates List */}
@@ -20,7 +21,7 @@ const TemplateGrid = ({
         <div className="flex items-center justify-between px-2">
           <div>
             <h3 className="text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
-              All Templates
+              {t('templates.all_templates')}
               <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-blue-100">
                 {filteredTemplates.length}
               </span>

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
 import { User, Mail, Save, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Input from '../../../../components/ui/input';
 import Button from '../../../../components/ui/button';
 import { useUpdateProfile } from '../../../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 const ProfileTab = ({ user }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -18,9 +20,9 @@ const ProfileTab = ({ user }) => {
     e.preventDefault();
     try {
       await updateProfile.mutateAsync(formData);
-      toast.success('Profile updated successfully');
+      toast.success(t('settings.profile.success'));
     } catch (error) {
-      toast.error(error.message || 'Failed to update profile');
+      toast.error(error.message || t('settings.profile.error'));
     }
   };
 
@@ -34,17 +36,17 @@ const ProfileTab = ({ user }) => {
       <div className="max-w-4xl">
         <div className="mb-12">
           <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">
-            Personal Information
+            {t('settings.profile.title')}
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-            Update your personal details and how others see you on the platform.
+            {t('settings.profile.subtitle')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="grid gap-8">
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-              Full Name
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+              {t('settings.profile.full_name')}
             </label>
             <Input
               icon={User}
@@ -57,8 +59,8 @@ const ProfileTab = ({ user }) => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
-              Email Address
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+              {t('settings.profile.email_address')}
             </label>
             <Input
               icon={Mail}
@@ -69,7 +71,7 @@ const ProfileTab = ({ user }) => {
               required
               helperText={
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-loose mt-2 block">
-                  This email will be used for account notifications and login.
+                  {t('settings.profile.email_helper')}
                 </span>
               }
               className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
@@ -84,13 +86,13 @@ const ProfileTab = ({ user }) => {
             >
               {updateProfile.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-3 animate-spin" />
-                  Updating...
+                  <Loader2 className="w-4 h-4 ltr:mr-3 rtl:ml-3 animate-spin" />
+                  {t('settings.profile.updating')}
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4 mr-3" />
-                  Save Changes
+                  <Save className="w-4 h-4 ltr:mr-3 rtl:ml-3" />
+                  {t('settings.profile.save_changes')}
                 </>
               )}
             </Button>

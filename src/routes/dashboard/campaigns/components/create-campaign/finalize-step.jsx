@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Clock, Shield, Zap, Activity, Gauge, User, Mail, Database } from 'lucide-react';
 import Input from '../../../../../components/ui/input';
 
@@ -10,6 +11,7 @@ const Step3Finalize = ({
   selectedBatch,
   selectedSender,
 }) => {
+  const { t } = useTranslation();
   const campaignName = watch('name');
   const subject = watch('subject');
 
@@ -24,17 +26,17 @@ const Step3Finalize = ({
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
-                Campaign Summary
+                {t('campaigns.campaign_summary')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Review your settings before launch
+                {t('campaigns.review_settings')}
               </p>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-[9px] font-extrabold text-emerald-700 uppercase tracking-widest">
-              Ready to Send
+              {t('campaigns.ready_to_send')}
             </span>
           </div>
         </div>
@@ -48,11 +50,11 @@ const Step3Finalize = ({
                     <Zap className="w-4 h-4 text-blue-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Campaign Name
+                    {t('campaigns.campaign_name')}
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {campaignName || 'Untitled Campaign'}
+                  {campaignName || t('campaigns.untitled_campaign')}
                 </p>
               </div>
 
@@ -62,11 +64,11 @@ const Step3Finalize = ({
                     <Mail className="w-4 h-4 text-indigo-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Email Subject
+                    {t('campaigns.email_subject')}
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 line-clamp-1">
-                  {subject || 'No subject set'}
+                  {subject || t('campaigns.no_subject_set')}
                 </p>
               </div>
             </div>
@@ -78,11 +80,11 @@ const Step3Finalize = ({
                     <Database className="w-4 h-4 text-emerald-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Recipient List
+                    {t('campaigns.recipient_list')}
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedBatch?.originalFilename || 'No list selected'}
+                  {selectedBatch?.originalFilename || t('campaigns.no_list_selected')}
                 </p>
               </div>
 
@@ -92,11 +94,11 @@ const Step3Finalize = ({
                     <User className="w-4 h-4 text-purple-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Sender Account
+                    {t('campaigns.sender_account')}
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedSender?.email || 'No sender selected'}
+                  {selectedSender?.email || t('campaigns.no_sender_selected')}
                 </p>
               </div>
             </div>
@@ -112,7 +114,7 @@ const Step3Finalize = ({
               <Clock className="w-4 h-4 text-blue-600" />
             </div>
             <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              Schedule Sending
+              {t('campaigns.schedule_sending')}
             </h3>
           </div>
 
@@ -135,12 +137,12 @@ const Step3Finalize = ({
                   value={option.id}
                   className="w-5 h-5 appearance-none border-2 border-slate-200 rounded-full checked:border-blue-500 checked:bg-blue-500 transition-all"
                 />
-                <div className="ml-4">
+                <div className="ltr:ml-4 ltr:mr-4 rtl:ml-4">
                   <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">
-                    {option.title}
+                    {t(`campaigns.${option.id === 'now' ? 'send_now' : 'schedule_later'}`)}
                   </p>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                    {option.desc}
+                    {t(`campaigns.${option.id === 'now' ? 'process_immediately' : 'choose_time'}`)}
                   </p>
                 </div>
               </label>
@@ -150,7 +152,7 @@ const Step3Finalize = ({
           {watchScheduleType === 'later' && (
             <div className="animate-in fade-in slide-in-from-top-4 duration-500">
               <Input
-                label="Send Date & Time"
+                label={t('campaigns.send_date_time')}
                 type="datetime-local"
                 {...register('scheduledAt')}
                 error={errors.scheduledAt?.message}
@@ -161,13 +163,13 @@ const Step3Finalize = ({
           )}
 
           <Input
-            label="Sending Rate (emails/min)"
+            label={t('campaigns.sending_rate')}
             type="number"
             {...register('throttlePerMinute', { valueAsNumber: true })}
             error={errors.throttlePerMinute?.message}
             icon={Gauge}
             className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
-            helperText="Lower rates can improve inbox placement"
+            helperText={t('campaigns.sending_rate_hint')}
           />
         </div>
 
@@ -178,7 +180,7 @@ const Step3Finalize = ({
               <Activity className="w-4 h-4 text-indigo-600" />
             </div>
             <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              Tracking & Rules
+              {t('campaigns.tracking_rules')}
             </h3>
           </div>
 
@@ -186,28 +188,27 @@ const Step3Finalize = ({
             {[
               {
                 id: 'trackOpens',
-                title: 'Open Tracking',
-                desc: 'Monitor views',
+                title: t('campaigns.open_tracking'),
+                desc: t('campaigns.monitor_views'),
               },
               {
                 id: 'trackClicks',
-                title: 'Click Tracking',
-                desc: 'Monitor link activity',
+                title: t('campaigns.click_tracking'),
+                desc: t('campaigns.monitor_clicks'),
               },
               {
                 id: 'unsubscribeLink',
-                title: 'Unsubscribe Link',
-                desc: 'CAN-SPAM Compliance',
+                title: t('campaigns.ph_unsubscribe'),
+                desc: t('campaigns.unsubscribe_link_compliant'),
                 highlight: true,
               },
             ].map((setting) => (
               <label
                 key={setting.id}
-                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${
-                  setting.highlight
+                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${setting.highlight
                     ? 'bg-amber-50/30 border-amber-100 hover:border-amber-200'
                     : 'bg-white border-slate-100 hover:border-blue-200'
-                }`}
+                  }`}
               >
                 <div>
                   <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">
@@ -219,7 +220,7 @@ const Step3Finalize = ({
                 </div>
                 <div className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" {...register(setting.id)} className="sr-only peer" />
-                  <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
+                  <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
                 </div>
               </label>
             ))}
@@ -229,8 +230,7 @@ const Step3Finalize = ({
             <div className="flex gap-4">
               <Shield className="w-5 h-5 text-blue-600 shrink-0" />
               <p className="text-[10px] font-bold text-blue-800 leading-relaxed uppercase tracking-widest">
-                By launching, you agree to follow anti-spam laws and ensure you have permission to
-                contact these recipients.
+                {t('campaigns.compliance_agreement')}
               </p>
             </div>
           </div>

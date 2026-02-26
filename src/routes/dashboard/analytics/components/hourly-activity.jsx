@@ -9,18 +9,20 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import CustomTooltip from './custom-tooltip';
 
 const HourlyActivity = ({ data }) => {
+  const { t } = useTranslation();
   return (
     <div className="premium-card p-8 h-full flex flex-col">
       <div className="flex items-center justify-between mb-10">
         <div>
           <h3 className="text-xl font-black text-slate-900 tracking-tight">
-            Hourly <span className="text-amber-500">Activity</span>
+            {t('analytics.hourly_activity_title')} <span className="text-amber-500">{t('analytics.hourly_activity_span')}</span>
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-            Best times for engagement
+            {t('analytics.hourly_activity_subtitle')}
           </p>
         </div>
         <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center border border-amber-100 shadow-sm">
@@ -58,7 +60,7 @@ const HourlyActivity = ({ data }) => {
               strokeWidth={4}
               dot={{ r: 4, fill: '#fff', strokeWidth: 3, stroke: '#f59e0b' }}
               activeDot={{ r: 6, strokeWidth: 0, fill: '#f59e0b' }}
-              name="Volume"
+              name={t('analytics.stats')}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -66,9 +68,8 @@ const HourlyActivity = ({ data }) => {
 
       <div className="mt-8 p-4 bg-amber-50/50 rounded-2xl border border-amber-100/50">
         <p className="text-[10px] font-bold text-amber-700 leading-relaxed">
-          <span className="font-black uppercase tracking-widest mr-2">Peak Times:</span>
-          Engagement peaks between 09:00 - 11:00 UTC. Schedule your campaigns during this window for
-          best results.
+          <span className="font-black uppercase tracking-widest me-2">{t('analytics.peak_times_span')}</span>
+          {t('analytics.peak_times_description')}
         </p>
       </div>
     </div>

@@ -59,11 +59,11 @@ const ContentTab = ({ previews, placeholders, sampleRecipient, selectedRecipient
               </div>
             </div>
             <div className="relative rounded-4xl border border-slate-200/60 bg-white p-1 shadow-2xl shadow-slate-900/2 overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-indigo-500 via-purple-500 to-rose-500 opacity-20"></div>
+              <div className="absolute top-0 ltr:left-0 ltr:right-0 rtl:left-0 w-full h-1 bg-linear-to-r from-indigo-500 via-purple-500 to-rose-500 opacity-20"></div>
               <div className="p-8 min-h-100 bg-slate-50/30 rounded-[28px] overflow-auto custom-scrollbar">
                 <div
                   dangerouslySetInnerHTML={{ __html: previews.html }}
-                  className="prose max-w-none [&_p]:my-4 [&_p]:text-slate-700 [&_p]:leading-relaxed [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-5"
+                  className="prose max-w-none [&_p]:my-4 [&_p]:text-slate-700 [&_p]:leading-relaxed [&_ul]:my-4 [&_ul]:list-disc [&_ul]:ltr:pl-5 ltr:pr-5 rtl:pl-5 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:ltr:pl-5 ltr:pr-5 rtl:pl-5"
                 />
               </div>
             </div>
@@ -123,7 +123,7 @@ const ContentTab = ({ previews, placeholders, sampleRecipient, selectedRecipient
         </div>
 
         <div className="mt-10 p-6 bg-slate-900 rounded-4xl flex items-center gap-6 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] -mr-32 -mt-32"></div>
+          <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] -ltr:mr-32 rtl:ml-32 -mt-32"></div>
           <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-indigo-500/20 relative z-10">
             <ShieldCheck className="w-6 h-6" />
           </div>

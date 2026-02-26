@@ -3,14 +3,17 @@ import ShowSender from '../../../modals/showsender';
 import ShowBatchDetails from '../../../modals/showbatchdetails';
 import AudienceHeader from './components/audience-header';
 import AudienceTabs from './components/audience-tabs';
+import ShowSenderDetails from '../../../modals/showsenderdetails';
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import Dialog from '../../../components/ui/dialog';
+import { useTranslation } from 'react-i18next';
 
 // Hooks
 import { useAudienceData } from './hooks/use-audience-data';
 
 const Audience = () => {
+  const { t } = useTranslation();
   const {
     // State
     activeTab,
@@ -24,7 +27,9 @@ const Audience = () => {
     showUploadModal,
     showSenderModal,
     showBatchModal,
+    showSenderDetailsModal,
     selectedBatch,
+    selectedSender,
 
     // Data
     filteredBatches,
@@ -65,6 +70,8 @@ const Audience = () => {
     handleDeleteBatch: deleteBatchAction,
     openBatchDetails,
     closeBatchModal,
+    openSenderDetails,
+    closeSenderDetailsModal,
   } = useAudienceData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -149,6 +156,7 @@ const Audience = () => {
           handleDeleteSender={handleDeleteSender}
           handleTestSender={handleTestSender}
           openBatchDetails={openBatchDetails}
+          openSenderDetails={openSenderDetails}
           isDeletingBatch={isLoading.deletingBatch}
           isDeletingSender={isLoading.deletingSender}
           isTestingSender={isLoading.testingSender}
@@ -195,24 +203,35 @@ const Audience = () => {
         />
       )}
 
+      {showSenderDetailsModal && selectedSender && (
+        <ShowSenderDetails
+          sender={selectedSender}
+          onClose={closeSenderDetailsModal}
+          handleTestSender={handleTestSender}
+          handleDeleteSender={handleDeleteSender}
+          isTestingSender={isLoading.testingSender}
+          isDeletingSender={isLoading.deletingSender}
+        />
+      )}
+
       <Dialog
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         title={
           deleteContext?.type === 'sender'
-            ? 'Delete Sender'
+            ? t('audience.delete_sender_title')
             : deleteContext?.type === 'batch'
-              ? 'Delete Contact List'
-              : 'Delete Item'
+              ? t('audience.delete_list_title')
+              : t('audience.delete_item_title')
         }
         description={
           deleteContext?.type === 'sender' && deleteContext.sender
-            ? `Are u sure u want to selete ${deleteContext.sender.email} (${deleteContext.sender.type})? This action cannot be undone.`
+            ? t('audience.delete_sender_description', { email: deleteContext.sender.email, type: deleteContext.sender.type })
             : deleteContext?.type === 'batch'
-              ? 'Are u sure u want to selete this contact list? This action cannot be undone.'
+              ? t('audience.delete_list_description')
               : ''
         }
-        confirmText="Delete"
+        confirmText={t('common.delete')}
         confirmVariant="danger"
         isLoading={
           deleteContext?.type === 'sender'

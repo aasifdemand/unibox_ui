@@ -1,14 +1,10 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import ShowDelete from '../../../modals/showdelete';
-
-// Components
+import { useTranslation } from 'react-i18next';
 import CampaignsHeader from './components/campaign/campaigns-header';
 import CampaignStats from './components/campaign/campaign-stats';
 import CampaignFilters from './components/campaign/campaign-filters';
 import CampaignGridView from './components/campaign/campaign-grid-view';
 import CampaignListView from './components/campaign/campaign-list-view';
-
+import { motion, AnimatePresence } from 'motion/react';
 // Hooks
 import { useCampaignsData } from './hooks/use-campaigns-data';
 
@@ -54,6 +50,7 @@ const Campaigns = () => {
       handleBulkActivate,
     },
   } = useCampaignsData();
+  const { t } = useTranslation();
 
   if (isLoading && campaigns.length === 0) {
     return (
@@ -69,7 +66,7 @@ const Campaigns = () => {
           </div>
         </div>
         <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">
-          Loading campaigns...
+          {t('campaigns.loading_campaigns')}
         </p>
       </motion.div>
     );

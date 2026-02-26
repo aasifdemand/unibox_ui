@@ -118,7 +118,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center rotate-3 border border-slate-100">
                 <Reply className="w-10 h-10 text-slate-200" />
               </div>
-              <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 rotate-12">
+              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 rotate-12">
                 <ShieldCheck className="w-5 h-5 text-indigo-200" />
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, CheckCircle, Plus, RefreshCcw, Upload, Users, XCircle } from 'lucide-react';
 
 const AudienceHeader = ({
@@ -10,6 +11,7 @@ const AudienceHeader = ({
   invalid,
   risky,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="premium-card p-8 animate-in fade-in slide-in-from-top-4 duration-700">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
@@ -19,12 +21,12 @@ const AudienceHeader = ({
               <Users className="w-4 h-4 text-blue-600" />
             </div>
             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tighter">
-              Recipients & Senders
+              {t('audience.title')}
             </h1>
           </div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-            Manage your mailing lists and sending accounts
+            {t('audience.subtitle')}
           </p>
         </div>
 
@@ -37,7 +39,7 @@ const AudienceHeader = ({
               >
                 <RefreshCcw className="w-4 h-4" />
                 <span className="text-[10px] font-extrabold uppercase tracking-widest">
-                  Refresh
+                  {t('audience.refresh')}
                 </span>
               </button>
               <button
@@ -46,7 +48,7 @@ const AudienceHeader = ({
               >
                 <Upload className="w-4 h-4" />
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-white">
-                  Add Contacts
+                  {t('audience.add_contacts')}
                 </span>
               </button>
             </>
@@ -57,7 +59,7 @@ const AudienceHeader = ({
             >
               <Plus className="w-4 h-4" />
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-white">
-                Add Sender
+                {t('audience.add_sender')}
               </span>
             </button>
           )}
@@ -67,15 +69,15 @@ const AudienceHeader = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Stats Card */}
         <div className="relative overflow-hidden p-6 rounded-3xl bg-linear-to-br from-indigo-600 to-blue-700 text-white border-none shadow-2xl shadow-indigo-500/20 group cursor-pointer">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-125 transition-transform duration-700"></div>
+          <div className="absolute top-0 ltr:right-0 rtl:left-0 w-32 h-32 bg-white/10 rounded-full -ltr:mr-16 rtl:ml-16 -mt-16 blur-2xl group-hover:scale-125 transition-transform duration-700"></div>
           <p className="text-[10px] font-extrabold text-indigo-100/60 uppercase tracking-[0.2em] mb-4">
-            Total Contacts
+            {t('audience.total_contacts')}
           </p>
           <div className="flex items-end gap-3">
             <span className="text-3xl font-extrabold tracking-tight tabular-nums">
               {totalContacts.toLocaleString()}
             </span>
-            <span className="text-[10px] font-extrabold text-white/60 mb-1.5">RECIPIENTS</span>
+            <span className="text-[10px] font-extrabold text-white/60 mb-1.5">{t('audience.recipients_suffix')}</span>
           </div>
           <div className="mt-6 w-full h-1 bg-white/10 rounded-full overflow-hidden">
             <div className="h-full bg-white/40 w-full"></div>
@@ -89,11 +91,11 @@ const AudienceHeader = ({
               <CheckCircle className="w-5 h-5 text-emerald-600" />
             </div>
             <div className="px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest">
-              Valid
+              {t('audience.valid')}
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Active & Verified
+            {t('audience.active_verified')}
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {verified.toLocaleString()}
@@ -107,11 +109,11 @@ const AudienceHeader = ({
               <XCircle className="w-5 h-5 text-rose-600" />
             </div>
             <div className="px-2 py-0.5 bg-rose-50 text-rose-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest">
-              Invalid
+              {t('audience.invalid')}
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Bounced or Invalid
+            {t('audience.bounced_invalid')}
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {invalid.toLocaleString()}
@@ -125,11 +127,11 @@ const AudienceHeader = ({
               <AlertTriangle className="w-5 h-5 text-amber-600" />
             </div>
             <div className="px-2 py-0.5 bg-amber-50 text-amber-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest">
-              Risky
+              {t('audience.risky')}
             </div>
           </div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-            Needs Review
+            {t('audience.needs_review')}
           </p>
           <h3 className="text-2xl font-extrabold text-slate-800 tabular-nums leading-none">
             {risky.toLocaleString()}

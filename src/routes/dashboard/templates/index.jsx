@@ -11,11 +11,13 @@ import TemplateGrid from './components/template-grid';
 import EmptyState from './components/empty-state';
 import LoadingState from './components/loading-state';
 import ErrorState from './components/error-state';
+import { useTranslation } from 'react-i18next';
 
 const Templates = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [templateToDelete, setTemplateToDelete] = useState(null);
 
+  const { t } = useTranslation();
   const { state, data, setters, handlers, mutations } = useTemplatesData();
 
   const {
@@ -51,7 +53,7 @@ const Templates = () => {
         year: 'numeric',
       });
     } catch {
-      return 'Invalid date';
+      return t('common.invalid_date');
     }
   };
 
@@ -121,7 +123,7 @@ const Templates = () => {
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <div className="w-12 h-12 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin"></div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
-                Syncing Forge assets...
+                {t('templates.syncing')}
               </p>
             </div>
           )}
@@ -146,13 +148,13 @@ const Templates = () => {
       <Dialog
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
-        title="Delete Template"
+        title={t('templates.delete_title')}
         description={
           templateToDelete
-            ? `Are u sure u want to selete "${templateToDelete.name}"? This action cannot be undone.`
+            ? t('templates.delete_description', { name: templateToDelete.name })
             : ''
         }
-        confirmText="Delete"
+        confirmText={t('common.delete')}
         confirmVariant="danger"
         isLoading={mutations.deleteTemplate.isPending}
         onCancel={() => {

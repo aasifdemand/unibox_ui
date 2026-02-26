@@ -45,7 +45,7 @@ const Modal = ({ isOpen, onClose, children, maxWidth = 'max-w-6xl', closeOnBackd
             {onClose && (
               <button
                 onClick={onClose}
-                className="absolute top-6 right-6 p-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl transition-all z-50 group border border-white/10 hover:scale-110 active:scale-95"
+                className="absolute top-6 ltr:right-6 rtl:left-6 p-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl transition-all z-50 group border border-white/10 hover:scale-110 active:scale-95"
               >
                 <X className="w-5 h-5 text-white group-hover:rotate-90 transition-transform duration-300" />
               </button>

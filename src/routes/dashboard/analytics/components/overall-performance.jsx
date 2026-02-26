@@ -1,26 +1,28 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Target } from 'lucide-react';
 
 const OverallPerformance = ({ aggregates }) => {
+  const { t } = useTranslation();
   return (
     <div className="relative overflow-hidden premium-card bg-white p-8 md:p-10">
       {/* Abstract Background Elements */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-linear-to-l from-blue-500/5 to-transparent pointer-events-none"></div>
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-0 inset-inline-end-0 w-1/2 h-full bg-linear-to-inline-start from-blue-500/5 to-transparent pointer-events-none"></div>
+      <div className="absolute -bottom-24 -inset-inline-start-24 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-10">
         <div className="max-w-xs shrink-0">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full mb-4">
             <Target className="w-3.5 h-3.5 text-blue-400" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">
-              Overview
+              {t('common.overview')}
             </span>
           </div>
           <h3 className="text-3xl font-black tracking-tighter mb-2 text-slate-800">
-            Overall <span className="text-blue-500">Performance</span>
+            {t('analytics.overall_performance_title')} <span className="text-blue-500">{t('analytics.overall_performance_span')}</span>
           </h3>
           <p className="text-slate-500 text-sm font-medium leading-relaxed">
-            Key metrics across all your campaigns.
+            {t('analytics.overall_performance_description')}
           </p>
         </div>
 
@@ -28,7 +30,7 @@ const OverallPerformance = ({ aggregates }) => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="space-y-1">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                Total Sent
+                {t('analytics.sent')}
               </p>
               <p className="text-3xl font-black tracking-tight tabular-nums text-slate-800">
                 {aggregates.totalSent.toLocaleString()}
@@ -37,7 +39,7 @@ const OverallPerformance = ({ aggregates }) => {
             </div>
             <div className="space-y-1">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                Total Opens
+                {t('analytics.total_opens')}
               </p>
               <p className="text-3xl font-black tracking-tight tabular-nums text-slate-800">
                 {aggregates.totalOpens.toLocaleString()}
@@ -46,7 +48,7 @@ const OverallPerformance = ({ aggregates }) => {
             </div>
             <div className="space-y-1">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                Total Clicks
+                {t('analytics.total_clicks')}
               </p>
               <p className="text-3xl font-black tracking-tight tabular-nums text-slate-800">
                 {aggregates.totalClicks.toLocaleString()}
@@ -55,7 +57,7 @@ const OverallPerformance = ({ aggregates }) => {
             </div>
             <div className="space-y-1">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                Total Replies
+                {t('analytics.replies')}
               </p>
               <p className="text-3xl font-black tracking-tight tabular-nums text-slate-800">
                 {aggregates.totalReplied.toLocaleString()}
@@ -68,7 +70,7 @@ const OverallPerformance = ({ aggregates }) => {
             <div className="flex items-center gap-5">
               <div className="text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                  Open Rate
+                  {t('analytics.open_rate')}
                 </p>
                 <p className="text-xl font-black text-blue-600 tabular-nums">
                   {aggregates.avgOpenRate}%
@@ -84,7 +86,7 @@ const OverallPerformance = ({ aggregates }) => {
             <div className="flex items-center gap-5">
               <div className="text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                  Click Rate
+                  {t('analytics.click_rate')}
                 </p>
                 <p className="text-xl font-black text-amber-500 tabular-nums">
                   {aggregates.avgClickRate}%
@@ -100,7 +102,7 @@ const OverallPerformance = ({ aggregates }) => {
             <div className="flex items-center gap-5">
               <div className="text-center">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                  Reply Rate
+                  {t('analytics.reply_rate')}
                 </p>
                 <p className="text-xl font-black text-emerald-500 tabular-nums">
                   {aggregates.avgReplyRate}%

@@ -1,4 +1,5 @@
 import { AlertCircle, Loader2, Trash2, Shield } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Modal from '../components/shared/modal';
 
@@ -9,6 +10,7 @@ const ShowDelete = ({
   handleDelete,
   isDeleting,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       isOpen={showDeleteModal}
@@ -17,7 +19,7 @@ const ShowDelete = ({
       closeOnBackdrop={true}
     >
       <div className="bg-linear-to-br from-rose-600 to-red-700 p-6 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Trash2 className="w-16 h-16 text-white" />
         </div>
         <div className="relative flex items-center justify-between">
@@ -32,10 +34,10 @@ const ShowDelete = ({
             </motion.div>
             <div>
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-                Delete Campaign
+                {t('settings.delete.campaign_title')}
               </h3>
               <p className="text-[10px] font-bold text-rose-100/70 uppercase tracking-widest mt-0.5">
-                This action cannot be undone
+                {t('settings.delete.footer_note')}
               </p>
             </div>
           </div>
@@ -49,12 +51,10 @@ const ShowDelete = ({
           </div>
           <div>
             <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight mb-2">
-              Confirm Deletion
+              {t('common.confirm_deletion')}
             </h4>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Are you sure you want to delete{' '}
-              <span className="font-extrabold text-slate-800">&quot;{campaign?.name}&quot;</span>?
-              This campaign will be permanently removed and cannot be recovered.
+              {t('settings.delete.campaign_confirm', { name: campaign?.name })}
             </p>
           </div>
         </div>
@@ -64,8 +64,7 @@ const ShowDelete = ({
           <div className="flex gap-3">
             <Shield className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <p className="text-[11px] font-bold text-amber-700 leading-relaxed">
-              This will permanently delete all campaign data including statistics, sent emails, and
-              analytics. This action is irreversible.
+              {t('settings.delete.warning_data')}
             </p>
           </div>
         </div>
@@ -76,7 +75,7 @@ const ShowDelete = ({
             onClick={() => setShowDeleteModal(false)}
             className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
           >
-            Cancel
+            {t('common.cancel')}
           </button>
           <button
             onClick={handleDelete}
@@ -87,12 +86,12 @@ const ShowDelete = ({
               {isDeleting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  Deleting...
+                  {t('common.deleting')}
                 </>
               ) : (
                 <>
                   <Trash2 className="w-4 h-4" />
-                  Delete Campaign
+                  {t('settings.delete.campaign_title')}
                 </>
               )}
             </motion.div>
@@ -102,7 +101,7 @@ const ShowDelete = ({
         {/* Footer Note */}
         <div className="mt-6 pt-4 border-t border-slate-100">
           <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest text-center">
-            This action is permanent and cannot be reversed
+            {t('settings.delete.footer_note')}
           </p>
         </div>
       </div>

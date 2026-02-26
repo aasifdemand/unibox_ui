@@ -55,7 +55,7 @@ const Checkbox = ({
             {checked && (
               <Check
                 className="
-                  absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                  absolute ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
                   h-3.5 w-3.5 text-white pointer-events-none
                 "
               />
@@ -64,7 +64,7 @@ const Checkbox = ({
         </div>
 
         {label && (
-          <div className="ml-3">
+          <div className="ltr:ml-3 ltr:mr-3 rtl:ml-3">
             <label
               htmlFor={checkboxId}
               className={`
@@ -75,7 +75,7 @@ const Checkbox = ({
               `}
             >
               <span className="-mt-px">{label}</span>
-              {required && <span className="text-red-500 ml-1">*</span>}
+              {required && <span className="text-red-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
             </label>
 
             {helperText && !error && (

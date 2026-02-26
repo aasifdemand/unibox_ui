@@ -296,14 +296,14 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
         keepMarks: true,
         keepAttributes: true,
         HTMLAttributes: {
-          class: 'list-disc ml-4',
+          class: 'list-disc ltr:ml-4 ltr:mr-4 rtl:ml-4',
         },
       }),
       OrderedList.configure({
         keepMarks: true,
         keepAttributes: true,
         HTMLAttributes: {
-          class: 'list-decimal ml-4',
+          class: 'list-decimal ltr:ml-4 ltr:mr-4 rtl:ml-4',
         },
       }),
       ListItem,
@@ -320,7 +320,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
       TableRow,
       TableHeader.configure({
         HTMLAttributes: {
-          class: 'border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold',
+          class: 'border border-gray-300 bg-gray-100 px-4 py-2 ltr:text-left ltr:text-right rtl:text-left font-semibold',
         },
       }),
       TableCell.configure({
@@ -444,7 +444,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
   }
 
   return (
-    <div className="flex flex-col rounded-3xl border border-slate-200/60 overflow-hidden shadow-2xl bg-white group/editor">
+    <div className="flex flex-col h-full overflow-hidden bg-white group/editor">
       {/* Premium Toolbar */}
       <div className="flex flex-wrap items-center gap-2 p-4 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10 backdrop-blur-3xl">
         {/* Navigation Group */}
@@ -486,7 +486,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               </span>
             </button>
             {showFontPicker && (
-              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-64 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-64 animate-in fade-in zoom-in-95 duration-200">
                 <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
                   Font Family
                 </div>
@@ -498,7 +498,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
                         editor.chain().focus().setFontFamily(font).run();
                         setShowFontPicker(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
+                      className="w-full ltr:text-left ltr:text-right rtl:text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
                       style={{ fontFamily: font }}
                     >
                       {font}
@@ -522,7 +522,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               </span>
             </button>
             {showFontSizePicker && (
-              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-32 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-32 animate-in fade-in zoom-in-95 duration-200">
                 <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
                   Font Size
                 </div>
@@ -534,7 +534,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
                         editor.chain().focus().setFontSize(`${size}px`).run();
                         setShowFontSizePicker(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-xs font-black hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-2xl"
+                      className="w-full ltr:text-left ltr:text-right rtl:text-left px-4 py-2 text-xs font-black hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-2xl"
                     >
                       {size}PX
                     </button>
@@ -557,7 +557,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               </span>
             </button>
             {showColorPicker && (
-              <div className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-4 z-50 w-72 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-4 z-50 w-72 animate-in fade-in zoom-in-95 duration-200">
                 <div className="grid grid-cols-8 gap-2">
                   {COLORS.map((color) => (
                     <button
@@ -648,7 +648,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
           </button>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ltr:ml-auto ltr:mr-auto rtl:ml-auto flex items-center gap-2">
           <button
             type="button"
             onClick={() => setPreviewMode(!previewMode)}
@@ -855,7 +855,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
         {showTokens && (
           <div
             ref={tokenRef}
-            className="absolute bottom-16 right-6 z-50 animate-in slide-in-from-bottom-6 duration-300 w-full max-w-sm md:max-w-md lg:max-w-xl"
+            className="absolute bottom-16 ltr:right-6 rtl:left-6 z-50 animate-in slide-in-from-bottom-6 duration-300 w-full max-w-sm md:max-w-md lg:max-w-xl"
           >
             <PersonalizationTokens
               onInsertToken={insertToken}

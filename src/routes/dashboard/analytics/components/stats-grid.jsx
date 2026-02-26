@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { TrendingUp, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const StatsGrid = ({ stats }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
@@ -14,7 +16,7 @@ const StatsGrid = ({ stats }) => {
         >
           {/* Dynamic Decorative Elements */}
           <div
-            className={`absolute -right-6 -top-6 w-32 h-32 rounded-full opacity-[0.03] blur-2xl group-hover:opacity-10 transition-opacity bg-linear-to-br ${stat.color}`}
+            className={`absolute -inset-inline-end-6 -top-6 w-32 h-32 rounded-full opacity-[0.03] blur-2xl group-hover:opacity-10 transition-opacity bg-linear-to-br ${stat.color}`}
           ></div>
 
           <div className="flex items-center justify-between mb-6 relative z-10">
@@ -26,7 +28,7 @@ const StatsGrid = ({ stats }) => {
             <div className="px-2 py-1 bg-slate-50 border border-slate-100 rounded-lg flex items-center gap-1.5 transition-colors group-hover:bg-white group-hover:border-blue-100">
               <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
               <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">
-                Stats
+                {t('analytics.stats')}
               </span>
             </div>
           </div>
@@ -59,7 +61,7 @@ const StatsGrid = ({ stats }) => {
           <div className="mt-6 pt-5 border-t border-slate-50 relative z-10 overflow-hidden">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                Confidence
+                {t('analytics.confidence')}
               </span>
               <span className="text-[9px] font-extrabold text-blue-600">92%</span>
             </div>

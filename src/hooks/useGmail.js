@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { getPersistentFolders, setPersistentFolders } from '../routes/dashboard/mailboxes/utils/persistent-cache';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -184,7 +186,7 @@ export const useGmailMessageQuery = (mailboxId, messageId) => {
 
 // Get labels
 export const useGmailLabelsQuery = (mailboxId) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: gmailKeys.labels(mailboxId),
     queryFn: async () => {
       const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/labels`, {
@@ -196,7 +198,16 @@ export const useGmailLabelsQuery = (mailboxId) => {
     },
     staleTime: 10 * 60 * 1000,
     enabled: !!mailboxId,
+    placeholderData: () => getPersistentFolders('gmail', mailboxId),
   });
+
+  useEffect(() => {
+    if (query.data && !query.isPlaceholderData) {
+      setPersistentFolders('gmail', mailboxId, query.data);
+    }
+  }, [query.data, query.isPlaceholderData, mailboxId]);
+
+  return query;
 };
 
 // Get threads

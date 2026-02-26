@@ -1,13 +1,25 @@
-// routes/protected-route.jsx
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useCurrentUser } from '../hooks/useAuth';
-import DashboardLayout from '../layouts/dashboard.layout';
+
 
 const ProtectedRoute = () => {
-  const { data: user, isLoading } = useCurrentUser({
-    // Only fetch when accessing protected routes
+  const navigate = useNavigate();
+  const { data: user, isLoading, isError } = useCurrentUser({
     retry: false,
   });
+
+  useEffect(() => {
+    // ONLY redirect if we definitely know there's no user (success but null)
+    // Avoid redirecting on ERROR states (like CORS block) to prevent infinite loops
+    if (!isLoading && !isError) {
+      if (!user) {
+        navigate('/auth/login', { replace: true });
+      } else if (!user.isVerified) {
+        navigate('/auth/verify-account', { state: { email: user.email }, replace: true });
+      }
+    }
+  }, [user, isLoading, isError, navigate]);
 
   if (isLoading) {
     return (
@@ -17,18 +29,11 @@ const ProtectedRoute = () => {
     );
   }
 
-  // Not logged in → redirect to login
-  if (!user) {
-    return <Navigate to="/auth/login" replace />;
+  if (!user || !user.isVerified) {
+    return null;
   }
 
-  // Logged in but not verified → redirect to verification page
-  if (!user.isVerified) {
-    return <Navigate to="/auth/verify-account" state={{ email: user.email }} replace />;
-  }
-
-  // Logged in and verified → render dashboard layout with nested routes
-  return <DashboardLayout />;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

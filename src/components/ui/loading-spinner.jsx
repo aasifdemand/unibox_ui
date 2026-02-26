@@ -116,7 +116,7 @@ export const SkeletonLoader = ({ type = 'list', count = 3 }) => {
           <div key={i} className="bg-white rounded-2xl border border-gray-200/50 p-6 animate-pulse">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gray-200 rounded-xl mr-4"></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-xl ltr:mr-4 rtl:ml-4"></div>
                 <div className="space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-32"></div>
                   <div className="h-3 bg-gray-200 rounded w-24"></div>
@@ -145,8 +145,8 @@ export const SkeletonLoader = ({ type = 'list', count = 3 }) => {
       <div className="divide-y divide-gray-100">
         {Array.from({ length: count }).map((_, i) => (
           <div key={i} className="flex items-start p-4 animate-pulse">
-            <div className="w-5 h-5 bg-gray-200 rounded mr-3"></div>
-            <div className="w-10 h-10 bg-gray-200 rounded-full mr-4"></div>
+            <div className="w-5 h-5 bg-gray-200 rounded ltr:mr-3 rtl:ml-3"></div>
+            <div className="w-10 h-10 bg-gray-200 rounded-full ltr:mr-4 rtl:ml-4"></div>
             <div className="flex-1 space-y-2">
               <div className="flex justify-between">
                 <div className="h-4 bg-gray-200 rounded w-32"></div>

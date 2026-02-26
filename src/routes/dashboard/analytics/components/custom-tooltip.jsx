@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CustomTooltip = ({ active, payload, label }) => {
+  const { t } = useTranslation();
   if (active && payload && payload.length) {
     // Find specific data points for calculations
-    const sentItem = payload.find((p) => p.name.includes('Sent') || p.dataKey === 'sent');
+    const sentItem = payload.find((p) => p.name?.includes('Sent') || p.name?.includes('Enviados') || p.name?.includes('Envoyés') || p.dataKey === 'sent');
     const repliedItem = payload.find(
-      (p) => p.name.includes('Replied') || p.name.includes('Replies') || p.dataKey === 'replies',
+      (p) => p.name?.includes('Replied') || p.name?.includes('Replies') || p.name?.includes('Respuestas') || p.name?.includes('Réponses') || p.dataKey === 'replies',
     );
 
     const sentValue = sentItem?.value || 0;
@@ -41,7 +43,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           <div className="mt-5 pt-4 border-t border-slate-100/80 space-y-2">
             <div className="flex items-center justify-between gap-4">
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                Reply Rate
+                {t('analytics.reply_rate')}
               </span>
               <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100/50">
                 {replyRate}%

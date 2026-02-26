@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Download, Loader2, MessageCircle, Eye } from 'lucide-react';
 
 const RecentReplies = ({ replies, isLoading }) => {
+  const { t } = useTranslation();
   const handleExport = () => {
     if (!replies || !replies.length) return;
 
@@ -27,7 +29,7 @@ const RecentReplies = ({ replies, isLoading }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'recent-replies.csv';
+    a.download = `recent-replies-${new Date().toISOString().split('T')[0]}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -38,10 +40,10 @@ const RecentReplies = ({ replies, isLoading }) => {
       <div className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-50">
         <div>
           <h3 className="text-xl font-extrabold text-slate-800 tracking-tight">
-            Recent <span className="text-violet-500">Replies</span>
+            {t('analytics.recent_replies_title')} <span className="text-violet-500">{t('analytics.replies_span')}</span>
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-            Latest responses from recipients
+            {t('analytics.replies_subtitle')}
           </p>
         </div>
         <button
@@ -49,7 +51,7 @@ const RecentReplies = ({ replies, isLoading }) => {
           className="btn-secondary py-2 px-4 shadow-xs flex items-center gap-2"
         >
           <Download className="w-4 h-4 text-slate-400" />
-          <span className="text-[10px] font-extrabold uppercase tracking-widest">Export</span>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest">{t('common.export')}</span>
         </button>
       </div>
 
@@ -57,28 +59,28 @@ const RecentReplies = ({ replies, isLoading }) => {
         <div className="flex flex-col items-center justify-center py-20">
           <Loader2 className="w-10 h-10 animate-spin text-violet-500 mb-4" />
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-            Loading replies...
+            {t('analytics.loading_replies')}
           </p>
         </div>
       ) : replies?.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-start">
             <thead>
               <tr className="bg-slate-50/50">
                 <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  From
+                  {t('analytics.table_from')}
                 </th>
                 <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Subject
+                  {t('analytics.table_subject')}
                 </th>
                 <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Campaign
+                  {t('analytics.table_campaign')}
                 </th>
                 <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Date & Time
+                  {t('analytics.table_date_time')}
                 </th>
-                <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-right">
-                  Actions
+                <th className="py-4 px-8 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-end">
+                  {t('analytics.table_actions')}
                 </th>
               </tr>
             </thead>
@@ -91,10 +93,10 @@ const RecentReplies = ({ replies, isLoading }) => {
                         {reply.from?.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
-                        <p className="font-bold text-slate-800 group-hover:text-violet-600 transition-colors truncate max-w-37.5">
+                        <p className="font-bold text-slate-800 group-hover:text-violet-600 transition-colors whitespace-nowrap">
                           {reply.from}
                         </p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
                           {reply.recipientEmail}
                         </p>
                       </div>
@@ -128,7 +130,7 @@ const RecentReplies = ({ replies, isLoading }) => {
                       })}
                     </p>
                   </td>
-                  <td className="py-5 px-8 text-right">
+                  <td className="py-5 px-8 text-end">
                     <Link
                       to={`/dashboard/campaigns/${reply.campaignId}`}
                       className="p-2.5 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all inline-block"
@@ -146,9 +148,9 @@ const RecentReplies = ({ replies, isLoading }) => {
           <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-100 shadow-inner">
             <MessageCircle className="w-8 h-8 text-slate-300" />
           </div>
-          <h4 className="text-xl font-extrabold text-slate-800 mb-2">No Replies Yet</h4>
+          <h4 className="text-xl font-extrabold text-slate-800 mb-2">{t('analytics.no_replies_yet')}</h4>
           <p className="text-sm text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
-            When recipients reply to your campaigns, they&apos;ll appear here.
+            {t('analytics.no_replies_description')}
           </p>
         </div>
       )}

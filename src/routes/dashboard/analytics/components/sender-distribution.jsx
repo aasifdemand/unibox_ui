@@ -1,18 +1,20 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import CustomTooltip from './custom-tooltip';
 
 const SenderDistribution = ({ data, COLORS }) => {
+  const { t } = useTranslation();
   const totalEmails = data.reduce((sum, s) => sum + (Number(s.sent) || Number(s.value) || 0), 0);
 
   return (
     <div className="premium-card p-8 h-full flex flex-col">
       <div className="mb-8">
         <h3 className="text-xl font-black text-slate-900 tracking-tight">
-          Sender <span className="text-indigo-500">Distribution</span>
+          {t('analytics.sender_distribution_title')} <span className="text-indigo-500">{t('analytics.distribution_span')}</span>
         </h3>
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-          Breakdown by sender type
+          {t('analytics.distribution_subtitle')}
         </p>
       </div>
 
@@ -54,7 +56,7 @@ const SenderDistribution = ({ data, COLORS }) => {
             {/* Center Label */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                Total
+                {t('analytics.total')}
               </span>
               <span className="text-xl font-black text-slate-900 leading-none mt-1">
                 {totalEmails > 1000 ? `${(totalEmails / 1000).toFixed(1)}k` : totalEmails}
@@ -104,9 +106,9 @@ const SenderDistribution = ({ data, COLORS }) => {
                 </div>
 
                 <div className="flex justify-between mt-1.5 px-0.5">
-                  <span className="text-[10px] font-bold text-slate-400">{item.count} Active</span>
+                  <span className="text-[10px] font-bold text-slate-400">{t('analytics.active_suffix', { count: item.count })}</span>
                   <span className="text-[10px] font-bold text-slate-500">
-                    {(item.sent || 0).toLocaleString()} Sent
+                    {t('analytics.sent_suffix', { count: (item.sent || 0).toLocaleString() })}
                   </span>
                 </div>
               </div>
@@ -119,7 +121,7 @@ const SenderDistribution = ({ data, COLORS }) => {
             <PieChart className="w-8 h-8 opacity-20" />
           </div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-300">
-            Loading distribution data...
+            {t('analytics.loading_distribution')}
           </p>
         </div>
       )}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -16,16 +18,16 @@ import { useSenders } from '../../../hooks/useSenders';
 import { useBatches } from '../../../hooks/useBatches';
 import { unescapeHtml } from '../../../utils/html-utils';
 
-const campaignSchema = z
+const getCampaignSchema = (t) => z
   .object({
-    name: z.string().min(3, 'Campaign name must be at least 3 characters').max(100),
-    subject: z.string().min(5, 'Subject must be at least 5 characters').max(150),
-    previewText: z.string().max(200, 'Preview text is too long').optional(),
+    name: z.string().min(3, t('campaigns.err_name_min')).max(100),
+    subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
+    previewText: z.string().max(200, t('campaigns.err_preview_too_long')).optional(),
     htmlBody: z.string().optional(),
     textBody: z.string().optional(),
-    senderId: z.string().min(1, 'Please select a sender'),
+    senderId: z.string().min(1, t('campaigns.no_sender_selected')),
     senderType: z.enum(['gmail', 'outlook', 'smtp']),
-    listBatchId: z.string().min(1, 'Please select a recipient list'),
+    listBatchId: z.string().min(1, t('campaigns.no_list_selected')),
     scheduleType: z.enum(['now', 'later']),
     scheduledAt: z.string().optional(),
     timezone: z.string().default('UTC'),
@@ -40,7 +42,7 @@ const campaignSchema = z
       return data.htmlBody?.trim().length > 0 || data.textBody?.trim().length > 0;
     },
     {
-      message: 'Email content is required',
+      message: t('campaigns.err_content_req'),
       path: ['htmlBody'],
     },
   );
@@ -51,6 +53,8 @@ const CreateCampaign = () => {
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSender, setSelectedSender] = useState(null);
   const [editorMode, setEditorMode] = useState('html');
+  const { t } = useTranslation();
+  const campaignSchema = React.useMemo(() => getCampaignSchema(t), [t]);
 
   // React Query hooks
   const createCampaign = useCreateCampaign();
@@ -113,13 +117,13 @@ const CreateCampaign = () => {
   };
 
   const steps = [
-    { number: 1, title: 'Contacts', description: 'Who are you emailing?' },
+    { number: 1, title: t('campaigns.step_contacts'), description: t('campaigns.step_contacts_desc') },
     {
       number: 2,
-      title: 'Content',
-      description: 'Write your email',
+      title: t('campaigns.step_content'),
+      description: t('campaigns.step_content_desc'),
     },
-    { number: 3, title: 'Review', description: 'Final check & launch' },
+    { number: 3, title: t('campaigns.step_review'), description: t('campaigns.step_review_desc') },
   ];
 
   const nextStep = async (e) => {
@@ -164,8 +168,8 @@ const CreateCampaign = () => {
             : watchTextBody && watchTextBody.trim().length > 0;
 
         if (!hasContent) {
-          alert(
-            `Please add some content to your ${editorMode === 'html' ? 'HTML' : 'plain text'} email before proceeding.`,
+          toast.error(
+            t('campaigns.error_add_content', { mode: editorMode === 'html' ? 'HTML' : t('campaigns.plain_text') }),
           );
           return;
         }
@@ -193,12 +197,12 @@ const CreateCampaign = () => {
   const onSubmit = async (data) => {
     try {
       if (!data.listBatchId) {
-        alert('Please select a recipient list');
+        toast.error(t('campaigns.no_list_selected'));
         return;
       }
 
       if (!data.senderId || !data.senderType) {
-        alert('Please select a sender');
+        toast.error(t('campaigns.no_sender_selected'));
         return;
       }
 
@@ -220,12 +224,11 @@ const CreateCampaign = () => {
 
       await createCampaign.mutateAsync(campaignData);
 
-      navigate('/dashboard/campaigns', {
-        state: { message: 'Campaign created successfully!' },
-      });
+      toast.success(t('campaigns.msg_campaign_created'));
+      navigate('/dashboard/campaigns');
     } catch (error) {
       console.error('Failed to create campaign:', error);
-      alert(`Error creating campaign: ${error.message}`);
+      toast.error(t('campaigns.err_create_failed', { message: error.message }));
     }
   };
 
@@ -294,59 +297,47 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="w-full p-8  space-y-10 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-slate-100">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Send className="w-5 h-5 text-white" />
+    <div className="w-full min-h-screen bg-slate-50/50 p-6 md:p-12 animate-in fade-in duration-700">
+      <div className="max-w-6xl mx-auto space-y-10">
+        {/* Simplified Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/60">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <Send className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-3xl font-black text-slate-800 uppercase tracking-tighter">
-              Create Campaign
-            </h1>
-          </div>
-          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest ml-1">
-            Step {currentStep} of {steps.length}
-          </p>
-        </div>
-        <button
-          onClick={() => navigate('/dashboard/campaigns')}
-          className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 hover:border-rose-100 transition-all active:scale-95"
-        >
-          Cancel
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-        <div className="lg:col-span-1 space-y-8">
-          <CampaignStepper steps={steps} currentStep={currentStep} />
-
-          <div className="hidden lg:block p-8 rounded-[2.5rem] bg-linear-to-br from-indigo-600 to-blue-700 shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-              <Sparkles className="w-20 h-20 text-blue-400" />
-            </div>
-            <div className="relative">
-              <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">
-                Need Help?
-              </h4>
-              <p className="text-[10px] font-bold text-indigo-100/70 leading-relaxed uppercase tracking-tight">
-                Need a hand? Our guides can help you get started.
+            <div>
+              <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">
+                {watch('name') || t('campaigns.create_campaign')}
+              </h1>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                {t('campaigns.step_indicator', { current: currentStep, total: steps.length })}
               </p>
-              <button className="mt-6 w-full py-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl text-[9px] font-extrabold text-white uppercase tracking-widest transition-all">
-                Read Guide
-              </button>
             </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/dashboard/campaigns')}
+              className="px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-rose-500 hover:border-rose-200 transition-all active:scale-95 shadow-sm"
+            >
+              {t('common.cancel')}
+            </button>
           </div>
         </div>
 
-        <div className="lg:col-span-3">
+        {/* Horizontal Stepper */}
+        <div className="py-4">
+          <CampaignStepper steps={steps} currentStep={currentStep} />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="space-y-8">
           {createCampaign.error && (
-            <div className="mb-8 p-6 bg-rose-50 border-2 border-rose-100 rounded-4xl animate-in bounce-in duration-500">
+            <div className="p-6 bg-rose-50 border border-rose-100 rounded-3xl animate-in bounce-in duration-500">
               <div className="flex items-center gap-4">
                 <AlertCircle className="w-6 h-6 text-rose-500" />
                 <div>
-                  <p className="text-xs font-black text-rose-600 uppercase tracking-widest">
-                    Error
+                  <p className="text-[10px] font-black text-rose-600 uppercase tracking-widest">
+                    {t('common.error')}
                   </p>
                   <p className="text-sm font-bold text-rose-700">{createCampaign.error.message}</p>
                 </div>
@@ -354,7 +345,7 @@ const CreateCampaign = () => {
             </div>
           )}
 
-          <div className="bg-white/40 backdrop-blur-xl rounded-[3rem] border border-slate-200/60 shadow-2xl shadow-slate-200/40 p-10 relative overflow-hidden">
+          <div className="bg-white rounded-[2.5rem] border border-slate-200/60 shadow-xl shadow-slate-200/40 p-10 relative overflow-hidden">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="relative z-10"
@@ -374,9 +365,9 @@ const CreateCampaign = () => {
                       type="button"
                       onClick={prevStep}
                       disabled={createCampaign.isPending}
-                      className="px-8 py-4 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:border-slate-300 transition-all disabled:opacity-50"
+                      className="px-8 py-4 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:border-slate-400 transition-all disabled:opacity-50 shadow-sm"
                     >
-                      Back
+                      {t('common.back')}
                     </button>
                   )}
                 </div>
@@ -387,22 +378,22 @@ const CreateCampaign = () => {
                       type="button"
                       onClick={nextStep}
                       disabled={createCampaign.isPending}
-                      className="px-10 py-5 bg-linear-to-r from-indigo-600 to-blue-700 rounded-3xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50"
+                      className="px-10 py-5 bg-linear-to-r from-indigo-600 to-blue-700 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest text-white shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50"
                     >
-                      Continue to {steps[currentStep]?.title || 'Next Step'}
+                      {t('campaigns.continue_to', { step: steps[currentStep]?.title || t('campaigns.next_step') })}
                     </button>
                   ) : (
                     <button
                       type="submit"
                       disabled={createCampaign.isPending}
-                      className="px-12 py-5 bg-blue-600 rounded-3xl text-[11px] font-black uppercase tracking-widest text-white shadow-2xl shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+                      className="px-12 py-5 bg-blue-600 rounded-2xl text-[11px] font-black uppercase tracking-widest text-white shadow-2xl shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
                     >
                       {createCampaign.isPending ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
                       ) : (
                         <Zap className="w-5 h-5" />
                       )}
-                      {createCampaign.isPending ? 'Creating Campaign...' : 'Create Campaign'}
+                      {createCampaign.isPending ? t('campaigns.creating_campaign') : t('campaigns.create_campaign_btn')}
                     </button>
                   )}
                 </div>

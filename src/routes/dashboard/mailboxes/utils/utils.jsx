@@ -1,7 +1,9 @@
 // mailboxes/utils.js
 import { format, isToday, isYesterday, isThisWeek } from 'date-fns';
+import i18n from '../../../../i18n';
 import { Gmail } from '../../../../icons/gmail';
 import { MicrosoftOutlook } from '../../../../icons/outlook';
+import { Smtp } from '../../../../icons/smtp';
 import { Mail } from 'lucide-react';
 
 export const formatMessageDate = (message) => {
@@ -68,7 +70,7 @@ export const getSenderInfo = (message, isSent = false) => {
   }
   return {
     email,
-    name: name || email.split('@')[0] || 'Unknown',
+    name: name || email.split('@')[0] || i18n.t('mailboxes.unknown_sender', 'Unknown'),
     isSent: !!isSent,
   };
 };
@@ -77,12 +79,12 @@ export const getSubject = (message) => {
   try {
     if (message?.subject) return message.subject;
     if (message?.payload?.headers) {
-      return message.payload.headers.find((h) => h.name === 'Subject')?.value || '(no subject)';
+      return message.payload.headers.find((h) => h.name === 'Subject')?.value || i18n.t('mailboxes.no_subject', '(no subject)');
     }
   } catch (e) {
     console.error('Error getting subject:', e);
   }
-  return '(no subject)';
+  return i18n.t('mailboxes.no_subject', '(no subject)');
 };
 
 export const getFullMessageBody = (message) => {
@@ -217,16 +219,16 @@ export const getPreview = (message) => {
 
 export const getInitials = (name) => name?.charAt(0)?.toUpperCase() || '?';
 
-export const getProviderIcon = (type) => {
+export const getProviderIcon = (type, className = "w-6 h-6") => {
   switch (type) {
     case 'gmail':
-      return <Gmail className="w-6 h-6" />;
+      return <Gmail className={className} />;
     case 'outlook':
-      return <MicrosoftOutlook className="w-6 h-6" />;
+      return <MicrosoftOutlook className={className} />;
     case 'smtp':
-      return <Mail className="w-6 h-6 text-green-500" />;
+      return <Smtp className={className} />;
     default:
-      return <Mail className="w-6 h-6 text-gray-500" />;
+      return <Mail className={`${className} text-gray-500`} />;
   }
 };
 

@@ -4,7 +4,7 @@ import { AlertCircle } from 'lucide-react';
 const ErrorState = ({ error, onRetry }) => {
   return (
     <div className="premium-card bg-rose-50 border-rose-100 p-8 mb-10 animate-in fade-in slide-in-from-top-4 duration-500">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:ltr:text-left ltr:text-right rtl:text-left">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="w-16 h-16 rounded-3xl bg-rose-100 flex items-center justify-center border border-rose-200 shadow-xl shadow-rose-500/10">
             <AlertCircle className="w-8 h-8 text-rose-600" />

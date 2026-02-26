@@ -1,7 +1,8 @@
-import React from 'react';
 import { Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Stats = ({ templates }) => {
+  const { t } = useTranslation();
   const formatDate = (dateString) => {
     try {
       return new Date(dateString).toLocaleDateString('en-US', {
@@ -10,7 +11,7 @@ const Stats = ({ templates }) => {
         year: 'numeric',
       });
     } catch {
-      return 'Never Updated';
+      return t('templates.never_updated');
     }
   };
 
@@ -22,27 +23,27 @@ const Stats = ({ templates }) => {
   const averageVariables =
     totalTemplatesCount > 0
       ? Math.round(
-          templates.reduce((sum, t) => sum + (t.variables?.length || 0), 0) / totalTemplatesCount,
-        )
+        templates.reduce((sum, t) => sum + (t.variables?.length || 0), 0) / totalTemplatesCount,
+      )
       : 0;
 
-  const lastUpdated = totalTemplatesCount > 0 ? formatDate(templates[0].updatedAt) : 'Never';
+  const lastUpdated = totalTemplatesCount > 0 ? formatDate(templates[0].updatedAt) : t('templates.never');
 
   return (
     <div className="premium-card bg-linear-to-br from-indigo-600 to-blue-700 rounded-[2.5rem] p-10 shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full -mr-32 -mt-32 blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+      <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-blue-600/10 rounded-full -ltr:mr-32 rtl:ml-32 -mt-32 blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
 
       <div className="relative">
         <h3 className="text-sm font-extrabold uppercase tracking-[0.2em] text-slate-500 mb-10 flex items-center gap-3">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-          Template Statistics
+          {t('templates.stats_overview')}
         </h3>
 
         <div className="space-y-10">
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                Active Templates
+                {t('templates.active_templates')}
               </span>
               <span className="text-2xl font-extrabold text-white tabular-nums">
                 {activeTemplatesCount}
@@ -59,7 +60,7 @@ const Stats = ({ templates }) => {
           <div>
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                Avg. Variables per Template
+                {t('templates.avg_variables')}
               </span>
               <span className="text-2xl font-extrabold text-white tabular-nums">
                 {averageVariables}
@@ -78,7 +79,7 @@ const Stats = ({ templates }) => {
           <div className="pt-8 border-t border-slate-700/50">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                Last Updated
+                {t('templates.last_updated')}
               </span>
               <span className="text-[10px] font-extrabold text-blue-400 uppercase tracking-widest">
                 {lastUpdated}
@@ -94,11 +95,10 @@ const Stats = ({ templates }) => {
             </div>
             <div>
               <p className="text-[10px] font-extrabold text-white uppercase tracking-widest mb-1">
-                Pro Tip
+                {t('templates.pro_tip')}
               </p>
               <p className="text-xs font-medium text-slate-400 leading-relaxed">
-                Use variables like {'{{first_name}}'} to personalize your emails and improve
-                engagement.
+                {t('templates.pro_tip_desc')}
               </p>
             </div>
           </div>

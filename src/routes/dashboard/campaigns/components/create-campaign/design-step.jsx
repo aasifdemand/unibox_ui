@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileText, Layout, Loader2, Database, Tag, User, X } from 'lucide-react';
 import Input from '../../../../../components/ui/input';
 import HtmlEmailEditor from '../../../../../components/shared/html-editor';
@@ -6,74 +7,74 @@ import { useTemplates } from '../../../../../hooks/useTemplate';
 import { Link } from 'react-router-dom';
 import Button from '../../../../../components/ui/button';
 
-const PLACEHOLDER_SUGGESTIONS = [
+const getPlaceholders = (t) => [
   {
     key: 'first_name',
-    label: 'First Name',
+    label: t('campaigns.ph_first_name'),
     example: 'John',
-    category: 'Basic',
+    category: t('campaigns.cat_basic'),
   },
-  { key: 'last_name', label: 'Last Name', example: 'Doe', category: 'Basic' },
+  { key: 'last_name', label: t('campaigns.ph_last_name'), example: 'Doe', category: t('campaigns.cat_basic') },
   {
     key: 'name',
-    label: 'Full Name',
+    label: t('campaigns.ph_full_name'),
     example: 'John Doe',
-    category: 'Basic',
+    category: t('campaigns.cat_basic'),
   },
   {
     key: 'email',
-    label: 'Email',
+    label: t('campaigns.ph_email'),
     example: 'john@example.com',
-    category: 'Basic',
+    category: t('campaigns.cat_basic'),
   },
   {
     key: 'company',
-    label: 'Company',
+    label: t('campaigns.ph_company'),
     example: 'Acme Inc',
-    category: 'Professional',
+    category: t('campaigns.cat_professional'),
   },
   {
     key: 'job_title',
-    label: 'Job Title',
+    label: t('campaigns.ph_job_title'),
     example: 'Marketing Manager',
-    category: 'Professional',
+    category: t('campaigns.cat_professional'),
   },
-  { key: 'city', label: 'City', example: 'New York', category: 'Location' },
+  { key: 'city', label: t('campaigns.ph_city'), example: 'New York', category: t('campaigns.cat_location') },
   {
     key: 'country',
-    label: 'Country',
+    label: t('campaigns.ph_country'),
     example: 'USA',
-    category: 'Location',
+    category: t('campaigns.cat_location'),
   },
   {
     key: 'phone',
-    label: 'Phone',
+    label: t('campaigns.ph_phone'),
     example: '+1 234 567 890',
-    category: 'Contact',
+    category: t('campaigns.cat_contact'),
   },
   {
     key: 'role',
-    label: 'Role / Job Title',
+    label: t('campaigns.ph_role'),
     example: 'CEO',
-    category: 'Professional',
+    category: t('campaigns.cat_professional'),
   },
   {
     key: 'industry',
-    label: 'Industry',
+    label: t('campaigns.ph_industry'),
     example: 'Software',
-    category: 'Professional',
+    category: t('campaigns.cat_professional'),
   },
   {
     key: 'sender_name',
-    label: 'Sender Name',
+    label: t('campaigns.ph_sender_name'),
     example: 'Your Name',
-    category: 'System',
+    category: t('campaigns.cat_system'),
   },
   {
     key: 'unsubscribe_link',
-    label: 'Unsubscribe Link',
+    label: t('campaigns.ph_unsubscribe'),
     example: '[unsubscribe link]',
-    category: 'System',
+    category: t('campaigns.cat_system'),
   },
 ];
 
@@ -87,6 +88,7 @@ const Step1Design = ({
   selectedBatch,
   selectedSender, // Add this prop
 }) => {
+  const { t } = useTranslation();
   const [showSubjectSuggestions, setShowSubjectSuggestions] = useState(false);
   const [subjectInputValue, setSubjectInputValue] = useState('');
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -137,18 +139,18 @@ const Step1Design = ({
 
   // Add sender_name to available columns
   const allPlaceholders = useMemo(() => {
-    const placeholders = [...PLACEHOLDER_SUGGESTIONS];
+    const placeholders = getPlaceholders(t);
 
     // Add dynamic columns from batch
     const dynamicItems = availableColumns.map((col) => {
       const lowerCol = col.toLowerCase().replace(/\s+/g, '_');
-      const existing = PLACEHOLDER_SUGGESTIONS.find((s) => s.key === lowerCol);
+      const existing = placeholders.find((s) => s.key === lowerCol);
       if (existing) return existing;
       return {
         key: lowerCol,
         label: col,
         example: `[${col}]`,
-        category: 'Custom Field',
+        category: t('campaigns.cat_custom'),
       };
     });
 
@@ -242,10 +244,10 @@ const Step1Design = ({
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                Start with a Template
+                {t('campaigns.start_with_template')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Choose from your saved library
+                {t('campaigns.choose_library')}
               </p>
             </div>
           </div>
@@ -253,7 +255,7 @@ const Step1Design = ({
             to="/dashboard/templates"
             className="px-4 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all border-2 border-slate-50 hover:border-blue-100 hover:bg-blue-50/50"
           >
-            Library
+            {t('campaigns.library')}
           </Link>
         </div>
 
@@ -262,7 +264,7 @@ const Step1Design = ({
             <div className="flex flex-col items-center justify-center py-8 gap-3">
               <Loader2 className="w-6 h-6 animate-spin text-blue-500/20" />
               <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest">
-                Loading...
+                {t('campaigns.loading')}
               </p>
             </div>
           ) : templates.length > 0 ? (
@@ -296,10 +298,10 @@ const Step1Design = ({
           ) : (
             <div className="text-center py-10 bg-slate-50/50 rounded-3xl border-2 border-dashed border-slate-100">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4 italic">
-                No templates found
+                {t('campaigns.no_templates')}
               </p>
               <Link to="/dashboard/templates/create">
-                <Button className="rounded-2xl px-8">Create One</Button>
+                <Button className="rounded-2xl px-8">{t('campaigns.create_one')}</Button>
               </Link>
             </div>
           )}
@@ -309,8 +311,8 @@ const Step1Design = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
           <Input
-            label="Campaign Name"
-            placeholder="e.g., Growth Campaign"
+            label={t('campaigns.campaign_name')}
+            placeholder={t('campaigns.campaign_name_placeholder')}
             {...register('name')}
             error={errors.name?.message}
             required
@@ -320,14 +322,14 @@ const Step1Design = ({
           <div className="relative group">
             <div className="flex items-center justify-between mb-2 px-1">
               <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                Subject Line *
+                {t('campaigns.subject_line')} *
               </label>
               <button
                 type="button"
                 onClick={() => setShowSubjectSuggestions(!showSubjectSuggestions)}
                 className="text-[9px] font-extrabold uppercase tracking-widest text-blue-600 flex items-center gap-1.5"
               >
-                <Tag className="w-3 h-3" /> Insert Variable
+                <Tag className="w-3 h-3" /> {t('campaigns.insert_variable')}
               </button>
             </div>
             <div className="relative">
@@ -341,11 +343,10 @@ const Step1Design = ({
                   if (e.key === 'Enter') e.preventDefault();
                 }}
                 onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
-                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${
-                  errors.subject
-                    ? 'border-rose-100 text-rose-600'
-                    : 'border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500'
-                }`}
+                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${errors.subject
+                  ? 'border-rose-100 text-rose-600'
+                  : 'border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500'
+                  }`}
                 placeholder="e.g., Hi {{first_name}}!"
               />
               {showSubjectSuggestions && (
@@ -355,7 +356,7 @@ const Step1Design = ({
                 >
                   <div className="flex items-center justify-between mb-4 px-2">
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      Variables
+                      {t('campaigns.variables')}
                     </span>
                     <button
                       onClick={() => setShowSubjectSuggestions(false)}
@@ -374,7 +375,7 @@ const Step1Design = ({
                           <button
                             key={item.key}
                             onClick={() => insertPlaceholder(item.key)}
-                            className="w-full text-left px-3 py-2 hover:bg-slate-50 rounded-xl flex items-center justify-between group/item transition-all"
+                            className="w-full ltr:text-left ltr:text-right rtl:text-left px-3 py-2 hover:bg-slate-50 rounded-xl flex items-center justify-between group/item transition-all"
                           >
                             <span className="font-mono text-[10px] text-blue-600 font-bold">
                               {'{{'}
@@ -404,10 +405,10 @@ const Step1Design = ({
               </div>
               <div>
                 <h4 className="text-[11px] font-extrabold text-slate-800 uppercase tracking-widest">
-                  Personalization
+                  {t('campaigns.personalization')}
                 </h4>
                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">
-                  Variables available for this campaign
+                  {t('campaigns.avail_variables')}
                 </p>
               </div>
             </div>
@@ -447,7 +448,7 @@ const Step1Design = ({
                 </div>
                 <div>
                   <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    Active Sender
+                    {t('campaigns.active_sender')}
                   </p>
                   <p className="text-xs font-bold text-slate-800">{selectedSender.displayName}</p>
                 </div>
@@ -465,10 +466,10 @@ const Step1Design = ({
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                Message Content
+                {t('campaigns.message_content')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                Design your email sequence
+                {t('campaigns.design_sequence')}
               </p>
             </div>
           </div>
@@ -478,13 +479,12 @@ const Step1Design = ({
               <button
                 key={mode}
                 onClick={() => setEditorMode(mode)}
-                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${
-                  editorMode === mode
-                    ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
-                    : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${editorMode === mode
+                  ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                  : 'text-slate-400 hover:text-slate-600'
+                  }`}
               >
-                {mode === 'html' ? 'Canvas' : 'Raw Text'}
+                {mode === 'html' ? t('campaigns.canvas_mode') : t('campaigns.raw_text_mode')}
               </button>
             ))}
           </div>
@@ -500,7 +500,7 @@ const Step1Design = ({
                   fieldName: col.toLowerCase().replace(/\s+/g, '_'),
                   displayName: col,
                 })),
-                { fieldName: 'sender_name', displayName: 'Sender Name' },
+                { fieldName: 'sender_name', displayName: t('campaigns.ph_sender_name') },
               ]}
             />
           ) : (
@@ -508,12 +508,12 @@ const Step1Design = ({
               {...register('htmlBody')}
               rows={15}
               className="w-full p-8 bg-slate-900 text-slate-300 font-mono text-sm border-0 focus:ring-0 resize-none outline-none"
-              placeholder="Start typing your email here... Use {{sender_name}} for the sender's name"
+              placeholder={t('campaigns.body_placeholder')}
             />
           )}
         </div>
         {errors.htmlBody && (
-          <p className="text-xs font-bold text-rose-500 uppercase tracking-widest ml-4">
+          <p className="text-xs font-bold text-rose-500 uppercase tracking-widest ltr:ml-4 ltr:mr-4 rtl:ml-4">
             {errors.htmlBody.message}
           </p>
         )}

@@ -3,6 +3,7 @@ import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
+import i18n from '../../../../i18n';
 
 // ============================================================================
 // PAGINATION HOOK
@@ -92,7 +93,7 @@ export const useMessageFilters = ({
         const email = match ? match[1] : from;
         const nameMatch = from.match(/^([^<]+)/);
         const name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
-        return { name: name || email.split('@')[0] || 'Unknown' };
+        return { name: name || email.split('@')[0] || i18n.t('mailboxes.unknown_sender', 'Unknown') };
       }
       if (message?.from?.emailAddress) {
         return {
@@ -105,19 +106,19 @@ export const useMessageFilters = ({
     } catch (e) {
       console.error('Error parsing sender:', e);
     }
-    return { name: 'Unknown' };
+    return { name: i18n.t('mailboxes.unknown_sender', 'Unknown') };
   };
 
   const getSubject = (message) => {
     try {
       if (message?.subject) return message.subject;
       if (message?.payload?.headers) {
-        return message.payload.headers.find((h) => h.name === 'Subject')?.value || '(no subject)';
+        return message.payload.headers.find((h) => h.name === 'Subject')?.value || i18n.t('mailboxes.no_subject', '(no subject)');
       }
     } catch (e) {
       console.error('Error getting subject:', e);
     }
-    return '(no subject)';
+    return i18n.t('mailboxes.no_subject', '(no subject)');
   };
 
   const getPreview = (message) => {
@@ -335,7 +336,7 @@ export const useTokenWarning = (selectedMailbox, onRefresh) => {
       toast(
         (t) => (
           <div className="flex items-center">
-            <AlertCircle className="w-5 h-5 text-yellow-500 mr-3" />
+            <AlertCircle className="w-5 h-5 text-yellow-500 ltr:mr-3 rtl:ml-3" />
             <div>
               <p className="font-medium">Token expiring soon</p>
               <p className="text-sm text-gray-600">

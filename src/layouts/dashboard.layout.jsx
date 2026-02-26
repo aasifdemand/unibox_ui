@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -19,6 +20,7 @@ import {
   PanelLeftOpen,
 } from 'lucide-react';
 import Sidebar from '../components/shared/sidebar';
+import LanguageSwitcher from '../components/shared/language-switcher';
 import { useCurrentUser } from '../hooks/useAuth';
 import { useCampaigns } from '../hooks/useCampaign';
 import { useTemplates } from '../hooks/useTemplate';
@@ -26,6 +28,7 @@ import { useBatches } from '../hooks/useBatches';
 import { useMailboxes } from '../hooks/useMailboxes';
 
 const DashboardLayout = () => {
+  const { t } = useTranslation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -75,41 +78,41 @@ const DashboardLayout = () => {
   }, 0);
 
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { icon: BarChart3, label: 'Analytics', path: '/dashboard/analytics' },
+    { icon: LayoutDashboard, label: t('common.dashboard'), path: '/dashboard' },
+    { icon: BarChart3, label: t('common.analytics'), path: '/dashboard/analytics' },
     {
       icon: Mailbox,
-      label: 'Mailboxes',
+      label: t('common.mailboxes'),
       path: '/dashboard/mailboxes',
       badge: unreadMailCount > 0 ? unreadMailCount.toString() : null,
     },
     {
       icon: Mail,
-      label: 'Campaigns',
+      label: t('common.campaigns'),
       path: '/dashboard/campaigns',
       badge: campaigns.length > 0 ? campaigns.length.toString() : null,
     },
     {
       icon: Users,
-      label: 'Audience',
+      label: t('common.audience'),
       path: '/dashboard/audience',
       badge: batches.length > 0 ? batches.length.toString() : null,
     },
     {
       icon: FileText,
-      label: 'Templates',
+      label: t('common.templates'),
       path: '/dashboard/templates',
       badge: templates.length > 0 ? templates.length.toString() : null,
     },
-    { icon: CreditCard, label: 'Subscription', path: '/dashboard/subscription' },
-    { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
+    { icon: CreditCard, label: t('common.subscription'), path: '/dashboard/subscription' },
+    { icon: Settings, label: t('common.settings'), path: '/dashboard/settings' },
   ];
 
   // Derive active item for breadcrumbs
   const activeItem = navItems.find((item) => {
     if (item.path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(item.path);
-  }) || { label: 'System', icon: LayoutDashboard };
+  }) || { label: t('common.system'), icon: LayoutDashboard };
 
   // Filtered search results
   const searchResults = useMemo(() => {
@@ -122,7 +125,7 @@ const DashboardLayout = () => {
         .map((c) => ({
           id: `c-${c.id}`,
           name: c.name,
-          type: 'Campaign',
+          type: t('common.campaign_singular', 'Campaign'),
           path: `/dashboard/campaigns/${c.id}`,
           icon: <Mail className="w-4 h-4" />,
         })),
@@ -134,16 +137,16 @@ const DashboardLayout = () => {
         .map((m) => ({
           id: `m-${m.id}`,
           name: m.displayName || m.email,
-          type: 'Mailbox',
+          type: t('common.mailbox_singular', 'Mailbox'),
           path: `/dashboard/mailboxes`,
           icon: <Mailbox className="w-4 h-4" />,
         })),
       ...templates
-        .filter((t) => t.name?.toLowerCase().includes(query))
-        .map((t) => ({
-          id: `t-${t.id}`,
-          name: t.name,
-          type: 'Template',
+        .filter((tmpl) => tmpl.name?.toLowerCase().includes(query))
+        .map((tmpl) => ({
+          id: `t-${tmpl.id}`,
+          name: tmpl.name,
+          type: t('common.template_singular', 'Template'),
           path: `/dashboard/templates`,
           icon: <FileText className="w-4 h-4" />,
         })),
@@ -156,7 +159,7 @@ const DashboardLayout = () => {
         .map((b) => ({
           id: `b-${b.id}`,
           name: b.name || b.originalFilename,
-          type: 'Audience',
+          type: t('common.audience_singular', 'Audience'),
           path: `/dashboard/audience`,
           icon: <Users className="w-4 h-4" />,
         })),
@@ -175,7 +178,7 @@ const DashboardLayout = () => {
 
       {/* Main Framework */}
       <div
-        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'pl-20' : 'pl-70'}`}
+        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'ltr:pl-20 rtl:pr-20' : 'ltr:pl-70 rtl:pr-70'}`}
       >
         {/* Superior Header - High Glassmorphism */}
         <header className="sticky top-0 z-40 h-20 px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2">
@@ -192,7 +195,7 @@ const DashboardLayout = () => {
               ) : (
                 <PanelLeftClose className="w-5 h-5" />
               )}
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <span className="absolute -bottom-8 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 {sidebarCollapsed ? 'Expand sidebar (⌘+B)' : 'Collapse sidebar (⌘+B)'}
               </span>
             </button>
@@ -204,7 +207,7 @@ const DashboardLayout = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">
-                    Navigation /
+                    {t('common.navigation')} /
                   </span>
                   <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-[0.2em] leading-none mb-1">
                     {user?.name}
@@ -216,11 +219,11 @@ const DashboardLayout = () => {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center h-8 px-4 border-l border-slate-200 ml-2">
+            <div className="hidden lg:flex items-center h-8 px-4 ltr:border-l ltr:border-r rtl:border-l border-slate-200 ltr:ml-2 ltr:mr-2 rtl:ml-2">
               <div className="flex items-center gap-2 bg-blue-50/50 px-3 py-1 rounded-full border border-blue-100/50 transition-all hover:bg-blue-50">
                 <Zap className="w-3.5 h-3.5 text-blue-500" />
                 <span className="text-[10px] font-extrabold text-blue-700 uppercase tracking-widest whitespace-nowrap">
-                  Live Monitoring Active
+                  {t('common.live_monitoring')}
                 </span>
               </div>
             </div>
@@ -230,7 +233,7 @@ const DashboardLayout = () => {
           <div className="flex items-center gap-6">
             {/* Search - Unified Command style */}
             <div className="hidden xl:flex relative group" ref={searchRef}>
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+              <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -240,10 +243,10 @@ const DashboardLayout = () => {
                   setShowSearchResults(true);
                 }}
                 onFocus={() => setShowSearchResults(searchQuery.length > 0)}
-                placeholder="Command + K to search..."
-                className="pl-12 pr-4 py-2.5 w-[320px] bg-slate-100/50 border border-slate-200/60 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 focus:outline-none focus:shadow-2xl focus:shadow-blue-500/5 transition-all duration-300"
+                placeholder={t('common.search') + "..."}
+                className="ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-2.5 w-[320px] bg-slate-100/50 border border-slate-200/60 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 focus:outline-none focus:shadow-2xl focus:shadow-blue-500/5 transition-all duration-300"
               />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <span className="px-1.5 py-0.5 rounded-md border border-slate-200 bg-white text-[9px] font-extrabold text-slate-400 shadow-xs leading-none">
                   ⌘
                 </span>
@@ -254,9 +257,9 @@ const DashboardLayout = () => {
 
               {/* Search Results Dropdown */}
               {showSearchResults && searchResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-300">
                   <div className="px-4 py-2 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50 mb-2">
-                    Quick Results
+                    {t('common.quick_results', 'Quick Results')}
                   </div>
                   <div className="max-h-80 overflow-y-auto px-2 space-y-1">
                     {searchResults.map((result) => (
@@ -267,7 +270,7 @@ const DashboardLayout = () => {
                           setSearchQuery('');
                           setShowSearchResults(false);
                         }}
-                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all text-left group"
+                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all ltr:text-left ltr:text-right rtl:text-left group"
                       >
                         <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
                           {result.icon}
@@ -286,23 +289,24 @@ const DashboardLayout = () => {
               )}
 
               {showSearchResults && searchQuery && searchResults.length === 0 && (
-                <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 p-8 z-50 text-center animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-slate-200 p-8 z-50 text-center animate-in fade-in slide-in-from-top-2 duration-300">
                   <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Search className="w-6 h-6 text-slate-300" />
                   </div>
-                  <p className="text-sm font-bold text-slate-800">No results found</p>
+                  <p className="text-sm font-bold text-slate-800">{t('common.no_results_found', 'No results found')}</p>
                   <p className="text-xs text-slate-500 mt-1">
-                    Try searching for campaigns or mailboxes
+                    {t('common.empty_search_unified', 'Try searching for campaigns or mailboxes')}
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="flex items-center gap-2 pr-4 border-r border-slate-200/60">
+            <div className="flex items-center gap-2 ltr:pr-4 rtl:pl-4 ltr:border-r rtl:border-l border-slate-200/60">
+              <LanguageSwitcher />
               <button className="w-10 h-10 rounded-xl hover:bg-slate-100/80 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90 group relative">
                 <Bell className="w-5 h-5" />
                 {unreadMailCount > 0 && (
-                  <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+                  <span className="absolute top-2 ltr:right-2 rtl:left-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
                 )}
               </button>
               <button className="w-10 h-10 rounded-xl hover:bg-slate-100/80 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90">
@@ -311,14 +315,14 @@ const DashboardLayout = () => {
             </div>
 
             {/* Micro Stats Card */}
-            <div className="hidden sm:flex flex-col text-right">
+            <div className="hidden sm:flex flex-col ltr:text-right rtl:text-left">
               <span className="text-xs font-extrabold text-slate-800 leading-none">
                 {user?.name?.split(' ')[0] || 'Aasif'} Inbox
               </span>
               <div className="flex items-center justify-end gap-1.5 mt-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]"></div>
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  Active
+                  {t('common.active')}
                 </span>
               </div>
             </div>
@@ -360,7 +364,7 @@ const DashboardLayout = () => {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
                 <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
-                  Global Status: Operational
+                  Global Status: {t('common.operational')}
                 </span>
               </div>
               <div className="flex items-center gap-6">
@@ -368,19 +372,19 @@ const DashboardLayout = () => {
                   href="#"
                   className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
                 >
-                  Documentation
+                  {t('common.documentation')}
                 </a>
                 <a
                   href="#"
                   className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
                 >
-                  Privacy
+                  {t('common.privacy')}
                 </a>
                 <a
                   href="#"
                   className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
                 >
-                  Terms
+                  {t('common.terms')}
                 </a>
               </div>
             </div>

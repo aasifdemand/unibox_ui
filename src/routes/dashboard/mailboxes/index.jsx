@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useMailboxesData } from './hooks/use-mailboxes-data';
 import Header from './components/header';
@@ -13,6 +14,7 @@ import Dialog from '../../../components/ui/dialog';
 import Pagination from './components/pagination';
 
 const Mailboxes = () => {
+  const { t } = useTranslation();
   const { state, data, isLoading, error, setters, handlers, utils } = useMailboxesData();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -119,14 +121,14 @@ const Mailboxes = () => {
       {error && (
         <div className="mx-6 mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
           <div className="flex items-center">
-            <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
+            <AlertCircle className="w-5 h-5 text-red-600 me-3" />
             <p className="text-sm text-red-700">{error.message}</p>
           </div>
           <button
             onClick={handlers.handleResetQueries}
             className="text-sm text-red-600 hover:text-red-800 font-medium"
           >
-            Dismiss
+            {t('mailboxes.dismiss')}
           </button>
         </div>
       )}
@@ -261,9 +263,9 @@ const Mailboxes = () => {
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                 <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
               </div>
-              <h3 className="text-lg font-bold text-slate-800">Loading Conversation...</h3>
+              <h3 className="text-lg font-bold text-slate-800">{t('mailboxes.loading_conversation')}</h3>
               <p className="text-sm text-slate-500 mt-2 font-medium">
-                Fetching encrypted message content
+                {t('mailboxes.fetching_content')}
               </p>
             </motion.div>
           )}
@@ -303,23 +305,23 @@ const Mailboxes = () => {
         setOpen={setDeleteDialogOpen}
         title={
           deleteContext?.type === 'disconnect'
-            ? 'Disconnect Mailbox'
+            ? t('mailboxes.disconnect_title')
             : deleteContext?.type === 'bulkDelete'
-              ? 'Delete Messages'
+              ? t('mailboxes.delete_messages_title')
               : deleteContext?.type === 'bulkSenderDelete'
-                ? 'Delete Mailboxes'
-                : 'Confirm Action'
+                ? t('mailboxes.delete_mailboxes_title')
+                : t('mailboxes.confirm_action')
         }
         description={
           deleteContext?.type === 'disconnect'
-            ? 'Are u sure u want to selete this mailbox connection? This action cannot be undone.'
+            ? t('mailboxes.disconnect_description')
             : deleteContext?.type === 'bulkDelete'
-              ? `Are u sure u want to selete ${deleteContext.count || 0} messages? This action cannot be undone.`
+              ? t('mailboxes.delete_messages_description', { count: deleteContext.count })
               : deleteContext?.type === 'bulkSenderDelete'
-                ? `Are u sure u want to delete ${deleteContext.count || 0} mailboxes? This will permanently remove them from your account.`
+                ? t('mailboxes.delete_mailboxes_description', { count: deleteContext.count })
                 : ''
         }
-        confirmText="Confirm"
+        confirmText={t('mailboxes.confirm')}
         confirmVariant="danger"
         isLoading={false}
         onCancel={() => {
