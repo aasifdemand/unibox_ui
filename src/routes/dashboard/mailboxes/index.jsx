@@ -69,54 +69,56 @@ const Mailboxes = () => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-50">
-      <Header
-        view={state.view}
-        selectedMailbox={state.selectedMailbox}
-        selectedFolder={state.selectedFolder}
-        currentMessage={data.currentMessage}
-        mailboxesCount={data.mailboxes.length}
-        getFolderUnreadCount={data.getFolderUnreadCount}
-        filterUnread={state.filterUnread}
-        filterStarred={state.filterStarred}
-        filterAttachments={state.filterAttachments}
-        totalMessages={state.totalMessages}
-        startMessageCount={data.startMessageCount}
-        endMessageCount={data.endMessageCount}
-        getSubject={utils.getSubject}
-        onBack={
-          state.view === 'message' ? handlers.handleBackToMessages : handlers.handleBackToMailboxes
-        }
-        onRefresh={handlers.refetchMailboxes}
-        isLoading={isLoading.isMailboxes}
-        onCompose={handlers.handleCompose}
-        onSync={handlers.handleSync}
-        isSyncing={isLoading.isSyncing}
-        onFilterUnread={() => setters.setFilterUnread(!state.filterUnread)}
-        filterUnreadActive={state.filterUnread}
-        onRefreshToken={handlers.handleRefreshToken}
-        showRefreshToken={state.selectedMailbox?.type !== 'smtp'}
-        onDisconnect={handleRequestDisconnect}
-        selectedMessages={state.selectedMessages}
-        onBulkMarkRead={handlers.handleBulkMarkRead}
-        onBulkMarkUnread={handlers.handleBulkMarkUnread}
-        onBulkDelete={handleRequestBulkDelete}
-        onClearSelection={() => setters.setSelectedMessages([])}
-        mailboxType={state.selectedMailbox?.type}
-        onReply={() => handlers.handleReply(data.currentMessage)}
-        onForward={() => handlers.handleForward(data.currentMessage)}
-        onDeleteMessage={() => handlers.handleDeleteMessage(state.currentMessageId)}
-        showMessageActions={state.view === 'message'}
-        mailboxViewMode={state.mailboxViewMode}
-        onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
-        mailboxSearch={state.mailboxSearch}
-        onMailboxSearchChange={handlers.handleMailboxSearchChange}
-        mailboxTypeFilter={state.mailboxTypeFilter}
-        onMailboxTypeChange={handlers.handleMailboxTypeChange}
-        selectedSenderIds={state.selectedSenderIds}
-        onBulkSenderDelete={handleRequestBulkSenderDelete}
-        onClearSenderSelection={() => setters.setSelectedSenderIds([])}
-      />
+    <div className="w-full h-full flex flex-col bg-slate-50 min-w-0">
+      {state.view !== 'message' && (
+        <Header
+          view={state.view}
+          selectedMailbox={state.selectedMailbox}
+          selectedFolder={state.selectedFolder}
+          currentMessage={data.currentMessage}
+          mailboxesCount={data.mailboxes.length}
+          getFolderUnreadCount={data.getFolderUnreadCount}
+          filterUnread={state.filterUnread}
+          filterStarred={state.filterStarred}
+          filterAttachments={state.filterAttachments}
+          totalMessages={state.totalMessages}
+          startMessageCount={data.startMessageCount}
+          endMessageCount={data.endMessageCount}
+          getSubject={utils.getSubject}
+          onBack={
+            state.view === 'message' ? handlers.handleBackToMessages : handlers.handleBackToMailboxes
+          }
+          onRefresh={handlers.refetchMailboxes}
+          isLoading={isLoading.isMailboxes}
+          onCompose={handlers.handleCompose}
+          onSync={handlers.handleSync}
+          isSyncing={isLoading.isSyncing}
+          onFilterUnread={() => setters.setFilterUnread(!state.filterUnread)}
+          filterUnreadActive={state.filterUnread}
+          onRefreshToken={handlers.handleRefreshToken}
+          showRefreshToken={state.selectedMailbox?.type !== 'smtp'}
+          onDisconnect={handleRequestDisconnect}
+          selectedMessages={state.selectedMessages}
+          onBulkMarkRead={handlers.handleBulkMarkRead}
+          onBulkMarkUnread={handlers.handleBulkMarkUnread}
+          onBulkDelete={handleRequestBulkDelete}
+          onClearSelection={() => setters.setSelectedMessages([])}
+          mailboxType={state.selectedMailbox?.type}
+          onReply={() => handlers.handleReply(data.currentMessage)}
+          onForward={() => handlers.handleForward(data.currentMessage)}
+          onDeleteMessage={() => handlers.handleDeleteMessage(state.currentMessageId)}
+          showMessageActions={state.view === 'message'}
+          mailboxViewMode={state.mailboxViewMode}
+          onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
+          mailboxSearch={state.mailboxSearch}
+          onMailboxSearchChange={handlers.handleMailboxSearchChange}
+          mailboxTypeFilter={state.mailboxTypeFilter}
+          onMailboxTypeChange={handlers.handleMailboxTypeChange}
+          selectedSenderIds={state.selectedSenderIds}
+          onBulkSenderDelete={handleRequestBulkSenderDelete}
+          onClearSenderSelection={() => setters.setSelectedSenderIds([])}
+        />
+      )}
 
       {error && (
         <div className="mx-6 mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
@@ -133,7 +135,7 @@ const Mailboxes = () => {
         </div>
       )}
 
-      <div className="flex-1 overflow-hidden relative">
+      <div className="flex-1 overflow-hidden relative min-w-0">
         <AnimatePresence mode="wait">
           {state.view === 'list' && (
             <motion.div

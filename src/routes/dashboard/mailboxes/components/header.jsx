@@ -171,7 +171,7 @@ const Header = ({
                   placeholder={t('mailboxes.search_mailboxes')}
                   value={mailboxSearch}
                   onChange={(e) => onMailboxSearchChange(e.target.value)}
-                  className="w-full px-3 bg-transparent text-sm font-bold placeholder:text-slate-400 focus:outline-none text-slate-700"
+                  className="w-full px-3 bg-transparent text-sm font-medium placeholder:font-medium placeholder:text-slate-400 focus:outline-none text-slate-700"
                 />
               </div>
 

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -42,6 +43,15 @@ h5,
 h6 {
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.02em;
+}
+
+
+a,
+p,
+li,
+span {
+  font-family: "Poppins", sans-serif;
+  letter-spacing: -0.03em;
 }
 
 .premium-card {
@@ -198,17 +208,25 @@ body.modal-open {
   line-height: 1.6;
   color: var(--text-main);
   word-wrap: break-word;
+  overflow-wrap: break-word;
   white-space: normal;
+  /* Prevent any child from blowing out the container horizontally */
+  min-width: 0;
+  overflow-x: hidden;
 }
 
+/* Override any inline width/height attributes set by email clients */
 .mail-content-html img {
-  max-width: 100%;
-  height: auto;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block;
 }
 
 .mail-content-html a {
   color: var(--primary);
   text-decoration: underline;
+  word-break: break-all;
 }
 
 .mail-content-html blockquote {
@@ -219,9 +237,28 @@ body.modal-open {
   margin-bottom: 1em;
 }
 
+/* Constrain tables — many marketing emails use fixed-width tables */
 .mail-content-html table {
-  max-width: 100%;
+  max-width: 100% !important;
+  width: auto !important;
   border-collapse: collapse;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.mail-content-html td,
+.mail-content-html th {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Don't let pre/code blocks overflow */
+.mail-content-html pre,
+.mail-content-html code {
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: hidden;
 }
 
 .mail-content-html p {

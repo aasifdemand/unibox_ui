@@ -15,8 +15,64 @@ import {
 } from 'lucide-react';
 import { formatFileSize } from '../utils/utils';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { getMessageId } from '../utils/getmessage-id';
+
+const SafeHtmlRenderer = ({ htmlContent }) => {
+  const iframeRef = useRef(null);
+  const [height, setHeight] = useState('400px');
+
+  // Inject styles to prevent the iframe content from hiding overflow 
+  // or bleeding heights in a way that breaks scroll calculations
+  const safeContent = `${htmlContent}
+<style>
+  html, body { height: auto !important; min-height: 0 !important; overflow: visible !important; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important; }
+</style>`;
+
+  const updateHeight = () => {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      try {
+        const body = iframeRef.current.contentWindow.document.body;
+        const html = iframeRef.current.contentWindow.document.documentElement;
+
+        // Let it layout first, then measure
+        setTimeout(() => {
+          if (!iframeRef.current) return;
+          const newHeight = Math.max(
+            body.scrollHeight || 0,
+            body.offsetHeight || 0,
+            html.clientHeight || 0,
+            html.scrollHeight || 0,
+            html.offsetHeight || 0
+          );
+          if (newHeight > 0) {
+            setHeight(`${newHeight + 30}px`); // Add slight padding
+          }
+        }, 100);
+      } catch (err) {
+        setHeight('800px');
+      }
+    }
+  };
+
+  useEffect(() => {
+    setHeight('400px');
+  }, [htmlContent]);
+
+  return (
+    <iframe
+      ref={iframeRef}
+      srcDoc={safeContent}
+      onLoad={updateHeight}
+      title="Message Content"
+      className="w-full border-none outline-none bg-transparent mail-iframe"
+      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin"
+      style={{ height, minHeight: '400px', display: 'block' }}
+      scrolling="no"
+    />
+  );
+};
 
 const MessageDetailView = ({
   message,
@@ -194,7 +250,7 @@ const MessageDetailView = ({
     });
 
     flushBlockquote();
-    return <div className="text-slate-700 leading-relaxed font-sans">{elements}</div>;
+    return <div className="text-slate-700 leading-relaxed font-sans break-words whitespace-pre-wrap overflow-hidden">{elements}</div>;
   };
 
   const renderMessageBody = () => {
@@ -249,7 +305,9 @@ const MessageDetailView = ({
     // Priority 1: Direct HTML property (Common for SMTP and updated models)
     if (message?.html) {
       return (
-        <div className="mail-content-html prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: message.html }} />
+        <div className="mail-content-html w-full max-w-none">
+          <SafeHtmlRenderer htmlContent={message.html} />
+        </div>
       );
     }
 
@@ -258,7 +316,7 @@ const MessageDetailView = ({
       if (message?.payload?.body?.data) {
         const content = decodeGmailData(message.payload.body.data);
         if (isHtmlContent(content)) {
-          return <div className="mail-content-html prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: content }} />;
+          return <div className="mail-content-html w-full max-w-none"><SafeHtmlRenderer htmlContent={content} /></div>;
         }
         return formatPlainText(content);
       }
@@ -268,7 +326,9 @@ const MessageDetailView = ({
           const content = decodeGmailData(bodyPart.data);
           if (bodyPart.mimeType === 'text/html' || isHtmlContent(content)) {
             return (
-              <div className="mail-content-html prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
+              <div className="mail-content-html w-full max-w-none">
+                <SafeHtmlRenderer htmlContent={content} />
+              </div>
             );
           }
           return formatPlainText(content);
@@ -282,10 +342,9 @@ const MessageDetailView = ({
         const content = message.body.content;
         if (message.body.contentType === 'html' || isHtmlContent(content)) {
           return (
-            <div
-              className="mail-content-html prose prose-slate max-w-none"
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
+            <div className="mail-content-html w-full max-w-none">
+              <SafeHtmlRenderer htmlContent={content} />
+            </div>
           );
         }
         return formatPlainText(content);
@@ -299,7 +358,7 @@ const MessageDetailView = ({
     if (message?.text || message?.body) {
       const content = message.text || message.body;
       if (isHtmlContent(content)) {
-        return <div className="mail-content-html prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: content }} />;
+        return <div className="mail-content-html w-full max-w-none"><SafeHtmlRenderer htmlContent={content} /></div>;
       }
       return formatPlainText(content);
     }
@@ -423,8 +482,8 @@ const MessageDetailView = ({
       </div>
 
       {/* Message Content Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-8">
-        <div dir="auto" className="max-w-5xl mx-auto space-y-8">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 min-w-0">
+        <div dir="auto" className="max-w-5xl mx-auto space-y-8 min-w-0 w-full overflow-hidden">
           {/* Sender & Context Header */}
           <div className="premium-card p-6 md:p-10 bg-white relative overflow-hidden group">
             {/* Background Decorative Element */}
@@ -548,8 +607,8 @@ const MessageDetailView = ({
           )}
 
           {/* Main Message Body - Premium Canvas */}
-          <div className="premium-card bg-white min-h-100 overflow-hidden">
-            <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-3 flex items-center justify-between">
+          <div className="premium-card bg-white min-h-100 min-w-0">
+            <div className="bg-slate-50/50 border-b border-slate-100 px-8 py-3 flex items-center justify-between overflow-hidden">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-slate-200"></div>
                 <div className="w-2 h-2 rounded-full bg-slate-200"></div>
@@ -559,7 +618,7 @@ const MessageDetailView = ({
                 {t('mailboxes.email_content_canvas')}
               </div>
             </div>
-            <div className="p-8 md:p-12 prose max-w-none text-slate-800">{renderMessageBody()}</div>
+            <div className="p-8 md:p-12 prose max-w-none text-slate-800 overflow-x-auto">{renderMessageBody()}</div>
           </div>
 
           {/* Quick Footer */}

@@ -169,7 +169,7 @@ const DashboardLayout = () => {
   }, [searchQuery, campaigns, mailboxes, templates, batches]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900">
       <Sidebar
         sidebarCollapsed={sidebarCollapsed}
         setSidebarCollapsed={setSidebarCollapsed}

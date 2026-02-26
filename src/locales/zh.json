@@ -173,6 +173,10 @@
         "account_expires": "帐户到期 {{date}}",
         "prefix_to": "致：",
         "new_badge": "新",
+        "stats_total": "Total Senders",
+        "stats_active": "Active Now",
+        "stats_attention": "Needs Attention",
+        "stats_health": "System Health",
         "search_placeholder": "搜索所有邮箱中的邮件...",
         "all_types": "所有类型",
         "gmail": "邮箱",
@@ -581,7 +585,7 @@
         "never_updated": "从未更新",
         "never": "从来没有",
         "pro_tip": "专业提���",
-        "pro_tip_desc": "Use variables like {{first_name}} to personalize your emails and improve engagement."
+        "pro_tip_desc": "使用 {{first_name}} 等变量来个性化您的电子邮件并提高参与度。"
     },
     "settings": {
         "title": "账户设置",
@@ -665,8 +669,8 @@
                 "add": "添加发件人",
                 "none": "找不到发件人。",
                 "provider": "{{type}} 提供者",
-                "verified": "Verified",
-                "pending": "Pending"
+                "verified": "已验证",
+                "pending": "待处理"
             },
             "templates": {
                 "title": "电子邮件模板",
@@ -861,7 +865,7 @@
                 "name": "模板名称",
                 "subject": "电子邮件主题",
                 "placeholder_name": "例如欢迎系列 - 第一天",
-                "placeholder_subject": "e.g. Hello {{first_name}}, welcome to our platform!",
+                "placeholder_subject": "例如【V0】您好，欢迎来到我们的平台！",
                 "placeholder_content": "在此输入您的电子邮件内容...使用 {{sender_name}} 作为发件人姓名"
             },
             "labels": {

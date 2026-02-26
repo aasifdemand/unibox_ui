@@ -173,6 +173,10 @@
         "account_expires": "Account verloopt {{date}}",
         "prefix_to": "Aan:",
         "new_badge": "Nieuw",
+        "stats_total": "Totaal aantal afzenders",
+        "stats_active": "Nu actief",
+        "stats_attention": "Heeft aandacht nodig",
+        "stats_health": "Systeemstatus",
         "search_placeholder": "Zoek berichten in alle mailboxen...",
         "all_types": "Alle typen",
         "gmail": "Gmail",
@@ -797,7 +801,7 @@
                 "placeholder_host_smtp": "smtp.voorbeeld.com",
                 "placeholder_host_imap": "imap.voorbeeld.com",
                 "placeholder_port_smtp": "openen 587",
-                "placeholder_port_imap": "993",
+                "placeholder_port_imap": "openen 993",
                 "placeholder_pass": "••••••••"
             },
             "tabs": {

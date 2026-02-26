@@ -173,6 +173,10 @@
         "account_expires": "บัญชีหมดอายุ {{date}}",
         "prefix_to": "ถึง:",
         "new_badge": "ใหม่",
+        "stats_total": "ผู้ส่งทั้งหมด",
+        "stats_active": "ใช้งานอยู่ตอนนี้",
+        "stats_attention": "ต้องการความสนใจ",
+        "stats_health": "ความสมบูรณ์ของระบบ",
         "search_placeholder": "ค้นหาข้อความในกล่องจดหมายทั้งหมด...",
         "all_types": "ทุกประเภท",
         "gmail": "Gmail",
@@ -1018,8 +1022,8 @@
             "unlimited_volume": "Unlimited sending volume",
             "dedicated_manager": "Dedicated success manager",
             "custom_warming": "Custom IP warming",
-            "sso_security": "SSO & advanced security",
-            "sla": "SLA guarantee"
+            "sso_security": "SSO และการรักษาความปลอดภัยขั้นสูง",
+            "sla": "การรับประกันสแอลเอ"
         }
     },
     "analytics": {
