@@ -65,7 +65,7 @@
         }
     },
     "auth": {
-        "copyright": "©{{वर्ष}} यूनिबॉक्स। सर्वाधिकार सुरक्षित।",
+        "copyright": "© [वि0] यूनीबॉक्स। सर्वाधिकार सुरक्षित।",
         "login": {
             "title": "स्वागत है",
             "title_span": "वापस",
@@ -119,10 +119,10 @@
         "mail": "मेल",
         "boxes": "बक्से",
         "conversation": "बातचीत",
-        "connected_accounts": "{{गिनती}} जुड़े हुए खाते",
+        "connected_accounts": "{{count}} जुड़े हुए खाते",
         "priority": "प्राथमिकता",
         "unread_focus": "अपठित फोकस",
-        "displaying_count": "{{कुल}} का {{प्रारंभ}}-{{अंत}} प्रदर्शित करना",
+        "displaying_count": "{{total}} में से {{start}}-{{end}} प्रदर्शित करना",
         "search_mailboxes": "मेलबॉक्स खोजें...",
         "all_providers": "सभी प्रदाता",
         "gmail_provider": "जीमेल",
@@ -135,7 +135,7 @@
         "delete_selected_mailboxes": "चयनित मेलबॉक्स हटाएं",
         "workspace": "कार्यक्षेत्र",
         "collapse": "पतन",
-        "more_folders": "+{{गिनती}} अधिक",
+        "more_folders": "+{{count}} और अधिक",
         "messages_search_placeholder": "प्रश्न प्रेषक, विषय या खुफिया कीवर्ड...",
         "temporal_all": "अस्थायी: सभी",
         "temporal_today": "अस्थायी: आज",
@@ -154,7 +154,7 @@
         "empty_unread": "कोई अपठित संदेश नहीं",
         "empty_starred": "कोई तारांकित संदेश नहीं",
         "empty_attachments": "अनुलग्नकों के साथ कोई संदेश नहीं",
-        "empty_folder": "{{नाम}} खाली है",
+        "empty_folder": "{{name}} खाली है",
         "empty_inbox": "इनबॉक्स खाली है",
         "no_mailboxes": "कोई मेलबॉक्स नहीं",
         "linked_yet": "अभी तक जुड़ा हुआ है",
@@ -170,7 +170,7 @@
         "volume_today": "आज",
         "sync_idle": "निष्क्रिय",
         "todays_volume": "आज का अंक",
-        "account_expires": "खाता {{दिनांक}}",
+        "account_expires": "खाता समाप्त हो रहा है {{date}}",
         "prefix_to": "समाप्त हो रहा है को:",
         "new_badge": "नया",
         "search_placeholder": "सभी मेलबॉक्सों में संदेश खोजें...",
@@ -226,8 +226,8 @@
         "cc_label": "सीसी",
         "pinned_message": "पिन किया गया संदेश",
         "priority_inbox_label": "प्राथमिकता इनबॉक्स",
-        "account_type_label": "{{प्रकार}} खाता",
-        "attached_media_assets": "संलग्न मीडिया परिसंपत्तियाँ ({{गिनती}})",
+        "account_type_label": "को प्राप्त हुआ [वि0] खाता",
+        "attached_media_assets": "संलग्न मीडिया संपत्ति ({{count}})",
         "email_content_canvas": "ईमेल सामग्री कैनवास",
         "end_of_thread": "वार्तालाप सूत्र का अंत",
         "delete_selected": "चयनित हटाएँ",
@@ -249,7 +249,7 @@
         "live_content_canvas": "लाइव सामग्री कैनवास",
         "preview_style": "पूर्वावलोकन शैली",
         "high_fidelity": "उच्च निष्ठा",
-        "attachments_count": "अनुलग्नक ({{गिनती}})",
+        "attachments_count": "अनुलग्नक ({{count}})",
         "attach_file": "फ़ाइल संलग्न करें",
         "attach_image": "छवि संलग्न करें",
         "hide_preview": "पूर्वावलोकन छिपाएँ",
@@ -276,7 +276,7 @@
         "search_placeholder": "खोज अभियान...",
         "grid_view": "जालक दृश्य",
         "list_view": "सूची दृश्य",
-        "selected_count": "{{गिनती}} अभियान चयनित",
+        "selected_count": "{{count}} अभियान चयनित",
         "no_campaigns_found": "कोई अभियान नहीं मिला",
         "no_matches": "कोई भी अभियान आपके खोज मापदंड से मेल नहीं खाता।",
         "empty_creation_hint": "अपना पहला ईमेल अभियान बनाकर आरंभ करें.",
@@ -295,13 +295,13 @@
         "step_content_desc": "अपना ईमेल लिखें",
         "step_review": "समीक्षा",
         "step_review_desc": "अंतिम जाँच एवं प्रक्षेपण",
-        "error_add_content": "कृपया आगे बढ़ने से पहले अपने {{मोड}} ईमेल में कुछ सामग्री जोड़ें।",
+        "error_add_content": "कृपया आगे बढ़ने से पहले अपने {{mode}} ईमेल में कुछ सामग्री जोड़ें।",
         "plain_text": "सादा पाठ",
-        "step_indicator": "{{कुल}} का चरण {{वर्तमान}}",
+        "step_indicator": "{{total}} का चरण {{current}}",
         "help_get_started": "एक हाथ चाहिए? हमारे मार्गदर्शक आरंभ करने में आपकी सहायता कर सकते हैं.",
         "creating_campaign": "अभियान बनाया जा रहा है...",
         "next_step": "अगला कदम",
-        "continue_to": "{{चरण}}",
+        "continue_to": "{{step}}",
         "start_with_template": "जारी रखें एक टेम्पलेट से प्रारंभ करें",
         "choose_library": "अपनी सहेजी गई लाइब्रेरी में से चुनें",
         "library": "पुस्तकालय",
@@ -360,7 +360,7 @@
         "msg_upload_success": "सफलतापूर्वक अपलोड हो गया!",
         "msg_upload_failed": "अपलोड विफल रहा. कृपया पुन: प्रयास करें।",
         "msg_smtp_success": "एसएमटीपी प्रेषक सफलतापूर्वक बनाया गया!",
-        "msg_smtp_failed": "विफल: {{संदेश}}",
+        "msg_smtp_failed": "तक जारी रखें विफल: {{message}}",
         "campaign_summary": "अभियान स���रांश",
         "review_settings": "लॉन्च से पहले अपनी सेटिंग्स की समीक्षा करें",
         "ready_to_send": "भेजने के लिए तैयार",
@@ -391,7 +391,7 @@
         "err_preview_too_long": "पूर्वावलोकन पाठ बहुत लंबा है",
         "err_content_req": "ईमेल सामग्री आवश्यक है",
         "msg_campaign_created": "अभियान सफलतापूर्वक बनाया गया!",
-        "err_create_failed": "अभियान बनाने में त्रुटि: {{संदेश}}",
+        "err_create_failed": "अभियान बनाने में त्रुटि: {{message}}",
         "create_campaign_btn": "अभियान बनाएं"
     },
     "dashboard": {
@@ -408,17 +408,17 @@
         "loading_data": "डैशबोर्ड डेटा लोड हो रहा है...",
         "stats": {
             "total_campaigns": "कुल अभियान",
-            "this_month": "+{{गिनती}} इस महीने",
-            "campaigns_desc": "{{सक्रिय}}सक्रिय, {{अनुसूचित}}अनुसूचित",
+            "this_month": "+[वि0] इस माह",
+            "campaigns_desc": "{{active}} सक्रिय, {{scheduled}} अनुसूचित",
             "open_rate": "खुली दर",
-            "total_opens": "{{गिनती}} कुल खुलता है",
-            "sent_desc": "{{गिनती}} ईमेल भेजे गए",
+            "total_opens": "[वि0] कुल खुलता है",
+            "sent_desc": "{{count}} ईमेल भेजे गए",
             "reply_rate": "उत्तर दर",
-            "total_replies": "{{गिनती}} कुल उत्तर",
+            "total_replies": "[वि0] कुल उत्तर",
             "engagement_desc": "अभियान सहभागिता",
             "contacts": "संपर्क",
-            "verified_count": "{{गिनती}} सत्यापित",
-            "senders_ready": "{{गिनती}} प्रेषक तैयार"
+            "verified_count": "[वि0] सत्यापित",
+            "senders_ready": "[वि0] प्रेषक तैयार हैं"
         },
         "quick_actions": {
             "title": "जल्दी",
@@ -435,9 +435,9 @@
         "activity": {
             "title": "गतिविधि समयरेखा",
             "no_activity": "कोई हालिया गतिविधि नहीं",
-            "campaign_completed": "अभियान \"{{नाम}}\" पूरा हुआ",
-            "campaign_status": "अभियान \"{{नाम}}\" {{स्थिति}}",
-            "list_status": "सूची \"{{नाम}}\" {{स्थिति}}"
+            "campaign_completed": "अभियान \"{{name}}\" पूरा हुआ",
+            "campaign_status": "अभियान \"{{name}}\" {{status}}",
+            "list_status": "सूची \"{{name}}\" {{status}}"
         },
         "recent_campaigns": {
             "title": "हाल ही में",
@@ -448,7 +448,7 @@
         },
         "performance": {
             "title": "अभियान प्रदर्शन",
-            "overview": "पिछले {{दिनों}} दिनों का अवलोकन",
+            "overview": "पिछले {{days}} दिनों का अवलोकन",
             "realtime": "वास्तविक समय",
             "success_rate": "सफलता दर",
             "avg_open": "औसत ओपन रेट",
@@ -472,13 +472,13 @@
         "goal": {
             "title": "को प्राप्त हुआ मासिक लक्ष्य",
             "growth": "कार्यक्षेत्र विकास",
-            "description": "आपने इस महीने के लिए अपने {{लक्ष्यअभियान लक्ष्य को}}पूरा कर लिया है।"
+            "description": "आपने इस महीने के लिए अपने {{goal}} अभियान लक्ष्य का {{completed}} पूरा कर लिया है।"
         },
         "upcoming": {
             "title": "आगामी",
             "next_launch": "अगला शेड्यूल लॉन्च",
             "launching_today": "आज लॉन्च हो रहा है",
-            "in_days": "{{दिनों में}} दिन",
+            "in_days": "[वि0] दिनों में",
             "no_scheduled": "अभी तक कोई अभियान निर्धारित नहीं है.",
             "plan_now": "अभी एक योजना बनाएं →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "कोई संपर्क नहीं",
         "no_contacts_description": "कोई संपर्क सूची नहीं मिली. आरंभ करने के लिए ��पनी पहली सूची अपलोड करें.",
         "upload_contacts_btn": "संपर्क अपलोड करें",
+        "verified": "सत्यापित",
         "valid": "मान्य",
         "risky": "जोखिम भरा",
         "invalid": "अमान्य",
@@ -580,7 +581,7 @@
         "never_updated": "कभी अद्यतन नहीं",
         "never": "कभी नहीं",
         "pro_tip": "प्रो टिप",
-        "pro_tip_desc": "अपने ईमेल को वैयक्तिकृत करने और सहभागिता को बेहतर बनाने के लिए __first_name__ जैसे वेरिएबल का उपयोग करें।"
+        "pro_tip_desc": "अपने ईमेल को वैयक्तिकृत करने और सहभागिता को बेहतर बनाने के लिए {{first_name}} जैसे वेरिएबल का उपयोग करें।"
     },
     "settings": {
         "title": "खाता सेटिंग",
@@ -622,7 +623,7 @@
             "current_password": "वर्तमान पासवर्ड",
             "new_password": "नया पासवर्ड",
             "confirm_password": "नये पासवर्ड की पुष्टि करें",
-            "strength": "ताकत: {{स्तर}}",
+            "strength": "शक्तिः [वि0]",
             "levels": {
                 "weak": "कमज़ोर",
                 "fair": "निष्पक्ष",
@@ -663,7 +664,9 @@
                 "manage_desc": "अपने कनेक्टेड ईमेल खाते प्रबंधित करें",
                 "add": "प्रेषक जोड़ें",
                 "none": "कोई प्रेषक नहीं मिला.",
-                "provider": "{{प्रकार}} प्रदाता"
+                "provider": "[वि0] प्रदाता",
+                "verified": "सत्यापित",
+                "pending": "लंबित"
             },
             "templates": {
                 "title": "ईमेल टेम्प्लेट",
@@ -705,7 +708,7 @@
             "msg_template": "टेम्पलेट हटा दिया गया",
             "msg_error": "हटाने में विफल",
             "campaign_title": "अभियान हटाएँ",
-            "campaign_confirm": "क्या आप वाकई अभियान \"{{नाम}}\" हटाना चाहते हैं? इस एक्शन को वापस नहीं किया जा सकता।",
+            "campaign_confirm": "क्या आप वाकई अभियान \"{{name}}\" को हटाना चाहते हैं? इस एक्शन को वापस नहीं किया जा सकता।",
             "warning_data": "इससे आंकड़े, भेजे गए ईमेल और विश्लेषण सहित सभी अभियान डेटा स्थायी रूप से हटा दिए जाएंगे। यह क्रिया अपरिवर्तनीय है.",
             "footer_note": "यह क्रिया स्थायी है और इसे उलटा नहीं किया जा सकता"
         }
@@ -814,12 +817,12 @@
                 "mapping_title": "कॉलम मैपिंग",
                 "mapping_subtitle": "अपने स्प्रैडशीट हेडर को हमारे फ़ील्ड पर मैप करें",
                 "change_file": "फ़ाइल बदलें",
-                "preview_title": "डेटा पूर्वावलोकन ({{गिनती}} रिकॉर्ड्स)",
-                "more_rows": "और अधिक प���क्तियाँ {{गिनें...",
+                "preview_title": "डेटा पूर्वावलोकन ({{count}} रिकॉर्ड्स)",
+                "more_rows": "और {{count}} अधिक पंक्तियाँ...",
                 "select_col": "-- कॉलम चुनें --",
                 "transform_note": "हम अपलोड करने से पहले इन मैपिंग के आधार पर आपके फ़ाइल डेटा को स्वचालित रूप से बदल देंगे।",
                 "upload_complete": "अपलोड पूर्ण",
-                "upload_summary": "}}गिनती__ खाते सफलतापूर्वक जोड़े गए",
+                "upload_summary": "{{count}} खाते सफलतापूर्वक जोड़े गए",
                 "errors": "त्रुटियाँ",
                 "upload_another": "अन्य फ़ाइल अपलोड करें",
                 "click_upload": "अपलोड करने के लिए क्लिक करें",
@@ -852,14 +855,14 @@
                 "details": "विवरण",
                 "content": "सामग्री",
                 "review": "समीक्षा",
-                "status": "{{कुल}} का चरण {{वर्तमान}}: {{नाम}}"
+                "status": "{{total}} का चरण {{current}}: {{name}}"
             },
             "fields": {
                 "name": "टेम्प्लेट का नाम",
                 "subject": "ईमेल विषय",
                 "placeholder_name": "जैसे स्वागत शृंखला - पहला दिन",
-                "placeholder_subject": "जैसे नमस्कार __first_name{{, हमारे मंच पर आपका स्वागत है!",
-                "placeholder_content": "अपनी ईमेल सामग्री यहां दर्ज करें... प्रेषक के नाम के लिए}}sender_name__ का प्रयोग करें"
+                "placeholder_subject": "जैसे नमस्ते {{first_name}}, हमारे मंच पर आपका स्वागत है!",
+                "placeholder_content": "अपनी ईमेल सामग्री यहां दर्ज करें... प्रेषक के नाम के लिए {{sender_name}} का उपयोग करें"
             },
             "labels": {
                 "status": "टेम्पलेट स्थिति",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "अपने संपर्क बैच विवरण देखें और प्रबंधित करें",
             "sender": "प्रेषक विवरण",
             "batch": "बैच विवरण",
             "template": "टेम्पलेट पूर्वावलोकन",
@@ -920,11 +924,11 @@
                 "try_adjusting": "अपने फ़िल्टर समायोजित करने का प्रयास करें"
             },
             "pagination": {
-                "showing": "कुल{{रिकॉर्डों में से}}प्रारंभ{{से}}अंत{{तक दिखाया जा रहा है",
-                "page_status": "}}कुल{{का पृष्ठ}}वर्तमान{{"
+                "showing": "{{total}} रिकॉर्ड्स में से {{start}} को {{end}} में दिखाया जा रहा है",
+                "page_status": "{{total}} का पृष्ठ {{current}}"
             },
             "footer": {
-                "records_verified": "}}गिनती__ रिकॉर्ड सत्यापित",
+                "records_verified": "[वि0] अभिलेख सत्यापित",
                 "export_all": "सभी रिकॉर्ड निर्यात करें"
             },
             "sender_info": {
@@ -980,7 +984,7 @@
         "current_plan": "वर्तमान योजना",
         "upgrade": "प्रो में अपग्रेड करें",
         "contact_sales": "बिक्री से संपर्क करें",
-        "price_monthly": "को प्राप्त हुआ ${{कीमत}}",
+        "price_monthly": "${{price}}",
         "help_title": "क्या आपके पास मूल्य निर्धारण के बारे में प्रश्न हैं?",
         "help_desc": "हमारी टीम आपके संगठन के लिए सही सेटअप ढूंढने में आपकी मदद करने के लिए यहां है।",
         "contact_us": "हमारे विशेषज्ञों से संपर्क करें",
@@ -1027,16 +1031,17 @@
         "failed_to_load": "एनालिटिक्स लोड करने में विफल",
         "try_again": "पुनः प्रयास करें",
         "total_campaigns": "कुल अभियान",
-        "active_count": "{{गिनती}} सक्रिय अभियान",
-        "completed_count": "{{गिनती}}पूरे अभियान",
+        "active_count": "[वि0] सक्रिय अभियान",
+        "completed_count": "{{count}} पूर्ण अभियान",
         "emails_sent": "ईमेल भेजे गए",
-        "open_rate_value": "{{प्रतिशत}}% औसत खुली दर",
-        "opens_count": "{{गिनती}} कुल खुलता है",
+        "recipients": "को प्राप्त हुआ प्राप्तकर्ता",
+        "open_rate_value": "{{percentage}}% औसत खुली दर",
+        "opens_count": "[वि0] कुल खुलता है",
         "total_replies": "कुल उत्तर",
-        "reply_rate_value": "{{प्रतिशत}}% उत्तर दर",
-        "unique_replies_count": "{{गिनती}} अद्वितीय उत्तर",
+        "reply_rate_value": "{{percentage}}% उत्तर दर",
+        "unique_replies_count": "[वि0] अद्वितीय उत्तर",
         "bounce_rate": "बाउंस दर",
-        "bounces_count": "{{गिनती}} बाउंस का पता चला",
+        "bounces_count": "{{count}} बाउंस का पता चला",
         "needs_attention": "ध्यान देने की आवश्यकता है",
         "good_status": "स्वस्थ",
         "campaign_title": "अभियान",
@@ -1086,8 +1091,8 @@
         "distribution_span": "वितरण",
         "distribution_subtitle": "खाता प्रदाता द्वारा ब्रेकडाउन",
         "total": "कुल",
-        "active_suffix": "{{गिनती}} सक्���िय",
-        "sent_suffix": "{{गिनती}} भेजा गया",
+        "active_suffix": "[वि0] सक्रिय",
+        "sent_suffix": "[वि0] भेजा हुआ",
         "loading_distribution": "वितरण लोड हो रहा है...",
         "top_campaigns_title": "शीर्ष",
         "campaigns_span": "अभियान",

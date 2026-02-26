@@ -10,6 +10,18 @@ import deTranslation from './locales/de.json';
 import ptTranslation from './locales/pt.json';
 import hiTranslation from './locales/hi.json';
 import urTranslation from './locales/ur.json';
+import itTranslation from './locales/it.json';
+import jaTranslation from './locales/ja.json';
+import ruTranslation from './locales/ru.json';
+import koTranslation from './locales/ko.json';
+import trTranslation from './locales/tr.json';
+import nlTranslation from './locales/nl.json';
+import faTranslation from './locales/fa.json';
+import heTranslation from './locales/he.json';
+import viTranslation from './locales/vi.json';
+import idTranslation from './locales/id.json';
+import thTranslation from './locales/th.json';
+import plTranslation from './locales/pl.json';
 
 const resources = {
     en: { translation: enTranslation },
@@ -21,6 +33,18 @@ const resources = {
     pt: { translation: ptTranslation },
     hi: { translation: hiTranslation },
     ur: { translation: urTranslation },
+    it: { translation: itTranslation },
+    ja: { translation: jaTranslation },
+    ru: { translation: ruTranslation },
+    ko: { translation: koTranslation },
+    tr: { translation: trTranslation },
+    nl: { translation: nlTranslation },
+    fa: { translation: faTranslation },
+    he: { translation: heTranslation },
+    vi: { translation: viTranslation },
+    id: { translation: idTranslation },
+    th: { translation: thTranslation },
+    pl: { translation: plTranslation },
 };
 
 i18n

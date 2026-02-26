@@ -28,7 +28,7 @@ import { useBatches } from '../hooks/useBatches';
 import { useMailboxes } from '../hooks/useMailboxes';
 
 const DashboardLayout = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -188,16 +188,12 @@ const DashboardLayout = () => {
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-slate-100/80 text-slate-500 hover:text-slate-800 transition-all active:scale-90 group relative"
-              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {sidebarCollapsed ? (
-                <PanelLeftOpen className="w-5 h-5" />
+                <PanelLeftOpen className={`w-5 h-5 ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`} />
               ) : (
-                <PanelLeftClose className="w-5 h-5" />
+                <PanelLeftClose className={`w-5 h-5 ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`} />
               )}
-              <span className="absolute -bottom-8 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                {sidebarCollapsed ? 'Expand sidebar (⌘+B)' : 'Collapse sidebar (⌘+B)'}
-              </span>
             </button>
 
             <div className="flex items-center gap-3">
@@ -281,7 +277,7 @@ const DashboardLayout = () => {
                             {result.type}
                           </p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-all" />
+                        <ChevronRight className={`w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-all ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`} />
                       </button>
                     ))}
                   </div>

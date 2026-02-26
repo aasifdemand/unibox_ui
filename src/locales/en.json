@@ -518,6 +518,7 @@
         "no_contacts_title": "No Contacts",
         "no_contacts_description": "No contact lists found. Upload your first list to get started.",
         "upload_contacts_btn": "Upload Contacts",
+        "verified": "Verified",
         "valid": "Valid",
         "risky": "Risky",
         "invalid": "Invalid",
@@ -663,7 +664,9 @@
                 "manage_desc": "Manage your connected email accounts",
                 "add": "Add Sender",
                 "none": "No senders found.",
-                "provider": "{{type}} provider"
+                "provider": "{{type}} provider",
+                "verified": "Verified",
+                "pending": "Pending"
             },
             "templates": {
                 "title": "Email Templates",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "View and manage your contact batch details",
             "sender": "Sender Details",
             "batch": "Batch Details",
             "template": "Template Preview",

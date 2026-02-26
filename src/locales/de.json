@@ -395,7 +395,7 @@
         "create_campaign_btn": "Kampagne erstellen"
     },
     "dashboard": {
-        "header_title": "Dashboard",
+        "header_title": "wird angezeigt Dashboard",
         "header_subtitle": "Überblick",
         "welcome_back": "Willkommen zurück! Hier finden Sie eine Zusammenfassung Ihrer Arbeitsbereichsleistung.",
         "time_range": {
@@ -458,9 +458,9 @@
         },
         "table": {
             "campaign": "Kampagne",
-            "status": "Status",
+            "status": "wird angezeigt Status",
             "reach": "Reichweite",
-            "engagement": "Engagement",
+            "engagement": "wird angezeigt Engagement",
             "launch_date": "Erscheinungsdatum",
             "actions": "Aktionen",
             "recipients": "Empfänger",
@@ -518,6 +518,7 @@
         "no_contacts_title": "Keine Kontakte",
         "no_contacts_description": "Keine Kontaktlisten gefunden. Laden Sie Ihre erste Liste hoch, um loszulegen.",
         "upload_contacts_btn": "Kontakte hochladen",
+        "verified": "wird angezeigt Verifiziert",
         "valid": "Gültig",
         "risky": "Riskant",
         "invalid": "Ungültig",
@@ -532,7 +533,7 @@
         "no_senders_description": "Keine E-Mail-Absender gefunden. Fügen Sie einen Absender hinzu, um mit dem Versenden von Kampagnen zu beginnen.",
         "sender_type": "Geben Sie",
         "created": "ein Erstellt",
-        "status": "Status",
+        "status": "wird angezeigt Status",
         "active": "Aktiv",
         "pending": "Ausstehend",
         "health": "Gesundheit",
@@ -580,7 +581,7 @@
         "never_updated": "Nie aktualisiert",
         "never": "Niemals",
         "pro_tip": "Profi-Tipp",
-        "pro_tip_desc": "Verwenden Sie Variablen wie {{Vorname}}, um Ihre E-Mails zu personalisieren und das Engagement zu verbessern."
+        "pro_tip_desc": "Verwenden Sie Variablen wie {{first_name}}, um Ihre E-Mails zu personalisieren und das Engagement zu verbessern."
     },
     "settings": {
         "title": "Kontoeinstellungen",
@@ -625,7 +626,7 @@
             "strength": "Stärke: {{level}}",
             "levels": {
                 "weak": "Schwach",
-                "fair": "Fair",
+                "fair": "Gerecht",
                 "good": "Gut",
                 "strong": "Stark"
             },
@@ -663,7 +664,9 @@
                 "manage_desc": "Verwalten Sie Ihre verbundenen E-Mail-Konten",
                 "add": "Absender hinzufügen",
                 "none": "Keine Absender gefunden.",
-                "provider": "{{type}} Anbieter"
+                "provider": "{{type}} Anbieter",
+                "verified": "Verifiziert",
+                "pending": "Ausstehend"
             },
             "templates": {
                 "title": "E-Mail-Vorlagen",
@@ -703,7 +706,7 @@
             "confirm": "Sind Sie sicher, dass Sie {{label}} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
             "msg_sender": "Absender gelöscht",
             "msg_template": "Vorlage gelöscht",
-            "msg_error": "Failed to delete",
+            "msg_error": "Fehler beim Löschen",
             "campaign_title": "konnte nicht gelöscht werden Kampagne löschen",
             "campaign_confirm": "Sind Sie sicher, dass Sie die Kampagne „{{name}}“ löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
             "warning_data": "Dadurch werden alle Kampagnendaten, einschließlich Statistiken, gesendeter E-Mails und Analysen, dauerhaft gelöscht. Diese Aktion ist irreversibel.",
@@ -794,8 +797,8 @@
                 "placeholder_host_smtp": "konnte nicht gelöscht werden smtp.example.com",
                 "placeholder_host_imap": "konnte nicht gelöscht werden imap.example.com",
                 "placeholder_port_smtp": "konnte nicht gelöscht werden 587",
-                "placeholder_port_imap": "993",
-                "placeholder_pass": "••••••••"
+                "placeholder_port_imap": "konnte nicht gelöscht werden 993",
+                "placeholder_pass": "konnte nicht gelöscht werden ••••••••"
             },
             "tabs": {
                 "smtp": "Ausgehend (SMTP)",
@@ -858,14 +861,14 @@
                 "name": "Vorlagenname",
                 "subject": "E-Mail-Betreff",
                 "placeholder_name": "z.B. Willkommensserie – Tag 1",
-                "placeholder_subject": "z.B. Hallo {{Vorname}}, willkommen auf unserer Plattform!",
-                "placeholder_content": "Geben Sie hier Ihren E-Mail-Inhalt ein... Verwenden Sie __sender_name__ für den Namen des Absenders"
+                "placeholder_subject": "z.B. Hallo {{first_name}}, willkommen auf unserer Plattform!",
+                "placeholder_content": "Geben Sie hier Ihren E-Mail-Inhalt ein... Verwenden Sie {{sender_name}} für den Namen des Absenders"
             },
             "labels": {
                 "status": "Vorlagenstatus",
                 "primary": "Primäre Vorlage",
                 "default": "Standard",
-                "standard": "Standard",
+                "standard": "konnte nicht gelöscht werden Standard",
                 "visual": "Visueller Editor",
                 "html": "HTML-Code",
                 "merge_tags": "Verfügbare Merge-Tags",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "wird angezeigt Anzeigen und Verwalten Ihrer Kontaktstapeldetails",
             "sender": "Absenderdetails",
             "batch": "Chargendetails",
             "template": "Vorlagenvorschau",
@@ -909,7 +913,7 @@
             },
             "table": {
                 "email": "E-Mail",
-                "name": "Name",
+                "name": "wird angezeigt Name",
                 "status": "Status",
                 "score": "Punktzahl",
                 "verified_on": "Verifiziert am",
@@ -1030,6 +1034,7 @@
         "active_count": "{{count}} aktive Kampagnen",
         "completed_count": "{{count}} abgeschlossene Kampagnen",
         "emails_sent": "Gesendete E-Mails",
+        "recipients": "Empfänger",
         "open_rate_value": "{{percentage}}% durchschnittliche Öffnungsrate",
         "opens_count": "{{count}} Gesamtöffnungen",
         "total_replies": "Gesamtantworten",

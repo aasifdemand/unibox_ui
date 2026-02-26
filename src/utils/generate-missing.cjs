@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Fills in ONLY the keys that are missing from each locale file
-// Does NOT overwrite existing translated keys
+// Does NOT overwrite existing translated keys, UNLESS they have broken placeholders
 
 const localesDir = path.join(process.cwd(), 'src', 'locales');
 const enJson = JSON.parse(fs.readFileSync(path.join(localesDir, 'en.json'), 'utf8'));
@@ -17,13 +17,40 @@ const langs = [
     { code: 'es', file: 'es.json' },
     { code: 'fr', file: 'fr.json' },
     { code: 'ur', file: 'ur.json' },
+    { code: 'it', file: 'it.json' },
+    { code: 'ja', file: 'ja.json' },
+    { code: 'ru', file: 'ru.json' },
+    { code: 'ko', file: 'ko.json' },
+    { code: 'tr', file: 'tr.json' },
+    { code: 'nl', file: 'nl.json' },
+    { code: 'fa', file: 'fa.json' },
+    { code: 'he', file: 'he.json' },
+    { code: 'vi', file: 'vi.json' },
+    { code: 'id', file: 'id.json' },
+    { code: 'th', file: 'th.json' },
+    { code: 'pl', file: 'pl.json' },
 ];
 
 function fetchTranslationBatch(texts, targetLang) {
     return new Promise((resolve) => {
-        const combined = texts.join(' ||| ');
-        let safeText = combined.replace(/\{\{([^}]+)\}\}/g, '__$1__');
-        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(safeText)}`;
+        const batchMap = {};
+        let index = 0;
+
+        // Better placeholder protection: use [V0], [V1], etc.
+        const processedTexts = texts.map(text => {
+            const variables = [];
+            const protectedText = text.replace(/\{\{([^}]+)\}\}/g, (match, p1) => {
+                const marker = `[V${variables.length}]`;
+                variables.push(p1);
+                return marker;
+            });
+            batchMap[index] = variables;
+            index++;
+            return protectedText;
+        });
+
+        const combined = processedTexts.join(' ||| ');
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(combined)}`;
 
         https.get(url, (res) => {
             let data = '';
@@ -32,9 +59,21 @@ function fetchTranslationBatch(texts, targetLang) {
                 try {
                     const parsed = JSON.parse(data);
                     let translated = parsed[0].map(item => item[0]).join('');
-                    translated = translated.replace(/__([^_]+)__/g, '{{$1}}');
-                    translated = translated.replace(/\{\{ /g, '{{').replace(/ \}\}/g, '}}');
-                    const results = translated.split('|||').map(s => s.trim());
+
+                    const results = translated.split('|||').map((s, i) => {
+                        let text = s.trim();
+                        // Restore variables
+                        const vars = batchMap[i];
+                        if (vars) {
+                            vars.forEach((v, vIdx) => {
+                                // Google sometimes adds spaces inside brackets like [ V0 ]
+                                const regex = new RegExp(`\\[\\s*V${vIdx}\\s*\\]`, 'g');
+                                text = text.replace(regex, `{{${v}}}`);
+                            });
+                        }
+                        return text;
+                    });
+
                     if (results.length !== texts.length) resolve(texts);
                     else resolve(results);
                 } catch (e) {
@@ -75,6 +114,20 @@ function unflattenObject(flat) {
     return result;
 }
 
+function hasBrokenPlaceholders(translated, source) {
+    if (typeof source !== 'string') return false;
+    const sourceMatches = source.match(/\{\{([^}]+)\}\}/g) || [];
+    const translatedMatches = translated.match(/\{\{([^}]+)\}\}/g) || [];
+
+    if (sourceMatches.length !== translatedMatches.length) return true;
+
+    // Check if keys match exactly
+    for (let i = 0; i < sourceMatches.length; i++) {
+        if (!translated.includes(sourceMatches[i])) return true;
+    }
+    return false;
+}
+
 async function main() {
     const flatEn = flattenObject(enJson);
 
@@ -86,14 +139,24 @@ async function main() {
         let existing = {};
         if (fs.existsSync(filePath)) {
             existing = flattenObject(JSON.parse(fs.readFileSync(filePath, 'utf8')));
+        } else {
+            console.log(`  ! ${file} does not exist, skipping...`);
+            continue;
         }
 
-        // Find keys that are missing or still have the English value unchanged
+        // Find keys that are missing OR have broken placeholders
         const missingKeys = Object.keys(flatEn).filter(k => {
             const existingVal = existing[k];
             const enVal = flatEn[k];
-            // Missing entirely, or hasn't changed from English
-            return existingVal === undefined || existingVal === enVal;
+
+            if (existingVal === undefined || existingVal === enVal) return true;
+
+            // Critical check: are placeholders broken?
+            if (hasBrokenPlaceholders(existingVal, enVal)) {
+                return true;
+            }
+
+            return false;
         });
 
         if (missingKeys.length === 0) {
@@ -101,10 +164,10 @@ async function main() {
             continue;
         }
 
-        console.log(`  Translating ${missingKeys.length} missing keys to ${code}...`);
+        console.log(`  Translating/Fixing ${missingKeys.length} keys to ${code}...`);
 
         const missingValues = missingKeys.map(k => flatEn[k]);
-        const BATCH_SIZE = 20;
+        const BATCH_SIZE = 15; // Slightly smaller batch for safety
         const translatedValues = [];
 
         for (let i = 0; i < missingValues.length; i += BATCH_SIZE) {
@@ -126,19 +189,19 @@ async function main() {
                 translatedValues.push(...batch);
             }
 
-            process.stdout.write(`  ${Math.min(i + BATCH_SIZE, missingValues.length)}/${missingValues.length} keys translated...\r`);
-            await delay(120);
+            process.stdout.write(`  ${Math.min(i + BATCH_SIZE, missingValues.length)}/${missingValues.length} keys processed...\r`);
+            await delay(150);
         }
 
         // Merge newly translated missing keys into existing
-        const merged = { ...flatEn, ...existing }; // Start with all English keys as fallback
+        const merged = { ...flatEn, ...existing };
         for (let i = 0; i < missingKeys.length; i++) {
             merged[missingKeys[i]] = translatedValues[i];
         }
 
         const translatedObj = unflattenObject(merged);
         fs.writeFileSync(filePath, JSON.stringify(translatedObj, null, 4));
-        console.log(`\n  ✓ Saved ${file} (${missingKeys.length} new keys translated)`);
+        console.log(`\n  ✓ Saved ${file} (${missingKeys.length} keys updated)`);
     }
 
     console.log('\nAll translations complete!');

@@ -135,7 +135,7 @@
         "delete_selected_mailboxes": "حذف صناديق البريد المحددة",
         "workspace": "مساحة العمل",
         "collapse": "طي",
-        "more_folders": "+{{عدد}} المزيد",
+        "more_folders": "+{{count}} المزيد",
         "messages_search_placeholder": "مرسل الاستعلام أو الموضوع أو الكلمات المفتاحية الاستخباراتية...",
         "temporal_all": "الزماني: الكل",
         "temporal_today": "الزماني: اليوم",
@@ -170,7 +170,7 @@
         "volume_today": "اليوم",
         "sync_idle": "خامل",
         "todays_volume": "حجم اليوم",
-        "account_expires": "انتهاء صلاحية الحساب {{تاريخ}}",
+        "account_expires": "انتهاء صلاحية الحساب {{date}}",
         "prefix_to": "إلى :",
         "new_badge": "جديد",
         "search_placeholder": "ابحث في الرسائل في كافة صناديق البريد...",
@@ -227,7 +227,7 @@
         "pinned_message": "الرسالة المثبتة",
         "priority_inbox_label": "البريد الهام",
         "account_type_label": "{{type}} الحساب",
-        "attached_media_assets": "أصول الوسائط المرفقة ({{عدد}})",
+        "attached_media_assets": "أصول الوسائط المرفقة ({{count}})",
         "email_content_canvas": "لوحة محتوى البريد الإلكتروني",
         "end_of_thread": "نهاية المحادثة",
         "delete_selected": "حذف المحدد",
@@ -249,7 +249,7 @@
         "live_content_canvas": "قماش المحتوى المباشر",
         "preview_style": "نمط المعاينة",
         "high_fidelity": "دقة عالية",
-        "attachments_count": "المرفقات ({{عدد}})",
+        "attachments_count": "المرفقات ({{count}})",
         "attach_file": "أرفق الملف",
         "attach_image": "إرفاق الصورة",
         "hide_preview": "إخفاء المعاينة",
@@ -297,11 +297,11 @@
         "step_review_desc": "الفحص النهائي والإطلاق",
         "error_add_content": "يرجى إضافة بعض المحتوى إلى بريدك الإلكتروني {{mode}} قبل المتابعة.",
         "plain_text": "نص عادي",
-        "step_indicator": "الخطوة {{الحالية}} من {{المجموع}}",
+        "step_indicator": "الخطوة {{current}} من {{total}}",
         "help_get_started": "هل تحتاج إلى يد؟ يمكن لأدلتنا مساعدتك على البدء.",
         "creating_campaign": "جارٍ إنشاء الحملة...",
         "next_step": "الخطوة التالية",
-        "continue_to": "تابع إلى {{الخطوة}}",
+        "continue_to": "تابع إلى {{step}}",
         "start_with_template": "ابدأ بالقالب",
         "choose_library": "اختر من مكتبتك المحفوظة",
         "library": "مكتبة",
@@ -360,7 +360,7 @@
         "msg_upload_success": "تم التحميل بنجاح!",
         "msg_upload_failed": "فشل التحميل. يرجى المحاولة مرة أخرى.",
         "msg_smtp_success": "تم إنشاء مرسل SMTP بنجاح!",
-        "msg_smtp_failed": "فشل: {{رسالة}}",
+        "msg_smtp_failed": "فشل: {{message}}",
         "campaign_summary": "ملخص الحملة",
         "review_settings": "قم بمراجعة إعداداتك قبل الإطلاق",
         "ready_to_send": "جاهز للإرسال",
@@ -408,8 +408,8 @@
         "loading_data": "جارٍ تحميل بيانات لوحة التحكم...",
         "stats": {
             "total_campaigns": "إجمالي الحملات",
-            "this_month": "+{{عدد}} هذا الشهر",
-            "campaigns_desc": "{{نشط}} نشط، {{مجدول}} مجدول",
+            "this_month": "+{{count}} هذا الشهر",
+            "campaigns_desc": "{{active}} نشط، {{scheduled}} مجدول",
             "open_rate": "سعر الفتح",
             "total_opens": "{{count}} إجمالي الفتحات",
             "sent_desc": "{{count}} رسائل البريد الإلكتروني المرسلة",
@@ -418,7 +418,7 @@
             "engagement_desc": "مشاركة الحملة",
             "contacts": "جهات الاتصال",
             "verified_count": "تم التحقق من {{count}}",
-            "senders_ready": "{{عدد}} المرسلين جاهزين"
+            "senders_ready": "{{count}} مرسلون جاهزون"
         },
         "quick_actions": {
             "title": "سريع",
@@ -436,8 +436,8 @@
             "title": "الجدول الزمني للنشاط",
             "no_activity": "لا يوجد نشاط حديث",
             "campaign_completed": "اكتملت الحملة \"{{name}}\"",
-            "campaign_status": "الحملة \"{{الاسم}}\" {{الحالة}}",
-            "list_status": "قائمة \"{{الاسم}}\" {{الحالة}}"
+            "campaign_status": "الحملة \"{{name}}\" {{status}}",
+            "list_status": "قائمة \"{{name}}\" {{status}}"
         },
         "recent_campaigns": {
             "title": "الأخيرة",
@@ -472,13 +472,13 @@
         "goal": {
             "title": "الهدف الشهري",
             "growth": "نمو مساحة العمل",
-            "description": "لقد أكملت {{أكملت}} هدف حملاتك {{goal}} لهذا الشهر."
+            "description": "لقد أكملت {{completed}} من هدف حملاتك {{goal}} لهذا الشهر."
         },
         "upcoming": {
             "title": "القادمة",
             "next_launch": "الإطلاق المقرر التالي",
             "launching_today": "الإطلاق اليوم",
-            "in_days": "خلال {{أيام}} أيام",
+            "in_days": "في {{days}} أيام",
             "no_scheduled": "لم تتم جدولة أي حملات حتى الآن.",
             "plan_now": "خطط الآن →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "لا توجد اتصالات",
         "no_contacts_description": "لم يتم العثور على قوائم جهات الاتصال. قم بتحميل قائمتك الأولى للبدء.",
         "upload_contacts_btn": "تحميل جهات الاتصال",
+        "verified": "تم التحقق",
         "valid": "صالح",
         "risky": "محفوفة بالمخاطر",
         "invalid": "غير صالح",
@@ -580,7 +581,7 @@
         "never_updated": "لم يتم التحديث أبدًا",
         "never": "أبدا",
         "pro_tip": "نصيحة للمحترفين",
-        "pro_tip_desc": "استخدم متغيرات مثل __first_name__ لتخصيص رسائل البريد الإلكتروني الخاصة بك وتحسين التفاعل."
+        "pro_tip_desc": "استخدم متغيرات مثل {{first_name}} لتخصيص رسائل البريد الإلكتروني الخاصة بك وتحسين التفاعل."
     },
     "settings": {
         "title": "إعدادات الحساب",
@@ -622,7 +623,7 @@
             "current_password": "كلمة المرور الحالية",
             "new_password": "كلمة المرور الجديدة",
             "confirm_password": "تأكيد كلمة المرور الجديدة",
-            "strength": "القوة: {{المستوى}}",
+            "strength": "القوة: {{level}}",
             "levels": {
                 "weak": "ضعيف",
                 "fair": "معرض",
@@ -663,7 +664,9 @@
                 "manage_desc": "إدارة حسابات البريد الإلكتروني المتصلة",
                 "add": "إضافة مرسل",
                 "none": "لم يتم العثور على مرسلين.",
-                "provider": "مزود {{type}}"
+                "provider": "مزود {{type}}",
+                "verified": "تم التحقق",
+                "pending": "في انتظار"
             },
             "templates": {
                 "title": "قوالب البريد الإلكتروني",
@@ -815,7 +818,7 @@
                 "mapping_subtitle": "قم بتعيين رؤوس جدول البيانات الخاص بك إلى حقولنا",
                 "change_file": "تغيير الملف",
                 "preview_title": "معاينة البيانات ({{count}} السجلات)",
-                "more_rows": "و{{عدد}} صفوف أخرى...",
+                "more_rows": "و{{count}} المزيد من الصفوف...",
                 "select_col": "-- اختر العمود --",
                 "transform_note": "سنقوم تلقائيًا بتحويل بيانات ملفك بناءً على هذه التعيينات قبل التحميل.",
                 "upload_complete": "اكتمل التحميل",
@@ -852,14 +855,14 @@
                 "details": "التفاصيل",
                 "content": "المحتوى",
                 "review": "مراجعة",
-                "status": "الخطوة {{الحالية}} من {{الإجمالي}}: {{الاسم}}"
+                "status": "الخطوة {{current}} من {{total}}: {{name}}"
             },
             "fields": {
                 "name": "اسم القالب",
                 "subject": "موضوع البريد الإلكتروني",
                 "placeholder_name": "على سبيل المثال سلسلة الترحيب - اليوم الأول",
-                "placeholder_subject": "على سبيل المثال مرحبًا __first_name{{، مرحبًا بك في منصتنا!",
-                "placeholder_content": "أدخل محتوى بريدك الإلكتروني هنا... استخدم}}sender_name__ لاسم المرسل"
+                "placeholder_subject": "على سبيل المثال مرحبًا {{first_name}}، مرحبًا بك في منصتنا!",
+                "placeholder_content": "أدخل محتوى بريدك الإلكتروني هنا... استخدم {{sender_name}} لاسم المرسل"
             },
             "labels": {
                 "status": "حالة القالب",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "عرض وإدارة تفاصيل دفعة الاتصال الخاصة بك",
             "sender": "تفاصيل المرسل",
             "batch": "تفاصيل الدفعة",
             "template": "معاينة القالب",
@@ -920,8 +924,8 @@
                 "try_adjusting": "حاول تعديل عوامل التصفية"
             },
             "pagination": {
-                "showing": "عرض {{البدء}} إلى {{النهاية}} من {{إجمالي}} السجلات",
-                "page_status": "الصفحة {{الحالية}} من {{المجموع}}"
+                "showing": "إظهار {{start}} إلى {{end}} من السجلات {{total}}",
+                "page_status": "صفحة {{current}} من {{total}}"
             },
             "footer": {
                 "records_verified": "تم التحقق من السجلات {{count}}",
@@ -980,7 +984,7 @@
         "current_plan": "الخطة الحالية",
         "upgrade": "الترقية إلى برو",
         "contact_sales": "اتصل بالمبيعات",
-        "price_monthly": "${{السعر}}",
+        "price_monthly": "${{price}}",
         "help_title": "هل لديك أسئلة حول التسعير؟",
         "help_desc": "فريقنا موجود لمساعدتك في العثور على الإعداد المثالي لمؤسستك.",
         "contact_us": "تواصل مع المتخصصين لدينا على",
@@ -1027,13 +1031,14 @@
         "failed_to_load": "فشل تحميل التحليلات",
         "try_again": "حاول مرة أخرى",
         "total_campaigns": "إجمالي الحملات",
-        "active_count": "{{عدد}} الحملات النشطة",
+        "active_count": "{{count}} الحملات النشطة",
         "completed_count": "{{count}} الحملات المكتملة",
         "emails_sent": "رسائل البريد الإلكتروني المرسلة",
-        "open_rate_value": "{{النسبة المئوية}}% متوسط ​​معدل الفتح",
+        "recipients": "المستلمون",
+        "open_rate_value": "{{percentage}}% متوسط ​​معدل الفتح",
         "opens_count": "{{count}} إجمالي الفتحات",
         "total_replies": "إجمالي الردود",
-        "reply_rate_value": "{{النسبة المئوية}}% معدل الرد",
+        "reply_rate_value": "{{percentage}}% معدل الرد",
         "unique_replies_count": "{{count}} ردود فريدة",
         "bounce_rate": "معدل الارتداد",
         "bounces_count": "تم اكتشاف {{count}} ارتدادات",

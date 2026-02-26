@@ -111,9 +111,9 @@
         }
     },
     "pwa": {
-        "update_available": "Update Available",
-        "update_desc": "A new version of Unibox is ready.",
-        "reload": "Reload"
+        "update_available": "可用更新",
+        "update_desc": "新版本的 Unibox 已准备就绪。",
+        "reload": "重新加载"
     },
     "mailboxes": {
         "mail": "邮件",
@@ -189,13 +189,13 @@
         "outbox": "发件箱",
         "starred": "已加星标",
         "important": "重要",
-        "category_personal": "Personal",
-        "category_social": "Social",
-        "category_promotions": "Promotions",
-        "category_updates": "Updates",
-        "category_forums": "Forums",
-        "conversation_history": "Conversation History",
-        "rss_feeds": "RSS Feeds",
+        "category_personal": "个人",
+        "category_social": "社交",
+        "category_promotions": "促销",
+        "category_updates": "更新",
+        "category_forums": "论坛",
+        "conversation_history": "对话历史记录",
+        "rss_feeds": "RSS 源",
         "load_more": "加载更多",
         "dismiss": "解雇",
         "loading_conversation": "正在加载对话...",
@@ -297,8 +297,8 @@
         "step_review_desc": "最终检查和启动",
         "error_add_content": "在继续之前，请在您的 {{mode}} 电子邮件中添加一些内容。",
         "plain_text": "纯文本",
-        "step_indicator": "{{total}}",
-        "help_get_started": "的步骤 {{current}}需要帮忙吗？我们的指南可以帮助您入门。",
+        "step_indicator": "{{total}} 的步骤 {{current}}",
+        "help_get_started": "需要帮忙吗？我们的指南可以帮助您入门。",
         "creating_campaign": "正在创建活动...",
         "next_step": "下一步",
         "continue_to": "继续{{step}}",
@@ -518,6 +518,7 @@
         "no_contacts_title": "没有联系人",
         "no_contacts_description": "未找到联系人列表。上传您的第一个列表即可开始。",
         "upload_contacts_btn": "上传联系人",
+        "verified": "Verified",
         "valid": "有效",
         "risky": "有风险",
         "invalid": "无效",
@@ -580,7 +581,7 @@
         "never_updated": "从未更新",
         "never": "从来没有",
         "pro_tip": "专业提���",
-        "pro_tip_desc": "使用 __first_name__ 等变量来个性化您的电子邮件并提高参与度。"
+        "pro_tip_desc": "Use variables like {{first_name}} to personalize your emails and improve engagement."
     },
     "settings": {
         "title": "账户设置",
@@ -663,7 +664,9 @@
                 "manage_desc": "管理您连接的电子邮件帐户",
                 "add": "添加发件人",
                 "none": "找不到发件人。",
-                "provider": "{{type}} 提供者"
+                "provider": "{{type}} 提供者",
+                "verified": "Verified",
+                "pending": "Pending"
             },
             "templates": {
                 "title": "电子邮件模板",
@@ -858,8 +861,8 @@
                 "name": "模板名称",
                 "subject": "电子邮件主题",
                 "placeholder_name": "例如欢迎系列 - 第一天",
-                "placeholder_subject": "例如您好__first_name{{，欢迎来到我们的平台！",
-                "placeholder_content": "在此输入您的电子邮件内容...使用}}sender_name__ 作为发件人姓名"
+                "placeholder_subject": "e.g. Hello {{first_name}}, welcome to our platform!",
+                "placeholder_content": "在此输入您的电子邮件内容...使用 {{sender_name}} 作为发件人姓名"
             },
             "labels": {
                 "status": "模板状态",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "查看和管理您的联系人批次详细信息",
             "sender": "发件人详细信息",
             "batch": "批次详情",
             "template": "模板预览",
@@ -980,7 +984,7 @@
         "current_plan": "当前计划",
         "upgrade": "升级到专业版",
         "contact_sales": "联系销售",
-        "price_monthly": "${{价格}}",
+        "price_monthly": "${{price}}",
         "help_title": "对定价有疑问吗？",
         "help_desc": "我们的团队随时帮助您找到适合您组织的完美设置。",
         "contact_us": "请通过",
@@ -1030,6 +1034,7 @@
         "active_count": "{{count}} 活跃活动",
         "completed_count": "{{count}} 已完成的营销活动",
         "emails_sent": "已发送电子邮件",
+        "recipients": "收件人",
         "open_rate_value": "{{percentage}}% 平均打开率",
         "opens_count": "{{count}} 总共打开",
         "total_replies": "回复总数",

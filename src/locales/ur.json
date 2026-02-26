@@ -119,10 +119,10 @@
         "mail": "میل",
         "boxes": "خانوں",
         "conversation": "گفتگو",
-        "connected_accounts": "{{شمار}} منسلک اکاؤنٹس",
+        "connected_accounts": "{{count}} منسلک اکاؤنٹس",
         "priority": "ترجیح",
         "unread_focus": "بغیر پڑھے ہوئے فوکس",
-        "displaying_count": "{{کل}} کا {{شروع}}-{{اختتام}} دکھا رہا ہے",
+        "displaying_count": "دکھا رہا ہے {{start}}-{{end}} از {{total}}",
         "search_mailboxes": "میل باکسز تلاش کریں...",
         "all_providers": "تمام فراہم کنندگان",
         "gmail_provider": "GMAIL",
@@ -154,7 +154,7 @@
         "empty_unread": "بغیر پڑھے ہوئے پیغامات نہیں",
         "empty_starred": "کوئی ستارے والے پیغامات نہیں",
         "empty_attachments": "منسلکات کے ساتھ کوئی پیغام نہیں",
-        "empty_folder": "{{نام}} خالی ہے",
+        "empty_folder": "{{name}} خالی ہے",
         "empty_inbox": "ان باکس خالی ہے",
         "no_mailboxes": "کوئی میل باکس نہیں ہے۔",
         "linked_yet": "ابھی تک منسلک ہے",
@@ -170,7 +170,7 @@
         "volume_today": "آج",
         "sync_idle": "بیکار",
         "todays_volume": "آج کی جلد",
-        "account_expires": "اکاؤنٹ کی میعاد ختم ہونے کی تاریخ__",
+        "account_expires": "اکاؤنٹ کی میعاد ختم ہو رہی ہے {{date}}",
         "prefix_to": "کو:",
         "new_badge": "نیا",
         "search_placeholder": "تمام میل باکسز میں پیغامات تلاش کریں...",
@@ -297,11 +297,11 @@
         "step_review_desc": "فائنل چیک اینڈ لانچ",
         "error_add_content": "براہ کرم آگے بڑھنے سے پہلے اپنے {{mode}} ای میل میں کچھ مواد شامل کریں۔",
         "plain_text": "سادہ متن",
-        "step_indicator": "{{کل}} کا مرحلہ {{موجودہ}}",
+        "step_indicator": "{{total}} کا مرحلہ {{current}}",
         "help_get_started": "ایک ہاتھ کی ضرورت ہے؟ ہمارے گائیڈ شروع کرنے میں آپ کی مدد کر سکتے ہیں۔",
         "creating_campaign": "مہم بنانا...",
         "next_step": "اگلا مرحلہ",
-        "continue_to": "{{قدم}} پر جاری رکھیں",
+        "continue_to": "{{step}} پر جاری رکھیں",
         "start_with_template": "ایک ٹیمپلیٹ کے ساتھ شروع کریں",
         "choose_library": "اپنی محفوظ کردہ لائبریری میں سے انتخاب کریں",
         "library": "لائبریری",
@@ -360,7 +360,7 @@
         "msg_upload_success": "اپ لوڈ کامیاب!",
         "msg_upload_failed": "اپ لوڈ ناکام ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔",
         "msg_smtp_success": "SMTP بھیجنے والا کامیابی کے ساتھ بنایا گیا!",
-        "msg_smtp_failed": "ناکام: {{پیغام}}",
+        "msg_smtp_failed": "ناکام: {{message}}",
         "campaign_summary": "مہم کا خلاصہ",
         "review_settings": "لانچ سے پہلے اپنی ترتیبات کا جائزہ لیں",
         "ready_to_send": "بھیجنے کے لیے تیار",
@@ -368,8 +368,8 @@
         "email_subject": "ای میل کا موضوع",
         "no_subject_set": "کوئی موضوع سیٹ نہیں",
         "recipient_list": "وصول کنندگان کی فہرست",
-        "no_list_selected": "No list selected",
-        "sender_account": "Sender Account",
+        "no_list_selected": "کوئی فہرست منتخب نہیں",
+        "sender_account": "بھیجنے والا اکاؤنٹ",
         "no_sender_selected": "کوئی بھیجنے والا منتخب نہیں ہوا",
         "schedule_sending": "بھیجنے کا شیڈول",
         "send_now": "ابھی بھیجیں",
@@ -409,16 +409,16 @@
         "stats": {
             "total_campaigns": "کل مہمات",
             "this_month": "+{{count}} اس مہینے",
-            "campaigns_desc": "{{فعال}}ایکٹو، {{شیڈیولڈ}}شیڈیولڈ",
+            "campaigns_desc": "{{active}} فعال، {{scheduled}} شیڈول",
             "open_rate": "اوپن ریٹ",
             "total_opens": "{{count}} کل کھلتا ہے",
             "sent_desc": "{{count}} ای میلز بھیجے گئے",
             "reply_rate": "جواب کی شرح",
-            "total_replies": "{{شمار}} کل جوابات",
+            "total_replies": "{{count}} کل جوابات",
             "engagement_desc": "مہم کی مصروفیت",
             "contacts": "رابطے",
             "verified_count": "{{count}} تصدیق شدہ",
-            "senders_ready": "{{گنتی}} بھیجنے والے تیار"
+            "senders_ready": "{{count}} بھیجنے والے تیار"
         },
         "quick_actions": {
             "title": "فوری",
@@ -435,9 +435,9 @@
         "activity": {
             "title": "سرگرمی کی ٹائم لائن",
             "no_activity": "کوئی حالیہ سرگرمی نہیں ہے۔",
-            "campaign_completed": "مہم \"{{نام}}\" مکمل",
-            "campaign_status": "مہم \"{{نام}}\" {{status}}",
-            "list_status": "فہرست \"{{نام}}\" {{status}}"
+            "campaign_completed": "مہم \"{{name}}\" مکمل ہو گئی",
+            "campaign_status": "مہم \"{{name}}\" {{status}}",
+            "list_status": "فہرست \"{{name}}\" {{status}}"
         },
         "recent_campaigns": {
             "title": "حالیہ",
@@ -448,7 +448,7 @@
         },
         "performance": {
             "title": "مہم کی کارکردگی",
-            "overview": "آخری {{دنوں}} دنوں کا جائزہ",
+            "overview": "آخری {{days}} دنوں کا جائزہ",
             "realtime": "ریئل ٹائم",
             "success_rate": "کامیابی کی شرح",
             "avg_open": "اوسط اوپن ریٹ",
@@ -472,13 +472,13 @@
         "goal": {
             "title": "ماہانہ مقصد",
             "growth": "ورک اسپیس گروتھ",
-            "description": "آپ نے اس مہینے کے لیے اپنے {{goal}} مہم کے اہداف میں سے {{مکمل}} کر لئے ہیں۔"
+            "description": "آپ نے اس مہینے کے لیے اپنے {{goal}} مہمات کا ہدف {{completed}} مکمل کر لیا ہے۔"
         },
         "upcoming": {
             "title": "آنے والا",
             "next_launch": "اگلا شیڈول لانچ",
             "launching_today": "آج لانچ ہو رہا ہے",
-            "in_days": "{{دنوں}} دنوں میں",
+            "in_days": "{{days}} دنوں میں",
             "no_scheduled": "ابھی تک کوئی مہم شیڈول نہیں ہے۔",
             "plan_now": "ابھی ایک منصوبہ بنائیں →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "کوئی رابطہ نہیں",
         "no_contacts_description": "رابطہ کی کوئی فہرست نہیں ملی۔ شروع کرنے کے لیے اپنی پہلی فہرست اپ لوڈ کریں۔",
         "upload_contacts_btn": "رابطے اپ لوڈ کریں",
+        "verified": "Verified",
         "valid": "درست",
         "risky": "خطرناک",
         "invalid": "غلط",
@@ -578,9 +579,9 @@
         "last_updated": "آخری تازہ کاری",
         "avg_variables": "اوسط متغیرات فی سانچہ",
         "never_updated": "کبھی اپ ڈیٹ نہیں ہوا۔",
-        "never": "Never",
-        "pro_tip": "Pro Tip",
-        "pro_tip_desc": "Use variables like {{first_name}} to personalize your emails and improve engagement."
+        "never": "کبھی نہیں",
+        "pro_tip": "پرو ٹپ",
+        "pro_tip_desc": "اپنی ای میلز کو ذاتی بنانے اور مصروفیت کو بہتر بنانے کے لیے متغیرات جیسے {{first_name}} کا استعمال کریں۔"
     },
     "settings": {
         "title": "اکاؤنٹ کی ترتیبات",
@@ -622,7 +623,7 @@
             "current_password": "موجودہ پاس ورڈ",
             "new_password": "نیا پاس ورڈ",
             "confirm_password": "نئے پاس ورڈ کی تصدیق کریں",
-            "strength": "طاقت: {{سطح}}",
+            "strength": "طاقت: {{level}}",
             "levels": {
                 "weak": "کمزور",
                 "fair": "میلہ",
@@ -645,9 +646,9 @@
             "success": "پاس ورڈ کامیابی سے تبدیل کر دیا گیا",
             "error": "پاس ورڈ تبدیل کرنے میں ناکام",
             "btn": {
-                "cancel": "Cancel",
-                "close": "Close",
-                "back": "Back"
+                "cancel": "منسوخ کریں",
+                "close": "بند کریں",
+                "back": "واپس"
             }
         },
         "resources": {
@@ -663,7 +664,9 @@
                 "manage_desc": "اپنے منسلک ای میل اکاؤنٹس کا نظم کریں",
                 "add": "مرسل شامل کریں",
                 "none": "کوئی مرسل نہیں ملا۔",
-                "provider": "{{type}} فراہم کنندہ"
+                "provider": "{{type}} فراہم کنندہ",
+                "verified": "تصدیق شدہ",
+                "pending": "زیر التواء"
             },
             "templates": {
                 "title": "ای میل سانچے",
@@ -746,13 +749,13 @@
             "title": {
                 "new": "نئے بھیجنے والے کو مربوط کریں۔"
             },
-            "subtitle": "Configure your email sending infrastructure",
+            "subtitle": "اپنا ای میل بھیجنے کا انفراسٹرکچر ترتیب دیں",
             "types": {
-                "gmail": "Google Gmail",
-                "outlook": "Microsoft Outlook",
-                "smtp": "Custom SMTP",
-                "bulk": "Bulk Import",
-                "smtp_desc": "Manual setup",
+                "gmail": "گوگل جی میل",
+                "outlook": "مائیکروسافٹ آؤٹ لک",
+                "smtp": "حسب ضرورت SMTP",
+                "bulk": "بلک امپورٹ",
+                "smtp_desc": "دستی سیٹ اپ",
                 "bulk_desc": "XLSX اپ لوڈ"
             },
             "secure_title": "انٹرپرائز گریڈ سیکورٹی",
@@ -785,9 +788,9 @@
                 "username": "صارف نام",
                 "password": "پاس ورڈ",
                 "secure": "SSL/TLS سیکیورٹی",
-                "type": "Account Type",
-                "first_name": "First Name",
-                "last_name": "Last Name",
+                "type": "اکاؤنٹ کی قسم",
+                "first_name": "پہلا نام",
+                "last_name": "آخری نام",
                 "domain": "Domain",
                 "placeholder_name": "e.g. John Smith",
                 "placeholder_email": "sender@example.com",
@@ -815,7 +818,7 @@
                 "mapping_subtitle": "اپنے اسپریڈشیٹ ہیڈرز کو ہمارے فیلڈز میں نقشہ بنائیں",
                 "change_file": "فائل کو تبدیل کریں",
                 "preview_title": "ڈیٹا کا پیش نظارہ ({{count}} ریکارڈز)",
-                "more_rows": "اور {{گنتی}} مزید قطاریں...",
+                "more_rows": "And {{count}} more rows...",
                 "select_col": "-- کالم منتخب کریں --",
                 "transform_note": "ہم اپ لوڈ کرنے سے پہلے ان نقشوں کی بنیاد پر آپ کے فائل ڈیٹا کو خود بخود تبدیل کر دیں گے۔",
                 "upload_complete": "اپ لوڈ مکمل",
@@ -852,14 +855,14 @@
                 "details": "تفصیلات",
                 "content": "مواد",
                 "review": "جائزہ",
-                "status": "{{کل}} کا {{موجودہ}} مرحلہ: {{نام}}"
+                "status": "Step {{current}} of {{total}}: {{name}}"
             },
             "fields": {
                 "name": "ٹیمپلیٹ کا نام",
                 "subject": "ای میل کا موضوع",
                 "placeholder_name": "جیسے ویلکم سیریز - پہلا دن",
-                "placeholder_subject": "جیسے ہیلو __پہلا_نام__، ہمارے پلیٹ فارم میں خوش آمدید!",
-                "placeholder_content": "اپنا ای م��ل مواد یہاں درج کریں... بھیجنے والے کے نام کے لیے __sender_name__ استعمال کریں"
+                "placeholder_subject": "e.g. Hello {{first_name}}, welcome to our platform!",
+                "placeholder_content": "Enter your email content here... Use {{sender_name}} for the sender's name"
             },
             "labels": {
                 "status": "ٹیمپلیٹ کی حیثیت",
@@ -882,10 +885,11 @@
             }
         },
         "details": {
+            "subtitle": "View and manage your contact batch details",
             "sender": "Sender Details",
             "batch": "Batch Details",
             "template": "Template Preview",
-            "first_name": "First Name",
+            "first_name": "پہلا نام",
             "last_name": "آخری نام",
             "company": "کمپنی",
             "phone": "فون",
@@ -920,8 +924,8 @@
                 "try_adjusting": "اپنے فلٹرز کو ایڈجسٹ کرنے کی کوشش کریں"
             },
             "pagination": {
-                "showing": "{{کل}} ریکارڈز میں سے {{شروع}} سے {{اختتام}} دکھا رہا ہے",
-                "page_status": "صفحہ {{موجودہ}} از {{کل}}"
+                "showing": "{{total}} ریکارڈز میں سے {{start}} سے {{end}} تک دکھا رہا ہے",
+                "page_status": "صفحہ {{current}} از {{total}}"
             },
             "footer": {
                 "records_verified": "{{count}} ریکارڈز کی تصدیق ہو گئی",
@@ -980,7 +984,7 @@
         "current_plan": "موجودہ منصوبہ",
         "upgrade": "پرو میں اپ گریڈ کریں",
         "contact_sales": "سیلز سے رابطہ کریں",
-        "price_monthly": "${{قیمت}}",
+        "price_monthly": "${{price}}",
         "help_title": "قیمتوں کے بارے میں سوالات ہیں؟",
         "help_desc": "ہماری ٹیم آپ کی تنظیم کے لیے بہترین سیٹ اپ تلاش کرنے میں آپ کی مدد کرنے کے لیے حاضر ہے۔",
         "contact_us": "پر ہمارے ماہرین تک پہنچیں",
@@ -1027,14 +1031,15 @@
         "failed_to_load": "تجزیات کو لوڈ کرنے میں ناکام",
         "try_again": "دوبارہ کوشش کریں",
         "total_campaigns": "کل مہمات",
-        "active_count": "{{شمار}} فعال مہمات",
-        "completed_count": "{{شمار}} مکمل شدہ مہمیں",
+        "active_count": "{{count}} فعال مہمات",
+        "completed_count": "{{count}} مکمل مہمات",
         "emails_sent": "بھیجے گئے ای میلز",
-        "open_rate_value": "{{فیصد}}% اوسط کھلی شرح",
+        "recipients": "وصول کنندگان",
+        "open_rate_value": "{{percentage}}% اوسط کھلی شرح",
         "opens_count": "{{count}} کل کھلتا ہے",
         "total_replies": "کل جوابات",
-        "reply_rate_value": "{{%}}% جواب کی شرح",
-        "unique_replies_count": "{{شمار}} منفرد جوابات",
+        "reply_rate_value": "{{percentage}}% جواب کی شرح",
+        "unique_replies_count": "{{count}} منفرد جوابات",
         "bounce_rate": "اچھال کی شرح",
         "bounces_count": "{{count}} باؤنس کا پتہ چلا",
         "needs_attention": "توجہ کی ضرورت ہے",
@@ -1086,8 +1091,8 @@
         "distribution_span": "تقسیم",
         "distribution_subtitle": "اکاؤنٹ فراہم کرنے والے کے ذریعے بریک ڈاؤن",
         "total": "کل",
-        "active_suffix": "{{شمار}} فعال",
-        "sent_suffix": "{{شمار}} بھیجا گیا",
+        "active_suffix": "{{count}} فعال",
+        "sent_suffix": "{{count}} بھیجا گیا۔",
         "loading_distribution": "لوڈنگ ڈسٹری بیوشن...",
         "top_campaigns_title": "اوپر",
         "campaigns_span": "مہمات",

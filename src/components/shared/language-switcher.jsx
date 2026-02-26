@@ -7,12 +7,24 @@ const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'es', name: 'Español', flag: '🇪🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-    { code: 'zh', name: '中文', flag: '🇨🇳' },
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
     { code: 'pt', name: 'Português', flag: '🇵🇹' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'ja', name: '日本語', flag: '🇯🇵' },
+    { code: 'ko', name: '한국어', flag: '🇰🇷' },
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
     { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
     { code: 'ur', name: 'اردو', flag: '🇵🇰' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'fa', name: 'فارسی', flag: '🇮🇷' },
+    { code: 'he', name: 'עברית', flag: '🇮🇱' },
+    { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
+    { code: 'id', name: 'Bahasa Indonesia', flag: '🇮🇩' },
+    { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+    { code: 'pl', name: 'Polski', flag: '🇵🇱' },
 ];
 
 const LanguageSwitcher = () => {
@@ -60,7 +72,7 @@ const LanguageSwitcher = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        className="absolute top-full ltr:right-0 rtl:left-0 mt-3 w-48 bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 p-2 z-[60] overflow-hidden"
+                        className="absolute top-full ltr:right-0 rtl:left-0 mt-3 w-48 max-h-[400px] overflow-y-auto bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200/60 p-2 z-[60] scrollbar-hide"
                     >
                         <div className="px-3 py-2 mb-1">
                             <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">Select Language</span>

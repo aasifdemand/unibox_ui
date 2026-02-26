@@ -1157,12 +1157,12 @@ const ShowSender = ({
                 {bulkUpload.isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>{t('sender.bulk.uploading')}</span>
+                    <span>{t('modals.sender.bulk.uploading')}</span>
                   </>
                 ) : (
                   <>
                     {isMapping ? <Zap className="w-4 h-4" /> : <Upload className="w-4 h-4" />}
-                    {isMapping ? t('sender.bulk.complete_btn') : t('sender.bulk.select_btn')}
+                    {isMapping ? t('modals.sender.bulk.complete_btn') : t('modals.sender.bulk.select_btn')}
                   </>
                 )}
               </Button>

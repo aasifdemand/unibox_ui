@@ -175,19 +175,19 @@ const Header = ({
                 />
               </div>
 
-              <div className="relative flex items-center min-w-40">
-                <Filter className="absolute inset-inline-start-4 w-4 h-4 text-slate-400 pointer-events-none" />
+              <div className="relative flex items-center min-w-40 bg-slate-50 border border-slate-200 rounded-2xl focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white transition-all shadow-xs">
+                <Filter className="w-4 h-4 text-slate-400 ms-4 shrink-0 pointer-events-none" />
                 <select
                   value={mailboxTypeFilter}
                   onChange={(e) => onMailboxTypeChange(e.target.value)}
-                  className="appearance-none w-full px-10 py-2.5 bg-slate-50 h-10.5 border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/40 focus:bg-white transition-all cursor-pointer"
+                  className="appearance-none w-full ps-2 pe-10 py-2.5 bg-transparent h-10.5 text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none cursor-pointer"
                 >
                   <option value="all">{t('mailboxes.all_providers')}</option>
                   <option value="gmail">{t('mailboxes.gmail_provider')}</option>
                   <option value="outlook">{t('mailboxes.outlook_provider')}</option>
                   <option value="smtp">{t('mailboxes.smtp_provider')}</option>
                 </select>
-                <ChevronRight className="absolute inset-inline-end-4 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+                <ChevronRight className="absolute right-4 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
               </div>
 
               <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-2xl border border-slate-200">

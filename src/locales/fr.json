@@ -65,7 +65,7 @@
         }
     },
     "auth": {
-        "copyright": "© {{année}} Unibox. Tous droits réservés.",
+        "copyright": "© {{year}}Unibox. Tous droits réservés.",
         "login": {
             "title": "Bienvenue",
             "title_span": "Retour",
@@ -478,7 +478,7 @@
             "title": "Prochain",
             "next_launch": "Prochain lancement programmé",
             "launching_today": "Lancement aujourd'hui",
-            "in_days": "Dans {{jours}} jours",
+            "in_days": "Dans {{days}} jours",
             "no_scheduled": "Aucune campagne planifiée pour l'instant.",
             "plan_now": "Planifiez-en un maintenant →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "Pas de Contacts",
         "no_contacts_description": "Aucune liste de contacts trouvée. Téléchargez votre première liste pour commencer.",
         "upload_contacts_btn": "Télécharger des Contacts",
+        "verified": "Vérifié",
         "valid": "Valide",
         "risky": "Risqué",
         "invalid": "Invalide",
@@ -664,7 +665,9 @@
                 "manage_desc": "Gérez vos comptes e-mail connectés",
                 "add": "Ajouter un expéditeur",
                 "none": "Aucun expéditeur trouvé.",
-                "provider": "Fournisseur {{type}}"
+                "provider": "Fournisseur {{type}}",
+                "verified": "Vérifié",
+                "pending": "En attente"
             },
             "templates": {
                 "title": "Modèles d'e-mail",
@@ -883,6 +886,7 @@
             }
         },
         "details": {
+            "subtitle": "Afficher et gérer les détails de votre lot de contacts",
             "sender": "Détails de l'expéditeur",
             "batch": "Détails du lot",
             "template": "Aperçu du modèle",
@@ -981,7 +985,7 @@
         "current_plan": "Plan actuel",
         "upgrade": "Passer à Pro",
         "contact_sales": "Contacter le service commercial",
-        "price_monthly": "{{$prix}}",
+        "price_monthly": "${{price}}",
         "help_title": "Des questions sur les tarifs ?",
         "help_desc": "Notre équipe est là pour vous aider à trouver la configuration parfaite pour votre organisation.",
         "contact_us": "Contactez nos spécialistes au",
@@ -1031,6 +1035,7 @@
         "active_count": "{{count}} campagnes actives",
         "completed_count": "{{count}} campagnes terminées",
         "emails_sent": "E-mails Envoyés",
+        "recipients": "Destinataires",
         "open_rate_value": "{{percentage}}% taux d'ouverture moyen",
         "opens_count": "{{count}} ouvertures totales",
         "total_replies": "Total des Réponses",

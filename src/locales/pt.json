@@ -65,7 +65,7 @@
         }
     },
     "auth": {
-        "copyright": "© {{ano}} Unibox. Todos os direitos reservados.",
+        "copyright": "© {{year}} Unibox. Todos os direitos reservados.",
         "login": {
             "title": "Bem vindo",
             "title_span": "Voltar",
@@ -135,7 +135,7 @@
         "delete_selected_mailboxes": "Excluir caixas de correio selecionadas",
         "workspace": "Espaço de trabalho",
         "collapse": "Recolher",
-        "more_folders": "+{{contar}} mais",
+        "more_folders": "+{{count}} mais",
         "messages_search_placeholder": "Consultar palavras-chave de remetente, assunto ou inteligência...",
         "temporal_all": "TEMPORAL: TODOS",
         "temporal_today": "TEMPORAL: HOJE",
@@ -170,7 +170,7 @@
         "volume_today": "Hoje",
         "sync_idle": "Inativo",
         "todays_volume": "Volume de hoje",
-        "account_expires": "A conta expira em {{data}}",
+        "account_expires": "A conta expira {{date}}",
         "prefix_to": "Para:",
         "new_badge": "Novo",
         "search_placeholder": "Pesquisa mensagens em todas as caixas de correio...",
@@ -297,11 +297,11 @@
         "step_review_desc": "Verificação final e lançamento",
         "error_add_content": "Adicione algum conteúdo ao seu e-mail {{mode}} antes de continuar.",
         "plain_text": "texto simples",
-        "step_indicator": "Etapa {{atual}} de {{total}}",
+        "step_indicator": "Etapa {{current}} de {{total}}",
         "help_get_started": "Precisa de uma mão? Nossos guias podem ajudá-lo a começar.",
         "creating_campaign": "Criando Campanha...",
         "next_step": "Próximo passo",
-        "continue_to": "Continue para {{passo}}",
+        "continue_to": "Continue para {{step}}",
         "start_with_template": "Comece com um modelo",
         "choose_library": "Escolha na sua biblioteca salva",
         "library": "Biblioteca",
@@ -360,7 +360,7 @@
         "msg_upload_success": "Carregamento bem-sucedido!",
         "msg_upload_failed": "Falha no upload. Por favor, tente novamente.",
         "msg_smtp_success": "Remetente SMTP criado com sucesso!",
-        "msg_smtp_failed": "Falha: {{mensagem}}",
+        "msg_smtp_failed": "Falha: {{message}}",
         "campaign_summary": "Resumo da campanha",
         "review_settings": "Revise suas configurações antes do lançamento",
         "ready_to_send": "Pronto para enviar",
@@ -408,11 +408,11 @@
         "loading_data": "Carregando dados do painel...",
         "stats": {
             "total_campaigns": "Total de campanhas",
-            "this_month": "+{{conta}} este mês",
-            "campaigns_desc": "{{ativo}} ativo, {{agendado}} agendado",
+            "this_month": "+{{count}} este mês",
+            "campaigns_desc": "{{active}} ativo, {{scheduled}} agendado",
             "open_rate": "Taxa de abertura",
             "total_opens": "{{count}} total de aberturas",
-            "sent_desc": "{{contar}} e-mails enviados",
+            "sent_desc": "{{count}} e-mails enviados",
             "reply_rate": "Taxa de resposta",
             "total_replies": "{{count}} total de respostas",
             "engagement_desc": "Engajamento da campanha",
@@ -448,7 +448,7 @@
         },
         "performance": {
             "title": "Desempenho da campanha",
-            "overview": "VISÃO GERAL DOS ÚLTIMOS {{dias}} DIAS",
+            "overview": "VISÃO GERAL DOS ÚLTIMOS {{days}} DIAS",
             "realtime": "Em tempo real",
             "success_rate": "Taxa de sucesso",
             "avg_open": "Taxa média de abertura",
@@ -478,7 +478,7 @@
             "title": "Próximos",
             "next_launch": "Próximo lançamento agendado",
             "launching_today": "Lançamento hoje",
-            "in_days": "Em {{dias}} Dias",
+            "in_days": "Em {{days}} Dias",
             "no_scheduled": "Nenhuma campanha agendada ainda.",
             "plan_now": "Planeje um agora →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "Sem contatos",
         "no_contacts_description": "Nenhuma lista de contatos encontrada. Carregue sua primeira lista para começar.",
         "upload_contacts_btn": "Carregar contatos",
+        "verified": "Verificado",
         "valid": "Válido",
         "risky": "Arriscado",
         "invalid": "Inválido",
@@ -580,7 +581,7 @@
         "never_updated": "Nunca atualizado",
         "never": "Nunca",
         "pro_tip": "Dica profissional",
-        "pro_tip_desc": "Use variáveis ​​como __first_name__ para personalizar seus e-mails e melhorar o engajamento."
+        "pro_tip_desc": "Use variáveis ​​como {{first_name}} para personalizar seus e-mails e melhorar o engajamento."
     },
     "settings": {
         "title": "Configurações da conta",
@@ -622,7 +623,7 @@
             "current_password": "Senha atual",
             "new_password": "Nova senha",
             "confirm_password": "Confirmar nova senha",
-            "strength": "Força: {{nível}}",
+            "strength": "Força: {{level}}",
             "levels": {
                 "weak": "Fraco",
                 "fair": "Justo",
@@ -663,7 +664,9 @@
                 "manage_desc": "Gerencie suas contas de e-mail conectadas",
                 "add": "Adicionar remetente",
                 "none": "Nenhum remetente encontrado.",
-                "provider": "{{type}} provedor"
+                "provider": "{{type}} provedor",
+                "verified": "Verificado",
+                "pending": "Pendente"
             },
             "templates": {
                 "title": "Modelos de e-mail",
@@ -815,7 +818,7 @@
                 "mapping_subtitle": "Mapeie os cabeçalhos da sua planilha para nossos campos",
                 "change_file": "Alterar arquivo",
                 "preview_title": "Visualização de dados ({{count}} registros)",
-                "more_rows": "E {{contar}} mais linhas...",
+                "more_rows": "E {{count}} mais linhas...",
                 "select_col": "-- Selecionar Coluna --",
                 "transform_note": "Transformaremos automaticamente os dados do seu arquivo com base nesses mapeamentos antes do upload.",
                 "upload_complete": "Carregamento concluído",
@@ -852,14 +855,14 @@
                 "details": "Detalhes",
                 "content": "Conteúdo",
                 "review": "Revisão",
-                "status": "Etapa {{atual}} de {{total}}: {{name}}"
+                "status": "Etapa {{current}} de {{total}}: {{name}}"
             },
             "fields": {
                 "name": "Nome do modelo",
                 "subject": "Assunto do e-mail",
                 "placeholder_name": "por exemplo Série de boas-vindas - Dia 1",
-                "placeholder_subject": "por exemplo Olá __first_name{{, bem-vindo à nossa plataforma!",
-                "placeholder_content": "Insira o conteúdo do seu e-mail aqui... Use}}sender_name__ para o nome do remetente"
+                "placeholder_subject": "por exemplo Olá {{first_name}}, bem-vindo à nossa plataforma!",
+                "placeholder_content": "Insira o conteúdo do seu e-mail aqui... Use {{sender_name}} para o nome do remetente"
             },
             "labels": {
                 "status": "Status do modelo",
@@ -882,6 +885,7 @@
             }
         },
         "details": {
+            "subtitle": "Visualize e gerencie os detalhes do seu lote de contatos",
             "sender": "Detalhes do remetente",
             "batch": "Detalhes do lote",
             "template": "Visualização do modelo",
@@ -921,7 +925,7 @@
             },
             "pagination": {
                 "showing": "Mostrando {{start}} a {{end}} de registros {{total}}",
-                "page_status": "Página {{atual}} de {{total}}"
+                "page_status": "Página {{current}} de {{total}}"
             },
             "footer": {
                 "records_verified": "{{count}} registros verificados",
@@ -974,13 +978,13 @@
         "subtitle": "Escolha o plano perfeito para suas necessidades de divulgação. Dimensione seu jogo de e-mail frio sem limites.",
         "custom_price": "Personalizado",
         "popular": "Escolha Popular",
-        "per_user": "/mo",
+        "per_user": "/ mês",
         "billing_suffix": "por usuário/mês",
         "custom_billing": "adaptado às suas necessidades",
         "current_plan": "Plano Atual",
         "upgrade": "Atualize para o Pro",
         "contact_sales": "Contate Vendas",
-        "price_monthly": "${{preço}}",
+        "price_monthly": "${{price}}",
         "help_title": "Tem dúvidas sobre preços?",
         "help_desc": "Nossa equipe está aqui para ajudá-lo a encontrar a configuração perfeita para sua organização.",
         "contact_us": "Entre em contato com nossos especialistas em",
@@ -1027,9 +1031,10 @@
         "failed_to_load": "Falha ao carregar o Analytics",
         "try_again": "Tente novamente",
         "total_campaigns": "Total de campanhas",
-        "active_count": "{{contar}} campanhas ativas",
+        "active_count": "{{count}} campanhas ativas",
         "completed_count": "{{count}} campanhas concluídas",
         "emails_sent": "E-mails enviados",
+        "recipients": "Destinatários",
         "open_rate_value": "{{percentage}}% taxa média de abertura",
         "opens_count": "{{count}} total de aberturas",
         "total_replies": "Total de respostas",

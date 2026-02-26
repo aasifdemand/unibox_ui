@@ -65,7 +65,7 @@
         }
     },
     "auth": {
-        "copyright": "© {{año}} Unibox. Reservados todos los derechos.",
+        "copyright": "© {{year}} Unibox. Reservados todos los derechos.",
         "login": {
             "title": "Bienvenido",
             "title_span": "Volver",
@@ -472,13 +472,13 @@
         "goal": {
             "title": "Meta mensual",
             "growth": "Crecimiento del espacio de trabajo",
-            "description": "Ha completado {{completado}} de su {{goal}} objetivo de campañas para este mes."
+            "description": "Ha completado {{completed}} de su objetivo de campañas {{goal}} para este mes."
         },
         "upcoming": {
             "title": "Próximo",
             "next_launch": "Próximo lanzamiento programado",
             "launching_today": "Lanzamiento hoy",
-            "in_days": "En {{días}} Días",
+            "in_days": "En {{days}} Días",
             "no_scheduled": "Aún no hay campañas programadas.",
             "plan_now": "Planifica uno ahora →"
         },
@@ -518,6 +518,7 @@
         "no_contacts_title": "Sin Contactos",
         "no_contacts_description": "No se encontraron listas de contactos. Suba su primera lista para comenzar.",
         "upload_contacts_btn": "Subir Contactos",
+        "verified": "Verificado",
         "valid": "Válido",
         "risky": "Riesgoso",
         "invalid": "Inválido",
@@ -664,7 +665,9 @@
                 "manage_desc": "Administra tus cuentas de correo conectadas",
                 "add": "Agregar remitente",
                 "none": "No se encontraron remitentes.",
-                "provider": "Proveedor {{type}}"
+                "provider": "Proveedor {{type}}",
+                "verified": "Verificado",
+                "pending": "Pendiente"
             },
             "templates": {
                 "title": "Plantillas de correo",
@@ -883,6 +886,7 @@
             }
         },
         "details": {
+            "subtitle": "Ver y administrar los detalles del lote de contactos",
             "sender": "Detalles del remitente",
             "batch": "Detalles del lote",
             "template": "Vista previa de la plantilla",
@@ -981,7 +985,7 @@
         "current_plan": "Plan actual",
         "upgrade": "Mejorar a Pro",
         "contact_sales": "Contactar ventas",
-        "price_monthly": "${{precio}}",
+        "price_monthly": "${{price}}",
         "help_title": "¿Tienes preguntas sobre los precios?",
         "help_desc": "Nuestro equipo está aquí para ayudarte a encontrar la configuración perfecta para tu organización.",
         "contact_us": "Contacta con nuestros especialistas en",
@@ -1031,6 +1035,7 @@
         "active_count": "{{count}} campañas activas",
         "completed_count": "{{count}} campañas completadas",
         "emails_sent": "Correos Enviados",
+        "recipients": "Destinatarios",
         "open_rate_value": "{{percentage}}% tasa media de apertura",
         "opens_count": "{{count}} aperturas totales",
         "total_replies": "Respuestas Totales",
