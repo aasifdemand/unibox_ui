@@ -135,6 +135,7 @@ export const useOutlookData = (
       message: currentOutlookMessageQuery,
       attachments: outlookAttachmentsQuery,
       search: outlookSearchQuery,
+      isSpecialFolder,
     },
     mutations: {
       sendMessage: sendOutlookMessage,

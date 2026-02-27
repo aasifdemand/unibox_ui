@@ -138,6 +138,7 @@ export const useSmtpData = (
       attachments: smtpAttachmentsQuery,
       status: smtpStatusQuery,
       search: smtpSearchQuery,
+      isSpecialFolder,
     },
     mutations: {
       markAsRead: markSmtpAsRead,

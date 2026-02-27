@@ -5,6 +5,7 @@ import MessageListItem from './messagelist-item';
 import EmptyMessages from './empty-messages';
 import FolderTree from './folder-tree';
 import { getDisplayId, getMessageId } from '../utils/getmessage-id';
+import { isFolderType } from '../utils/folder-utils';
 
 const MessagesView = ({
   selectedMailbox,
@@ -133,16 +134,21 @@ const MessagesView = ({
           {/* Main List Body */}
           <div className="flex-1 min-h-0 relative flex flex-col">
             {isLoadingMessages && filteredMessages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center flex-1 px-6">
+              <div className="flex flex-col items-center justify-center flex-1 px-6 bg-white/20 backdrop-blur-sm transition-all duration-300">
                 <div className="relative">
-                  <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+                  <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
                   </div>
                 </div>
-                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-6">
-                  {t('mailboxes.indexing_messages')}
-                </span>
+                <div className="flex flex-col items-center gap-2 mt-8">
+                  <span className="text-sm font-black text-slate-800 uppercase tracking-[0.3em] animate-pulse">
+                    {t('mailboxes.indexing_messages')}
+                  </span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    {t('mailboxes.fetching_content')}
+                  </span>
+                </div>
               </div>
             ) : filteredMessages.length === 0 ? (
               <EmptyMessages
@@ -174,11 +180,7 @@ const MessagesView = ({
                     }`}
                 >
                   {filteredMessages.map((message) => {
-                    const isSentFolder =
-                      selectedFolder?.id === 'SENT' ||
-                      selectedFolder?.id === 'sentitems' ||
-                      selectedFolder?.name === 'SENT' ||
-                      message.labelIds?.includes('SENT');
+                    const isSentFolder = isFolderType(selectedFolder, 'sent') || message.labelIds?.includes('SENT');
 
                     return (
                       <MessageListItem

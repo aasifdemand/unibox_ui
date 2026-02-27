@@ -24,19 +24,26 @@ export const isFolderType = (folder, type) => {
         case 'INBOX':
             return isMatch(id, ['INBOX']) || isMatch(name, ['INBOX']);
         case 'SENT':
-            return isMatch(id, ['SENT', 'SENTITEMS', 'SENT MESSAGES', 'SENT MAIL']) || isMatch(name, ['SENT', 'SENT ITEMS', 'SENT MESSAGES', 'SENT MAIL']);
+            return isMatch(id, ['SENT', 'SENTITEMS', 'SENT MESSAGES', 'SENT MAIL', 'SENT_MAIL', 'SENTMAIL', 'SENT-MAIL']) ||
+                isMatch(name, ['SENT', 'SENT ITEMS', 'SENT MESSAGES', 'SENT MAIL', 'SENT ITEMS', 'SENT_MAIL', 'SENTMAIL', 'SENT-MAIL']);
         case 'DRAFTS':
-            return isMatch(id, ['DRAFT', 'DRAFTS']) || isMatch(name, ['DRAFT', 'DRAFTS']);
+            return isMatch(id, ['DRAFT', 'DRAFTS', 'DRAFTMESSAGES', 'DRAFT_MESSAGES']) ||
+                isMatch(name, ['DRAFT', 'DRAFTS', 'DRAFT MESSAGES', 'DRAFT_MESSAGES']);
         case 'TRASH':
-            return isMatch(id, ['TRASH', 'DELETEDITEMS', 'DELETED', 'BIN']) || isMatch(name, ['TRASH', 'DELETED ITEMS', 'DELETED', 'BIN', 'RECYCLE BIN']);
+            return isMatch(id, ['TRASH', 'DELETEDITEMS', 'DELETED', 'BIN', 'DELETED MESSAGES', 'DELETED_MESSAGES']) ||
+                isMatch(name, ['TRASH', 'DELETED ITEMS', 'DELETED', 'BIN', 'RECYCLE BIN', 'DELETED MESSAGES', 'DELETED_MESSAGES']);
         case 'SPAM':
-            return isMatch(id, ['SPAM', 'JUNK', 'JUNKEMAIL']) || isMatch(name, ['SPAM', 'JUNK', 'JUNK EMAIL']);
+            return isMatch(id, ['SPAM', 'JUNK', 'JUNKEMAIL', 'JUNK_EMAIL', 'JUNKMAIL', 'SPAM_MESSAGES']) ||
+                isMatch(name, ['SPAM', 'JUNK', 'JUNK EMAIL', 'JUNK_EMAIL', 'JUNKMAIL', 'SPAM MESSAGES']);
         case 'ARCHIVE':
-            return isMatch(id, ['ARCHIVE']) || isMatch(name, ['ARCHIVE']);
+            return isMatch(id, ['ARCHIVE', 'ARCHIVED', 'ARCHIVEMESSAGES']) ||
+                isMatch(name, ['ARCHIVE', 'ARCHIVED', 'ARCHIVE MESSAGES']);
         case 'STARRED':
-            return isMatch(id, ['STARRED', 'FLAGGED']) || isMatch(name, ['STARRED', 'FLAGGED', 'STAR']);
+            return isMatch(id, ['STARRED', 'FLAGGED', 'STAR']) ||
+                isMatch(name, ['STARRED', 'FLAGGED', 'STAR', 'STARRED MESSAGES']);
         case 'IMPORTANT':
-            return isMatch(id, ['IMPORTANT', 'IMPORTANT MESSAGES']) || isMatch(name, ['IMPORTANT', 'IMPORTANT MESSAGES']);
+            return isMatch(id, ['IMPORTANT', 'IMPORTANT MESSAGES', 'IMPORTANT_MESSAGES']) ||
+                isMatch(name, ['IMPORTANT', 'IMPORTANT MESSAGES', 'IMPORTANT_MESSAGES']);
         case 'OUTBOX':
             return isMatch(id, ['OUTBOX']) || isMatch(name, ['OUTBOX']);
         case 'CATEGORY_PERSONAL':

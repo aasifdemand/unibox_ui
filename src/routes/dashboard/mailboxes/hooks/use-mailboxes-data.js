@@ -136,40 +136,58 @@ export const useMailboxesData = () => {
     const q = provider.queries;
     const pageIndex = currentPage - 1;
 
+    // Helper to extract messages from any query page safely
+    const getMsgs = (query, field = 'messages') => {
+      const page = query?.data?.pages ? query.data.pages[pageIndex] : query?.data;
+      return (page ? page[field] : []) || [];
+    };
+
     if (selectedMailbox.type === 'gmail') {
-      if (!selectedFolder) return q.messages.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'trash')) return q.trash.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'spam')) return q.spam.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'starred')) return q.starred.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'important'))
-        return q.important.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'drafts')) return q.drafts.data?.pages[pageIndex]?.drafts || [];
-      return q.messages.data?.pages[pageIndex]?.messages || [];
+      if (!selectedFolder) return getMsgs(q.messages);
+      if (isFolderType(selectedFolder, 'sent')) return getMsgs(q.sent);
+      if (isFolderType(selectedFolder, 'trash')) return getMsgs(q.trash);
+      if (isFolderType(selectedFolder, 'spam')) return getMsgs(q.spam);
+      if (isFolderType(selectedFolder, 'starred')) return getMsgs(q.starred);
+      if (isFolderType(selectedFolder, 'important')) return getMsgs(q.important);
+      if (isFolderType(selectedFolder, 'drafts')) return getMsgs(q.drafts, 'drafts');
+
+      if (provider.queries?.isSpecialFolder) {
+        return [];
+      }
+
+      return getMsgs(q.messages);
     }
 
     if (selectedMailbox.type === 'outlook') {
-      if (!selectedFolder) return q.messages.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'trash'))
-        return q.trash.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'spam')) return q.spam.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'archive')) return q.archive.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'outbox')) return q.outbox.data?.pages[pageIndex]?.messages || [];
-      if (isFolderType(selectedFolder, 'drafts')) return q.drafts.data?.pages[pageIndex]?.messages || [];
-      return q.messages.data?.pages[pageIndex]?.messages || [];
+      if (!selectedFolder) return getMsgs(q.messages);
+      if (isFolderType(selectedFolder, 'sent')) return getMsgs(q.sent);
+      if (isFolderType(selectedFolder, 'trash')) return getMsgs(q.trash);
+      if (isFolderType(selectedFolder, 'spam')) return getMsgs(q.spam);
+      if (isFolderType(selectedFolder, 'archive')) return getMsgs(q.archive);
+      if (isFolderType(selectedFolder, 'outbox')) return getMsgs(q.outbox);
+      if (isFolderType(selectedFolder, 'drafts')) return getMsgs(q.drafts);
+
+      // If it's a special folder but not one of the above, it's safer to return [] 
+      // while loading or if it's disabled in useOutlookData.
+      if (provider.queries?.isSpecialFolder) {
+        return [];
+      }
+
+      return getMsgs(q.messages);
     }
 
     if (selectedMailbox.type === 'smtp') {
       if (!selectedFolder) return q.messages.data?.messages || [];
       if (isFolderType(selectedFolder, 'sent')) return q.sent.data?.messages || [];
-      if (isFolderType(selectedFolder, 'drafts'))
-        return q.drafts.data?.messages || [];
-      if (isFolderType(selectedFolder, 'trash'))
-        return q.trash.data?.messages || [];
-      if (isFolderType(selectedFolder, 'spam'))
-        return q.spam.data?.messages || [];
+      if (isFolderType(selectedFolder, 'drafts')) return q.drafts.data?.messages || [];
+      if (isFolderType(selectedFolder, 'trash')) return q.trash.data?.messages || [];
+      if (isFolderType(selectedFolder, 'spam')) return q.spam.data?.messages || [];
       if (isFolderType(selectedFolder, 'archive')) return q.archive.data?.messages || [];
+
+      if (provider.queries?.isSpecialFolder) {
+        return [];
+      }
+
       return q.messages.data?.messages || [];
     }
 
@@ -215,7 +233,8 @@ export const useMailboxesData = () => {
         setTotalMessages(searchData?.totalCount || 0);
       } else {
         setHasNextPage(provider.queries.search.hasNextPage);
-        setTotalMessages(searchData?.pages[0]?.totalResults || 0);
+        const firstSearchPage = searchData?.pages?.[0];
+        setTotalMessages(firstSearchPage?.totalResults || firstSearchPage?.resultSizeEstimate || firstSearchPage?.count || 0);
       }
       return;
     }
@@ -243,7 +262,17 @@ export const useMailboxesData = () => {
                     ? q.drafts
                     : q.messages;
 
-      total = query.data?.pages?.reduce((acc, p) => acc + (p?.messages?.length || 0), 0) || 0;
+      // Use specialized count from folder metadata if available (immediate and accurate)
+      const folderTotal = selectedFolder?.totalItemCount || selectedFolder?.messagesTotal || selectedFolder?.totalCount || selectedFolder?.itemCount;
+
+      const firstPage = query.data?.pages?.[0];
+      const queryTotal = firstPage?.totalResults || firstPage?.resultSizeEstimate || firstPage?.count;
+
+      total = folderTotal || queryTotal ||
+        query.data?.pages?.reduce((acc, p) => {
+          const msgs = p?.messages || p?.drafts || p || [];
+          return acc + (Array.isArray(msgs) ? msgs.length : 0);
+        }, 0) || 0;
       hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === 'outlook') {
       const query = !selectedFolder
@@ -260,9 +289,21 @@ export const useMailboxesData = () => {
                   ? q.outbox
                   : isFolderType(selectedFolder, 'drafts')
                     ? q.drafts
-                    : q.messages;
+                    : isFolderType(selectedFolder, 'starred')
+                      ? q.messages // Outlook uses generic messages query for starred/flagged if no specific hook
+                      : q.messages;
 
-      total = query.data?.pages?.reduce((acc, p) => acc + (p?.messages?.length || 0), 0) || 0; // Outlook might not provide totalResults in standard way, use fallback
+      // Use totalResults or count from the first page, prioritizing folder metadata
+      const folderTotal = selectedFolder?.totalItemCount || selectedFolder?.totalCount || selectedFolder?.itemCount || selectedFolder?.count;
+
+      const firstPage = query.data?.pages?.[0];
+      const queryTotal = firstPage?.count || firstPage?.totalResults;
+
+      total = folderTotal || queryTotal ||
+        query.data?.pages?.reduce((acc, p) => {
+          const msgs = p?.messages || p?.value || p || [];
+          return acc + (Array.isArray(msgs) ? msgs.length : 0);
+        }, 0) || 0;
       hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === 'smtp') {
       const query = !selectedFolder
@@ -287,6 +328,13 @@ export const useMailboxesData = () => {
     setHasNextPage(hasNext);
     setHasPreviousPage(currentPage > 1);
   }, [selectedMailbox, selectedFolder, currentPage, searchQuery, provider?.queries]);
+
+  useEffect(() => {
+    if (selectedFolder) {
+      setSelectedMessages([]);
+      setCurrentMessageId(null);
+    }
+  }, [selectedFolder]);
 
   // =========================
   // HANDLERS
@@ -859,7 +907,7 @@ export const useMailboxesData = () => {
                         : isFolderType(selectedFolder, 'outbox') ? q.outbox
                           : q.messages;
 
-        return activeQuery?.isLoading || activeQuery?.isFetchingNextPage;
+        return activeQuery?.isLoading || activeQuery?.isFetching || activeQuery?.isFetchingNextPage;
       })(),
       isMessageLoading: provider?.queries.message?.isLoading,
       isSyncing: provider?.mutations.sync.isLoading,

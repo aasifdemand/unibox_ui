@@ -135,6 +135,7 @@ export const useGmailData = (
       message: currentGmailMessageQuery,
       attachments: gmailAttachmentsQuery,
       search: gmailSearchQuery,
+      isSpecialFolder,
     },
     mutations: {
       sendMessage: sendGmailMessage,
