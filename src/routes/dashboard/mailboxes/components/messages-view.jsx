@@ -55,7 +55,7 @@ const MessagesView = ({
               placeholder={t('mailboxes.messages_search_placeholder')}
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full ltr:pl-11 ltr:pr-11 rtl:pl-11 ltr:pr-11 rtl:pl-11 py-3 bg-slate-50/50 border border-slate-200/80 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 transition-all outline-none shadow-xs"
+              className="w-full ltr:pl-11 ltr:pr-11 rtl:pl-11 ltr:pr-11 rtl:pl-11 py-3 bg-slate-50/50 border border-slate-200/80 rounded-2xl text-sm font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 transition-all outline-none shadow-xs"
             />
             {searchQuery && (
               <button

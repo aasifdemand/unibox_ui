@@ -15,7 +15,7 @@ const Pagination = ({
   const { t } = useTranslation();
   return (
     <div className="flex items-center justify-between">
-      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+      <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
         {t('mailboxes.page')} <span className="text-slate-800">{currentPage}</span>
         {totalMessages > 0 && (
           <span className="mx-2 px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-md">

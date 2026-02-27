@@ -22,13 +22,69 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
   const iframeRef = useRef(null);
   const [height, setHeight] = useState('400px');
 
-  // Inject styles to prevent the iframe content from hiding overflow 
-  // or bleeding heights in a way that breaks scroll calculations
-  const safeContent = `${htmlContent}
+  // Inject styles to restore the "Premium" look that was lost during iframe transition
+  const safeContent = `
+<!DOCTYPE html>
+<html>
+<head>
 <style>
-  html, body { height: auto !important; min-height: 0 !important; overflow: visible !important; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important; }
-</style>`;
+  html, body { 
+    height: auto !important; 
+    min-height: 0 !important; 
+    overflow: visible !important; 
+    margin: 0; 
+    padding: 0;
+  }
+  body { 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important; 
+    font-size: 15px;
+    line-height: 1.6;
+    color: #334155; /* slate-700 */
+    padding: 32px !important;
+  }
+  img { 
+    max-width: 100% !important; 
+    height: auto !important; 
+    display: block; 
+    margin: 1em 0;
+  }
+  a { 
+    color: #6366f1; /* primary-500 */
+    text-decoration: underline; 
+    word-break: break-all;
+  }
+  p { margin-bottom: 1.25em; }
+  h1, h2, h3, h4 { 
+    font-family: 'Outfit', sans-serif !important; 
+    color: #1e293b; /* slate-800 */
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  blockquote {
+    border-left: 4px solid #e2e8f0;
+    padding-left: 1.25rem;
+    margin: 1.5em 0;
+    color: #64748b;
+    font-style: italic;
+  }
+  table { 
+    width: 100% !important; 
+    max-width: 100% !important; 
+    border-collapse: collapse; 
+    margin: 1em 0;
+    table-layout: fixed;
+  }
+  /* Preserve original email styling if it exists */
+  ${htmlContent.includes('<style>') ? '' : `
+    ul, ol { margin-bottom: 1.25em; padding-left: 1.5em; }
+    li { margin-bottom: 0.5em; }
+  `}
+</style>
+</head>
+<body>
+  ${htmlContent}
+</body>
+</html>`;
 
   const updateHeight = () => {
     if (iframeRef.current && iframeRef.current.contentWindow) {
@@ -250,7 +306,7 @@ const MessageDetailView = ({
     });
 
     flushBlockquote();
-    return <div className="text-slate-700 leading-relaxed font-sans break-words whitespace-pre-wrap overflow-hidden">{elements}</div>;
+    return <div className="text-slate-700 leading-relaxed font-sans break-words whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none">{elements}</div>;
   };
 
   const renderMessageBody = () => {

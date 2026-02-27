@@ -384,7 +384,7 @@ const AudienceTabs = ({
                           </div>
                           <div>
                             <div className="flex items-center gap-3">
-                              <h4 className="font-extrabold text-slate-800 tracking-tighter text-base">
+                              <h4 className="font-bold text-slate-800 tracking-tight text-base">
                                 {sender.displayName}
                               </h4>
                               {sender.isVerified ? (
@@ -484,31 +484,31 @@ const AudienceTabs = ({
                   className="premium-card bg-white border-slate-200/60 overflow-hidden mb-4"
                 >
                   <div className="overflow-x-auto">
-                    <table className="w-full ltr:text-left ltr:text-right rtl:text-left border-collapse">
+                    <table className="w-full ltr:text-left rtl:text-right border-collapse">
                       <thead>
                         <tr>
                           <th className="py-4 px-6 bg-slate-50 border-b border-slate-100">
-                            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                               {t('audience.senders_title')}
                             </span>
                           </th>
-                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100">
-                            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100 text-center">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                               {t('audience.sender_type')}
                             </span>
                           </th>
-                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100">
-                            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100 text-center">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                               {t('audience.status')}
                             </span>
                           </th>
-                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100">
-                            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                          <th className="py-4 px-6 bg-slate-50 border-b border-slate-100 text-center">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                               {t('audience.created')}
                             </span>
                           </th>
                           <th className="py-4 px-6 bg-slate-50 border-b border-slate-100 ltr:text-right rtl:text-left">
-                            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                               {t('audience.actions')}
                             </span>
                           </th>
@@ -539,21 +539,21 @@ const AudienceTabs = ({
                                   )}
                                 </div>
                                 <div>
-                                  <h4 className="font-extrabold text-slate-800 tracking-tight text-sm">
+                                  <h4 className="font-bold text-slate-800 tracking-tight text-sm">
                                     {sender.displayName}
                                   </h4>
-                                  <p className="text-[11px] font-bold text-slate-500">
+                                  <p className="text-[11px] font-medium text-slate-500">
                                     {sender.email}
                                   </p>
                                 </div>
                               </div>
                             </td>
-                            <td className="py-4 px-6">
+                            <td className="py-4 px-6 text-center">
                               <span className="text-[11px] font-extrabold text-slate-600 uppercase">
                                 {sender.type === 'smtp' ? t('audience.direct_smtp') : sender.type}
                               </span>
                             </td>
-                            <td className="py-4 px-6">
+                            <td className="py-4 px-6 text-center">
                               {sender.isVerified ? (
                                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 border border-emerald-200/50 rounded-lg text-[10px] font-extrabold uppercase tracking-widest">
                                   <CheckCircle className="w-3 h-3" />
@@ -566,7 +566,7 @@ const AudienceTabs = ({
                                 </div>
                               )}
                             </td>
-                            <td className="py-4 px-6">
+                            <td className="py-4 px-6 text-center">
                               <span className="text-[11px] font-extrabold text-slate-600 tabular-nums">
                                 {new Date(sender.createdAt).toLocaleDateString()}
                               </span>
