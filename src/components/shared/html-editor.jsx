@@ -34,20 +34,22 @@ import {
   Underline as UnderlineIcon,
   Eye,
   Trash2,
-  Tag,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Table as TableIcon,
   Undo,
   Redo,
   Highlighter,
-  Palette,
+  FileText,
+  List,
+  ListOrdered,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
   TypeOutline,
   Hash,
-  FileText,
 } from 'lucide-react';
 import PersonalizationTokens from './personalization-tokens';
 
+// Typography constants removed as requested: COLORS
 const FONTS = [
   'Arial',
   'Helvetica',
@@ -62,89 +64,6 @@ const FONTS = [
 ];
 
 const FONT_SIZES = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
-
-const COLORS = [
-  '#000000',
-  '#434343',
-  '#666666',
-  '#999999',
-  '#b7b7b7',
-  '#cccccc',
-  '#d9d9d9',
-  '#efefef',
-  '#f3f3f3',
-  '#ffffff',
-  '#980000',
-  '#ff0000',
-  '#ff9900',
-  '#ffff00',
-  '#00ff00',
-  '#00ffff',
-  '#4a86e8',
-  '#0000ff',
-  '#9900ff',
-  '#ff00ff',
-  '#e6b8af',
-  '#f4cccc',
-  '#fce5cd',
-  '#fff2cc',
-  '#d9ead3',
-  '#d0e0e3',
-  '#c9daf8',
-  '#cfe2f3',
-  '#d9d2e9',
-  '#ead1dc',
-  '#dd7e6b',
-  '#ea9999',
-  '#f9cb9c',
-  '#ffe599',
-  '#b6d7a8',
-  '#a2c4c9',
-  '#9fc5e8',
-  '#9fc5e8',
-  '#b4a7d6',
-  '#d5a6bd',
-  '#cc4125',
-  '#e06666',
-  '#f6b26b',
-  '#ffd966',
-  '#93c47d',
-  '#76a5af',
-  '#6d9eeb',
-  '#6d9eeb',
-  '#8e7cc3',
-  '#c27ba0',
-  '#a61c00',
-  '#cc0000',
-  '#e69138',
-  '#f1c232',
-  '#6aa84f',
-  '#45818e',
-  '#3c78d8',
-  '#3c78d8',
-  '#674ea7',
-  '#a64d79',
-  '#85200c',
-  '#990000',
-  '#b45f06',
-  '#bf9000',
-  '#38761d',
-  '#134f5c',
-  '#1155cc',
-  '#1155cc',
-  '#351c75',
-  '#741b47',
-  '#5b0f00',
-  '#660000',
-  '#783f04',
-  '#7f6000',
-  '#274e13',
-  '#0c343d',
-  '#1c4587',
-  '#1c4587',
-  '#20124d',
-  '#4c1130',
-];
 
 // 🔴 Custom font size extension
 const FontSize = TextStyle.extend({
@@ -234,9 +153,12 @@ function findVariables(doc) {
   return DecorationSet.create(doc, decorations);
 }
 
-const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
+const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) => {
   const [showTokens, setShowTokens] = useState(false);
+  const [tokenQuery, setTokenQuery] = useState('');
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
   const tokenRef = useRef(null);
+  const containerRef = useRef(null);
   const [previewMode, setPreviewMode] = useState(false);
 
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -334,11 +256,40 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
 
-      // Real-time suggestion trigger
+      // Real-time suggestion trigger with filtering support
       const { from } = editor.state.selection;
-      const textBefore = editor.state.doc.textBetween(Math.max(0, from - 2), from);
-      if (textBefore === '{{') {
-        setShowTokens(true);
+
+      // Look back to find the start of a token sequence
+      const textBefore = editor.state.doc.textBetween(Math.max(0, from - 20), from);
+      const lastTokenStart = textBefore.lastIndexOf('{{');
+
+      if (lastTokenStart !== -1) {
+        // Get content between {{ and current cursor
+        const query = textBefore.substring(lastTokenStart + 2);
+
+        // Ensure there's no closing }} or space in the query (which would mean we're past the token)
+        if (!query.includes('}}') && !query.includes(' ')) {
+          setShowTokens(true);
+          setTokenQuery(query);
+
+          // Calculate position
+          if (containerRef.current) {
+            const { view } = editor;
+            const coords = view.coordsAtPos(from);
+            const containerRect = containerRef.current.getBoundingClientRect();
+
+            setDropdownPos({
+              top: coords.bottom - containerRect.top + 10, // 10px below the line
+              left: coords.left - containerRect.left,
+            });
+          }
+        } else {
+          setShowTokens(false);
+          setTokenQuery('');
+        }
+      } else {
+        setShowTokens(false);
+        setTokenQuery('');
       }
 
       onChange(html);
@@ -374,10 +325,28 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
     };
   }, [showTokens]);
 
-  const insertToken = (token) => {
+  const insertToken = (tokenObj) => {
     if (!editor) return;
-    editor.chain().focus().insertContent(token).run();
+
+    const { from } = editor.state.selection;
+    const textBefore = editor.state.doc.textBetween(Math.max(0, from - 20), from);
+    const lastTokenStart = textBefore.lastIndexOf('{{');
+
+    if (lastTokenStart !== -1) {
+      // Calculate absolute position in the document to replace the trigger text
+      const startPos = from - (textBefore.length - lastTokenStart);
+      editor
+        .chain()
+        .focus()
+        .insertContentAt({ from: startPos, to: from }, tokenObj.token)
+        .run();
+    } else {
+      // Fallback to simple insertion if for some reason trigger wasn't found
+      editor.chain().focus().insertContent(tokenObj.token).run();
+    }
+
     setShowTokens(false);
+    setTokenQuery('');
   };
 
   const clearContent = () => {
@@ -445,60 +414,54 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white group/editor">
-      {/* Premium Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 p-4 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10 backdrop-blur-3xl">
-        {/* Navigation Group */}
-        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+      {/* Single-Line Professional Toolbar - No Overflow Clip for Dropdowns */}
+      <div className="flex items-center gap-1 p-2 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-20 backdrop-blur-3xl min-h-[50px]">
+        {/* Navigation */}
+        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
           <button
             type="button"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
-            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-600 disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-90"
-            title="Undo (Ctrl+Z)"
+            className="p-1 rounded-md hover:bg-slate-50 text-slate-500 disabled:opacity-20 transition-all"
           >
-            <Undo className="w-4 h-4" />
+            <Undo className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
-            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-600 disabled:opacity-20 disabled:cursor-not-allowed transition-all active:scale-90"
-            title="Redo (Ctrl+Y)"
+            className="p-1 rounded-md hover:bg-slate-50 text-slate-500 disabled:opacity-20 transition-all"
           >
-            <Redo className="w-4 h-4" />
+            <Redo className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="w-px h-6 bg-slate-200 mx-1" />
+        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
 
-        {/* Typography & Design Group */}
-        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+        {/* Typography */}
+        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
           <div className="relative">
             <button
               type="button"
-              onClick={() => setShowFontPicker(!showFontPicker)}
-              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontPicker ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'hover:bg-slate-100 text-slate-600'}`}
-              title="Font Family"
+              onClick={() => {
+                setShowFontPicker(!showFontPicker);
+                setShowFontSizePicker(false);
+              }}
+              className={`px-2 py-1 rounded-md flex items-center gap-1.5 transition-all ${showFontPicker ? 'bg-blue-600 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-600'}`}
             >
-              <TypeOutline className="w-4 h-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Font
+              <TypeOutline className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-bold truncate max-w-[60px] hidden lg:inline">
+                {editor.getAttributes('textStyle').fontFamily?.split(',')[0] || 'Font'}
               </span>
             </button>
             {showFontPicker && (
-              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-64 animate-in fade-in zoom-in-95 duration-200">
-                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
-                  Font Family
-                </div>
-                <div className="max-h-72 overflow-y-auto custom-scrollbar">
+              <div className="absolute top-full left-0 mt-2 bg-white border border-slate-100 rounded-xl shadow-2xl p-1 z-[100] w-48 border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+                <div className="max-h-60 overflow-y-auto custom-scrollbar p-1">
                   {FONTS.map((font) => (
                     <button
                       key={font}
-                      onClick={() => {
-                        editor.chain().focus().setFontFamily(font).run();
-                        setShowFontPicker(false);
-                      }}
-                      className="w-full ltr:text-left ltr:text-right rtl:text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
+                      onClick={() => { editor.chain().focus().setFontFamily(font).run(); setShowFontPicker(false); }}
+                      className={`w-full text-left px-3 py-1.5 text-xs hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-blue-50 text-blue-600 font-bold' : ''}`}
                       style={{ fontFamily: font }}
                     >
                       {font}
@@ -512,170 +475,139 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
           <div className="relative">
             <button
               type="button"
-              onClick={() => setShowFontSizePicker(!showFontSizePicker)}
-              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showFontSizePicker ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'hover:bg-slate-100 text-slate-600'}`}
-              title="Font Size"
+              onClick={() => {
+                setShowFontSizePicker(!showFontSizePicker);
+                setShowFontPicker(false);
+              }}
+              className={`px-2 py-1 rounded-md flex items-center gap-1.5 transition-all ${showFontSizePicker ? 'bg-indigo-600 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-600'}`}
             >
-              <Hash className="w-4 h-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Size
+              <Hash className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-bold hidden lg:inline">
+                {editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}
               </span>
             </button>
             {showFontSizePicker && (
-              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-3 z-50 w-32 animate-in fade-in zoom-in-95 duration-200">
-                <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] px-4 py-3 border-b border-slate-50 mb-2">
-                  Font Size
-                </div>
-                <div className="max-h-72 overflow-y-auto">
+              <div className="absolute top-full left-0 mt-2 bg-white border border-slate-100 rounded-xl shadow-2xl p-1 z-[100] w-20 border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+                <div className="max-h-60 overflow-y-auto custom-scrollbar p-1">
                   {FONT_SIZES.map((size) => (
                     <button
                       key={size}
-                      onClick={() => {
-                        editor.chain().focus().setFontSize(`${size}px`).run();
-                        setShowFontSizePicker(false);
-                      }}
-                      className="w-full ltr:text-left ltr:text-right rtl:text-left px-4 py-2 text-xs font-black hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 rounded-2xl"
+                      onClick={() => { editor.chain().focus().setFontSize(`${size}px`).run(); setShowFontSizePicker(false); }}
+                      className={`w-full text-center px-2 py-1.5 text-[11px] font-bold hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors ${editor.getAttributes('textStyle').fontSize === `${size}px` ? 'bg-indigo-50 text-indigo-600' : ''}`}
                     >
-                      {size}PX
+                      {size}
                     </button>
                   ))}
                 </div>
               </div>
             )}
           </div>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowColorPicker(!showColorPicker)}
-              className={`p-2.5 rounded-xl flex items-center gap-2.5 transition-all active:scale-95 ${showColorPicker ? 'bg-rose-600 text-white shadow-lg shadow-rose-500/20' : 'hover:bg-slate-100 text-slate-600'}`}
-              title="Text Color"
-            >
-              <Palette className="w-4 h-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest hidden lg:inline">
-                Color
-              </span>
-            </button>
-            {showColorPicker && (
-              <div className="absolute top-full ltr:left-0 ltr:right-0 rtl:left-0 mt-3 bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-4xl shadow-2xl p-4 z-50 w-72 animate-in fade-in zoom-in-95 duration-200">
-                <div className="grid grid-cols-8 gap-2">
-                  {COLORS.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => {
-                        editor.chain().focus().setColor(color).run();
-                        setShowColorPicker(false);
-                      }}
-                      className="w-6 h-6 rounded-full border border-slate-100 hover:scale-125 transition-all"
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
         </div>
 
-        <div className="w-px h-6 bg-slate-200 mx-1" />
+        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
 
-        {/* Format Group */}
-        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+        {/* Basic Formatting */}
+        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-2.5 rounded-xl transition-all ${editor.isActive('bold') ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('bold') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <Bold className="w-4 h-4" />
+            <Bold className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-2.5 rounded-xl transition-all ${editor.isActive('italic') ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('italic') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <Italic className="w-4 h-4" />
+            <Italic className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`p-2.5 rounded-xl transition-all ${editor.isActive('underline') ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-500'}`}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('underline') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <UnderlineIcon className="w-4 h-4" />
+            <UnderlineIcon className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleHighlight().run()}
-            className={`p-2.5 rounded-xl transition-all ${editor.isActive('highlight') ? 'bg-amber-400 text-amber-950' : 'hover:bg-slate-100 text-slate-500'}`}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('highlight') ? 'bg-amber-400 text-amber-950 shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <Highlighter className="w-4 h-4" />
+            <Highlighter className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="w-px h-6 bg-slate-200 mx-1" />
+        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
 
-        {/* Integration Group */}
-        <div className="flex items-center gap-1 bg-white/80 p-1.5 rounded-2xl border border-slate-200/40 shadow-xs">
+        {/* Lists & Alignment */}
+        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
           <button
             type="button"
-            onClick={() => setShowLinkModal(true)}
-            className={`p-2.5 rounded-xl transition-all ${editor.isActive('link') ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'hover:bg-slate-100 text-slate-500'}`}
-            title="Link Integration"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('bulletList') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <LinkIcon className="w-4 h-4" />
+            <List className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            onClick={() => setShowImageModal(true)}
-            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-500 transition-all"
-            title="Image Asset"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive('orderedList') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <ImageIcon className="w-4 h-4" />
+            <ListOrdered className="w-3.5 h-3.5" />
+          </button>
+          <div className="w-px h-3 bg-slate-100 mx-0.5" />
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign('left').run()}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'left' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
+          >
+            <AlignLeft className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            onClick={() => setShowTableModal(true)}
-            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-blue-500 transition-all"
-            title="Insert Table"
+            onClick={() => editor.chain().focus().setTextAlign('center').run()}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'center' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <TableIcon className="w-4 h-4" />
+            <AlignCenter className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            onClick={() => setShowTokens(!showTokens)}
-            className={`p-2.5 rounded-xl transition-all ${showTokens ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20' : 'hover:bg-slate-100 text-slate-500'}`}
-            title="Insert Variables"
+            onClick={() => editor.chain().focus().setTextAlign('right').run()}
+            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'right' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
           >
-            <Tag className="w-4 h-4" />
+            <AlignRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="ltr:ml-auto ltr:mr-auto rtl:ml-auto flex items-center gap-2">
+        <div className="flex-1 min-w-1" />
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 flex-none">
           <button
             type="button"
             onClick={() => setPreviewMode(!previewMode)}
-            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${previewMode ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            className={`p-1.5 rounded-xl transition-all ${previewMode ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white border border-slate-200/60 text-slate-600 hover:bg-slate-50'}`}
+            title={previewMode ? "Editor" : "Preview"}
           >
-            {previewMode ? <FileText className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-            <span>{previewMode ? 'Editor' : 'Preview'}</span>
+            {previewMode ? <FileText className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
 
-          <div className="flex items-center bg-slate-100 p-1 rounded-2xl">
-            <button
-              type="button"
-              onClick={clearContent}
-              className="p-2.5 text-slate-400 hover:text-rose-600 transition-colors"
-              title="Clear Content"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={clearContent}
+            className="p-1.5 rounded-lg bg-white border border-slate-200/60 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-all"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
-      <div className="relative flex-1 bg-slate-50/30">
+      <div ref={containerRef} className="relative flex-1 bg-slate-50/30">
         {previewMode ? (
           <div className="p-4 md:p-8 h-full overflow-y-auto animate-in fade-in duration-500 custom-scrollbar">
-            <div className="max-w-4xl mx-auto premium-card bg-white min-h-125 overflow-hidden flex flex-col">
-              <div className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 flex-none px-6 py-3 flex items-center justify-between">
+            <div className="max-w-4xl mx-auto premium-card bg-white min-h-125 overflow-hidden flex flex-col rounded-3xl border border-slate-100 shadow-2xl">
+              <div className="bg-slate-50/50 backdrop-blur-md border-b border-slate-100 flex-none px-6 py-3.5 flex items-center justify-between rounded-t-3xl">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-rose-400 border border-slate-200 shadow-inner"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-slate-200 shadow-inner"></div>
@@ -688,7 +620,10 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
               <div
                 className="flex-1 p-8 md:p-10 lg:p-12 prose prose-slate prose-lg max-w-none text-slate-800 mail-content-html leading-normal"
                 dangerouslySetInnerHTML={{
-                  __html: renderEmailPreview(value),
+                  __html: (value || '').replace(
+                    /\{\{\s*sender_name\s*\}\}/g,
+                    senderName || '[Sender Name]'
+                  )
                 }}
               />
             </div>
@@ -855,12 +790,19 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [] }) => {
         {showTokens && (
           <div
             ref={tokenRef}
-            className="absolute bottom-16 ltr:right-6 rtl:left-6 z-50 animate-in slide-in-from-bottom-6 duration-300 w-full max-w-sm md:max-w-md lg:max-w-xl"
+            className="absolute z-50 animate-in slide-in-from-top-1 duration-300 w-48 shadow-2xl"
+            style={{
+              top: `${dropdownPos.top}px`,
+              left: `${dropdownPos.left}px`,
+              // Ensure it doesn't go off screen horizontally
+              maxWidth: 'calc(100vw - 40px)'
+            }}
           >
             <PersonalizationTokens
               onInsertToken={insertToken}
               userFields={userFields}
               onClose={() => setShowTokens(false)}
+              externalQuery={tokenQuery}
             />
           </div>
         )}

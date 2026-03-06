@@ -12,6 +12,12 @@
         "settings": "Настройки",
         "navigation": "Навигация",
         "active": "Активно",
+        "status": {
+            "active": "Активный",
+            "draft": "Черновик",
+            "scheduled": "По расписанию",
+            "completed": "Завершено"
+        },
         "search": "Поиск",
         "documentation": "Документация",
         "privacy": "Конфиденциальность",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Почта",
-        "boxes": "",
+        "subtitle": "Счета",
+        "connected_description": "{{count}} подключенные учетные записи синхронизированы и готовы.",
         "conversation": "Беседа",
         "connected_accounts": "ПОДКЛЮЧЕНО АККАУНТОВ: {{count}}",
         "priority": "ПРИОРИТЕТ",
@@ -257,9 +264,13 @@
         "save_draft": "Сохранить черновик",
         "discard": "Сбросить",
         "sending_label": "Отправка...",
-        "send_label": "Отправить"
+        "send_label": "Отправить",
+        "boxes": ""
     },
     "campaigns": {
+        "title": "Кампании",
+        "subtitle": "Информационно-пропагандистская деятельность",
+        "header_description": "Создавайте и отслеживайте свои почтовые кампании.",
         "header_subtitle": "Управляйте и отслеживайте свои почтовые кампании",
         "create_campaign": "Создать кампанию",
         "loading_campaigns": "Загрузка кампаний...",
@@ -289,12 +300,14 @@
         "status_created": "СОЗДАНО",
         "status_running": "Бег",
         "status_paused": "Приостановлено",
-        "step_contacts": "Контакты",
-        "step_contacts_desc": "Кому вы отправляете электронное письмо?",
-        "step_content": "Содержание",
-        "step_content_desc": "Напишите свой адрес электронной почты",
-        "step_review": "Обзор",
-        "step_review_desc": "Окончательная проверка и запуск",
+        "step_import_leads": "Импорт потенциальных клиентов",
+        "step_import_leads_desc": "Легко добавляйте свои контакты",
+        "step_sequences": "Последовательности",
+        "step_sequences_desc": "Напишите последовательность писем",
+        "step_setup": "Настройка",
+        "step_setup_desc": "Настройте свою кампанию",
+        "step_final_review": "Итоговый обзор",
+        "step_final_review_desc": "Последняя проверка и запуск",
         "error_add_content": "Прежде чем продолжить, добавьте некоторый контент в свое электронное письмо {{mode}}.",
         "plain_text": "простой текст",
         "step_indicator": "Шаг {{current}} из {{total}}",
@@ -392,7 +405,13 @@
         "err_content_req": "Требуется содержание электронного письма",
         "msg_campaign_created": "Кампания успешно создана!",
         "err_create_failed": "Ошибка при создании кампании: {{message}}",
-        "create_campaign_btn": "Создать кампанию"
+        "create_campaign_btn": "Создать кампанию",
+        "step_contacts": "Контакты",
+        "step_contacts_desc": "Кому вы отправляете электронное письмо?",
+        "step_content": "Содержание",
+        "step_content_desc": "Напишите свой адрес электронной почты",
+        "step_review": "Обзор",
+        "step_review_desc": "Окончательная проверка и запуск"
     },
     "dashboard": {
         "header_title": "Панель управления",
@@ -418,7 +437,8 @@
             "engagement_desc": "Участие в кампании",
             "contacts": "Контакты",
             "verified_count": "{{count}} проверено",
-            "senders_ready": "{{count}} отправители готовы"
+            "senders_ready": "{{count}} отправители готовы",
+            "total_senders": "Всего отправителей"
         },
         "quick_actions": {
             "title": "Быстро",
@@ -498,6 +518,7 @@
     "audience": {
         "title": "Получатели и отправители",
         "subtitle": "Управляйте своими списками рассылки и учетными записями о��правки",
+        "header_description": "Управляйте своими списками рассылки и учетными записями отправки по платформе.",
         "refresh": "Обновить",
         "add_contacts": "Добавить контакты",
         "add_sender": "Добавить отправителя",
@@ -509,6 +530,9 @@
         "contact_lists_tab": "Списки контактов",
         "email_senders_tab": "Отправители электронной почты",
         "search_lists_placeholder": "Поиск в списках контактов...",
+        "search_contacts_placeholder": "Поиск по электронной почте или имени...",
+        "no_contacts_yet": "Контактов пока нет",
+        "upload_to_get_started": "Загрузите список контактов, чтобы начать.",
         "all_status": "Все статусы",
         "uploaded": "Загружено",
         "processing": "Обработка",
@@ -541,12 +565,14 @@
         "delete_sender_title": "Удалить отправителя",
         "delete_list_title": "Удалить список контактов",
         "delete_item_title": "Удалить элемент",
+        "actions": "Действия",
         "delete_sender_description": "Вы уверены, что хотите удалить {{email}} ({{type}})? Это действие невозможно отменить.",
         "delete_list_description": "Вы уверены, что хотите удалить этот список контактов? Это действие невозможно отменить."
     },
     "templates": {
         "title": "Шаблоны электронной почты",
         "subtitle": "Создавайте шаблоны электронной почты и управляйте ими",
+        "header_description": "Управляйте многократно используемыми шаблонами электронной почты.",
         "create_new": "Создать новый шаблон",
         "search_placeholder": "Шаблоны поиска...",
         "status_filter": "Фильтр состояния",
@@ -566,6 +592,8 @@
         "delete_title": "Удалить шаблон",
         "delete_description": "Вы уверены, что хотите удалить «{{name}}»? Это действие невозможно отменить.",
         "quick_actions": "Быстрые действия",
+        "choose_template": "Выберите шаблон",
+        "templates_found": "Найдено шаблонов",
         "create_template": "Создать шаблон",
         "create_template_desc": "Создайте новый шаблон электронной почты с нуля",
         "import_template": "Импортировать шаблон",
@@ -585,6 +613,7 @@
     },
     "settings": {
         "title": "Настройки учетной записи",
+        "subtitle_short": "Менеджер",
         "subtitle": "Личный кабинет · Ресурсы рабочего пространства · Контроль безопасности",
         "loading": "Загрузка настроек...",
         "account_ready": "Аккаунт готов",
@@ -692,11 +721,12 @@
                 "verified": "Проверено",
                 "completed": "Завершено",
                 "sent": "Отправлено",
-                "pending": "В ожидании",
+                "running": "Бег",
                 "scheduled": "По расписанию",
                 "failed": "Не удалось",
                 "bounced": "Отскочил",
-                "draft": "Черновик"
+                "draft": "Черновик",
+                "pending": "В ожидании"
             }
         },
         "delete": {

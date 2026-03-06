@@ -20,8 +20,9 @@ import {
 import Modal from '../components/shared/modal';
 import Button from '../components/ui/button';
 import CampaignStepper from '../routes/dashboard/campaigns/components/create-campaign/campaign-stepper';
+import ImportLeadsStep from '../routes/dashboard/campaigns/components/create-campaign/import-leads-step';
 import DesignStep from '../routes/dashboard/campaigns/components/create-campaign/design-step';
-import AudienceStep from '../routes/dashboard/campaigns/components/create-campaign/audience';
+import SetupStep from '../routes/dashboard/campaigns/components/create-campaign/setup-step';
 import FinalizeStep from '../routes/dashboard/campaigns/components/create-campaign/finalize-step';
 
 // Import React Query hooks
@@ -32,14 +33,14 @@ import { unescapeHtml } from '../utils/html-utils';
 
 const getCampaignSchema = (t) => z
     .object({
-        name: z.string().min(3, t('campaigns.err_name_min')).max(100),
-        subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
-        previewText: z.string().max(200, t('campaigns.err_preview_too_long')).optional(),
-        htmlBody: z.string().optional(),
-        textBody: z.string().optional(),
-        senderId: z.string().min(1, t('campaigns.no_sender_selected')),
-        senderType: z.enum(['gmail', 'outlook', 'smtp']),
-        listBatchId: z.string().min(1, t('campaigns.no_list_selected')),
+        name: z.string().min(3, t('campaigns.err_name_min')).max(100).default(''),
+        subject: z.string().min(5, t('campaigns.err_subject_min')).max(150).default(''),
+        previewText: z.string().max(200, t('campaigns.err_preview_too_long')).optional().default(''),
+        htmlBody: z.string().optional().default(''),
+        textBody: z.string().optional().default(''),
+        senderId: z.string().min(1, t('campaigns.no_sender_selected')).default(''),
+        senderType: z.enum(['gmail', 'outlook', 'smtp']).default('gmail'),
+        listBatchId: z.string().min(1, t('campaigns.no_list_selected')).default(''),
         scheduleType: z.enum(['now', 'later']),
         scheduledAt: z.string().optional(),
         timezone: z.string().default('UTC'),
@@ -47,10 +48,18 @@ const getCampaignSchema = (t) => z
         trackOpens: z.boolean().default(true),
         trackClicks: z.boolean().default(true),
         unsubscribeLink: z.boolean().default(true),
+        steps: z.array(z.object({
+            stepOrder: z.number(),
+            subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
+            htmlBody: z.string().min(10, t('campaigns.err_content_req')),
+            textBody: z.string().optional(),
+            delayMinutes: z.number().min(0).default(0),
+            condition: z.enum(['always', 'no_reply']).default('always'),
+        })).default([]),
     })
     .refine(
         (data) => {
-            // Custom validation: Either htmlBody or textBody must be provided
+            // Main campaign content must be valid (it maps to step 0)
             return data.htmlBody?.trim().length > 0 || data.textBody?.trim().length > 0;
         },
         {
@@ -90,6 +99,8 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
     } = useForm({
         resolver: zodResolver(campaignSchema),
         defaultValues: {
+            name: '',
+            subject: '',
             scheduleType: 'now',
             throttlePerMinute: 10,
             trackOpens: true,
@@ -98,7 +109,9 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             htmlBody: '',
             textBody: '',
+            steps: [],
         },
+        shouldUnregister: false,
     });
 
     const watchScheduleType = watch('scheduleType');
@@ -131,13 +144,14 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
     };
 
     const steps = [
-        { number: 1, title: t('campaigns.step_contacts'), description: t('campaigns.step_contacts_desc') },
+        { number: 1, title: t('campaigns.step_import_leads'), description: t('campaigns.step_import_leads_desc') },
         {
             number: 2,
-            title: t('campaigns.step_content'),
-            description: t('campaigns.step_content_desc'),
+            title: t('campaigns.step_sequences'),
+            description: t('campaigns.step_sequences_desc'),
         },
-        { number: 3, title: t('campaigns.step_review'), description: t('campaigns.step_review_desc') },
+        { number: 3, title: t('campaigns.step_setup'), description: t('campaigns.step_setup_desc') },
+        { number: 4, title: t('campaigns.step_final_review'), description: t('campaigns.step_final_review_desc') },
     ];
 
     const nextStep = async (e) => {
@@ -148,8 +162,11 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         let isValid = false;
 
         switch (currentStep) {
-            case 1: // Audience validation
-                isValid = await trigger(['senderId', 'listBatchId']);
+            case 1: // Leads validation
+                isValid = await trigger(['listBatchId']);
+                if (!isValid) {
+                    toast.error(t('campaigns.no_list_selected'));
+                }
                 break;
             case 2: {
                 // Design validation (Name + Subject)
@@ -188,6 +205,12 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                 }
                 break;
             }
+            case 3: // Setup validation (Sender)
+                isValid = await trigger(['senderId']);
+                if (!isValid) {
+                    toast.error(t('campaigns.no_sender_selected'));
+                }
+                break;
             default:
                 isValid = true;
         }
@@ -269,6 +292,8 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             watchScheduleType,
             watchListBatchId,
             watchSenderId,
+            refetchBatches,
+            refetchSenders,
         };
 
         switch (currentStep) {
@@ -281,7 +306,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <AudienceStep {...stepProps} />
+                        <ImportLeadsStep {...stepProps} />
                     </motion.div>
                 );
             case 2:
@@ -305,11 +330,23 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                     >
+                        <SetupStep {...stepProps} />
+                    </motion.div>
+                );
+            case 4:
+                return (
+                    <motion.div
+                        key="step4"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <FinalizeStep {...stepProps} />
                     </motion.div>
                 );
             default:
-                return <AudienceStep {...stepProps} />;
+                return <ImportLeadsStep {...stepProps} />;
         }
     };
 

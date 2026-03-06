@@ -12,6 +12,12 @@
         "settings": "설정",
         "navigation": "탐색",
         "active": "활성",
+        "status": {
+            "active": "활성",
+            "draft": "초안",
+            "scheduled": "예정됨",
+            "completed": "완료됨"
+        },
         "search": "검색",
         "documentation": "문서",
         "privacy": "개인정보 보호",
@@ -118,7 +124,8 @@
     },
     "mailboxes": {
         "mail": "메일",
-        "boxes": "함",
+        "subtitle": "계정",
+        "connected_description": "{{count}} 연결된 계정이 동기화되어 준비되었습니다.",
         "conversation": "대화",
         "connected_accounts": "{{count}} 개의 연결된 계정",
         "priority": "우선순위",
@@ -174,10 +181,6 @@
         "account_expires": "계정 만료 {{date}}",
         "prefix_to": "받는 사람:",
         "new_badge": "새로운",
-        "stats_total": "총 발신자",
-        "stats_active": "지금 활동 중",
-        "stats_attention": "주의가 필요함",
-        "stats_health": "시스템 상태",
         "search_placeholder": "모든 편지함에서 메시지를 검색합니다...",
         "all_types": "모든 유형",
         "gmail": "지메일",
@@ -262,9 +265,17 @@
         "save_draft": "초안 저장",
         "discard": "폐기",
         "sending_label": "보내는 중...",
-        "send_label": "보내기"
+        "send_label": "보내기",
+        "boxes": "함",
+        "stats_total": "총 발신자",
+        "stats_active": "지금 활동 중",
+        "stats_attention": "주의가 필요함",
+        "stats_health": "시스템 상태"
     },
     "campaigns": {
+        "title": "캠페인",
+        "subtitle": "봉사 활동",
+        "header_description": "이메일 캠페인을 만들고 추적하세요.",
         "header_subtitle": "이메일 캠페인을 관리하고 추적하세요",
         "create_campaign": "캠페인 만들기",
         "loading_campaigns": "캠페인 로드 중...",
@@ -294,12 +305,14 @@
         "status_created": "생성됨",
         "status_running": "실행 중",
         "status_paused": "일시중지됨",
-        "step_contacts": "연락처",
-        "step_contacts_desc": "누구에게 이메일을 보내고 있나요?",
-        "step_content": "내용",
-        "step_content_desc": "이메일을 적어주세요",
-        "step_review": "검토",
-        "step_review_desc": "최종 확인 및 실행",
+        "step_import_leads": "리드 가져오기",
+        "step_import_leads_desc": "쉽게 연락처를 추가하세요",
+        "step_sequences": "시퀀스",
+        "step_sequences_desc": "이메일 순서를 작성하세요",
+        "step_setup": "설정",
+        "step_setup_desc": "캠페인 구성",
+        "step_final_review": "최종 검토",
+        "step_final_review_desc": "마지막 확인 및 실행",
         "error_add_content": "계속하기 전에 {{mode}} 이메일에 일부 콘텐츠를 추가하세요.",
         "plain_text": "일반 텍스트",
         "step_indicator": "{{total}}의 단계 {{current}}",
@@ -397,7 +410,13 @@
         "err_content_req": "이메일 내용이 필요합니다",
         "msg_campaign_created": "캠페인이 성공적으로 생성되었습니다!",
         "err_create_failed": "캠페인 생성 오류: {{message}}",
-        "create_campaign_btn": "캠페인 만들기"
+        "create_campaign_btn": "캠페인 만들기",
+        "step_contacts": "연락처",
+        "step_contacts_desc": "누구에게 이메일을 보내고 있나요?",
+        "step_content": "내용",
+        "step_content_desc": "이메일을 적어주세요",
+        "step_review": "검토",
+        "step_review_desc": "최종 확인 및 실행"
     },
     "dashboard": {
         "header_title": "대시보드",
@@ -423,7 +442,8 @@
             "engagement_desc": "캠페인 참여",
             "contacts": "연락처",
             "verified_count": "{{count}} 확인됨",
-            "senders_ready": "{{count}}명의 발신자 준비됨"
+            "senders_ready": "{{count}}명의 발신자 준비됨",
+            "total_senders": "총 발신자"
         },
         "quick_actions": {
             "title": "빨리",
@@ -503,6 +523,7 @@
     "audience": {
         "title": "수신자 및 발신자",
         "subtitle": "메일링 리스트와 전송 계정을 관리하세요",
+        "header_description": "를 클릭하세요. 플랫폼 전체에서 메일링 리스트와 전송 계정을 관리하세요.",
         "refresh": "새로고침",
         "add_contacts": "연락처 추가",
         "add_sender": "발신자 추가",
@@ -514,6 +535,9 @@
         "contact_lists_tab": "연락처 목록",
         "email_senders_tab": "이메일 발신자",
         "search_lists_placeholder": "연락처 목록 검색...",
+        "search_contacts_placeholder": "를 클릭하세요. 이메일이나 이름으로 검색하세요...",
+        "no_contacts_yet": "아직 연락처가 없습니다",
+        "upload_to_get_started": "시작하려면 연락처 목록을 업로드하세요.",
         "all_status": "모든 상태",
         "uploaded": "업로드됨",
         "processing": "처리 중",
@@ -546,12 +570,14 @@
         "delete_sender_title": "보낸 사람 삭제",
         "delete_list_title": "연락처 목록 삭제",
         "delete_item_title": "항목 삭제",
+        "actions": "조치",
         "delete_sender_description": "정말로 {{email}}({{type}})을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
         "delete_list_description": "이 연락처 목록을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
     },
     "templates": {
         "title": "이메일 템플릿",
         "subtitle": "이메일 템플릿을 만들고 관리하세요",
+        "header_description": "재사용 가능한 이메일 템플릿을 관리하세요.",
         "create_new": "새 템플릿 만들기",
         "search_placeholder": "템플릿 검색...",
         "status_filter": "상태 필터",
@@ -571,6 +597,8 @@
         "delete_title": "템플릿 삭제",
         "delete_description": "정말로 \"{{name}}\"을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
         "quick_actions": "빠른 조치",
+        "choose_template": "템플릿 선택",
+        "templates_found": "템플릿을 찾았습니다",
         "create_template": "템플릿 생성",
         "create_template_desc": "처음부터 새 이메일 템플릿 만들기",
         "import_template": "템플릿 가져오기",
@@ -590,6 +618,7 @@
     },
     "settings": {
         "title": "계정 설정",
+        "subtitle_short": "를 클릭하세요. 관리자",
         "subtitle": "개인 계정 · 작업 공간 리소스 · 보안 제어",
         "loading": "설정 로드 중...",
         "account_ready": "계정 준비",
@@ -697,11 +726,12 @@
                 "verified": "확인됨",
                 "completed": "완료됨",
                 "sent": "보냄",
-                "pending": "보류 중",
+                "running": "를 클릭하세요. 실행 중",
                 "scheduled": "예정됨",
                 "failed": "실패",
                 "bounced": "반송됨",
-                "draft": "초안"
+                "draft": "초안",
+                "pending": "보류 중"
             }
         },
         "delete": {
@@ -801,8 +831,8 @@
                 "placeholder_email": "를 클릭하세요. sender@example.com",
                 "placeholder_host_smtp": "를 클릭하세요. smtp.example.com",
                 "placeholder_host_imap": "를 클릭하세요. imap.example.com",
-                "placeholder_port_smtp": "587",
-                "placeholder_port_imap": "993",
+                "placeholder_port_smtp": "를 클릭하세요. 587",
+                "placeholder_port_imap": "를 클릭하세요. 993",
                 "placeholder_pass": "•••••��••"
             },
             "tabs": {

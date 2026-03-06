@@ -12,6 +12,12 @@
         "settings": "Ajustes",
         "navigation": "Navegación",
         "active": "Activo",
+        "status": {
+            "active": "Activo",
+            "draft": "Borrador",
+            "scheduled": "Programado",
+            "completed": "Completado"
+        },
         "search": "Buscar",
         "documentation": "Documentación",
         "privacy": "Privacidad",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Buzones",
-        "boxes": "de correo",
+        "subtitle": "Cuentas",
+        "connected_description": "{{count}} cuentas conectadas sincronizadas y listas.",
         "conversation": "Conversación",
         "connected_accounts": "{{count}} CUENTAS CONECTADAS",
         "priority": "PRIORIDAD",
@@ -173,10 +180,6 @@
         "account_expires": "La cuenta expira el {{date}}",
         "prefix_to": "Para: ",
         "new_badge": "Nuevo",
-        "stats_total": "Total de remitentes",
-        "stats_active": "Activo ahora",
-        "stats_attention": "Necesita atención",
-        "stats_health": "Estado del sistema",
         "search_placeholder": "Buscar mensajes en todos los buzones...",
         "all_types": "Todos los tipos",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Guardar borrador",
         "discard": "Descartar",
         "sending_label": "Enviando...",
-        "send_label": "Enviar"
+        "send_label": "Enviar",
+        "boxes": "de correo",
+        "stats_total": "Total de remitentes",
+        "stats_active": "Activo ahora",
+        "stats_attention": "Necesita atención",
+        "stats_health": "Estado del sistema"
     },
     "campaigns": {
+        "title": "Campañas",
+        "subtitle": "Divulgación",
+        "header_description": "Cree y realice un seguimiento de sus campañas de correo electrónico.",
         "header_subtitle": "Administra y rastrea tus campañas de correo electrónico",
         "create_campaign": "Crear Campaña",
         "loading_campaigns": "Cargando campañas...",
@@ -293,12 +304,14 @@
         "status_created": "CREADO",
         "status_running": "En ejecución",
         "status_paused": "Pausado",
-        "step_contacts": "Contactos",
-        "step_contacts_desc": "¿A quién le envías correos?",
-        "step_content": "Contenido",
-        "step_content_desc": "Escribe tu correo",
-        "step_review": "Revisión",
-        "step_review_desc": "Chequeo final y lanzamiento",
+        "step_import_leads": "Importar clientes potenciales",
+        "step_import_leads_desc": "Añade fácilmente tus contactos",
+        "step_sequences": "Secuencias",
+        "step_sequences_desc": "Escribe tu secuencia de correo electrónico",
+        "step_setup": "Configuración",
+        "step_setup_desc": "Configura tu campaña",
+        "step_final_review": "Revisión final",
+        "step_final_review_desc": "Última comprobación y lanzamiento",
         "error_add_content": "Por favor, añade algo de contenido a tu correo {{mode}} antes de proceder.",
         "plain_text": "texto plano",
         "step_indicator": "Paso {{current}} de {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "El contenido del correo es obligatorio",
         "msg_campaign_created": "¡Campaña creada con éxito!",
         "err_create_failed": "Error al crear la campaña: {{message}}",
-        "create_campaign_btn": "Crear Campaña"
+        "create_campaign_btn": "Crear Campaña",
+        "step_contacts": "Contactos",
+        "step_contacts_desc": "¿A quién le envías correos?",
+        "step_content": "Contenido",
+        "step_content_desc": "Escribe tu correo",
+        "step_review": "Revisión",
+        "step_review_desc": "Chequeo final y lanzamiento"
     },
     "dashboard": {
         "header_title": "Tablero",
@@ -422,7 +441,8 @@
             "engagement_desc": "Compromiso de la campaña",
             "contacts": "Contactos",
             "verified_count": "{{count}} verificados",
-            "senders_ready": "{{count}} remitentes listos"
+            "senders_ready": "{{count}} remitentes listos",
+            "total_senders": "Total de remitentes"
         },
         "quick_actions": {
             "title": "Acciones",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Destinatarios y Remitentes",
         "subtitle": "Administre sus listas de correo y cuentas de envío",
+        "header_description": "Administre sus listas de correo y cuentas de envío en toda la plataforma.",
         "refresh": "Actualizar",
         "add_contacts": "Agregar Contactos",
         "add_sender": "Agregar Remitente",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Listas de Contactos",
         "email_senders_tab": "Remitentes de Correo",
         "search_lists_placeholder": "Buscar listas de contactos...",
+        "search_contacts_placeholder": "Buscar por correo electrónico o nombre...",
+        "no_contacts_yet": "Aún no hay contactos",
+        "upload_to_get_started": "Cargue una lista de contactos para comenzar.",
         "all_status": "Todos los Estados",
         "uploaded": "Subido",
         "processing": "Procesando",
@@ -545,6 +569,7 @@
         "delete_sender_title": "Eliminar remitente",
         "delete_list_title": "Eliminar lista de contactos",
         "delete_item_title": "Eliminar elemento",
+        "actions": "Acciones",
         "delete_sender_description": "¿Estás seguro de que deseas eliminar {{email}} ({{type}})? Esta acción no se puede deshacer.",
         "delete_list_description": "¿Estás seguro de que deseas eliminar esta lista de contactos? Esta acción no se puede deshacer.",
         "draft": "Borrador"
@@ -552,6 +577,7 @@
     "templates": {
         "title": "Plantillas de correo electrónico",
         "subtitle": "Crea y administra tus plantillas de correo electrónico",
+        "header_description": "Administre sus plantillas de correo electrónico reutilizables.",
         "create_new": "Crear nueva plantilla",
         "search_placeholder": "Buscar plantillas...",
         "status_filter": "Filtro de estado",
@@ -571,6 +597,8 @@
         "delete_title": "Eliminar plantilla",
         "delete_description": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
         "quick_actions": "Acciones rápidas",
+        "choose_template": "Elegir plantilla",
+        "templates_found": "Plantillas encontradas",
         "create_template": "Crear plantilla",
         "create_template_desc": "Construye una nueva plantilla desde cero",
         "import_template": "Importar plantilla",
@@ -590,6 +618,7 @@
     },
     "settings": {
         "title": "Ajustes de la cuenta",
+        "subtitle_short": "Gerente",
         "subtitle": "Cuenta personal · Recursos del espacio de trabajo · Controles de seguridad",
         "loading": "Cargando ajustes...",
         "account_ready": "Cuenta lista",
@@ -697,11 +726,12 @@
                 "verified": "Verificado",
                 "completed": "Completado",
                 "sent": "Enviado",
-                "pending": "Pendiente",
+                "running": "Corriendo",
                 "scheduled": "Programado",
                 "failed": "Fallido",
                 "bounced": "Rebotado",
-                "draft": "Borrador"
+                "draft": "Borrador",
+                "pending": "Pendiente"
             }
         },
         "delete": {
@@ -803,7 +833,7 @@
                 "placeholder_host_imap": "imap.ejemplo.com",
                 "placeholder_port_smtp": "587",
                 "placeholder_port_imap": "993",
-                "placeholder_pass": "••••••••"
+                "placeholder_pass": "•��••••••"
             },
             "tabs": {
                 "smtp": "Saliente (SMTP)",

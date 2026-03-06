@@ -174,7 +174,7 @@ const MessagesView = ({
                   </div>
                 )}
                 <div
-                  className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-3 ${viewMode === 'grid'
+                  className={`flex-1 overflow-y-auto p-4 md:p-8 space-y-3 ${viewMode === 'grid'
                     ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0'
                     : ''
                     }`}
@@ -209,7 +209,7 @@ const MessagesView = ({
 
           {/* Pagination - Bottom Bar (Always Fixed at bottom of the list area if paging info exists) */}
           {(totalMessages > 0 || (isLoadingMessages && pagination.currentPage > 1)) && (
-            <div className="bg-white/50 backdrop-blur-md border-t border-slate-200/60 p-4">
+            <div className="py-4">
               <Pagination
                 currentPage={pagination.currentPage}
                 hasNextPage={pagination.hasNextPage}
@@ -217,9 +217,14 @@ const MessagesView = ({
                 isLoadingMessages={isLoadingMessages}
                 onNextPage={onNextPage}
                 onPrevPage={onPrevPage}
+                onPageChange={(page) => {
+                  if (page > pagination.currentPage) onNextPage();
+                  else if (page < pagination.currentPage) onPrevPage();
+                }}
                 startMessageCount={startMessageCount}
                 endMessageCount={endMessageCount}
                 totalMessages={totalMessages}
+                itemsPerPage={10} // Standard for messages
               />
             </div>
           )}

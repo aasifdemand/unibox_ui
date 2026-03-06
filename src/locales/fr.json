@@ -12,6 +12,12 @@
         "settings": "Paramètres",
         "navigation": "Navigation",
         "active": "Actif",
+        "status": {
+            "active": "Actif",
+            "draft": "Brouillon",
+            "scheduled": "Programmé",
+            "completed": "Terminé"
+        },
         "search": "Rechercher",
         "documentation": "Documents",
         "privacy": "Confidentialité",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Boîtes",
-        "boxes": "aux lettres",
+        "subtitle": "Comptes",
+        "connected_description": "{{count}} comptes connectés synchronisés et prêts.",
         "conversation": "Conversation",
         "connected_accounts": "{{count}} COMPTES CONNECTÉS",
         "priority": "PRIORITÉ",
@@ -173,10 +180,6 @@
         "account_expires": "Le compte expire le {{date}}",
         "prefix_to": "À: ",
         "new_badge": "Nouveau",
-        "stats_total": "Nombre total d'expéditeurs",
-        "stats_active": "Actif maintenant",
-        "stats_attention": "A besoin d'attention",
-        "stats_health": "Santé du système",
         "search_placeholder": "Rechercher des messages dans toutes les boîtes...",
         "all_types": "Tous les types",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Enregistrer le brouillon",
         "discard": "Ignorer",
         "sending_label": "Envoi en cours...",
-        "send_label": "Envoyer"
+        "send_label": "Envoyer",
+        "boxes": "aux lettres",
+        "stats_total": "Nombre total d'expéditeurs",
+        "stats_active": "Actif maintenant",
+        "stats_attention": "A besoin d'attention",
+        "stats_health": "Santé du système"
     },
     "campaigns": {
+        "title": "Campagnes",
+        "subtitle": "Sensibilisation",
+        "header_description": "Créez et suivez vos campagnes email.",
         "header_subtitle": "Gérez et suivez vos campagnes d'e-mailing",
         "create_campaign": "Créer une campagne",
         "loading_campaigns": "Chargement des campagnes...",
@@ -293,12 +304,14 @@
         "status_created": "CRÉÉ",
         "status_running": "En cours",
         "status_paused": "En pause",
-        "step_contacts": "Contacts",
-        "step_contacts_desc": "À qui envoyez-vous des e-mails ?",
-        "step_content": "Contenu",
-        "step_content_desc": "Rédigez votre e-mail",
-        "step_review": "Révision",
-        "step_review_desc": "Vérification finale et lancement",
+        "step_import_leads": "Importer des prospects",
+        "step_import_leads_desc": "Ajoutez facilement vos contacts",
+        "step_sequences": "Séquences",
+        "step_sequences_desc": "Écrivez votre séquence d'e-mails",
+        "step_setup": "Configuration",
+        "step_setup_desc": "Configurez votre campagne",
+        "step_final_review": "Examen final",
+        "step_final_review_desc": "Dernière vérification et lancement",
         "error_add_content": "Veuillez ajouter du contenu à votre e-mail {{mode}} avant de continuer.",
         "plain_text": "texte brut",
         "step_indicator": "Étape {{current}} sur {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "Le contenu de l'e-mail est obligatoire",
         "msg_campaign_created": "Campagne créée avec succès !",
         "err_create_failed": "Erreur lors de la création de la campagne : {{message}}",
-        "create_campaign_btn": "Créer la campagne"
+        "create_campaign_btn": "Créer la campagne",
+        "step_contacts": "Contacts",
+        "step_contacts_desc": "À qui envoyez-vous des e-mails ?",
+        "step_content": "Contenu",
+        "step_content_desc": "Rédigez votre e-mail",
+        "step_review": "Révision",
+        "step_review_desc": "Vérification finale et lancement"
     },
     "dashboard": {
         "header_title": "Tableau de bord",
@@ -422,7 +441,8 @@
             "engagement_desc": "Engagement de la campagne",
             "contacts": "Contacts",
             "verified_count": "{{count}} vérifiés",
-            "senders_ready": "{{count}} expéditeurs prêts"
+            "senders_ready": "{{count}} expéditeurs prêts",
+            "total_senders": "Nombre total d'expéditeurs"
         },
         "quick_actions": {
             "title": "Actions",
@@ -466,7 +486,7 @@
             "reach": "Portée",
             "engagement": "Fiançailles",
             "launch_date": "Date de lancement",
-            "actions": "Actions",
+            "actions": "Actes",
             "recipients": "Destinataires",
             "open": "Ouverture",
             "click": "Clic",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Destinataires & Expéditeurs",
         "subtitle": "Gérez vos listes de diffusion et vos comptes d'envoi",
+        "header_description": "Gérez vos listes de diffusion et vos comptes d'envoi sur la plateforme.",
         "refresh": "Rafraîchir",
         "add_contacts": "Ajouter des Contacts",
         "add_sender": "Ajouter un Expéditeur",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Listes de Contacts",
         "email_senders_tab": "Expéditeurs d'E-mails",
         "search_lists_placeholder": "Rechercher des listes...",
+        "search_contacts_placeholder": "Rechercher par email ou par nom...",
+        "no_contacts_yet": "Aucun contact pour l'instant",
+        "upload_to_get_started": "Téléchargez une liste de contacts pour commencer.",
         "all_status": "Tous les Statuts",
         "uploaded": "Téléchargé",
         "processing": "Traitement",
@@ -545,6 +569,7 @@
         "delete_sender_title": "Supprimer l'expéditeur",
         "delete_list_title": "Supprimer la liste de contacts",
         "delete_item_title": "Supprimer l'élément",
+        "actions": "Actions",
         "delete_sender_description": "Êtes-vous sûr de vouloir supprimer {{email}} ({{type}}) ? Cette action est irréversible.",
         "delete_list_description": "Êtes-vous sûr de vouloir supprimer cette liste de contacts ? Cette action est irréversible.",
         "draft": "Brouillon"
@@ -552,6 +577,7 @@
     "templates": {
         "title": "Modèles d'e-mail",
         "subtitle": "Créez et gérez vos modèles d'e-mail",
+        "header_description": "Gérez vos modèles d'e-mails réutilisables.",
         "create_new": "Créer un nouveau modèle",
         "search_placeholder": "Rechercher des modèles...",
         "status_filter": "Filtre d'état",
@@ -571,6 +597,8 @@
         "delete_title": "Supprimer le modèle",
         "delete_description": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ? Cette action est irréversible.",
         "quick_actions": "Actions rapides",
+        "choose_template": "Choisissez un modèle",
+        "templates_found": "Modèles trouvés",
         "create_template": "Créer un modèle",
         "create_template_desc": "Construire un nouveau modèle à partir de zéro",
         "import_template": "Importer un modèle",
@@ -590,6 +618,7 @@
     },
     "settings": {
         "title": "Paramètres du compte",
+        "subtitle_short": "Gestionnaire",
         "subtitle": "Compte personnel · Ressources de l'espace de travail · Contrôles de sécurité",
         "loading": "Chargement des paramètres...",
         "account_ready": "Compte prêt",
@@ -697,11 +726,12 @@
                 "verified": "Vérifié",
                 "completed": "Terminé",
                 "sent": "Envoyé",
-                "pending": "En attente",
+                "running": "En cours d'exécution",
                 "scheduled": "Programmé",
                 "failed": "Échoué",
                 "bounced": "Rebondi",
-                "draft": "Brouillon"
+                "draft": "Brouillon",
+                "pending": "En attente"
             }
         },
         "delete": {
@@ -803,7 +833,7 @@
                 "placeholder_host_imap": "imap.exemple.com",
                 "placeholder_port_smtp": "587",
                 "placeholder_port_imap": "993",
-                "placeholder_pass": "••••••••"
+                "placeholder_pass": "•••••��••"
             },
             "tabs": {
                 "smtp": "Sortant (SMTP)",

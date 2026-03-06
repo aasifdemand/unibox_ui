@@ -12,6 +12,12 @@
         "settings": "Pengaturan",
         "navigation": "Navigasi",
         "active": "Aktif",
+        "status": {
+            "active": "Aktif",
+            "draft": "Draf",
+            "scheduled": "Dijadwalkan",
+            "completed": "Selesai"
+        },
         "search": "Cari",
         "documentation": "Dokumentasi",
         "privacy": "Pribadi",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Surat",
-        "boxes": "kotak",
+        "subtitle": "Akun",
+        "connected_description": "{{count}} akun terhubung disinkronkan dan siap.",
         "conversation": "Percakapan",
         "connected_accounts": "{{count}} AKUN TERHUBUNG",
         "priority": "PRIORITAS",
@@ -173,10 +180,6 @@
         "account_expires": "Akun Kedaluwarsa {{date}}",
         "prefix_to": "Kepada:",
         "new_badge": "Baru",
-        "stats_total": "Jumlah Pengirim",
-        "stats_active": "Aktif Sekarang",
-        "stats_attention": "Perlu Perhatian",
-        "stats_health": "Kesehatan Sistem",
         "search_placeholder": "Cari pesan di semua kotak surat...",
         "all_types": "Semua Jenis",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Simpan draf",
         "discard": "Buang",
         "sending_label": "Mengirim...",
-        "send_label": "Kirim"
+        "send_label": "Kirim",
+        "boxes": "kotak",
+        "stats_total": "Jumlah Pengirim",
+        "stats_active": "Aktif Sekarang",
+        "stats_attention": "Perlu Perhatian",
+        "stats_health": "Kesehatan Sistem"
     },
     "campaigns": {
+        "title": "Kampanye",
+        "subtitle": "Penjangkauan",
+        "header_description": "Buat dan lacak kampanye email Anda.",
         "header_subtitle": "Kelola dan lacak kampanye email Anda",
         "create_campaign": "Buat Kampanye",
         "loading_campaigns": "Memuat kampanye...",
@@ -293,12 +304,14 @@
         "status_created": "DIBUAT",
         "status_running": "Berjalan",
         "status_paused": "Dijeda",
-        "step_contacts": "Kontak",
-        "step_contacts_desc": "Siapa yang Anda kirimi email?",
-        "step_content": "Konten",
-        "step_content_desc": "Tulis email Anda",
-        "step_review": "Tinjau",
-        "step_review_desc": "Pemeriksaan & peluncuran terakhir",
+        "step_import_leads": "Impor Prospek",
+        "step_import_leads_desc": "Tambahkan kontak Anda dengan mudah",
+        "step_sequences": "Urutan",
+        "step_sequences_desc": "Tulis urutan email Anda",
+        "step_setup": "Pengaturan",
+        "step_setup_desc": "Konfigurasikan kampanye Anda",
+        "step_final_review": "Tinjauan Akhir",
+        "step_final_review_desc": "Pemeriksaan & peluncuran terakhir",
         "error_add_content": "Silakan tambahkan beberapa konten ke email {{mode}} Anda sebelum melanjutkan.",
         "plain_text": "teks biasa",
         "step_indicator": "Langkah {{current}} dari {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "Konten email wajib diisi",
         "msg_campaign_created": "Kampanye berhasil dibuat!",
         "err_create_failed": "Kesalahan saat membuat kampanye: {{message}}",
-        "create_campaign_btn": "Buat Kampanye"
+        "create_campaign_btn": "Buat Kampanye",
+        "step_contacts": "Kontak",
+        "step_contacts_desc": "Siapa yang Anda kirimi email?",
+        "step_content": "Konten",
+        "step_content_desc": "Tulis email Anda",
+        "step_review": "Tinjau",
+        "step_review_desc": "Pemeriksaan & peluncuran terakhir"
     },
     "dashboard": {
         "header_title": "Dasbor",
@@ -422,7 +441,8 @@
             "engagement_desc": "Keterlibatan kampanye",
             "contacts": "Kontak",
             "verified_count": "{{count}} terverifikasi",
-            "senders_ready": "{{count}} pengirim siap"
+            "senders_ready": "{{count}} pengirim siap",
+            "total_senders": "Jumlah Pengirim"
         },
         "quick_actions": {
             "title": "Cepat",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Penerima & Pengirim",
         "subtitle": "Kelola milis dan akun pengirim Anda",
+        "header_description": "Kelola milis dan akun pengirim Anda di seluruh platform.",
         "refresh": "Segarkan",
         "add_contacts": "Tambahkan Kontak",
         "add_sender": "Tambahkan Pengirim",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Daftar Kontak",
         "email_senders_tab": "Pengirim Email",
         "search_lists_placeholder": "Cari daftar kontak...",
+        "search_contacts_placeholder": "Cari berdasarkan email atau nama...",
+        "no_contacts_yet": "Belum ada kontak",
+        "upload_to_get_started": "Unggah daftar kontak untuk memulai.",
         "all_status": "Semua Status",
         "uploaded": "Diunggah",
         "processing": "Memproses",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Hapus Pengirim",
         "delete_list_title": "Hapus Daftar Kontak",
         "delete_item_title": "Hapus Barang",
+        "actions": "Tindakan",
         "delete_sender_description": "Apakah Anda yakin ingin menghapus {{email}} ({{type}})? Tindakan ini tidak dapat dibatalkan.",
         "delete_list_description": "Apakah Anda yakin ingin menghapus daftar kontak ini? Tindakan ini tidak dapat dibatalkan."
     },
     "templates": {
         "title": "Templat Email",
         "subtitle": "Buat dan kelola template email Anda",
+        "header_description": "Kelola template email Anda yang dapat digunakan kembali.",
         "create_new": "Buat Templat Baru",
         "search_placeholder": "Cari template...",
         "status_filter": "Filter Status",
@@ -570,6 +596,8 @@
         "delete_title": "Hapus Templat",
         "delete_description": "Apakah Anda yakin ingin menghapus \"{{name}}\"? Tindakan ini tidak dapat dibatalkan.",
         "quick_actions": "Tindakan Cepat",
+        "choose_template": "Pilih Templat",
+        "templates_found": "Templat Ditemukan",
         "create_template": "Buat Templat",
         "create_template_desc": "Buat template email baru dari awal",
         "import_template": "Impor Templat",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Pengaturan Akun",
+        "subtitle_short": "Manajer",
         "subtitle": "Akun pribadi · Sumber daya ruang kerja · Kontrol keamanan",
         "loading": "Memuat setelan...",
         "account_ready": "Akun Siap",
@@ -696,11 +725,12 @@
                 "verified": "Terverifikasi",
                 "completed": "Selesai",
                 "sent": "Dikirim",
-                "pending": "Tertunda",
+                "running": "Berjalan",
                 "scheduled": "Dijadwalkan",
                 "failed": "Gagal",
                 "bounced": "Terpental",
-                "draft": "Draf"
+                "draft": "Draf",
+                "pending": "Tertunda"
             }
         },
         "delete": {

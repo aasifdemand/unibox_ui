@@ -1,8 +1,8 @@
 import React from 'react';
-import { Check, PenTool, Users, Send } from 'lucide-react';
+import { Check, PenTool, Users, Send, Zap } from 'lucide-react';
 
 const CampaignStepper = ({ steps, currentStep }) => {
-  const icons = [Users, PenTool, Send];
+  const icons = [Users, PenTool, Zap, Send];
 
   return (
     <div className="w-full mb-12 relative px-4">
@@ -25,19 +25,17 @@ const CampaignStepper = ({ steps, currentStep }) => {
           const isCompleted = currentStep > step.number;
 
           return (
-            <div
-              key={step.number}
-              className="flex flex-col items-center gap-3 relative"
-            >
+            <div key={step.number} className="flex flex-col items-center gap-3 relative">
               {/* Step Circle */}
               <div className="relative">
                 <div
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 shadow-sm ${isActive
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 shadow-sm ${
+                    isActive
                       ? 'bg-linear-to-br from-blue-600 to-indigo-700 border-transparent text-white shadow-xl shadow-indigo-500/20 scale-110'
                       : isCompleted
                         ? 'bg-linear-to-br from-blue-500 to-indigo-600 border-transparent text-white shadow-lg shadow-indigo-500/10'
                         : 'bg-white border-slate-100 text-slate-300'
-                    }`}
+                  }`}
                 >
                   {isCompleted ? (
                     <Check className="w-5 h-5 animate-in zoom-in duration-300" />
@@ -54,8 +52,9 @@ const CampaignStepper = ({ steps, currentStep }) => {
               {/* Step Label */}
               <div className="text-center absolute -bottom-8 whitespace-nowrap">
                 <h4
-                  className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-slate-900' : isCompleted ? 'text-slate-600' : 'text-slate-400'
-                    }`}
+                  className={`text-[10px] font-black uppercase tracking-widest transition-colors ${
+                    isActive ? 'text-slate-900' : isCompleted ? 'text-slate-600' : 'text-slate-400'
+                  }`}
                 >
                   {step.title}
                 </h4>

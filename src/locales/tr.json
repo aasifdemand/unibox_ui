@@ -12,6 +12,12 @@
         "settings": "Ayarlar",
         "navigation": "Navigasyon",
         "active": "Aktif",
+        "status": {
+            "active": "Aktif",
+            "draft": "Taslak",
+            "scheduled": "Planlanmış",
+            "completed": "Tamamlandı"
+        },
         "search": "Ara",
         "documentation": "Dokümantasyon",
         "privacy": "Gizlilik",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Posta",
-        "boxes": "Kutuları",
+        "subtitle": "Hesaplar",
+        "connected_description": "{{count}} bağlı hesaplar senkronize edildi ve hazır.",
         "conversation": "Konuşma",
         "connected_accounts": "{{count}} BAĞLI HESAP",
         "priority": "ÖNCELİK",
@@ -173,10 +180,6 @@
         "account_expires": "Hesabın Süresi Doluyor {{date}}",
         "prefix_to": "Kime:",
         "new_badge": "Yeni",
-        "stats_total": "Toplam Gönderici",
-        "stats_active": "Şu anda Aktif",
-        "stats_attention": "Dikkat Edilmesi Gerekiyor",
-        "stats_health": "Sistem Sağlığı",
         "search_placeholder": "Tüm posta kutularındaki iletileri arayın...",
         "all_types": "Tüm Türler",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Taslağı kaydet",
         "discard": "At",
         "sending_label": "Gönderiliyor...",
-        "send_label": "Gönder"
+        "send_label": "Gönder",
+        "boxes": "Kutuları",
+        "stats_total": "Toplam Gönderici",
+        "stats_active": "Şu anda Aktif",
+        "stats_attention": "Dikkat Edilmesi Gerekiyor",
+        "stats_health": "Sistem Sağlığı"
     },
     "campaigns": {
+        "title": "Oluştur Kampanyalar",
+        "subtitle": "Sosyal Yardım",
+        "header_description": "E-posta kampanyalarınızı oluşturun ve takip edin.",
         "header_subtitle": "E-posta kampanyalarınızı yönetin ve takip edin",
         "create_campaign": "Kampanya Oluştur",
         "loading_campaigns": "Kampanyalar yükleniyor...",
@@ -293,12 +304,14 @@
         "status_created": "OLUŞTURULDU",
         "status_running": "Koşuyor",
         "status_paused": "Duraklatıldı",
-        "step_contacts": "İletişim",
-        "step_contacts_desc": "Kime e-posta gönderiyorsun?",
-        "step_content": "İçerik",
-        "step_content_desc": "E-postanızı yazın",
-        "step_review": "İncele",
-        "step_review_desc": "Son kontrol ve başlatma",
+        "step_import_leads": "Oluştur Potansiyel Müşterileri İçe Aktar",
+        "step_import_leads_desc": "Kişilerinizi kolayca ekleyin",
+        "step_sequences": "Diziler",
+        "step_sequences_desc": "E-posta sıranızı yazın",
+        "step_setup": "Kurulum",
+        "step_setup_desc": "Kampanyanızı yapılandırın",
+        "step_final_review": "Son İnceleme",
+        "step_final_review_desc": "Son kontrol ve başlatma",
         "error_add_content": "Devam etmeden önce lütfen {{mode}} e-postanıza biraz içerik ekleyin.",
         "plain_text": "düz metin",
         "step_indicator": "Adım {{current}} / {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "E-posta içeriği gerekli",
         "msg_campaign_created": "Kampanya başarıyla oluşturuldu!",
         "err_create_failed": "Kampanya oluşturulurken hata oluştu: {{message}}",
-        "create_campaign_btn": "Kampanya Oluştur"
+        "create_campaign_btn": "Kampanya Oluştur",
+        "step_contacts": "İletişim",
+        "step_contacts_desc": "Kime e-posta gönderiyorsun?",
+        "step_content": "İçerik",
+        "step_content_desc": "E-postanızı yazın",
+        "step_review": "İncele",
+        "step_review_desc": "Son kontrol ve başlatma"
     },
     "dashboard": {
         "header_title": "Kontrol Paneli",
@@ -422,7 +441,8 @@
             "engagement_desc": "Kampanya katılımı",
             "contacts": "İletişim",
             "verified_count": "{{count}} doğrulandı",
-            "senders_ready": "{{count}} gönderen hazır"
+            "senders_ready": "{{count}} gönderen hazır",
+            "total_senders": "Oluştur Toplam Gönderici"
         },
         "quick_actions": {
             "title": "Hızlı",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Alıcılar ve Gönderenler",
         "subtitle": "Posta listelerinizi ve gönderme hesaplarınızı yönetin",
+        "header_description": "Platform genelinde posta listelerinizi ve gönderme hesaplarınızı yönetin.",
         "refresh": "Yenile",
         "add_contacts": "Kişi Ekle",
         "add_sender": "Göndereni Ekle",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Kişi Listeleri",
         "email_senders_tab": "E-posta Göndericileri",
         "search_lists_placeholder": "Kişi listelerinde ara...",
+        "search_contacts_placeholder": "E-postaya veya isme göre arayın...",
+        "no_contacts_yet": "Henüz kişi yok",
+        "upload_to_get_started": "Başlamak için bir kişi listesi yükleyin.",
         "all_status": "Tüm Durumlar",
         "uploaded": "Yüklendi",
         "processing": "İşleniyor",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Göndereni Sil",
         "delete_list_title": "Kişi Listesini Sil",
         "delete_item_title": "Öğeyi Sil",
+        "actions": "Eylemler",
         "delete_sender_description": "{{email}} ({{type}}) silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.",
         "delete_list_description": "Bu kişi listesini silmek istediğinizden emin misiniz? Bu eylem geri alınamaz."
     },
     "templates": {
         "title": "E-posta Şablonları",
         "subtitle": "E-posta şablonlarınızı oluşturun ve yönetin",
+        "header_description": "Yeniden kullanılabilir e-posta şablonlarınızı yönetin.",
         "create_new": "Yeni Şablon Oluştur",
         "search_placeholder": "Şablonlarda ara...",
         "status_filter": "Durum Filtresi",
@@ -570,6 +596,8 @@
         "delete_title": "Şablonu Sil",
         "delete_description": "\"{{name}}\"yi silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.",
         "quick_actions": "Hızlı Eylemler",
+        "choose_template": "Şablon Seçin",
+        "templates_found": "Bulunan Şablonlar",
         "create_template": "Şablon Oluştur",
         "create_template_desc": "Sıfırdan yeni bir e-posta şablonu oluşturun",
         "import_template": "Şablonu İçe Aktar",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Hesap Ayarları",
+        "subtitle_short": "Oluştur Yönetici",
         "subtitle": "Kişisel hesap · Çalışma alanı kaynakları · Güvenlik kontrolleri",
         "loading": "Ayarlar yükleniyor...",
         "account_ready": "Hesap Hazır",
@@ -696,11 +725,12 @@
                 "verified": "Doğrulandı",
                 "completed": "Tamamlandı",
                 "sent": "Gönderildi",
-                "pending": "Beklemede",
+                "running": "Oluştur Koşuyor",
                 "scheduled": "Planlanmış",
                 "failed": "Başarısız",
                 "bounced": "Geri döndü",
-                "draft": "Taslak"
+                "draft": "Taslak",
+                "pending": "Beklemede"
             }
         },
         "delete": {
@@ -799,7 +829,7 @@
                 "placeholder_name": "örneğin John Smith",
                 "placeholder_email": "gönderen@example.com",
                 "placeholder_host_smtp": "Oluştur smtp.example.com",
-                "placeholder_host_imap": "imap.example.com",
+                "placeholder_host_imap": "Oluştur imap.example.com",
                 "placeholder_port_smtp": "587",
                 "placeholder_port_imap": "993",
                 "placeholder_pass": "••••••••"

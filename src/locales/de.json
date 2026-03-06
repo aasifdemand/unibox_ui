@@ -12,6 +12,12 @@
         "settings": "Einstellungen",
         "navigation": "Navigation",
         "active": "Aktiv",
+        "status": {
+            "active": "Aktiv",
+            "draft": "Entwurf",
+            "scheduled": "Geplant",
+            "completed": "Abgeschlossen"
+        },
         "search": "Suche",
         "documentation": "Dokumentation",
         "privacy": "Datenschutz",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "E-Mail",
-        "boxes": "Kisten",
+        "subtitle": "Konten",
+        "connected_description": "{{count}} verbundene Konten synchronisiert und bereit.",
         "conversation": "Gespräch",
         "connected_accounts": "{{count}} VERBUNDENE KONTEN",
         "priority": "PRIORITÄT",
@@ -173,10 +180,6 @@
         "account_expires": "Konto läuft am {{date}}",
         "prefix_to": "ab An:",
         "new_badge": "Neu",
-        "stats_total": "wird angezeigt Gesamtzahl der Absender",
-        "stats_active": "Jetzt aktiv",
-        "stats_attention": "Braucht Aufmerksamkeit",
-        "stats_health": "Systemzustand",
         "search_placeholder": "Nachrichten in allen Postfächern durchsuchen...",
         "all_types": "Alle Typen",
         "gmail": "wird angezeigt Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Entwurf speichern",
         "discard": "Verwerfen",
         "sending_label": "Senden...",
-        "send_label": "Senden"
+        "send_label": "Senden",
+        "boxes": "Kisten",
+        "stats_total": "wird angezeigt Gesamtzahl der Absender",
+        "stats_active": "Jetzt aktiv",
+        "stats_attention": "Braucht Aufmerksamkeit",
+        "stats_health": "Systemzustand"
     },
     "campaigns": {
+        "title": "wird angezeigt Kampagnen",
+        "subtitle": "Reichweite",
+        "header_description": "Erstellen und verfolgen Sie Ihre E-Mail-Kampagnen.",
         "header_subtitle": "Verwalten und verfolgen Sie Ihre E-Mail-Kampagnen",
         "create_campaign": "Kampagne erstellen",
         "loading_campaigns": "Kampagnen werden geladen...",
@@ -293,12 +304,14 @@
         "status_created": "ERSTELLT",
         "status_running": "Laufen",
         "status_paused": "Angehalten",
-        "step_contacts": "Kontakte",
-        "step_contacts_desc": "Wem schreiben Sie eine E-Mail?",
-        "step_content": "Inhalt",
-        "step_content_desc": "Schreiben Sie Ihre E-Mail",
-        "step_review": "Rezension",
-        "step_review_desc": "Endkontrolle und Start",
+        "step_import_leads": "wird angezeigt Leads importieren",
+        "step_import_leads_desc": "Fügen Sie ganz einfach Ihre Kontakte hinzu",
+        "step_sequences": "Sequenzen",
+        "step_sequences_desc": "Schreiben Sie Ihre E-Mail-Sequenz",
+        "step_setup": "Einrichtung",
+        "step_setup_desc": "Konfigurieren Sie Ihre Kampagne",
+        "step_final_review": "Abschließende Überprüfung",
+        "step_final_review_desc": "Letzte Überprüfung und Einführung",
         "error_add_content": "Bitte fügen Sie Ihrer {{mode}}-E-Mail einige Inhalte hinzu, bevor Sie fortfahren.",
         "plain_text": "Klartext",
         "step_indicator": "Schritt {{current}} von {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "E-Mail-Inhalt ist erforderlich",
         "msg_campaign_created": "Kampagne erfolgreich erstellt!",
         "err_create_failed": "Fehler beim Erstellen der Kampagne: {{message}}",
-        "create_campaign_btn": "Kampagne erstellen"
+        "create_campaign_btn": "Kampagne erstellen",
+        "step_contacts": "Kontakte",
+        "step_contacts_desc": "Wem schreiben Sie eine E-Mail?",
+        "step_content": "Inhalt",
+        "step_content_desc": "Schreiben Sie Ihre E-Mail",
+        "step_review": "Rezension",
+        "step_review_desc": "Endkontrolle und Start"
     },
     "dashboard": {
         "header_title": "wird angezeigt Dashboard",
@@ -422,7 +441,8 @@
             "engagement_desc": "Kampagnenengagement",
             "contacts": "Kontakte",
             "verified_count": "{{count}} überprüft",
-            "senders_ready": "{{count}} Absender bereit"
+            "senders_ready": "{{count}} Absender bereit",
+            "total_senders": "wird angezeigt Gesamtzahl der Absender"
         },
         "quick_actions": {
             "title": "Schnell",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Empfänger und Absender",
         "subtitle": "Verwalten Sie Ihre Mailinglisten und Versandkonten",
+        "header_description": "Verwalten Sie Ihre Mailinglisten und Versandkonten auf der gesamten Plattform.",
         "refresh": "Aktualisieren",
         "add_contacts": "Kontakte hinzufügen",
         "add_sender": "Absender hinzufügen",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Kontaktlisten",
         "email_senders_tab": "E-Mail-Absender",
         "search_lists_placeholder": "Kontaktlisten durchsuchen...",
+        "search_contacts_placeholder": "Suche nach E-Mail oder Namen...",
+        "no_contacts_yet": "Noch keine Kontakte",
+        "upload_to_get_started": "Laden Sie eine Kontaktliste hoch, um loszulegen.",
         "all_status": "Alle Status",
         "uploaded": "Hochgeladen",
         "processing": "Verarbeitung",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Absender löschen",
         "delete_list_title": "Kontaktliste löschen",
         "delete_item_title": "Element löschen",
+        "actions": "Aktionen",
         "delete_sender_description": "Sind Sie sicher, dass Sie {{email}} ({{type}}) löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "delete_list_description": "Sind Sie sicher, dass Sie diese Kontaktliste löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
     },
     "templates": {
         "title": "E-Mail-Vorlagen",
         "subtitle": "Erstellen und verwalten Sie Ihre E-Mail-Vorlagen",
+        "header_description": "Verwalten Sie Ihre wiederverwendbaren E-Mail-Vorlagen.",
         "create_new": "Neue Vorlage erstellen",
         "search_placeholder": "Suchvorlagen...",
         "status_filter": "Statusfilter",
@@ -570,6 +596,8 @@
         "delete_title": "Vorlage löschen",
         "delete_description": "Sind Sie sicher, dass Sie „{{name}}“ löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "quick_actions": "Schnellaktionen",
+        "choose_template": "Wählen Sie Vorlage",
+        "templates_found": "Vorlagen gefunden",
         "create_template": "Vorlage erstellen",
         "create_template_desc": "Erstellen Sie eine neue E-Mail-Vorlage von Grund auf",
         "import_template": "Vorlage importieren",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Kontoeinstellungen",
+        "subtitle_short": "wird angezeigt Manager",
         "subtitle": "Persönliches Konto · Arbeitsbereichsressourcen · Sicherheitskontrollen",
         "loading": "Einstellungen werden geladen...",
         "account_ready": "Konto bereit",
@@ -696,11 +725,12 @@
                 "verified": "Verifiziert",
                 "completed": "Vollendet",
                 "sent": "Gesendet",
-                "pending": "Ausstehend",
+                "running": "wird angezeigt Laufen",
                 "scheduled": "Geplant",
                 "failed": "Fehlgeschlagen",
                 "bounced": "Abgeprallt",
-                "draft": "Entwurf"
+                "draft": "Entwurf",
+                "pending": "Ausstehend"
             }
         },
         "delete": {
@@ -918,7 +948,7 @@
             "table": {
                 "email": "E-Mail",
                 "name": "wird angezeigt Name",
-                "status": "Status",
+                "status": "wird angezeigt Status",
                 "score": "Punktzahl",
                 "verified_on": "Verifiziert am",
                 "added_on": "Hinzugefügt am",
@@ -982,7 +1012,7 @@
         "subtitle": "Wählen Sie den perfekten Plan für Ihre Outreach-Anforderungen. Skalieren Sie Ihr Cold-E-Mail-Spiel ohne Grenzen.",
         "custom_price": "Benutzerdefiniert",
         "popular": "Beliebte Wahl",
-        "per_user": "/mo",
+        "per_user": "/Mo",
         "billing_suffix": "pro Benutzer/Monat",
         "custom_billing": "maßgeschneidert auf Ihre Bedürfnisse",
         "current_plan": "Aktueller Plan",

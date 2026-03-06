@@ -160,7 +160,7 @@ const Mailboxes = () => {
                 />
               </div>
               {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (
-                <div className="bg-white border-t border-slate-200 p-4 shrink-0">
+                <div className="py-4 shrink-0">
                   <Pagination
                     currentPage={state.mailboxPage}
                     hasNextPage={state.mailboxPage < data.mailboxMeta.totalPages}
@@ -168,7 +168,9 @@ const Mailboxes = () => {
                     isLoadingMessages={isLoading.isMailboxes}
                     onNextPage={() => handlers.handleMailboxPageChange(state.mailboxPage + 1)}
                     onPrevPage={() => handlers.handleMailboxPageChange(state.mailboxPage - 1)}
+                    onPageChange={handlers.handleMailboxPageChange}
                     totalMessages={data.mailboxMeta.total}
+                    itemsPerPage={data.mailboxMeta.limit}
                     startMessageCount={(state.mailboxPage - 1) * data.mailboxMeta.limit + 1}
                     endMessageCount={Math.min(
                       state.mailboxPage * data.mailboxMeta.limit,

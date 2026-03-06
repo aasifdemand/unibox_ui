@@ -12,6 +12,12 @@
         "settings": "设置",
         "navigation": "导航",
         "active": "活跃",
+        "status": {
+            "active": "活跃",
+            "draft": "草稿",
+            "scheduled": "预定",
+            "completed": "已完成"
+        },
         "search": "搜索",
         "documentation": "文档",
         "privacy": "隐私",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "邮件",
-        "boxes": "盒子",
+        "subtitle": "账户",
+        "connected_description": "{{count}} 连接的帐户已同步并准备就绪。",
         "conversation": "对话",
         "connected_accounts": "{{count}} 关联帐户",
         "priority": "优先权",
@@ -173,10 +180,6 @@
         "account_expires": "帐户到期 {{date}}",
         "prefix_to": "致：",
         "new_badge": "新",
-        "stats_total": "Total Senders",
-        "stats_active": "Active Now",
-        "stats_attention": "Needs Attention",
-        "stats_health": "System Health",
         "search_placeholder": "搜索所有邮箱中的邮件...",
         "all_types": "所有类型",
         "gmail": "邮箱",
@@ -261,9 +264,17 @@
         "save_draft": "保存草稿",
         "discard": "丢弃",
         "sending_label": "正在发送...",
-        "send_label": "发送"
+        "send_label": "发送",
+        "boxes": "盒子",
+        "stats_total": "Total Senders",
+        "stats_active": "Active Now",
+        "stats_attention": "Needs Attention",
+        "stats_health": "System Health"
     },
     "campaigns": {
+        "title": "活动",
+        "subtitle": "外展",
+        "header_description": "创建并跟踪您���电子邮件活动。",
         "header_subtitle": "管理和跟踪您的电子邮件营销活动",
         "create_campaign": "创建活动",
         "loading_campaigns": "正在加载活动...",
@@ -293,12 +304,14 @@
         "status_created": "已创建",
         "status_running": "运行",
         "status_paused": "暂停",
-        "step_contacts": "联系方式",
-        "step_contacts_desc": "你给谁发电子邮件？",
-        "step_content": "内容",
-        "step_content_desc": "写下您的电子邮件",
-        "step_review": "评论",
-        "step_review_desc": "最终检查和启动",
+        "step_import_leads": "导入线索",
+        "step_import_leads_desc": "轻松添加您的联系人",
+        "step_sequences": "序列",
+        "step_sequences_desc": "Write your email sequence",
+        "step_setup": "Setup",
+        "step_setup_desc": "Configure your campaign",
+        "step_final_review": "Final Review",
+        "step_final_review_desc": "Last check & launch",
         "error_add_content": "在继续之前，请在您的 {{mode}} 电子邮件中添加一些内容。",
         "plain_text": "纯文本",
         "step_indicator": "{{total}} 的步骤 {{current}}",
@@ -396,7 +409,13 @@
         "err_content_req": "电子邮件内容为必填项",
         "msg_campaign_created": "活动创建成功！",
         "err_create_failed": "创建活动时出错：{{message}}",
-        "create_campaign_btn": "创建活动"
+        "create_campaign_btn": "创建活动",
+        "step_contacts": "联系方式",
+        "step_contacts_desc": "你给谁发电子邮件？",
+        "step_content": "内容",
+        "step_content_desc": "写下您的电子邮件",
+        "step_review": "评论",
+        "step_review_desc": "最终检查和启动"
     },
     "dashboard": {
         "header_title": "仪表板",
@@ -422,7 +441,8 @@
             "engagement_desc": "活动参与",
             "contacts": "联系方式",
             "verified_count": "{{count}} 已验证",
-            "senders_ready": "{{count}} 发件人准备就绪"
+            "senders_ready": "{{count}} 发件人准备就绪",
+            "total_senders": "Total Senders"
         },
         "quick_actions": {
             "title": "快的",
@@ -481,7 +501,7 @@
         "upcoming": {
             "title": "Upcoming",
             "next_launch": "Next Scheduled Launch",
-            "launching_today": "Launching Today",
+            "launching_today": "今天推出",
             "in_days": "{{days}} 天",
             "no_scheduled": "尚未安排任何活动。",
             "plan_now": "现在就计划一项 →"
@@ -502,6 +522,7 @@
     "audience": {
         "title": "收件人和发件人",
         "subtitle": "管理您的邮件列表和发送帐户",
+        "header_description": "跨平台管理您的邮件列表和发送帐户。",
         "refresh": "刷新",
         "add_contacts": "添加联系人",
         "add_sender": "添加发件人",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "联系人列表",
         "email_senders_tab": "电子邮件发件人",
         "search_lists_placeholder": "搜索联系人列表...",
+        "search_contacts_placeholder": "按电子邮件或姓名搜索...",
+        "no_contacts_yet": "还没有联系方式",
+        "upload_to_get_started": "上传联系人列表即可开始。",
         "all_status": "所有状态",
         "uploaded": "已上传",
         "processing": "加工",
@@ -522,7 +546,7 @@
         "no_contacts_title": "没有联系人",
         "no_contacts_description": "未找到联系人列表。上传您的第一个列表即可开始。",
         "upload_contacts_btn": "上传联系人",
-        "verified": "Verified",
+        "verified": "已验证",
         "valid": "有效",
         "risky": "有风险",
         "invalid": "无效",
@@ -545,12 +569,14 @@
         "delete_sender_title": "删除发件人",
         "delete_list_title": "删除联系人列表",
         "delete_item_title": "删除项目",
+        "actions": "行动",
         "delete_sender_description": "您确定要删除 {{email}} ({{type}}) 吗？此操作无法撤消。",
         "delete_list_description": "您确定要删除此联系人列表吗？此操作无法撤消。"
     },
     "templates": {
         "title": "电子邮件模板",
         "subtitle": "创建和管理您的电子邮件模板",
+        "header_description": "管理可重复使用的电子邮件模板。",
         "create_new": "创建新模板",
         "search_placeholder": "搜索模板...",
         "status_filter": "状态过滤器",
@@ -570,6 +596,8 @@
         "delete_title": "删除模板",
         "delete_description": "您确定要删除“{{name}}”吗？此操作无法撤消。",
         "quick_actions": "快速行动",
+        "choose_template": "选择模板",
+        "templates_found": "找到模板",
         "create_template": "创建模板",
         "create_template_desc": "从头开始构建新的电子邮件模板",
         "import_template": "导入模板",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "账户设置",
+        "subtitle_short": "经理",
         "subtitle": "个人账户·工作空间资源·安全控制",
         "loading": "正在加载设置...",
         "account_ready": "帐户准备就绪",
@@ -696,11 +725,12 @@
                 "verified": "已验证",
                 "completed": "完全的",
                 "sent": "已发送",
-                "pending": "待处理",
+                "running": "运行",
                 "scheduled": "预定",
                 "failed": "失败",
                 "bounced": "退回",
-                "draft": "草稿"
+                "draft": "草稿",
+                "pending": "待处理"
             }
         },
         "delete": {

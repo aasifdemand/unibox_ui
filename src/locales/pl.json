@@ -12,6 +12,12 @@
         "settings": "Ustawienia",
         "navigation": "Nawigacja",
         "active": "Aktywny",
+        "status": {
+            "active": "Aktywny",
+            "draft": "Projekt",
+            "scheduled": "Zaplanowane",
+            "completed": "Ukończono"
+        },
         "search": "Szukaj",
         "documentation": "Dokumentacja",
         "privacy": "Prywatność",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Poczta",
-        "boxes": "pudełka",
+        "subtitle": "Konta",
+        "connected_description": "{{count}} połączone konta zsynchronizowane i gotowe.",
         "conversation": "Rozmowa",
         "connected_accounts": "{{count}} POŁĄCZONE KONTA",
         "priority": "PRIORYTET",
@@ -257,9 +264,13 @@
         "save_draft": "Zapisz wersję roboczą",
         "discard": "Odrzuć",
         "sending_label": "Wysyłam...",
-        "send_label": "Wyślij"
+        "send_label": "Wyślij",
+        "boxes": "pudełka"
     },
     "campaigns": {
+        "title": "Kampanie",
+        "subtitle": "Zasięg",
+        "header_description": "Twórz i śledź swoje kampanie e-mailowe.",
         "header_subtitle": "Zarządzaj i śledź swoje kampanie e-mailowe",
         "create_campaign": "Utwórz kampanię",
         "loading_campaigns": "Ładowanie kampanii...",
@@ -289,12 +300,14 @@
         "status_created": "STWORZONO",
         "status_running": "Bieganie",
         "status_paused": "Wstrzymano",
-        "step_contacts": "Kontakty",
-        "step_contacts_desc": "Do kogo wysyłasz e-maile?",
-        "step_content": "Treść",
-        "step_content_desc": "Napisz swój e-mail",
-        "step_review": "Recenzja",
-        "step_review_desc": "Ostateczna kontrola i uruchomienie",
+        "step_import_leads": "Importuj leady",
+        "step_import_leads_desc": "Z łatwością dodawaj swoje kontakty",
+        "step_sequences": "Sekwencje",
+        "step_sequences_desc": "Napisz sekwencję e-maili",
+        "step_setup": "Organizować coś",
+        "step_setup_desc": "Skonfiguruj swoją kampanię",
+        "step_final_review": "Recenzja końcowa",
+        "step_final_review_desc": "Ostatnia kontrola i uruchomienie",
         "error_add_content": "Zanim przejdziesz dalej, dodaj trochę treści do swojego e-maila {{mode}}.",
         "plain_text": "zwykły tekst",
         "step_indicator": "Krok {{current}} z {{total}}",
@@ -392,7 +405,13 @@
         "err_content_req": "Treść e-maila jest wymagana",
         "msg_campaign_created": "Kampania została utworzona pomyślnie!",
         "err_create_failed": "Błąd podczas tworzenia kampanii: {{message}}",
-        "create_campaign_btn": "Utwórz kampanię"
+        "create_campaign_btn": "Utwórz kampanię",
+        "step_contacts": "Kontakty",
+        "step_contacts_desc": "Do kogo wysyłasz e-maile?",
+        "step_content": "Treść",
+        "step_content_desc": "Napisz swój e-mail",
+        "step_review": "Recenzja",
+        "step_review_desc": "Ostateczna kontrola i uruchomienie"
     },
     "dashboard": {
         "header_title": "Panel",
@@ -418,7 +437,8 @@
             "engagement_desc": "Zaangażowanie w kampanię",
             "contacts": "Kontakty",
             "verified_count": "{{count}} zweryfikowane",
-            "senders_ready": "{{count}} nadawcy gotowi"
+            "senders_ready": "{{count}} nadawcy gotowi",
+            "total_senders": "Całkowita liczba nadawców"
         },
         "quick_actions": {
             "title": "Szybko",
@@ -498,6 +518,7 @@
     "audience": {
         "title": "Odbiorcy i nadawcy",
         "subtitle": "Zarządzaj swoimi listami mailingowymi i kontami wysyłającymi",
+        "header_description": "Zarządzaj swoimi listami mailingowymi i kontami wysyłającymi na platformie.",
         "refresh": "Odśwież",
         "add_contacts": "Dodaj kontakty",
         "add_sender": "Dodaj nadawcę",
@@ -509,6 +530,9 @@
         "contact_lists_tab": "Listy kontaktów",
         "email_senders_tab": "Nadawcy e-maili",
         "search_lists_placeholder": "Przeszukaj listy kontaktów...",
+        "search_contacts_placeholder": "Szukaj według adresu e-mail lub nazwy...",
+        "no_contacts_yet": "Nie ma jeszcze żadnych kontaktów",
+        "upload_to_get_started": "Aby rozpocząć, prześlij listę kontaktów.",
         "all_status": "Wszystkie stany",
         "uploaded": "Przesłano",
         "processing": "Przetwarzanie",
@@ -541,12 +565,14 @@
         "delete_sender_title": "Usuń nadawcę",
         "delete_list_title": "Usuń listę kontaktów",
         "delete_item_title": "Usuń element",
+        "actions": "Działania",
         "delete_sender_description": "Czy na pewno chcesz usunąć {{email}} ({{type}})? Tej akcji nie można cofnąć.",
         "delete_list_description": "Czy na pewno chcesz usunąć tę listę kontaktów? Tej akcji nie można cofnąć."
     },
     "templates": {
         "title": "Szablony e-maili",
         "subtitle": "Twórz szablony e-maili i zarządzaj nimi",
+        "header_description": "Zarządzaj szablonami wiadomości e-mail wielokrotnego użytku.",
         "create_new": "Utwórz nowy szablon",
         "search_placeholder": "Wyszukaj szablony...",
         "status_filter": "Filtr statusu",
@@ -566,6 +592,8 @@
         "delete_title": "Usuń szablon",
         "delete_description": "Czy na pewno chcesz usunąć „{{name}}”? Tej akcji nie można cofnąć.",
         "quick_actions": "Szybkie akcje",
+        "choose_template": "Wybierz szablon",
+        "templates_found": "Znaleziono szablony",
         "create_template": "Utwórz szablon",
         "create_template_desc": "Zbuduj od podstaw nowy szablon wiadomości e-mail",
         "import_template": "Importuj szablon",
@@ -585,6 +613,7 @@
     },
     "settings": {
         "title": "Ustawienia konta",
+        "subtitle_short": "Menedżer",
         "subtitle": "Konto osobiste · Zasoby Workspace · Kontrola bezpieczeństwa",
         "loading": "Ładowanie ustawień...",
         "account_ready": "Konto gotowe",
@@ -692,11 +721,12 @@
                 "verified": "Zweryfikowano",
                 "completed": "Ukończono",
                 "sent": "Wysłano",
-                "pending": "Oczekuje",
+                "running": "Bieganie",
                 "scheduled": "Zaplanowane",
                 "failed": "Nie udało się",
                 "bounced": "Odbił się",
-                "draft": "Projekt"
+                "draft": "Projekt",
+                "pending": "Oczekuje"
             }
         },
         "delete": {

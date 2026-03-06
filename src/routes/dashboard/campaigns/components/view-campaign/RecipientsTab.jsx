@@ -202,6 +202,11 @@ const RecipientStatusBadge = ({ status }) => {
       icon: <ShieldCheck className="w-3 h-3" />,
       label: 'Bounced',
     },
+    failed: {
+      bg: 'bg-red-50 text-red-700 border-red-100',
+      icon: <ShieldCheck className="w-3 h-3" />,
+      label: 'Failed',
+    },
     default: {
       bg: 'bg-slate-50 text-slate-500 border-slate-100',
       icon: <Users className="w-3 h-3" />,

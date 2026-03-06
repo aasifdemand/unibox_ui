@@ -12,9 +12,15 @@ import {
   Filter,
   XCircle,
 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import MessageActionsHeader from './messageactions-header';
-import { useAudienceData } from '../../audience/hooks/use-audience-data';
 import ShowSender from '../../../../modals/showsender';
+import {
+  useCreateSmtpSender,
+  initiateGmailOAuth,
+  initiateOutlookOAuth
+} from '../../../../hooks/useSenders';
 
 const Header = ({
   view,
@@ -60,19 +66,59 @@ const Header = ({
   onClearSenderSelection,
 }) => {
   const { t } = useTranslation();
-  const {
-    senderType,
-    smtpData,
-    showSenderModal,
-    setSenderType,
-    setSmtpData,
-    setShowSenderModal,
-    handleGmailOAuth,
-    handleOutlookOAuth,
-    handleSmtpSubmit,
-  } = useAudienceData();
+  const createSmtpSender = useCreateSmtpSender();
+
+  const [showSenderModal, setShowSenderModal] = useState(false);
+  const [senderType, setSenderType] = useState('gmail');
+  const [smtpData, setSmtpData] = useState({
+    displayName: '',
+    email: '',
+    host: '',
+    port: '587',
+    username: '',
+    password: '',
+    secure: true,
+    imapHost: '',
+    imapPort: '993',
+    imapSecure: true,
+    imapUser: '',
+    imapPassword: '',
+    provider: 'custom',
+  });
+
+  const handleGmailOAuth = () => initiateGmailOAuth();
+  const handleOutlookOAuth = () => initiateOutlookOAuth();
+
+  const handleSmtpSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = { ...smtpData };
+    if (!formData.imapHost && formData.host) {
+      formData.imapHost = formData.host.replace('smtp', 'imap');
+    }
+    if (!formData.imapUser) {
+      formData.imapUser = formData.username;
+    }
+    if (!formData.imapPassword) {
+      formData.imapPassword = formData.password;
+    }
+
+    try {
+      await createSmtpSender.mutateAsync(formData);
+      setShowSenderModal(false);
+      setSmtpData({
+        displayName: '', email: '', host: '', port: '587', username: '', password: '',
+        secure: true, imapHost: '', imapPort: '993', imapSecure: true, imapUser: '',
+        imapPassword: '', provider: 'custom',
+      });
+      toast.success(t('campaigns.msg_smtp_success'));
+      if (onRefresh) onRefresh();
+    } catch (error) {
+      toast.error(t('campaigns.msg_smtp_failed', { message: error.message }));
+    }
+  };
   return (
-    <div className="bg-white/90 backdrop-blur-2xl border-b border-slate-200/60 px-4 md:px-8 py-5 sticky top-0 z-20 shadow-xs">
+    <div className="w-full px-4 md:px-8 mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full mx-auto">
         <div className="flex items-center gap-6">
           {view !== 'list' && (
@@ -87,10 +133,10 @@ const Header = ({
 
           <div className="flex flex-col">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight">
                 {view === 'list' && (
                   <>
-                    {t('mailboxes.mail')}<span className="text-gradient">{t('mailboxes.boxes')}</span>
+                    {t('mailboxes.mail')} <span className="text-gradient ms-3 me-3">{t('mailboxes.subtitle')}</span>
                   </>
                 )}
                 {view === 'messages' && (
@@ -103,7 +149,7 @@ const Header = ({
 
               {view === 'messages' && selectedMailbox && (
                 <div className="hidden sm:flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50"></div>
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-xs">
                     {selectedMailbox.email}
                   </span>
@@ -111,13 +157,13 @@ const Header = ({
               )}
             </div>
 
-            <div className="flex items-center gap-3 mt-1.5 font-sans">
+            <div className="flex items-center gap-3 mt-2 font-sans">
               {view === 'list' && (
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
-                  <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-[0.2em]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50"></div>
+                  <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">
                     {t('mailboxes.connected_accounts', { count: mailboxesCount })}
-                  </span>
+                  </p>
                 </div>
               )}
 
@@ -164,7 +210,7 @@ const Header = ({
         <div className="flex items-center gap-3">
           {view === 'list' && (
             <div className="flex items-center gap-3">
-              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 min-w-60 transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
+              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 min-w-60 transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
                 <Search className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors shrink-0" />
                 <input
                   type="text"
@@ -180,7 +226,7 @@ const Header = ({
                 <select
                   value={mailboxTypeFilter}
                   onChange={(e) => onMailboxTypeChange(e.target.value)}
-                  className="appearance-none w-full ps-2 pe-10 py-2.5 bg-transparent h-10.5 text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none cursor-pointer"
+                  className="appearance-none w-full ps-2 pe-10 py-3 bg-transparent text-[10px] font-black uppercase tracking-widest text-slate-600 focus:outline-none cursor-pointer"
                 >
                   <option value="all">{t('mailboxes.all_providers')}</option>
                   <option value="gmail">{t('mailboxes.gmail_provider')}</option>
@@ -216,7 +262,7 @@ const Header = ({
               <button
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="p-2.5 bg-slate-50 hover:bg-white rounded-2xl border border-slate-200 transition-all shadow-xs group"
+                className="p-3 bg-slate-50 hover:bg-white rounded-2xl border border-slate-200 transition-all shadow-xs group"
                 title="Refresh Mailboxes"
               >
                 <RefreshCw
@@ -254,7 +300,7 @@ const Header = ({
               ) : (
                 <button
                   onClick={() => setShowSenderModal(true)}
-                  className="btn-primary flex items-center py-2.5 px-6 whitespace-nowrap shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+                  className="btn-primary flex items-center py-3 px-8 whitespace-nowrap shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
                 >
                   <Plus className="w-4 h-4 me-2 shrink-0" />
                   <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">
@@ -274,7 +320,7 @@ const Header = ({
                   handleSmtpSubmit={handleSmtpSubmit}
                   smtpData={smtpData}
                   setSmtpData={setSmtpData}
-                  isSubmitting={isLoading.creatingSender}
+                  isSubmitting={createSmtpSender.isPending}
                 />
               )}
             </div>

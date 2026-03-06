@@ -89,3 +89,10 @@ export const calculateClickRate = (campaign) => {
   const clicks = campaign.totalClicks || 0;
   return `${Math.round((clicks / campaign.totalSent) * 100)}%`;
 };
+
+// Calculate reply rate
+export const calculateReplyRate = (campaign) => {
+  if (!campaign.totalSent || campaign.totalSent === 0) return '-';
+  const replies = campaign.totalReplied || 0;
+  return `${Math.round((replies / campaign.totalSent) * 100)}%`;
+};

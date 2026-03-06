@@ -17,6 +17,8 @@ export const useCampaignsData = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
 
   // React Query hooks
   const { data: campaigns = [], isLoading, refetch: refetchCampaigns } = useCampaigns();
@@ -37,6 +39,13 @@ export const useCampaignsData = () => {
 
     return matchesSearch && matchesStatus;
   });
+
+  // Paginate campaigns
+  const totalProcessed = filteredCampaigns.length;
+  const paginatedCampaigns = filteredCampaigns.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
 
   // Calculate stats
   const totalCampaigns = campaigns.length;
@@ -261,6 +270,10 @@ export const useCampaignsData = () => {
       draftCampaigns,
       completedCampaigns,
       statusOptions,
+      paginatedCampaigns,
+      currentPage,
+      totalProcessed,
+      ITEMS_PER_PAGE,
     },
     isLoading: {
       isAnyLoading,
@@ -287,6 +300,7 @@ export const useCampaignsData = () => {
       setSearchTerm,
       setStatusFilter,
       setShowDeleteModal,
+      setCurrentPage,
     },
     handlers: {
       handleSelectAll,

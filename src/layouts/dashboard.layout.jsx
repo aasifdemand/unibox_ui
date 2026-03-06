@@ -181,7 +181,12 @@ const DashboardLayout = () => {
         className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'ltr:pl-20 rtl:pr-20' : 'ltr:pl-70 rtl:pr-70'}`}
       >
         {/* Superior Header - High Glassmorphism */}
-        <header className="sticky top-0 z-40 h-20 px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2">
+        <header
+          className={`fixed top-0 z-40 h-20 px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2 transition-all duration-500 ease-in-out ${sidebarCollapsed
+            ? 'ltr:left-20 rtl:right-20 w-[calc(100%-5rem)]'
+            : 'ltr:left-70 rtl:right-70 w-[calc(100%-17.5rem)]'
+            }`}
+        >
           {/* Section Indicator with Sidebar Toggle */}
           <div className="flex items-center gap-6">
             {/* Sidebar Toggle Button - Moved from Sidebar */}
@@ -239,7 +244,7 @@ const DashboardLayout = () => {
                   setShowSearchResults(true);
                 }}
                 onFocus={() => setShowSearchResults(searchQuery.length > 0)}
-                placeholder={t('common.search') + "..."}
+                placeholder={t('common.search') + '...'}
                 className="ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-2.5 w-[320px] bg-slate-100/50 border border-slate-200/60 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 focus:outline-none focus:shadow-2xl focus:shadow-blue-500/5 transition-all duration-300"
               />
               <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -277,7 +282,9 @@ const DashboardLayout = () => {
                             {result.type}
                           </p>
                         </div>
-                        <ChevronRight className={`w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-all ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`} />
+                        <ChevronRight
+                          className={`w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-all ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`}
+                        />
                       </button>
                     ))}
                   </div>
@@ -289,7 +296,9 @@ const DashboardLayout = () => {
                   <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Search className="w-6 h-6 text-slate-300" />
                   </div>
-                  <p className="text-sm font-bold text-slate-800">{t('common.no_results_found', 'No results found')}</p>
+                  <p className="text-sm font-bold text-slate-800">
+                    {t('common.no_results_found', 'No results found')}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">
                     {t('common.empty_search_unified', 'Try searching for campaigns or mailboxes')}
                   </p>
@@ -331,12 +340,13 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          className="p-4 md:p-8 w-full"
+          className="pt-28 md:pt-32 px-4 md:px-8 pb-4 md:pb-8 w-full"
         >
           <div className="w-full min-h-[calc(100vh-144px)]">
             <Outlet />
           </div>
         </motion.main>
+
 
         {/* Refined Footer */}
         <footer className="px-10 py-8 mt-auto border-t border-slate-200/40 bg-white/30 backdrop-blur-sm">

@@ -6,7 +6,7 @@ import Dialog from '../../../components/ui/dialog';
 // Import custom hook and components
 import { useTemplatesData } from './hooks/use-templates-data';
 import Header from './components/header';
-import SearchFilters from './components/search-filters';
+import TemplateToolbar from './components/template-toolbar';
 import TemplateGrid from './components/template-grid';
 import EmptyState from './components/empty-state';
 import LoadingState from './components/loading-state';
@@ -79,20 +79,15 @@ const Templates = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="max-w-400 mx-auto p-4 sm:p-6 lg:p-10 space-y-2"
+        className="max-w-400 mx-auto px-4 md:px-8 pb-8 space-y-2"
       >
-        <Header onCreateNew={handleCreateNew} isPending={isPending} />
+        <Header
+          onCreateNew={handleCreateNew}
+          isPending={isPending}
+        />
 
         <div className="space-y-8">
           {error && <ErrorState error={error} onRetry={() => refetchTemplates()} />}
-
-          <SearchFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            filterActive={filterActive}
-            setFilterActive={setFilterActive}
-            isPending={isPending}
-          />
 
           {!isLoading && templates.length === 0 && !error ? (
             <EmptyState onCreateNew={handleCreateNew} isPending={isPending} />
@@ -104,16 +99,27 @@ const Templates = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <TemplateGrid
-                  templates={templates}
-                  filteredTemplates={filteredTemplates}
-                  onEdit={handleEditTemplate}
-                  onDelete={handleRequestDeleteTemplate}
-                  onCreateNew={handleCreateNew}
-                  isPending={isPending}
-                  deleteMutation={mutations.deleteTemplate}
-                  formatDate={formatDate}
-                />
+                <div className="bg-white rounded-3xl p-6 shadow-xs border border-slate-200/60">
+                  <TemplateToolbar
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    filterActive={filterActive}
+                    setFilterActive={setFilterActive}
+                    isPending={isPending}
+                  />
+                  <div className="mt-4">
+                    <TemplateGrid
+                      templates={templates}
+                      filteredTemplates={filteredTemplates}
+                      onEdit={handleEditTemplate}
+                      onDelete={handleRequestDeleteTemplate}
+                      onCreateNew={handleCreateNew}
+                      isPending={isPending}
+                      deleteMutation={mutations.deleteTemplate}
+                      formatDate={formatDate}
+                    />
+                  </div>
+                </div>
               </motion.div>
             )
           )}

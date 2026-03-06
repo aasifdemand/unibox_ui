@@ -12,6 +12,12 @@
         "settings": "Instellingen",
         "navigation": "Navigatie",
         "active": "Actief",
+        "status": {
+            "active": "Actief",
+            "draft": "Ontwerp",
+            "scheduled": "Gepland",
+            "completed": "Voltooid"
+        },
         "search": "Zoeken",
         "documentation": "Documentatie",
         "privacy": "Privacy",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Post",
-        "boxes": "vakken",
+        "subtitle": "Rekeningen",
+        "connected_description": "{{count}} verbonden accounts gesynchroniseerd en klaar.",
         "conversation": "Gesprek",
         "connected_accounts": "{{count}} GEKOPPELDE ACCOUNTS",
         "priority": "PRIORITEIT",
@@ -173,10 +180,6 @@
         "account_expires": "Account verloopt {{date}}",
         "prefix_to": "Aan:",
         "new_badge": "Nieuw",
-        "stats_total": "Totaal aantal afzenders",
-        "stats_active": "Nu actief",
-        "stats_attention": "Heeft aandacht nodig",
-        "stats_health": "Systeemstatus",
         "search_placeholder": "Zoek berichten in alle mailboxen...",
         "all_types": "Alle typen",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Concept opslaan",
         "discard": "Gooi",
         "sending_label": "weg Verzenden...",
-        "send_label": "Verzend"
+        "send_label": "Verzend",
+        "boxes": "vakken",
+        "stats_total": "Totaal aantal afzenders",
+        "stats_active": "Nu actief",
+        "stats_attention": "Heeft aandacht nodig",
+        "stats_health": "Systeemstatus"
     },
     "campaigns": {
+        "title": "Campagnes",
+        "subtitle": "Bereik",
+        "header_description": "Creëer en volg uw e-mailcampagnes.",
         "header_subtitle": "Beheer en volg uw e-mailcampagnes",
         "create_campaign": "Campagne maken",
         "loading_campaigns": "Campagnes laden...",
@@ -293,12 +304,14 @@
         "status_created": "GEMAAKT",
         "status_running": "Rennen",
         "status_paused": "Gepauzeerd",
-        "step_contacts": "Contacten",
-        "step_contacts_desc": "Wie e-mail je?",
-        "step_content": "Inhoud",
-        "step_content_desc": "Schrijf uw e-mail",
-        "step_review": "Beoordeling",
-        "step_review_desc": "Laatste controle en lancering",
+        "step_import_leads": "Leads importeren",
+        "step_import_leads_desc": "Voeg eenvoudig uw contacten toe",
+        "step_sequences": "Reeksen",
+        "step_sequences_desc": "Schrijf uw e-mailreeks",
+        "step_setup": "Instellen",
+        "step_setup_desc": "Configureer uw campagne",
+        "step_final_review": "Eindbeoordeling",
+        "step_final_review_desc": "Laatste controle en lancering",
         "error_add_content": "Voeg wat inhoud toe aan uw {{mode}} e-mail voordat u doorgaat.",
         "plain_text": "platte tekst",
         "step_indicator": "Stap {{current}} van {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "E-mailinhoud is vereist",
         "msg_campaign_created": "Campagne succesvol gemaakt!",
         "err_create_failed": "Fout bij maken van campagne: {{message}}",
-        "create_campaign_btn": "Campagne maken"
+        "create_campaign_btn": "Campagne maken",
+        "step_contacts": "Contacten",
+        "step_contacts_desc": "Wie e-mail je?",
+        "step_content": "Inhoud",
+        "step_content_desc": "Schrijf uw e-mail",
+        "step_review": "Beoordeling",
+        "step_review_desc": "Laatste controle en lancering"
     },
     "dashboard": {
         "header_title": "Dashboard",
@@ -422,7 +441,8 @@
             "engagement_desc": "Campagnebetrokkenheid",
             "contacts": "Contacten",
             "verified_count": "{{count}} geverifieerd",
-            "senders_ready": "{{count}} afzenders klaar"
+            "senders_ready": "{{count}} afzenders klaar",
+            "total_senders": "Totaal aantal afzenders"
         },
         "quick_actions": {
             "title": "Snel",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Ontvangers en afzenders",
         "subtitle": "Beheer uw mailinglijsten en verzendaccounts",
+        "header_description": "openen Beheer uw mailinglijsten en verzendaccounts op het hele platform.",
         "refresh": "Vernieuwen",
         "add_contacts": "Contactpersonen toevoegen",
         "add_sender": "Afzender",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Contactlijsten",
         "email_senders_tab": "E-mailafzenders",
         "search_lists_placeholder": "Contactlijsten zoeken...",
+        "search_contacts_placeholder": "openen Zoek op e-mailadres of naam...",
+        "no_contacts_yet": "Nog geen contacten",
+        "upload_to_get_started": "Upload een contactenlijst om aan de slag te gaan.",
         "all_status": "Alle status",
         "uploaded": "Geüpload",
         "processing": "Verwerking",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Afzender",
         "delete_list_title": "verwijderen Contactlijst verwijderen",
         "delete_item_title": "Artikel verwijderen",
+        "actions": "Acties",
         "delete_sender_description": "Weet u zeker dat u {{email}} ({{type}}) wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
         "delete_list_description": "Weet u zeker dat u deze contactlijst wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
     },
     "templates": {
         "title": "E-mailsjablonen",
         "subtitle": "Maak en beheer uw e-mailsjablonen",
+        "header_description": "Beheer uw herbruikbare e-mailsjablonen.",
         "create_new": "Nieuwe sjabloon maken",
         "search_placeholder": "Sjablonen zoeken...",
         "status_filter": "Statusfilter",
@@ -570,6 +596,8 @@
         "delete_title": "Sjabloon verwijderen",
         "delete_description": "Weet u zeker dat u \"{{name}}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
         "quick_actions": "Snelle acties",
+        "choose_template": "Kies Sjabloon",
+        "templates_found": "Sjablonen gevonden",
         "create_template": "Sjabloon maken",
         "create_template_desc": "Bouw een geheel nieuwe e-mailsjabloon",
         "import_template": "Sjabloon importeren",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Accountinstellingen",
+        "subtitle_short": "openen Beheerder",
         "subtitle": "Persoonlijk account · Hulpmiddelen voor de werkruimte · Beveiligingsmaatregelen",
         "loading": "Instellingen laden...",
         "account_ready": "Account klaar",
@@ -696,11 +725,12 @@
                 "verified": "Geverifieerd",
                 "completed": "Voltooid",
                 "sent": "Verzonden",
-                "pending": "In behandeling",
+                "running": "openen Rennen",
                 "scheduled": "Gepland",
                 "failed": "Mislukt",
                 "bounced": "Gestuiterd",
-                "draft": "Ontwerp"
+                "draft": "Ontwerp",
+                "pending": "In behandeling"
             }
         },
         "delete": {
@@ -802,7 +832,7 @@
                 "placeholder_host_imap": "imap.voorbeeld.com",
                 "placeholder_port_smtp": "openen 587",
                 "placeholder_port_imap": "openen 993",
-                "placeholder_pass": "••••••••"
+                "placeholder_pass": "openen ••••••••"
             },
             "tabs": {
                 "smtp": "Uitgaand (SMTP)",
@@ -856,7 +886,7 @@
                 "edit": "Sjabloon bewerken"
             },
             "steps": {
-                "details": "Details",
+                "details": "openen Details",
                 "content": "Inhoud",
                 "review": "Beoordeling",
                 "status": "Stap {{current}} van {{total}}: {{name}}"

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FileText, Layout, Loader2, Database, Tag, User, X } from 'lucide-react';
-import Input from '../../../../../components/ui/input';
+import { Layout, Tag, Plus, Clock, MessageSquare, Trash2, Mail } from 'lucide-react';
 import HtmlEmailEditor from '../../../../../components/shared/html-editor';
+import PersonalizationTokens from '../../../../../components/shared/personalization-tokens';
 import { useTemplates } from '../../../../../hooks/useTemplate';
-import { Link } from 'react-router-dom';
-import Button from '../../../../../components/ui/button';
+import TemplatePickerModal from '../../../../../modals/TemplatePickerModal';
+
 
 const getPlaceholders = (t) => [
   {
@@ -86,76 +86,104 @@ const Step1Design = ({
   editorMode,
   setEditorMode,
   selectedBatch,
-  selectedSender, // Add this prop
+  selectedSender,
 }) => {
   const { t } = useTranslation();
+  const [activeStepIndex, setActiveStepIndex] = useState(0); // 0 = Main, 1+ = Follow-ups
   const [showSubjectSuggestions, setShowSubjectSuggestions] = useState(false);
-  const [subjectInputValue, setSubjectInputValue] = useState('');
+  const [subjectTokenQuery, setSubjectTokenQuery] = useState('');
+  const [subjectDropdownPos, setSubjectDropdownPos] = useState({ top: 0, left: 0 });
   const [cursorPosition, setCursorPosition] = useState(0);
 
   const subjectInputRef = useRef(null);
   const suggestionsRef = useRef(null);
+  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
 
   const { data: templates = [], isLoading: templatesLoading } = useTemplates();
 
-  const subjectValue = watch('subject') || '';
-  const htmlBody = watch('htmlBody') || '';
+  // Watchers
   const campaignName = watch('name');
+  const mainSubject = watch('subject') || '';
+  const mainHtmlBody = watch('htmlBody') || '';
+  const steps = watch('steps') || [];
 
-  // Update content when sender changes
-  useEffect(() => {
-    if (selectedSender?.displayName && htmlBody) {
-      // Replace {{sender_name}} with actual sender name
-      const updatedBody = htmlBody.replace(/\{\{sender_name\}\}/g, selectedSender.displayName);
+  // Helper to get current editing content
+  const currentSubject = activeStepIndex === 0 ? mainSubject : steps[activeStepIndex - 1]?.subject || '';
+  const currentHtmlBody = activeStepIndex === 0 ? mainHtmlBody : steps[activeStepIndex - 1]?.htmlBody || '';
 
-      // Only update if there was a change
-      if (updatedBody !== htmlBody) {
-        setValue('htmlBody', updatedBody, { shouldValidate: true });
-      }
+  const setContent = (val) => {
+    if (activeStepIndex === 0) {
+      setValue('htmlBody', val, { shouldValidate: true });
+    } else {
+      const newSteps = [...steps];
+      newSteps[activeStepIndex - 1].htmlBody = val;
+      setValue('steps', newSteps, { shouldValidate: true });
     }
-  }, [selectedSender, htmlBody, setValue]);
+  };
+
+  const setSubject = (val) => {
+    if (activeStepIndex === 0) {
+      setValue('subject', val, { shouldValidate: true });
+    } else {
+      const newSteps = [...steps];
+      newSteps[activeStepIndex - 1].subject = val;
+      setValue('steps', newSteps, { shouldValidate: true });
+    }
+  };
+
+  const addFollowUp = () => {
+    const nextOrder = steps.length + 1;
+    const newStep = {
+      stepOrder: nextOrder,
+      subject: activeStepIndex === 0 ? `Re: ${mainSubject}` : `Re: ${steps[activeStepIndex - 1].subject}`,
+      htmlBody: '',
+      textBody: '',
+      delayMinutes: 4320, // 3 days
+      condition: 'no_reply',
+    };
+    setValue('steps', [...steps, newStep]);
+    setActiveStepIndex(steps.length + 1);
+  };
+
+  const removeFollowUp = (index) => {
+    const newSteps = steps.filter((_, i) => i !== index);
+    // Re-index steps
+    const reindexed = newSteps.map((s, i) => ({ ...s, stepOrder: i + 1 }));
+    setValue('steps', reindexed);
+    if (activeStepIndex > index + 1) setActiveStepIndex(activeStepIndex - 1);
+    else if (activeStepIndex === index + 1) setActiveStepIndex(0);
+  };
+
+  const updateDelay = (index, value) => {
+    const newSteps = [...steps];
+    newSteps[index].delayMinutes = parseInt(value);
+    setValue('steps', newSteps);
+  };
+
+  const updateCondition = (index, value) => {
+    const newSteps = [...steps];
+    newSteps[index].condition = value;
+    setValue('steps', newSteps);
+  };
 
   // Dynamic Placeholders Logic
   const availableColumns = useMemo(() => {
     if (!selectedBatch) return [];
     const meta = selectedBatch.mapping || {};
     const columns = Object.values(meta).filter((v) => v && v !== '');
-    if (columns.length === 0) {
-      return [
-        'email',
-        'name',
-        'first_name',
-        'last_name',
-        'company',
-        'role',
-        'industry',
-        'city',
-        'country',
-        'phone',
-      ];
-    }
-    return [...new Set(columns)];
+    return columns.length === 0 ? ['email', 'name', 'first_name', 'last_name', 'company'] : [...new Set(columns)];
   }, [selectedBatch]);
 
-  // Add sender_name to available columns
   const allPlaceholders = useMemo(() => {
     const placeholders = getPlaceholders(t);
-
-    // Add dynamic columns from batch
     const dynamicItems = availableColumns.map((col) => {
       const lowerCol = col.toLowerCase().replace(/\s+/g, '_');
       const existing = placeholders.find((s) => s.key === lowerCol);
       if (existing) return existing;
-      return {
-        key: lowerCol,
-        label: col,
-        example: `[${col}]`,
-        category: t('campaigns.cat_custom'),
-      };
+      return { key: lowerCol, label: col, example: `[${col}]`, category: t('campaigns.cat_custom') };
     });
-
     return [...placeholders, ...dynamicItems];
-  }, [availableColumns]);
+  }, [availableColumns, t]);
 
   const filteredSuggestions = useMemo(() => {
     return allPlaceholders.reduce((acc, item) => {
@@ -165,359 +193,401 @@ const Step1Design = ({
     }, {});
   }, [allPlaceholders]);
 
-  useEffect(() => {
-    setSubjectInputValue(subjectValue);
-  }, [subjectValue]);
+  const insertPlaceholder = (placeholderKey) => {
+    const textBeforeTrigger = currentSubject.substring(0, cursorPosition).lastIndexOf('{{');
 
+    if (textBeforeTrigger !== -1) {
+      const textBefore = currentSubject.substring(0, textBeforeTrigger);
+      const textAfter = currentSubject.substring(cursorPosition);
+      const newValue = textBefore + `{{${placeholderKey}}}` + textAfter;
+      setSubject(newValue);
+    } else {
+      // Fallback
+      const textBeforeCursor = currentSubject.slice(0, cursorPosition);
+      const textAfterCursor = currentSubject.slice(cursorPosition);
+      const newValue = textBeforeCursor + `{{${placeholderKey}}}` + textAfterCursor;
+      setSubject(newValue);
+    }
+
+    setShowSubjectSuggestions(false);
+    setSubjectTokenQuery('');
+  };
+
+  // Click outside for subject suggestions
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        suggestionsRef.current &&
-        !suggestionsRef.current.contains(event.target) &&
-        subjectInputRef.current &&
-        !subjectInputRef.current.contains(event.target)
-      ) {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) &&
+        subjectInputRef.current && !subjectInputRef.current.contains(event.target)) {
         setShowSubjectSuggestions(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const applyTemplate = (template) => {
-    if (template.name && !campaignName) {
-      setValue('name', `${template.name} Campaign`, { shouldValidate: true });
+    if (showSubjectSuggestions) {
+      document.addEventListener('mousedown', handleClickOutside);
     }
-    if (template.subject) {
-      setValue('subject', template.subject, { shouldValidate: true });
-    }
-    const content =
-      template.htmlContent || template.htmlBody || template.content || template.html || '';
-    setValue('htmlBody', content, { shouldValidate: true });
-  };
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSubjectSuggestions]);
 
   const handleSubjectChange = (e) => {
-    const value = e.target.value;
-    setSubjectInputValue(value);
-    setValue('subject', value, { shouldValidate: true });
-    if (value.slice(-2) === '{{') setShowSubjectSuggestions(true);
+    const val = e.target.value;
+    const pos = e.target.selectionStart;
+    setSubject(val);
+    setCursorPosition(pos);
+
+    // Dynamic trigger logic
+    const textBefore = val.substring(0, pos);
+    const lastTokenStart = textBefore.lastIndexOf('{{');
+
+    if (lastTokenStart !== -1) {
+      const query = textBefore.substring(lastTokenStart + 2);
+      if (!query.includes('}}') && !query.includes(' ')) {
+        setShowSubjectSuggestions(true);
+        setSubjectTokenQuery(query);
+
+        // Position calculation
+        if (subjectInputRef.current) {
+          const input = subjectInputRef.current;
+          const rect = input.getBoundingClientRect();
+
+          // Use a canvas or hidden span to measure text width
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          const style = window.getComputedStyle(input);
+          context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+          const textWidth = context.measureText(textBefore).width;
+
+          const paddingLeft = parseFloat(style.paddingLeft);
+
+          setSubjectDropdownPos({
+            top: input.offsetHeight + 10,
+            left: Math.min(rect.width - 200, paddingLeft + textWidth - 20), // Approx offset
+          });
+        }
+      } else {
+        setShowSubjectSuggestions(false);
+        setSubjectTokenQuery('');
+      }
+    } else {
+      setShowSubjectSuggestions(false);
+      setSubjectTokenQuery('');
+    }
   };
 
-  const insertPlaceholder = (placeholderKey) => {
-    const textBeforeCursor = subjectInputValue.slice(0, cursorPosition);
-    const textAfterCursor = subjectInputValue.slice(cursorPosition);
-    const lastTwoChars = textBeforeCursor.slice(-2);
-    let newValue =
-      lastTwoChars === '{{'
-        ? textBeforeCursor.slice(0, -2) + `{{${placeholderKey}}}` + textAfterCursor
-        : textBeforeCursor + `{{${placeholderKey}}}` + textAfterCursor;
+  const handleApplyTemplate = (template) => {
+    if (activeStepIndex === 0) {
+      setValue('subject', template.subject, { shouldValidate: true });
+      setValue('htmlBody', template.htmlContent, { shouldValidate: true });
 
-    setSubjectInputValue(newValue);
-    setValue('subject', newValue, { shouldValidate: true });
-    setShowSubjectSuggestions(false);
-
-    setTimeout(() => {
-      if (subjectInputRef.current) {
-        const newCursorPos =
-          textBeforeCursor.length +
-          `{{${placeholderKey}}}`.length -
-          (lastTwoChars === '{{' ? 2 : 0);
-        subjectInputRef.current.focus();
-        subjectInputRef.current.setSelectionRange(newCursorPos, newCursorPos);
+      // Map template name to campaign name if current name is empty or default
+      const currentName = watch('name');
+      if (!currentName || currentName === '' || currentName === t('campaigns.untitled_campaign')) {
+        setValue('name', template.name, { shouldValidate: true });
       }
-    }, 0);
+    } else {
+      const newSteps = [...steps];
+      newSteps[activeStepIndex - 1].subject = template.subject;
+      newSteps[activeStepIndex - 1].htmlBody = template.htmlContent;
+      setValue('steps', newSteps, { shouldValidate: true });
+    }
+    setShowTemplatePicker(false);
   };
 
   return (
-    <div
-      className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700"
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
-      }}
-    >
-      {/* Premium Template Selection */}
-      <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm">
-        <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/30 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Layout className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                {t('campaigns.start_with_template')}
-              </h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                {t('campaigns.choose_library')}
-              </p>
-            </div>
-          </div>
-          <Link
-            to="/dashboard/templates"
-            className="px-4 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all border-2 border-slate-50 hover:border-blue-100 hover:bg-blue-50/50"
-          >
-            {t('campaigns.library')}
-          </Link>
-        </div>
+    <div className="flex flex-col lg:flex-row gap-8 min-h-[600px] animate-in fade-in duration-700">
+      {/* LEFT SIDEBAR: Step Navigation */}
+      <div className="lg:w-72 shrink-0 space-y-4">
+        <div className="bg-slate-50 border border-slate-100 rounded-[2rem] p-4 space-y-2">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-3 mb-4">
+            Campaign Sequence
+          </p>
 
-        <div className="p-8">
-          {templatesLoading ? (
-            <div className="flex flex-col items-center justify-center py-8 gap-3">
-              <Loader2 className="w-6 h-6 animate-spin text-blue-500/20" />
-              <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest">
-                {t('campaigns.loading')}
+          {/* Step 0: Main Email */}
+          <button
+            type="button"
+            onClick={() => setActiveStepIndex(0)}
+            className={`w-full flex items-center gap-3 p-4 rounded-2xl transition-all ${activeStepIndex === 0
+              ? 'bg-white shadow-xl shadow-blue-500/5 border border-blue-100 ring-2 ring-blue-500/10'
+              : 'hover:bg-white/60 text-slate-500'
+              }`}
+          >
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeStepIndex === 0 ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'}`}>
+              <Mail className="w-4 h-4" />
+            </div>
+            <div className="flex-1 text-left overflow-hidden">
+              <p className={`text-[10px] font-black uppercase tracking-tight ${activeStepIndex === 0 ? 'text-blue-600' : 'text-slate-400'}`}>
+                Step 1: Main
+              </p>
+              <p className="text-[11px] font-bold truncate max-w-full">
+                {mainSubject || 'No Subject'}
               </p>
             </div>
-          ) : templates.length > 0 ? (
-            <div className="flex items-center gap-5 overflow-x-auto pb-4 scrollbar-hide">
-              {templates.slice(0, 8).map((template) => (
-                <div
-                  key={template.id}
-                  onClick={() => applyTemplate(template)}
-                  className="shrink-0 w-60 group cursor-pointer"
-                >
-                  <div className="bg-white rounded-3xl border-2 border-slate-100 p-4 hover:border-blue-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
-                    <div className="h-20 bg-slate-50 rounded-xl mb-3 p-3 overflow-hidden relative">
-                      <p className="text-[8px] text-slate-400 leading-tight">
-                        {(template.htmlContent || template.htmlBody || '')
-                          .replace(/<[^>]*>/g, '')
-                          .substring(0, 60)}
-                        ...
-                      </p>
-                      <div className="absolute inset-0 bg-linear-to-t from-slate-50 to-transparent"></div>
-                    </div>
-                    <h5 className="font-extrabold text-slate-800 text-[11px] uppercase tracking-tight truncate group-hover:text-blue-600 transition-colors">
-                      {template.name}
-                    </h5>
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest truncate mt-1">
-                      {template.subject || 'No Subject'}
+          </button>
+
+          {/* Follow-up Steps */}
+          {steps.map((step, idx) => (
+            <div key={idx} className="relative group">
+              <button
+                type="button"
+                onClick={() => setActiveStepIndex(idx + 1)}
+                className={`w-full flex items-center gap-3 p-4 rounded-2xl transition-all ${activeStepIndex === idx + 1
+                  ? 'bg-white shadow-xl shadow-blue-500/5 border border-blue-100 ring-2 ring-blue-500/10'
+                  : 'hover:bg-white/60 text-slate-500'
+                  }`}
+              >
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeStepIndex === idx + 1 ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-400'}`}>
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <div className="flex-1 text-left overflow-hidden">
+                  <div className="flex items-center justify-between">
+                    <p className={`text-[10px] font-black uppercase tracking-tight ${activeStepIndex === idx + 1 ? 'text-indigo-600' : 'text-slate-400'}`}>
+                      Step {idx + 2}: Follow-up
                     </p>
                   </div>
+                  <p className="text-[11px] font-bold truncate">
+                    {step.subject || 'No Subject'}
+                  </p>
+                  <div className="flex items-center gap-1 mt-1">
+                    <Clock className="w-3 h-3 text-slate-300" />
+                    <span className="text-[9px] font-bold text-slate-400 uppercase">
+                      Wait {Math.round(step.delayMinutes / 1440)}d
+                    </span>
+                  </div>
                 </div>
-              ))}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); removeFollowUp(idx); }}
+                className="absolute top-2 right-2 p-1.5 bg-rose-50 text-rose-400 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-500 hover:text-white"
+              >
+                <Trash2 className="w-3 h-3" />
+              </button>
             </div>
-          ) : (
-            <div className="text-center py-10 bg-slate-50/50 rounded-3xl border-2 border-dashed border-slate-100">
-              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-4 italic">
-                {t('campaigns.no_templates')}
-              </p>
-              <Link to="/dashboard/templates/create">
-                <Button className="rounded-2xl px-8">{t('campaigns.create_one')}</Button>
-              </Link>
-            </div>
-          )}
+          ))}
+
+          <button
+            type="button"
+            onClick={addFollowUp}
+            className="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50/50 transition-all font-bold text-[10px] uppercase tracking-widest mt-4"
+          >
+            <Plus className="w-4 h-4" />
+            Add Follow-up
+          </button>
+        </div>
+
+        {/* Info Box */}
+        <div className="bg-indigo-50/50 border border-indigo-100 rounded-[2rem] p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Clock className="w-4 h-4 text-indigo-600" />
+            <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">
+              Sequence Logic
+            </span>
+          </div>
+          <p className="text-[11px] text-indigo-600/80 leading-relaxed font-medium">
+            Sequence follows the order shown here. If a recipient replies, all future steps are automatically stopped.
+          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          <Input
-            label={t('campaigns.campaign_name')}
-            placeholder={t('campaigns.campaign_name_placeholder')}
-            {...register('name')}
-            error={errors.name?.message}
-            required
-            className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
-          />
-
-          <div className="relative group">
-            <div className="flex items-center justify-between mb-2 px-1">
-              <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                {t('campaigns.subject_line')} *
-              </label>
-              <button
-                type="button"
-                onClick={() => setShowSubjectSuggestions(!showSubjectSuggestions)}
-                className="text-[9px] font-extrabold uppercase tracking-widest text-blue-600 flex items-center gap-1.5"
-              >
-                <Tag className="w-3 h-3" /> {t('campaigns.insert_variable')}
-              </button>
+      {/* RIGHT SIDE: Editor Area */}
+      <div className="flex-1 space-y-6">
+        {/* Step Header / Delay Controls */}
+        <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-black text-slate-800 tracking-tight">
+                {activeStepIndex === 0 ? 'Main Campaign Email' : `Follow-up Email #${activeStepIndex}`}
+              </h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Editing step {activeStepIndex + 1} of {steps.length + 1}
+              </p>
             </div>
-            <div className="relative">
-              <input
-                ref={subjectInputRef}
-                type="text"
-                value={subjectInputValue}
-                onChange={handleSubjectChange}
-                onKeyDown={(e) => {
-                  setCursorPosition(e.target.selectionStart);
-                  if (e.key === 'Enter') e.preventDefault();
-                }}
-                onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
-                className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold transition-all outline-none ${errors.subject
-                  ? 'border-rose-100 text-rose-600'
-                  : 'border-slate-100 text-slate-700 focus:bg-white focus:border-blue-500'
-                  }`}
-                placeholder="e.g., Hi {{first_name}}!"
-              />
-              {showSubjectSuggestions && (
-                <div
-                  ref={suggestionsRef}
-                  className="absolute z-50 mt-3 w-full bg-white rounded-4xl shadow-2xl border border-slate-200/60 p-4 animate-in fade-in slide-in-from-top-2"
-                >
-                  <div className="flex items-center justify-between mb-4 px-2">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      {t('campaigns.variables')}
+
+            <div className="flex items-center gap-3">
+              {activeStepIndex > 0 && (
+                <div className="flex items-center gap-4 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-1">
+                      Wait for
                     </span>
-                    <button
-                      onClick={() => setShowSubjectSuggestions(false)}
-                      className="p-1 hover:bg-slate-100 rounded-lg text-slate-400"
+                    <select
+                      value={steps[activeStepIndex - 1].delayMinutes}
+                      onChange={(e) => updateDelay(activeStepIndex - 1, e.target.value)}
+                      className="bg-transparent text-sm font-bold text-slate-700 outline-none cursor-pointer"
                     >
-                      <X className="w-4 h-4" />
-                    </button>
+                      <option value={1440}>1 Day</option>
+                      <option value={2880}>2 Days</option>
+                      <option value={4320}>3 Days</option>
+                      <option value={7200}>5 Days</option>
+                      <option value={10080}>7 Days</option>
+                      <option value={20160}>14 Days</option>
+                    </select>
                   </div>
-                  <div className="max-h-52 overflow-y-auto no-scrollbar">
-                    {Object.entries(filteredSuggestions).map(([cat, items]) => (
-                      <div key={cat} className="mb-2">
-                        <div className="text-[8px] font-extrabold text-slate-300 uppercase tracking-[0.2em] px-3 py-1.5">
-                          {cat}
-                        </div>
-                        {items.map((item) => (
-                          <button
-                            key={item.key}
-                            onClick={() => insertPlaceholder(item.key)}
-                            className="w-full ltr:text-left ltr:text-right rtl:text-left px-3 py-2 hover:bg-slate-50 rounded-xl flex items-center justify-between group/item transition-all"
-                          >
-                            <span className="font-mono text-[10px] text-blue-600 font-bold">
-                              {'{{'}
-                              {item.key}
-                              {'}}'}
-                            </span>
-                            <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                              {item.label}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    ))}
+                  <div className="w-px h-8 bg-slate-200"></div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-1">
+                      Condition
+                    </span>
+                    <select
+                      value={steps[activeStepIndex - 1].condition}
+                      onChange={(e) => updateCondition(activeStepIndex - 1, e.target.value)}
+                      className="bg-transparent text-sm font-bold text-indigo-600 outline-none cursor-pointer uppercase tracking-tighter"
+                    >
+                      <option value="no_reply">IF NO REPLY</option>
+                      <option value="always">ALWAYS SEND</option>
+                    </select>
                   </div>
                 </div>
               )}
+
+              <button
+                type="button"
+                onClick={() => setShowTemplatePicker(true)}
+                className="flex items-center gap-2.5 px-6 py-3 bg-blue-50 text-blue-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95"
+              >
+                <Layout className="w-3.5 h-3.5" />
+                Choose Template
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Variables Info Panel */}
-        {selectedBatch && (
-          <div className="bg-slate-50 border-2 border-slate-100 rounded-[2.5rem] p-6 relative overflow-hidden">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center">
-                <Database className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <h4 className="text-[11px] font-extrabold text-slate-800 uppercase tracking-widest">
-                  {t('campaigns.personalization')}
-                </h4>
-                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">
-                  {t('campaigns.avail_variables')}
-                </p>
-              </div>
-            </div>
+        {/* Campaign Name & Step Header */}
+        <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-6 space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest px-1">
+              {t('campaigns.campaign_name')} *
+            </label>
+            <input
+              type="text"
+              {...register('name')}
+              className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold focus:border-blue-500 transition-all outline-none ${errors.name ? 'border-rose-400 bg-rose-50/30' : 'border-slate-100'}`}
+              placeholder={t('campaigns.campaign_name_placeholder')}
+            />
+            {errors.name && (
+              <p className="text-[9px] font-bold text-rose-500 uppercase tracking-widest px-2">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+        </div>
 
-            <div className="flex flex-wrap gap-2">
-              {availableColumns.map((col) => (
-                <div
-                  key={col}
-                  className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl flex items-center gap-2 group cursor-default hover:border-blue-300 transition-all shadow-sm"
-                >
-                  <div className="w-1 h-1 rounded-full bg-blue-400"></div>
-                  <code className="text-[9px] font-extrabold text-slate-600 font-mono">
-                    {'{{'}
-                    {col.toLowerCase().replace(/\s+/g, '_')}
-                    {'}}'}
-                  </code>
-                </div>
-              ))}
-              <div className="px-3 py-1.5 bg-purple-50 border border-purple-100 rounded-xl flex items-center gap-2 shadow-sm">
-                <div className="w-1 h-1 rounded-full bg-purple-400"></div>
-                <code className="text-[9px] font-extrabold text-purple-600 font-mono">
-                  {'{{'}sender_name{'}}'}
-                </code>
-              </div>
-              <div className="px-3 py-1.5 bg-rose-50 border border-rose-100 rounded-xl flex items-center gap-2 shadow-sm">
-                <div className="w-1 h-1 rounded-full bg-rose-400"></div>
-                <code className="text-[9px] font-extrabold text-rose-600 font-mono">
-                  {'{{'}unsubscribe_link{'}}'}
-                </code>
-              </div>
-            </div>
-
-            {selectedSender && (
-              <div className="mt-4 p-3 bg-white border border-slate-200 rounded-xl flex items-center gap-3">
-                <div className="w-6 h-6 rounded-lg bg-green-100 flex items-center justify-center">
-                  <User className="w-3 h-3 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('campaigns.active_sender')}
-                  </p>
-                  <p className="text-xs font-bold text-slate-800">{selectedSender.displayName}</p>
-                </div>
+        {/* Subject Area */}
+        <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-6 space-y-4">
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+              Subject Line *
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowSubjectSuggestions(!showSubjectSuggestions)}
+              className="text-[9px] font-extrabold uppercase tracking-widest text-blue-600 flex items-center gap-1.5"
+            >
+              <Tag className="w-3 h-3" /> Insert Variable
+            </button>
+          </div>
+          <div className="relative">
+            <input
+              ref={subjectInputRef}
+              type="text"
+              value={currentSubject}
+              onChange={handleSubjectChange}
+              onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.preventDefault();
+              }}
+              className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold focus:border-blue-500 transition-all outline-none"
+              placeholder="e.g., Hi {{first_name}}!"
+            />
+            {errors.subject && (
+              <p className="text-[9px] font-bold text-rose-500 uppercase tracking-widest mt-2 px-2">
+                {errors.subject.message}
+              </p>
+            )}
+            {showSubjectSuggestions && (
+              <div
+                ref={suggestionsRef}
+                className="absolute z-50 animate-in slide-in-from-top-1 duration-300 w-48 shadow-2xl"
+                style={{
+                  top: `${subjectDropdownPos.top}px`,
+                  left: `${subjectDropdownPos.left}px`,
+                  maxWidth: 'calc(100vw - 40px)'
+                }}
+              >
+                <PersonalizationTokens
+                  onInsertToken={(t) => insertPlaceholder(t.token.replace(/[{}]/g, ''))}
+                  userFields={[
+                    ...availableColumns.map((col) => ({
+                      fieldName: col.toLowerCase().replace(/\s+/g, '_'),
+                      displayName: col,
+                    })),
+                    { fieldName: 'sender_name', displayName: 'Sender Name' },
+                  ]}
+                  onClose={() => setShowSubjectSuggestions(false)}
+                  externalQuery={subjectTokenQuery}
+                />
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className="space-y-4 pt-4 border-t border-slate-100">
-        <div className="flex items-center justify-between px-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center">
-              <FileText className="w-5 h-5 text-indigo-600" />
-            </div>
-            <div>
-              <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                {t('campaigns.message_content')}
-              </h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                {t('campaigns.design_sequence')}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex bg-slate-100/50 p-1 rounded-xl border border-slate-200/50">
+        {/* Content Tabs */}
+        <div className="flex items-center justify-between bg-slate-50 p-2 rounded-2xl">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4">
+            Message Content
+          </p>
+          <div className="flex bg-white/60 p-1 rounded-xl shadow-sm border border-slate-100">
             {['html', 'text'].map((mode) => (
               <button
                 key={mode}
+                type="button"
                 onClick={() => setEditorMode(mode)}
-                className={`px-5 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest transition-all ${editorMode === mode
-                  ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                className={`px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${editorMode === mode
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
                   : 'text-slate-400 hover:text-slate-600'
                   }`}
               >
-                {mode === 'html' ? t('campaigns.canvas_mode') : t('campaigns.raw_text_mode')}
+                {mode === 'html' ? 'Visual Canvas' : 'Plain Text'}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="border-2 border-slate-100 rounded-[2.5rem] bg-white overflow-hidden shadow-sm shadow-slate-200/20">
-          {editorMode === 'html' ? (
-            <HtmlEmailEditor
-              value={htmlBody}
-              onChange={(html) => setValue('htmlBody', html, { shouldValidate: true })}
-              userFields={[
-                ...availableColumns.map((col) => ({
-                  fieldName: col.toLowerCase().replace(/\s+/g, '_'),
-                  displayName: col,
-                })),
-                { fieldName: 'sender_name', displayName: t('campaigns.ph_sender_name') },
-              ]}
-            />
-          ) : (
-            <textarea
-              {...register('htmlBody')}
-              rows={15}
-              className="w-full p-8 bg-slate-900 text-slate-300 font-mono text-sm border-0 focus:ring-0 resize-none outline-none"
-              placeholder={t('campaigns.body_placeholder')}
-            />
-          )}
+        <div className="border-2 border-slate-100 rounded-[2rem] bg-slate-50/30 overflow-hidden shadow-sm p-3">
+          <div className="bg-white rounded-[1.5rem] overflow-hidden border border-slate-100 h-full shadow-inner">
+            {editorMode === 'html' ? (
+              <HtmlEmailEditor
+                value={currentHtmlBody}
+                onChange={setContent}
+                userFields={[
+                  ...availableColumns.map((col) => ({
+                    fieldName: col.toLowerCase().replace(/\s+/g, '_'),
+                    displayName: col,
+                  })),
+                  { fieldName: 'sender_name', displayName: 'Sender Name' },
+                ]}
+                senderName={selectedSender?.name || ''}
+              />
+            ) : (
+              <textarea
+                value={currentHtmlBody}
+                onChange={(e) => setContent(e.target.value)}
+                rows={15}
+                className="w-full h-full p-8 bg-slate-900 text-slate-300 font-mono text-sm border-0 focus:ring-0 resize-none outline-none"
+                placeholder="Write your email here..."
+              />
+            )}
+          </div>
         </div>
-        {errors.htmlBody && (
-          <p className="text-xs font-bold text-rose-500 uppercase tracking-widest ltr:ml-4 ltr:mr-4 rtl:ml-4">
-            {errors.htmlBody.message}
-          </p>
-        )}
       </div>
+
+      <TemplatePickerModal
+        isOpen={showTemplatePicker}
+        onClose={() => setShowTemplatePicker(false)}
+        templates={templates}
+        isLoading={templatesLoading}
+        onSelect={handleApplyTemplate}
+      />
     </div>
   );
 };

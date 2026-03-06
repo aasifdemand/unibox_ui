@@ -12,6 +12,12 @@
         "settings": "ترتیبات",
         "navigation": "نیویگیشن",
         "active": "فعال",
+        "status": {
+            "active": "فعال",
+            "draft": "ڈرافٹ",
+            "scheduled": "طے شدہ",
+            "completed": "مکمل"
+        },
         "search": "تلاش کریں",
         "documentation": "دستاویزی",
         "privacy": "رازداری",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "میل",
-        "boxes": "خانوں",
+        "subtitle": "اکاؤنٹس",
+        "connected_description": "{{count}} منسلک اکاؤنٹس مطابقت پذیر اور تیار ہیں۔",
         "conversation": "گفتگو",
         "connected_accounts": "{{count}} منسلک اکاؤنٹس",
         "priority": "ترجیح",
@@ -173,10 +180,6 @@
         "account_expires": "اکاؤنٹ کی میعاد ختم ہو رہی ہے {{date}}",
         "prefix_to": "کو:",
         "new_badge": "نیا",
-        "stats_total": "کل بھیجنے والے",
-        "stats_active": "ابھی ایکٹو",
-        "stats_attention": "توجہ کی ضرورت ہے",
-        "stats_health": "نظام صحت",
         "search_placeholder": "تمام میل باکسز میں پیغامات تلاش کریں...",
         "all_types": "تمام اقسام",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "ڈرافٹ محفوظ کریں",
         "discard": "رد کریں",
         "sending_label": "بھیج رہا ہے...",
-        "send_label": "بھیجیں"
+        "send_label": "بھیجیں",
+        "boxes": "خانوں",
+        "stats_total": "کل بھیجنے والے",
+        "stats_active": "ابھی ایکٹو",
+        "stats_attention": "توجہ کی ضرورت ہے",
+        "stats_health": "نظام صحت"
     },
     "campaigns": {
+        "title": "مہمات",
+        "subtitle": "آؤٹ ریچ",
+        "header_description": "اپنی ای میل مہمات بنائیں اور ٹریک کریں۔",
         "header_subtitle": "اپنی ای میل مہمات کا نظم کریں اور ٹریک کریں",
         "create_campaign": "مہم بنائیں",
         "loading_campaigns": "مہمات لوڈ ہو رہی ہیں...",
@@ -293,12 +304,14 @@
         "status_created": "تخلیق کردہ",
         "status_running": "چل رہا ہے",
         "status_paused": "موقوف",
-        "step_contacts": "رابطے",
-        "step_contacts_desc": "آپ کس کو ای میل کر رہے ہیں؟",
-        "step_content": "مواد",
-        "step_content_desc": "اپنا ای میل لکھیں",
-        "step_review": "جائزہ",
-        "step_review_desc": "فائنل چیک اینڈ لانچ",
+        "step_import_leads": "لیڈز درآمد کریں",
+        "step_import_leads_desc": "آسانی سے اپنے رابطے شامل کریں",
+        "step_sequences": "سلسلے",
+        "step_sequences_desc": "اپنا ای میل ترتیب لکھیں",
+        "step_setup": "سیٹ اپ",
+        "step_setup_desc": "اپنی مہم کو ترتیب دیں",
+        "step_final_review": "حتمی جائزہ",
+        "step_final_review_desc": "آخری چیک اور لانچ",
         "error_add_content": "براہ کرم آگے بڑھنے سے پہلے اپنے {{mode}} ای میل میں کچھ مواد شامل کریں۔",
         "plain_text": "سادہ متن",
         "step_indicator": "{{total}} کا مرحلہ {{current}}",
@@ -396,7 +409,13 @@
         "err_content_req": "ای میل کا مواد درکار ہے",
         "msg_campaign_created": "مہم کامیابی کے ساتھ بنائی گئی!",
         "err_create_failed": "مہم بنانے میں خرابی: {{message}}",
-        "create_campaign_btn": "مہم بنائیں"
+        "create_campaign_btn": "مہم بنائیں",
+        "step_contacts": "رابطے",
+        "step_contacts_desc": "آپ کس کو ای میل کر رہے ہیں؟",
+        "step_content": "مواد",
+        "step_content_desc": "اپنا ای میل لکھیں",
+        "step_review": "جائزہ",
+        "step_review_desc": "فائنل چیک اینڈ لانچ"
     },
     "dashboard": {
         "header_title": "ڈیش بورڈ",
@@ -422,7 +441,8 @@
             "engagement_desc": "مہم کی مصروفیت",
             "contacts": "رابطے",
             "verified_count": "{{count}} تصدیق شدہ",
-            "senders_ready": "{{count}} بھیجنے والے تیار"
+            "senders_ready": "{{count}} بھیجنے والے تیار",
+            "total_senders": "کل بھیجنے والے"
         },
         "quick_actions": {
             "title": "فوری",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "وصول کنندگان اور بھیجنے والے",
         "subtitle": "اپنی میلنگ لسٹ اور بھیجنے والے اکاؤنٹس کا نظم کریں",
+        "header_description": "پلیٹ فارم پر اپنی میلنگ لسٹ اور بھیجنے والے اکاؤنٹس کا نظم کریں۔",
         "refresh": "تازہ کریں",
         "add_contacts": "رابطے شامل کریں",
         "add_sender": "بھیجنے والے کو شامل کریں",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "رابطے کی فہرستیں",
         "email_senders_tab": "ای میل بھیجنے والے",
         "search_lists_placeholder": "رابطے کی فہرستیں تلاش کریں...",
+        "search_contacts_placeholder": "ای میل یا نام سے تلاش کریں...",
+        "no_contacts_yet": "No contacts yet",
+        "upload_to_get_started": "Upload a contact list to get started.",
         "all_status": "تمام حیثیت",
         "uploaded": "اپ لوڈ کردہ",
         "processing": "پروسیسنگ",
@@ -545,12 +569,14 @@
         "delete_sender_title": "بھیجنے والے کو حذف کریں",
         "delete_list_title": "رابطے کی فہرست کو حذف کریں",
         "delete_item_title": "آئٹم کو حذف کریں",
+        "actions": "اعمال",
         "delete_sender_description": "کیا آپ واقعی {{email}} ({{type}}) کو حذف کرنا چاہتے ہیں؟ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
         "delete_list_description": "کیا آپ واقعی اس رابطہ فہرست کو حذف کرنا چاہتے ہیں؟ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔"
     },
     "templates": {
         "title": "ای میل ٹیمپلیٹس",
         "subtitle": "اپنے ای میل ٹیمپلیٹس بنائیں اور ان کا نظم کریں",
+        "header_description": "اپنے دوبارہ قابل استعمال ای میل ٹیمپلیٹس کا نظم کریں۔",
         "create_new": "نیا سانچہ بنائیں",
         "search_placeholder": "ٹیمپلیٹس تلاش کریں...",
         "status_filter": "اسٹیٹس فلٹر",
@@ -570,6 +596,8 @@
         "delete_title": "سانچہ حذف کریں",
         "delete_description": "کیا آپ واقعی \"{{name}}\" کو حذف کرنا چاہتے ہیں؟ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
         "quick_actions": "فوری اقدامات",
+        "choose_template": "Choose Template",
+        "templates_found": "Templates Found",
         "create_template": "ٹیمپلیٹ بنائیں",
         "create_template_desc": "شروع سے ایک نیا ای میل ٹیمپلیٹ بنائیں",
         "import_template": "امپورٹ ٹیمپلیٹ",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "اکاؤنٹ کی ترتیبات",
+        "subtitle_short": "مینیجر",
         "subtitle": "ذاتی اکاؤنٹ · ورک اسپیس کے وسائل · سیکیورٹی کنٹرولز",
         "loading": "ترتیبات لوڈ ہو رہی ہیں...",
         "account_ready": "اکاؤنٹ تیار ہے",
@@ -696,11 +725,12 @@
                 "verified": "تصدیق شدہ",
                 "completed": "مکمل",
                 "sent": "بھیجا",
-                "pending": "زیر التواء",
+                "running": "چل رہا ہے",
                 "scheduled": "طے شدہ",
                 "failed": "ناکام",
                 "bounced": "اچھال دیا",
-                "draft": "ڈرافٹ"
+                "draft": "ڈرافٹ",
+                "pending": "زیر التواء"
             }
         },
         "delete": {

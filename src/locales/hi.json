@@ -12,6 +12,12 @@
         "settings": "सेटिंग्स",
         "navigation": "नेविगेशन",
         "active": "सक्रिय",
+        "status": {
+            "active": "सक्रिय",
+            "draft": "ड्राफ्ट",
+            "scheduled": "अनुसूचित",
+            "completed": "पूर्ण"
+        },
         "search": "खोजें",
         "documentation": "दस्तावेज़ीकरण",
         "privacy": "गोपनीयता",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "मेल",
-        "boxes": "बक्से",
+        "subtitle": "खाते",
+        "connected_description": "{{count}} जुड़े हुए खाते समन्वयित और तैयार हैं।",
         "conversation": "बातचीत",
         "connected_accounts": "{{count}} जुड़े हुए खाते",
         "priority": "प्राथमिकता",
@@ -173,10 +180,6 @@
         "account_expires": "खाता समाप्त हो रहा है {{date}}",
         "prefix_to": "समाप्त हो रहा है को:",
         "new_badge": "नया",
-        "stats_total": "कुल प्रेषक",
-        "stats_active": "अभी सक्रिय",
-        "stats_attention": "ध्यान देने की आवश्यकता है",
-        "stats_health": "सिस्टम स्वास्थ्य",
         "search_placeholder": "सभी मेलबॉक्सों में संदेश खोजें...",
         "all_types": "सभी प्रकार",
         "gmail": "जीमेल",
@@ -261,9 +264,17 @@
         "save_draft": "ड्राफ्ट सहेजें",
         "discard": "त्यागें",
         "sending_label": "भेजा जा रहा है...",
-        "send_label": "भेजें"
+        "send_label": "भेजें",
+        "boxes": "बक्से",
+        "stats_total": "कुल प्रेषक",
+        "stats_active": "अभी सक्रिय",
+        "stats_attention": "ध्यान देने की आवश्यकता है",
+        "stats_health": "सिस्टम स्वास्थ्य"
     },
     "campaigns": {
+        "title": "अभियान",
+        "subtitle": "आउटरीच",
+        "header_description": "अपने ईमेल अभियान बनाएं और ट्रैक करें.",
         "header_subtitle": "अपने ईमेल अभियानों को प्रबंधित और ट्रैक करें",
         "create_campaign": "अभियान बनाएं",
         "loading_campaigns": "अभियान लोड हो रहे हैं...",
@@ -293,12 +304,14 @@
         "status_created": "बनाया गया",
         "status_running": "दौड़ना",
         "status_paused": "रोका गया",
-        "step_contacts": "संपर्क",
-        "step_contacts_desc": "आप किसे ईमेल कर रहे हैं?",
-        "step_content": "सामग्री",
-        "step_content_desc": "अपना ईमेल लिखें",
-        "step_review": "समीक्षा",
-        "step_review_desc": "अंतिम जाँच एवं प्रक्षेपण",
+        "step_import_leads": "आयात लीड",
+        "step_import_leads_desc": "आसानी से अपने संपर्क जोड़ें",
+        "step_sequences": "अनुक्रम",
+        "step_sequences_desc": "अपना ईमेल क्रम लिखें",
+        "step_setup": "सेटअप",
+        "step_setup_desc": "अपना अभियान कॉन्फ़िगर करें",
+        "step_final_review": "अंतिम समीक्षा",
+        "step_final_review_desc": "अंतिम जांच और लॉन्च",
         "error_add_content": "कृपया आगे बढ़ने से पहले अपने {{mode}} ईमेल में कुछ सामग्री जोड़ें।",
         "plain_text": "सादा पाठ",
         "step_indicator": "{{total}} का चरण {{current}}",
@@ -396,7 +409,13 @@
         "err_content_req": "ईमेल सामग्री आवश्यक है",
         "msg_campaign_created": "अभियान सफलतापूर्वक बनाया गया!",
         "err_create_failed": "अभियान बनाने में त्रुटि: {{message}}",
-        "create_campaign_btn": "अभियान बनाएं"
+        "create_campaign_btn": "अभियान बनाएं",
+        "step_contacts": "संपर्क",
+        "step_contacts_desc": "आप किसे ईमेल कर रहे हैं?",
+        "step_content": "सामग्री",
+        "step_content_desc": "अपना ईमेल लिखें",
+        "step_review": "समीक्षा",
+        "step_review_desc": "अंतिम जाँच एवं प्रक्षेपण"
     },
     "dashboard": {
         "header_title": "डैशबोर्ड",
@@ -422,7 +441,8 @@
             "engagement_desc": "अभियान सहभागिता",
             "contacts": "संपर्क",
             "verified_count": "[वि0] सत्यापित",
-            "senders_ready": "[वि0] प्रेषक तैयार हैं"
+            "senders_ready": "[वि0] प्रेषक तैयार हैं",
+            "total_senders": "कुल प्रेषक"
         },
         "quick_actions": {
             "title": "जल्दी",
@@ -482,7 +502,7 @@
             "title": "आगामी",
             "next_launch": "अगला शेड्यूल लॉन्च",
             "launching_today": "आज लॉन्च हो रहा है",
-            "in_days": "में [वि0] दिन",
+            "in_days": "[वि0] दिनों में",
             "no_scheduled": "अभी तक कोई अभियान निर्धारित नहीं है.",
             "plan_now": "अभी एक योजना बनाएं →"
         },
@@ -502,6 +522,7 @@
     "audience": {
         "title": "प्राप्तकर्ता एवं प्रेषक",
         "subtitle": "अपनी मेलिंग सूचियाँ और भेजने वाले खाते प्रबंधित करें",
+        "header_description": "प्लेटफ़ॉर्म पर अपनी मेलिंग सूचियाँ और भेजने वाले खाते प्रबंधित करें।",
         "refresh": "ताज़ा करें",
         "add_contacts": "संपर्क जोड़ें",
         "add_sender": "प्रेषक जोड़ें",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "संपर्क सूचियाँ",
         "email_senders_tab": "ईमेल प्रेषक",
         "search_lists_placeholder": "संपर्क सूचियाँ खोजें...",
+        "search_contacts_placeholder": "ईमेल या नाम से खोजें...",
+        "no_contacts_yet": "अभी तक कोई संप��्क नहीं",
+        "upload_to_get_started": "आरंभ करने के लिए संपर्क सूची अपलोड करें.",
         "all_status": "सभी स्थिति",
         "uploaded": "अपलोड किया गया",
         "processing": "प्रसंस्करण",
@@ -545,12 +569,14 @@
         "delete_sender_title": "प्रेषक को हटाएँ",
         "delete_list_title": "संपर्क सूची हटाएं",
         "delete_item_title": "आइटम हटाएं",
+        "actions": "क्रियाएँ",
         "delete_sender_description": "क्या आप वाकई {{email}} ({{type}}) को हटाना चाहते हैं? इस एक्शन को वापस नहीं किया जा सकता।",
         "delete_list_description": "क्या आप वाकई इस संपर्क सूची को हटाना चाहते हैं? इस एक्शन को वापस नहीं किया जा सकता।"
     },
     "templates": {
         "title": "ईमेल टेम्प्लेट",
         "subtitle": "अपने ईमेल टेम्प्लेट बनाएं और प्रबंधित करें",
+        "header_description": "अपने पुन: प्रयोज्य ईमेल टेम्पलेट प्रबंधित करें।",
         "create_new": "नया टेम्प्लेट बनाएं",
         "search_placeholder": "टेम्प्लेट खोजें...",
         "status_filter": "स्थिति फ़िल्टर",
@@ -570,6 +596,8 @@
         "delete_title": "टेम्प्लेट हटाएं",
         "delete_description": "क्या आप वाकई \"{{name}}\" को हटाना चाहते हैं? इस एक्शन को वापस नहीं किया जा सकता।",
         "quick_actions": "त्वरित कार्रवाई",
+        "choose_template": "टेम्पलेट चुनें",
+        "templates_found": "टेम्प्लेट मिले",
         "create_template": "टेम्पलेट बनाएं",
         "create_template_desc": "शुरुआत से एक नया ईमेल टेम्पलेट बनाएं",
         "import_template": "आयात टेम्प्लेट",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "खाता सेटिंग",
+        "subtitle_short": "मैनेजर",
         "subtitle": "व्यक्तिगत खाता · कार्यस्थल संसाधन · सुरक्षा नियंत्रण",
         "loading": "सेटिंग लोड हो रही है...",
         "account_ready": "खाता तैयार",
@@ -696,11 +725,12 @@
                 "verified": "सत्यापित",
                 "completed": "पुरा होना।",
                 "sent": "भेजा गया",
-                "pending": "लंबित",
+                "running": "दौड़ना",
                 "scheduled": "अनुसूचित",
                 "failed": "विफल",
                 "bounced": "बाउंस",
-                "draft": "ड्राफ्ट"
+                "draft": "ड्राफ्ट",
+                "pending": "लंबित"
             }
         },
         "delete": {

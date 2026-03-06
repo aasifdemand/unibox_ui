@@ -12,6 +12,12 @@
         "settings": "Cài đặt",
         "navigation": "Điều hướng",
         "active": "Đang hoạt động",
+        "status": {
+            "active": "Đang hoạt động",
+            "draft": "Bản nháp",
+            "scheduled": "Đã lên lịch",
+            "completed": "Đã hoàn thành"
+        },
         "search": "Tìm kiếm",
         "documentation": "Tài liệu",
         "privacy": "Sự riêng tư",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Thư",
-        "boxes": "hộp",
+        "subtitle": "Tài khoản",
+        "connected_description": "{{count}} các tài khoản được kết nối đã được đồng bộ hóa và sẵn sàng.",
         "conversation": "Cuộc hội thoại",
         "connected_accounts": "{{count}} TÀI KHOẢN KẾT NỐI",
         "priority": "ƯU TIÊN",
@@ -173,10 +180,6 @@
         "account_expires": "Tài khoản hết hạn {{date}}",
         "prefix_to": "Tới:",
         "new_badge": "Mới",
-        "stats_total": "Tổng số người gửi",
-        "stats_active": "Đang hoạt động",
-        "stats_attention": "Cần Chú Ý",
-        "stats_health": "Tình trạng hệ thống",
         "search_placeholder": "Tìm kiếm thư trong tất cả các hộp thư...",
         "all_types": "Tất cả các loại",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Lưu bản nháp",
         "discard": "Loại bỏ",
         "sending_label": "Đang gửi...",
-        "send_label": "Gửi"
+        "send_label": "Gửi",
+        "boxes": "hộp",
+        "stats_total": "Tổng số người gửi",
+        "stats_active": "Đang hoạt động",
+        "stats_attention": "Cần Chú Ý",
+        "stats_health": "Tình trạng hệ thống"
     },
     "campaigns": {
+        "title": "Chiến dịch",
+        "subtitle": "Tiếp cận",
+        "header_description": "Tạo và theo dõi các chiến dịch email của bạn.",
         "header_subtitle": "Quản lý và theo dõi các chiến dịch email của bạn",
         "create_campaign": "Tạo chiến dịch",
         "loading_campaigns": "Đang tải chiến dịch...",
@@ -293,12 +304,14 @@
         "status_created": "TẠO",
         "status_running": "Đang chạy",
         "status_paused": "Đã tạm dừng",
-        "step_contacts": "Liên hệ",
-        "step_contacts_desc": "Bạn đang gửi email cho ai?",
-        "step_content": "Nội dung",
-        "step_content_desc": "Viết email của bạn",
-        "step_review": "Đánh giá",
-        "step_review_desc": "Kiểm tra lần cuối và khởi chạy",
+        "step_import_leads": "Nhập đầu mối",
+        "step_import_leads_desc": "Dễ dàng thêm liên hệ của bạn",
+        "step_sequences": "Trình tự",
+        "step_sequences_desc": "Viết chuỗi email của bạn",
+        "step_setup": "Thiết lập",
+        "step_setup_desc": "Định cấu hình chiến dịch của bạn",
+        "step_final_review": "Đánh giá cuối cùng",
+        "step_final_review_desc": "Kiểm tra lần cuối và khởi chạy",
         "error_add_content": "Vui lòng thêm một số nội dung vào email {{mode}} của bạn trước khi tiếp tục.",
         "plain_text": "văn bản thuần túy",
         "step_indicator": "Bước {{current}} của {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "Nội dung email là bắt buộc",
         "msg_campaign_created": "Chiến dịch được tạo thành công!",
         "err_create_failed": "Lỗi tạo chiến dịch: {{message}}",
-        "create_campaign_btn": "Tạo chiến dịch"
+        "create_campaign_btn": "Tạo chiến dịch",
+        "step_contacts": "Liên hệ",
+        "step_contacts_desc": "Bạn đang gửi email cho ai?",
+        "step_content": "Nội dung",
+        "step_content_desc": "Viết email của bạn",
+        "step_review": "Đánh giá",
+        "step_review_desc": "Kiểm tra lần cuối và khởi chạy"
     },
     "dashboard": {
         "header_title": "Trang tổng quan",
@@ -422,7 +441,8 @@
             "engagement_desc": "Tương tác với chiến dịch",
             "contacts": "Liên hệ",
             "verified_count": "{{count}} đã được xác minh",
-            "senders_ready": "{{count}} người gửi đã sẵn sàng"
+            "senders_ready": "{{count}} người gửi đã sẵn sàng",
+            "total_senders": "Tổng số người gửi"
         },
         "quick_actions": {
             "title": "Nhanh",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Người nhận & Người gửi",
         "subtitle": "Quản lý danh sách gửi thư và tài khoản gửi của bạn",
+        "header_description": "Quản lý danh sách gửi thư của bạn và gửi tài khoản trên nền tảng.",
         "refresh": "Làm mới",
         "add_contacts": "Thêm liên hệ",
         "add_sender": "Thêm người gửi",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Danh sách liên hệ",
         "email_senders_tab": "Người gửi Email",
         "search_lists_placeholder": "Tìm kiếm danh sách liên lạc...",
+        "search_contacts_placeholder": "Tìm kiếm theo email hoặc tên...",
+        "no_contacts_yet": "Chưa có liên hệ nào",
+        "upload_to_get_started": "Tải lên danh sách liên hệ để bắt đầu.",
         "all_status": "Tất cả trạng thái",
         "uploaded": "Đã tải lên",
         "processing": "Đang xử lý",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Xóa người gửi",
         "delete_list_title": "Xóa Danh sách Liên hệ",
         "delete_item_title": "Xóa mục",
+        "actions": "Hành động",
         "delete_sender_description": "Bạn có chắc chắn muốn xóa {{email}} ({{type}}) không? Không thể hoàn tác hành động này.",
         "delete_list_description": "Bạn có chắc chắn muốn xóa danh sách liên lạc này không? Không thể hoàn tác hành động này."
     },
     "templates": {
         "title": "Mẫu email",
         "subtitle": "Tạo và qu���n lý các mẫu email của bạn",
+        "header_description": "Quản lý các mẫu email có thể sử dụng lại của bạn.",
         "create_new": "Tạo Mẫu Mới",
         "search_placeholder": "Tìm kiếm mẫu...",
         "status_filter": "Bộ lọc trạng thái",
@@ -570,6 +596,8 @@
         "delete_title": "Xóa mẫu",
         "delete_description": "Bạn có chắc chắn muốn xóa \"{{name}}\" không? Không thể hoàn tác hành động này.",
         "quick_actions": "Thao tác nhanh",
+        "choose_template": "Chọn Mẫu",
+        "templates_found": "Đã tìm thấy mẫu",
         "create_template": "Tạo Mẫu",
         "create_template_desc": "Xây dựng mẫu email mới từ đầu",
         "import_template": "Nhập mẫu",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Cài đặt tài khoản",
+        "subtitle_short": "Người quản lý",
         "subtitle": "Tài khoản cá nhân · Tài nguyên không gian làm việc · Kiểm soát bảo mật",
         "loading": "Đang tải cài đặt...",
         "account_ready": "Tài khoản đã sẵn sàng",
@@ -696,11 +725,12 @@
                 "verified": "Đã xác minh",
                 "completed": "Đã hoàn thành",
                 "sent": "Đã gửi",
-                "pending": "Đang chờ xử lý",
+                "running": "Đang chạy",
                 "scheduled": "Đã lên lịch",
                 "failed": "Thất bại",
                 "bounced": "Bị trả lại",
-                "draft": "Bản nháp"
+                "draft": "Bản nháp",
+                "pending": "Đang chờ xử lý"
             }
         },
         "delete": {

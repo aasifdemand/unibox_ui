@@ -58,20 +58,7 @@ const StatsGrid = ({ stats }) => {
             </p>
           </div>
 
-          <div className="mt-6 pt-5 border-t border-slate-50 relative z-10 overflow-hidden">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                {t('analytics.confidence')}
-              </span>
-              <span className="text-[9px] font-extrabold text-blue-600">92%</span>
-            </div>
-            <div className="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden border border-slate-100/50 p-px">
-              <div
-                className={`h-full bg-linear-to-r ${stat.color} rounded-full group-hover:translate-x-0 transition-transform duration-1000 ease-out`}
-                style={{ width: '92%', transform: 'translateX(-10%)' }}
-              ></div>
-            </div>
-          </div>
+
         </motion.div>
       ))}
     </div>

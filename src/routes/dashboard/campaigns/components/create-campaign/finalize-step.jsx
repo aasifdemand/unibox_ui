@@ -107,133 +107,75 @@ const Step3Finalize = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Schedule Settings */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-blue-600" />
+        {/* Campaign Logic Summary */}
+        <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center">
+              <Activity className="w-4 h-4 text-orange-600" />
             </div>
-            <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              {t('campaigns.schedule_sending')}
+            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">
+              Campaign Protocol
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 gap-3">
-            {[
-              { id: 'now', title: 'Send Now', desc: 'Process immediately' },
-              {
-                id: 'later',
-                title: 'Schedule for Later',
-                desc: 'Choose specific time',
-              },
-            ].map((option) => (
-              <label
-                key={option.id}
-                className={`group relative flex items-center p-5 bg-white border-2 rounded-4xl cursor-pointer transition-all duration-300 hover:border-blue-200 ${watch('scheduleType') === option.id ? 'border-blue-500 bg-blue-50/20 ring-4 ring-blue-500/5 shadow-sm' : 'border-slate-100'}`}
-              >
-                <input
-                  type="radio"
-                  {...register('scheduleType')}
-                  value={option.id}
-                  className="w-5 h-5 appearance-none border-2 border-slate-200 rounded-full checked:border-blue-500 checked:bg-blue-500 transition-all"
-                />
-                <div className="ltr:ml-4 ltr:mr-4 rtl:ml-4">
-                  <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">
-                    {t(`campaigns.${option.id === 'now' ? 'send_now' : 'schedule_later'}`)}
-                  </p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                    {t(`campaigns.${option.id === 'now' ? 'process_immediately' : 'choose_time'}`)}
-                  </p>
-                </div>
-              </label>
-            ))}
-          </div>
-
-          {watchScheduleType === 'later' && (
-            <div className="animate-in fade-in slide-in-from-top-4 duration-500">
-              <Input
-                label={t('campaigns.send_date_time')}
-                type="datetime-local"
-                {...register('scheduledAt')}
-                error={errors.scheduledAt?.message}
-                required
-                className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
-              />
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule Plan</span>
+              <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest">
+                {watchScheduleType === 'now' ? 'Immediate Execution' : 'Scheduled Release'}
+              </span>
             </div>
-          )}
-
-          <Input
-            label={t('campaigns.sending_rate')}
-            type="number"
-            {...register('throttlePerMinute', { valueAsNumber: true })}
-            error={errors.throttlePerMinute?.message}
-            icon={Gauge}
-            className="rounded-2xl border-2 border-slate-100 focus:border-blue-500"
-            helperText={t('campaigns.sending_rate_hint')}
-          />
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sending Throttle</span>
+              <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest">
+                {watch('throttlePerMinute')} EMAILS / MIN
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Compliance Status</span>
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-3 h-3 text-emerald-500" />
+                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Verified</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Tracking & Compliance */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-indigo-600" />
+        {/* Tracking & Launch */}
+        <div className="bg-indigo-600 rounded-[2.5rem] p-8 text-white flex flex-col justify-between shadow-2xl shadow-indigo-500/20">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">
+              <Zap className="w-4 h-4 text-white" />
             </div>
-            <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
-              {t('campaigns.tracking_rules')}
+            <h3 className="text-xs font-black uppercase tracking-widest">
+              Launch Rules
             </h3>
           </div>
 
           <div className="space-y-3">
-            {[
-              {
-                id: 'trackOpens',
-                title: t('campaigns.open_tracking'),
-                desc: t('campaigns.monitor_views'),
-              },
-              {
-                id: 'trackClicks',
-                title: t('campaigns.click_tracking'),
-                desc: t('campaigns.monitor_clicks'),
-              },
-              {
-                id: 'unsubscribeLink',
-                title: t('campaigns.ph_unsubscribe'),
-                desc: t('campaigns.unsubscribe_link_compliant'),
-                highlight: true,
-              },
-            ].map((setting) => (
-              <label
-                key={setting.id}
-                className={`flex items-center justify-between p-5 rounded-4xl border-2 cursor-pointer transition-all duration-300 ${setting.highlight
-                    ? 'bg-amber-50/30 border-amber-100 hover:border-amber-200'
-                    : 'bg-white border-slate-100 hover:border-blue-200'
-                  }`}
-              >
-                <div>
-                  <p className="text-xs font-extrabold text-slate-800 uppercase tracking-tight">
-                    {setting.title}
-                  </p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                    {setting.desc}
-                  </p>
-                </div>
-                <div className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" {...register(setting.id)} className="sr-only peer" />
-                  <div className="w-12 h-7 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
-                </div>
-              </label>
-            ))}
-          </div>
-
-          <div className="p-5 rounded-3xl bg-blue-50/40 border border-blue-100">
-            <div className="flex gap-4">
-              <Shield className="w-5 h-5 text-blue-600 shrink-0" />
-              <p className="text-[10px] font-bold text-blue-800 leading-relaxed uppercase tracking-widest">
-                {t('campaigns.compliance_agreement')}
-              </p>
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Open Tracking</span>
+              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('trackOpens') ? 'bg-emerald-400' : 'bg-white/10'}`}>
+                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('trackOpens') ? 'right-[2px]' : 'left-[2px]'}`} />
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Click Tracking</span>
+              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('trackClicks') ? 'bg-emerald-400' : 'bg-white/10'}`}>
+                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('trackClicks') ? 'right-[2px]' : 'left-[2px]'}`} />
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Unsubscribe Footer</span>
+              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('unsubscribeLink') ? 'bg-emerald-400' : 'bg-white/10'}`}>
+                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('unsubscribeLink') ? 'right-[2px]' : 'left-[2px]'}`} />
+              </div>
             </div>
           </div>
+
+          <p className="text-[9px] text-white/40 font-medium uppercase text-center leading-relaxed mt-6">
+            Clicking the launch button will initiate the campaign sequence across your selected sending infrastructure.
+          </p>
         </div>
       </div>
     </div>

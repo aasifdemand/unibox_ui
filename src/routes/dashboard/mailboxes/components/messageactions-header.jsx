@@ -49,7 +49,7 @@ const MessageActionsHeader = ({
       ) : (
         <button
           onClick={onCompose}
-          className="group relative flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-blue-500/20 active:scale-95 overflow-hidden"
+          className="btn-primary flex items-center gap-2 transition-all transition-all relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -ltr:translate-x-full rtl:-translate-x-full group-hover:ltr:translate-x-full rtl:-translate-x-full transition-transform duration-700"></div>
           <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -62,7 +62,7 @@ const MessageActionsHeader = ({
         <button
           onClick={onSync}
           disabled={isSyncing}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isSyncing ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
+          className={`flex items-center gap-2 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${isSyncing ? 'bg-white text-blue-600 shadow-sm border border-slate-200' : 'text-slate-500 hover:text-slate-900'
             }`}
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
@@ -71,9 +71,9 @@ const MessageActionsHeader = ({
 
         <button
           onClick={onFilterUnread}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filterUnreadActive
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
-              : 'text-slate-500 hover:text-slate-900'
+          className={`flex items-center gap-2 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filterUnreadActive
+            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
+            : 'text-slate-500 hover:text-slate-900'
             }`}
         >
           <MailQuestion className="w-3.5 h-3.5" />

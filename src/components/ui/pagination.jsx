@@ -57,11 +57,10 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`w-10 h-10 rounded-xl text-sm font-bold transition-all duration-200 ${
-            currentPage === page
+          className={`w-10 h-10 rounded-xl text-sm font-bold transition-all duration-200 ${currentPage === page
               ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
               : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-          }`}
+            }`}
         >
           {page}
         </button>
@@ -71,7 +70,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
 
   return (
     <div
-      className={`flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-slate-50/30 ${className}`}
+      className={`flex items-center justify-between px-6 py-4 ${className}`}
     >
       <div className="text-sm text-slate-500 font-medium">
         Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}

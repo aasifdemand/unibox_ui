@@ -12,6 +12,12 @@
         "settings": "تنظیمات",
         "navigation": "ناوبری",
         "active": "فعال",
+        "status": {
+            "active": "فعال",
+            "draft": "پیش نویس",
+            "scheduled": "برنامه ریزی شده",
+            "completed": "تکمیل شد"
+        },
         "search": "جستجو",
         "documentation": "مستندات",
         "privacy": "حریم خصوصی",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "ایمیل",
-        "boxes": "جعبه",
+        "subtitle": "حساب ها",
+        "connected_description": "{{count}} حساب‌های متصل همگام‌سازی شده و آماده است.",
         "conversation": "گفتگو",
         "connected_accounts": "{{count}} حساب‌های متصل",
         "priority": "اولویت",
@@ -173,10 +180,6 @@
         "account_expires": "حساب منقضی می شود {{date}}",
         "prefix_to": "به:",
         "new_badge": "جدید",
-        "stats_total": "مجموع فرستندگان",
-        "stats_active": "اکنون فعال است",
-        "stats_attention": "نیاز به توجه دارد",
-        "stats_health": "سلامت سیستم",
         "search_placeholder": "جستجوی پیام ها در تمام صندوق های پستی...",
         "all_types": "همه انواع",
         "gmail": "جیمیل",
@@ -261,9 +264,17 @@
         "save_draft": "ذخیره پیش نویس",
         "discard": "دور انداختن",
         "sending_label": "ارسال...",
-        "send_label": "ارسال"
+        "send_label": "ارسال",
+        "boxes": "جعبه",
+        "stats_total": "مجموع فرستندگان",
+        "stats_active": "اکنون فعال است",
+        "stats_attention": "نیاز به توجه دارد",
+        "stats_health": "سلامت سیستم"
     },
     "campaigns": {
+        "title": "کمپین ها",
+        "subtitle": "اطلاع رسانی",
+        "header_description": "کمپین های ایمیل خود را ایجاد و پیگیری کنید.",
         "header_subtitle": "کمپین های ایمیل خود را مدیریت و پیگیری کنید",
         "create_campaign": "ایجاد کمپین",
         "loading_campaigns": "در حال بارگیری کمپین ها...",
@@ -293,12 +304,14 @@
         "status_created": "ایجاد شد",
         "status_running": "در حال اجرا",
         "status_paused": "مکث شد",
-        "step_contacts": "اطلاعات تماس",
-        "step_contacts_desc": "به کی ایمیل میزنی؟",
-        "step_content": "مطالب",
-        "step_content_desc": "ایمیل خود را بنویسید",
-        "step_review": "بررسی",
-        "step_review_desc": "بررسی نهایی و راه اند��زی",
+        "step_import_leads": "واردات سرنخ",
+        "step_import_leads_desc": "به راحتی مخاطبین خود را اضافه کنید",
+        "step_sequences": "دنباله ها",
+        "step_sequences_desc": "دنباله ایمیل خود را بنویسید",
+        "step_setup": "راه اندازی",
+        "step_setup_desc": "کمپین خود را پیکربندی کنید",
+        "step_final_review": "بررسی نهایی",
+        "step_final_review_desc": "آخرین بررسی و راه اندازی",
         "error_add_content": "لطفاً قبل از ادامه، مقداری محتوا به ایمیل {{mode}} خود اضافه کنید.",
         "plain_text": "متن ساده",
         "step_indicator": "مرحله {{current}} از {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "محتوای ایمیل الزامی است",
         "msg_campaign_created": "کمپین با موفقیت ایجاد شد!",
         "err_create_failed": "خطا در ایجاد کمپین: {{message}}",
-        "create_campaign_btn": "ایجاد کمپین"
+        "create_campaign_btn": "ایجاد کمپین",
+        "step_contacts": "اطلاعات تماس",
+        "step_contacts_desc": "به کی ایمیل میزنی؟",
+        "step_content": "مطالب",
+        "step_content_desc": "ایمیل خود را بنویسید",
+        "step_review": "بررسی",
+        "step_review_desc": "بررسی نهایی و راه اند��زی"
     },
     "dashboard": {
         "header_title": "داشبورد",
@@ -422,7 +441,8 @@
             "engagement_desc": "تعامل کمپین",
             "contacts": "اطلاعات تماس",
             "verified_count": "{{count}} تأیید شد",
-            "senders_ready": "{{count}} فرستنده آماده"
+            "senders_ready": "{{count}} فرستنده آماده",
+            "total_senders": "مجموع ارسال کنندگان"
         },
         "quick_actions": {
             "title": "سریع",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "گیرندگان و فرستندگان",
         "subtitle": "لیست های پستی و حساب های ارسالی خود را مدیریت کنید",
+        "header_description": "لیست های پستی و حساب های ارسالی خود را در سراسر پلت فرم مدیریت کنید.",
         "refresh": "تازه کردن",
         "add_contacts": "افزودن مخاطبین",
         "add_sender": "افزودن فرستنده",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "لیست های تماس",
         "email_senders_tab": "ارسال کنندگان ایمیل",
         "search_lists_placeholder": "جستجو در لیست مخاطبین...",
+        "search_contacts_placeholder": "جستجو با ایمیل یا نام...",
+        "no_contacts_yet": "هنوز مخاطبی وجود ندارد",
+        "upload_to_get_started": "برای شروع یک لیست تماس آپلود کنید.",
         "all_status": "همه وضعیت",
         "uploaded": "آپلود شده",
         "processing": "پردازش",
@@ -545,12 +569,14 @@
         "delete_sender_title": "حذف فرستنده",
         "delete_list_title": "حذف لیست مخاطبین",
         "delete_item_title": "حذف مورد",
+        "actions": "اقدامات",
         "delete_sender_description": "آیا مطمئن هستید که می خواهید {{email}} ({{type}}) را حذف کنید؟ این عمل قابل لغو نیست.",
         "delete_list_description": "آیا مطمئن هستید که می خواهید این لیست مخاطبین را حذف کنید؟ این عمل قابل لغو نیست."
     },
     "templates": {
         "title": "قالب های ایمیل",
         "subtitle": "قالب های ایمیل خود را ایجاد و مدیریت کنید",
+        "header_description": "الگو��ای ایمیل قابل استفاده مجدد خود را مدیریت کنید.",
         "create_new": "ایجاد الگوی جدید",
         "search_placeholder": "جستجوی قالب ها...",
         "status_filter": "فیلتر وضعیت",
@@ -570,6 +596,8 @@
         "delete_title": "حذف الگو",
         "delete_description": "آیا مطمئن هستید که می خواهید \"{{name}}\" را حذف کنید؟ این عمل قابل لغو نیست.",
         "quick_actions": "اقدامات سریع",
+        "choose_template": "الگو را انتخاب کنید",
+        "templates_found": "الگوها پیدا شد",
         "create_template": "ایجاد الگو",
         "create_template_desc": "یک قالب ایمیل جدید از ابتدا بسازید",
         "import_template": "وارد کردن الگو",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "تنظیمات حساب",
+        "subtitle_short": "مدیر",
         "subtitle": "حساب شخصی · منابع فضای کاری · کنترل های امنیتی",
         "loading": "در حال بارگیری تنظیمات...",
         "account_ready": "حساب آماده",
@@ -696,11 +725,12 @@
                 "verified": "تایید شده",
                 "completed": "تکمیل شد",
                 "sent": "ارسال شد",
-                "pending": "در انتظار",
+                "running": "در حال اجرا",
                 "scheduled": "برنامه ریزی شده",
                 "failed": "ناموفق",
                 "bounced": "برگشت",
-                "draft": "پیش نویس"
+                "draft": "پیش نویس",
+                "pending": "در انتظار"
             }
         },
         "delete": {

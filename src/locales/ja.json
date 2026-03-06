@@ -12,6 +12,12 @@
         "settings": "設定",
         "navigation": "ナビゲーション",
         "active": "アクティブ",
+        "status": {
+            "active": "アクティブ",
+            "draft": "草案",
+            "scheduled": "予定",
+            "completed": "完了しました"
+        },
         "search": "検索",
         "documentation": "ドキュメント",
         "privacy": "プライバシー",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "メール",
-        "boxes": "ボックス",
+        "subtitle": "アカウント",
+        "connected_description": "{{count}} 接続されたアカウントが同期され、準備が整いました。",
         "conversation": "コンバーセーション",
         "connected_accounts": "{{count}} 個のアカウントが接続済み",
         "priority": "優先",
@@ -173,10 +180,6 @@
         "account_expires": "アカウントの有効期限は {{date}} です",
         "prefix_to": "宛先:",
         "new_badge": "新しい",
-        "stats_total": "送信者の総数",
-        "stats_active": "現在アクティブです",
-        "stats_attention": "注意が必要です",
-        "stats_health": "システムの状態",
         "search_placeholder": "すべてのメールボックス内のメッセージを検索します...",
         "all_types": "すべてのタイプ",
         "gmail": "Gメール",
@@ -261,9 +264,17 @@
         "save_draft": "下書きを保存",
         "discard": "破棄",
         "sending_label": "送信中...",
-        "send_label": "送信"
+        "send_label": "送信",
+        "boxes": "ボックス",
+        "stats_total": "送信者の総数",
+        "stats_active": "現在アクティブです",
+        "stats_attention": "注意が必要です",
+        "stats_health": "システムの状態"
     },
     "campaigns": {
+        "title": "へキャンペーン",
+        "subtitle": "アウトリーチ",
+        "header_description": "電子メール キャンペーンを作成して追跡します。",
         "header_subtitle": "電子メール キャンペーンを管理および追跡する",
         "create_campaign": "キャンペーンを作成する",
         "loading_campaigns": "キャンペーンを読み込み中...",
@@ -293,12 +304,14 @@
         "status_created": "作成されました",
         "status_running": "ランニング",
         "status_paused": "一時停止しました",
-        "step_contacts": "連絡先",
-        "step_contacts_desc": "誰にメールしてるの？",
-        "step_content": "内容",
-        "step_content_desc": "メールを書いてください",
-        "step_review": "レビュー",
-        "step_review_desc": "最終チェックと起動",
+        "step_import_leads": "へリードをインポート",
+        "step_import_leads_desc": "連絡先を簡単に追加",
+        "step_sequences": "シーケンス",
+        "step_sequences_desc": "電子メールのシーケンスを書きます",
+        "step_setup": "セットアップ",
+        "step_setup_desc": "キャンペーンを設定する",
+        "step_final_review": "最終レビュー",
+        "step_final_review_desc": "最終チェックと起動",
         "error_add_content": "続行する前に、{{mode}} メールにコンテンツを追加してください。",
         "plain_text": "プレーンテキスト",
         "step_indicator": "ステップ {{current}} / {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "電子メールの内容は必須です",
         "msg_campaign_created": "キャンペーンが正常に作成されました。",
         "err_create_failed": "キャンペーン作成エラー: {{message}}",
-        "create_campaign_btn": "キャンペーンを作成する"
+        "create_campaign_btn": "キャンペーンを作成する",
+        "step_contacts": "連絡先",
+        "step_contacts_desc": "誰にメールしてるの？",
+        "step_content": "内容",
+        "step_content_desc": "メールを書いてください",
+        "step_review": "レビュー",
+        "step_review_desc": "最終チェックと起動"
     },
     "dashboard": {
         "header_title": "ダッシュボード",
@@ -422,7 +441,8 @@
             "engagement_desc": "キャンペーンへの取り組み",
             "contacts": "連絡先",
             "verified_count": "{{count}} が確認されました",
-            "senders_ready": "{{count}} 件の送信者が準備完了"
+            "senders_ready": "{{count}} 件の送信者が準備完了",
+            "total_senders": "へ送信者の総数"
         },
         "quick_actions": {
             "title": "早い",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "受信者と送信者",
         "subtitle": "メーリング リストと送信アカウントを管理する",
+        "header_description": "プラットフォーム全体でメーリング リストと送信アカウントを管理します。",
         "refresh": "リフレッシュ",
         "add_contacts": "連絡先を追加",
         "add_sender": "送信者を追加",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "連絡先リスト",
         "email_senders_tab": "メール送信者",
         "search_lists_placeholder": "連絡先リストを検索...",
+        "search_contacts_placeholder": "メールアドレスまたは名前で検索します...",
+        "no_contacts_yet": "まだ連絡先がありません",
+        "upload_to_get_started": "まずは連絡先リストをアップロードしてください。",
         "all_status": "すべてのステータス",
         "uploaded": "アップロードされました",
         "processing": "処理中",
@@ -545,12 +569,14 @@
         "delete_sender_title": "送信者を削除",
         "delete_list_title": "連絡先リストを削除",
         "delete_item_title": "項目を削除",
+        "actions": "アクション",
         "delete_sender_description": "{{email}} ({{type}}) を削除してもよろしいですか?この操作は��に戻すことができません。",
         "delete_list_description": "この連絡先リストを削除してもよろしいですか?この操作は元に戻すことができません。"
     },
     "templates": {
         "title": "電子メール テンプレート",
         "subtitle": "電子メール テンプレートを作成および管理する",
+        "header_description": "再利用可能な電子メール テンプレートを管理します。",
         "create_new": "新しいテンプレートを作成",
         "search_placeholder": "テンプレートを検索...",
         "status_filter": "ステータス フィルター",
@@ -570,6 +596,8 @@
         "delete_title": "テンプレートを削除",
         "delete_description": "「{{name}}」を削除してもよろしいですか?この操作は元に戻すことができません。",
         "quick_actions": "クイックアクション",
+        "choose_template": "テンプレートを選択",
+        "templates_found": "テンプレートが見つかりました",
         "create_template": "テンプレートの作成",
         "create_template_desc": "新しい電子メール テンプレートを最初から作成する",
         "import_template": "テンプレートをインポート",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "アカウント設定",
+        "subtitle_short": "へマネージャー",
         "subtitle": "個人アカウント · ワークスペース リソース · セキュリティ制御",
         "loading": "設定を読み込み中...",
         "account_ready": "アカウントの準備ができました",
@@ -696,11 +725,12 @@
                 "verified": "確認済み",
                 "completed": "完了しました",
                 "sent": "送信済み",
-                "pending": "保留中",
+                "running": "へランニング",
                 "scheduled": "予定",
                 "failed": "失敗しました",
                 "bounced": "バウンスしました",
-                "draft": "草案"
+                "draft": "草案",
+                "pending": "保留中"
             }
         },
         "delete": {
@@ -799,7 +829,7 @@
                 "placeholder_name": "例えばジョン・スミス",
                 "placeholder_email": "へsender@example.com",
                 "placeholder_host_smtp": "へsmtp.example.com",
-                "placeholder_host_imap": "imap.example.com",
+                "placeholder_host_imap": "へimap.example.com",
                 "placeholder_port_smtp": "587",
                 "placeholder_port_imap": "993",
                 "placeholder_pass": "••••••••"

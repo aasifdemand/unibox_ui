@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -32,7 +32,7 @@ const HourlyActivity = ({ data }) => {
 
       <div className="h-62.5 w-full flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 0, right: 10, left: -25, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 0, right: 10, left: -25, bottom: 0 }}>
             <CartesianGrid vertical={false} strokeDasharray="8 8" stroke="#f1f5f9" />
             <XAxis
               dataKey="hour"
@@ -49,20 +49,21 @@ const HourlyActivity = ({ data }) => {
             <Tooltip content={<CustomTooltip />} />
             <defs>
               <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.2} />
                 <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Line
+            <Area
               type="monotone"
               dataKey="count"
               stroke="#f59e0b"
               strokeWidth={4}
-              dot={{ r: 4, fill: '#fff', strokeWidth: 3, stroke: '#f59e0b' }}
+              fill="url(#colorCount)"
+              dot={false}
               activeDot={{ r: 6, strokeWidth: 0, fill: '#f59e0b' }}
               name={t('analytics.stats')}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
 

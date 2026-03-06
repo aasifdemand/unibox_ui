@@ -15,6 +15,7 @@ import {
   Users,
   Loader2,
   Plus,
+  ChevronDown,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
@@ -28,6 +29,7 @@ import {
 } from 'recharts';
 
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-hot-toast';
 
 // Import components & modals
 import ShowTemplate from '../../modals/showtemplate';
@@ -39,7 +41,7 @@ import ShowCreateCampaign from '../../modals/showcreatecampaign';
 
 // Import React Query hooks
 import { useCampaigns } from '../../hooks/useCampaign';
-import { useSenders } from '../../hooks/useSenders';
+import { useSenders, useCreateSmtpSender, initiateGmailOAuth, initiateOutlookOAuth } from '../../hooks/useSenders';
 import { useTemplate } from '../../hooks/useTemplate';
 import { useBatches, useVerificationTotals } from '../../hooks/useBatches';
 
@@ -48,10 +50,9 @@ const QuickActionContent = ({ action }) => (
     <div
       className={`w-12 h-12 rounded-2xl bg-linear-to-br ${action.color} p-0.5 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}
     >
-      <div className="w-full h-full bg-white rounded-xl flex items-center justify-center">
-        <div
-          className={`text-transparent bg-linear-to-br ${action.color} bg-clip-text`}
-        >
+      <div className="w-full h-full bg-white rounded-xl flex items-center justify-center relative overflow-hidden">
+        <div className={`absolute inset-0 bg-linear-to-br ${action.color} opacity-10`}></div>
+        <div className="relative z-10 p-2 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:stroke-[2.5px] [&>svg]:text-slate-700">
           {action.icon}
         </div>
       </div>
@@ -96,11 +97,45 @@ const Dashboard = () => {
   // Get verification totals using the hook
   const verificationTotals = useVerificationTotals();
 
+  // Sender modal state
+  const createSmtpSender = useCreateSmtpSender();
+  const [showSenderModal, setShowSenderModal] = useState(false);
+  const [senderType, setSenderType] = useState('gmail');
+  const [smtpData, setSmtpData] = useState({
+    displayName: '', email: '', host: '', port: '587', username: '', password: '',
+    secure: true, imapHost: '', imapPort: '993', imapSecure: true, imapUser: '',
+    imapPassword: '', provider: 'custom',
+  });
+
+  const handleGmailOAuth = () => initiateGmailOAuth();
+  const handleOutlookOAuth = () => initiateOutlookOAuth();
+
   // Handle refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await Promise.all([refetchCampaigns(), refetchSenders(), refetchTemplates(), refetchBatches()]);
     setIsRefreshing(false);
+  };
+
+  const handleSmtpSubmit = async (e) => {
+    e.preventDefault();
+    const formData = { ...smtpData };
+    if (!formData.imapHost && formData.host) formData.imapHost = formData.host.replace('smtp', 'imap');
+    if (!formData.imapUser) formData.imapUser = formData.username;
+    if (!formData.imapPassword) formData.imapPassword = formData.password;
+    try {
+      await createSmtpSender.mutateAsync(formData);
+      setShowSenderModal(false);
+      setSmtpData({
+        displayName: '', email: '', host: '', port: '587', username: '', password: '',
+        secure: true, imapHost: '', imapPort: '993', imapSecure: true, imapUser: '',
+        imapPassword: '', provider: 'custom',
+      });
+      toast.success(t('campaigns.msg_smtp_success'));
+      handleRefresh();
+    } catch (error) {
+      toast.error(t('campaigns.msg_smtp_failed', { message: error.message }));
+    }
   };
 
   // Calculate real stats
@@ -124,8 +159,7 @@ const Dashboard = () => {
   const avgReplyRate = totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : '0.0';
 
   // Contact stats
-  const totalContacts =
-    verificationTotals.verified + verificationTotals.invalid + verificationTotals.unverified;
+  const totalContacts = batches.reduce((acc, batch) => acc + (batch.totalRecords || 0), 0);
 
   // Sender stats
   const totalSenders = senders.length;
@@ -341,12 +375,12 @@ const Dashboard = () => {
       onClick: templateHandlers.handleCreateNew,
     },
     {
-      title: t("dashboard.quick_actions.add_sender"),
+      title: t("dashboard.quick_actions.add_mailbox", "Add Mailbox"),
       description: t("dashboard.quick_actions.add_sender_desc"),
       icon: <Send className="w-5 h-5" />,
       color: 'from-amber-500 to-amber-600',
       bgColor: 'bg-linear-to-br from-amber-50 to-amber-50',
-      onClick: () => audienceData.setShowSenderModal(true),
+      onClick: () => setShowSenderModal(true),
     },
   ];
 
@@ -391,7 +425,7 @@ const Dashboard = () => {
       {/* Header - Premium Alignment */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center">
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight flex items-center">
             {t("dashboard.header_title")} <span className="text-gradient ms-3 me-3">{t("dashboard.header_subtitle")}</span>
             {isRefreshing && <Loader2 className="w-5 h-5 ms-4 me-4 animate-spin text-blue-500" />}
           </h1>
@@ -404,7 +438,7 @@ const Dashboard = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
+              className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>
@@ -416,7 +450,7 @@ const Dashboard = () => {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-[10px] font-extrabold uppercase tracking-widest transition-all shadow-xl shadow-blue-500/20 active:scale-95 disabled:opacity-50"
+            className="btn-primary flex items-center text-[10px] font-extrabold uppercase tracking-widest transition-all"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 me-2.5" />}
             {isRefreshing ? t("dashboard.syncing") : t("dashboard.refresh_data")}
@@ -486,20 +520,7 @@ const Dashboard = () => {
                 </p>
               </div>
 
-              <div className="mt-6 pt-5 border-t border-slate-50 relative z-10 overflow-hidden">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('dashboard.performance.success_rate')}
-                  </span>
-                  <span className="text-[9px] font-extrabold text-blue-600">84%</span>
-                </div>
-                <div className="w-full h-1.5 bg-slate-50 rounded-full overflow-hidden border border-slate-100/50 p-px">
-                  <div
-                    className={`h-full bg-linear-to-r ${stat.color} rounded-full transition-all duration-2000 ease-out shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
-                    style={{ width: '84%' }}
-                  ></div>
-                </div>
-              </div>
+
             </motion.div>
           ))}
         </div>
@@ -517,19 +538,19 @@ const Dashboard = () => {
                   {t('dashboard.performance.overview', { days: timeRange })}
                 </p>
               </div>
-              <div className="flex bg-slate-100 p-1 rounded-xl self-start">
-                {['7', '30', '90'].map((range) => (
-                  <button
-                    key={range}
-                    onClick={() => setTimeRange(range)}
-                    className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${timeRange === range
-                      ? 'bg-white text-blue-600 shadow-sm'
-                      : 'text-slate-500 hover:text-slate-700'
-                      }`}
-                  >
-                    {range}D
-                  </button>
-                ))}
+              <div className="relative inline-block text-left self-start">
+                <select
+                  value={timeRange}
+                  onChange={(e) => setTimeRange(e.target.value)}
+                  className="appearance-none bg-slate-50 border-2 border-slate-100 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer hover:bg-white transition-colors"
+                >
+                  <option value="7">Last 7 Days</option>
+                  <option value="30">Last 30 Days</option>
+                  <option value="90">Last 90 Days</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 ltr:right-0 rtl:left-0 flex items-center px-3 text-slate-400">
+                  <ChevronDown className="w-4 h-4" />
+                </div>
               </div>
             </div>
 
@@ -546,15 +567,15 @@ const Dashboard = () => {
                 >
                   <defs>
                     <linearGradient id="colorSent" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.5} />
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
+                      <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
                     </linearGradient>
                     <linearGradient id="colorReplies" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.5} />
-                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.1} />
+                      <stop offset="0%" stopColor="#10b981" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#10b981" stopOpacity={0.8} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                   <XAxis
                     dataKey="name"
                     axisLine={false}
@@ -578,26 +599,28 @@ const Dashboard = () => {
                     cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }}
                   />
                   <Area
-                    type="linear"
+                    type="monotone"
                     dataKey="sent"
-                    stroke="#3b82f6"
-                    strokeWidth={3}
+                    stackId="1"
+                    stroke="#2563eb"
+                    strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#colorSent)"
                     name={t('analytics.sent')}
-                    activeDot={{ r: 6, strokeWidth: 0 }}
-                    dot={{ r: 4, strokeWidth: 2, stroke: '#fff', fill: '#3b82f6' }}
+                    activeDot={{ r: 6, strokeWidth: 0, fill: '#2563eb' }}
+                    dot={false}
                   />
                   <Area
-                    type="linear"
+                    type="monotone"
                     dataKey="replies"
-                    stroke="#8b5cf6"
-                    strokeWidth={3}
+                    stackId="1"
+                    stroke="#059669"
+                    strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#colorReplies)"
                     name={t('analytics.replies')}
-                    activeDot={{ r: 6, strokeWidth: 0 }}
-                    dot={{ r: 4, strokeWidth: 2, stroke: '#fff', fill: '#8b5cf6' }}
+                    activeDot={{ r: 6, strokeWidth: 0, fill: '#059669' }}
+                    dot={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -994,17 +1017,17 @@ const Dashboard = () => {
           uploading={audienceData.isLoading.uploading}
         />
       )}
-      {audienceData.showSenderModal && (
+      {showSenderModal && (
         <ShowSender
-          setShowSenderModal={audienceData.setShowSenderModal}
-          setSenderType={audienceData.setSenderType}
-          senderType={audienceData.senderType}
-          handleGmailOAuth={audienceData.handleGmailOAuth}
-          handleOutlookOAuth={audienceData.handleOutlookOAuth}
-          handleSmtpSubmit={audienceData.handleSmtpSubmit}
-          smtpData={audienceData.smtpData}
-          setSmtpData={audienceData.setSmtpData}
-          isSubmitting={audienceData.isLoading.creatingSender}
+          setShowSenderModal={setShowSenderModal}
+          setSenderType={setSenderType}
+          senderType={senderType}
+          handleGmailOAuth={handleGmailOAuth}
+          handleOutlookOAuth={handleOutlookOAuth}
+          handleSmtpSubmit={handleSmtpSubmit}
+          smtpData={smtpData}
+          setSmtpData={setSmtpData}
+          isSubmitting={createSmtpSender.isPending}
         />
       )}
       <ShowCreateCampaign

@@ -12,6 +12,12 @@
         "settings": "Impostazioni",
         "navigation": "Navigazione",
         "active": "Attivo",
+        "status": {
+            "active": "Attivo",
+            "draft": "Bozza",
+            "scheduled": "Programmato",
+            "completed": "Completato"
+        },
         "search": "Cerca",
         "documentation": "Documentazione",
         "privacy": "Privacy",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "Posta",
-        "boxes": "elettronica",
+        "subtitle": "Conti",
+        "connected_description": "Account connessi {{count}} sincronizzati e pronti.",
         "conversation": "Conversazione",
         "connected_accounts": "{{count}} ACCOUNT COLLEGATI",
         "priority": "PRIORITÀ",
@@ -173,10 +180,6 @@
         "account_expires": "L'account scade il {{date}}",
         "prefix_to": "A:",
         "new_badge": "Nuovo",
-        "stats_total": "Mittenti totali",
-        "stats_active": "Attivo adesso",
-        "stats_attention": "Ha bisogno di attenzione",
-        "stats_health": "Integrità del sistema",
         "search_placeholder": "Cerca messaggi in tutte le caselle di posta...",
         "all_types": "Tutti i tipi",
         "gmail": "Gmail",
@@ -261,9 +264,17 @@
         "save_draft": "Salva bozza",
         "discard": "Scarta",
         "sending_label": "Invio...",
-        "send_label": "Inviare"
+        "send_label": "Inviare",
+        "boxes": "elettronica",
+        "stats_total": "Mittenti totali",
+        "stats_active": "Attivo adesso",
+        "stats_attention": "Ha bisogno di attenzione",
+        "stats_health": "Integrità del sistema"
     },
     "campaigns": {
+        "title": "Campagne",
+        "subtitle": "Divulgazione",
+        "header_description": "Crea e monitora le tue campagne e-mail.",
         "header_subtitle": "Gestisci e monitora le tue campagne e-mail",
         "create_campaign": "Crea campagna",
         "loading_campaigns": "Caricamento campagne...",
@@ -293,12 +304,14 @@
         "status_created": "CREATO",
         "status_running": "In esecuzione",
         "status_paused": "In pausa",
-        "step_contacts": "Contatti",
-        "step_contacts_desc": "A chi stai inviando un'e-mail?",
-        "step_content": "Contenuto",
-        "step_content_desc": "Scrivi la tua email",
-        "step_review": "Recensione",
-        "step_review_desc": "Controllo finale e lancio",
+        "step_import_leads": "Importa lead",
+        "step_import_leads_desc": "Aggiungi facilmente i tuoi contatti",
+        "step_sequences": "Sequenze",
+        "step_sequences_desc": "Scrivi la sequenza di email",
+        "step_setup": "Impostazione",
+        "step_setup_desc": "Configura la tua campagna",
+        "step_final_review": "Revisione finale",
+        "step_final_review_desc": "Ultimo controllo e avvio",
         "error_add_content": "Aggiungi del contenuto alla tua email {{mode}} prima di procedere.",
         "plain_text": "testo semplice",
         "step_indicator": "Passo {{current}} di {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "Il contenuto dell'email è obbligatorio",
         "msg_campaign_created": "Campagna creata con successo!",
         "err_create_failed": "Errore durante la creazione della campagna: {{message}}",
-        "create_campaign_btn": "Crea campagna"
+        "create_campaign_btn": "Crea campagna",
+        "step_contacts": "Contatti",
+        "step_contacts_desc": "A chi stai inviando un'e-mail?",
+        "step_content": "Contenuto",
+        "step_content_desc": "Scrivi la tua email",
+        "step_review": "Recensione",
+        "step_review_desc": "Controllo finale e lancio"
     },
     "dashboard": {
         "header_title": "Cruscotto",
@@ -422,7 +441,8 @@
             "engagement_desc": "Coinvolgimento della campagna",
             "contacts": "Contatti",
             "verified_count": "{{count}} verificato",
-            "senders_ready": "{{count}} mittenti pronti"
+            "senders_ready": "{{count}} mittenti pronti",
+            "total_senders": "Mittenti totali"
         },
         "quick_actions": {
             "title": "Veloce",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "Destinatari e mittenti",
         "subtitle": "Gestisci le tue mailing list e gli account di invio",
+        "header_description": "Gestisci le tue mailing list e gli account di invio sulla piattaforma.",
         "refresh": "Aggiorna",
         "add_contacts": "Aggiungi contatti",
         "add_sender": "Aggiungi mittente",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "Elenchi contatti",
         "email_senders_tab": "Mittenti e-mail",
         "search_lists_placeholder": "Cerca elenchi di contatti...",
+        "search_contacts_placeholder": "Cerca per email o nome...",
+        "no_contacts_yet": "Ancora nessun contatto",
+        "upload_to_get_started": "Carica un elenco di contatti per iniziare.",
         "all_status": "Tutti gli stati",
         "uploaded": "Caricato",
         "processing": "Elaborazione",
@@ -545,12 +569,14 @@
         "delete_sender_title": "Elimina mittente",
         "delete_list_title": "Elimina elenco contatti",
         "delete_item_title": "Elimina elemento",
+        "actions": "Azioni",
         "delete_sender_description": "Sei sicuro di voler eliminare {{email}} ({{type}})? Questa azione non può essere annullata.",
         "delete_list_description": "Sei sicuro di voler eliminare questo elenco di contatti? Questa azione non può essere annullata."
     },
     "templates": {
         "title": "Modelli di posta elettronica",
         "subtitle": "Crea e gestisci i tuoi modelli di posta elettronica",
+        "header_description": "Gestisci i tuoi modelli di email riutilizzabili.",
         "create_new": "Crea nuovo modello",
         "search_placeholder": "Cerca modelli...",
         "status_filter": "Filtro stato",
@@ -570,6 +596,8 @@
         "delete_title": "Elimina modello",
         "delete_description": "Sei sicuro di voler eliminare \"{{name}}\"? Questa azione non può essere annullata.",
         "quick_actions": "Azioni rapide",
+        "choose_template": "Scegli Modello",
+        "templates_found": "Modelli trovati",
         "create_template": "Crea modello",
         "create_template_desc": "Crea un nuovo modello di email da zero",
         "import_template": "Importa modello",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "Impostazioni account",
+        "subtitle_short": "Direttore",
         "subtitle": "Account personale · Risorse dell'area di lavoro · Controlli di sicurezza",
         "loading": "Caricamento impostazioni...",
         "account_ready": "Conto pronto",
@@ -696,11 +725,12 @@
                 "verified": "Verificato",
                 "completed": "Completato",
                 "sent": "Inviato",
-                "pending": "In attesa",
+                "running": "In esecuzione",
                 "scheduled": "Programmato",
                 "failed": "Non riuscito",
                 "bounced": "Rimbalzato",
-                "draft": "Bozza"
+                "draft": "Bozza",
+                "pending": "In attesa"
             }
         },
         "delete": {

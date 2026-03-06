@@ -113,7 +113,7 @@ const ComposeView = ({
     setIsSending(true);
     try {
       await onSend({
-        to: to.split(',').map((e) => e.trim()),
+        to: to.split(',').map((e) => e.trim()).filter(e => e),
         subject,
         html: bodyHtml,
         body: bodyHtml.replace(/<[^>]*>/g, ''),

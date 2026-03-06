@@ -188,10 +188,11 @@ export const useVerificationTotals = () => {
       const v = batch.verification || {};
       acc.verified += v.verified || 0;
       acc.invalid += v.invalid || 0;
+      acc.risky += v.risky || 0;
       acc.unverified += v.unverified || 0;
       return acc;
     },
-    { verified: 0, invalid: 0, unverified: 0 },
+    { verified: 0, invalid: 0, risky: 0, unverified: 0 },
   );
 };
 
@@ -353,9 +354,9 @@ export const useExportVerificationResults = () => {
         CreatedAt: record.createdAt ? new Date(record.createdAt).toLocaleString() : '',
         ...(record.verificationMeta && typeof record.verificationMeta === 'object'
           ? Object.keys(record.verificationMeta).reduce((acc, key) => {
-              acc[`Verification_${key}`] = record.verificationMeta[key];
-              return acc;
-            }, {})
+            acc[`Verification_${key}`] = record.verificationMeta[key];
+            return acc;
+          }, {})
           : {}),
       }));
 

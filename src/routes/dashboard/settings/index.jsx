@@ -126,18 +126,12 @@ const Settings = () => {
   return (
     <div className="max-w-400 mx-auto p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-              <SettingsIcon className="w-4 h-4 text-blue-600" />
-            </div>
-            <h1 className="text-3xl font-extrabold text-slate-800 tracking-tighter">
-              {t('settings.title')}
-            </h1>
-          </div>
-          <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight flex items-center">
+            {t('settings.title')} <span className="text-gradient ms-4">{t('settings.subtitle_short') || 'Account'}</span>
+          </h1>
+          <p className="text-slate-500 font-medium mt-2 text-sm">
             {t('settings.subtitle')}
           </p>
         </div>
@@ -173,7 +167,7 @@ const Settings = () => {
                 >
                   <item.icon className="w-4.5 h-4.5" />
                 </div>
-                <div className="ltr:text-left ltr:text-right rtl:text-left">
+                <div className="ltr:text-left rtl:text-right">
                   <p
                     className={`font-black tracking-tight text-xs uppercase ${activeMenu === item.id ? 'text-slate-900' : 'text-slate-500'
                       }`}

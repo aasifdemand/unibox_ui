@@ -12,6 +12,12 @@
         "settings": "הגדרות",
         "navigation": "ניווט",
         "active": "פעיל",
+        "status": {
+            "active": "פעיל",
+            "draft": "טיוטה",
+            "scheduled": "מתוזמן",
+            "completed": "הושלם"
+        },
         "search": "חפש",
         "documentation": "תיעוד",
         "privacy": "פְּרָטִיוּת",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "דואר",
-        "boxes": "קופסאות",
+        "subtitle": "חשבונות",
+        "connected_description": "{{count}} חשבונות מחוברים מסונכרנים ומוכנים.",
         "conversation": "שִׂיחָה",
         "connected_accounts": "{{count}} חשבונות מחוברים",
         "priority": "עדיפות",
@@ -257,9 +264,13 @@
         "save_draft": "שמור טיוטה",
         "discard": "בטל",
         "sending_label": "שולח...",
-        "send_label": "שלח"
+        "send_label": "שלח",
+        "boxes": "קופסאות"
     },
     "campaigns": {
+        "title": "מסעות פרסום",
+        "subtitle": "הסברה",
+        "header_description": "צור ועקוב אחר מסעות הפרסום שלך בדוא\"ל.",
         "header_subtitle": "נהל ועקוב אחר מסעות הפרסום שלך בדוא\"ל",
         "create_campaign": "צור מסע פרסום",
         "loading_campaigns": "טוען קמפיינים...",
@@ -289,12 +300,14 @@
         "status_created": "נוצר",
         "status_running": "פועל",
         "status_paused": "מושהה",
-        "step_contacts": "אנשי קשר",
-        "step_contacts_desc": "למי אתה שולח מייל?",
-        "step_content": "תוכן",
-        "step_content_desc": "כתוב את האימייל שלך",
-        "step_review": "סקירה",
-        "step_review_desc": "בדיקה אחרונה והשקה",
+        "step_import_leads": "ייבוא ​​לידים",
+        "step_import_leads_desc": "הוסף בקלות את אנשי הקשר שלך",
+        "step_sequences": "רצפים",
+        "step_sequences_desc": "כתוב את רצף הדוא\"ל שלך",
+        "step_setup": "הגדרה",
+        "step_setup_desc": "הגדר את מסע הפרסום שלך",
+        "step_final_review": "סקירה סופית",
+        "step_final_review_desc": "בדיקה והשקה אחרונים",
         "error_add_content": "אנא הוסף תוכן לאימייל {{mode}} שלך לפני שתמשיך.",
         "plain_text": "טקסט רגיל",
         "step_indicator": "שלב {{current}} של {{total}}",
@@ -392,7 +405,13 @@
         "err_content_req": "תוכן דוא\"ל נדרש",
         "msg_campaign_created": "הקמפיין נוצר בהצלחה!",
         "err_create_failed": "שגיאה ביצירת מסע פרסום: {{message}}",
-        "create_campaign_btn": "צור מסע פרסום"
+        "create_campaign_btn": "צור מסע פרסום",
+        "step_contacts": "אנשי קשר",
+        "step_contacts_desc": "למי אתה שולח מייל?",
+        "step_content": "תוכן",
+        "step_content_desc": "כתוב את האימייל שלך",
+        "step_review": "סקירה",
+        "step_review_desc": "בדיקה אחרונה והשקה"
     },
     "dashboard": {
         "header_title": "לוח מחוונים",
@@ -418,7 +437,8 @@
             "engagement_desc": "מעורבות בקמפיין",
             "contacts": "אנשי קשר",
             "verified_count": "{{count}} מאומת",
-            "senders_ready": "{{count}} שולחים מוכנים"
+            "senders_ready": "{{count}} שולחים מוכנים",
+            "total_senders": "סך השולחים"
         },
         "quick_actions": {
             "title": "מהיר",
@@ -498,6 +518,7 @@
     "audience": {
         "title": "נמענים ושולחים",
         "subtitle": "נהל את רשימות התפוצה שלך ושליחת חשבונות",
+        "header_description": "נהל את רשימות התפוצה שלך ושליחת חשבונות ברחבי הפלטפורמה.",
         "refresh": "רענן",
         "add_contacts": "הוסף אנשי קשר",
         "add_sender": "הוסף שולח",
@@ -509,6 +530,9 @@
         "contact_lists_tab": "רשימות אנשי קשר",
         "email_senders_tab": "שולחי דוא\"ל",
         "search_lists_placeholder": "חפש ברשימות אנשי קשר...",
+        "search_contacts_placeholder": "חפש לפי אימייל או שם...",
+        "no_contacts_yet": "עדיין אין אנשי קשר",
+        "upload_to_get_started": "העלה רשימת אנשי קשר כדי להתחיל.",
         "all_status": "כל סטטוס",
         "uploaded": "הועלה",
         "processing": "עיבוד",
@@ -541,12 +565,14 @@
         "delete_sender_title": "מחק השולח",
         "delete_list_title": "מחק רשימת אנשי קשר",
         "delete_item_title": "מחק פריט",
+        "actions": "פעולות",
         "delete_sender_description": "האם אתה בטוח שאתה רוצה למחוק את {{email}} ({{type}})? לא ניתן לבטל פעולה זו.",
         "delete_list_description": "האם אתה בטוח שאתה רוצה למחוק את רשימת אנשי הקשר הזו? לא ניתן לבטל פעולה זו."
     },
     "templates": {
         "title": "תבניות דוא\"ל",
         "subtitle": "צור ונהל את תבניות הדוא\"ל שלך",
+        "header_description": "נהל את תבניות הדוא\"ל הניתנות לשימוש חוזר.",
         "create_new": "צור תבנית חדשה",
         "search_placeholder": "חיפוש תבניות...",
         "status_filter": "מסנן מצב",
@@ -566,6 +592,8 @@
         "delete_title": "מחק תבנית",
         "delete_description": "האם אתה בטוח שאתה רוצה למחוק את \"{{name}}\"? לא ניתן לבטל פעולה זו.",
         "quick_actions": "פעולות מהירות",
+        "choose_template": "בחר תבנית",
+        "templates_found": "נמצאו תבניות",
         "create_template": "צור תבנית",
         "create_template_desc": "בנו תבנית דוא\"ל חדשה מאפס",
         "import_template": "ייבוא ​​תבנית",
@@ -585,6 +613,7 @@
     },
     "settings": {
         "title": "הגדרות חשבון",
+        "subtitle_short": "מנהל",
         "subtitle": "חשבון אישי · משאבי סביבת עבודה · בקרות אבטחה",
         "loading": "טוען הגדרות...",
         "account_ready": "חשבון מוכן",
@@ -692,11 +721,12 @@
                 "verified": "מאומת",
                 "completed": "הושלם",
                 "sent": "נשלח",
-                "pending": "בהמתנה",
+                "running": "פועל",
                 "scheduled": "מתוזמן",
                 "failed": "נכשל",
                 "bounced": "הוקפץ",
-                "draft": "טיוטה"
+                "draft": "טיוטה",
+                "pending": "בהמתנה"
             }
         },
         "delete": {
@@ -943,7 +973,7 @@
                 "port_security": "נמל / אבטחה",
                 "user": "משתמש SMTP",
                 "auth_method": "שיטת אישור",
-                "oauth_token": "OAuth 2.0 Token",
+                "oauth_token": "אסימון OAuth 2.0",
                 "imap_host": "מארח IMAP",
                 "imap_port_security": "יציאת IMAP / אבטחה",
                 "imap_user": "משתמש IMAP",
@@ -998,7 +1028,7 @@
                 "desc": "לצוותים גדלים"
             },
             "enterprise": {
-                "name": "Enterprise",
+                "name": "מִפְעָל",
                 "desc": "לפעולות מותאמות"
             }
         },
@@ -1080,7 +1110,7 @@
         "replies_span": "תשובות",
         "replies_subtitle": "התגובות האחרונות מהקהל שלך",
         "loading_replies": "טוען תשובות אחרונות...",
-        "table_from": "FROM",
+        "table_from": "מִן",
         "table_subject": "נוֹשֵׂא",
         "table_campaign": "מַסָע",
         "table_date_time": "תאריך ושעה",

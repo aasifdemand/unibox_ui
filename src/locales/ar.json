@@ -12,6 +12,12 @@
         "settings": "الإعدادات",
         "navigation": "الملاحة",
         "active": "نشط",
+        "status": {
+            "active": "نشط",
+            "draft": "مسودة",
+            "scheduled": "مجدولة",
+            "completed": "اكتمل"
+        },
         "search": "بحث",
         "documentation": "توثيق",
         "privacy": "الخصوصية",
@@ -117,7 +123,8 @@
     },
     "mailboxes": {
         "mail": "البريد",
-        "boxes": "صناديق",
+        "subtitle": "الحسابات",
+        "connected_description": "{{count}} تمت مزامنة الحسابات المتصلة وجاهزة.",
         "conversation": "محادثة",
         "connected_accounts": "{{count}} الحسابات المتصلة",
         "priority": "الأولوية",
@@ -173,10 +180,6 @@
         "account_expires": "انتهاء صلاحية الحساب {{date}}",
         "prefix_to": "إلى :",
         "new_badge": "جديد",
-        "stats_total": "إجمالي المرسلين",
-        "stats_active": "نشط الآن",
-        "stats_attention": "يحتاج إلى اهتمام",
-        "stats_health": "صحة النظام",
         "search_placeholder": "ابحث في الرسائل في كافة صناديق البريد...",
         "all_types": "جميع الأنواع",
         "gmail": "ج��ميل",
@@ -261,9 +264,17 @@
         "save_draft": "حفظ المسودة",
         "discard": "تجاهل",
         "sending_label": "جاري الإرسال...",
-        "send_label": "أرسل"
+        "send_label": "أرسل",
+        "boxes": "صناديق",
+        "stats_total": "إجمالي المرسلين",
+        "stats_active": "نشط الآن",
+        "stats_attention": "يحتاج إلى اهتمام",
+        "stats_health": "صحة النظام"
     },
     "campaigns": {
+        "title": "حملات",
+        "subtitle": "التوعية",
+        "header_description": "إنشاء وتتبع حملات البريد الإلكتروني الخاصة بك.",
         "header_subtitle": "إدارة وتتبع حملات البريد الإلكتروني الخاصة بك",
         "create_campaign": "إنشاء حملة",
         "loading_campaigns": "جارٍ تحميل الحملات...",
@@ -293,12 +304,14 @@
         "status_created": "تم الإنشاء",
         "status_running": "جاري",
         "status_paused": "متوقف مؤقتًا",
-        "step_contacts": "جهات الاتصال",
-        "step_contacts_desc": "من الذي تراسله بالبريد الإلكتروني؟",
-        "step_content": "المحتوى",
-        "step_content_desc": "أكتب بريدك الإلكتروني",
-        "step_review": "مراجعة",
-        "step_review_desc": "الفحص النهائي والإطلاق",
+        "step_import_leads": "استيراد العروض",
+        "step_import_leads_desc": "أضف جهات الاتصال الخاصة بك بسهولة",
+        "step_sequences": "متواليات",
+        "step_sequences_desc": "اكتب تسلسل بريدك الإلكتروني",
+        "step_setup": "الإعداد",
+        "step_setup_desc": "قم بتكوين حملتك",
+        "step_final_review": "المراجعة النهائية",
+        "step_final_review_desc": "آخر فحص وإطلاق",
         "error_add_content": "يرجى إضافة بعض المحتوى إلى بريدك الإلكتروني {{mode}} قبل المتابعة.",
         "plain_text": "نص عادي",
         "step_indicator": "الخطوة {{current}} من {{total}}",
@@ -396,7 +409,13 @@
         "err_content_req": "محتوى البريد الإلكتروني مطلوب",
         "msg_campaign_created": "تم إنشاء الحملة بنجاح!",
         "err_create_failed": "حدث خطأ أثناء إنشاء الحملة: {{message}}",
-        "create_campaign_btn": "إنشاء حملة"
+        "create_campaign_btn": "إنشاء حملة",
+        "step_contacts": "جهات الاتصال",
+        "step_contacts_desc": "من الذي تراسله بالبريد الإلكتروني؟",
+        "step_content": "المحتوى",
+        "step_content_desc": "أكتب بريدك الإلكتروني",
+        "step_review": "مراجعة",
+        "step_review_desc": "الفحص النهائي والإطلاق"
     },
     "dashboard": {
         "header_title": "لوحة القيادة",
@@ -422,7 +441,8 @@
             "engagement_desc": "مشاركة الحملة",
             "contacts": "جهات الاتصال",
             "verified_count": "تم التحقق من {{count}}",
-            "senders_ready": "{{count}} مرسلون جاهزون"
+            "senders_ready": "{{count}} مرسلون جاهزون",
+            "total_senders": "إجمالي المرسلين"
         },
         "quick_actions": {
             "title": "سريع",
@@ -502,6 +522,7 @@
     "audience": {
         "title": "المستلمون والمرسلون",
         "subtitle": "إدارة قوائمك البريدية وحسابات الإرسال",
+        "header_description": "إدارة قوائمك البريدية وإرسال الحسابات عبر المنصة.",
         "refresh": "تحديث",
         "add_contacts": "إضافة جهات اتصال",
         "add_sender": "إضافة مرسل",
@@ -513,6 +534,9 @@
         "contact_lists_tab": "قوائم الاتصال",
         "email_senders_tab": "مرسلي البريد الإلكتروني",
         "search_lists_placeholder": "البحث في قوائم جهات الاتصال...",
+        "search_contacts_placeholder": "البحث بالبريد الإلكتروني أو الاسم...",
+        "no_contacts_yet": "لا توجد اتصالات بعد",
+        "upload_to_get_started": "قم بتحميل قائمة جهات الاتصال للبدء.",
         "all_status": "كل الحالة",
         "uploaded": "تم الرفع",
         "processing": "معالجة",
@@ -545,12 +569,14 @@
         "delete_sender_title": "حذف المرسل",
         "delete_list_title": "حذف قائمة جهات الاتصال",
         "delete_item_title": "حذف العنصر",
+        "actions": "الإجراءات",
         "delete_sender_description": "هل أنت متأكد من أنك تريد حذف {{email}} ({{type}})؟ لا يمكن التراجع عن هذا الإجراء.",
         "delete_list_description": "هل أنت متأكد أنك تريد حذف قائمة جهات الاتصال هذه؟ لا يمكن التراجع عن هذا الإجراء."
     },
     "templates": {
         "title": "قوالب البريد الإلكتروني",
         "subtitle": "إنشاء وإدارة قوالب البريد الإلكتروني الخاصة بك",
+        "header_description": "إدارة قوالب البريد الإلكتروني القابلة لإعادة الاستخدام.",
         "create_new": "إنشاء قالب جديد",
         "search_placeholder": "قوالب البحث...",
         "status_filter": "تصفية الحالة",
@@ -570,6 +596,8 @@
         "delete_title": "حذف القالب",
         "delete_description": "هل أنت متأكد أنك تريد حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
         "quick_actions": "إجراءات سريعة",
+        "choose_template": "اختر القالب",
+        "templates_found": "تم العثور على القوالب",
         "create_template": "إنشاء قالب",
         "create_template_desc": "أنشئ قالب بريد إلكتروني جديدًا من البداية",
         "import_template": "استيراد القالب",
@@ -589,6 +617,7 @@
     },
     "settings": {
         "title": "إعدادات الحساب",
+        "subtitle_short": "مدير",
         "subtitle": "الحساب الشخصي · موارد مساحة العمل · ضوابط الأمان",
         "loading": "جارٍ تحميل الإعدادات...",
         "account_ready": "الحساب جاهز",
@@ -696,11 +725,12 @@
                 "verified": "تم التحقق",
                 "completed": "مكتمل",
                 "sent": "تم الإرسال",
-                "pending": "في انتظار",
+                "running": "جاري",
                 "scheduled": "مجدولة",
                 "failed": "فشل",
                 "bounced": "ارتد",
-                "draft": "مسودة"
+                "draft": "مسودة",
+                "pending": "في انتظار"
             }
         },
         "delete": {

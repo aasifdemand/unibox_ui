@@ -149,6 +149,8 @@ export const useSmtpData = (
       toggleFlag: toggleSmtpFlag,
       batchOperations: batchSmtpOperations,
       sendMessage: sendSmtpMessage,
+      reply: sendSmtpMessage, // Map reply to send for now
+      forward: sendSmtpMessage, // Map forward to send for now
       createDraft: createSmtpDraft,
       updateDraft: updateSmtpDraft,
       deleteDraft: deleteSmtpDraft,

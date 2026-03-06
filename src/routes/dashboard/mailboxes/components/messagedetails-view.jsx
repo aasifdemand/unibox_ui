@@ -13,7 +13,13 @@ import {
   Star,
   Trash2,
 } from 'lucide-react';
-import { formatFileSize } from '../utils/utils';
+import {
+  formatMessageDate,
+  getSenderInfo as getSenderInfoUtil,
+  getSubject as getSubjectUtil,
+  getInitials,
+  formatFileSize,
+} from '../utils/utils';
 import { format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { getMessageId } from '../utils/getmessage-id';
@@ -123,7 +129,7 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
       onLoad={updateHeight}
       title="Message Content"
       className="w-full border-none outline-none bg-transparent mail-iframe"
-      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin"
+      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
       style={{ height, minHeight: '400px', display: 'block' }}
       scrolling="no"
     />
@@ -147,109 +153,43 @@ const MessageDetailView = ({
   const [showActions, setShowActions] = useState(false);
   const realMessageId = getMessageId(message, mailbox?.type);
 
-  const getSenderInfo = (msg) => {
-    let email = '',
-      name = '';
-
-    try {
-      // Outlook format (from your API response)
-      if (msg?.from?.emailAddress) {
-        email = msg.from.emailAddress.address || '';
-        name = msg.from.emailAddress.name || '';
-      }
-      // SMTP format (from your API response)
-      else if (msg?.from && typeof msg.from === 'string') {
-        // Parse "Nathaniel Pierce" <nathaniel.pierce@cubetvolt.info>
-        const match = msg.from.match(/^(?:"?(.+?)"?\s*)?(?:<(.+?)>)?$/);
-        if (match) {
-          name = match[1] || '';
-          email = match[2] || msg.from;
-        }
-        // If no match, use the whole string as email
-        if (!email) {
-          email = msg.from;
-          name = email.split('@')[0];
-        }
-      }
-      // Gmail format
-      else if (msg?.payload?.headers) {
-        const from = msg.payload.headers.find((h) => h.name === 'From')?.value || '';
-        const match = from.match(/<([^>]+)>/);
-        email = match ? match[1] : from;
-        const nameMatch = from.match(/^([^<]+)/);
-        name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
-      }
-      // Direct from string (fallback)
-      else if (msg?.from) {
-        email = msg.from;
-        name = email.split('@')[0];
-      }
-    } catch (e) {
-      console.error('Error parsing sender:', e);
-    }
-
-    // Clean up name
-    if (name) {
-      name = name.replace(/^["']|["']$/g, '').trim();
-    }
-    if (!name && email) {
-      name = email.split('@')[0];
-    }
-
-    return { email, name };
-  };
+  const getSenderInfo = (msg) => getSenderInfoUtil(msg);
 
   const getRecipients = (msg) => {
-    // SMTP format (from your API response)
     if (msg?.to) {
-      // Parse comma-separated list
-      return msg.to
+      return (typeof msg.to === 'string' ? msg.to : '')
         .split(',')
         .map((t) => t.trim())
         .filter(Boolean);
     }
-    // Outlook format
     if (msg?.toRecipients) {
       return msg.toRecipients.map((r) => r.emailAddress?.address).filter(Boolean);
     }
-    // Gmail format
     if (msg?.payload?.headers) {
-      const to = msg.payload.headers.find((h) => h.name === 'To')?.value || '';
+      const to = msg.payload.headers.find((h) => h.name === 'To' || h.name === 'to')?.value || '';
       return to.split(',').map((t) => t.trim());
     }
     return [];
   };
 
   const getCcRecipients = (msg) => {
-    // SMTP format (from your API response)
     if (msg?.cc) {
-      return msg.cc
+      return (typeof msg.cc === 'string' ? msg.cc : '')
         .split(',')
         .map((t) => t.trim())
         .filter(Boolean);
     }
-    // Outlook format
     if (msg?.ccRecipients) {
       return msg.ccRecipients.map((r) => r.emailAddress?.address).filter(Boolean);
     }
-    // Gmail format
     if (msg?.payload?.headers) {
-      const cc = msg.payload.headers.find((h) => h.name === 'Cc')?.value || '';
+      const cc = msg.payload.headers.find((h) => h.name === 'Cc' || h.name === 'cc')?.value || '';
       return cc.split(',').map((t) => t.trim());
     }
     return [];
   };
 
-  const getSubject = (msg) => {
-    if (msg?.subject) return msg.subject;
-    if (msg?.payload?.headers) {
-      return (
-        msg.payload.headers.find((h) => h.name === 'Subject' || h.name === 'subject')?.value ||
-        t('mailboxes.no_subject')
-      );
-    }
-    return t('mailboxes.no_subject');
-  };
+  const getSubject = (msg) => getSubjectUtil(msg);
 
   const getDate = (msg) => {
     if (msg?.date) return new Date(msg.date);
@@ -258,9 +198,7 @@ const MessageDetailView = ({
     return new Date();
   };
 
-  const getAttachments = (msg) => {
-    return msg?.attachments || [];
-  };
+  const getAttachments = (msg) => msg?.attachments || [];
 
   const sender = getSenderInfo(message);
   const recipients = getRecipients(message);
@@ -271,42 +209,144 @@ const MessageDetailView = ({
   const formatPlainText = (text) => {
     if (!text) return null;
 
-    // Handle collapsed "On ... wrote:" patterns and other common reply headers
-    // More flexible regex for different date formats and languages
-    let processedText = text.replace(/([^\n])\s*(On\s+.*wrote:)/gi, '$1\n\n$2');
-    // Ensure newlines before blockquotes
-    processedText = processedText.replace(/([^\n])\s*(>)/g, '$1\n$2');
+    const urlRegex = /(https?:\/\/[^\s]+)/gi;
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
+    const signatureWords = ['Cheers', 'Best', 'Regards', 'Sincerely', 'Thanks', 'Bästa', 'Hälsningar', 'Yours', 'Talk soon', 'Kind regards'];
 
-    const lines = processedText.split(/\r?\n/);
-    const elements = [];
-    let currentBlockquote = [];
+    const linkify = (t) => {
+      if (typeof t !== 'string') return t;
+      const parts = t.split(/(\s+)/);
+      return parts.map((part, i) => {
+        if (part.match(urlRegex)) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-semibold decoration-blue-600/30 underline-offset-4">
+              {part}
+            </a>
+          );
+        }
+        if (part.match(emailRegex)) {
+          return (
+            <a key={i} href={`mailto:${part}`} className="text-blue-600 hover:underline font-semibold decoration-blue-600/30 underline-offset-4">
+              {part}
+            </a>
+          );
+        }
+        return part;
+      });
+    };
 
-    const flushBlockquote = () => {
-      if (currentBlockquote.length > 0) {
-        elements.push(
-          <blockquote key={`bq-${elements.length}`} className="border-l-4 border-blue-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-2xl">
-            {currentBlockquote.map((line, i) => (
-              <div key={i}>{line || '\u00A0'}</div>
-            ))}
-          </blockquote>
-        );
-        currentBlockquote = [];
+    const lines = text.split(/\n/);
+    const blocks = [];
+    let currentBlock = null;
+
+    const flush = () => {
+      if (currentBlock) {
+        blocks.push(currentBlock);
+        currentBlock = null;
       }
     };
 
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
-      // Detect quote lines or empty lines between quote lines
-      if (trimmedLine.startsWith('>') || (trimmedLine === '' && currentBlockquote.length > 0 && index < lines.length - 1 && lines[index + 1].trim().startsWith('>'))) {
-        currentBlockquote.push(line.replace(/^>\s?/, ''));
-      } else {
-        flushBlockquote();
-        elements.push(<div key={index} className="min-h-[1.5em]">{line}</div>);
-      }
-    });
+    lines.forEach((line) => {
+      const trimmed = line.trim();
 
-    flushBlockquote();
-    return <div className="text-slate-700 leading-relaxed font-sans break-words whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none">{elements}</div>;
+      // Signature detection (start of signature)
+      const isSignatureStart = signatureWords.some(word =>
+        trimmed.toLowerCase().startsWith(word.toLowerCase())
+      );
+
+      if (isSignatureStart && currentBlock?.type !== 'signature') {
+        flush();
+      }
+
+      // Quote detection
+      if (trimmed.startsWith('>')) {
+        if (currentBlock?.type !== 'quote') flush();
+        if (!currentBlock) currentBlock = { type: 'quote', lines: [] };
+        currentBlock.lines.push(line.replace(/^>\s?/, ''));
+        return;
+      }
+
+      // List detection
+      const listMatch = trimmed.match(/^([-*•]|\d+\.)\s+(.+)$/);
+      if (listMatch) {
+        if (currentBlock?.type !== 'list') flush();
+        if (!currentBlock) currentBlock = { type: 'list', items: [] };
+        currentBlock.items.push(listMatch[2]);
+        return;
+      }
+
+      // Empty line handling
+      if (trimmed === '') {
+        flush();
+        return;
+      }
+
+      // Signature continuation
+      if (currentBlock?.type === 'signature') {
+        currentBlock.lines.push(line);
+        return;
+      }
+
+      // If we hit a signature start word
+      if (isSignatureStart) {
+        currentBlock = { type: 'signature', lines: [line] };
+        return;
+      }
+
+      // Default: Treat every line as a new paragraph block to maximize vertical space (space-y-9)
+      flush();
+      currentBlock = { type: 'paragraph', content: line };
+      flush();
+    });
+    flush();
+
+    return (
+      <div className="text-slate-700 font-sans break-words whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none space-y-9 select-text">
+        {blocks.map((block, bIdx) => {
+          if (block.type === 'quote') {
+            return (
+              <blockquote key={bIdx} className="border-l-4 border-slate-200 pl-8 my-8 text-slate-500 italic bg-linear-to-r from-slate-50/80 to-transparent py-5 rounded-r-[2.5rem]">
+                {block.lines.map((l, lIdx) => (
+                  <div key={lIdx} className="leading-relaxed">{linkify(l) || '\u00A0'}</div>
+                ))}
+              </blockquote>
+            );
+          }
+
+          if (block.type === 'list') {
+            return (
+              <ul key={bIdx} className="list-none space-y-4 ltr:pl-5 rtl:pr-5 border-l border-slate-100 ltr:ml-2 rtl:mr-2">
+                {block.items.map((item, iIdx) => (
+                  <li key={iIdx} className="flex items-start group">
+                    <span className="shrink-0 ltr:mr-4 rtl:ml-4 w-1.5 h-1.5 rounded-full bg-blue-500/30 group-hover:bg-blue-500 mt-2.5 transition-colors" />
+                    <span className="text-base font-medium leading-relaxed tracking-tight text-slate-600">{linkify(item)}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+
+          if (block.type === 'signature') {
+            return (
+              <div key={bIdx} className="pt-4 border-t border-slate-100/50 mt-10 space-y-1">
+                {block.lines.map((l, lIdx) => (
+                  <div key={lIdx} className="text-[15px] font-semibold text-slate-500 leading-relaxed italic opacity-90">
+                    {linkify(l)}
+                  </div>
+                ))}
+              </div>
+            );
+          }
+
+          // Paragraph
+          return (
+            <p key={bIdx} className="text-[16px] font-medium text-slate-600 leading-[1.6] tracking-tight">
+              {linkify(block.content)}
+            </p>
+          );
+        })}
+      </div>
+    );
   };
 
   const renderMessageBody = () => {
@@ -548,7 +588,7 @@ const MessageDetailView = ({
             <div className="flex flex-col md:flex-row md:items-start gap-6 relative z-10">
               <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 p-0.5 shadow-xl shadow-blue-500/20 group-hover:scale-105 transition-transform">
                 <div className="w-full h-full bg-white/10 backdrop-blur-sm rounded-[14px] flex items-center justify-center text-white font-extrabold text-2xl border border-white/20">
-                  {sender.name.charAt(0).toUpperCase()}
+                  {getInitials(sender.name)}
                 </div>
               </div>
 

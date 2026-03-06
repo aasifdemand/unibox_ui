@@ -41,7 +41,7 @@ export const getSenderInfo = (message, isSent = false) => {
       const match = headerValue.match(/<([^>]+)>/);
       email = match ? match[1] : headerValue;
       const nameMatch = headerValue.match(/^([^<]+)/);
-      name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
+      name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
     } else if (isSent && (message?.toRecipients?.[0] || message?.to)) {
       let to = message.toRecipients?.[0]?.emailAddress || message.to;
       if (Array.isArray(to)) to = to[0];
@@ -50,17 +50,17 @@ export const getSenderInfo = (message, isSent = false) => {
         const match = to.match(/<([^>]+)>/);
         email = match ? match[1] : to;
         const nameMatch = to.match(/^([^<]+)/);
-        name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
+        name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
       } else {
         email = to?.address || to?.email || '';
         name = to?.name || email.split('@')[0];
       }
     } else if (message?.from?.emailAddress) {
       email = message.from.emailAddress.address || '';
-      name = message.from.emailAddress.name || email.split('@')[0];
+      name = (message.from.emailAddress.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
     } else if (message?.from?.email) {
       email = message.from.email;
-      name = message.from.name || email.split('@')[0];
+      name = (message.from.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
     } else if (typeof message?.from === 'string') {
       email = message.from;
       name = email.split('@')[0];
@@ -217,7 +217,11 @@ export const getPreview = (message) => {
   return body.substring(0, 100) + (body.length > 100 ? '...' : '');
 };
 
-export const getInitials = (name) => name?.charAt(0)?.toUpperCase() || '?';
+export const getInitials = (name) => {
+  if (!name) return '?';
+  const cleanName = name.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+  return cleanName.charAt(0).toUpperCase() || name.charAt(0).toUpperCase() || '?';
+};
 
 export const getProviderIcon = (type, className = "w-6 h-6") => {
   switch (type) {
