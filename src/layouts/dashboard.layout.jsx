@@ -175,7 +175,7 @@ const DashboardLayout = () => {
             }`}
         >
           {/* Section Indicator with Sidebar Toggle */}
-          <div className="flex items-center gap-3 lg:gap-6 min-w-0">
+          <div className="flex items-center gap-3 lg:gap-6 min-w-0 flex-1">
             {/* Sidebar Toggle Button - Moved from Sidebar */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -232,7 +232,7 @@ const DashboardLayout = () => {
                 }}
                 onFocus={() => setShowSearchResults(searchQuery.length > 0)}
                 placeholder={t('common.search') + '...'}
-                className="ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-2.5 w-[320px] bg-slate-100/50 border border-slate-200/60 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 focus:outline-none focus:shadow-2xl focus:shadow-blue-500/5 transition-all duration-300"
+                className="ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-2.5 w-[240px] 2xl:w-[320px] bg-slate-100/50 border border-slate-200/60 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500/50 focus:outline-none focus:shadow-2xl focus:shadow-blue-500/5 transition-all duration-300"
               />
               <div className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <span className="px-1.5 py-0.5 rounded-md border border-slate-200 bg-white text-[9px] font-extrabold text-slate-400 shadow-xs leading-none">
