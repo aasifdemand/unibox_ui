@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "البريد الإلكتروني",
         "dashboard": "لوحة القيادة",
         "growth_platform": "منصة النمو",
         "main_dashboard": "لوحة التحكم الرئيسية",
@@ -18,6 +19,7 @@
             "scheduled": "مجدولة",
             "completed": "اكتمل"
         },
+        "date": "التاريخ",
         "search": "بحث",
         "documentation": "توثيق",
         "privacy": "الخصوصية",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "البريد",
         "subtitle": "الحسابات",
+        "viewing_conversation": "عرض المحادثة",
         "connected_description": "{{count}} تمت مزامنة الحسابات المتصلة وجاهزة.",
         "conversation": "محادثة",
         "connected_accounts": "{{count}} الحسابات المتصلة",
@@ -156,6 +159,7 @@
         "showing": "عرض",
         "prev": "السابق",
         "next": "التالي",
+        "status": "الحالة",
         "no_messages": "لم يتم العثور على رسائل",
         "empty_search": "جرب مصطلح بحث مختلف",
         "empty_unread": "لا توجد رسائل غير مقروءة",
@@ -550,6 +554,7 @@
         "valid": "صالح",
         "risky": "محفوفة بالمخاطر",
         "invalid": "غير صالح",
+        "unknown": "غير معروف",
         "unverified": "لم يتم التحقق",
         "uploaded_on": "تم الرفع على",
         "view_details": "عرض التفاصيل",
@@ -925,6 +930,7 @@
             "template": "معاينة القالب",
             "first_name": "الاسم الأول",
             "last_name": "الاسم الأخير",
+            "name": "الاسم",
             "company": "شركة",
             "phone": "الهاتف",
             "city": "المدينة",

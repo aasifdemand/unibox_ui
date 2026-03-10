@@ -23,9 +23,11 @@ import Sidebar from '../components/shared/sidebar';
 import LanguageSwitcher from '../components/shared/language-switcher';
 import { useCurrentUser } from '../hooks/useAuth';
 import { useCampaigns } from '../hooks/useCampaign';
-import { useTemplates } from '../hooks/useTemplate';
-import { useBatches } from '../hooks/useBatches';
 import { useMailboxes } from '../hooks/useMailboxes';
+import { useAllContacts } from '../routes/dashboard/audience/hooks/use-all-contacts';
+import { useSocketEvents } from '../hooks/useSocketEvents';
+import NotificationDropdown from '../components/shared/notification-dropdown';
+import toast from 'react-hot-toast';
 
 const DashboardLayout = () => {
   const { t, i18n } = useTranslation();
@@ -65,26 +67,38 @@ const DashboardLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Global Real-Time Event Listener
+  useSocketEvents('notification', (payload) => {
+    console.log('Received real-time notification:', payload);
+    const { type = 'info', message, title } = payload;
+    const displayText = title ? `${title}: ${message}` : message;
+
+    if (type === 'success') {
+      toast.success(displayText);
+    } else if (type === 'error') {
+      toast.error(displayText);
+    } else {
+      toast(displayText, {
+        icon: '🔔',
+      });
+    }
+  });
+
   // React Query hooks
   const { data: user } = useCurrentUser();
   const { data: campaigns = [] } = useCampaigns();
-  const { data: templates = [] } = useTemplates();
-  const { data: batches = [] } = useBatches();
-  const { data: mailboxResponse = { mailboxes: [] } } = useMailboxes();
-  const mailboxes = useMemo(() => mailboxResponse.mailboxes || [], [mailboxResponse.mailboxes]);
+  const { data: mailboxResponse = { mailboxes: [], meta: { total: 0 } } } = useMailboxes();
+  const { pagination: contactsPagination } = useAllContacts({ limit: 1 }); // Just to get total count
 
-  const unreadMailCount = mailboxes.reduce((total, mailbox) => {
-    return total + (mailbox.unreadCount || 0);
-  }, 0);
+  const mailboxes = useMemo(() => mailboxResponse.mailboxes || [], [mailboxResponse.mailboxes]);
 
   const navItems = [
     { icon: LayoutDashboard, label: t('common.dashboard'), path: '/dashboard' },
-    { icon: BarChart3, label: t('common.analytics'), path: '/dashboard/analytics' },
     {
       icon: Mailbox,
       label: t('common.mailboxes'),
       path: '/dashboard/mailboxes',
-      badge: unreadMailCount > 0 ? unreadMailCount.toString() : null,
+      badge: mailboxResponse.meta?.total > 0 ? mailboxResponse.meta.total.toString() : null,
     },
     {
       icon: Mail,
@@ -96,14 +110,9 @@ const DashboardLayout = () => {
       icon: Users,
       label: t('common.audience'),
       path: '/dashboard/audience',
-      badge: batches.length > 0 ? batches.length.toString() : null,
+      badge: contactsPagination.total > 0 ? contactsPagination.total.toString() : null,
     },
-    {
-      icon: FileText,
-      label: t('common.templates'),
-      path: '/dashboard/templates',
-      badge: templates.length > 0 ? templates.length.toString() : null,
-    },
+    { icon: BarChart3, label: t('common.analytics'), path: '/dashboard/analytics' },
     { icon: CreditCard, label: t('common.subscription'), path: '/dashboard/subscription' },
     { icon: Settings, label: t('common.settings'), path: '/dashboard/settings' },
   ];
@@ -141,32 +150,10 @@ const DashboardLayout = () => {
           path: `/dashboard/mailboxes`,
           icon: <Mailbox className="w-4 h-4" />,
         })),
-      ...templates
-        .filter((tmpl) => tmpl.name?.toLowerCase().includes(query))
-        .map((tmpl) => ({
-          id: `t-${tmpl.id}`,
-          name: tmpl.name,
-          type: t('common.template_singular', 'Template'),
-          path: `/dashboard/templates`,
-          icon: <FileText className="w-4 h-4" />,
-        })),
-      ...batches
-        .filter(
-          (b) =>
-            b.name?.toLowerCase().includes(query) ||
-            b.originalFilename?.toLowerCase().includes(query),
-        )
-        .map((b) => ({
-          id: `b-${b.id}`,
-          name: b.name || b.originalFilename,
-          type: t('common.audience_singular', 'Audience'),
-          path: `/dashboard/audience`,
-          icon: <Users className="w-4 h-4" />,
-        })),
     ];
 
     return results.slice(0, 8);
-  }, [searchQuery, campaigns, mailboxes, templates, batches]);
+  }, [searchQuery, campaigns, mailboxes]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900">
@@ -308,12 +295,7 @@ const DashboardLayout = () => {
 
             <div className="flex items-center gap-2 ltr:pr-4 rtl:pl-4 ltr:border-r rtl:border-l border-slate-200/60">
               <LanguageSwitcher />
-              <button className="w-10 h-10 rounded-xl hover:bg-slate-100/80 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90 group relative">
-                <Bell className="w-5 h-5" />
-                {unreadMailCount > 0 && (
-                  <span className="absolute top-2 ltr:right-2 rtl:left-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
-                )}
-              </button>
+              <NotificationDropdown />
               <button className="w-10 h-10 rounded-xl hover:bg-slate-100/80 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90">
                 <HelpCircle className="w-5 h-5" />
               </button>
@@ -340,7 +322,7 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          className="pt-28 md:pt-32 px-4 md:px-8 pb-4 md:pb-8 w-full"
+          className="pt-24 px-4 md:px-8 pb-4 md:pb-8 w-full"
         >
           <div className="w-full min-h-[calc(100vh-144px)]">
             <Outlet />

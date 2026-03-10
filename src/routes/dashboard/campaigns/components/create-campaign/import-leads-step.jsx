@@ -71,136 +71,131 @@ const ImportLeadsStep = ({
             }
             toast.success(t('campaigns.msg_upload_success'));
         } catch (error) {
-            toast.error(t('campaigns.msg_upload_failed'));
+            toast.error(error.message || t('campaigns.msg_upload_failed'));
         }
     };
 
     return (
-        <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="text-center max-w-2xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-12 pt-8 pb-16 animate-in fade-in duration-500">
+            {/* Minimal Header */}
+            <div className="text-center space-y-2">
                 <h2 className="text-3xl font-black text-slate-800 tracking-tight">
-                    Easily add or update Leads /Contacts
+                    Add Leads to Campaign
                 </h2>
-                <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-                    How would you like to get contacts into your list?
+                <p className="text-sm font-medium text-slate-500">
+                    Import new contacts or select from your saved lists
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch pt-4">
-                {/* Option 1: Upload CSV/Excel */}
-                <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 space-y-8 shadow-sm hover:shadow-xl hover:border-blue-100 transition-all group">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <Upload className="w-6 h-6 text-white" />
+            <div className="space-y-10">
+                {/* Upload Section */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <Upload className="w-4 h-4" />
                         </div>
-                        <div>
-                            <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest">
-                                Upload CSV File
-                            </h3>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                                Import from external spreadsheet
-                            </p>
-                        </div>
+                        <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Option 1: Upload CSV File</h3>
                     </div>
 
                     <div
                         onClick={() => setShowUploadModal(true)}
-                        className="border-2 border-dashed border-slate-200 rounded-[2rem] p-12 flex flex-col items-center justify-center gap-6 cursor-pointer hover:bg-slate-50 hover:border-blue-300 transition-all bg-slate-50/30"
+                        className="border-2 border-dashed border-slate-200 hover:border-blue-400 bg-white/50 hover:bg-white rounded-[2rem] p-12 flex flex-col items-center justify-center gap-5 cursor-pointer transition-all group shadow-sm hover:shadow-md"
                     >
-                        <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-blue-600 shadow-sm border border-slate-100 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                            <Upload className="w-8 h-8" />
+                        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:scale-110 group-hover:bg-blue-100 transition-all duration-500">
+                            <FileSpreadsheet className="w-6 h-6" />
                         </div>
-                        <div className="text-center space-y-2">
+                        <div className="text-center space-y-1">
                             <p className="text-base font-black text-slate-800">
                                 Click to <span className="text-blue-600">browse</span> or drag and drop
                             </p>
-                            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.2em]">
-                                Upload your CSV files to import leads.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="pt-4 px-2">
-                        <div className="flex items-center gap-3 p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100">
-                            <FileSpreadsheet className="w-5 h-5 text-indigo-600" />
-                            <p className="text-[10px] font-bold text-indigo-700 uppercase tracking-widest leading-relaxed">
-                                Fast import with auto-field mapping & validation
+                            <p className="text-xs font-medium text-slate-400">
+                                Upload your CSV spreadsheet to auto-map fields.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                {/* Option 2: Import from Saved Lists (The Prominent Reuse Option) */}
-                <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 space-y-8 shadow-sm hover:shadow-xl hover:border-indigo-100 transition-all group">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                            <Database className="w-6 h-6 text-white" />
+                <div className="relative flex items-center py-2">
+                    <div className="flex-grow border-t border-slate-200"></div>
+                    <span className="flex-shrink-0 mx-4 text-xs font-black text-slate-300 uppercase tracking-widest">OR</span>
+                    <div className="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                {/* Saved Lists Section */}
+                <div className="space-y-6">
+                    <div className="flex items-center gap-3 px-2">
+                        <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                            <Database className="w-4 h-4" />
                         </div>
-                        <div>
-                            <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest">
-                                Import from Saved Lists
-                            </h3>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                                Reuse your existing audiences
-                            </p>
-                        </div>
+                        <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Option 2: Import from Saved Lists</h3>
                     </div>
 
-                    <div className="space-y-6">
-                        <div className="relative group/search">
+                    <div className="bg-white border border-slate-200 rounded-[2rem] p-8 shadow-sm space-y-8">
+                        <div className="relative group">
                             <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-                                <Search className="w-4 h-4 text-slate-400 group-focus-within/search:text-indigo-600 transition-colors" />
+                                <Search className="w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                             </div>
                             <select
-                                className="w-full pl-14 pr-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-3xl text-sm font-bold focus:border-indigo-500 transition-all outline-none appearance-none cursor-pointer"
+                                className="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-[1.5rem] text-sm font-bold text-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
                                 value={watchListBatchId || ''}
                                 onChange={(e) => handleBatchSelect(e.target.value)}
                             >
-                                <option value="">Select & search lead list</option>
+                                <option value="" className="text-slate-400 font-medium">Search your saved lists...</option>
                                 {verifiedBatches.map(batch => (
-                                    <option key={batch.id} value={batch.id}>
+                                    <option key={batch.id} value={batch.id} className="text-slate-900 font-bold">
                                         {batch.originalFilename} ({batch.validRecords} leads)
                                     </option>
                                 ))}
                             </select>
+                            <div className="absolute inset-y-0 right-5 flex items-center pointer-events-none">
+                                <div className="w-6 h-6 bg-white shadow-sm border border-slate-100 rounded-md flex items-center justify-center">
+                                    <Database className="w-3 h-3 text-slate-400" />
+                                </div>
+                            </div>
                         </div>
 
                         {isLoadingBatches ? (
-                            <div className="flex items-center justify-center py-10">
-                                <Loader2 className="w-6 h-6 text-indigo-200 animate-spin" />
+                            <div className="flex items-center justify-center py-8">
+                                <Loader2 className="w-6 h-6 text-slate-300 animate-spin" />
                             </div>
                         ) : (
-                            <div className="max-h-60 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                                {verifiedBatches.slice(0, 4).map((batch) => (
-                                    <div
-                                        key={batch.id}
-                                        onClick={() => handleBatchSelect(batch.id)}
-                                        className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${watchListBatchId === batch.id ? 'border-indigo-500 bg-indigo-50/30' : 'border-slate-50 bg-slate-50/50 hover:border-indigo-200 hover:bg-white'}`}
-                                    >
-                                        <div className="flex items-center gap-3 overflow-hidden">
-                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${watchListBatchId === batch.id ? 'bg-indigo-600 text-white' : 'bg-white text-slate-400 border border-slate-100'}`}>
-                                                <Users className="w-4 h-4" />
+                            <div className="space-y-2">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 group">Available Audiences</p>
+                                <div className="max-h-60 overflow-y-auto space-y-1 custom-scrollbar -mx-2 px-2">
+                                    {verifiedBatches.slice(0, 5).map((batch) => (
+                                        <div
+                                            key={batch.id}
+                                            onClick={() => handleBatchSelect(batch.id)}
+                                            className={`flex items-center justify-between p-4 rounded-xl transition-all cursor-pointer ${watchListBatchId === batch.id ? 'bg-indigo-50 border border-indigo-100 shadow-sm' : 'hover:bg-slate-50 border border-transparent'}`}
+                                        >
+                                            <div className="flex items-center gap-4 overflow-hidden">
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-400'}`}>
+                                                    <Users className="w-4 h-4" />
+                                                </div>
+                                                <span className={`text-sm font-bold truncate transition-colors ${watchListBatchId === batch.id ? 'text-indigo-900' : 'text-slate-700'}`}>
+                                                    {batch.originalFilename}
+                                                </span>
                                             </div>
-                                            <span className="text-xs font-bold text-slate-700 truncate">{batch.originalFilename}</span>
+                                            <div className="flex items-center gap-3 shrink-0">
+                                                <span className={`text-xs font-bold ${watchListBatchId === batch.id ? 'text-indigo-600' : 'text-slate-400'}`}>
+                                                    {batch.validRecords}
+                                                </span>
+                                                {watchListBatchId === batch.id && <Check className="w-4 h-4 text-indigo-600" />}
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-3 shrink-0">
-                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{batch.validRecords}</span>
-                                            {watchListBatchId === batch.id && <Check className="w-4 h-4 text-emerald-500" />}
+                                    ))}
+                                    {verifiedBatches.length === 0 && (
+                                        <div className="text-center py-8">
+                                            <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                                <Database className="w-4 h-4 text-slate-300" />
+                                            </div>
+                                            <p className="text-xs font-bold text-slate-400">No saved lists found</p>
                                         </div>
-                                    </div>
-                                ))}
-                                {verifiedBatches.length === 0 && (
-                                    <div className="text-center py-10">
-                                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest tracking-[0.2em]">No saved lists found</p>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         )}
                     </div>
-
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.15em] leading-relaxed text-center px-4">
-                        Only valid emails are uploaded to help reduce campaign bounce rates. Quick and easy import in just a few clicks.
-                    </p>
                 </div>
             </div>
 

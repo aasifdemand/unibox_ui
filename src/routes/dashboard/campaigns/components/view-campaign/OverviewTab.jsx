@@ -1,7 +1,7 @@
-import React from 'react';
-import { Activity, Target, ExternalLink, ShieldCheck, Database, Settings2 } from 'lucide-react';
+import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target } from "lucide-react";
+import { Activity } from "react";
 
-const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) => {
+const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, steps }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
       {/* Left Column: Progress & Details */}
@@ -44,7 +44,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) =>
                   Remaining
                 </span>
                 <span className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums">
-                  {(stats.totalRecipients - stats.totalSent).toLocaleString()}
+                  {Math.max(0, stats.totalRecipients - stats.totalSent).toLocaleString()}
                 </span>
               </div>
               <div className="flex flex-col ltr:text-right rtl:text-left">
@@ -58,6 +58,59 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate }) =>
             </div>
           </div>
         </div>
+
+        {/* Campaign Sequence Logic */}
+        {steps && steps.length > 1 && (
+          <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2">
+            <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
+              <Activity className="w-5 h-5 text-indigo-600" />
+              Campaign Sequence
+            </h3>
+
+            <div className="relative">
+              {/* Vertical Line */}
+              <div className="absolute ltr:left-5 rtl:right-5 top-2 bottom-2 w-0.5 bg-slate-100"></div>
+
+              <div className="space-y-10 relative">
+                {steps.map((step, idx) => (
+                  <div key={step.id} className="flex gap-6">
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-lg relative z-10 ${idx === 0 ? 'bg-indigo-600 text-white shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-400'
+                      }`}>
+                      {idx === 0 ? <Send className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
+                    </div>
+                    <div className="flex-1 pt-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-black text-slate-900 tracking-tight">
+                          Step {idx + 1}: {idx === 0 ? 'Initial Email' : 'Follow-up Email'}
+                        </p>
+                        {idx > 0 && (
+                          <div className="px-3 py-1 bg-amber-50 rounded-lg border border-amber-100">
+                            <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">
+                              Wait {Math.round(step.delayMinutes / 1440)} Days
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs font-bold text-slate-400 truncate max-w-md">
+                        Subject: {step.subject}
+                      </p>
+                      {idx > 0 && (
+                        <div className="mt-3 flex items-center gap-2">
+                          <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">
+                            Condition:
+                          </span>
+                          <span className="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                            {step.condition === 'no_reply' ? 'If No Reply' : 'Always Send'}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Campaign Details */}
         <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2">

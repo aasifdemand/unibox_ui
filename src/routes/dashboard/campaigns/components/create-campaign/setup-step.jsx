@@ -108,7 +108,7 @@ const SetupStep = ({
                                     key={sender.id}
                                     onClick={() => handleSenderSelect(sender.id, sType)}
                                     className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${isSelected
-                                        ? 'border-blue-500 bg-white shadow-xl ring-8 ring-blue-500/5 -translate-y-1'
+                                        ? 'border-blue-600 bg-white shadow-2xl shadow-blue-500/10 -translate-y-1'
                                         : 'border-slate-100 bg-white hover:border-blue-200 hover:-translate-y-0.5'
                                         }`}
                                 >
@@ -165,7 +165,7 @@ const SetupStep = ({
                         ].map((option) => (
                             <label
                                 key={option.id}
-                                className={`group relative flex items-center p-5 bg-white border-2 rounded-4xl cursor-pointer transition-all duration-300 hover:border-blue-200 ${watch('scheduleType') === option.id ? 'border-blue-500 bg-blue-50/20 ring-4 ring-blue-500/5' : 'border-slate-100'}`}
+                                className={`group relative flex items-center p-5 bg-white border-2 rounded-4xl cursor-pointer transition-all duration-300 hover:border-blue-200 ${watch('scheduleType') === option.id ? 'border-blue-600 bg-blue-50/10 shadow-lg shadow-blue-500/5' : 'border-slate-100'}`}
                             >
                                 <input
                                     type="radio"

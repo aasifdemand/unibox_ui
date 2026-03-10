@@ -1,5 +1,36 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronRight, Clock, Mail } from 'lucide-react';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender
+} from '@tanstack/react-table';
+import {
+  ChevronRight,
+  Clock,
+  Mail,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+} from 'lucide-react';
+
+const SortIndicator = ({ column }) => {
+  const isSorted = column.getIsSorted();
+  if (!isSorted) return (
+    <div className="w-4 h-4 flex items-center justify-center rounded-md group-hover/header:bg-slate-100 transition-all ml-1 opacity-0 group-hover/header:opacity-100">
+      <ChevronsUpDown className="w-3 h-3 text-slate-300 group-hover/header:text-slate-400" />
+    </div>
+  );
+  return (
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-indigo-50/50 border border-indigo-100/50 ml-1">
+      {isSorted === 'desc'
+        ? <ChevronDown className="w-2.5 h-2.5 text-indigo-600" />
+        : <ChevronUp className="w-2.5 h-2.5 text-indigo-600" />
+      }
+    </div>
+  );
+};
 
 const MailboxList = ({
   mailboxes,
@@ -13,10 +44,195 @@ const MailboxList = ({
   onCheckAllSenders,
 }) => {
   const { t } = useTranslation();
+  const [sorting, setSorting] = React.useState([]);
+
   const isSelected = (id) => selectedSenderIds.some((item) => item.id === id);
-  const allSelected = mailboxes.length > 0 && selectedSenderIds.length === mailboxes.length;
-  const isSomeSelected =
-    selectedSenderIds.length > 0 && selectedSenderIds.length < mailboxes.length;
+
+  const columns = React.useMemo(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <div className="flex items-center justify-center">
+          <input
+            type="checkbox"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              onCheckAllSenders(e.target.checked);
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+            className="w-5 h-5 text-indigo-600 rounded-lg border-slate-300 focus:ring-indigo-500 cursor-pointer shadow-xs transition-all"
+          />
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center justify-center">
+          <div className={`transition-opacity duration-300 ${row.getIsSelected() || selectedSenderIds.length > 0 ? 'opacity-100' : 'opacity-0 group-hover/row:opacity-100 focus-within:opacity-100'}`}>
+            <input
+              type="checkbox"
+              checked={row.getIsSelected()}
+              onChange={(e) => {
+                onCheckSender(row.original.id, row.original.type, e.target.checked);
+                row.toggleSelected(!!e.target.checked);
+              }}
+              className="w-5 h-5 text-indigo-600 rounded-lg border-slate-300 focus:ring-indigo-500 cursor-pointer shadow-xs transition-all"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'displayName',
+      header: ({ column }) => (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="flex items-center group/header"
+        >
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_mailbox')}
+          </span>
+          <SortIndicator column={column} />
+        </button>
+      ),
+      cell: ({ row }) => {
+        const mailbox = row.original;
+        return (
+          <div className="flex items-center transition-transform duration-300 group-hover/row:translate-x-0.5" onClick={() => onSelect(mailbox)}>
+            <div
+              className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center me-3 group-hover/row:scale-110 transition-transform duration-300 shadow-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCheckSender(mailbox.id, mailbox.type, !row.getIsSelected());
+                row.toggleSelected(!row.getIsSelected());
+              }}
+            >
+              {getProviderIcon(mailbox.type, 'w-7 h-7')}
+            </div>
+            <div>
+              <p className="font-bold text-slate-800 group-hover/row:text-indigo-600 transition-colors">
+                {mailbox.displayName}
+              </p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
+                {mailbox.type}
+              </p>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'email',
+      header: ({ column }) => (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="flex items-center group/header"
+        >
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_email')}
+          </span>
+          <SortIndicator column={column} />
+        </button>
+      ),
+      cell: ({ row }) => <p className="text-sm font-medium text-slate-600">{row.original.email}</p>,
+    },
+    {
+      accessorKey: 'isVerified',
+      header: ({ column }) => (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="flex items-center group/header"
+        >
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_status')}
+          </span>
+          <SortIndicator column={column} />
+        </button>
+      ),
+      cell: ({ row }) => (
+        <span
+          className={`text-[10px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block ${row.original.isVerified
+            ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+            : 'bg-amber-50 text-amber-600 border-amber-100'
+            }`}
+        >
+          {row.original.isVerified ? t('mailboxes.status_active') : t('mailboxes.status_warning')}
+        </span>
+      ),
+    },
+    {
+      accessorKey: 'stats.dailySent',
+      header: ({ column }) => (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="flex items-center group/header"
+        >
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_volume')}
+          </span>
+          <SortIndicator column={column} />
+        </button>
+      ),
+      cell: ({ row }) => (
+        <div className="flex flex-col">
+          <span className="text-sm font-extrabold text-slate-800 tabular-nums">
+            {row.original.stats?.dailySent || 0}
+          </span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            {t('mailboxes.volume_today')}
+          </span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'lastSyncAt',
+      header: ({ column }) => (
+        <button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="flex items-center group/header"
+        >
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_last_sync')}
+          </span>
+          <SortIndicator column={column} />
+        </button>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center text-xs font-bold text-slate-500 uppercase tracking-widest tabular-nums">
+          <Clock className="w-3.5 h-3.5 me-1.5 text-slate-400" />
+          {row.original.lastSyncAt ? timeAgo(row.original.lastSyncAt) : t('mailboxes.sync_idle')}
+        </div>
+      ),
+    },
+    {
+      id: 'actions',
+      header: () => (
+        <div className="text-right">
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('mailboxes.table_actions')}
+          </span>
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center justify-end" onClick={() => onSelect(row.original)}>
+          <div className="inline-flex w-8 h-8 rounded-full bg-slate-50 items-center justify-center group-hover/row:bg-indigo-600 transition-colors shadow-xs">
+            <ChevronRight className="w-4 h-4 text-slate-300 group-hover/row:text-white transition-colors" />
+          </div>
+        </div>
+      ),
+    }
+  ], [t, getProviderIcon, onSelect, onCheckSender, timeAgo, selectedSenderIds]);
+
+  const table = useReactTable({
+    data: mailboxes,
+    columns,
+    state: {
+      sorting,
+      rowSelection: Object.fromEntries(selectedSenderIds.map(item => [mailboxes.findIndex(m => m.id === item.id), true])),
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    enableRowSelection: true,
+  });
 
   if (mailboxes.length === 0) {
     return (
@@ -37,117 +253,34 @@ const MailboxList = ({
   if (viewMode === 'list') {
     return (
       <div className="h-full overflow-y-auto p-4 md:p-8 animate-in fade-in duration-500">
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-          <div className="overflow-x-auto">
-            <table className="w-full text-start border-collapse">
+        <div className="bg-white rounded-[2rem] border border-slate-200/60 overflow-hidden shadow-xl shadow-slate-900/5">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-start border-collapse border-separate border-spacing-0">
               <thead>
-                <tr className="bg-slate-50/50 border-b border-slate-100">
-                  <th className="px-6 py-4 w-10 text-center">
-                    <div className="flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        checked={allSelected}
-                        ref={(el) => {
-                          if (el) el.indeterminate = isSomeSelected;
-                        }}
-                        onChange={(e) => onCheckAllSenders(e.target.checked)}
-                        className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer"
-                      />
-                    </div>
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-start">
-                    {t('mailboxes.table_mailbox')}
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-start">
-                    {t('mailboxes.table_email')}
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-start">
-                    {t('mailboxes.table_status')}
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-start">
-                    {t('mailboxes.table_volume')}
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-start">
-                    {t('mailboxes.table_last_sync')}
-                  </th>
-                  <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-end">
-                    {t('mailboxes.table_actions')}
-                  </th>
-                </tr>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <tr key={headerGroup.id} className="bg-slate-50/80 backdrop-blur-md">
+                    {headerGroup.headers.map(header => (
+                      <th
+                        key={header.id}
+                        className="px-6 py-5 border-b border-slate-200/60 transition-colors first:ltr:rounded-tl-2xl last:ltr:rounded-tr-2xl"
+                      >
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {mailboxes.map((mailbox) => (
+                {table.getRowModel().rows.map((row) => (
                   <tr
-                    key={mailbox.id}
-                    className={`group hover:bg-slate-50/50 transition-colors cursor-pointer ${isSelected(mailbox.id) ? 'bg-blue-50/30' : ''}`}
+                    key={row.id}
+                    className={`group/row hover:bg-slate-50/50 transition-colors cursor-pointer ${row.getIsSelected() ? 'bg-indigo-50/30' : ''}`}
                   >
-                    <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                      <div className={`flex items-center justify-center transition-opacity duration-300 ${isSelected(mailbox.id) || selectedSenderIds.length > 0 ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus-within:opacity-100'}`}>
-                        <input
-                          type="checkbox"
-                          checked={isSelected(mailbox.id)}
-                          onChange={(e) =>
-                            onCheckSender(mailbox.id, mailbox.type, e.target.checked)
-                          }
-                          className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer"
-                        />
-                      </div>
-                    </td>
-                    <td className="px-6 py-4" onClick={() => onSelect(mailbox)}>
-                      <div className="flex items-center">
-                        <div
-                          className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center me-3 group-hover:scale-110 transition-transform duration-300 shadow-sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onCheckSender(mailbox.id, mailbox.type, !isSelected(mailbox.id));
-                          }}
-                        >
-                          {getProviderIcon(mailbox.type, 'w-7 h-7')}
-                        </div>
-                        <div>
-                          <p className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                            {mailbox.displayName}
-                          </p>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
-                            {mailbox.type}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-slate-600">{mailbox.email}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`text-[10px] uppercase tracking-widest font-extrabold px-2 py-1 rounded-lg border shadow-xs inline-block ${mailbox.isVerified
-                          ? 'bg-green-50 text-green-600 border-green-100'
-                          : 'bg-amber-50 text-amber-600 border-amber-100'
-                          }`}
-                      >
-                        {mailbox.isVerified ? t('mailboxes.status_active') : t('mailboxes.status_warning')}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-extrabold text-slate-800">
-                          {mailbox.stats?.dailySent || 0}
-                        </span>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                          {t('mailboxes.volume_today')}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center text-xs font-bold text-slate-500 uppercase tracking-widest">
-                        <Clock className="w-3.5 h-3.5 me-1.5 text-slate-400" />
-                        {mailbox.lastSyncAt ? timeAgo(mailbox.lastSyncAt) : t('mailboxes.sync_idle')}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-end">
-                      <div className="inline-flex w-8 h-8 rounded-full bg-slate-50 items-center justify-center group-hover:bg-blue-600 transition-colors">
-                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-white transition-colors" />
-                      </div>
-                    </td>
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id} className="px-6 py-4 border-b border-slate-50/50">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "อีเมล์",
         "dashboard": "แดชบอร์ด",
         "growth_platform": "แพลตฟอร์มการเติบโต",
         "main_dashboard": "แดชบอร์ดหลัก",
@@ -18,6 +19,7 @@
             "scheduled": "กำหนดเวลา",
             "completed": "เสร็จสมบูรณ์"
         },
+        "date": "วันที่",
         "search": "ค้นหา",
         "documentation": "เอกสาร",
         "privacy": "ความเป็นส่วนตัว",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "จดหมาย",
         "subtitle": "บัญชี",
+        "viewing_conversation": "กำลังดูการสนทนา",
         "connected_description": "{{count}} บัญชีที่เชื่อมต่อซิงค์และพร้อมแล้ว",
         "conversation": "การสนทนา",
         "connected_accounts": "{{count}} บัญชีที่เชื่อมต่อ",
@@ -156,6 +159,7 @@
         "showing": "กำลังแสดง",
         "prev": "ก่อนหน้า",
         "next": "ต่อไป",
+        "status": "สถานะ",
         "no_messages": "ไม่พบข้อความ",
         "empty_search": "ลองใช้คำค้นหาอื่น",
         "empty_unread": "ไม่มีข้อความที่ยังไม่ได้อ่าน",
@@ -550,6 +554,7 @@
         "valid": "ถูกต้อง",
         "risky": "เสี่ยง",
         "invalid": "ไม่ถูกต้อง",
+        "unknown": "ไม่ทราบ",
         "unverified": "ไม่ได้รับการยืนยัน",
         "uploaded_on": "อัปโหลดเมื่อ",
         "view_details": "ดูรายละเอียด",
@@ -925,6 +930,7 @@
             "template": "ดูตัวอย่างเทมเพลต",
             "first_name": "ชื่อ",
             "last_name": "นามสกุล",
+            "name": "ชื่อ",
             "company": "บริษัท",
             "phone": "โทรศัพท์",
             "city": "เมือง",

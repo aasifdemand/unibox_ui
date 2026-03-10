@@ -1,12 +1,13 @@
 {
     "common": {
+        "email": "Email",
         "dashboard": "Dashboard",
         "growth_platform": "Growth Platform",
         "main_dashboard": "Main Dashboard",
         "analytics": "Analytics",
         "mailboxes": "Mailboxes",
         "campaigns": "Campaigns",
-        "audience": "Audience",
+        "audience": "Contacts",
         "templates": "Templates",
         "subscription": "Subscription",
         "settings": "Settings",
@@ -18,6 +19,7 @@
             "scheduled": "Scheduled",
             "completed": "Completed"
         },
+        "date": "Date",
         "search": "Search",
         "documentation": "Documentation",
         "privacy": "Privacy",
@@ -54,7 +56,7 @@
         "campaign_singular": "Campaign",
         "mailbox_singular": "Mailbox",
         "template_singular": "Template",
-        "audience_singular": "Audience",
+        "audience_singular": "Contact",
         "default_auto": "Default (Auto)",
         "non_secure": "Non-secure",
         "read_guide": "Read Guide",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "Mailboxes",
         "subtitle": "Accounts",
+        "viewing_conversation": "Viewing Conversation",
         "connected_description": "{{count}} connected accounts synced and ready.",
         "conversation": "Conversation",
         "connected_accounts": "{{count}} CONNECTED ACCOUNTS",
@@ -156,6 +159,7 @@
         "showing": "Showing",
         "prev": "Prev",
         "next": "Next",
+        "status": "Status",
         "no_messages": "No messages found",
         "empty_search": "Try a different search term",
         "empty_unread": "No unread messages",
@@ -431,7 +435,7 @@
             "contacts": "Contacts",
             "verified_count": "{{count}} verified",
             "senders_ready": "{{count}} senders ready",
-            "total_senders" :"Total Senders"
+            "total_senders": "Total Senders"
         },
         "quick_actions": {
             "title": "Quick",
@@ -509,8 +513,8 @@
         }
     },
     "audience": {
-        "title": "Audience",
-        "subtitle": "Contacts",
+        "title": "Contacts",
+        "subtitle": "Leads",
         "header_description": "Manage your mailing lists and sending accounts across the platform.",
         "refresh": "Refresh",
         "add_contacts": "Add Contacts",
@@ -539,6 +543,7 @@
         "valid": "Valid",
         "risky": "Risky",
         "invalid": "Invalid",
+        "unknown": "Unknown",
         "unverified": "Unverified",
         "uploaded_on": "Uploaded On",
         "view_details": "View Details",
@@ -913,6 +918,7 @@
             "template": "Template Preview",
             "first_name": "First Name",
             "last_name": "Last Name",
+            "name": "Name",
             "company": "Company",
             "phone": "Phone",
             "city": "City",

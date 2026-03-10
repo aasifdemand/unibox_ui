@@ -16,6 +16,7 @@ import {
 
 import { useMailboxes } from '../../../../hooks/useMailboxes';
 import { useBulkDeleteSenders } from '../../../../hooks/useSenders';
+import { useSocketEvents } from '../../../../hooks/useSocketEvents';
 import { useGmailData } from './use-gmail-data';
 import { useOutlookData } from './use-outlook-data';
 import { useSmtpData } from './use-smtp-data';
@@ -26,6 +27,28 @@ const PAGE_SIZE = 10;
 
 export const useMailboxesData = () => {
   const queryClient = useQueryClient();
+
+  // =========================
+  // SOCKET EVENTS (REAL-TIME UPDATES)
+  // =========================
+  useSocketEvents({
+    mailbox_updated: (data) => {
+      // Data contains { senderId, senderEmail, messageId }
+      // This will trigger a background refetch of all mailbox counts and lists
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
+
+      // If we are currently viewing this specific mailbox, invalidate its messages too
+      if (data?.senderId) {
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const key = query.queryKey;
+            // Matches ['gmail', mailboxId, ...], ['outlook', mailboxId, ...], etc
+            return key.includes(data.senderId);
+          },
+        });
+      }
+    },
+  });
 
   // =========================
   // LOCAL STATE
@@ -911,6 +934,7 @@ export const useMailboxesData = () => {
       })(),
       isMessageLoading: provider?.queries.message?.isLoading,
       isSyncing: provider?.mutations.sync.isLoading,
+      isSending: provider?.mutations.sendMessage.isPending || provider?.mutations.reply.isPending || provider?.mutations.forward.isPending,
     },
     error: provider?.queries.messages.error || provider?.queries.search?.error,
     setters: {

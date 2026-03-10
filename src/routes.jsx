@@ -21,9 +21,9 @@ const CreateCampaign = lazy(() => import('./routes/dashboard/campaigns/create-ca
 const ViewCampaign = lazy(() => import('./routes/dashboard/campaigns/view-campaign'));
 const Audience = lazy(() => import('./routes/dashboard/audience'));
 const Analytics = lazy(() => import('./routes/dashboard/analytics'));
-const Templates = lazy(() => import('./routes/dashboard/templates'));
 const Subscription = lazy(() => import('./routes/dashboard/subscription'));
 const Settings = lazy(() => import('./routes/dashboard/settings'));
+const Notifications = lazy(() => import('./routes/dashboard/notifications'));
 
 const LoadingFallback = () => (
   <div className="flex h-screen w-full items-center justify-center bg-slate-50">
@@ -66,9 +66,10 @@ const AppRoutes = () => {
             <Route path="campaigns/:id" element={<ViewCampaign />} />
             <Route path="audience" element={<Audience />} />
             <Route path="analytics" element={<Analytics />} />
-            <Route path="templates" element={<Templates />} />
+
             <Route path="subscription" element={<Subscription />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
       </Routes>

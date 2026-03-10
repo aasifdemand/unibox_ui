@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Layout, Tag, Plus, Clock, MessageSquare, Trash2, Mail } from 'lucide-react';
 import HtmlEmailEditor from '../../../../../components/shared/html-editor';
 import PersonalizationTokens from '../../../../../components/shared/personalization-tokens';
-import { useTemplates } from '../../../../../hooks/useTemplate';
-import TemplatePickerModal from '../../../../../modals/TemplatePickerModal';
+import HighlightedInput from '../../../../../components/shared/highlighted-input';
 
 
 const getPlaceholders = (t) => [
@@ -83,8 +82,6 @@ const Step1Design = ({
   errors,
   watch,
   setValue,
-  editorMode,
-  setEditorMode,
   selectedBatch,
   selectedSender,
 }) => {
@@ -96,10 +93,8 @@ const Step1Design = ({
   const [cursorPosition, setCursorPosition] = useState(0);
 
   const subjectInputRef = useRef(null);
+  const highlightedInputRef = useRef(null);
   const suggestionsRef = useRef(null);
-  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
-
-  const { data: templates = [], isLoading: templatesLoading } = useTemplates();
 
   // Watchers
   const campaignName = watch('name');
@@ -167,23 +162,40 @@ const Step1Design = ({
   };
 
   // Dynamic Placeholders Logic
-  const availableColumns = useMemo(() => {
-    if (!selectedBatch) return [];
-    const meta = selectedBatch.mapping || {};
-    const columns = Object.values(meta).filter((v) => v && v !== '');
-    return columns.length === 0 ? ['email', 'name', 'first_name', 'last_name', 'company'] : [...new Set(columns)];
-  }, [selectedBatch]);
-
   const allPlaceholders = useMemo(() => {
-    const placeholders = getPlaceholders(t);
-    const dynamicItems = availableColumns.map((col) => {
-      const lowerCol = col.toLowerCase().replace(/\s+/g, '_');
-      const existing = placeholders.find((s) => s.key === lowerCol);
+    const staticPlaceholders = getPlaceholders(t);
+    const mapping = selectedBatch?.mapping || {};
+
+    const dynamicItems = Object.entries(mapping).map(([slug, label]) => {
+      // Check if we already have a static placeholder for this slug
+      const existing = staticPlaceholders.find((s) => s.key === slug);
       if (existing) return existing;
-      return { key: lowerCol, label: col, example: `[${col}]`, category: t('campaigns.cat_custom') };
+
+      return {
+        key: slug,
+        label: label,
+        example: `[${label}]`,
+        category: t('campaigns.cat_custom'),
+      };
     });
-    return [...placeholders, ...dynamicItems];
-  }, [availableColumns, t]);
+
+    // Deduplicate and combine
+    const combined = [...staticPlaceholders];
+    dynamicItems.forEach(item => {
+      if (!combined.find(c => c.key === item.key)) {
+        combined.push(item);
+      }
+    });
+
+    return combined;
+  }, [selectedBatch, t]);
+
+  const availableFields = useMemo(() => {
+    return allPlaceholders.map(p => ({
+      fieldName: p.key,
+      displayName: p.label
+    }));
+  }, [allPlaceholders]);
 
   const filteredSuggestions = useMemo(() => {
     return allPlaceholders.reduce((acc, item) => {
@@ -213,85 +225,14 @@ const Step1Design = ({
     setSubjectTokenQuery('');
   };
 
-  // Click outside for subject suggestions
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target) &&
-        subjectInputRef.current && !subjectInputRef.current.contains(event.target)) {
-        setShowSubjectSuggestions(false);
-      }
-    };
-    if (showSubjectSuggestions) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showSubjectSuggestions]);
-
-  const handleSubjectChange = (e) => {
-    const val = e.target.value;
-    const pos = e.target.selectionStart;
-    setSubject(val);
-    setCursorPosition(pos);
-
-    // Dynamic trigger logic
-    const textBefore = val.substring(0, pos);
-    const lastTokenStart = textBefore.lastIndexOf('{{');
-
-    if (lastTokenStart !== -1) {
-      const query = textBefore.substring(lastTokenStart + 2);
-      if (!query.includes('}}') && !query.includes(' ')) {
-        setShowSubjectSuggestions(true);
-        setSubjectTokenQuery(query);
-
-        // Position calculation
-        if (subjectInputRef.current) {
-          const input = subjectInputRef.current;
-          const rect = input.getBoundingClientRect();
-
-          // Use a canvas or hidden span to measure text width
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          const style = window.getComputedStyle(input);
-          context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-          const textWidth = context.measureText(textBefore).width;
-
-          const paddingLeft = parseFloat(style.paddingLeft);
-
-          setSubjectDropdownPos({
-            top: input.offsetHeight + 10,
-            left: Math.min(rect.width - 200, paddingLeft + textWidth - 20), // Approx offset
-          });
-        }
-      } else {
-        setShowSubjectSuggestions(false);
-        setSubjectTokenQuery('');
-      }
-    } else {
-      setShowSubjectSuggestions(false);
-      setSubjectTokenQuery('');
+  const triggerTokenDropdown = () => {
+    if (highlightedInputRef.current?.editor) {
+      const editor = highlightedInputRef.current.editor;
+      editor.chain().focus().insertContent('{{').run();
     }
   };
 
-  const handleApplyTemplate = (template) => {
-    if (activeStepIndex === 0) {
-      setValue('subject', template.subject, { shouldValidate: true });
-      setValue('htmlBody', template.htmlContent, { shouldValidate: true });
 
-      // Map template name to campaign name if current name is empty or default
-      const currentName = watch('name');
-      if (!currentName || currentName === '' || currentName === t('campaigns.untitled_campaign')) {
-        setValue('name', template.name, { shouldValidate: true });
-      }
-    } else {
-      const newSteps = [...steps];
-      newSteps[activeStepIndex - 1].subject = template.subject;
-      newSteps[activeStepIndex - 1].htmlBody = template.htmlContent;
-      setValue('steps', newSteps, { shouldValidate: true });
-    }
-    setShowTemplatePicker(false);
-  };
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 min-h-[600px] animate-in fade-in duration-700">
@@ -439,36 +380,7 @@ const Step1Design = ({
                   </div>
                 </div>
               )}
-
-              <button
-                type="button"
-                onClick={() => setShowTemplatePicker(true)}
-                className="flex items-center gap-2.5 px-6 py-3 bg-blue-50 text-blue-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95"
-              >
-                <Layout className="w-3.5 h-3.5" />
-                Choose Template
-              </button>
             </div>
-          </div>
-        </div>
-
-        {/* Campaign Name & Step Header */}
-        <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-6 space-y-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest px-1">
-              {t('campaigns.campaign_name')} *
-            </label>
-            <input
-              type="text"
-              {...register('name')}
-              className={`w-full px-6 py-4 bg-slate-50 border-2 rounded-2xl text-sm font-bold focus:border-blue-500 transition-all outline-none ${errors.name ? 'border-rose-400 bg-rose-50/30' : 'border-slate-100'}`}
-              placeholder={t('campaigns.campaign_name_placeholder')}
-            />
-            {errors.name && (
-              <p className="text-[9px] font-bold text-rose-500 uppercase tracking-widest px-2">
-                {errors.name.message}
-              </p>
-            )}
           </div>
         </div>
 
@@ -480,115 +392,55 @@ const Step1Design = ({
             </label>
             <button
               type="button"
-              onClick={() => setShowSubjectSuggestions(!showSubjectSuggestions)}
+              onClick={triggerTokenDropdown}
               className="text-[9px] font-extrabold uppercase tracking-widest text-blue-600 flex items-center gap-1.5"
             >
               <Tag className="w-3 h-3" /> Insert Variable
             </button>
           </div>
           <div className="relative">
-            <input
-              ref={subjectInputRef}
-              type="text"
+            <HighlightedInput
+              ref={highlightedInputRef}
               value={currentSubject}
-              onChange={handleSubjectChange}
-              onKeyUp={(e) => setCursorPosition(e.target.selectionStart)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') e.preventDefault();
-              }}
-              className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold focus:border-blue-500 transition-all outline-none"
+              onChange={setSubject}
               placeholder="e.g., Hi {{first_name}}!"
+              userFields={[
+                ...availableFields,
+                { fieldName: 'sender_name', displayName: 'Sender Name' },
+              ]}
             />
             {errors.subject && (
               <p className="text-[9px] font-bold text-rose-500 uppercase tracking-widest mt-2 px-2">
                 {errors.subject.message}
               </p>
             )}
-            {showSubjectSuggestions && (
-              <div
-                ref={suggestionsRef}
-                className="absolute z-50 animate-in slide-in-from-top-1 duration-300 w-48 shadow-2xl"
-                style={{
-                  top: `${subjectDropdownPos.top}px`,
-                  left: `${subjectDropdownPos.left}px`,
-                  maxWidth: 'calc(100vw - 40px)'
-                }}
-              >
-                <PersonalizationTokens
-                  onInsertToken={(t) => insertPlaceholder(t.token.replace(/[{}]/g, ''))}
-                  userFields={[
-                    ...availableColumns.map((col) => ({
-                      fieldName: col.toLowerCase().replace(/\s+/g, '_'),
-                      displayName: col,
-                    })),
-                    { fieldName: 'sender_name', displayName: 'Sender Name' },
-                  ]}
-                  onClose={() => setShowSubjectSuggestions(false)}
-                  externalQuery={subjectTokenQuery}
-                />
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Content Tabs */}
+        {/* Content Section */}
         <div className="flex items-center justify-between bg-slate-50 p-2 rounded-2xl">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-4 py-2">
             Message Content
           </p>
-          <div className="flex bg-white/60 p-1 rounded-xl shadow-sm border border-slate-100">
-            {['html', 'text'].map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                onClick={() => setEditorMode(mode)}
-                className={`px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${editorMode === mode
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-                  : 'text-slate-400 hover:text-slate-600'
-                  }`}
-              >
-                {mode === 'html' ? 'Visual Canvas' : 'Plain Text'}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div className="border-2 border-slate-100 rounded-[2rem] bg-slate-50/30 overflow-hidden shadow-sm p-3">
           <div className="bg-white rounded-[1.5rem] overflow-hidden border border-slate-100 h-full shadow-inner">
-            {editorMode === 'html' ? (
-              <HtmlEmailEditor
-                value={currentHtmlBody}
-                onChange={setContent}
-                userFields={[
-                  ...availableColumns.map((col) => ({
-                    fieldName: col.toLowerCase().replace(/\s+/g, '_'),
-                    displayName: col,
-                  })),
-                  { fieldName: 'sender_name', displayName: 'Sender Name' },
-                ]}
-                senderName={selectedSender?.name || ''}
-              />
-            ) : (
-              <textarea
-                value={currentHtmlBody}
-                onChange={(e) => setContent(e.target.value)}
-                rows={15}
-                className="w-full h-full p-8 bg-slate-900 text-slate-300 font-mono text-sm border-0 focus:ring-0 resize-none outline-none"
-                placeholder="Write your email here..."
-              />
-            )}
+            <HtmlEmailEditor
+              value={currentHtmlBody}
+              onChange={setContent}
+              userFields={[
+                ...availableFields,
+                { fieldName: 'sender_name', displayName: 'Sender Name' },
+              ]}
+              senderName={selectedSender?.name || ''}
+            />
           </div>
         </div>
-      </div>
+      </div >
 
-      <TemplatePickerModal
-        isOpen={showTemplatePicker}
-        onClose={() => setShowTemplatePicker(false)}
-        templates={templates}
-        isLoading={templatesLoading}
-        onSelect={handleApplyTemplate}
-      />
-    </div>
+
+    </div >
   );
 };
 

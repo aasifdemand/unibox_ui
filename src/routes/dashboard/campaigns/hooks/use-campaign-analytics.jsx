@@ -166,6 +166,7 @@ export const useCampaignAnalytics = (id) => {
     if (!campaign) return null;
 
     const recipients = campaign.CampaignRecipients || [];
+    const totalRecipients = campaign.totalRecipients || recipients.length || 0;
 
     // Prioritize backend-provided aggregate stats if available
     const totalSent =
@@ -188,19 +189,27 @@ export const useCampaignAnalytics = (id) => {
         ? campaign.totalClicks
         : recipients.filter((r) => r.clickedAt).length;
 
-    const progress = recipients.length
-      ? Math.min(100, Math.round((totalSent / recipients.length) * 100))
+    const progress = totalRecipients
+      ? Math.min(100, Math.round((totalSent / totalRecipients) * 100))
       : 0;
 
+    const uniqueContacted =
+      recipients.filter((r) => r.status !== 'pending').length ||
+      (campaign.totalSent > 0 ? Math.min(campaign.totalSent, totalRecipients) : 1);
+
     return {
-      totalRecipients: recipients.length || campaign.totalRecipients || 0,
+      totalRecipients,
       totalSent,
       totalReplied,
       totalOpened,
       totalClicked,
+      uniqueContacted,
       progress,
     };
   }, [campaign]);
+
+  // Extract CampaignSteps
+  const steps = useMemo(() => campaign?.CampaignSteps || [], [campaign]);
 
   // Preview Logic
   const sampleRecipient = useMemo(
@@ -208,27 +217,47 @@ export const useCampaignAnalytics = (id) => {
     [campaign, selectedRecipientForPreview],
   );
 
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+
   const previews = useMemo(() => {
     if (!campaign) return {};
+
+    let subject = campaign.subject;
+    let html = campaign.htmlBody;
+    let text = campaign.textBody;
+
+    if (activeStepIndex > 0 && steps.length > 0) {
+      const step = steps.find(s => s.stepOrder === activeStepIndex);
+      if (step) {
+        subject = step.subject;
+        html = step.htmlBody;
+        text = step.textBody;
+      }
+    }
+
     return {
-      subject: replaceWithRecipientData(campaign.subject, sampleRecipient),
-      html: replaceWithRecipientData(unescapeHtml(campaign.htmlBody), sampleRecipient),
-      text: replaceWithRecipientData(campaign.textBody, sampleRecipient),
+      subject: replaceWithRecipientData(subject, sampleRecipient),
+      html: replaceWithRecipientData(unescapeHtml(html), sampleRecipient),
+      text: replaceWithRecipientData(text, sampleRecipient),
       previewText: replaceWithRecipientData(campaign.previewText, sampleRecipient),
       campaignName: replaceWithRecipientData(campaign.name, sampleRecipient),
     };
-  }, [campaign, sampleRecipient]);
+  }, [campaign, sampleRecipient, activeStepIndex, steps]);
 
   const placeholders = useMemo(() => {
     if (!campaign) return [];
-    const all = [
-      ...extractPlaceholders(campaign.subject),
-      ...extractPlaceholders(campaign.htmlBody),
-      ...extractPlaceholders(campaign.textBody),
-      ...extractPlaceholders(campaign.previewText),
+
+    const allText = [
+      campaign.subject,
+      campaign.htmlBody,
+      campaign.textBody,
+      campaign.previewText,
+      ...steps.flatMap(s => [s.subject, s.htmlBody, s.textBody])
     ];
+
+    const all = allText.flatMap(text => extractPlaceholders(text));
     return [...new Set(all)];
-  }, [campaign]);
+  }, [campaign, steps]);
 
   // Actions
   const handleAction = async (actionFn, successMsg, errorMsg) => {
@@ -255,6 +284,9 @@ export const useCampaignAnalytics = (id) => {
     previews,
     placeholders,
     sampleRecipient,
+    steps,
+    activeStepIndex,
+    setActiveStepIndex,
     selectedRecipientForPreview,
     setSelectedRecipientForPreview,
     selectedRecipientId,

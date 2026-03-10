@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "Courriel",
         "dashboard": "Tableau de bord",
         "growth_platform": "Plateforme de Croissance",
         "main_dashboard": "Tableau de bord principal",
@@ -18,6 +19,7 @@
             "scheduled": "Programmé",
             "completed": "Terminé"
         },
+        "date": "Date",
         "search": "Rechercher",
         "documentation": "Documents",
         "privacy": "Confidentialité",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "Boîtes",
         "subtitle": "Comptes",
+        "viewing_conversation": "Affichage d'une conversation",
         "connected_description": "{{count}} comptes connectés synchronisés et prêts.",
         "conversation": "Conversation",
         "connected_accounts": "{{count}} COMPTES CONNECTÉS",
@@ -156,6 +159,7 @@
         "showing": "Affichage de",
         "prev": "Préc.",
         "next": "Suiv.",
+        "status": "Statut",
         "no_messages": "Aucun message trouvé",
         "empty_search": "Essayez un autre terme de recherche",
         "empty_unread": "Aucun message non lu",
@@ -550,6 +554,7 @@
         "valid": "Valide",
         "risky": "Risqué",
         "invalid": "Invalide",
+        "unknown": "Inconnu",
         "unverified": "Non vérifié",
         "uploaded_on": "Téléchargé le",
         "view_details": "Voir les Détails",
@@ -926,6 +931,7 @@
             "template": "Aperçu du modèle",
             "first_name": "Prénom",
             "last_name": "Nom",
+            "name": "Nom",
             "company": "Entreprise",
             "phone": "Téléphone",
             "city": "Ville",

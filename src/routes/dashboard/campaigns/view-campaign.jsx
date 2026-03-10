@@ -32,6 +32,9 @@ const ViewCampaign = () => {
     previews,
     placeholders,
     sampleRecipient,
+    steps,
+    activeStepIndex,
+    setActiveStepIndex,
     selectedRecipientForPreview,
     setSelectedRecipientForPreview,
     setSelectedRecipientId,
@@ -88,7 +91,7 @@ const ViewCampaign = () => {
     );
   }
   return (
-    <div className="max-w-400 mx-auto p-4 sm:p-6 lg:p-10 space-y-2 animate-in fade-in duration-700">
+    <div className="max-w-400 mx-auto p-4 sm:p-6 space-y-2 animate-in fade-in duration-700">
       {showDeleteModal && (
         <ShowDelete
           handleDelete={async () => {
@@ -149,11 +152,10 @@ const ViewCampaign = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${
-                  activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20'
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-white'
-                }`}
+                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${activeTab === tab.id
+                  ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20'
+                  : 'text-slate-400 hover:text-slate-600 hover:bg-white'
+                  }`}
               >
                 {tab.label}
               </button>
@@ -175,6 +177,7 @@ const ViewCampaign = () => {
                   previews={previews}
                   placeholders={placeholders}
                   formatDate={formatDate}
+                  steps={steps}
                 />
               )}
               {activeTab === 'analytics' && <AnalyticsTab campaign={campaign} stats={stats} />}
@@ -203,6 +206,9 @@ const ViewCampaign = () => {
                   placeholders={placeholders}
                   sampleRecipient={sampleRecipient}
                   selectedRecipientForPreview={selectedRecipientForPreview}
+                  steps={steps}
+                  activeStepIndex={activeStepIndex}
+                  setActiveStepIndex={setActiveStepIndex}
                 />
               )}
             </motion.div>

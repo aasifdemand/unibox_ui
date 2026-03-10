@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "이메일",
         "dashboard": "대시보드",
         "growth_platform": "성장 플랫폼",
         "main_dashboard": "메인 대시보드",
@@ -18,6 +19,7 @@
             "scheduled": "예정됨",
             "completed": "완료됨"
         },
+        "date": "날짜",
         "search": "검색",
         "documentation": "문서",
         "privacy": "개인정보 보호",
@@ -125,6 +127,7 @@
     "mailboxes": {
         "mail": "메일",
         "subtitle": "계정",
+        "viewing_conversation": "대화 보기",
         "connected_description": "{{count}} 연결된 계정이 동기화되어 준비되었습니다.",
         "conversation": "대화",
         "connected_accounts": "{{count}} 개의 연결된 계정",
@@ -157,6 +160,7 @@
         "showing": "표시 중",
         "prev": "이전",
         "next": "다음",
+        "status": "상태",
         "no_messages": "메시지를 찾을 수 없습니다",
         "empty_search": "다른 검색어를 사용해 보세요",
         "empty_unread": "읽지 않은 메시지가 없습니다",
@@ -551,6 +555,7 @@
         "valid": "유효함",
         "risky": "위험해",
         "invalid": "유효하지 않음",
+        "unknown": "를 클릭하세요. 알 수 없음",
         "unverified": "확인되지 않음",
         "uploaded_on": "업로드 날짜",
         "view_details": "세부정보 보기",
@@ -926,6 +931,7 @@
             "template": "템플릿 미리보기",
             "first_name": "이름",
             "last_name": "성",
+            "name": "를 클릭하세요. 이름",
             "company": "회사",
             "phone": "전화",
             "city": "도시",
@@ -971,7 +977,7 @@
                 "setup_type": "설치 유형",
                 "sender_id": "보낸 사람 ID",
                 "direct": "직접 SMTP/IMAP",
-                "oauth": "OAuth 2.0",
+                "oauth": "를 클릭하세요. OAuth 2.0",
                 "outgoing": "발신 구성(SMTP)",
                 "incoming": "수신 구성(IMAP)",
                 "host": "SMTP 호스트",

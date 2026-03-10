@@ -320,28 +320,28 @@ const ShowSender = ({
                 clearTestResults();
               }}
               disabled={isSubmitting}
-              className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${senderType === item.type
-                ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-2xl shadow-${item.color}-500/10`
+              className={`group relative p-4 sm:p-5 rounded-[2rem] border-2 transition-all duration-500 ${senderType === item.type
+                ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-xl shadow-${item.color}-500/10`
                 : 'border-slate-50 bg-white hover:border-slate-200'
                 } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 ${item.bg} rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-500`}
                 >
-                  <item.icon className={`w-7 h-7 ${item.text}`} />
+                  <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.text}`} />
                 </div>
-                <span className="text-sm font-extrabold text-slate-800 uppercase tracking-tight">
+                <span className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-tight">
                   {item.label}
                 </span>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
                   {item.desc}
                 </p>
               </div>
               {senderType === item.type && (
-                <div className="absolute top-4 ltr:right-4 rtl:left-4 animate-in zoom-in">
-                  <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/40">
-                    <CheckCircle className="w-3.5 h-3.5 text-white" />
+                <div className="absolute top-3 ltr:right-3 rtl:left-3 sm:top-4 sm:ltr:right-4 sm:rtl:left-4 animate-in zoom-in">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/40">
+                    <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
                   </div>
                 </div>
               )}

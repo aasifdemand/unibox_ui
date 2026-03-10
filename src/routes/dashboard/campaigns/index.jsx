@@ -133,6 +133,7 @@ const Campaigns = () => {
             setViewMode={setViewMode}
           />
           <div className="min-h-100 relative mt-6">
+
             <AnimatePresence mode="wait">
               {viewMode === 'grid' ? (
                 <motion.div
@@ -183,7 +184,6 @@ const Campaigns = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-
             {/* New Numeric Pagination */}
             {totalProcessed > ITEMS_PER_PAGE && (
               <div className="mt-8 mb-8">

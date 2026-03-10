@@ -76,23 +76,32 @@ export const calculateProgress = (campaign) => {
   return Math.min(100, Math.round((sent / total) * 100));
 };
 
+// Helper for unique contacts
+export const getUniqueContacted = (campaign) => {
+  if (!campaign.totalSent || campaign.totalSent === 0) return 0;
+  return Math.min(campaign.totalSent, campaign.totalRecipients || campaign.totalSent);
+};
+
 // Calculate open rate
 export const calculateOpenRate = (campaign) => {
-  if (!campaign.totalSent || campaign.totalSent === 0) return '-';
+  const uniqueContacted = getUniqueContacted(campaign);
+  if (uniqueContacted === 0) return '-';
   const opens = campaign.totalOpens || 0;
-  return `${Math.round((opens / campaign.totalSent) * 100)}%`;
+  return `${Math.round((opens / uniqueContacted) * 100)}%`;
 };
 
 // Calculate click rate
 export const calculateClickRate = (campaign) => {
-  if (!campaign.totalSent || campaign.totalSent === 0) return '-';
+  const uniqueContacted = getUniqueContacted(campaign);
+  if (uniqueContacted === 0) return '-';
   const clicks = campaign.totalClicks || 0;
-  return `${Math.round((clicks / campaign.totalSent) * 100)}%`;
+  return `${Math.round((clicks / uniqueContacted) * 100)}%`;
 };
 
 // Calculate reply rate
 export const calculateReplyRate = (campaign) => {
-  if (!campaign.totalSent || campaign.totalSent === 0) return '-';
+  const uniqueContacted = getUniqueContacted(campaign);
+  if (uniqueContacted === 0) return '-';
   const replies = campaign.totalReplied || 0;
-  return `${Math.round((replies / campaign.totalSent) * 100)}%`;
+  return `${Math.round((replies / uniqueContacted) * 100)}%`;
 };

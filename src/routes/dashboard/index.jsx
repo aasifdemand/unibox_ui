@@ -32,17 +32,15 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 
 // Import components & modals
-import ShowTemplate from '../../modals/showtemplate';
 import ShowUpload from '../../modals/showupload';
 import ShowSender from '../../modals/showsender';
-import { useTemplatesData } from './templates/hooks/use-templates-data';
 import { useAudienceData } from './audience/hooks/use-audience-data';
 import ShowCreateCampaign from '../../modals/showcreatecampaign';
+import RecentCampaignsTable from './components/recent-campaigns-table';
 
 // Import React Query hooks
 import { useCampaigns } from '../../hooks/useCampaign';
 import { useSenders, useCreateSmtpSender, initiateGmailOAuth, initiateOutlookOAuth } from '../../hooks/useSenders';
-import { useTemplate } from '../../hooks/useTemplate';
 import { useBatches, useVerificationTotals } from '../../hooks/useBatches';
 
 const QuickActionContent = ({ action }) => (
@@ -69,8 +67,7 @@ const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
 
-  // Template Modal Logic
-  const { state: templateState, setters: templateSetters, handlers: templateHandlers } = useTemplatesData();
+
 
   // Audience Modal Logic
   const audienceData = useAudienceData();
@@ -90,7 +87,7 @@ const Dashboard = () => {
 
   const senders = senderResponse.data || [];
 
-  const { isLoading: templatesLoading, refetch: refetchTemplates } = useTemplate();
+
 
   const { data: batches = [], isLoading: batchesLoading, refetch: refetchBatches } = useBatches();
 
@@ -113,7 +110,7 @@ const Dashboard = () => {
   // Handle refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await Promise.all([refetchCampaigns(), refetchSenders(), refetchTemplates(), refetchBatches()]);
+    await Promise.all([refetchCampaigns(), refetchSenders(), refetchBatches()]);
     setIsRefreshing(false);
   };
 
@@ -366,14 +363,7 @@ const Dashboard = () => {
       bgColor: 'bg-linear-to-br from-green-50 to-emerald-50',
       onClick: () => audienceData.setShowUploadModal(true),
     },
-    {
-      title: t("dashboard.quick_actions.create_template"),
-      description: t("dashboard.quick_actions.create_template_desc"),
-      icon: <Edit className="w-5 h-5" />,
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-linear-to-br from-purple-50 to-purple-50',
-      onClick: templateHandlers.handleCreateNew,
-    },
+
     {
       title: t("dashboard.quick_actions.add_mailbox", "Add Mailbox"),
       description: t("dashboard.quick_actions.add_sender_desc"),
@@ -407,7 +397,7 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.time) - new Date(a.time))
     .slice(0, 3);
 
-  const isLoading = campaignsLoading || sendersLoading || templatesLoading || batchesLoading;
+  const isLoading = campaignsLoading || sendersLoading || batchesLoading;
 
   if (isLoading && campaigns.length === 0) {
     return (
@@ -793,130 +783,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-start border-collapse">
-              <thead>
-                <tr className="bg-slate-50/50">
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                    {t("dashboard.table.campaign")}
-                  </th>
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                    {t("dashboard.table.status")}
-                  </th>
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                    {t("dashboard.table.reach")}
-                  </th>
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                    {t("dashboard.table.engagement")}
-                  </th>
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                    {t("dashboard.table.launch_date")}
-                  </th>
-                  <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 text-end">
-                    {t("dashboard.table.actions")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {recentCampaigns.length > 0 ? (
-                  recentCampaigns.map((campaign) => (
-                    <tr key={campaign.id} className="group hover:bg-blue-50/30 transition-colors">
-                      <td className="px-8 py-5">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center me-4 group-hover:scale-110 transition-transform">
-                            <Send className="w-5 h-5 text-blue-500" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-slate-800 mb-1">{campaign.name}</p>
-                            <div className="w-32 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-blue-500 rounded-full transition-all duration-1000"
-                                style={{ width: `${campaign.progress}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <span
-                          className={`inline-flex items-center px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${campaign.statusColor} border border-white/50 shadow-sm transition-transform group-hover:scale-105`}
-                        >
-                          <span className="me-2 opacity-70">{campaign.statusIcon}</span>
-                          {campaign.statusLabel}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-black text-slate-700 tracking-tight">
-                            {campaign.recipients}
-                          </span>
-                          <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
-                            {t("dashboard.table.recipients")}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-6">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-black text-blue-600 tracking-tight">
-                              {campaign.openRate}
-                            </span>
-                            <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
-                              {t("dashboard.table.open")}
-                            </span>
-                          </div>
-                          <div className="w-px h-6 bg-slate-100"></div>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-black text-indigo-600 tracking-tight">
-                              {campaign.clickRate}
-                            </span>
-                            <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
-                              {t("dashboard.table.click")}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] font-black text-slate-500 uppercase tracking-tight">
-                            {campaign.sentDate}
-                          </span>
-                          <span className="text-[8px] text-slate-300 font-bold uppercase tracking-widest">
-                            {t("dashboard.table.launched")}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-8 py-6 text-end">
-                        <Link
-                          to={`/dashboard/campaigns/${campaign.id}`}
-                          className="p-3 text-slate-400 hover:text-blue-600 hover:bg-white rounded-2xl transition-all inline-flex items-center justify-center shadow-sm hover:shadow-xl hover:shadow-blue-500/10 border border-transparent hover:border-blue-100"
-                        >
-                          <ChevronRight className="w-5 h-5" />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="py-20 text-center">
-                      <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Send className="w-10 h-10 text-slate-200" />
-                      </div>
-                      <h3 className="text-xl font-bold text-slate-800 mb-2">
-                        {t("dashboard.empty.no_campaigns")}
-                      </h3>
-                      <p className="text-slate-500 font-medium mb-8 max-w-xs mx-auto">
-                        {t("dashboard.empty.description")}
-                      </p>
-                      <Link to="/dashboard/campaigns/create" className="btn-primary">
-                        {t("dashboard.empty.create_first")}
-                      </Link>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <RecentCampaignsTable recentCampaigns={recentCampaigns} />
         </div>
 
         {/* Goal & Upcoming Section */}
@@ -992,17 +859,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <ShowTemplate
-        showTemplateModal={templateState.showTemplateModal}
-        setShowTemplateModal={templateSetters.setShowTemplateModal}
-        editingTemplate={templateState.editingTemplate}
-        formData={templateState.formData}
-        handleSaveTemplate={templateHandlers.handleSaveTemplate}
-        setFormData={templateSetters.setFormData}
-        editorMode={templateState.editorMode}
-        setEditorMode={templateSetters.setEditorMode}
-        defaultUserFields={templateState.defaultUserFields}
-      />
+
       {audienceData.showUploadModal && (
         <ShowUpload
           setShowUploadModal={audienceData.setShowUploadModal}

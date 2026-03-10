@@ -175,7 +175,7 @@ const Step2Audience = ({
       }
       toast.success(t('campaigns.msg_upload_success'));
     } catch (error) {
-      toast.error(t('campaigns.msg_upload_failed'));
+      toast.error(error.message || t('campaigns.msg_upload_failed'));
     }
   };
 

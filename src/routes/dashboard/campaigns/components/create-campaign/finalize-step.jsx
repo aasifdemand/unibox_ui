@@ -153,22 +153,31 @@ const Step3Finalize = ({
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
               <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Open Tracking</span>
-              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('trackOpens') ? 'bg-emerald-400' : 'bg-white/10'}`}>
-                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('trackOpens') ? 'right-[2px]' : 'left-[2px]'}`} />
+              <div
+                onClick={() => setValue('trackOpens', !watch('trackOpens'))}
+                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('trackOpens') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
+              >
+                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('trackOpens') ? 'left-[17px]' : 'left-[3px]'}`} />
               </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
               <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Click Tracking</span>
-              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('trackClicks') ? 'bg-emerald-400' : 'bg-white/10'}`}>
-                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('trackClicks') ? 'right-[2px]' : 'left-[2px]'}`} />
+              <div
+                onClick={() => setValue('trackClicks', !watch('trackClicks'))}
+                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('trackClicks') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
+              >
+                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('trackClicks') ? 'left-[17px]' : 'left-[3px]'}`} />
               </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
               <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Unsubscribe Footer</span>
-              <div className={`w-8 h-4 rounded-full relative transition-colors ${watch('unsubscribeLink') ? 'bg-emerald-400' : 'bg-white/10'}`}>
-                <div className={`absolute top-[2px] w-3 h-3 bg-white rounded-full transition-all ${watch('unsubscribeLink') ? 'right-[2px]' : 'left-[2px]'}`} />
+              <div
+                onClick={() => setValue('unsubscribeLink', !watch('unsubscribeLink'))}
+                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('unsubscribeLink') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
+              >
+                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('unsubscribeLink') ? 'left-[17px]' : 'left-[3px]'}`} />
               </div>
             </div>
           </div>

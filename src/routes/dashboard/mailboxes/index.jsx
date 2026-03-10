@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useMailboxesData } from './hooks/use-mailboxes-data';
@@ -16,6 +16,9 @@ import Pagination from './components/pagination';
 const Mailboxes = () => {
   const { t } = useTranslation();
   const { state, data, isLoading, error, setters, handlers, utils } = useMailboxesData();
+
+  const composeRef = useRef(null);
+  const [showComposePreview, setShowComposePreview] = useState(false);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteContext, setDeleteContext] = useState(null);
@@ -70,55 +73,61 @@ const Mailboxes = () => {
 
   return (
     <div className="w-full h-full flex flex-col bg-slate-50 min-w-0">
-      {state.view !== 'message' && (
-        <Header
-          view={state.view}
-          selectedMailbox={state.selectedMailbox}
-          selectedFolder={state.selectedFolder}
-          currentMessage={data.currentMessage}
-          mailboxesCount={data.mailboxes.length}
-          getFolderUnreadCount={data.getFolderUnreadCount}
-          filterUnread={state.filterUnread}
-          filterStarred={state.filterStarred}
-          filterAttachments={state.filterAttachments}
-          totalMessages={state.totalMessages}
-          startMessageCount={data.startMessageCount}
-          endMessageCount={data.endMessageCount}
-          getSubject={utils.getSubject}
-          onBack={
-            state.view === 'message' ? handlers.handleBackToMessages : handlers.handleBackToMailboxes
-          }
-          onRefresh={handlers.refetchMailboxes}
-          isLoading={isLoading.isMailboxes}
-          onCompose={handlers.handleCompose}
-          onSync={handlers.handleSync}
-          isSyncing={isLoading.isSyncing}
-          onFilterUnread={() => setters.setFilterUnread(!state.filterUnread)}
-          filterUnreadActive={state.filterUnread}
-          onRefreshToken={handlers.handleRefreshToken}
-          showRefreshToken={state.selectedMailbox?.type !== 'smtp'}
-          onDisconnect={handleRequestDisconnect}
-          selectedMessages={state.selectedMessages}
-          onBulkMarkRead={handlers.handleBulkMarkRead}
-          onBulkMarkUnread={handlers.handleBulkMarkUnread}
-          onBulkDelete={handleRequestBulkDelete}
-          onClearSelection={() => setters.setSelectedMessages([])}
-          mailboxType={state.selectedMailbox?.type}
-          onReply={() => handlers.handleReply(data.currentMessage)}
-          onForward={() => handlers.handleForward(data.currentMessage)}
-          onDeleteMessage={() => handlers.handleDeleteMessage(state.currentMessageId)}
-          showMessageActions={state.view === 'message'}
-          mailboxViewMode={state.mailboxViewMode}
-          onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
-          mailboxSearch={state.mailboxSearch}
-          onMailboxSearchChange={handlers.handleMailboxSearchChange}
-          mailboxTypeFilter={state.mailboxTypeFilter}
-          onMailboxTypeChange={handlers.handleMailboxTypeChange}
-          selectedSenderIds={state.selectedSenderIds}
-          onBulkSenderDelete={handleRequestBulkSenderDelete}
-          onClearSenderSelection={() => setters.setSelectedSenderIds([])}
-        />
-      )}
+      <Header
+        view={state.view}
+        selectedMailbox={state.selectedMailbox}
+        selectedFolder={state.selectedFolder}
+        currentMessage={data.currentMessage}
+        mailboxesCount={data.mailboxes.length}
+        getFolderUnreadCount={data.getFolderUnreadCount}
+        filterUnread={state.filterUnread}
+        filterStarred={state.filterStarred}
+        filterAttachments={state.filterAttachments}
+        totalMessages={state.totalMessages}
+        startMessageCount={data.startMessageCount}
+        endMessageCount={data.endMessageCount}
+        getSubject={utils.getSubject}
+        onBack={
+          state.view === 'message' ? handlers.handleBackToMessages : handlers.handleBackToMailboxes
+        }
+        onRefresh={handlers.refetchMailboxes}
+        isLoading={isLoading.isMailboxes}
+        onCompose={handlers.handleCompose}
+        onSync={handlers.handleSync}
+        isSyncing={isLoading.isSyncing}
+        onFilterUnread={() => setters.setFilterUnread(!state.filterUnread)}
+        filterUnreadActive={state.filterUnread}
+        onRefreshToken={handlers.handleRefreshToken}
+        showRefreshToken={state.selectedMailbox?.type !== 'smtp'}
+        onDisconnect={handleRequestDisconnect}
+        selectedMessages={state.selectedMessages}
+        onBulkMarkRead={handlers.handleBulkMarkRead}
+        onBulkMarkUnread={handlers.handleBulkMarkUnread}
+        onBulkDelete={handleRequestBulkDelete}
+        onClearSelection={() => setters.setSelectedMessages([])}
+        mailboxType={state.selectedMailbox?.type}
+        onReply={() => handlers.handleReply(data.currentMessage)}
+        onForward={() => handlers.handleForward(data.currentMessage)}
+        onDeleteMessage={() => handlers.handleDeleteMessage(state.currentMessageId)}
+        showMessageActions={state.view === 'message'}
+        mailboxViewMode={state.mailboxViewMode}
+        onToggleMailboxViewMode={handlers.handleToggleMailboxViewMode}
+        mailboxSearch={state.mailboxSearch}
+        onMailboxSearchChange={handlers.handleMailboxSearchChange}
+        mailboxTypeFilter={state.mailboxTypeFilter}
+        onMailboxTypeChange={handlers.handleMailboxTypeChange}
+        onBulkSenderDelete={handleRequestBulkSenderDelete}
+        onClearSenderSelection={() => setters.setSelectedSenderIds([])}
+        // Compose props for header
+        onSendCompose={() => composeRef.current?.handleSend()}
+        onSaveDraft={() => composeRef.current?.handleSaveDraft()}
+        isSending={isLoading.isSending}
+        composeType={state.replyToMessage ? 'reply' : state.forwardMessage ? 'forward' : 'new'}
+        onTogglePreview={() => setShowComposePreview(!showComposePreview)}
+        showPreview={showComposePreview}
+        onAttach={() => composeRef.current?.triggerFileUpload()}
+        onAttachImage={() => composeRef.current?.triggerImageUpload()}
+      />
 
       {error && (
         <div className="mx-6 mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
@@ -182,9 +191,9 @@ const Mailboxes = () => {
             </motion.div>
           )}
 
-          {state.view === 'messages' && state.selectedMailbox && (
+          {(state.view === 'messages' || state.view === 'message' || state.view === 'compose') && state.selectedMailbox && (
             <motion.div
-              key="messages-view"
+              key="messages-view-container"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
@@ -192,6 +201,23 @@ const Mailboxes = () => {
               className="h-full"
             >
               <MessagesView
+                ref={composeRef}
+                view={state.view}
+                currentMessage={data.currentMessage}
+                isMessageLoading={isLoading.isMessageLoading}
+                onBack={
+                  state.view === 'message' || state.view === 'compose'
+                    ? handlers.handleBackToMessages
+                    : handlers.handleBackToMailboxes
+                }
+                onDelete={() => handlers.handleDeleteMessage(state.currentMessageId)}
+                onReply={() => handlers.handleReply(data.currentMessage)}
+                onForward={() => handlers.handleForward(data.currentMessage)}
+                onMarkRead={() => handlers.handleMarkMessageAsRead(state.currentMessageId)}
+                onMarkUnread={() => handlers.handleMarkMessageAsUnread(state.currentMessageId)}
+                onStar={(id, starred) => handlers.handleToggleStar(id, starred)}
+                onPrint={() => window.print()}
+                onDownload={(id, filename) => handlers.handleDownloadAttachment(id, filename)}
                 selectedMailbox={state.selectedMailbox}
                 selectedFolder={state.selectedFolder}
                 folders={data.folders}
@@ -232,75 +258,20 @@ const Mailboxes = () => {
                 endMessageCount={data.endMessageCount}
                 totalMessages={state.totalMessages}
                 onCompose={handlers.handleCompose}
-              />
-            </motion.div>
-          )}
-
-          {state.view === 'compose' && state.selectedMailbox && (
-            <motion.div
-              key="compose-view"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="h-full"
-            >
-              <ComposeView
-                selectedMailbox={state.selectedMailbox}
-                onClose={handlers.handleCloseCompose}
-                onSend={handlers.handleSendMessage}
+                onCloseCompose={handlers.handleCloseCompose}
+                onSendCompose={() => composeRef.current?.handleSend()}
+                onSaveDraft={() => composeRef.current?.handleSaveDraft()}
                 replyToMessage={state.replyToMessage}
                 forwardMessage={state.forwardMessage}
-                onSaveDraft={handlers.handleSaveDraft}
+                isIntegrated={true}
+                showPreview={showComposePreview}
+                onTogglePreview={() => setShowComposePreview(!showComposePreview)}
               />
             </motion.div>
           )}
 
-          {state.view === 'message' && isLoading.isMessageLoading && (
-            <motion.div
-              key="message-loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center p-20 bg-white/50 animate-pulse"
-            >
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              </div>
-              <h3 className="text-lg font-bold text-slate-800">{t('mailboxes.loading_conversation')}</h3>
-              <p className="text-sm text-slate-500 mt-2 font-medium">
-                {t('mailboxes.fetching_content')}
-              </p>
-            </motion.div>
-          )}
 
-          {state.view === 'message' &&
-            data.currentMessage &&
-            !isLoading.isMessageLoading &&
-            state.selectedMailbox && (
-              <motion.div
-                key="message-detail"
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-                className="h-full"
-              >
-                <MessageDetailView
-                  message={data.currentMessage}
-                  mailbox={state.selectedMailbox}
-                  onBack={handlers.handleBackToMessages}
-                  onDelete={() => handlers.handleDeleteMessage(state.currentMessageId)}
-                  onReply={() => handlers.handleReply(data.currentMessage)}
-                  onForward={() => handlers.handleForward(data.currentMessage)}
-                  onMarkRead={() => handlers.handleMarkMessageAsRead(state.currentMessageId)}
-                  onMarkUnread={() => handlers.handleMarkMessageAsUnread(state.currentMessageId)}
-                  onStar={(id, starred) => handlers.handleToggleStar(id, starred)}
-                  onPrint={() => window.print()}
-                  onDownload={(id, filename) => handlers.handleDownloadAttachment(id, filename)}
-                />
-              </motion.div>
-            )}
+
         </AnimatePresence>
       </div>
 

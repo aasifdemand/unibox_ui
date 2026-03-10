@@ -17,18 +17,15 @@ import Pagination from '../../../../components/ui/pagination';
 
 const ResourcesTab = ({
   senders,
-  templates,
   batches,
   campaigns,
   loading,
   onDeleteSender,
-  onDeleteTemplate,
 }) => {
   const { t } = useTranslation();
   const [subTab, setSubTab] = useState('senders');
   const [pages, setPages] = useState({
     senders: 1,
-    templates: 1,
     lists: 1,
     campaigns: 1,
   });
@@ -65,12 +62,6 @@ const ResourcesTab = ({
 
   const resourceTabs = [
     { id: 'senders', label: t('settings.resources.tabs.senders'), icon: Mail, count: senders.length },
-    {
-      id: 'templates',
-      label: t('settings.resources.tabs.templates'),
-      icon: MessageSquare,
-      count: templates.length,
-    },
     { id: 'lists', label: t('settings.resources.tabs.lists'), icon: Users, count: batches.length },
     {
       id: 'campaigns',
@@ -172,70 +163,6 @@ const ResourcesTab = ({
               <div className="text-center py-20 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   {t('settings.resources.senders.none')}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Templates Content */}
-        {subTab === 'templates' && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="text-xl font-black text-slate-900 tracking-tight">
-                  {t('settings.resources.templates.title')}
-                </h4>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                  {t('settings.resources.templates.subtitle')}
-                </p>
-              </div>
-              <Link
-                to="/dashboard/templates/create"
-                className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg shadow-blue-500/20 active:scale-95"
-              >
-                <Plus className="w-3.5 h-3.5" /> {t('settings.resources.templates.add')}
-              </Link>
-            </div>
-
-            {loading.templates ? (
-              <div className="flex justify-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-600 opacity-20" />
-              </div>
-            ) : templates.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {getPaginatedData(templates, 'templates').map((template) => (
-                  <div
-                    key={template.id}
-                    className="p-5 border border-slate-100 rounded-3xl bg-white/50 hover:bg-white hover:shadow-xl hover:shadow-slate-900/2 transition-all duration-300 group"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <h5 className="text-sm font-black text-slate-900 truncate tracking-tight uppercase">
-                        {template.name}
-                      </h5>
-                      <button
-                        onClick={() => onDeleteTemplate(template.id)}
-                        className="p-2 text-slate-300 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <p className="text-[11px] font-bold text-slate-500 line-clamp-1 mb-6 opacity-60">
-                      {template.subject}
-                    </p>
-                    <Link
-                      to="/dashboard/templates"
-                      className="text-[9px] text-blue-600 font-black uppercase tracking-[0.25em] flex items-center hover:text-black transition-colors"
-                    >
-                      {t('settings.resources.templates.manage')} <ChevronRight className="w-3 h-3 ltr:ml-2 ltr:mr-2 rtl:ml-2" />
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-20 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  {t('settings.resources.templates.none')}
                 </p>
               </div>
             )}
@@ -363,14 +290,6 @@ const ResourcesTab = ({
             totalItems={senders.length}
             itemsPerPage={ITEMS_PER_PAGE}
             onPageChange={(p) => handlePageChange('senders', p)}
-          />
-        )}
-        {subTab === 'templates' && templates.length > ITEMS_PER_PAGE && (
-          <Pagination
-            currentPage={pages.templates}
-            totalItems={templates.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={(p) => handlePageChange('templates', p)}
           />
         )}
         {subTab === 'lists' && batches.length > ITEMS_PER_PAGE && (

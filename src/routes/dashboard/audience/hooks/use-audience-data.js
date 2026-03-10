@@ -83,7 +83,7 @@ export const useAudienceData = () => {
       refetchBatches();
       toast.success('Upload successful!');
     } catch (error) {
-      toast.error(`Upload failed: ${error.message}`);
+      toast.error(`Upload failed: ${error.message || 'Unknown error'}`);
     }
   };
 

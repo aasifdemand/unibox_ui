@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "電子メール",
         "dashboard": "ダッシュボード",
         "growth_platform": "成長プラットフォーム",
         "main_dashboard": "メインダッシュボード",
@@ -18,6 +19,7 @@
             "scheduled": "予定",
             "completed": "完了しました"
         },
+        "date": "日付",
         "search": "検索",
         "documentation": "ドキュメント",
         "privacy": "プライバシー",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "メール",
         "subtitle": "アカウント",
+        "viewing_conversation": "会話の表示",
         "connected_description": "{{count}} 接続されたアカウントが同期され、準備が整いました。",
         "conversation": "コンバーセーション",
         "connected_accounts": "{{count}} 個のアカウントが接続済み",
@@ -156,6 +159,7 @@
         "showing": "表示中",
         "prev": "前へ",
         "next": "次へ",
+        "status": "ステータス",
         "no_messages": "メッセージが見つかりません",
         "empty_search": "別の検索語を試してください",
         "empty_unread": "未読メッセージはありません",
@@ -550,6 +554,7 @@
         "valid": "有効です",
         "risky": "危険",
         "invalid": "無効です",
+        "unknown": "へ不明",
         "unverified": "未検証",
         "uploaded_on": "アップロード日",
         "view_details": "詳細を表示",
@@ -830,8 +835,8 @@
                 "placeholder_email": "へsender@example.com",
                 "placeholder_host_smtp": "へsmtp.example.com",
                 "placeholder_host_imap": "へimap.example.com",
-                "placeholder_port_smtp": "587",
-                "placeholder_port_imap": "993",
+                "placeholder_port_smtp": "へ587",
+                "placeholder_port_imap": "へ993",
                 "placeholder_pass": "••••••••"
             },
             "tabs": {
@@ -925,6 +930,7 @@
             "template": "テンプレートのプレビュー",
             "first_name": "名",
             "last_name": "姓",
+            "name": "名前",
             "company": "会社",
             "phone": "電話",
             "city": "都市",

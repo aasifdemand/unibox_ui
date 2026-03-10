@@ -11,7 +11,6 @@ import Dialog from '../../../components/ui/dialog';
 // Hooks
 import { useCurrentUser } from '../../../hooks/useAuth';
 import { useSenders, useDeleteSender } from '../../../hooks/useSenders';
-import { useTemplates, useDeleteTemplate } from '../../../hooks/useTemplate';
 import { useBatches } from '../../../hooks/useBatches';
 import { useCampaigns } from '../../../hooks/useCampaign';
 import toast from 'react-hot-toast';
@@ -30,13 +29,11 @@ const Settings = () => {
     limit: 1000,
   });
   const senders = senderResponse.data || [];
-  const { data: templates = [], isLoading: templatesLoading } = useTemplates();
   const { data: batches = [], isLoading: batchesLoading } = useBatches();
   const { data: campaigns = [], isLoading: campaignsLoading } = useCampaigns();
 
   // Resource Mutations
   const deleteSender = useDeleteSender();
-  const deleteTemplate = useDeleteTemplate();
 
   const handleOnDeleteSender = (id) => {
     const sender = senders.find((s) => s.id === id);
@@ -48,15 +45,7 @@ const Settings = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleOnDeleteTemplate = (id) => {
-    const template = templates.find((t) => t.id === id);
-    setDeleteTarget(
-      template
-        ? { type: 'template', id, label: template.name }
-        : { type: 'template', id, label: 'this template' },
-    );
-    setDeleteDialogOpen(true);
-  };
+
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
@@ -64,9 +53,7 @@ const Settings = () => {
       if (deleteTarget.type === 'sender') {
         await deleteSender.mutateAsync({ senderId: deleteTarget.id });
         toast.success(t('settings.delete.msg_sender'));
-      } else if (deleteTarget.type === 'template') {
-        await deleteTemplate.mutateAsync(deleteTarget.id);
-        toast.success(t('settings.delete.msg_template'));
+
       }
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
@@ -237,17 +224,14 @@ const Settings = () => {
                 >
                   <ResourcesTab
                     senders={senders}
-                    templates={templates}
                     batches={batches}
                     campaigns={campaigns}
                     loading={{
                       senders: sendersLoading,
-                      templates: templatesLoading,
                       batches: batchesLoading,
                       campaigns: campaignsLoading,
                     }}
                     onDeleteSender={handleOnDeleteSender}
-                    onDeleteTemplate={handleOnDeleteTemplate}
                   />
                 </motion.div>
               )}
@@ -262,9 +246,7 @@ const Settings = () => {
         title={
           deleteTarget?.type === 'sender'
             ? t('settings.delete.sender')
-            : deleteTarget?.type === 'template'
-              ? t('settings.delete.template')
-              : t('settings.delete.item')
+            : t('settings.delete.item')
         }
         description={
           deleteTarget
@@ -276,9 +258,7 @@ const Settings = () => {
         isLoading={
           deleteTarget?.type === 'sender'
             ? deleteSender.isPending
-            : deleteTarget?.type === 'template'
-              ? deleteTemplate.isPending
-              : false
+            : false
         }
         onCancel={() => {
           setDeleteDialogOpen(false);

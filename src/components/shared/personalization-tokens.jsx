@@ -170,11 +170,11 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, extern
                     </div>
                     <div className="flex-1 min-w-0 flex items-center justify-between">
                       <div className="flex flex-col overflow-hidden">
-                        <span className="font-bold text-slate-800 text-[10px] truncate">
+                        <span className="font-medium text-slate-700 text-[10px] truncate">
                           {token.label}
                         </span>
                       </div>
-                      <code className="text-[7px] bg-white border border-slate-100 px-1 py-0.5 rounded-md font-mono text-blue-600/70 font-bold ml-2 shrink-0">
+                      <code className="text-[7px] bg-white/50 border border-slate-100/80 px-1.5 py-0.5 rounded-md font-mono text-blue-500/80 font-medium ml-2 shrink-0">
                         {token.token.replace(/[{}]/g, '')}
                       </code>
                     </div>

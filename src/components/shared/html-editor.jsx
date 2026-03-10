@@ -11,11 +11,7 @@ import BulletList from '@tiptap/extension-bullet-list';
 import OrderedList from '@tiptap/extension-ordered-list';
 import ListItem from '@tiptap/extension-list-item';
 import Strike from '@tiptap/extension-strike';
-import Code from '@tiptap/extension-code';
-import CodeBlock from '@tiptap/extension-code-block';
-import Blockquote from '@tiptap/extension-blockquote';
-import HorizontalRule from '@tiptap/extension-horizontal-rule';
-import HardBreak from '@tiptap/extension-hard-break';
+
 
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
@@ -32,6 +28,7 @@ import {
   Bold,
   Italic,
   Underline as UnderlineIcon,
+  Strikethrough,
   Eye,
   Trash2,
   Undo,
@@ -46,6 +43,16 @@ import {
   AlignJustify,
   TypeOutline,
   Hash,
+  Heading1,
+  Heading2,
+  Heading3,
+  Link as LinkIcon,
+  Image as ImageIcon,
+  Quote,
+  Minus,
+  Palette,
+  Table as TableIcon,
+  ChevronDown,
 } from 'lucide-react';
 import PersonalizationTokens from './personalization-tokens';
 
@@ -141,9 +148,9 @@ function findVariables(doc) {
         decorations.push(
           Decoration.inline(pos + match.index, pos + match.index + match[0].length, {
             class:
-              'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-bold border border-amber-200/60 shadow-sm',
+              'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-amber-200/60 shadow-sm',
             style:
-              'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 700;',
+              'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 500;',
           }),
         );
       }
@@ -160,6 +167,8 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   const tokenRef = useRef(null);
   const containerRef = useRef(null);
   const [previewMode, setPreviewMode] = useState(false);
+  const [imageUploadTab, setImageUploadTab] = useState('url'); // 'url' | 'file'
+  const [openDropdown, setOpenDropdown] = useState(null); // 'style' | 'font' | 'size' | 'format' | 'align' | 'lists' | 'insert'
 
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontPicker, setShowFontPicker] = useState(false);
@@ -174,28 +183,17 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
 
   const editor = useEditor({
     extensions: [
-      // ✅ StarterKit with History ENABLED (don't disable it)
+      // ✅ StarterKit includes: Bold, Italic, Strike, Code, CodeBlock, Blockquote, HorizontalRule, HardBreak, Heading, History
       StarterKit.configure({
         bulletList: false,
         orderedList: false,
         listItem: false,
-        code: false,
-        codeBlock: false,
-        blockquote: false,
-        horizontalRule: false,
-        hardBreak: false,
-        // ❌ REMOVED: history: false - this was the problem!
+        heading: {
+          levels: [1, 2, 3, 4, 5, 6],
+        },
       }),
       Underline,
       Strike,
-      Code,
-      CodeBlock.configure({
-        language: 'html',
-      }),
-      Blockquote,
-      HorizontalRule,
-      HardBreak,
-      // ❌ REMOVED: History import completely - StarterKit provides it
       TextAlign.configure({
         types: ['heading', 'paragraph'],
         alignments: ['left', 'center', 'right', 'justify'],
@@ -213,6 +211,9 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
       Image.configure({
         allowBase64: true,
         inline: true,
+        HTMLAttributes: {
+          style: 'max-width: 400px; width: 100%; height: auto; display: inline-block;',
+        },
       }),
       BulletList.configure({
         keepMarks: true,
@@ -354,19 +355,37 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   };
 
   const setLink = () => {
-    if (linkUrl) {
-      editor.chain().focus().setLink({ href: linkUrl }).run();
-      setLinkUrl('');
-      setShowLinkModal(false);
+    if (!linkUrl) return;
+    const url = linkUrl.startsWith('http') ? linkUrl : `https://${linkUrl}`;
+    const { from, to, empty } = editor.state.selection;
+    if (empty) {
+      // No text selected — insert the URL as clickable text
+      editor
+        .chain()
+        .focus()
+        .insertContent(`<a href="${url}" class="text-blue-600 underline cursor-pointer">${url}</a>`)
+        .run();
+    } else {
+      editor.chain().focus().setLink({ href: url }).run();
     }
+    setLinkUrl('');
+    setShowLinkModal(false);
   };
 
-  const addImage = () => {
-    if (imageUrl) {
-      editor.chain().focus().setImage({ src: imageUrl }).run();
+  const addImage = (src) => {
+    if (src) {
+      editor.chain().focus().setImage({ src }).run();
       setImageUrl('');
       setShowImageModal(false);
     }
+  };
+
+  const handleImageFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => addImage(reader.result);
+    reader.readAsDataURL(file);
   };
 
   const insertTable = () => {
@@ -413,55 +432,95 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   }
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-white group/editor">
-      {/* Single-Line Professional Toolbar - No Overflow Clip for Dropdowns */}
-      <div className="flex items-center gap-1 p-2 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-20 backdrop-blur-3xl min-h-[50px]">
-        {/* Navigation */}
-        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
+    <div className="flex flex-col h-full bg-white group/editor">
+      {/* Toolbar - z-index high so dropdowns render above content */}
+      <div className="sticky top-0 z-[100] border-b border-slate-100 bg-white">
+        <div className="flex items-center gap-0.5 px-2 py-1.5 min-h-[44px]">
+
+          {/* Undo / Redo */}
           <button
             type="button"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
-            className="p-1 rounded-md hover:bg-slate-50 text-slate-500 disabled:opacity-20 transition-all"
+            className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-slate-500 hover:bg-slate-100 disabled:opacity-25 transition-all text-[11px] font-semibold flex-none"
+            title="Undo"
           >
             <Undo className="w-3.5 h-3.5" />
+            <span>Undo</span>
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
-            className="p-1 rounded-md hover:bg-slate-50 text-slate-500 disabled:opacity-20 transition-all"
+            className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-slate-500 hover:bg-slate-100 disabled:opacity-25 transition-all text-[11px] font-semibold flex-none"
+            title="Redo"
           >
             <Redo className="w-3.5 h-3.5" />
+            <span>Redo</span>
           </button>
-        </div>
 
-        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
+          <div className="w-px h-5 bg-slate-200 mx-1 flex-none" />
 
-        {/* Typography */}
-        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
-          <div className="relative">
+          {/* Style Dropdown */}
+          <div className="relative flex-none">
             <button
               type="button"
-              onClick={() => {
-                setShowFontPicker(!showFontPicker);
-                setShowFontSizePicker(false);
-              }}
-              className={`px-2 py-1 rounded-md flex items-center gap-1.5 transition-all ${showFontPicker ? 'bg-blue-600 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-600'}`}
+              onClick={() => setOpenDropdown(openDropdown === 'style' ? null : 'style')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[110px] ${openDropdown === 'style' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
-              <TypeOutline className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-bold truncate max-w-[60px] hidden lg:inline">
+              <span className="flex-1 text-left">
+                {editor.isActive('paragraph') ? 'Paragraph' :
+                  [1, 2, 3, 4, 5, 6].find(level => editor.isActive('heading', { level }))
+                    ? <span className="uppercase">h{[1, 2, 3, 4, 5, 6].find(level => editor.isActive('heading', { level }))}</span>
+                    : 'Style'}
+              </span>
+              <ChevronDown className="w-3 h-3 flex-none" />
+            </button>
+            {openDropdown === 'style' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-32 animate-in fade-in zoom-in-95 duration-150 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setParagraph().run(); setOpenDropdown(null); }}
+                  className={`w-full text-left px-4 py-2 text-[11px] font-bold border-b border-slate-50 transition-colors ${editor.isActive('paragraph') ? 'bg-blue-50 text-blue-600' : 'hover:bg-slate-50 text-slate-600'}`}
+                >
+                  Paragraph
+                </button>
+                {[1, 2, 3, 4, 5, 6].map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => { editor.chain().focus().toggleHeading({ level }).run(); setOpenDropdown(null); }}
+                    className={`w-full text-left px-4 py-2 text-[13px] font-black uppercase border-b border-slate-50 last:border-0 transition-colors ${editor.isActive('heading', { level }) ? 'bg-blue-50 text-blue-600' : 'hover:bg-slate-50 text-slate-900'}`}
+                  >
+                    h{level}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Font Dropdown */}
+          <div className="relative flex-none">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'font' ? null : 'font')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[100px] ${openDropdown === 'font' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <TypeOutline className="w-3.5 h-3.5 flex-none" />
+              <span className="flex-1 text-left truncate max-w-[70px]">
                 {editor.getAttributes('textStyle').fontFamily?.split(',')[0] || 'Font'}
               </span>
+              <ChevronDown className="w-3 h-3 flex-none" />
             </button>
-            {showFontPicker && (
-              <div className="absolute top-full left-0 mt-2 bg-white border border-slate-100 rounded-xl shadow-2xl p-1 z-[100] w-48 border-slate-200 animate-in fade-in zoom-in-95 duration-150">
-                <div className="max-h-60 overflow-y-auto custom-scrollbar p-1">
+            {openDropdown === 'font' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-48 animate-in fade-in zoom-in-95 duration-150">
+                <div className="max-h-60 overflow-y-auto custom-scrollbar">
                   {FONTS.map((font) => (
                     <button
                       key={font}
-                      onClick={() => { editor.chain().focus().setFontFamily(font).run(); setShowFontPicker(false); }}
-                      className={`w-full text-left px-3 py-1.5 text-xs hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-blue-50 text-blue-600 font-bold' : ''}`}
+                      type="button"
+                      onClick={() => { editor.chain().focus().setFontFamily(font).run(); setOpenDropdown(null); }}
+                      className={`w-full text-left px-3 py-2 text-xs transition-colors ${editor.getAttributes('textStyle').fontFamily === font ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                       style={{ fontFamily: font }}
                     >
                       {font}
@@ -472,28 +531,26 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             )}
           </div>
 
-          <div className="relative">
+          {/* Size Dropdown */}
+          <div className="relative flex-none">
             <button
               type="button"
-              onClick={() => {
-                setShowFontSizePicker(!showFontSizePicker);
-                setShowFontPicker(false);
-              }}
-              className={`px-2 py-1 rounded-md flex items-center gap-1.5 transition-all ${showFontSizePicker ? 'bg-indigo-600 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-600'}`}
+              onClick={() => setOpenDropdown(openDropdown === 'size' ? null : 'size')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[60px] ${openDropdown === 'size' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
-              <Hash className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-bold hidden lg:inline">
-                {editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}
-              </span>
+              <Hash className="w-3.5 h-3.5 flex-none" />
+              <span>{editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}</span>
+              <ChevronDown className="w-3 h-3 flex-none" />
             </button>
-            {showFontSizePicker && (
-              <div className="absolute top-full left-0 mt-2 bg-white border border-slate-100 rounded-xl shadow-2xl p-1 z-[100] w-20 border-slate-200 animate-in fade-in zoom-in-95 duration-150">
-                <div className="max-h-60 overflow-y-auto custom-scrollbar p-1">
+            {openDropdown === 'size' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-20 animate-in fade-in zoom-in-95 duration-150">
+                <div className="max-h-60 overflow-y-auto custom-scrollbar">
                   {FONT_SIZES.map((size) => (
                     <button
                       key={size}
-                      onClick={() => { editor.chain().focus().setFontSize(`${size}px`).run(); setShowFontSizePicker(false); }}
-                      className={`w-full text-center px-2 py-1.5 text-[11px] font-bold hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors ${editor.getAttributes('textStyle').fontSize === `${size}px` ? 'bg-indigo-50 text-indigo-600' : ''}`}
+                      type="button"
+                      onClick={() => { editor.chain().focus().setFontSize(`${size}px`).run(); setOpenDropdown(null); }}
+                      className={`w-full text-center px-2 py-1.5 text-xs transition-colors ${editor.getAttributes('textStyle').fontSize === `${size}px` ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                     >
                       {size}
                     </button>
@@ -502,108 +559,232 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               </div>
             )}
           </div>
-        </div>
 
-        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
+          <div className="w-px h-5 bg-slate-200 mx-1 flex-none" />
 
-        {/* Basic Formatting */}
-        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('bold') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <Bold className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('italic') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <Italic className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('underline') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <UnderlineIcon className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('highlight') ? 'bg-amber-400 text-amber-950 shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <Highlighter className="w-3.5 h-3.5" />
-          </button>
-        </div>
+          {/* Format Dropdown */}
+          <div className="relative flex-none">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'format' ? null : 'format')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'format' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <Bold className="w-3.5 h-3.5" />
+              <span>Format</span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {openDropdown === 'format' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleBold().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bold') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <Bold className="w-3.5 h-3.5" /><span>Bold</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleItalic().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('italic') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <Italic className="w-3.5 h-3.5" /><span>Italic</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleUnderline().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('underline') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <UnderlineIcon className="w-3.5 h-3.5" /><span>Underline</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleStrike().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('strike') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <Strikethrough className="w-3.5 h-3.5" /><span>Strikethrough</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleHighlight().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('highlight') ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <Highlighter className="w-3.5 h-3.5" /><span>Highlight</span>
+                </button>
+                <div className="border-t border-slate-100 mt-1 pt-1">
+                  <label className="flex items-center gap-3 px-3 py-2 cursor-pointer text-xs text-slate-700 hover:bg-slate-50 transition-colors">
+                    <Palette className="w-3.5 h-3.5" />
+                    <span>Text Color</span>
+                    <input
+                      type="color"
+                      className="ml-auto w-5 h-5 rounded cursor-pointer border-0 p-0 overflow-hidden"
+                      value={editor.getAttributes('textStyle').color || '#000000'}
+                      onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+                    />
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
 
-        <div className="w-px h-5 bg-slate-200/60 flex-none mx-0.5" />
+          {/* Align Dropdown */}
+          <div className="relative flex-none">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'align' ? null : 'align')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'align' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <AlignLeft className="w-3.5 h-3.5" />
+              <span>Align</span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {openDropdown === 'align' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setTextAlign('left').run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'left' }) ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <AlignLeft className="w-3.5 h-3.5" /><span>Align Left</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setTextAlign('center').run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'center' }) ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <AlignCenter className="w-3.5 h-3.5" /><span>Align Center</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setTextAlign('right').run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'right' }) ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <AlignRight className="w-3.5 h-3.5" /><span>Align Right</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setTextAlign('justify').run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'justify' }) ? 'bg-blue-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <AlignJustify className="w-3.5 h-3.5" /><span>Justify</span>
+                </button>
+              </div>
+            )}
+          </div>
 
-        {/* Lists & Alignment */}
-        <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200/40 shadow-xs flex-none">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('bulletList') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <List className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive('orderedList') ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <ListOrdered className="w-3.5 h-3.5" />
-          </button>
-          <div className="w-px h-3 bg-slate-100 mx-0.5" />
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('left').run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'left' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <AlignLeft className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('center').run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'center' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <AlignCenter className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('right').run()}
-            className={`p-1.5 rounded-md transition-all ${editor.isActive({ textAlign: 'right' }) ? 'bg-slate-900 text-white shadow-sm' : 'hover:bg-slate-50 text-slate-500'}`}
-          >
-            <AlignRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+          {/* Lists Dropdown */}
+          <div className="relative flex-none">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'lists' ? null : 'lists')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'lists' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <List className="w-3.5 h-3.5" />
+              <span>Lists</span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {openDropdown === 'lists' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleBulletList().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bulletList') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <List className="w-3.5 h-3.5" /><span>Bullet List</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleOrderedList().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('orderedList') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <ListOrdered className="w-3.5 h-3.5" /><span>Numbered List</span>
+                </button>
+              </div>
+            )}
+          </div>
 
-        <div className="flex-1 min-w-1" />
+          <div className="w-px h-5 bg-slate-200 mx-1 flex-none" />
 
-        {/* Actions */}
-        <div className="flex items-center gap-1 flex-none">
-          <button
-            type="button"
-            onClick={() => setPreviewMode(!previewMode)}
-            className={`p-1.5 rounded-xl transition-all ${previewMode ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white border border-slate-200/60 text-slate-600 hover:bg-slate-50'}`}
-            title={previewMode ? "Editor" : "Preview"}
-          >
-            {previewMode ? <FileText className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-          </button>
+          {/* Insert Dropdown */}
+          <div className="relative flex-none">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'insert' ? null : 'insert')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'insert' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+            >
+              <LinkIcon className="w-3.5 h-3.5" />
+              <span>Insert</span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {openDropdown === 'insert' && (
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-2xl py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  type="button"
+                  onClick={() => { setShowLinkModal(true); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('link') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <LinkIcon className="w-3.5 h-3.5" /><span>Hyperlink</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setImageUploadTab('url'); setShowImageModal(true); setOpenDropdown(null); }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-xs hover:bg-slate-50 text-slate-700 transition-colors"
+                >
+                  <ImageIcon className="w-3.5 h-3.5" /><span>Image</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowTableModal(true); setOpenDropdown(null); }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-xs hover:bg-slate-50 text-slate-700 transition-colors"
+                >
+                  <TableIcon className="w-3.5 h-3.5" /><span>Table</span>
+                </button>
+                <div className="border-t border-slate-100 my-1" />
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().toggleBlockquote().run(); setOpenDropdown(null); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('blockquote') ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                >
+                  <Quote className="w-3.5 h-3.5" /><span>Blockquote</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { editor.chain().focus().setHorizontalRule().run(); setOpenDropdown(null); }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-xs hover:bg-slate-50 text-slate-700 transition-colors"
+                >
+                  <Minus className="w-3.5 h-3.5" /><span>Divider</span>
+                </button>
+              </div>
+            )}
+          </div>
 
-          <button
-            type="button"
-            onClick={clearContent}
-            className="p-1.5 rounded-lg bg-white border border-slate-200/60 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-all"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex-1 min-w-1" />
+
+          {/* Actions */}
+          <div className="flex items-center gap-1 flex-none translate-x-[-4px]">
+            <button
+              type="button"
+              onClick={() => setPreviewMode(!previewMode)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${previewMode ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+              title={previewMode ? 'Editor' : 'Preview'}
+            >
+              {previewMode ? <FileText className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+              <span>{previewMode ? 'Edit' : 'Preview'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={clearContent}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-all"
+              title="Clear"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Clear</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div ref={containerRef} className="relative flex-1 bg-slate-50/30">
+      <div ref={containerRef} className="relative z-0 flex-1 bg-slate-50/30">
         {previewMode ? (
           <div className="p-4 md:p-8 h-full overflow-y-auto animate-in fade-in duration-500 custom-scrollbar">
             <div className="max-w-4xl mx-auto premium-card bg-white min-h-125 overflow-hidden flex flex-col rounded-3xl border border-slate-100 shadow-2xl">
@@ -618,7 +799,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                 </div>
               </div>
               <div
-                className="flex-1 p-8 md:p-10 lg:p-12 prose prose-slate prose-lg max-w-none text-slate-800 mail-content-html leading-normal"
+                className="flex-1 p-8 md:p-10 lg:p-12 max-w-none text-slate-800 mail-content-html leading-normal"
                 dangerouslySetInnerHTML={{
                   __html: (value || '').replace(
                     /\{\{\s*sender_name\s*\}\}/g,
@@ -699,36 +880,55 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center">
-                  {' '}
-                  <ImageIcon className="w-5 h-5 text-emerald-600" />{' '}
+                <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center">
+                  <ImageIcon className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
-                  Insert Image
-                </h3>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">Insert Image</h3>
               </div>
-              <input
-                type="text"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="https://asset-source.com/img.jpg"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl mb-6 text-sm outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all"
-                autoFocus
-              />
-              <div className="flex gap-3">
+              {/* Tabs */}
+              <div className="flex gap-2 mb-5 bg-slate-100 p-1 rounded-xl">
                 <button
-                  onClick={() => setShowImageModal(false)}
-                  className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all"
+                  type="button"
+                  onClick={() => setImageUploadTab('url')}
+                  className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${imageUploadTab === 'url' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'
+                    }`}
                 >
-                  Abort
+                  URL
                 </button>
                 <button
-                  onClick={addImage}
-                  className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-all"
+                  type="button"
+                  onClick={() => setImageUploadTab('file')}
+                  className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${imageUploadTab === 'file' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'
+                    }`}
                 >
-                  Sync
+                  Upload
                 </button>
               </div>
+              {imageUploadTab === 'url' ? (
+                <>
+                  <input
+                    type="text"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl mb-6 text-sm outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
+                    autoFocus
+                  />
+                  <div className="flex gap-3">
+                    <button onClick={() => setShowImageModal(false)} className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Cancel</button>
+                    <button onClick={() => addImage(imageUrl)} className="flex-1 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 active:scale-95 transition-all">Insert</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-blue-200 rounded-2xl cursor-pointer bg-blue-50/30 hover:bg-blue-50 transition-all mb-6">
+                    <ImageIcon className="w-8 h-8 text-blue-400 mb-2" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">Click to choose file</span>
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageFileUpload} />
+                  </label>
+                  <button onClick={() => setShowImageModal(false)} className="w-full py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Cancel</button>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -790,7 +990,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
         {showTokens && (
           <div
             ref={tokenRef}
-            className="absolute z-50 animate-in slide-in-from-top-1 duration-300 w-48 shadow-2xl"
+            className="absolute z-[600] animate-in slide-in-from-top-1 duration-300 w-48 shadow-2xl"
             style={{
               top: `${dropdownPos.top}px`,
               left: `${dropdownPos.left}px`,

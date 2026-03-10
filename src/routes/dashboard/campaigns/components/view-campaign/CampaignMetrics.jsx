@@ -24,8 +24,8 @@ const CampaignMetrics = ({ campaign, stats }) => {
       value: stats.totalOpened,
       icon: <Mail className="w-5 h-5" />,
       theme: 'purple',
-      description: stats.totalSent
-        ? `${Math.round((stats.totalOpened / stats.totalSent) * 100)}% Open Rate`
+      description: stats.uniqueContacted
+        ? `${Math.round((stats.totalOpened / stats.uniqueContacted) * 100)}% Open Rate`
         : '0% Open Rate',
       subLabel: 'Engagement',
     },
@@ -34,8 +34,8 @@ const CampaignMetrics = ({ campaign, stats }) => {
       value: stats.totalReplied,
       icon: <MessageCircle className="w-5 h-5" />,
       theme: 'amber',
-      description: stats.totalSent
-        ? `${Math.round((stats.totalReplied / stats.totalSent) * 100)}% Reply Rate`
+      description: stats.uniqueContacted
+        ? `${Math.round((stats.totalReplied / stats.uniqueContacted) * 100)}% Reply Rate`
         : '0% Reply Rate',
       subLabel: 'Responses',
     },

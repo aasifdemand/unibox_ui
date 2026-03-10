@@ -1,45 +1,35 @@
 // hooks/useAllContacts.js
-// Fetches contacts from ALL batches and provides a flat list for the Audience table.
-import { useQueries } from '@tanstack/react-query';
-import { useBatches, batchKeys } from '../../../../hooks/useBatches';
+import { useQuery } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const fetchBatchStatus = async (batchId) => {
-    const res = await fetch(`${API_URL}/lists/batch/${batchId}/status`, {
+const fetchAllContacts = async (params = {}) => {
+    // Send limit, page, searchTerm, filterStatus
+    const searchParams = new URLSearchParams({
+        limit: params.limit || 10,
+        page: params.page || 1,
+        searchTerm: params.searchTerm || '',
+        filterStatus: params.filterStatus || 'all'
+    });
+
+    const res = await fetch(`${API_URL}/lists/contacts?${searchParams.toString()}`, {
         credentials: 'include',
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to fetch batch status');
-    return data.data;
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch contacts');
+    return data.data; // { contacts: [...], pagination: { total, page, limit, pages } }
 };
 
-/**
- * Returns all contacts across all uploaded batches as a flat array.
- * Each contact has a `sourceBatch` field injected for reference.
- */
-export const useAllContacts = () => {
-    const { data: batches = [], isLoading: isLoadingBatches } = useBatches();
-
-    const batchQueries = useQueries({
-        queries: batches.map((batch) => ({
-            queryKey: batchKeys.status(batch.id),
-            queryFn: () => fetchBatchStatus(batch.id),
-            staleTime: 60 * 1000,
-            enabled: !!batch.id,
-        })),
+export const useAllContacts = (params = {}) => {
+    const { data, isLoading } = useQuery({
+        queryKey: ['contacts', params],
+        queryFn: () => fetchAllContacts(params),
+        keepPreviousData: true,
     });
 
-    const isLoading = isLoadingBatches || batchQueries.some((q) => q.isLoading && q.fetchStatus !== 'idle');
-
-    const contacts = batchQueries.flatMap((query, idx) => {
-        const records = query.data?.allRecords || [];
-        const batch = batches[idx];
-        return records.map((r) => ({
-            ...r,
-            sourceBatch: batch?.originalFilename || '',
-        }));
-    });
-
-    return { contacts, isLoading };
+    return {
+        contacts: data?.contacts || [],
+        pagination: data?.pagination || { total: 0, page: 1, limit: 10, pages: 0 },
+        isLoading,
+    };
 };

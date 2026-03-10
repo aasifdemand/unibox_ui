@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Send, Paperclip, Image as ImageIcon, ChevronLeft, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -13,21 +13,23 @@ import {
 } from '../utils/utils';
 
 
-const ComposeView = ({
+const ComposeView = forwardRef(({
   selectedMailbox,
   onClose,
   onSend,
   replyToMessage,
   forwardMessage,
   onSaveDraft,
-}) => {
+  isIntegrated = false,
+  showPreview,
+  onTogglePreview,
+}, ref) => {
   const { t } = useTranslation();
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const [messageText, setMessageText] = useState(''); // The new message content
   const [quoteHtml, setQuoteHtml] = useState(''); // The original message content
   const [isSending, setIsSending] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const fileInputRef = React.useRef(null);
   const imageInputRef = React.useRef(null);
@@ -154,15 +156,25 @@ const ComposeView = ({
 
   const handleSaveDraft = () => {
     onSaveDraft?.({
-      to: to.split(',').map((e) => e.trim()),
+      to: to.split(',').map((e) => e.trim()).filter(e => e),
       subject,
       html: bodyHtml,
+      body: bodyHtml.replace(/<[^>]*>/g, ''),
+      attachments,
     });
-    toast.success(t('mailboxes.draft_saved_success'));
   };
 
+  useImperativeHandle(ref, () => ({
+    handleSend,
+    handleSaveDraft,
+    togglePreview: () => onTogglePreview?.(),
+    triggerFileUpload: () => fileInputRef.current?.click(),
+    triggerImageUpload: () => imageInputRef.current?.click(),
+    showPreview,
+  }));
+
   return (
-    <div className="h-full flex flex-col bg-white ltr:border-l ltr:border-r rtl:border-l border-slate-200">
+    <div className={`h-full flex flex-col ${isIntegrated ? '' : 'bg-white ltr:border-l ltr:border-r rtl:border-l border-slate-200'}`}>
       {/* Hidden File Inputs */}
       <input
         type="file"
@@ -180,30 +192,32 @@ const ComposeView = ({
         multiple
       />
 
-      {/* Header */}
-      <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      {/* Header - Only in non-integrated mode */}
+      {!isIntegrated && (
+        <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors text-slate-600"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h2 className="text-lg font-medium text-slate-900">
+                {replyToMessage ? t('mailboxes.reply') : forwardMessage ? t('mailboxes.forward') : t('mailboxes.new_message')}
+              </h2>
+              <p className="text-sm text-slate-500">{selectedMailbox?.email}</p>
+            </div>
+          </div>
+
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-200 rounded-lg transition-colors text-slate-600"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <X className="w-5 h-5" />
           </button>
-          <div>
-            <h2 className="text-lg font-medium text-slate-900">
-              {replyToMessage ? t('mailboxes.reply') : forwardMessage ? t('mailboxes.forward') : t('mailboxes.new_message')}
-            </h2>
-            <p className="text-sm text-slate-500">{selectedMailbox?.email}</p>
-          </div>
         </div>
-
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-slate-200 rounded-lg transition-colors text-slate-600"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+      )}
 
       {/* Form Fields */}
       <div className="flex-1 overflow-y-auto">
@@ -237,15 +251,15 @@ const ComposeView = ({
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest px-1">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
               {t('mailboxes.your_message')}
             </label>
-            <div className="border border-slate-100 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500 transition-all bg-white shadow-sm">
+            <div className={`rounded-[2rem] overflow-hidden focus-within:ring-4 focus-within:ring-blue-500/5 focus-within:border-blue-500/50 transition-all ${isIntegrated ? 'bg-slate-50/30 border border-slate-100' : 'bg-white border border-slate-100 shadow-sm'}`}>
               <textarea
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 placeholder={t('mailboxes.compose_placeholder')}
-                className="w-full min-h-[400px] p-8 text-base text-slate-800 placeholder:text-slate-300 outline-none resize-none no-scrollbar font-normal leading-relaxed"
+                className="w-full min-h-[400px] p-8 md:p-10 text-base text-slate-800 placeholder:text-slate-300 outline-none resize-none no-scrollbar font-sans font-medium leading-relaxed"
               />
             </div>
           </div>
@@ -256,19 +270,21 @@ const ComposeView = ({
                 {t('mailboxes.live_content_canvas')}
               </label>
               {/* Integrated Preview Canvas */}
-              <div className="premium-card bg-white min-h-[400px] overflow-hidden shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col group">
-                <div className="bg-slate-50 border-b border-slate-100 px-8 py-3 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-rose-400"></div>
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
-                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+              <div className={isIntegrated ? "mt-8" : "premium-card bg-white min-h-[400px] overflow-hidden shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col group"}>
+                {!isIntegrated && (
+                  <div className="bg-slate-50 border-b border-slate-100 px-8 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-rose-400"></div>
+                      <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                      <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                    </div>
+                    <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
+                      {t('mailboxes.email_content_canvas')}
+                    </div>
                   </div>
-                  <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
-                    {t('mailboxes.email_content_canvas')}
-                  </div>
-                </div>
+                )}
 
-                <div className="flex-1 p-10 overflow-y-auto no-scrollbar">
+                <div className={`${isIntegrated ? "" : "flex-1 p-10 overflow-y-auto no-scrollbar"}`}>
                   {/* Canvas Header */}
                   <div className="flex items-start gap-6 pb-10 border-b border-slate-50 mb-10">
                     <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 p-0.5 shadow-xl shadow-blue-500/20 flex-shrink-0">
@@ -348,71 +364,75 @@ const ComposeView = ({
         </div>
       </div>
 
-      {/* Footer Actions */}
-      <div className="border-t border-slate-100 px-8 py-6 flex items-center justify-between bg-white">
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="p-3 text-slate-500 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all"
-            title={t('mailboxes.attach_file')}
-          >
-            <Paperclip className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => imageInputRef.current?.click()}
-            className="p-3 text-slate-500 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all"
-            title={t('mailboxes.attach_image')}
-          >
-            <ImageIcon className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => setShowPreview(!showPreview)}
-            className={`p-3 rounded-xl transition-all ${showPreview ? 'bg-blue-50 text-blue-600 shadow-inner' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600'
-              }`}
-            title={showPreview ? t('mailboxes.hide_preview') : t('mailboxes.show_preview')}
-          >
-            {showPreview ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-          </button>
-          <div className="w-px h-6 bg-slate-100 mx-2" />
-          <button
-            onClick={handleSaveDraft}
-            className="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 rounded-xl transition-all active:scale-95"
-          >
-            {t('mailboxes.save_draft')}
-          </button>
-        </div>
+      {/* Footer Actions - Only in non-integrated mode */}
+      {!isIntegrated && (
+        <div className="border-t border-slate-100 px-8 py-6 flex items-center justify-between bg-white">
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-3 text-slate-500 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all"
+              title={t('mailboxes.attach_file')}
+            >
+              <Paperclip className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => imageInputRef.current?.click()}
+              className="p-3 text-slate-500 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all"
+              title={t('mailboxes.attach_image')}
+            >
+              <ImageIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setShowPreview(!showPreview)}
+              className={`p-3 rounded-xl transition-all ${showPreview ? 'bg-blue-50 text-blue-600 shadow-inner' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600'
+                }`}
+              title={showPreview ? t('mailboxes.hide_preview') : t('mailboxes.show_preview')}
+            >
+              {showPreview ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+            <div className="w-px h-6 bg-slate-100 mx-2" />
+            <button
+              onClick={handleSaveDraft}
+              className="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 rounded-xl transition-all active:scale-95"
+            >
+              {t('mailboxes.save_draft')}
+            </button>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onClose}
-            className="px-6 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors"
-          >
-            {t('mailboxes.discard')}
-          </button>
-          <button
-            onClick={handleSend}
-            disabled={isSending}
-            className={`flex items-center gap-2 px-8 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 ${isSending
-              ? 'bg-blue-400 cursor-not-allowed text-white/50'
-              : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20'
-              }`}
-          >
-            {isSending ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>{t('mailboxes.sending_label')}</span>
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4" />
-                <span>{t('mailboxes.send_label')}</span>
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={onClose}
+              className="px-6 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+            >
+              {t('mailboxes.discard')}
+            </button>
+            <button
+              onClick={handleSend}
+              disabled={isSending}
+              className={`flex items-center gap-2 px-8 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 ${isSending
+                ? 'bg-blue-400 cursor-not-allowed text-white/50'
+                : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20'
+                }`}
+            >
+              {isSending ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>{t('mailboxes.sending_label')}</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>{t('mailboxes.send_label')}</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
-};
+});
+
+ComposeView.displayName = 'ComposeView';
 
 export default ComposeView;

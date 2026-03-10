@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "E-mail",
         "dashboard": "Painel",
         "growth_platform": "Plataforma de crescimento",
         "main_dashboard": "Painel principal",
@@ -18,6 +19,7 @@
             "scheduled": "Agendado",
             "completed": "Concluído"
         },
+        "date": "Data",
         "search": "Pesquisar",
         "documentation": "Documentação",
         "privacy": "Privacidade",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "Correio",
         "subtitle": "Contas",
+        "viewing_conversation": "Visualizando Conversa",
         "connected_description": "{{count}} contas conectadas sincronizadas e prontas.",
         "conversation": "Conversa",
         "connected_accounts": "{{count}} CONTAS CONECTADAS",
@@ -156,6 +159,7 @@
         "showing": "Mostrando",
         "prev": "Anterior",
         "next": "Próximo",
+        "status": "Estado",
         "no_messages": "Nenhuma mensagem encontrada",
         "empty_search": "Tente um termo de pesquisa diferente",
         "empty_unread": "Nenhuma mensagem não lida",
@@ -550,6 +554,7 @@
         "valid": "Válido",
         "risky": "Arriscado",
         "invalid": "Inválido",
+        "unknown": "Desconhecido",
         "unverified": "Não verificado",
         "uploaded_on": "Carregado em",
         "view_details": "Ver detalhes",
@@ -925,6 +930,7 @@
             "template": "Visualização do modelo",
             "first_name": "Nome",
             "last_name": "Sobrenome",
+            "name": "Nome",
             "company": "Empresa",
             "phone": "Telefone",
             "city": "Cidade",

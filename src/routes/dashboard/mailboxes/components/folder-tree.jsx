@@ -77,19 +77,19 @@ const FolderTree = ({
       <div key={folder.id}>
         <button
           onClick={() => onSelectFolder(folder)}
-          className={`group w-full flex items-center px-4 py-3 rounded-2xl transition-all duration-300 border border-transparent ${isSelected
+          className={`group w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl transition-all duration-300 border border-transparent ${isSelected
             ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
             : 'hover:bg-slate-100 text-slate-600 hover:text-slate-800'
             }`}
           style={{ paddingLeft: `${depth * 16 + 16}px` }}
         >
           <span
-            className={`w-5 h-5 ltr:mr-3 rtl:ml-3 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-white' : 'text-slate-400 group-hover:text-blue-500'}`}
+            className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-white' : 'text-slate-400 group-hover:text-blue-500'}`}
           >
             {getFolderIcon(folder)}
           </span>
           <span
-            className={`text-sm truncate flex-1 ltr:text-left ltr:text-right rtl:text-left ${isSelected ? 'font-bold' : 'font-semibold'}`}
+            className={`text-sm truncate ${isSelected ? 'font-bold' : 'font-semibold'}`}
           >
             {getFolderName(folder)}
           </span>
@@ -130,21 +130,55 @@ const FolderTree = ({
   const sortedFolders = useMemo(() => {
     if (!Array.isArray(folders)) return [];
 
-    const getSystemOrder = (folder) => {
-      if (isFolderType(folder, 'inbox')) return 1;
-      if (isFolderType(folder, 'sent')) return 2;
-      if (isFolderType(folder, 'drafts')) return 3;
-      if (isFolderType(folder, 'trash')) return 4;
-      if (isFolderType(folder, 'spam')) return 5;
-      if (isFolderType(folder, 'archive')) return 6;
-      if (isFolderType(folder, 'outbox')) return 7;
-      if (isFolderType(folder, 'important') || isFolderType(folder, 'starred')) return 8;
-      return 99;
+    const getSystemType = (folder) => {
+      if (isFolderType(folder, 'inbox')) return 'inbox';
+      if (isFolderType(folder, 'sent')) return 'sent';
+      if (isFolderType(folder, 'drafts')) return 'drafts';
+      if (isFolderType(folder, 'trash')) return 'trash';
+      if (isFolderType(folder, 'spam')) return 'spam';
+      if (isFolderType(folder, 'archive')) return 'archive';
+      if (isFolderType(folder, 'outbox')) return 'outbox';
+      if (isFolderType(folder, 'starred')) return 'starred';
+      if (isFolderType(folder, 'important')) return 'important';
+      return null;
     };
 
-    return [...folders].sort((a, b) => {
-      const aOrder = getSystemOrder(a);
-      const bOrder = getSystemOrder(b);
+    const getSystemOrder = (type) => {
+      switch (type) {
+        case 'inbox': return 1;
+        case 'sent': return 2;
+        case 'drafts': return 3;
+        case 'trash': return 4;
+        case 'spam': return 5;
+        case 'archive': return 6;
+        case 'outbox': return 7;
+        case 'starred': return 8;
+        case 'important': return 9;
+        default: return 99;
+      }
+    };
+
+    const seenTypes = new Set();
+    const uniqueFolders = [];
+
+    // Deduplicate system folders to prevent e.g. [Imap]/Trash and TRASH showing twice
+    for (const folder of folders) {
+      const type = getSystemType(folder);
+      if (type) {
+        if (!seenTypes.has(type)) {
+          seenTypes.add(type);
+          uniqueFolders.push(folder);
+        }
+      } else {
+        uniqueFolders.push(folder);
+      }
+    }
+
+    return uniqueFolders.sort((a, b) => {
+      const aType = getSystemType(a);
+      const bType = getSystemType(b);
+      const aOrder = getSystemOrder(aType);
+      const bOrder = getSystemOrder(bType);
 
       if (aOrder !== bOrder) return aOrder - bOrder;
       return (a.name || '').localeCompare(b.name || '');

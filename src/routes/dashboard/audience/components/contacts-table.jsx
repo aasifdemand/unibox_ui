@@ -2,6 +2,13 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import {
+    useReactTable,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getSortedRowModel,
+    flexRender,
+} from '@tanstack/react-table';
+import {
     FileSpreadsheet,
     CheckCircle,
     AlertCircle,
@@ -15,9 +22,13 @@ import {
     Phone,
     Briefcase,
     Globe,
+    Search,
+    ChevronUp,
+    ChevronDown,
+    ChevronsUpDown,
 } from 'lucide-react';
 import { useAllContacts } from '../hooks/use-all-contacts';
-import { getPaginatedData, formatDate } from '../audience-service';
+import { formatDate } from '../audience-service';
 
 const RECORDS_PER_PAGE = 10;
 
@@ -39,10 +50,6 @@ const getVerificationBadgeClass = (status) => {
     }
 };
 
-/**
- * Extract readable metadata fields from a contact's metadata JSONB object.
- * Normalises common key variants (city, City, CITY, etc.).
- */
 const METADATA_MAP = {
     company: ['company', 'organization', 'org', 'employer', 'companyname'],
     jobTitle: ['jobtitle', 'job_title', 'title', 'position', 'role', 'designation'],
@@ -66,67 +73,192 @@ const extractMeta = (metadata) => {
     return result;
 };
 
-/**
- * ContactsTable — flat view of all contacts from all batches.
- * Shows email, name, verification status, plus any metadata fields from the uploaded file.
- */
+const metaIcons = {
+    company: <Building2 className="w-3 h-3" />,
+    jobTitle: <Briefcase className="w-3 h-3" />,
+    phone: <Phone className="w-3 h-3" />,
+    city: <MapPin className="w-3 h-3" />,
+    country: <Globe className="w-3 h-3" />,
+    website: <Globe className="w-3 h-3" />,
+};
+
+
+
+const SortIndicator = ({ column }) => {
+    const isSorted = column.getIsSorted();
+    if (!isSorted) return (
+        <div className="w-4 h-4 flex items-center justify-center rounded-md group-hover/header:bg-slate-100 transition-all ml-1 opacity-0 group-hover/header:opacity-100">
+            <ChevronsUpDown className="w-3 h-3 text-slate-300 group-hover/header:text-slate-400" />
+        </div>
+    );
+    return (
+        <div className="w-4 h-4 flex items-center justify-center rounded-md bg-indigo-50/50 border border-indigo-100/50 ml-1">
+            {isSorted === 'desc'
+                ? <ChevronDown className="w-2.5 h-2.5 text-indigo-600" />
+                : <ChevronUp className="w-2.5 h-2.5 text-indigo-600" />
+            }
+        </div>
+    );
+};
+
+const Filter = ({ column, table }) => {
+    const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id);
+    const columnFilterValue = column.getFilterValue();
+
+    return (
+        <div className="mt-1 relative group/filter">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-300 group-focus-within/filter:text-blue-500 transition-colors" />
+            <input
+                type="text"
+                value={(columnFilterValue ?? '')}
+                onChange={e => column.setFilterValue(e.target.value)}
+                placeholder="Filter..."
+                className="w-full pl-7 pr-2 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-inter"
+            />
+        </div>
+    );
+};
+
 const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
+    const [sorting, setSorting] = useState([]);
 
-    const { contacts, isLoading } = useAllContacts();
-
-    const filteredContacts = useMemo(() => {
-        let result = contacts;
-        if (searchTerm) {
-            const lower = searchTerm.toLowerCase();
-            result = result.filter(
-                (c) => c.email?.toLowerCase().includes(lower) || c.name?.toLowerCase().includes(lower),
-            );
-        }
-        if (filterStatus && filterStatus !== 'all') {
-            result = result.filter((c) => c.verificationStatus === filterStatus);
-        }
-        return result;
-    }, [contacts, searchTerm, filterStatus]);
-
+    // Reset to page 1 if external filters change
     React.useEffect(() => { setCurrentPage(1); }, [searchTerm, filterStatus]);
 
-    const { totalPages, totalRecords, currentRecords } = useMemo(
-        () => getPaginatedData(filteredContacts, currentPage, RECORDS_PER_PAGE),
-        [filteredContacts, currentPage],
-    );
+    const { contacts: currentRecords, pagination, isLoading } = useAllContacts({
+        page: currentPage,
+        limit: RECORDS_PER_PAGE,
+        searchTerm,
+        filterStatus
+    });
 
-    const handlePageChange = useCallback((page) => setCurrentPage(page), []);
+    const { totalPages, total: totalRecords } = pagination;
 
-    // Determine which metadata fields are actually present across visible records
     const visibleMetaFields = useMemo(() => {
         const fields = new Set();
         currentRecords.forEach((r) => {
             const meta = extractMeta(r.metadata);
             Object.keys(meta).forEach((k) => fields.add(k));
         });
-        // Keep a preferred order
         return ['company', 'jobTitle', 'phone', 'city', 'country', 'website'].filter((f) => fields.has(f));
     }, [currentRecords]);
 
-    const metaIcons = {
-        company: <Building2 className="w-3 h-3" />,
-        jobTitle: <Briefcase className="w-3 h-3" />,
-        phone: <Phone className="w-3 h-3" />,
-        city: <MapPin className="w-3 h-3" />,
-        country: <Globe className="w-3 h-3" />,
-        website: <Globe className="w-3 h-3" />,
-    };
+    const columns = useMemo(() => {
+        const baseColumns = [
+            {
+                accessorKey: 'email',
+                header: ({ column }) => (
+                    <div
+                        className="flex items-center cursor-pointer select-none group/header"
+                        onClick={column.getToggleSortingHandler()}
+                    >
+                        <span>Email</span>
+                        <SortIndicator column={column} />
+                    </div>
+                ),
+                cell: info => (
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-blue-100 transition-colors shrink-0">
+                            <Mail className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-600" />
+                        </div>
+                        <span className="font-semibold text-slate-700 truncate max-w-52">{info.getValue() || '—'}</span>
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'name',
+                header: ({ column }) => (
+                    <div
+                        className="flex items-center cursor-pointer select-none group/header"
+                        onClick={column.getToggleSortingHandler()}
+                    >
+                        <span>Name</span>
+                        <SortIndicator column={column} />
+                    </div>
+                ),
+                cell: info => info.getValue() || '—',
+            },
+        ];
 
-    const metaLabels = {
-        company: 'Company',
-        jobTitle: 'Job Title',
-        phone: 'Phone',
-        city: 'City',
-        country: 'Country',
-        website: 'Website',
-    };
+        // Dynamic Meta Columns
+        const metaCols = visibleMetaFields.map(field => ({
+            id: `meta-${field}`,
+            header: ({ column }) => (
+                <div
+                    className="flex items-center cursor-pointer select-none group/header"
+                    onClick={column.getToggleSortingHandler()}
+                >
+                    <span>{field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}</span>
+                    <SortIndicator column={column} />
+                </div>
+            ),
+            accessorFn: row => {
+                const meta = extractMeta(row.metadata);
+                return meta[field];
+            },
+            cell: info => info.getValue() ? (
+                <span className="flex items-center gap-1.5 text-slate-600 font-medium whitespace-nowrap">
+                    <span className="text-slate-400">{metaIcons[field]}</span>
+                    {info.getValue()}
+                </span>
+            ) : <span className="text-slate-300">—</span>,
+        }));
+
+        const endColumns = [
+            {
+                accessorKey: 'verificationStatus',
+                header: ({ column }) => (
+                    <div
+                        className="flex items-center cursor-pointer select-none group/header"
+                        onClick={column.getToggleSortingHandler()}
+                    >
+                        <span>Status</span>
+                        <SortIndicator column={column} />
+                    </div>
+                ),
+                cell: info => {
+                    const status = info.getValue();
+                    return (
+                        <div className="flex items-center gap-2">
+                            {getVerificationIcon(status)}
+                            <span className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-lg ${getVerificationBadgeClass(status)}`}>
+                                {status ? t(`audience.${status}`) : t('modals.details.table.unverified')}
+                            </span>
+                        </div>
+                    );
+                },
+            },
+            {
+                accessorKey: 'createdAt',
+                header: ({ column }) => (
+                    <div
+                        className="flex items-center cursor-pointer select-none group/header"
+                        onClick={column.getToggleSortingHandler()}
+                    >
+                        <span>Added On</span>
+                        <SortIndicator column={column} />
+                    </div>
+                ),
+                cell: info => <span className="text-slate-500 whitespace-nowrap font-medium">{formatDate(info.getValue())}</span>,
+            }
+        ];
+
+        return [...baseColumns, ...metaCols, ...endColumns];
+    }, [visibleMetaFields, t]);
+
+    const table = useReactTable({
+        data: currentRecords,
+        columns,
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        manualFiltering: true,
+    });
 
     if (isLoading) {
         return (
@@ -137,7 +269,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
         );
     }
 
-    if (contacts.length === 0) {
+    if (!isLoading && currentRecords.length === 0 && !searchTerm && filterStatus === 'all') {
         return (
             <div className="flex flex-col items-center justify-center py-24 gap-6">
                 <div className="w-20 h-20 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center">
@@ -161,131 +293,97 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     }
 
     return (
-        <div>
-            {/* Table */}
-            <div className="overflow-x-auto rounded-2xl border border-slate-100">
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="bg-slate-50 border-b border-slate-100">
-                            <th className="px-5 py-3.5 ltr:text-left rtl:text-right text-[10px] font-extrabold text-slate-400 uppercase tracking-widest whitespace-nowrap">
-                                Email
-                            </th>
-                            <th className="px-5 py-3.5 ltr:text-left rtl:text-right text-[10px] font-extrabold text-slate-400 uppercase tracking-widest whitespace-nowrap">
-                                Name
-                            </th>
-                            {visibleMetaFields.map((f) => (
-                                <th key={f} className="px-5 py-3.5 ltr:text-left rtl:text-right text-[10px] font-extrabold text-slate-400 uppercase tracking-widest whitespace-nowrap">
-                                    {metaLabels[f]}
-                                </th>
-                            ))}
-                            <th className="px-5 py-3.5 ltr:text-left rtl:text-right text-[10px] font-extrabold text-slate-400 uppercase tracking-widest whitespace-nowrap">
-                                Status
-                            </th>
-                            <th className="px-5 py-3.5 ltr:text-left rtl:text-right text-[10px] font-extrabold text-slate-400 uppercase tracking-widest whitespace-nowrap">
-                                Added On
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                        {currentRecords.map((record, index) => {
-                            const meta = extractMeta(record.metadata);
-                            return (
-                                <motion.tr
-                                    key={record.id || `${record.email}-${index}`}
-                                    initial={{ opacity: 0, x: -8 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.025 }}
-                                    className="group hover:bg-blue-50/30 transition-colors"
-                                >
-                                    {/* Email */}
-                                    <td className="px-5 py-3.5">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-blue-100 transition-colors shrink-0">
-                                                <Mail className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-600" />
-                                            </div>
-                                            <span className="font-semibold text-slate-700 truncate max-w-52">{record.email || '—'}</span>
-                                        </div>
-                                    </td>
-
-                                    {/* Name */}
-                                    <td className="px-5 py-3.5 font-semibold text-slate-600 whitespace-nowrap">
-                                        {record.name || '—'}
-                                    </td>
-
-                                    {/* Dynamic metadata columns */}
-                                    {visibleMetaFields.map((f) => (
-                                        <td key={f} className="px-5 py-3.5 text-slate-500 whitespace-nowrap">
-                                            {meta[f] ? (
-                                                <span className="flex items-center gap-1.5 text-slate-600 font-medium">
-                                                    <span className="text-slate-400">{metaIcons[f]}</span>
-                                                    {meta[f]}
-                                                </span>
-                                            ) : (
-                                                <span className="text-slate-300">—</span>
+        <div className="space-y-6">
+            <div className="overflow-hidden no-scrollbar rounded-3xl border border-slate-200/60 bg-white shadow-xl shadow-slate-200/20">
+                <div className="overflow-x-auto no-scrollbar">
+                    <table className="w-full text-sm border-separate border-spacing-0">
+                        <thead>
+                            {table.getHeaderGroups().map(headerGroup => (
+                                <tr key={headerGroup.id} className="bg-slate-50/80 backdrop-blur-md">
+                                    {headerGroup.headers.map(header => (
+                                        <th key={header.id} className="px-6 py-4 ltr:text-left rtl:text-right border-b border-slate-200/60 transition-colors">
+                                            {header.isPlaceholder ? null : (
+                                                <div className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.15em] select-none">
+                                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                                </div>
                                             )}
+                                        </th>
+                                    ))}
+                                </tr>
+                            ))}
+                        </thead>
+                        <tbody className="divide-y divide-slate-100/60">
+                            {table.getRowModel().rows.map((row, index) => (
+                                <motion.tr
+                                    key={row.id}
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        delay: index * 0.015,
+                                        duration: 0.3,
+                                        ease: "easeOut"
+                                    }}
+                                    className="group hover:bg-slate-50/40 transition-colors duration-200 cursor-default"
+                                >
+                                    {row.getVisibleCells().map(cell => (
+                                        <td key={cell.id} className="px-6 py-4 font-inter">
+                                            <div className="transition-transform duration-200 group-hover:translate-x-0.5">
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </div>
                                         </td>
                                     ))}
-
-                                    {/* Verification status */}
-                                    <td className="px-5 py-3.5">
-                                        <div className="flex items-center gap-2">
-                                            {getVerificationIcon(record.verificationStatus)}
-                                            <span className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-lg ${getVerificationBadgeClass(record.verificationStatus)}`}>
-                                                {record.verificationStatus
-                                                    ? t(`audience.${record.verificationStatus}`)
-                                                    : t('modals.details.table.unverified')}
-                                            </span>
-                                        </div>
-                                    </td>
-
-                                    {/* Added On */}
-                                    <td className="px-5 py-3.5 text-slate-500 whitespace-nowrap font-medium">
-                                        {formatDate(record.createdAt)}
-                                    </td>
                                 </motion.tr>
-                            );
-                        })}
-                        {currentRecords.length === 0 && (
-                            <tr>
-                                <td colSpan={3 + visibleMetaFields.length} className="px-6 py-16 text-center">
-                                    <div className="flex flex-col items-center">
-                                        <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-3">
-                                            <FileSpreadsheet className="w-7 h-7 text-slate-300" />
+                            ))}
+                            {table.getRowModel().rows.length === 0 && (
+                                <tr>
+                                    <td colSpan={columns.length} className="px-6 py-24 text-center">
+                                        <div className="flex flex-col items-center">
+                                            <div className="w-20 h-20 rounded-3xl bg-slate-50 flex items-center justify-center mb-6 border border-slate-100 shadow-sm">
+                                                <FileSpreadsheet className="w-10 h-10 text-slate-300" />
+                                            </div>
+                                            <p className="text-xl font-black text-slate-700 tracking-tight">{t('modals.details.table.no_records')}</p>
+                                            <p className="text-sm font-bold text-slate-400 mt-2">
+                                                {t('modals.details.table.try_adjusting')}
+                                            </p>
                                         </div>
-                                        <p className="text-sm font-bold text-slate-400">{t('modals.details.table.no_records')}</p>
-                                        <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-1">
-                                            {t('modals.details.table.try_adjusting')}
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            {/* Footer: count + pagination */}
-            <div className="flex items-center justify-between pt-4 mt-2">
-                <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {totalRecords} {t('audience.total_contacts')}
-                </p>
+            <div className="flex items-center justify-between px-4">
+                <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                    <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                        {totalRecords.toLocaleString()} {t('audience.total_contacts')}
+                    </p>
+                </div>
 
                 {totalPages > 1 && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl border border-slate-100 shadow-sm">
                         <button
-                            onClick={() => handlePageChange(currentPage - 1)}
+                            onClick={() => setCurrentPage(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="w-8 h-8 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:border-blue-400 hover:text-blue-600 transition-all disabled:opacity-40 disabled:pointer-events-none"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-blue-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
                         >
-                            <ChevronLeft className="w-4 h-4" />
+                            <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <span className="text-xs font-extrabold text-slate-600 px-2">{currentPage} / {totalPages}</span>
+
+                        <div className="px-4 flex items-center gap-2">
+                            <span className="text-xs font-black text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg">{currentPage}</span>
+                            <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
+                            <span className="text-xs font-black text-slate-600">{totalPages}</span>
+                        </div>
+
                         <button
-                            onClick={() => handlePageChange(currentPage + 1)}
+                            onClick={() => setCurrentPage(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="w-8 h-8 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:border-blue-400 hover:text-blue-600 transition-all disabled:opacity-40 disabled:pointer-events-none"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-blue-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
                         >
-                            <ChevronRight className="w-4 h-4" />
+                            <ChevronRight className="w-5 h-5" />
                         </button>
                     </div>
                 )}

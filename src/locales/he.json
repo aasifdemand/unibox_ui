@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "דוא\"ל",
         "dashboard": "לוח מחוונים",
         "growth_platform": "פלטפורמת צמיחה",
         "main_dashboard": "לוח המחוונים הראשי",
@@ -18,6 +19,7 @@
             "scheduled": "מתוזמן",
             "completed": "הושלם"
         },
+        "date": "תאריך",
         "search": "חפש",
         "documentation": "תיעוד",
         "privacy": "פְּרָטִיוּת",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "דואר",
         "subtitle": "חשבונות",
+        "viewing_conversation": "צפייה בשיחה",
         "connected_description": "{{count}} חשבונות מחוברים מסונכרנים ומוכנים.",
         "conversation": "שִׂיחָה",
         "connected_accounts": "{{count}} חשבונות מחוברים",
@@ -156,6 +159,7 @@
         "showing": "מציג",
         "prev": "הקודם",
         "next": "הַבָּא",
+        "status": "סטטוס",
         "no_messages": "לא נמצאו הודעות",
         "empty_search": "נסה מונח חיפוש אחר",
         "empty_unread": "אין הודעות שלא נקראו",
@@ -546,6 +550,7 @@
         "valid": "תקף",
         "risky": "מסוכן",
         "invalid": "לא חוקי",
+        "unknown": "לא ידוע",
         "unverified": "לא מאומת",
         "uploaded_on": "הועלה ב-",
         "view_details": "צפה בפרטים",
@@ -921,6 +926,7 @@
             "template": "תצוגה מקדימה של תבנית",
             "first_name": "שם פרטי",
             "last_name": "שם משפחה",
+            "name": "שם",
             "company": "חברה",
             "phone": "טלפון",
             "city": "עיר",

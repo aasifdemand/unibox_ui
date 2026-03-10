@@ -120,10 +120,10 @@ const MessageListItem = ({
   return (
     <div
       onClick={handleSelect}
-      className={`group flex items-start p-4 hover:bg-white hover:shadow-lg hover:shadow-slate-200/40 rounded-2xl cursor-pointer transition-all duration-300 border border-transparent ${!isRead ? 'bg-blue-50/40 border-blue-100/50' : 'hover:border-slate-100'
-        } ${isSelected ? 'bg-blue-100/30 border-blue-200 ring-2 ring-blue-500/5' : ''}`}
+      className={`group flex items-center px-6 py-4 hover:bg-slate-50/80 rounded-[1.5rem] cursor-pointer transition-all duration-300 border border-transparent ${!isRead ? 'bg-white shadow-sm ring-1 ring-slate-100' : ''
+        } ${isSelected ? 'bg-blue-50/50 border-blue-200 ring-2 ring-blue-500/10' : ''}`}
     >
-      <div className="flex items-center mt-1 ltr:mr-4 rtl:ml-4">
+      <div className="flex items-center ltr:mr-4 rtl:ml-4 shrink-0">
         <input
           type="checkbox"
           checked={isSelected}
@@ -133,62 +133,41 @@ const MessageListItem = ({
         />
       </div>
 
-      <div dir="auto" className="flex-1 min-w-0">
-        <div className="flex items-center mb-1">
-          <div
-            className={`w-10 h-10 rounded-xl bg-linear-to-br from-slate-100 to-slate-50 flex items-center justify-center text-slate-600 font-bold text-sm ltr:mr-4 rtl:ml-4 shrink-0 border border-slate-200/50 shadow-inner group-hover:scale-105 transition-transform ${!isRead ? 'from-blue-100 to-blue-50 text-blue-600 border-blue-200' : ''
-              }`}
-          >
-            {getInitials(sender.name)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <p
-                  className={`text-sm truncate font-bold tracking-tight ${!isRead ? 'text-slate-800' : 'text-slate-700'
-                    }`}
-                >
-                  {displayPrefix}
-                  {sender.name}
-                </p>
-                {message.isStarred && <Star className="w-3 h-3 text-amber-400 fill-amber-400" />}
-                {!isRead && (
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
-                )}
-              </div>
-              <div className="flex items-center gap-3 shrink-0 ltr:ml-4 ltr:mr-4 rtl:ml-4">
-                {hasAttachments && <Paperclip className="w-3.5 h-3.5 text-slate-400" />}
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  {formatDate(message)}
-                </p>
-              </div>
-            </div>
-
-            <p
-              className={`text-sm mt-0.5 truncate tracking-tight ${!isRead ? 'font-extrabold text-slate-800' : 'font-medium text-slate-600'
-                }`}
-            >
-              {getSubject(message)}
-            </p>
-          </div>
+      <div dir="auto" className="flex-1 min-w-0 flex items-center gap-4">
+        <div
+          className={`w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 font-bold text-sm shrink-0 shadow-inner group-hover:scale-105 transition-transform ${!isRead ? 'bg-blue-600 text-white border-blue-700' : ''
+            }`}
+        >
+          {getInitials(sender.name)}
         </div>
 
-        <p className="text-xs text-slate-500 font-medium line-clamp-1 ltr:ml-14 ltr:mr-14 rtl:ml-14 opacity-80 leading-relaxed">
-          {getPreview(message)}
-        </p>
-
-        {message.labels?.length > 0 && (
-          <div className="flex items-center gap-1.5 mt-2.5 ltr:ml-14 ltr:mr-14 rtl:ml-14">
-            {message.labels.slice(0, 3).map((label) => (
-              <span
-                key={label}
-                className="px-2 py-0.5 bg-slate-100 text-slate-500 font-bold rounded-md text-[9px] uppercase tracking-widest border border-slate-200/50"
-              >
-                {label}
-              </span>
-            ))}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <p className={`text-sm truncate font-bold tracking-tight ${!isRead ? 'text-slate-900' : 'text-slate-600'}`}>
+                {displayPrefix}{sender.name}
+              </p>
+              {!isRead && (
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+              )}
+            </div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">
+              {formatDate(message)}
+            </p>
           </div>
-        )}
+
+          <div className="flex items-center justify-between gap-4 mt-0.5">
+            <p className={`text-sm truncate tracking-tight flex-1 ${!isRead ? 'font-extrabold text-slate-900' : 'font-medium text-slate-500'}`}>
+              {getSubject(message)}
+              <span className="mx-2 font-normal text-slate-300">|</span>
+              <span className="font-normal opacity-60">{getPreview(message)}</span>
+            </p>
+            <div className="flex items-center gap-2 shrink-0">
+              {hasAttachments && <Paperclip className="w-3 h-3 text-slate-300" />}
+              {message.isStarred && <Star className="w-3 h-3 text-amber-400 fill-amber-400" />}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

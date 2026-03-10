@@ -36,6 +36,18 @@ const getCampaignSchema = (t) => z
     trackOpens: z.boolean().default(true),
     trackClicks: z.boolean().default(true),
     unsubscribeLink: z.boolean().default(true),
+    steps: z
+      .array(
+        z.object({
+          stepOrder: z.number(),
+          subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
+          htmlBody: z.string().min(1, t('campaigns.err_content_req')),
+          textBody: z.string().optional(),
+          delayMinutes: z.number().min(1),
+          condition: z.enum(['always', 'no_reply']),
+        }),
+      )
+      .optional(),
   })
   .refine(
     (data) => {
@@ -53,7 +65,7 @@ const CreateCampaign = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSender, setSelectedSender] = useState(null);
-  const [editorMode, setEditorMode] = useState('html');
+
   const { t } = useTranslation();
   const campaignSchema = React.useMemo(() => getCampaignSchema(t), [t]);
 
@@ -79,6 +91,7 @@ const CreateCampaign = () => {
   } = useForm({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
+      name: 'Untitled Campaign',
       scheduleType: 'now',
       throttlePerMinute: 10,
       trackOpens: true,
@@ -87,12 +100,13 @@ const CreateCampaign = () => {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       htmlBody: '',
       textBody: '',
+      steps: [],
     },
   });
 
   const watchScheduleType = watch('scheduleType');
   const watchHtmlBody = watch('htmlBody');
-  const watchTextBody = watch('textBody');
+
   const watchListBatchId = watch('listBatchId');
   const watchSenderId = watch('senderId');
 
@@ -137,45 +151,33 @@ const CreateCampaign = () => {
     let isValid = false;
 
     switch (currentStep) {
-      case 1: // Import Leads validation
-        isValid = !!watchListBatchId;
+      case 1: { // Import Leads + Name validation
+        const infoValid = await trigger(['name', 'listBatchId']);
+        isValid = infoValid;
         if (!isValid) {
-          toast.error(t('campaigns.no_list_selected'));
+          if (!watch('name')) toast.error(t('campaigns.err_name_min'));
+          else if (!watchListBatchId) toast.error(t('campaigns.no_list_selected'));
         }
         break;
+      }
       case 2: {
-        // Design validation (Name + Subject)
-        const infoValid = await trigger(['name', 'subject']);
+        // Design validation (Subject only, name moved to step 1)
+        const infoValid = await trigger(['subject']);
         if (!infoValid) return;
 
         // Content validation
-        if (editorMode === 'html') {
-          if (!watchHtmlBody || watchHtmlBody.trim().length < 10) {
-            setValue('htmlBody', watchHtmlBody || '');
-            await trigger('htmlBody');
-            isValid = false;
-          } else {
-            isValid = true;
-          }
+        if (!watchHtmlBody || watchHtmlBody.trim().length < 10) {
+          setValue('htmlBody', watchHtmlBody || '');
+          await trigger('htmlBody');
+          isValid = false;
         } else {
-          if (!watchTextBody || watchTextBody.trim().length < 10) {
-            setValue('textBody', watchTextBody || '');
-            await trigger('textBody');
-            isValid = false;
-          } else {
-            isValid = true;
-          }
+          isValid = true;
         }
 
-        const hasContent =
-          editorMode === 'html'
-            ? watchHtmlBody && watchHtmlBody.trim().length > 0
-            : watchTextBody && watchTextBody.trim().length > 0;
+        const hasContent = watchHtmlBody && watchHtmlBody.trim().length > 0;
 
         if (!hasContent) {
-          toast.error(
-            t('campaigns.error_add_content', { mode: editorMode === 'html' ? 'HTML' : t('campaigns.plain_text') }),
-          );
+          toast.error(t('campaigns.error_add_content', { mode: 'HTML' }));
           return;
         }
         break;
@@ -218,9 +220,7 @@ const CreateCampaign = () => {
       }
 
       // Ensure we have content
-      if (editorMode === 'text' && data.textBody && !data.htmlBody) {
-        data.htmlBody = `<pre style="font-family: monospace; white-space: pre-wrap;">${data.textBody}</pre>`;
-      } else if (editorMode === 'html' && data.htmlBody && !data.textBody) {
+      if (data.htmlBody) {
         data.textBody = data.htmlBody.replace(/<[^>]*>/g, ' ');
       }
 
@@ -258,8 +258,6 @@ const CreateCampaign = () => {
       navigate,
       handleBatchSelect,
       handleSenderSelect,
-      editorMode,
-      setEditorMode,
       watchScheduleType,
       watchListBatchId,
       watchSenderId,
@@ -320,21 +318,33 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-50/50 p-6 md:p-12 animate-in fade-in duration-700">
-      <div className="max-w-6xl mx-auto space-y-10">
+    <div className="w-full min-h-screen bg-slate-50/50 p-6 m animate-in fade-in duration-700">
+      <div className="w-full space-y-10">
         {/* Simplified Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/60">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
               <Send className="w-6 h-6 text-white" />
             </div>
-            <div>
-              <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tighter">
-                {watch('name') || t('campaigns.create_campaign')}
-              </h1>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                {t('campaigns.step_indicator', { current: currentStep, total: steps.length })}
-              </p>
+            <div className="flex-1">
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  {...register('name')}
+                  className={`bg-transparent text-lg font-bold text-slate-800 tracking-tight outline-none focus:ring-0 w-full placeholder:text-slate-300 ${errors.name ? 'text-rose-500 placeholder:text-rose-200' : ''}`}
+                  placeholder={t('campaigns.campaign_name_placeholder')}
+                />
+                <div className="flex items-center gap-3">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                    {t('campaigns.step_indicator', { current: currentStep, total: steps.length })}
+                  </p>
+                  {errors.name && (
+                    <span className="text-[9px] font-bold text-rose-500 uppercase tracking-widest mt-0.5">
+                      • {errors.name.message}
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">

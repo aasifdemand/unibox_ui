@@ -11,9 +11,9 @@ import {
 } from 'lucide-react';
 
 const AnalyticsTab = ({ campaign, stats }) => {
-  const openRate = stats.totalSent ? Math.round((stats.totalOpened / stats.totalSent) * 100) : 0;
-  const clickRate = stats.totalSent ? Math.round((stats.totalClicked / stats.totalSent) * 100) : 0;
-  const replyRate = stats.totalSent ? Math.round((stats.totalReplied / stats.totalSent) * 100) : 0;
+  const openRate = stats.uniqueContacted ? Math.round((stats.totalOpened / stats.uniqueContacted) * 100) : 0;
+  const clickRate = stats.uniqueContacted ? Math.round((stats.totalClicked / stats.uniqueContacted) * 100) : 0;
+  const replyRate = stats.uniqueContacted ? Math.round((stats.totalReplied / stats.uniqueContacted) * 100) : 0;
 
   return (
     <div className="space-y-10 pb-20 mt-4">

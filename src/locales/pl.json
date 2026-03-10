@@ -1,5 +1,6 @@
 {
     "common": {
+        "email": "E-mail",
         "dashboard": "Panel",
         "growth_platform": "Platforma Rozwoju",
         "main_dashboard": "Panel główny",
@@ -18,6 +19,7 @@
             "scheduled": "Zaplanowane",
             "completed": "Ukończono"
         },
+        "date": "Data",
         "search": "Szukaj",
         "documentation": "Dokumentacja",
         "privacy": "Prywatność",
@@ -124,6 +126,7 @@
     "mailboxes": {
         "mail": "Poczta",
         "subtitle": "Konta",
+        "viewing_conversation": "Oglądanie rozmowy",
         "connected_description": "{{count}} połączone konta zsynchronizowane i gotowe.",
         "conversation": "Rozmowa",
         "connected_accounts": "{{count}} POŁĄCZONE KONTA",
@@ -156,6 +159,7 @@
         "showing": "Pokazuję",
         "prev": "Poprzedni",
         "next": "Następny",
+        "status": "Stan",
         "no_messages": "Nie znaleziono wiadomości",
         "empty_search": "Spróbuj innego wyszukiwanego hasła",
         "empty_unread": "Brak nieprzeczytanych wiadomości",
@@ -546,6 +550,7 @@
         "valid": "Ważne",
         "risky": "Ryzykowne",
         "invalid": "Nieprawidłowe",
+        "unknown": "Nieznane",
         "unverified": "Niesprawdzony",
         "uploaded_on": "Przesłano dnia",
         "view_details": "Zobacz szczegóły",
@@ -921,6 +926,7 @@
             "template": "Podgląd szablonu",
             "first_name": "Imię",
             "last_name": "Nazwisko",
+            "name": "Nazwa",
             "company": "Firma",
             "phone": "Telefon",
             "city": "Miasto",

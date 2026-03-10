@@ -196,6 +196,7 @@ body.modal-open {
 
 /* HTML Content Resets (SMTP/Gmail/Outlook) */
 .mail-content-html {
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--text-main);
   word-wrap: break-word;
@@ -253,7 +254,96 @@ body.modal-open {
 }
 
 .mail-content-html p {
-  margin-bottom: 1em;
+  margin: 0;
+}
+
+/* Preserve spacing from intentional blank lines (double-Enter) */
+.mail-content-html p:empty,
+.mail-content-html p:has(> br:only-child) {
+  height: 1em;
+}
+
+/* Heading styling for both editor and preview */
+.ProseMirror h1,
+.mail-content-html h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.ProseMirror h2,
+.mail-content-html h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+}
+
+.ProseMirror h3,
+.mail-content-html h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #334155;
+}
+
+.ProseMirror h4,
+.mail-content-html h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #475569;
+}
+
+.ProseMirror h5,
+.mail-content-html h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #64748b;
+}
+
+.ProseMirror h6,
+.mail-content-html h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #94a3b8;
+}
+
+/* Blockquote styling for both editor and preview */
+.ProseMirror blockquote,
+.mail-content-html blockquote {
+  border-left: 3px solid #6366f1;
+  padding-left: 1rem;
+  margin: 0.5em 0;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Hide scrollbar for custom-scrollbar class */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 @keyframes shimmer {
@@ -264,4 +354,14 @@ body.modal-open {
   100% {
     transform: translateX(100%);
   }
+}
+
+/* Tiptap Placeholder Styles */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #94a3b8;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
 }
