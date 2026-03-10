@@ -24,6 +24,7 @@ const Analytics = lazy(() => import('./routes/dashboard/analytics'));
 const Subscription = lazy(() => import('./routes/dashboard/subscription'));
 const Settings = lazy(() => import('./routes/dashboard/settings'));
 const Notifications = lazy(() => import('./routes/dashboard/notifications'));
+const Landing = lazy(() => import('./routes/landing'));
 
 const LoadingFallback = () => (
   <div className="flex h-screen w-full items-center justify-center bg-slate-50">
@@ -50,6 +51,11 @@ const AppRoutes = () => {
             <Route path="verify-account" element={<VerifyAccount />} />
           </Route>
         </Route>
+
+        <Route
+          path="/"
+          element={<Landing />}
+        />
 
         {/* Protected app routes (ONLY for logged-in users) */}
         <Route

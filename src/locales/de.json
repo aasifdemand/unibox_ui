@@ -545,6 +545,7 @@
         "uploaded": "Hochgeladen",
         "processing": "Verarbeitung",
         "completed": "Abgeschlossen",
+        "verifying": "wird angezeigt Überprüfung",
         "failed": "Fehlgeschlagen",
         "loading_contacts": "Kontakte werden geladen...",
         "no_contacts_title": "Keine Kontakte",

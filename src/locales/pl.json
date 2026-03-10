@@ -541,6 +541,7 @@
         "uploaded": "Przesłano",
         "processing": "Przetwarzanie",
         "completed": "Ukończono",
+        "verifying": "Weryfikacja",
         "failed": "Nie udało się",
         "loading_contacts": "Ładowanie kontaktów...",
         "no_contacts_title": "Brak kontaktów",

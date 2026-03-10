@@ -545,6 +545,7 @@
         "uploaded": "Subido",
         "processing": "Procesando",
         "completed": "Completado",
+        "verifying": "Verificando",
         "failed": "Fallido",
         "loading_contacts": "Cargando contactos...",
         "no_contacts_title": "Sin Contactos",

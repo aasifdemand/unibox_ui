@@ -545,6 +545,7 @@
         "uploaded": "Yüklendi",
         "processing": "İşleniyor",
         "completed": "Tamamlanmış",
+        "verifying": "Oluştur Doğrulanıyor",
         "failed": "Başarısız",
         "loading_contacts": "Kişiler yükleniyor...",
         "no_contacts_title": "Kişi Yok",

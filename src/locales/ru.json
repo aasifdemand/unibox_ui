@@ -541,6 +541,7 @@
         "uploaded": "Загружено",
         "processing": "Обработка",
         "completed": "Завершено",
+        "verifying": "Проверка",
         "failed": "Не удалось",
         "loading_contacts": "Загрузка контактов...",
         "no_contacts_title": "Нет контактов",

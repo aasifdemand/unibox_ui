@@ -545,6 +545,7 @@
         "uploaded": "Diunggah",
         "processing": "Memproses",
         "completed": "Selesai",
+        "verifying": "Memverifikasi",
         "failed": "Gagal",
         "loading_contacts": "Memuat kontak...",
         "no_contacts_title": "Tidak Ada Kontak",

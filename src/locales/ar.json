@@ -545,6 +545,7 @@
         "uploaded": "تم الرفع",
         "processing": "معالجة",
         "completed": "اكتمل",
+        "verifying": "Verifying",
         "failed": "فشل",
         "loading_contacts": "جارٍ تحميل جهات الاتصال...",
         "no_contacts_title": "لا توجد اتصالات",

@@ -545,6 +545,7 @@
         "uploaded": "已上传",
         "processing": "加工",
         "completed": "已完成",
+        "verifying": "验证",
         "failed": "失败",
         "loading_contacts": "正在加载联系人...",
         "no_contacts_title": "没有联系人",

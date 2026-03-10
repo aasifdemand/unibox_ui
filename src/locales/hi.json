@@ -545,6 +545,7 @@
         "uploaded": "अपलोड किया गया",
         "processing": "प्रसंस्करण",
         "completed": "पूर्ण",
+        "verifying": "सत्यापन हो रहा है",
         "failed": "विफल",
         "loading_contacts": "संपर्क लोड हो रहे हैं...",
         "no_contacts_title": "कोई संपर्क नहीं",

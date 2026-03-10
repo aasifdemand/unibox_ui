@@ -545,6 +545,7 @@
         "uploaded": "آپلود شده",
         "processing": "پردازش",
         "completed": "تکمیل شد",
+        "verifying": "تایید",
         "failed": "ناموفق",
         "loading_contacts": "در حال بارگیری مخاطبین...",
         "no_contacts_title": "بدون مخاطب",

@@ -546,6 +546,7 @@
         "uploaded": "업로드됨",
         "processing": "처리 중",
         "completed": "완료됨",
+        "verifying": "를 클릭하세요. 확인 중",
         "failed": "실패",
         "loading_contacts": "연락처 로드 중...",
         "no_contacts_title": "연락처 없음",

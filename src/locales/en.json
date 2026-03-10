@@ -534,6 +534,7 @@
         "uploaded": "Uploaded",
         "processing": "Processing",
         "completed": "Completed",
+        "verifying": "Verifying",
         "failed": "Failed",
         "loading_contacts": "Loading contacts...",
         "no_contacts_title": "No Contacts",
