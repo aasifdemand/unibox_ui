@@ -215,12 +215,12 @@ export const useForgotPassword = () => {
 // =========================
 // RESET PASSWORD MUTATION
 // =========================
-const resetPassword = async ({ email, otp, newPassword }) => {
+const resetPassword = async ({ token, newPassword }) => {
   const res = await fetch(`${API_URL}/auth/reset-password`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, otp, newPassword }),
+    body: JSON.stringify({ token, newPassword }),
   });
 
   const data = await res.json();

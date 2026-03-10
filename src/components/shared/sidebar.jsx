@@ -1,4 +1,4 @@
-import { LogOut, Mail, Sparkles } from 'lucide-react';
+import { LogOut, Mail, Sparkles, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentUser, useLogout } from '../../hooks/useAuth';
 import Dialog from '../../components/ui/dialog';
 
-const Sidebar = ({ sidebarCollapsed, navItems }) => {
+const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,12 +30,20 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
 
   return (
     <>
+      {/* Mobile Overlay */}
+      {!sidebarCollapsed && (
+        <div
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 lg:hidden"
+          onClick={() => setSidebarCollapsed(true)}
+        />
+      )}
+
       <aside
-        className={`fixed ltr:left-0 rtl:right-0 top-0 h-screen bg-white ltr:border-r rtl:border-l border-slate-200/60 transition-all duration-500 z-30 flex flex-col no-scrollbar ${sidebarCollapsed ? 'w-20' : 'w-70'
+        className={`fixed ltr:left-0 rtl:right-0 top-0 h-screen bg-white ltr:border-r rtl:border-l border-slate-200/60 transition-all duration-300 z-50 flex flex-col no-scrollbar ${sidebarCollapsed ? '-translate-x-full lg:translate-x-0 lg:w-20' : 'translate-x-0 w-[280px] lg:w-70'
           }`}
       >
         {/* Superior Logo Section - Removed toggle button */}
-        <div className="flex items-center h-20 px-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
+        <div className="flex items-center justify-between h-20 px-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-10">
           <motion.div
             initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -59,6 +67,20 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
               </div>
             )}
           </motion.div>
+
+          {/* Mobile Close Button */}
+          {!sidebarCollapsed && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSidebarCollapsed(true);
+              }}
+              className="lg:hidden absolute ltr:right-4 rtl:left-4 z-50 p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-xl transition-all shadow-sm bg-white border border-slate-100"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Premium Navigation */}
@@ -111,6 +133,11 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                 >
                   <Link
                     to={item.path}
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarCollapsed(true);
+                      }
+                    }}
                     onMouseEnter={() => setActiveHover(item.path)}
                     onMouseLeave={() => setActiveHover(null)}
                     className={`group relative flex items-center rounded-2xl px-4 py-3.5 transition-all duration-300 ${isActive
@@ -178,7 +205,8 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
               </div>
             </div>
 
-            {!sidebarCollapsed && (
+            {/* Profile for lg screens when collapsed */}
+            <div className={`hidden lg:block ${!sidebarCollapsed ? 'hidden' : ''}`}>
               <div className="flex-1 min-w-0 animate-in fade-in slide-in-from-ltr:left-2 ltr:right-2 rtl:left-2 duration-500">
                 <p className="text-xs font-extrabold text-slate-800 truncate tracking-tight">
                   {user?.name || 'Premium User'}
@@ -187,9 +215,21 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                   {user?.role || 'Administrator'}
                 </p>
               </div>
-            )}
+            </div>
 
-            {!sidebarCollapsed && (
+            {/* Always show text on mobile, hide on lg if collapsed */}
+            <div className={`flex-1 min-w-0 ${sidebarCollapsed ? 'lg:hidden' : ''}`}>
+              <div className="animate-in fade-in slide-in-from-ltr:left-2 ltr:right-2 rtl:left-2 duration-500">
+                <p className="text-xs font-extrabold text-slate-800 truncate tracking-tight">
+                  {user?.name || 'Premium User'}
+                </p>
+                <p className="text-[10px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-widest">
+                  {user?.role || 'Administrator'}
+                </p>
+              </div>
+            </div>
+
+            <div className={`${sidebarCollapsed ? 'lg:hidden' : ''}`}>
               <button
                 onClick={() => setShowLogoutDialog(true)}
                 disabled={logout.isPending}
@@ -201,7 +241,7 @@ const Sidebar = ({ sidebarCollapsed, navItems }) => {
                   <LogOut className="w-5 h-5" />
                 )}
               </button>
-            )}
+            </div>
           </div>
         </div>
       </aside>

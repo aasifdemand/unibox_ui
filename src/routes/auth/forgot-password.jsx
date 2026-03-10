@@ -43,11 +43,11 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 md:mb-10">
         <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-blue-100">
           <Mail className="w-8 h-8 text-blue-600" />
         </div>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
+        <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">
           Reset <span className="text-gradient">Password</span>
         </h2>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">

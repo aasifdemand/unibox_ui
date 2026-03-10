@@ -8,7 +8,7 @@ const AuthLayout = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 relative overflow-hidden w-full">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px] animate-pulse"></div>
@@ -27,7 +27,7 @@ const AuthLayout = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        className="relative w-full max-w-md"
+        className="relative w-full max-w-sm md:max-w-md mx-auto"
       >
         {/* Logo */}
         <div className="flex justify-center mb-10">
@@ -36,7 +36,7 @@ const AuthLayout = () => {
 
         {/* Main Content */}
         <div className="bg-white/70 backdrop-blur-2xl border border-white p-2 shadow-xl rounded-2xl">
-          <div className="p-8">
+          <div className="p-6 md:p-8">
             <Outlet />
           </div>
         </div>

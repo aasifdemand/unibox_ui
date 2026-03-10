@@ -1,9 +1,8 @@
-import { useState, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import OTPInput from 'react-otp-input';
+import { useState } from 'react';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Input from '../../components/ui/input';
-import { Mail, KeyRound } from 'lucide-react';
-import { useResetPassword, useForgotPassword } from '../../hooks/useAuth';
+import { KeyRound } from 'lucide-react';
+import { useResetPassword } from '../../hooks/useAuth';
 import { resetPasswordSchema } from '../../validators/reset-password.schema';
 import { useToast } from '../../hooks/useToast';
 
@@ -20,28 +19,20 @@ const mapZodErrors = (zodError) => {
 const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const toast = useToast();
-  const intervalRef = useRef(null);
 
   const resetPassword = useResetPassword();
-  const forgotPassword = useForgotPassword();
 
-  const initialEmail = location.state?.email || '';
+  const queryToken = searchParams.get('token') || '';
 
   const [formData, setFormData] = useState({
-    email: initialEmail,
-    otp: '',
+    token: queryToken,
     newPassword: '',
+    confirmPassword: '',
   });
 
   const [errors, setErrors] = useState({});
-  const [showResendTimer, setShowResendTimer] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(60);
-
-  const handleOTPChange = (otp) => {
-    setFormData((prev) => ({ ...prev, otp }));
-    if (errors.otp) setErrors((p) => ({ ...p, otp: null }));
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +49,16 @@ const ResetPassword = () => {
       return;
     }
 
+    if (!formData.token) {
+      setErrors({ token: 'Invalid reset link. Token is missing.' });
+      return;
+    }
+
     const toastId = toast.loading('Resetting password...');
 
     try {
       await resetPassword.mutateAsync({
-        email: formData.email,
-        otp: formData.otp,
+        token: formData.token,
         newPassword: formData.newPassword,
       });
 
@@ -72,118 +67,27 @@ const ResetPassword = () => {
       navigate('/auth/login');
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error(error.message || 'Invalid or expired code');
+      toast.error(error.message || 'Invalid or expired link. Please request a new one.');
     }
   };
 
-  const startResendTimer = () => {
-    clearInterval(intervalRef.current);
-    setShowResendTimer(true);
-    setResendCountdown(60);
-
-    intervalRef.current = setInterval(() => {
-      setResendCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current);
-          setShowResendTimer(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const handleResendOTP = async () => {
-    if (!formData.email) {
-      setErrors({ email: 'Email is required' });
-      return;
-    }
-
-    startResendTimer();
-
-    const toastId = toast.loading('Resending code...');
-
-    try {
-      await forgotPassword.mutateAsync(formData.email);
-      toast.dismiss(toastId);
-      toast.success('Code resent successfully');
-    } catch (error) {
-      toast.dismiss(toastId);
-      toast.error(error.message || 'Failed to resend code');
-    }
-  };
-
-  const formatTime = (s) =>
-    `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-
-  const isLoading = resetPassword.isPending || forgotPassword.isPending;
+  const isLoading = resetPassword.isPending;
 
   return (
     <>
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 md:mb-10">
         <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-blue-100">
           <KeyRound className="w-8 h-8 text-blue-600" />
         </div>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
+        <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">
           Reset <span className="text-gradient">Password</span>
         </h2>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
-          Enter the code sent to your email
+          Enter your new password
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          disabled={!!initialEmail || isLoading}
-          icon={Mail}
-          error={errors.email}
-          className="rounded-2xl border-slate-200/60"
-        />
-
-        <div className="space-y-3">
-          <div className="flex justify-between items-center px-1">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              Verification Code
-            </label>
-            <button
-              type="button"
-              onClick={handleResendOTP}
-              disabled={showResendTimer || isLoading}
-              className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 disabled:text-slate-300 transition-colors"
-            >
-              {showResendTimer ? `Resend in ${formatTime(resendCountdown)}` : 'Resend code'}
-            </button>
-          </div>
-
-          <OTPInput
-            value={formData.otp}
-            onChange={handleOTPChange}
-            numInputs={6}
-            containerStyle="flex gap-2.5"
-            renderInput={(props) => (
-              <input
-                {...props}
-                disabled={isLoading}
-                className="w-full h-14 text-xl font-bold text-center border-2 rounded-xl transition-all outline-none focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/5 disabled:bg-slate-50 disabled:cursor-not-allowed bg-slate-50/30"
-                style={{
-                  borderColor: errors.otp ? '#f87171' : 'rgba(226, 232, 240, 0.6)',
-                }}
-              />
-            )}
-          />
-
-          {errors.otp && (
-            <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mt-2 px-1">
-              {errors.otp}
-            </p>
-          )}
-        </div>
-
         <Input.Password
           label="New Password"
           name="newPassword"
@@ -194,6 +98,23 @@ const ResetPassword = () => {
           placeholder="••••••••"
           className="rounded-2xl border-slate-200/60"
         />
+
+        <Input.Password
+          label="Confirm Password"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleInputChange}
+          error={errors.confirmPassword}
+          disabled={isLoading}
+          placeholder="••••••••"
+          className="rounded-2xl border-slate-200/60"
+        />
+
+        {errors.token && (
+          <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mt-2 px-1 text-center">
+            {errors.token}
+          </p>
+        )}
 
         <button
           type="submit"

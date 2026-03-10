@@ -165,17 +165,17 @@ const DashboardLayout = () => {
 
       {/* Main Framework */}
       <div
-        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'ltr:pl-20 rtl:pr-20' : 'ltr:pl-70 rtl:pr-70'}`}
+        className={`transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'lg:ltr:pl-20 lg:rtl:pr-20' : 'lg:ltr:pl-70 lg:rtl:pr-70'}`}
       >
         {/* Superior Header - High Glassmorphism */}
         <header
-          className={`fixed top-0 z-40 h-20 px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2 transition-all duration-500 ease-in-out ${sidebarCollapsed
-            ? 'ltr:left-20 rtl:right-20 w-[calc(100%-5rem)]'
-            : 'ltr:left-70 rtl:right-70 w-[calc(100%-17.5rem)]'
+          className={`fixed top-0 z-40 h-16 lg:h-20 px-4 lg:px-8 flex items-center justify-between bg-white/40 backdrop-blur-2xl border-b border-slate-200/40 shadow-xs shadow-slate-800/2 transition-all duration-500 ease-in-out ltr:left-0 ltr:right-0 rtl:right-0 rtl:left-0 ${sidebarCollapsed
+            ? 'lg:ltr:left-20 lg:rtl:right-20'
+            : 'lg:ltr:left-70 lg:rtl:right-70'
             }`}
         >
           {/* Section Indicator with Sidebar Toggle */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 lg:gap-6 min-w-0">
             {/* Sidebar Toggle Button - Moved from Sidebar */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -188,12 +188,12 @@ const DashboardLayout = () => {
               )}
             </button>
 
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-slate-800/10 transition-transform hover:rotate-3">
+            <div className="flex items-center gap-2 lg:gap-3">
+              <div className="hidden lg:flex w-10 h-10 rounded-2xl bg-blue-600 items-center justify-center text-white shadow-lg shadow-slate-800/10 transition-transform hover:rotate-3">
                 <activeItem.icon className="w-5 h-5" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
+              <div className="min-w-0 flex-1">
+                <div className="hidden lg:flex items-center gap-2">
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">
                     {t('common.navigation')} /
                   </span>
@@ -201,7 +201,7 @@ const DashboardLayout = () => {
                     {user?.name}
                   </span>
                 </div>
-                <h1 className="text-xl font-extrabold text-slate-800 tracking-tighter leading-none">
+                <h1 className="text-base sm:text-lg lg:text-xl font-extrabold text-slate-800 tracking-tighter leading-none truncate max-w-[130px] sm:max-w-none">
                   {activeItem.label}
                 </h1>
               </div>
@@ -218,7 +218,7 @@ const DashboardLayout = () => {
           </div>
 
           {/* Action Center */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
             {/* Search - Unified Command style */}
             <div className="hidden xl:flex relative group" ref={searchRef}>
               <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
@@ -293,10 +293,10 @@ const DashboardLayout = () => {
               )}
             </div>
 
-            <div className="flex items-center gap-2 ltr:pr-4 rtl:pl-4 ltr:border-r rtl:border-l border-slate-200/60">
+            <div className="flex items-center gap-1 sm:gap-2 sm:ltr:pr-4 sm:rtl:pl-4 sm:ltr:border-r sm:rtl:border-l border-slate-200/60">
               <LanguageSwitcher />
               <NotificationDropdown />
-              <button className="w-10 h-10 rounded-xl hover:bg-slate-100/80 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90">
+              <button className="hidden sm:flex w-10 h-10 rounded-xl hover:bg-slate-100/80 items-center justify-center text-slate-500 hover:text-slate-800 transition-all active:scale-90">
                 <HelpCircle className="w-5 h-5" />
               </button>
             </div>
@@ -322,7 +322,7 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          className="pt-24 px-4 md:px-8 pb-4 md:pb-8 w-full"
+          className="pt-20 lg:pt-24 px-4 md:px-8 pb-4 md:pb-8 w-full"
         >
           <div className="w-full min-h-[calc(100vh-144px)]">
             <Outlet />
@@ -331,7 +331,7 @@ const DashboardLayout = () => {
 
 
         {/* Refined Footer */}
-        <footer className="px-10 py-8 mt-auto border-t border-slate-200/40 bg-white/30 backdrop-blur-sm">
+        <footer className="px-6 md:px-10 py-6 md:py-8 mt-auto border-t border-slate-200/40 bg-white/30 backdrop-blur-sm">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full mx-auto">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 group cursor-pointer">
@@ -348,14 +348,14 @@ const DashboardLayout = () => {
               </span>
             </div>
 
-            <div className="flex items-center gap-10">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-10">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
-                <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
+                <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest text-center md:text-left">
                   Global Status: {t('common.operational')}
                 </span>
               </div>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-4 md:gap-6 flex-wrap justify-center">
                 <a
                   href="#"
                   className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
@@ -377,7 +377,7 @@ const DashboardLayout = () => {
               </div>
             </div>
 
-            <p className="text-[10px] font-bold text-slate-300">
+            <p className="text-[10px] font-bold text-slate-300 text-center">
               © {new Date().getFullYear()} Unibox Intelligence Labs.
             </p>
           </div>

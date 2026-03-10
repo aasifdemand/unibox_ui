@@ -72,8 +72,8 @@ const Signup = () => {
 
   return (
     <>
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
+      <div className="text-center mb-8 md:mb-10">
+        <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">
           {t('auth.signup.title')} <span className="text-gradient">{t('auth.signup.title_span')}</span>
         </h2>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
