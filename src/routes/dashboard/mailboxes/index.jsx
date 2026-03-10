@@ -259,8 +259,8 @@ const Mailboxes = () => {
                 totalMessages={state.totalMessages}
                 onCompose={handlers.handleCompose}
                 onCloseCompose={handlers.handleCloseCompose}
-                onSendCompose={() => composeRef.current?.handleSend()}
-                onSaveDraft={() => composeRef.current?.handleSaveDraft()}
+                onSendCompose={handlers.handleSendMessage}
+                onSaveDraft={handlers.handleSaveDraft}
                 replyToMessage={state.replyToMessage}
                 forwardMessage={state.forwardMessage}
                 isIntegrated={true}

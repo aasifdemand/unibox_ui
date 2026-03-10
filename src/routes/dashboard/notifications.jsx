@@ -53,7 +53,7 @@ const NotificationsPage = () => {
     };
 
     return (
-        <div className="max-w-400 mx-auto p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
+        <div className="max-w-7xl w-full mx-auto p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
             {/* Page Header (Match Settings Style) */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
                 <div>

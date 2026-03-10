@@ -150,12 +150,12 @@ const Analytics = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative group">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto mt-4 lg:mt-0">
+          <div className="relative group w-full sm:w-auto">
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
+              className="appearance-none w-full sm:w-auto ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>
@@ -168,7 +168,7 @@ const Analytics = () => {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="btn-primary flex items-center px-6"
+            className="btn-primary flex items-center justify-center px-6 w-full sm:w-auto py-2.5"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 ltr:mr-2 rtl:ml-2" />}
             {isRefreshing ? t('analytics.refreshing') : t('analytics.refresh_data')}

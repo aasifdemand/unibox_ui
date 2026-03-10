@@ -54,7 +54,7 @@ const CampaignToolbar = ({
                     <Filter className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                     <select
                         value={statusFilter}
-                        onChange={(e) => setsetStatusFilter(e.target.value)}
+                        onChange={(e) => setStatusFilter(e.target.value)}
                         className="w-full h-10 ltr:pl-10 ltr:pr-10 rtl:pl-10 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:bg-white focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/40 outline-none appearance-none cursor-pointer shadow-xs transition-all"
                     >
                         {statusOptions.map((option) => (

@@ -1,6 +1,9 @@
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+const defaultBaseUrl = API_URL.replace(/\/api\/v1\/?$/, '') || 'http://localhost:8080';
+
+const SOCKET_URL = import.meta.env.VITE_API_BASE_URL || defaultBaseUrl;
 
 // Initialize a generic socket client
 // Make sure this doesn't auto-connect initially if we don't have a token,

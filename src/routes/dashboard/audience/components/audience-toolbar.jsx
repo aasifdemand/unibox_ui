@@ -25,7 +25,7 @@ const AudienceToolbar = ({
             </div>
 
             {/* Status Filter */}
-            <div className="relative group min-w-44 flex-1 md:flex-none">
+            <div className="relative group min-w-44 w-full md:w-auto flex-1 md:flex-none">
                 <SlidersHorizontal className="absolute ltr:left-4 rtl:right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none group-focus-within:text-blue-500 transition-colors" />
                 <select
                     value={filterStatus}

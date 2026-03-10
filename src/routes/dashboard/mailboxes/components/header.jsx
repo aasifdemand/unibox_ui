@@ -241,10 +241,10 @@ const Header = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
           {view === 'list' && (
-            <div className="flex items-center gap-3">
-              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 min-w-60 transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white">
+            <div className="flex flex-wrap md:flex-nowrap items-center gap-3 w-full">
+              <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 w-full md:w-auto md:min-w-60 transition-all focus-within:ring-2 focus-within:ring-blue-500/10 focus-within:border-blue-500/40 focus-within:bg-white flex-1 min-w-[200px]">
                 <Search className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors shrink-0" />
                 <input
                   type="text"

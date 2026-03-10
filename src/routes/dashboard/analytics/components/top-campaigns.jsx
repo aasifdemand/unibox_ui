@@ -7,7 +7,7 @@ const TopCampaigns = ({ campaigns, isLoading }) => {
   const { t } = useTranslation();
   return (
     <div className="premium-card p-8 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h3 className="text-xl font-extrabold text-slate-800 tracking-tight">
             {t('analytics.top_campaigns_title')} <span className="text-blue-500">{t('analytics.campaigns_span')}</span>

@@ -659,7 +659,7 @@ const Dashboard = () => {
                 {t("dashboard.quick_actions.title")} <span className="text-blue-600 mx-2">{t("dashboard.quick_actions.span")}</span>
                 <Sparkles className="w-4 h-4 ms-3 text-blue-500 animate-pulse" />
               </h3>
-              <div className="grid grid-cols-2 gap-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
                 {quickActions.map((action, index) => (
                   <motion.div
                     key={index}

@@ -80,7 +80,7 @@ const Campaigns = () => {
   }
 
   return (
-    <div className="max-w-400 mx-auto px-4 md:px-8 pb-8 space-y-2 animate-in fade-in duration-700">
+    <div className="max-w-7xl w-full mx-auto px-4 md:px-8 pb-8 space-y-2 animate-in fade-in duration-700">
       {showDeleteModal && (
         <ShowDelete
           campaign={campaignToDelete}
