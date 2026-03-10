@@ -205,8 +205,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
               </div>
             </div>
 
-            {/* Profile for lg screens when collapsed */}
-            <div className={`hidden lg:block ${!sidebarCollapsed ? 'hidden' : ''}`}>
+            {!sidebarCollapsed && (
               <div className="flex-1 min-w-0 animate-in fade-in slide-in-from-ltr:left-2 ltr:right-2 rtl:left-2 duration-500">
                 <p className="text-xs font-extrabold text-slate-800 truncate tracking-tight">
                   {user?.name || 'Premium User'}
@@ -215,19 +214,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                   {user?.role || 'Administrator'}
                 </p>
               </div>
-            </div>
-
-            {/* Always show text on mobile, hide on lg if collapsed */}
-            <div className={`flex-1 min-w-0 ${sidebarCollapsed ? 'lg:hidden' : ''}`}>
-              <div className="animate-in fade-in slide-in-from-ltr:left-2 ltr:right-2 rtl:left-2 duration-500">
-                <p className="text-xs font-extrabold text-slate-800 truncate tracking-tight">
-                  {user?.name || 'Premium User'}
-                </p>
-                <p className="text-[10px] font-bold text-slate-400 truncate uppercase mt-0.5 tracking-widest">
-                  {user?.role || 'Administrator'}
-                </p>
-              </div>
-            </div>
+            )}
 
             <div className={`${sidebarCollapsed ? 'lg:hidden' : ''}`}>
               <button
