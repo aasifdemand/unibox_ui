@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { queryClient } from './lib/query-client.js';
 import { QueryClientProvider } from '@tanstack/react-query';
 import './i18n';
-import PWAUpdatePrompt from './components/shared/pwa-update-prompt.jsx';
+
 
 
 createRoot(document.getElementById('root')).render(
@@ -59,7 +59,7 @@ createRoot(document.getElementById('root')).render(
             },
           }}
         />
-        <PWAUpdatePrompt />
+
 
       </BrowserRouter>
     </QueryClientProvider>
