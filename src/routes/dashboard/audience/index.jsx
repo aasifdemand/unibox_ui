@@ -13,6 +13,7 @@ const Audience = () => {
   const { t } = useTranslation();
   const {
     // State
+    activeTab,
     searchTerm,
     filterStatus,
     uploadStep,
@@ -23,8 +24,10 @@ const Audience = () => {
     // Data
     metrics,
     isLoading,
+    filteredBatches,
 
     // Setters
+    setActiveTab,
     setSearchTerm,
     setFilterStatus,
     setUploadStep,
@@ -35,6 +38,8 @@ const Audience = () => {
     resetUploadState,
     handleFileUploadWrapper,
     handleContactsUpload,
+    handleDeleteBatch,
+    openBatchDetails,
   } = useAudienceData();
 
 
