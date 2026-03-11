@@ -143,7 +143,7 @@ const ImportLeadsStep = ({
                                 <option value="" className="text-slate-400 font-medium">Search your saved lists...</option>
                                 {verifiedBatches.map(batch => (
                                     <option key={batch.id} value={batch.id} className="text-slate-900 font-bold">
-                                        {batch.originalFilename} ({batch.validRecords} leads)
+                                        {batch.originalFilename} ({batch.verification?.valid ?? batch.validRecords} leads)
                                     </option>
                                 ))}
                             </select>
@@ -178,7 +178,7 @@ const ImportLeadsStep = ({
                                             </div>
                                             <div className="flex items-center gap-3 shrink-0">
                                                 <span className={`text-xs font-bold ${watchListBatchId === batch.id ? 'text-indigo-600' : 'text-slate-400'}`}>
-                                                    {batch.validRecords}
+                                                    {batch.verification?.valid ?? batch.validRecords}
                                                 </span>
                                                 {watchListBatchId === batch.id && <Check className="w-4 h-4 text-indigo-600" />}
                                             </div>

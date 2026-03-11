@@ -72,7 +72,7 @@ const AudienceTabs = ({
                     </h4>
                     <div className="flex items-center gap-2 mt-1">
                       <div
-                        className={`w-1.5 h-1.5 rounded-full ${batch.status === 'completed'
+                        className={`w-1.5 h-1.5 rounded-full ${['completed', 'verified'].includes(batch.status)
                           ? 'bg-emerald-500'
                           : batch.status === 'processing'
                             ? 'bg-amber-500 animate-pulse'

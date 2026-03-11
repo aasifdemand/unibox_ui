@@ -128,7 +128,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         }
     }, [showModal, refetchSenders, refetchBatches]);
 
-    const verifiedBatches = batches.filter((batch) => batch.status === 'verified');
+    const verifiedBatches = batches.filter((batch) => ['verified', 'completed'].includes(batch.status));
 
     const handleBatchSelect = (batchId) => {
         const batch = verifiedBatches.find((b) => b.id === batchId);
