@@ -21,6 +21,7 @@ const ImportLeadsStep = ({
     isLoadingBatches,
     refetchBatches,
 }) => {
+    console.log('📬 ImportLeadsStep Received:', { count: verifiedBatches?.length, lists: verifiedBatches });
     const { t } = useTranslation();
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [uploadStep, setUploadStep] = useState(1);

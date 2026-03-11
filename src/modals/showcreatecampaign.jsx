@@ -86,23 +86,26 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
 
     const senders = senderResponse.data || [];
 
-    const batchesQuery = useBatches(1, 100);
-    const batchesData = batchesQuery.data || [];
-    const isLoadingBatches = batchesQuery.isLoading;
-    const refetchBatches = batchesQuery.refetch;
-
-    // Direct logging to verify data structure
+    // Standardize with Audience page limit
+    const batchesQuery = useBatches(1, 20);
+    const rawData = batchesQuery.data; // Should be the array from useBatches
+    
+    // TRACE LOGGING: Let's see exactly what's inside
     useEffect(() => {
-        if (!isLoadingBatches) {
-            console.log('🔍 Modal Batch Check:', {
-                count: batchesData.length,
-                is_array: Array.isArray(batchesData),
-                first_item: batchesData[0]
+        if (!batchesQuery.isLoading) {
+            console.log('🧬 CAMPAIGN MODAL TRACE:', {
+                raw_data_type: typeof rawData,
+                is_array: Array.isArray(rawData),
+                length: rawData?.length,
+                full_raw: rawData
             });
         }
-    }, [batchesData, isLoadingBatches]);
+    }, [rawData, batchesQuery.isLoading]);
 
-    const verifiedBatches = batchesData; 
+    const verifiedBatches = useMemo(() => {
+        if (!Array.isArray(rawData)) return [];
+        return rawData; // Showing all for now to bypass filter bugs
+    }, [rawData]);
 
     const {
         register,
@@ -297,7 +300,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             selectedSender,
             verifiedBatches,
             senders,
-            isLoadingBatches,
+            isLoadingBatches: batchesQuery.isLoading,
             isLoadingSenders,
             handleBatchSelect,
             handleSenderSelect,
@@ -306,7 +309,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             watchScheduleType,
             watchListBatchId,
             watchSenderId,
-            refetchBatches,
+            refetchBatches: batchesQuery.refetch,
             refetchSenders,
         };
 
