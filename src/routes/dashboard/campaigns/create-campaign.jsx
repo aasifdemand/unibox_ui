@@ -79,8 +79,18 @@ const CreateCampaign = () => {
 
   const senders = senderResponse.data || [];
 
-  const { data: batchesRes, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
-  const batches = batchesRes?.data || [];
+  const { 
+    data: batches = [], 
+    isLoading: isLoadingBatches, 
+    refetch: refetchBatches 
+  } = useBatches(1, 20);
+
+  // Trace logging for the actual page
+  console.log('🏗️ CreateCampaign Page Render:', {
+    isLoadingBatches,
+    batches_count: batches?.length,
+    all_batches: batches
+  });
 
   const {
     register,
@@ -117,7 +127,14 @@ const CreateCampaign = () => {
     refetchBatches();
   }, [refetchSenders, refetchBatches]);
 
-  const verifiedBatches = batches.filter((batch) => batch.status === 'verified');
+  const verifiedBatches = React.useMemo(() => {
+    if (!Array.isArray(batches)) return [];
+    // Broadened filter to include more statuses and batches with valid records
+    return batches.filter((batch) => 
+      ['verified', 'completed', 'valid', 'uploaded', 'parsing'].includes(batch.status) || 
+      (batch.validRecords > 0)
+    );
+  }, [batches]);
 
   const handleBatchSelect = (batchId) => {
     const batch = verifiedBatches.find((b) => b.id === batchId);
