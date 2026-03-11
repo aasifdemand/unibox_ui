@@ -86,21 +86,23 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
 
     const senders = senderResponse.data || [];
 
-    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(1, 100);
-    
-    // Debug logging to catch empty lists
-    useEffect(() => {
-        if (!isLoadingBatches && batches.length > 0) {
-            console.log('📦 Batches loaded successfully');
-            console.table(batches.map(b => ({ filename: b.originalFilename, status: b.status, valid: b.validRecords })));
-        } else if (!isLoadingBatches) {
-            console.warn('⚠️ No batches returned from API');
-        }
-    }, [batches, isLoadingBatches]);
+    const batchesQuery = useBatches(1, 100);
+    const batchesData = batchesQuery.data || [];
+    const isLoadingBatches = batchesQuery.isLoading;
+    const refetchBatches = batchesQuery.refetch;
 
-    const verifiedBatches = batches.filter((batch) => 
-        batch.status && ['verified', 'completed', 'valid', 'uploaded', 'parsing'].includes(batch.status.toLowerCase())
-    );
+    // Direct logging to verify data structure
+    useEffect(() => {
+        if (!isLoadingBatches) {
+            console.log('🔍 Modal Batch Check:', {
+                count: batchesData.length,
+                is_array: Array.isArray(batchesData),
+                first_item: batchesData[0]
+            });
+        }
+    }, [batchesData, isLoadingBatches]);
+
+    const verifiedBatches = batchesData; 
 
     const {
         register,
