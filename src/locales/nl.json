@@ -955,7 +955,7 @@
             "table": {
                 "email": "E-mail",
                 "name": "Naam",
-                "status": "Status",
+                "status": "openen Status",
                 "score": "Scoren",
                 "verified_on": "Geverifieerd op",
                 "added_on": "Toegevoegd op",

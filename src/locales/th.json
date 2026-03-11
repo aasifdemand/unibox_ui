@@ -1055,10 +1055,10 @@
             "premium_templates": "เทมเพลตระดับพรีเมียมและการทดสอบ A/B",
             "sequence_builder": "ตัวสร้างลำดับ",
             "priority_support": "การสนับสนุนทุกวันตลอด 24 ชั่วโมงทุกวัน",
-            "everything_pro": "Everything in Professional",
-            "unlimited_volume": "Unlimited sending volume",
-            "dedicated_manager": "Dedicated success manager",
-            "custom_warming": "Custom IP warming",
+            "everything_pro": "ทุกอย่างในระดับมืออาชีพ",
+            "unlimited_volume": "ปริมาณการส่งไม่จำกัด",
+            "dedicated_manager": "ผู้จัดการความสำเร็จโดยเฉพาะ",
+            "custom_warming": "การอุ่น IP แบบกำหนดเอง",
             "sso_security": "SSO และการรักษาความปลอดภัยขั้นสูง",
             "sla": "การรับประกันสแอลเอ"
         }

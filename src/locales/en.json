@@ -446,7 +446,7 @@
             "import_contacts_desc": "Add new subscribers",
             "create_template": "Create Template",
             "create_template_desc": "Design email templates",
-            "add_sender": "Add Mailbox",
+            "add_sender": "Connect Mailbox",
             "add_sender_desc": "Connect email account"
         },
         "activity": {

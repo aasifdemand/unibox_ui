@@ -838,7 +838,7 @@
                 "placeholder_host_imap": "へimap.example.com",
                 "placeholder_port_smtp": "へ587",
                 "placeholder_port_imap": "へ993",
-                "placeholder_pass": "••••••••"
+                "placeholder_pass": "へ••••••••"
             },
             "tabs": {
                 "smtp": "送信 (SMTP)",

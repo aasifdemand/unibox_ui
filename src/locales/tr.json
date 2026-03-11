@@ -838,7 +838,7 @@
                 "placeholder_host_imap": "Oluştur imap.example.com",
                 "placeholder_port_smtp": "Oluştur 587",
                 "placeholder_port_imap": "Oluştur 993",
-                "placeholder_pass": "••••••••"
+                "placeholder_pass": "Oluştur ••••••••"
             },
             "tabs": {
                 "smtp": "Giden (SMTP)",

@@ -977,7 +977,7 @@
                 "setup_type": "Setup-Typ",
                 "sender_id": "Absender-ID",
                 "direct": "Direktes SMTP/IMAP",
-                "oauth": "OAuth 2.0",
+                "oauth": "wird angezeigt OAuth 2.0",
                 "outgoing": "Ausgangskonfiguration (SMTP)",
                 "incoming": "Eingehende Konfiguration (IMAP)",
                 "host": "SMTP-Host",
