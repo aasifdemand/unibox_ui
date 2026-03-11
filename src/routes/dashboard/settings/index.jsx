@@ -29,8 +29,7 @@ const Settings = () => {
     limit: 1000,
   });
   const senders = senderResponse.data || [];
-  const { data: batchesRes, isLoading: batchesLoading } = useBatches();
-  const batches = batchesRes?.data || [];
+  const { data: batches, isLoading: batchesLoading } = useBatches();
   const { data: campaigns = [], isLoading: campaignsLoading } = useCampaigns();
 
   // Resource Mutations

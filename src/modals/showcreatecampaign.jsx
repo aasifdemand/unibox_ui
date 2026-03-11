@@ -86,8 +86,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
 
     const senders = senderResponse.data || [];
 
-    const { data: batchesRes, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
-    const batches = batchesRes?.data || [];
+    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
 
     const {
         register,

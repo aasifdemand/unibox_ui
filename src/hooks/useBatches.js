@@ -27,12 +27,18 @@ const fetchBatches = async (page = 1, limit = 20) => {
 };
 
 export const useBatches = (page = 1, limit = 20) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: [...batchKeys.lists(), { page, limit }],
     queryFn: () => fetchBatches(page, limit),
     staleTime: 2 * 60 * 1000,
     gcTime: 5 * 60 * 1000,
   });
+
+  return {
+    ...query,
+    data: query.data?.data || [],
+    pagination: query.data?.pagination || { total: 0, pages: 0 },
+  };
 };
 
 // =========================
@@ -180,13 +186,12 @@ export const useValidEmailsForSending = (batchId) => {
 // GET VERIFICATION TOTALS FOR DASHBOARD
 // =========================
 export const useVerificationTotals = () => {
-  const { data: batchesRes } = useBatches();
-  const batchesData = batchesRes?.data || [];
+  const { data: batches = [] } = useBatches();
 
-  return batchesData.reduce(
+  return batches.reduce(
     (acc, batch) => {
       const v = batch.verification || {};
-      acc.verified += v.verified || 0;
+      acc.verified += v.valid || 0;
       acc.invalid += v.invalid || 0;
       acc.risky += v.risky || 0;
       acc.unverified += v.unverified || 0;

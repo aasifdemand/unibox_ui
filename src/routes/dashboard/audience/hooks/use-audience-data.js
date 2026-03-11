@@ -37,9 +37,7 @@ export const useAudienceData = () => {
   const BATCHES_PER_PAGE = 12;
 
   // React Query hooks
-  const { data: batchesRes, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(batchPage, BATCHES_PER_PAGE);
-  const batchesData = batchesRes?.data || [];
-  const batchesPagination = batchesRes?.pagination || { total: 0, pages: 0 };
+  const { data: batchesData, pagination: batchesPagination, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(batchPage, BATCHES_PER_PAGE);
 
   const uploadBatch = useUploadBatch();
   const deleteBatch = useDeleteBatch();
