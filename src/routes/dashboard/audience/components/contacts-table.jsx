@@ -126,6 +126,16 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sorting, setSorting] = useState([]);
 
+    // Reset to page 1 if external filters change
+    React.useEffect(() => { setCurrentPage(1); }, [searchTerm, filterStatus]);
+
+    const { contacts: currentRecords = [], pagination = { totalPages: 0, total: 0 }, isLoading, refetch } = useAllContacts({
+        page: currentPage,
+        limit: RECORDS_PER_PAGE,
+        searchTerm,
+        filterStatus
+    });
+
     const { totalPages, total: totalRecords } = pagination;
 
     const visibleMetaFields = useMemo(() => {
