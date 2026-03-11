@@ -26,7 +26,7 @@ const BatchDetailsModal = ({
 
     if (!show) return null;
 
-    const { batch, contacts = [], pagination = {} } = batchStatus || {};
+    const { batch, allRecords: contacts = [], pagination = {}, verification = {} } = batchStatus || {};
 
     const getVerificationIcon = (status) => {
         switch (status) {
@@ -98,10 +98,10 @@ const BatchDetailsModal = ({
                                 {/* Stats Bar */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     {[
-                                        { label: t('audience.valid'), value: batch?.verification?.valid || 0, color: 'emerald' },
-                                        { label: t('audience.risky'), value: batch?.verification?.risky || 0, color: 'amber' },
-                                        { label: t('audience.invalid'), value: batch?.verification?.invalid || 0, color: 'rose' },
-                                        { label: t('audience.unverified'), value: batch?.verification?.unverified || 0, color: 'slate' },
+                                        { label: t('audience.valid'), value: verification?.valid || batch?.verification?.valid || 0, color: 'emerald' },
+                                        { label: t('audience.risky'), value: verification?.risky || batch?.verification?.risky || 0, color: 'amber' },
+                                        { label: t('audience.invalid'), value: verification?.invalid || batch?.verification?.invalid || 0, color: 'rose' },
+                                        { label: t('audience.unverified'), value: verification?.unverified || batch?.verification?.unverified || 0, color: 'slate' },
                                     ].map((stat, i) => (
                                         <div key={i} className={`p-4 rounded-2xl bg-${stat.color}-50/50 border border-${stat.color}-100`}>
                                             <p className={`text-[10px] font-black text-${stat.color}-600/60 uppercase tracking-widest mb-1`}>
