@@ -87,20 +87,23 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
     const senders = senderResponse.data || [];
 
     // Standardize with Audience page limit
-    const batchesQuery = useBatches(1, 20);
-    const rawData = batchesQuery.data; // Should be the array from useBatches
+    const { 
+        data: rawData = [], 
+        isLoading: isLoadingBatches, 
+        refetch: refetchBatches 
+    } = useBatches(1, 20);
     
     // direct logging in render body
     console.log('🏛️ ShowCreateCampaign Render:', {
         step: currentStep,
-        batches_loading: batchesQuery.isLoading,
+        batches_loading: isLoadingBatches,
         batches_count: rawData?.length,
         batches_data: rawData
     });
 
     const verifiedBatches = useMemo(() => {
         if (!Array.isArray(rawData)) return [];
-        return rawData; // Showing all for now to bypass filter bugs
+        return rawData;
     }, [rawData]);
 
     const {
@@ -296,7 +299,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             selectedSender,
             verifiedBatches,
             senders,
-            isLoadingBatches: batchesQuery.isLoading,
+            isLoadingBatches,
             isLoadingSenders,
             handleBatchSelect,
             handleSenderSelect,
@@ -305,7 +308,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             watchScheduleType,
             watchListBatchId,
             watchSenderId,
-            refetchBatches: batchesQuery.refetch,
+            refetchBatches,
             refetchSenders,
         };
 
