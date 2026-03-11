@@ -253,8 +253,15 @@ body.modal-open {
   overflow-x: hidden;
 }
 
+.ProseMirror p,
 .mail-content-html p {
   margin: 0;
+  margin-bottom: 1em;
+}
+
+.ProseMirror p:last-child,
+.mail-content-html p:last-child {
+  margin-bottom: 0;
 }
 
 /* Preserve spacing from intentional blank lines (double-Enter) */
