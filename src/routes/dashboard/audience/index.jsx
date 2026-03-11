@@ -4,11 +4,13 @@ import AudienceToolbar from './components/audience-toolbar';
 import ContactsTable from './components/contacts-table';
 import AudienceTabs from './components/audience-tabs';
 import BatchDetailsModal from './components/batch-details-modal';
+import Dialog from '../../../components/ui/dialog';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 
 // Hooks
 import { useAudienceData } from './hooks/use-audience-data';
+import { useState } from 'react';
 
 const Audience = () => {
   const { t } = useTranslation();
@@ -52,6 +54,29 @@ const Audience = () => {
     showBatchModal,
     batchStatus,
   } = useAudienceData();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [batchToDelete, setBatchToDelete] = useState(null);
+
+  const triggerDeleteBatch = (batchId) => {
+    const batch = filteredBatches.find((b) => b.id === batchId);
+    setBatchToDelete({
+      id: batchId,
+      label: batch?.originalFilename || 'this batch',
+    });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!batchToDelete) return;
+    try {
+      await handleDeleteBatch(batchToDelete.id);
+      setDeleteDialogOpen(false);
+      setBatchToDelete(null);
+    } catch (err) {
+      // Error is handled in useAudienceData toast
+    }
+  };
 
 
 
@@ -121,7 +146,7 @@ const Audience = () => {
                   isLoadingBatches={isLoading.batches}
                   filteredBatches={filteredBatches}
                   setShowUploadModal={setShowUploadModal}
-                  handleDeleteBatch={handleDeleteBatch}
+                  handleDeleteBatch={triggerDeleteBatch}
                   openBatchDetails={openBatchDetails}
                   pagination={batchesPagination}
                   currentPage={batchPage}
@@ -159,7 +184,22 @@ const Audience = () => {
         />
       )}
 
-
+      <Dialog
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        title={t('audience.delete_batch_title', 'Delete Batch')}
+        description={t('audience.delete_batch_confirm', {
+          label: batchToDelete?.label,
+        }) || `Are you sure you want to delete "${batchToDelete?.label}"? All contacts in this batch will be removed.`}
+        confirmText={t('common.delete', 'Delete')}
+        confirmVariant="danger"
+        isLoading={isLoading.deletingBatch}
+        onCancel={() => {
+          setDeleteDialogOpen(false);
+          setBatchToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+      />
     </motion.div>
   );
 };

@@ -79,7 +79,8 @@ const CreateCampaign = () => {
 
   const senders = senderResponse.data || [];
 
-  const { data: batches = [], isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
+  const { data: batchesRes, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
+  const batches = batchesRes?.data || [];
 
   const {
     register,

@@ -180,9 +180,10 @@ export const useValidEmailsForSending = (batchId) => {
 // GET VERIFICATION TOTALS FOR DASHBOARD
 // =========================
 export const useVerificationTotals = () => {
-  const { data: batches = [] } = useBatches();
+  const { data: batchesRes } = useBatches();
+  const batchesData = batchesRes?.data || [];
 
-  return batches.reduce(
+  return batchesData.reduce(
     (acc, batch) => {
       const v = batch.verification || {};
       acc.verified += v.verified || 0;

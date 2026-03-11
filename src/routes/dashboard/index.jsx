@@ -90,7 +90,8 @@ const Dashboard = () => {
 
   const senders = senderResponse.data || [];
 
-  const { data: batches = [], isLoading: batchesLoading, refetch: refetchBatches } = useBatches();
+  const { data: batchesRes, isLoading: batchesLoading, refetch: refetchBatches } = useBatches();
+  const batches = batchesRes?.data || [];
 
   // Get verification totals using the hook
   const verificationTotals = useVerificationTotals();
