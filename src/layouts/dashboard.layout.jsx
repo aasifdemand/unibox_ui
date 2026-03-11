@@ -207,14 +207,7 @@ const DashboardLayout = () => {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center h-8 px-4 ltr:border-l ltr:border-r rtl:border-l border-slate-200 ltr:ml-2 ltr:mr-2 rtl:ml-2">
-              <div className="flex items-center gap-2 bg-blue-50/50 px-3 py-1 rounded-full border border-blue-100/50 transition-all hover:bg-blue-50">
-                <Zap className="w-3.5 h-3.5 text-blue-500" />
-                <span className="text-[10px] font-extrabold text-blue-700 uppercase tracking-widest whitespace-nowrap">
-                  {t('common.live_monitoring')}
-                </span>
-              </div>
-            </div>
+
           </div>
 
           {/* Action Center */}
