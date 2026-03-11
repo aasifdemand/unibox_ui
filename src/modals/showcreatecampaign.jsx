@@ -86,9 +86,20 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
 
     const senders = senderResponse.data || [];
 
-    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(1, 1000);
+    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(1, 100);
+    
+    // Debug logging to catch empty lists
+    useEffect(() => {
+        if (!isLoadingBatches && batches.length > 0) {
+            console.log('📦 Batches loaded successfully');
+            console.table(batches.map(b => ({ filename: b.originalFilename, status: b.status, valid: b.validRecords })));
+        } else if (!isLoadingBatches) {
+            console.warn('⚠️ No batches returned from API');
+        }
+    }, [batches, isLoadingBatches]);
+
     const verifiedBatches = batches.filter((batch) => 
-        batch.status && ['verified', 'completed'].includes(batch.status.toLowerCase())
+        batch.status && ['verified', 'completed', 'valid', 'uploaded', 'parsing'].includes(batch.status.toLowerCase())
     );
 
     const {
