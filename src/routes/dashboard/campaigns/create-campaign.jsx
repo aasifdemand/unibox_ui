@@ -85,13 +85,6 @@ const CreateCampaign = () => {
     refetch: refetchBatches 
   } = useBatches(1, 20);
 
-  // Trace logging for the actual page
-  console.log('🏗️ CreateCampaign Page Render:', {
-    isLoadingBatches,
-    batches_count: batches?.length,
-    all_batches: batches
-  });
-
   const {
     register,
     handleSubmit,

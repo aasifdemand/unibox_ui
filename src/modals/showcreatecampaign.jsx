@@ -92,14 +92,6 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         isLoading: isLoadingBatches, 
         refetch: refetchBatches 
     } = useBatches(1, 20);
-    
-    // direct logging in render body
-    console.log('🏛️ ShowCreateCampaign Render:', {
-        step: currentStep,
-        batches_loading: isLoadingBatches,
-        batches_count: rawData?.length,
-        batches_data: rawData
-    });
 
     const verifiedBatches = useMemo(() => {
         if (!Array.isArray(rawData)) return [];
