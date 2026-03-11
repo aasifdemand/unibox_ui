@@ -40,7 +40,12 @@ import RecentCampaignsTable from './components/recent-campaigns-table';
 
 // Import React Query hooks
 import { useCampaigns } from '../../hooks/useCampaign';
-import { useSenders, useCreateSmtpSender, initiateGmailOAuth, initiateOutlookOAuth } from '../../hooks/useSenders';
+import {
+  useSenders,
+  useCreateSmtpSender,
+  initiateGmailOAuth,
+  initiateOutlookOAuth,
+} from '../../hooks/useSenders';
 import { useBatches, useVerificationTotals } from '../../hooks/useBatches';
 
 const QuickActionContent = ({ action }) => (
@@ -67,8 +72,6 @@ const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
 
-
-
   // Audience Modal Logic
   const audienceData = useAudienceData();
 
@@ -87,8 +90,6 @@ const Dashboard = () => {
 
   const senders = senderResponse.data || [];
 
-
-
   const { data: batches = [], isLoading: batchesLoading, refetch: refetchBatches } = useBatches();
 
   // Get verification totals using the hook
@@ -99,9 +100,19 @@ const Dashboard = () => {
   const [showSenderModal, setShowSenderModal] = useState(false);
   const [senderType, setSenderType] = useState('gmail');
   const [smtpData, setSmtpData] = useState({
-    displayName: '', email: '', host: '', port: '587', username: '', password: '',
-    secure: true, imapHost: '', imapPort: '993', imapSecure: true, imapUser: '',
-    imapPassword: '', provider: 'custom',
+    displayName: '',
+    email: '',
+    host: '',
+    port: '587',
+    username: '',
+    password: '',
+    secure: true,
+    imapHost: '',
+    imapPort: '993',
+    imapSecure: true,
+    imapUser: '',
+    imapPassword: '',
+    provider: 'custom',
   });
 
   const handleGmailOAuth = () => initiateGmailOAuth();
@@ -117,16 +128,27 @@ const Dashboard = () => {
   const handleSmtpSubmit = async (e) => {
     e.preventDefault();
     const formData = { ...smtpData };
-    if (!formData.imapHost && formData.host) formData.imapHost = formData.host.replace('smtp', 'imap');
+    if (!formData.imapHost && formData.host)
+      formData.imapHost = formData.host.replace('smtp', 'imap');
     if (!formData.imapUser) formData.imapUser = formData.username;
     if (!formData.imapPassword) formData.imapPassword = formData.password;
     try {
       await createSmtpSender.mutateAsync(formData);
       setShowSenderModal(false);
       setSmtpData({
-        displayName: '', email: '', host: '', port: '587', username: '', password: '',
-        secure: true, imapHost: '', imapPort: '993', imapSecure: true, imapUser: '',
-        imapPassword: '', provider: 'custom',
+        displayName: '',
+        email: '',
+        host: '',
+        port: '587',
+        username: '',
+        password: '',
+        secure: true,
+        imapHost: '',
+        imapPort: '993',
+        imapSecure: true,
+        imapUser: '',
+        imapPassword: '',
+        provider: 'custom',
       });
       toast.success(t('campaigns.msg_smtp_success'));
       handleRefresh();
@@ -226,17 +248,17 @@ const Dashboard = () => {
         clickRate,
         sentDate: campaign.scheduledAt
           ? new Date(campaign.scheduledAt).toLocaleDateString(undefined, {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })
-          : campaign.status === 'draft'
-            ? t('dashboard.table.draft')
-            : new Date(campaign.createdAt).toLocaleDateString(undefined, {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
-            }),
+            })
+          : campaign.status === 'draft'
+            ? t('dashboard.table.draft')
+            : new Date(campaign.createdAt).toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              }),
         progress,
       };
     });
@@ -284,7 +306,7 @@ const Dashboard = () => {
           { sent: 0, opens: 0, replies: 0 },
         );
 
-      let label = "";
+      let label = '';
       if (range <= 7) {
         label = date.toLocaleDateString(undefined, { weekday: 'short' });
       } else {
@@ -304,43 +326,46 @@ const Dashboard = () => {
   // Stats cards data
   const stats = [
     {
-      title: t("dashboard.stats.total_campaigns"),
+      title: t('dashboard.stats.total_campaigns'),
       value: totalCampaigns.toString(),
-      change: t("dashboard.stats.this_month", { count: campaignsThisMonth }),
+      change: t('dashboard.stats.this_month', { count: campaignsThisMonth }),
       icon: <Send className="w-6 h-6 text-blue-600" />,
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50',
-      description: t("dashboard.stats.campaigns_desc", { active: activeCampaigns, scheduled: scheduledCampaigns }),
+      description: t('dashboard.stats.campaigns_desc', {
+        active: activeCampaigns,
+        scheduled: scheduledCampaigns,
+      }),
       trend: 'up',
     },
     {
-      title: t("dashboard.stats.open_rate"),
+      title: t('dashboard.stats.open_rate'),
       value: `${avgOpenRate}%`,
-      change: t("dashboard.stats.total_opens", { count: totalOpens }),
+      change: t('dashboard.stats.total_opens', { count: totalOpens }),
       icon: <MailOpen className="w-6 h-6 text-green-600" />,
       color: 'from-green-500 to-emerald-600',
       bgColor: 'bg-green-50',
-      description: t("dashboard.stats.sent_desc", { count: totalSent || 0 }),
+      description: t('dashboard.stats.sent_desc', { count: totalSent || 0 }),
       trend: 'up',
     },
     {
-      title: t("dashboard.stats.reply_rate"),
+      title: t('dashboard.stats.reply_rate'),
       value: `${avgReplyRate}%`,
-      change: t("dashboard.stats.total_replies", { count: totalReplied }),
+      change: t('dashboard.stats.total_replies', { count: totalReplied }),
       icon: <TrendingUp className="w-6 h-6 text-purple-600" />,
       color: 'from-purple-500 to-purple-600',
       bgColor: 'bg-purple-50',
-      description: t("dashboard.stats.engagement_desc"),
+      description: t('dashboard.stats.engagement_desc'),
       trend: 'up',
     },
     {
-      title: t("dashboard.stats.contacts"),
+      title: t('dashboard.stats.contacts'),
       value: totalContacts.toLocaleString(),
-      change: t("dashboard.stats.verified_count", { count: verificationTotals.verified }),
+      change: t('dashboard.stats.verified_count', { count: verificationTotals.verified }),
       icon: <Users className="w-6 h-6 text-amber-600" />,
       color: 'from-amber-500 to-amber-600',
       bgColor: 'bg-amber-50',
-      description: t("dashboard.stats.senders_ready", { count: totalSenders }),
+      description: t('dashboard.stats.senders_ready', { count: totalSenders }),
       trend: 'up',
     },
   ];
@@ -348,16 +373,16 @@ const Dashboard = () => {
   // Quick Actions
   const quickActions = [
     {
-      title: t("dashboard.quick_actions.create_campaign"),
-      description: t("dashboard.quick_actions.create_campaign_desc"),
+      title: t('dashboard.quick_actions.create_campaign'),
+      description: t('dashboard.quick_actions.create_campaign_desc'),
       icon: <Sparkles className="w-5 h-5" />,
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'bg-linear-to-br from-blue-50 to-indigo-50',
       onClick: () => setShowCreateCampaignModal(true),
     },
     {
-      title: t("dashboard.quick_actions.import_contacts"),
-      description: t("dashboard.quick_actions.import_contacts_desc"),
+      title: t('dashboard.quick_actions.import_contacts'),
+      description: t('dashboard.quick_actions.import_contacts_desc'),
       icon: <Users className="w-5 h-5" />,
       color: 'from-green-500 to-emerald-600',
       bgColor: 'bg-linear-to-br from-green-50 to-emerald-50',
@@ -365,8 +390,8 @@ const Dashboard = () => {
     },
 
     {
-      title: t("dashboard.quick_actions.add_mailbox", "Add Mailbox"),
-      description: t("dashboard.quick_actions.add_sender_desc"),
+      title: t('dashboard.quick_actions.add_mailbox', 'Connect Mailbox'),
+      description: t('dashboard.quick_actions.add_sender_desc'),
       icon: <Send className="w-5 h-5" />,
       color: 'from-amber-500 to-amber-600',
       bgColor: 'bg-linear-to-br from-amber-50 to-amber-50',
@@ -381,15 +406,21 @@ const Dashboard = () => {
       type: 'campaign',
       title:
         c.status === 'completed'
-          ? t("dashboard.activity.campaign_completed", { name: c.name })
-          : t("dashboard.activity.campaign_status", { name: c.name, status: c.status.toLowerCase() }),
+          ? t('dashboard.activity.campaign_completed', { name: c.name })
+          : t('dashboard.activity.campaign_status', {
+              name: c.name,
+              status: c.status.toLowerCase(),
+            }),
       time: new Date(c.updatedAt || c.createdAt).toLocaleString(),
       icon: c.status === 'completed' ? 'bg-green-500' : 'bg-blue-500',
     })),
     ...batches.slice(0, 2).map((b) => ({
       id: `batch-${b.id}`,
       type: 'batch',
-      title: t("dashboard.activity.list_status", { name: b.originalFilename || 'Upload', status: b.status.toLowerCase() }),
+      title: t('dashboard.activity.list_status', {
+        name: b.originalFilename || 'Upload',
+        status: b.status.toLowerCase(),
+      }),
       time: new Date(b.createdAt).toLocaleString(),
       icon: 'bg-purple-500',
     })),
@@ -404,7 +435,7 @@ const Dashboard = () => {
       <div className="p-6 flex items-center justify-center h-64">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">{t("dashboard.loading_data")}</p>
+          <p className="text-gray-600">{t('dashboard.loading_data')}</p>
         </div>
       </div>
     );
@@ -416,12 +447,11 @@ const Dashboard = () => {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
         <div>
           <h1 className="text-4xl font-black text-slate-800 tracking-tight flex items-center">
-            {t("dashboard.header_title")} <span className="text-gradient ms-3 me-3">{t("dashboard.header_subtitle")}</span>
+            {t('dashboard.header_title')}{' '}
+            <span className="text-gradient ms-3 me-3">{t('dashboard.header_subtitle')}</span>
             {isRefreshing && <Loader2 className="w-5 h-5 ms-4 me-4 animate-spin text-blue-500" />}
           </h1>
-          <p className="text-slate-500 font-medium mt-1">
-            {t("dashboard.welcome_back")}
-          </p>
+          <p className="text-slate-500 font-medium mt-1">{t('dashboard.welcome_back')}</p>
         </div>
         <div className="flex items-center space-x-3">
           <div className="relative group">
@@ -443,7 +473,7 @@ const Dashboard = () => {
             className="btn-primary flex items-center text-[10px] font-extrabold uppercase tracking-widest transition-all"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 me-2.5" />}
-            {isRefreshing ? t("dashboard.syncing") : t("dashboard.refresh_data")}
+            {isRefreshing ? t('dashboard.syncing') : t('dashboard.refresh_data')}
           </button>
         </div>
       </div>
@@ -509,8 +539,6 @@ const Dashboard = () => {
                   {stat.description}
                 </p>
               </div>
-
-
             </motion.div>
           ))}
         </div>
@@ -656,7 +684,8 @@ const Dashboard = () => {
             <div className="premium-card bg-white/40 backdrop-blur-3xl border-slate-200/50 p-8 shadow-2xl shadow-slate-900/5 relative overflow-hidden group">
               <div className="absolute -top-24 inset-inline-end-24 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl"></div>
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center relative z-10">
-                {t("dashboard.quick_actions.title")} <span className="text-blue-600 mx-2">{t("dashboard.quick_actions.span")}</span>
+                {t('dashboard.quick_actions.title')}{' '}
+                <span className="text-blue-600 mx-2">{t('dashboard.quick_actions.span')}</span>
                 <Sparkles className="w-4 h-4 ms-3 text-blue-500 animate-pulse" />
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
@@ -688,7 +717,9 @@ const Dashboard = () => {
             </div>
 
             <div className="premium-card p-6 flex-1">
-              <h3 className="text-lg font-bold text-slate-800 mb-6">{t("dashboard.activity.title")}</h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-6">
+                {t('dashboard.activity.title')}
+              </h3>
               <div className="space-y-0 relative">
                 {recentActivity.length > 0 ? (
                   recentActivity.map((activity, idx) => (
@@ -710,7 +741,7 @@ const Dashboard = () => {
                       </div>
 
                       {/* Content Area */}
-                      <div className={idx !== recentActivity.length - 1 ? "pb-8" : ""}>
+                      <div className={idx !== recentActivity.length - 1 ? 'pb-8' : ''}>
                         <p className="text-xs font-black text-slate-700 leading-snug mb-2 uppercase tracking-tight group-hover:text-blue-600 transition-colors">
                           {activity.title}
                         </p>
@@ -726,7 +757,9 @@ const Dashboard = () => {
                 ) : (
                   <div className="text-center py-8">
                     <Clock className="w-10 h-10 text-slate-200 mx-auto mb-3" />
-                    <p className="text-sm text-slate-400 font-medium">{t("dashboard.activity.no_activity")}</p>
+                    <p className="text-sm text-slate-400 font-medium">
+                      {t('dashboard.activity.no_activity')}
+                    </p>
                   </div>
                 )}
               </div>
@@ -735,7 +768,7 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <div>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-                      {t("dashboard.stats.total_senders")}
+                      {t('dashboard.stats.total_senders')}
                     </p>
                     <div className="text-xl font-extrabold text-slate-800">{totalSenders}</div>
                   </div>
@@ -760,10 +793,11 @@ const Dashboard = () => {
           <div className="p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100/50 bg-white/40 backdrop-blur-xl">
             <div>
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">
-                {t("dashboard.recent_campaigns.title")} <span className="text-blue-600">{t("dashboard.recent_campaigns.span")}</span>
+                {t('dashboard.recent_campaigns.title')}{' '}
+                <span className="text-blue-600">{t('dashboard.recent_campaigns.span')}</span>
               </h3>
               <p className="text-2xl font-extrabold text-slate-800 tracking-tight">
-                {t("dashboard.recent_campaigns.subtitle")}
+                {t('dashboard.recent_campaigns.subtitle')}
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -771,14 +805,14 @@ const Dashboard = () => {
                 to="/dashboard/campaigns"
                 className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
               >
-                {t("dashboard.recent_campaigns.view_all")}
+                {t('dashboard.recent_campaigns.view_all')}
               </Link>
               <Link
                 to="/dashboard/campaigns/create"
                 className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-500/20 active:scale-95 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                {t("dashboard.recent_campaigns.new_campaign")}
+                {t('dashboard.recent_campaigns.new_campaign')}
               </Link>
             </div>
           </div>
@@ -795,15 +829,18 @@ const Dashboard = () => {
               </div>
               <div className="text-end">
                 <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mb-1">
-                  {t("dashboard.goal.title")}
+                  {t('dashboard.goal.title')}
                 </p>
                 <h4 className="text-2xl font-extrabold">{goalProgress}%</h4>
               </div>
             </div>
 
-            <h3 className="text-xl font-bold mb-2">{t("dashboard.goal.growth")}</h3>
+            <h3 className="text-xl font-bold mb-2">{t('dashboard.goal.growth')}</h3>
             <p className="text-blue-100 text-sm font-medium mb-6 whitespace-nowrap overflow-hidden text-ellipsis">
-              {t("dashboard.goal.description", { completed: campaignsThisMonth, goal: monthlyGoal })}
+              {t('dashboard.goal.description', {
+                completed: campaignsThisMonth,
+                goal: monthlyGoal,
+              })}
             </p>
 
             <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
@@ -821,12 +858,14 @@ const Dashboard = () => {
               </div>
               <div className="text-end">
                 <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
-                  {t("dashboard.upcoming.title")}
+                  {t('dashboard.upcoming.title')}
                 </span>
               </div>
             </div>
 
-            <h3 className="text-xl font-bold text-slate-800 mb-2">{t("dashboard.upcoming.next_launch")}</h3>
+            <h3 className="text-xl font-bold text-slate-800 mb-2">
+              {t('dashboard.upcoming.next_launch')}
+            </h3>
 
             {nextCampaign ? (
               <div className="flex items-center justify-between">
@@ -835,7 +874,9 @@ const Dashboard = () => {
                     &quot;{nextCampaign.name}&quot;
                   </p>
                   <div className="text-3xl font-extrabold text-slate-800">
-                    {daysUntilNext === 0 ? t("dashboard.upcoming.launching_today") : t("dashboard.upcoming.in_days", { days: daysUntilNext })}
+                    {daysUntilNext === 0
+                      ? t('dashboard.upcoming.launching_today')
+                      : t('dashboard.upcoming.in_days', { days: daysUntilNext })}
                   </div>
                 </div>
                 <Link
@@ -847,12 +888,14 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <p className="text-slate-500 font-medium italic">{t("dashboard.upcoming.no_scheduled")}</p>
+                <p className="text-slate-500 font-medium italic">
+                  {t('dashboard.upcoming.no_scheduled')}
+                </p>
                 <Link
                   to="/dashboard/campaigns/create"
                   className="text-blue-600 font-bold text-sm hover:underline"
                 >
-                  {t("dashboard.upcoming.plan_now")}
+                  {t('dashboard.upcoming.plan_now')}
                 </Link>
               </div>
             )}
