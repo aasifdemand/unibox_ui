@@ -34,6 +34,13 @@ export const useBatches = (page = 1, limit = 20) => {
     gcTime: 5 * 60 * 1000,
   });
 
+  console.log('🪝 useBatches hook run:', { 
+    isLoading: query.isLoading, 
+    has_data: !!query.data, 
+    data_type: typeof query.data?.data,
+    data_length: query.data?.data?.length 
+  });
+
   return {
     ...query,
     data: query.data?.data || [],

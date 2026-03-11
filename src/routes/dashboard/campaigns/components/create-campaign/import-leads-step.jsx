@@ -142,11 +142,14 @@ const ImportLeadsStep = ({
                                 onChange={(e) => handleBatchSelect(e.target.value)}
                             >
                                 <option value="" className="text-slate-400 font-medium">Search your saved lists...</option>
-                                {verifiedBatches.map(batch => (
-                                    <option key={batch.id} value={batch.id} className="text-slate-900 font-bold">
-                                        {batch.originalFilename} ({batch.verification?.valid ?? batch.validRecords} leads)
-                                    </option>
-                                ))}
+                                {verifiedBatches.map(batch => {
+                                    console.log('💎 Rendering Batch Option:', batch.originalFilename);
+                                    return (
+                                        <option key={batch.id} value={batch.id} className="text-slate-900 font-bold">
+                                            {batch.originalFilename} ({batch.verification?.valid ?? batch.validRecords} leads)
+                                        </option>
+                                    );
+                                })}
                             </select>
                             <div className="absolute inset-y-0 right-5 flex items-center pointer-events-none">
                                 <div className="w-6 h-6 bg-white shadow-sm border border-slate-100 rounded-md flex items-center justify-center">
@@ -163,12 +166,14 @@ const ImportLeadsStep = ({
                             <div className="space-y-2">
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 group">Available Audiences</p>
                                 <div className="max-h-60 overflow-y-auto space-y-1 custom-scrollbar -mx-2 px-2">
-                                    {verifiedBatches?.map((batch) => (
-                                        <div
-                                            key={batch.id}
-                                            onClick={() => handleBatchSelect(batch.id)}
-                                            className={`flex items-center justify-between p-4 rounded-xl transition-all cursor-pointer ${watchListBatchId === batch.id ? 'bg-indigo-50 border border-indigo-100 shadow-sm' : 'hover:bg-slate-50 border border-transparent'}`}
-                                        >
+                                    {verifiedBatches?.map((batch) => {
+                                        console.log('📜 Rendering Batch List Item:', batch.originalFilename);
+                                        return (
+                                            <div
+                                                key={batch.id}
+                                                onClick={() => handleBatchSelect(batch.id)}
+                                                className={`flex items-center justify-between p-4 rounded-xl transition-all cursor-pointer ${watchListBatchId === batch.id ? 'bg-indigo-50 border border-indigo-100 shadow-sm' : 'hover:bg-slate-50 border border-transparent'}`}
+                                            >
                                             <div className="flex items-center gap-4 overflow-hidden">
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-400'}`}>
                                                     <Users className="w-4 h-4" />
@@ -183,8 +188,9 @@ const ImportLeadsStep = ({
                                                 </span>
                                                 {watchListBatchId === batch.id && <Check className="w-4 h-4 text-indigo-600" />}
                                             </div>
-                                        </div>
-                                    ))}
+                                            </div>
+                                        );
+                                    })}
                                     {verifiedBatches.length === 0 && (
                                         <div className="text-center py-8">
                                             <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mx-auto mb-2">

@@ -90,17 +90,13 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
     const batchesQuery = useBatches(1, 20);
     const rawData = batchesQuery.data; // Should be the array from useBatches
     
-    // TRACE LOGGING: Let's see exactly what's inside
-    useEffect(() => {
-        if (!batchesQuery.isLoading) {
-            console.log('🧬 CAMPAIGN MODAL TRACE:', {
-                raw_data_type: typeof rawData,
-                is_array: Array.isArray(rawData),
-                length: rawData?.length,
-                full_raw: rawData
-            });
-        }
-    }, [rawData, batchesQuery.isLoading]);
+    // direct logging in render body
+    console.log('🏛️ ShowCreateCampaign Render:', {
+        step: currentStep,
+        batches_loading: batchesQuery.isLoading,
+        batches_count: rawData?.length,
+        batches_data: rawData
+    });
 
     const verifiedBatches = useMemo(() => {
         if (!Array.isArray(rawData)) return [];
