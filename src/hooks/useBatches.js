@@ -248,6 +248,30 @@ export const useDeleteBatch = () => {
 };
 
 // =========================
+// DELETE INDIVIDUAL CONTACT
+// =========================
+const deleteContact = async (recordId) => {
+  const res = await fetch(`${API_URL}/lists/contact/${recordId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to delete contact');
+  return data;
+};
+
+export const useDeleteContact = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteContact,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['batches'] });
+    },
+  });
+};
+
+// =========================
 // RETRY BATCH
 // =========================
 const retryBatch = async (batchId) => {

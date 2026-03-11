@@ -26,9 +26,12 @@ import {
     ChevronUp,
     ChevronDown,
     ChevronsUpDown,
+    Trash2,
 } from 'lucide-react';
 import { useAllContacts } from '../hooks/use-all-contacts';
+import { useDeleteContact } from '../../../../hooks/useBatches';
 import { formatDate } from '../audience-service';
+import { toast } from 'react-hot-toast';
 
 const RECORDS_PER_PAGE = 10;
 
@@ -123,16 +126,28 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
     const [sorting, setSorting] = useState([]);
+    const deleteContact = useDeleteContact();
 
     // Reset to page 1 if external filters change
     React.useEffect(() => { setCurrentPage(1); }, [searchTerm, filterStatus]);
 
-    const { contacts: currentRecords, pagination, isLoading } = useAllContacts({
+    const { contacts: currentRecords, pagination, isLoading, refetch } = useAllContacts({
         page: currentPage,
         limit: RECORDS_PER_PAGE,
         searchTerm,
         filterStatus
     });
+
+    const handleDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this contact?')) return;
+        try {
+            await deleteContact.mutateAsync(id);
+            refetch();
+            toast.success('Contact deleted successfully');
+        } catch (error) {
+            toast.error('Failed to delete contact');
+        }
+    };
 
     const { totalPages, total: totalRecords } = pagination;
 
@@ -242,11 +257,30 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
                     </div>
                 ),
                 cell: info => <span className="text-slate-500 whitespace-nowrap font-medium">{formatDate(info.getValue())}</span>,
+            },
+            {
+                id: 'actions',
+                header: () => (
+                    <div className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.15em] select-none text-center">
+                        Actions
+                    </div>
+                ),
+                cell: info => (
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => handleDelete(info.row.original.id)}
+                            disabled={deleteContact.isPending}
+                            className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all disabled:opacity-20"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                        </button>
+                    </div>
+                ),
             }
         ];
 
         return [...baseColumns, ...metaCols, ...endColumns];
-    }, [visibleMetaFields, t]);
+    }, [visibleMetaFields, t, deleteContact.isPending]);
 
     const table = useReactTable({
         data: currentRecords,
