@@ -193,7 +193,24 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
                         <SortIndicator column={column} />
                     </div>
                 ),
-                cell: info => info.getValue() || '—',
+                cell: info => <span className="font-medium text-slate-600">{info.getValue() || '—'}</span>,
+            },
+            {
+                accessorKey: 'sourceBatch',
+                header: ({ column }) => (
+                    <div
+                        className="flex items-center cursor-pointer select-none group/header"
+                        onClick={column.getToggleSortingHandler()}
+                    >
+                        <span>Batch</span>
+                        <SortIndicator column={column} />
+                    </div>
+                ),
+                cell: info => (
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
+                        {info.getValue() || '—'}
+                    </span>
+                ),
             },
         ];
 
@@ -329,8 +346,8 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     return (
         <div className="space-y-6">
             <div className="overflow-hidden no-scrollbar rounded-3xl border border-slate-200/60 bg-white shadow-xl shadow-slate-200/20">
-                <div className="overflow-x-auto no-scrollbar">
-                    <table className="w-full text-sm border-separate border-spacing-0">
+                <div className="overflow-x-auto no-scrollbar scroll-smooth">
+                    <table className="w-full text-sm border-separate border-spacing-0 min-w-[1200px]">
                         <thead>
                             {table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id} className="bg-slate-50/80 backdrop-blur-md">

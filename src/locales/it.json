@@ -526,6 +526,7 @@
     "audience": {
         "title": "Destinatari e mittenti",
         "subtitle": "Gestisci le tue mailing list e gli account di invio",
+        "import_batches": "Importa batch",
         "header_description": "Gestisci le tue mailing list e gli account di invio sulla piattaforma.",
         "refresh": "Aggiorna",
         "add_contacts": "Aggiungi contatti",

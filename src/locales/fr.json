@@ -526,6 +526,7 @@
     "audience": {
         "title": "Destinataires & Expéditeurs",
         "subtitle": "Gérez vos listes de diffusion et vos comptes d'envoi",
+        "import_batches": "Importer des lots",
         "header_description": "Gérez vos listes de diffusion et vos comptes d'envoi sur la plateforme.",
         "refresh": "Rafraîchir",
         "add_contacts": "Ajouter des Contacts",

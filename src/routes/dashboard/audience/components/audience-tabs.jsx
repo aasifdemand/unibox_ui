@@ -4,6 +4,8 @@ import {
   FileSpreadsheet,
   Trash2,
   Upload,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useExportBatch } from '../../../../hooks/useBatches';
 import { motion } from 'motion/react';
@@ -15,6 +17,9 @@ const AudienceTabs = ({
   setShowUploadModal,
   handleDeleteBatch,
   openBatchDetails,
+  pagination,
+  currentPage,
+  onPageChange,
 }) => {
   const { t } = useTranslation();
   const exportBatch = useExportBatch();
@@ -158,6 +163,42 @@ const AudienceTabs = ({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {!isLoadingBatches && pagination && pagination.pages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between px-4 mt-8 gap-4 sm:gap-0">
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+              {pagination.total?.toLocaleString()} {t('audience.total_batches') || 'Total Batches'}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl border border-slate-100 shadow-sm">
+            <button
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="px-4 flex items-center gap-2">
+              <span className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg">{currentPage}</span>
+              <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
+              <span className="text-xs font-black text-slate-600">{pagination.pages}</span>
+            </div>
+
+            <button
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === pagination.pages}
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       )}
     </div>

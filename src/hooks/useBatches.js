@@ -17,29 +17,29 @@ export const batchKeys = {
 // =========================
 // FETCH ALL BATCHES
 // =========================
-const fetchBatches = async () => {
-  const res = await fetch(`${API_URL}/lists/batches`, {
+const fetchBatches = async (page = 1, limit = 20) => {
+  const res = await fetch(`${API_URL}/lists/batches?page=${page}&limit=${limit}`, {
     credentials: 'include',
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch batches');
-  return data.data || [];
+  return data;
 };
 
-export const useBatches = () => {
+export const useBatches = (page = 1, limit = 20) => {
   return useQuery({
-    queryKey: batchKeys.lists(),
-    queryFn: fetchBatches,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    gcTime: 5 * 60 * 1000, // 5 minutes
+    queryKey: [...batchKeys.lists(), { page, limit }],
+    queryFn: () => fetchBatches(page, limit),
+    staleTime: 2 * 60 * 1000,
+    gcTime: 5 * 60 * 1000,
   });
 };
 
 // =========================
 // GET BATCH STATUS WITH VERIFICATION RESULTS
 // =========================
-const fetchBatchStatus = async (batchId) => {
-  const res = await fetch(`${API_URL}/lists/batch/${batchId}/status`, {
+const fetchBatchStatus = async (batchId, page = 1, limit = 20) => {
+  const res = await fetch(`${API_URL}/lists/batch/${batchId}/status?page=${page}&limit=${limit}`, {
     credentials: 'include',
   });
   const data = await res.json();
@@ -47,17 +47,16 @@ const fetchBatchStatus = async (batchId) => {
   return data.data;
 };
 
-export const useBatchStatus = (batchId) => {
+export const useBatchStatus = (batchId, page = 1, limit = 20) => {
   return useQuery({
-    queryKey: batchKeys.status(batchId),
-    queryFn: () => fetchBatchStatus(batchId),
+    queryKey: [...batchKeys.status(batchId), { page, limit }],
+    queryFn: () => fetchBatchStatus(batchId, page, limit),
     enabled: !!batchId,
-    staleTime: 30 * 1000, // 30 seconds
+    staleTime: 30 * 1000,
     refetchInterval: (query) => {
-      // Refetch if still processing
       const data = query.state.data;
-      if (data && data.verification?.unverified > 0) {
-        return 5000; // 5 seconds
+      if (data && data.batch?.status === 'processing') {
+        return 5000;
       }
       return false;
     },

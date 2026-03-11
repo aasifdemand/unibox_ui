@@ -526,6 +526,7 @@
     "audience": {
         "title": "Ontvangers en afzenders",
         "subtitle": "Beheer uw mailinglijsten en verzendaccounts",
+        "import_batches": "openen Batches importeren",
         "header_description": "openen Beheer uw mailinglijsten en verzendaccounts op het hele platform.",
         "refresh": "Vernieuwen",
         "add_contacts": "Contactpersonen toevoegen",

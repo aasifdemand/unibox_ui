@@ -522,6 +522,7 @@
     "audience": {
         "title": "Odbiorcy i nadawcy",
         "subtitle": "Zarządzaj swoimi listami mailingowymi i kontami wysyłającymi",
+        "import_batches": "Importuj partie",
         "header_description": "Zarządzaj swoimi listami mailingowymi i kontami wysyłającymi na platformie.",
         "refresh": "Odśwież",
         "add_contacts": "Dodaj kontakty",

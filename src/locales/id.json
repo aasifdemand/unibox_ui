@@ -526,6 +526,7 @@
     "audience": {
         "title": "Penerima & Pengirim",
         "subtitle": "Kelola milis dan akun pengirim Anda",
+        "import_batches": "Impor Batch",
         "header_description": "Kelola milis dan akun pengirim Anda di seluruh platform.",
         "refresh": "Segarkan",
         "add_contacts": "Tambahkan Kontak",

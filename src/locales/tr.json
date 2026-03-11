@@ -526,6 +526,7 @@
     "audience": {
         "title": "Alıcılar ve Gönderenler",
         "subtitle": "Posta listelerinizi ve gönderme hesaplarınızı yönetin",
+        "import_batches": "Oluştur Toplu İçe Aktarma",
         "header_description": "Platform genelinde posta listelerinizi ve gönderme hesaplarınızı yönetin.",
         "refresh": "Yenile",
         "add_contacts": "Kişi Ekle",

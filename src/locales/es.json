@@ -526,6 +526,7 @@
     "audience": {
         "title": "Destinatarios y Remitentes",
         "subtitle": "Administre sus listas de correo y cuentas de envío",
+        "import_batches": "Importar lotes",
         "header_description": "Administre sus listas de correo y cuentas de envío en toda la plataforma.",
         "refresh": "Actualizar",
         "add_contacts": "Agregar Contactos",

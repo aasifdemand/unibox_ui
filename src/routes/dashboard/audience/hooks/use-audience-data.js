@@ -32,26 +32,32 @@ export const useAudienceData = () => {
     country: '',
   });
 
+  const [batchPage, setBatchPage] = useState(1);
+  const [recordsPage, setRecordsPage] = useState(1);
+  const BATCHES_PER_PAGE = 12;
+
   // React Query hooks
-  const { data: batches = [], isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
+  const { data: batchesRes, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(batchPage, BATCHES_PER_PAGE);
+  const batchesData = batchesRes?.data || [];
+  const batchesPagination = batchesRes?.pagination || { total: 0, pages: 0 };
 
   const uploadBatch = useUploadBatch();
   const deleteBatch = useDeleteBatch();
 
   // Get batch status when a batch is selected
   const {
-    data: batchStatus,
+    data: batchStatusData,
     isLoading: isLoadingBatchStatus,
     refetch: refetchBatchStatus,
-  } = useBatchStatus(selectedBatch?.id);
+  } = useBatchStatus(selectedBatch?.id, recordsPage);
 
   // Calculate verification totals using service function
-  const { valid, invalid, risky, unverified } = calculateVerificationTotals(batches);
+  const { valid, invalid, risky, unverified } = calculateVerificationTotals(batchesData);
 
   const totalContacts = valid + invalid + risky + unverified;
 
   // Filter batches using service function
-  const filteredBatches = filterBatches(batches, searchTerm, filterStatus);
+  const filteredBatches = batchesData; // Let the backend handle primary filtering or do it locally on the page
 
   // Open batch details
   const openBatchDetails = (batch) => {
@@ -138,17 +144,20 @@ export const useAudienceData = () => {
     showUploadModal,
     showBatchModal,
     selectedBatch,
+    batchPage,
+    recordsPage,
 
     // Data
-    batches,
+    batches: batchesData,
     filteredBatches,
-    batchStatus, // Add this
+    batchesPagination,
+    batchStatus: batchStatusData,
     metrics: { valid, invalid, risky, unverified, totalContacts },
 
     // Loading
     isLoading: {
       batches: isLoadingBatches,
-      batchStatus: isLoadingBatchStatus, // Add this
+      batchStatus: isLoadingBatchStatus,
       uploading: uploadBatch.isPending,
       deletingBatch: deleteBatch.isPending,
     },
@@ -164,6 +173,8 @@ export const useAudienceData = () => {
     setSelectedBatch,
     setUploadedFile,
     setFileHeaders,
+    setBatchPage,
+    setRecordsPage,
 
     // Actions
     resetUploadState: () =>
@@ -173,6 +184,6 @@ export const useAudienceData = () => {
     handleDeleteBatch,
     openBatchDetails,
     closeBatchModal,
-    refetchBatchStatus, // Add this
+    refetchBatchStatus,
   };
 };

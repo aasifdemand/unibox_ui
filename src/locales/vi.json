@@ -526,6 +526,7 @@
     "audience": {
         "title": "Người nhận & Người gửi",
         "subtitle": "Quản lý danh sách gửi thư và tài khoản gửi của bạn",
+        "import_batches": "Nhập lô",
         "header_description": "Quản lý danh sách gửi thư của bạn và gửi tài khoản trên nền tảng.",
         "refresh": "Làm mới",
         "add_contacts": "Thêm liên hệ",

@@ -526,6 +526,7 @@
     "audience": {
         "title": "受信者と送信者",
         "subtitle": "メーリング リストと送信アカウントを管理する",
+        "import_batches": "へバッチのインポート",
         "header_description": "プラットフォーム全体でメーリング リストと送信アカウントを管理します。",
         "refresh": "リフレッシュ",
         "add_contacts": "連絡先を追加",

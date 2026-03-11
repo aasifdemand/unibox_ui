@@ -526,6 +526,7 @@
     "audience": {
         "title": "Empfänger und Absender",
         "subtitle": "Verwalten Sie Ihre Mailinglisten und Versandkonten",
+        "import_batches": "wird angezeigt Stapel importieren",
         "header_description": "Verwalten Sie Ihre Mailinglisten und Versandkonten auf der gesamten Plattform.",
         "refresh": "Aktualisieren",
         "add_contacts": "Kontakte hinzufügen",

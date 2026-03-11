@@ -527,6 +527,7 @@
     "audience": {
         "title": "수신자 및 발신자",
         "subtitle": "메일링 리스트와 전송 계정을 관리하세요",
+        "import_batches": "일괄 가져오기",
         "header_description": "를 클릭하세요. 플랫폼 전체에서 메일링 리스트와 전송 계정을 관리하세요.",
         "refresh": "새로고침",
         "add_contacts": "연락처 추가",

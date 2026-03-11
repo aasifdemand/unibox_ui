@@ -515,6 +515,7 @@
     "audience": {
         "title": "Contacts",
         "subtitle": "Leads",
+        "import_batches": "Import Batches",
         "header_description": "Manage your mailing lists and sending accounts across the platform.",
         "refresh": "Refresh",
         "add_contacts": "Add Contacts",

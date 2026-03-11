@@ -3,6 +3,7 @@ import AudienceHeader from './components/audience-header';
 import AudienceToolbar from './components/audience-toolbar';
 import ContactsTable from './components/contacts-table';
 import AudienceTabs from './components/audience-tabs';
+import BatchDetailsModal from './components/batch-details-modal';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 
@@ -40,6 +41,16 @@ const Audience = () => {
     handleContactsUpload,
     handleDeleteBatch,
     openBatchDetails,
+    closeBatchModal,
+
+    // Pagination
+    batchPage,
+    setBatchPage,
+    batchesPagination,
+    recordsPage,
+    setRecordsPage,
+    showBatchModal,
+    batchStatus,
   } = useAudienceData();
 
 
@@ -80,7 +91,7 @@ const Audience = () => {
             : 'text-slate-400 hover:text-slate-600'
             }`}
         >
-          {t('audience.import_batches') || 'Import Batches'}
+          {t('audience.import_batches')}
         </button>
       </div>
 
@@ -112,12 +123,25 @@ const Audience = () => {
                   setShowUploadModal={setShowUploadModal}
                   handleDeleteBatch={handleDeleteBatch}
                   openBatchDetails={openBatchDetails}
+                  pagination={batchesPagination}
+                  currentPage={batchPage}
+                  onPageChange={setBatchPage}
                 />
               </div>
             )}
           </div>
         </div>
       </motion.div>
+
+      {/* Batch Details Modal */}
+      <BatchDetailsModal
+        show={showBatchModal}
+        onClose={closeBatchModal}
+        batchStatus={batchStatus}
+        isLoading={isLoading.batchStatus}
+        recordsPage={recordsPage}
+        setRecordsPage={setRecordsPage}
+      />
 
       {/* Upload Modal */}
       {showUploadModal && (

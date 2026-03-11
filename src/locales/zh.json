@@ -526,6 +526,7 @@
     "audience": {
         "title": "收件人和发件人",
         "subtitle": "管理您的邮件列表和发送帐户",
+        "import_batches": "批量导入",
         "header_description": "跨平台管理您的邮件列表和发送帐户。",
         "refresh": "刷新",
         "add_contacts": "添加联系人",
