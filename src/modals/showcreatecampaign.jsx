@@ -86,7 +86,10 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
 
     const senders = senderResponse.data || [];
 
-    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches();
+    const { data: batches, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(1, 1000);
+    const verifiedBatches = batches.filter((batch) => 
+        batch.status && ['verified', 'completed'].includes(batch.status.toLowerCase())
+    );
 
     const {
         register,
@@ -127,8 +130,6 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
             refetchBatches();
         }
     }, [showModal, refetchSenders, refetchBatches]);
-
-    const verifiedBatches = batches.filter((batch) => ['verified', 'completed'].includes(batch.status));
 
     const handleBatchSelect = (batchId) => {
         const batch = verifiedBatches.find((b) => b.id === batchId);

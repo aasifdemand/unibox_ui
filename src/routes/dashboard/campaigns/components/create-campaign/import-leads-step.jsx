@@ -162,7 +162,7 @@ const ImportLeadsStep = ({
                             <div className="space-y-2">
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 group">Available Audiences</p>
                                 <div className="max-h-60 overflow-y-auto space-y-1 custom-scrollbar -mx-2 px-2">
-                                    {verifiedBatches.slice(0, 5).map((batch) => (
+                                    {verifiedBatches?.map((batch) => (
                                         <div
                                             key={batch.id}
                                             onClick={() => handleBatchSelect(batch.id)}
