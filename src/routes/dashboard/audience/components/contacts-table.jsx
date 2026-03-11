@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import {
@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 
 import { formatDate } from '../audience-service';
+import { useAllContacts } from '../hooks/use-all-contacts';
 
 
 const RECORDS_PER_PAGE = 10;
@@ -127,16 +128,16 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     const [sorting, setSorting] = useState([]);
 
     // Reset to page 1 if external filters change
-    React.useEffect(() => { setCurrentPage(1); }, [searchTerm, filterStatus]);
+    useEffect(() => { setCurrentPage(1); }, [searchTerm, filterStatus]);
 
-    const { contacts: currentRecords = [], pagination = { totalPages: 0, total: 0 }, isLoading, refetch } = useAllContacts({
+    const { contacts: currentRecords = [], pagination = { pages: 0, total: 0 }, isLoading, refetch } = useAllContacts({
         page: currentPage,
         limit: RECORDS_PER_PAGE,
         searchTerm,
         filterStatus
     });
 
-    const { totalPages, total: totalRecords } = pagination;
+    const { pages: totalPages, total: totalRecords } = pagination;
 
     const visibleMetaFields = useMemo(() => {
         const fields = new Set();
