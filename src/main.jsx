@@ -9,6 +9,23 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import './i18n';
 import { registerSW } from 'virtual:pwa-register'
 
+/**
+ * Handle "Failed to load module script" errors that happen after deployments.
+ * When a new version is pushed, old hashed assets disappear. 
+ * If the user has an old version open, we catch the failed import and reload.
+ */
+window.addEventListener('error', (e) => {
+  const isChunkLoadFailed = e.message?.toLowerCase().includes('failed to fetch dynamically imported module') ||
+                            e.message?.toLowerCase().includes('loading chunk') ||
+                            e.target?.tagName === 'SCRIPT';
+  
+  if (isChunkLoadFailed) {
+    console.warn('⚡ Module/Chunk load failed. Likely a new deployment. Auto-reloading...', e);
+    // Add a small delay to prevent infinite loop if it's a real network error
+    setTimeout(() => window.location.reload(), 1000);
+  }
+}, true); // Use capture to catch script tag errors
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
