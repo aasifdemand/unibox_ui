@@ -12,7 +12,7 @@ export default defineConfig({
       registerType: "autoUpdate",
 
       manifest: {
-        name: "Unibox — Growth Platform",
+        name: "Unibox - Growth Platform",
         short_name: "Unibox",
         description: "Manage all your outreach campaigns",
         theme_color: "#2563EB",
