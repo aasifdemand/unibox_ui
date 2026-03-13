@@ -79,10 +79,10 @@ const CreateCampaign = () => {
 
   const senders = senderResponse.data || [];
 
-  const { 
-    data: batches = [], 
-    isLoading: isLoadingBatches, 
-    refetch: refetchBatches 
+  const {
+    data: batches = [],
+    isLoading: isLoadingBatches,
+    refetch: refetchBatches
   } = useBatches(1, 20);
 
   const {
@@ -123,8 +123,8 @@ const CreateCampaign = () => {
   const verifiedBatches = React.useMemo(() => {
     if (!Array.isArray(batches)) return [];
     // Broadened filter to include more statuses and batches with valid records
-    return batches.filter((batch) => 
-      ['verified', 'completed', 'valid', 'uploaded', 'parsing'].includes(batch.status) || 
+    return batches.filter((batch) =>
+      ['verified', 'completed', 'valid', 'uploaded', 'parsing'].includes(batch.status) ||
       (batch.validRecords > 0)
     );
   }, [batches]);

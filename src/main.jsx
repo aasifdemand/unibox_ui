@@ -8,7 +8,9 @@ import { queryClient } from './lib/query-client.js';
 import { QueryClientProvider } from '@tanstack/react-query';
 import './i18n';
 import { registerSW } from 'virtual:pwa-register'
-
+registerSW({
+  immediate: true
+})
 /**
  * Handle "Failed to load module script" errors that happen after deployments.
  * When a new version is pushed, old hashed assets disappear. 
@@ -16,9 +18,9 @@ import { registerSW } from 'virtual:pwa-register'
  */
 window.addEventListener('error', (e) => {
   const isChunkLoadFailed = e.message?.toLowerCase().includes('failed to fetch dynamically imported module') ||
-                            e.message?.toLowerCase().includes('loading chunk') ||
-                            e.target?.tagName === 'SCRIPT';
-  
+    e.message?.toLowerCase().includes('loading chunk') ||
+    e.target?.tagName === 'SCRIPT';
+
   if (isChunkLoadFailed) {
     console.warn('⚡ Module/Chunk load failed. Likely a new deployment. Auto-reloading...', e);
     // Add a small delay to prevent infinite loop if it's a real network error
@@ -76,11 +78,7 @@ createRoot(document.getElementById('root')).render(
             },
           }}
         />
-        {
-          registerSW({
-            immediate: true
-          })
-        }
+
 
       </BrowserRouter>
     </QueryClientProvider>

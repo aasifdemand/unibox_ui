@@ -255,19 +255,15 @@ body.modal-open {
 
 .ProseMirror p,
 .mail-content-html p {
-  margin: 0;
-  margin-bottom: 1em;
-}
-
-.ProseMirror p:last-child,
-.mail-content-html p:last-child {
-  margin-bottom: 0;
+  margin: 0 !important;
 }
 
 /* Preserve spacing from intentional blank lines (double-Enter) */
+.ProseMirror p:empty,
+.ProseMirror p:has(> br:only-child),
 .mail-content-html p:empty,
 .mail-content-html p:has(> br:only-child) {
-  height: 1em;
+  min-height: 1.25em;
 }
 
 /* Heading styling for both editor and preview */
