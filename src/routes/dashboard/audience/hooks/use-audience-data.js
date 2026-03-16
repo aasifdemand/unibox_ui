@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { calculateVerificationTotals, filterBatches, resetUploadState } from '../audience-service';
+import * as XLSX from 'xlsx';
+import { calculateVerificationTotals, resetUploadState } from '../audience-service';
 import {
   useBatches,
   useUploadBatch,
@@ -77,8 +78,77 @@ export const useAudienceData = () => {
     }
 
     try {
+      // 🚀 FRONTEND DEDUPLICATION
+      const reader = new FileReader();
+      const processUpload = new Promise((resolve, reject) => {
+        reader.onload = async (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            // Get data as array of objects
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            const emailColumn = mapping.email;
+
+            if (!emailColumn) {
+              return resolve(uploadedFile); // Should not happen due to guard above
+            }
+
+            const initialCount = jsonData.length;
+            const seenEmails = new Set();
+            const uniqueData = [];
+
+            for (const row of jsonData) {
+              const emailValue = row[emailColumn];
+              if (emailValue) {
+                const normalizedEmail = String(emailValue).trim().toLowerCase();
+                if (!seenEmails.has(normalizedEmail)) {
+                  seenEmails.add(normalizedEmail);
+                  uniqueData.push(row);
+                }
+              } else {
+                // Keep rows without emails for the server to handle if necessary, 
+                // or skip them. Here we skip if the user specifically wants email-based dedupe.
+                uniqueData.push(row);
+              }
+            }
+
+            const duplicateCount = initialCount - uniqueData.length;
+            if (duplicateCount > 0) {
+              toast.success(`Removed ${duplicateCount} duplicate contacts from the list.`);
+            }
+
+            // If no duplicates, upload original file
+            if (duplicateCount === 0) {
+              return resolve(uploadedFile);
+            }
+
+            // Create new workbook with cleaned data
+            const newWs = XLSX.utils.json_to_sheet(uniqueData);
+            const newWb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(newWb, newWs, "Contacts");
+
+            // Create a blob
+            const wbout = XLSX.write(newWb, { bookType: 'xlsx', type: 'array' });
+            const cleanedFile = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            // Give it the same name
+            const fileWithMetadata = new File([cleanedFile], uploadedFile.name, { type: uploadedFile.type });
+            resolve(fileWithMetadata);
+          } catch (err) {
+            reject(err);
+          }
+        };
+        reader.onerror = () => reject(new Error("Failed to read file for deduplication"));
+        reader.readAsArrayBuffer(uploadedFile);
+      });
+
+      const fileToUpload = await processUpload;
+
       const formData = new FormData();
-      formData.append('file', uploadedFile);
+      formData.append('file', fileToUpload);
 
       await uploadBatch.mutateAsync(formData);
 
