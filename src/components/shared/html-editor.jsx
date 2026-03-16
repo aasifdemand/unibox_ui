@@ -204,6 +204,8 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
       Highlight.configure({ multicolor: true }),
       Link.configure({
         openOnClick: false,
+        autolink: true,
+        linkOnPaste: true,
         HTMLAttributes: {
           class: 'text-blue-600 underline cursor-pointer',
         },
