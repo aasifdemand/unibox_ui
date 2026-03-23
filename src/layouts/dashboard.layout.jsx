@@ -265,6 +265,13 @@ const DashboardLayout = () => {
         </header>
 
         {/* Intelligence Surface */}
+        <motion.main
+          key={location.pathname}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="pt-[56px] w-full min-h-screen relative"
+        >
           {/* Main Content Area */}
           <div className="p-2 w-full min-h-[calc(100vh-144px)]">
             <Suspense
@@ -287,6 +294,7 @@ const DashboardLayout = () => {
               <Outlet />
             </Suspense>
           </div>
+        </motion.main>
       </div>
     </div>
   );
