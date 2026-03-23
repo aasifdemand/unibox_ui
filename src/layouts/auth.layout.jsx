@@ -1,6 +1,5 @@
 import Logo from '../components/shared/logo';
 import { Outlet } from 'react-router-dom';
-import { Suspense } from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/shared/language-switcher';
@@ -31,15 +30,7 @@ const AuthLayout = () => {
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             className="w-full max-w-[420px] bg-slate-50/80  border border-white/60 p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
           >
-            <Suspense
-              fallback={
-                <div className="flex flex-col items-center justify-center py-12">
-                  <div className="w-8 h-8 border-4 border-orange-600/20 border-t-orange-600 rounded-full animate-spin"></div>
-                </div>
-              }
-            >
-              <Outlet />
-            </Suspense>
+            <Outlet />
           </motion.div>
         </div>
 

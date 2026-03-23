@@ -380,10 +380,6 @@ body.modal-open {
   }
 }
 
-.animate-shimmer {
-  animation: shimmer 2s linear infinite;
-}
-
 /* Tiptap Placeholder Styles */
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
