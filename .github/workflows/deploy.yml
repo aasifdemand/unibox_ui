@@ -25,7 +25,9 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.FRONTEND_PATH }}
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
+            rm -rf dist
             npm install
             npm run build
             sudo systemctl reload nginx
