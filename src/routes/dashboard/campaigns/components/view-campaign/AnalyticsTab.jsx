@@ -123,7 +123,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-orange-200 transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-md bg-slate-900 flex items-center justify-center text-white shadow-sm">
+                <div className="w-8 h-8 rounded-md bg-orange-600 flex items-center justify-center text-white shadow-sm">
                   <Clock className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
