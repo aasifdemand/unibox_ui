@@ -19,6 +19,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import Skeleton from '../../components/ui/skeleton';
 import {
   AreaChart,
   Area,
@@ -502,10 +503,30 @@ const Dashboard = () => {
 
   if (isLoading && campaigns.length === 0) {
     return (
-      <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('dashboard.loading_data')}</p>
+      <div className="p-4 md:p-8 w-full animate-in fade-in duration-500">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-32 rounded-lg" />
+            <Skeleton className="h-10 w-32 rounded-lg" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-48 rounded-2xl" />
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <Skeleton className="lg:col-span-2 h-96 rounded-2xl" />
+          <div className="flex flex-col gap-6">
+            <Skeleton className="h-48 rounded-2xl" />
+            <Skeleton className="h-48 rounded-2xl" />
+          </div>
         </div>
       </div>
     );

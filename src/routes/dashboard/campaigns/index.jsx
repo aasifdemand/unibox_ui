@@ -3,6 +3,7 @@ import CampaignsHeader from './components/campaign/campaigns-header';
 import CampaignListView from './components/campaign/campaign-list-view';
 import EditCampaignModal from './components/campaign/edit-campaign-modal';
 import { motion } from 'motion/react';
+import Skeleton from '../../../components/ui/skeleton';
 // Hooks
 import { useCampaignsData } from './hooks/use-campaigns-data';
 import ShowDelete from '../../../modals/showdelete';
@@ -86,21 +87,13 @@ const Campaigns = () => {
       />
 
       {isLoading && campaigns.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="min-h-[60vh] flex flex-col items-center justify-center"
-        >
-          <div className="relative">
-            <div className="w-20 h-20 border-[6px] border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 bg-orange-600 rounded-full animate-ping"></div>
-            </div>
+        <div className="space-y-6">
+          <div className="flex flex-col gap-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Skeleton key={i} className="h-20 w-full rounded-xl" />
+            ))}
           </div>
-          <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">
-            {t('campaigns.loading_campaigns')}
-          </p>
-        </motion.div>
+        </div>
       ) : (
         <div className="space-y-8">
           {/* Campaigns Grid/List View */}

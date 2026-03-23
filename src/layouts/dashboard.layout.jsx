@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard,
@@ -264,17 +265,28 @@ const DashboardLayout = () => {
         </header>
 
         {/* Intelligence Surface */}
-        <motion.main
-          key={location.pathname}
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="pt-[56px] w-full min-h-screen"
-        >
-          <div className="p-2 w-full  min-h-[calc(100vh-144px)]">
-            <Outlet />
+          {/* Main Content Area */}
+          <div className="p-2 w-full min-h-[calc(100vh-144px)]">
+            <Suspense
+              fallback={
+                <div className="fixed top-14 left-0 right-0 z-50">
+                  <div className="h-0.5 w-full bg-orange-600/10 overflow-hidden">
+                    <div className="h-full bg-orange-600 animate-[shimmer_1.5s_infinite] origin-left w-full"></div>
+                  </div>
+                  <div className="flex h-64 w-full items-center justify-center bg-white/50 backdrop-blur-xs">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-10 h-10 border-4 border-orange-600/20 border-t-orange-600 rounded-full animate-spin"></div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
+                        Loading Module...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <Outlet />
+            </Suspense>
           </div>
-        </motion.main>
       </div>
     </div>
   );

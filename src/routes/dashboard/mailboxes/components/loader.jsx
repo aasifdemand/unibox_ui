@@ -1,13 +1,12 @@
-import { Loader2 } from 'lucide-react';
+import Skeleton from '../../../../components/ui/skeleton';
 
 const Loader = ({ isLoading, mailboxes }) => {
   if (isLoading && mailboxes.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 font-medium">Loading mailboxes...</p>
-        </div>
+      <div className="p-6 space-y-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Skeleton key={i} className="h-24 w-full rounded-2xl" />
+        ))}
       </div>
     );
   }

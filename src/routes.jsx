@@ -35,41 +35,39 @@ const LoadingFallback = () => (
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<LoadingFallback />}>
-      <Routes>
-        {/* Auth routes (ONLY for logged-out users) */}
-        <Route path="auth" element={<AuthRoute />}>
-          <Route element={<AuthLayout />}>
-            <Route path="signup" element={<Signup />} />
-            <Route path="login" element={<Login />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="verify-account" element={<VerifyAccount />} />
-          </Route>
+    <Routes>
+      {/* Auth routes (ONLY for logged-out users) */}
+      <Route path="auth" element={<AuthRoute />}>
+        <Route element={<AuthLayout />}>
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="verify-account" element={<VerifyAccount />} />
         </Route>
+      </Route>
 
-        <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
 
-        {/* Protected app routes (ONLY for logged-in users) */}
-        <Route path="dashboard" element={<ProtectedRoute />}>
-          <Route path="campaigns/create" element={<CreateCampaign />} />
-          <Route element={<DashboardLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="mailboxes" element={<Mailboxes />} />
-            <Route path="campaigns" element={<Campaigns />} />
+      {/* Protected app routes (ONLY for logged-in users) */}
+      <Route path="dashboard" element={<ProtectedRoute />}>
+        <Route path="campaigns/create" element={<CreateCampaign />} />
+        <Route element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="mailboxes" element={<Mailboxes />} />
+          <Route path="campaigns" element={<Campaigns />} />
 
-            <Route path="campaigns/:id" element={<ViewCampaign />} />
-            <Route path="audience" element={<Audience />} />
-            <Route path="crm" element={<CRM />} />
-            <Route path="integrations" element={<Integrations />} />
-            <Route path="analytics" element={<Analytics />} />
+          <Route path="campaigns/:id" element={<ViewCampaign />} />
+          <Route path="audience" element={<Audience />} />
+          <Route path="crm" element={<CRM />} />
+          <Route path="integrations" element={<Integrations />} />
+          <Route path="analytics" element={<Analytics />} />
 
-            <Route path="settings" element={<Settings />} />
-            <Route path="notifications" element={<Notifications />} />
-          </Route>
+          <Route path="settings" element={<Settings />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
-      </Routes>
-    </Suspense>
+      </Route>
+    </Routes>
   );
 };
 

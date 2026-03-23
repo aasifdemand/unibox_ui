@@ -14,8 +14,11 @@ import {
   ChevronDown,
   Target,
   Trash2,
+  CheckCircle2,
+  AlertCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Skeleton from '../../../components/ui/skeleton';
 import {
   DndContext,
   DragOverlay,
@@ -242,13 +245,32 @@ const CRMIntegration = () => {
     }
   };
 
-  if (isLoading && !pipeline.length) {
+  if (isLoading) {
     return (
-      <div className="h-[calc(100vh-140px)] flex flex-col items-center justify-center border border-slate-200 rounded-[32px] bg-white shadow-sm overflow-hidden animate-in fade-in duration-700 mx-8 mb-8 no-scrollbar gap-4 outline-none focus:outline-none focus:ring-0">
-        <Loader2 className="w-12 h-12 text-orange-500 animate-spin" />
-        <p className="text-sm font-black text-slate-400 tracking-widest italic">
-          loading...
-        </p>
+      <div className="p-4 md:p-8 w-full">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-32 rounded-lg" />
+            <Skeleton className="h-10 w-32 rounded-lg" />
+          </div>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto pb-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="w-[320px] shrink-0 space-y-4">
+              <Skeleton className="h-12 w-full rounded-xl" />
+              <div className="space-y-3">
+                {[1, 2, 3].map((j) => (
+                  <Skeleton key={j} className="h-32 w-full rounded-2xl" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
