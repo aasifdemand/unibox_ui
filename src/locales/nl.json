@@ -11,6 +11,12 @@
         "templates": "Sjablonen",
         "subscription": "Abonnement",
         "settings": "Instellingen",
+        "crm": "CRM",
+        "email_campaigns": "E-mailcampagnes",
+        "email_accounts": "E-mailaccounts",
+        "contacts": "Contacten",
+        "global_analytics": "Analyse",
+        "integrations": "Integraties",
         "navigation": "Navigatie",
         "active": "Actief",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "Weet u zeker dat u wilt uitloggen? U moet zich opnieuw verifiëren.",
             "confirm": "Bevestig uitloggen",
             "cancel": "Blijf ingelogd"
-        }
+        },
+        "admin": "Beheerder",
+        "administrator": "Beheerder",
+        "user": "Gebruiker",
+        "u": "U"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Alle rechten voorbehouden.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "Of registreer met",
             "already_account": "Heeft u al een account?",
             "sign_in_link": "Inloggen"
+        },
+        "layout": {
+            "platform_live": "Platformlive",
+            "title_main": "De slimmere manier om",
+            "title_span": "outreach uitvoeren",
+            "subtitle": "Unibox combineert AI-verrijking, slimme sequencing en een uniforme antwoordinbox – alles in één platform.",
+            "trusted_by": "Vertrouwd door",
+            "teams": "outreachteams"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "Campagnes",
         "subtitle": "Bereik",
+        "sequence_details": "Sequentiedetails",
         "header_description": "Creëer en volg uw e-mailcampagnes.",
         "header_subtitle": "Beheer en volg uw e-mailcampagnes",
         "create_campaign": "Campagne maken",
@@ -303,6 +322,7 @@
         "campaign_date": "Campagnedatum",
         "empty_log_title": "Leeg bewerkingslogboek",
         "empty_log_subtitle": "Matrixscan voltooid. Geen campagne-items gevonden.",
+        "create_first_campaign": "Eerste campagne maken",
         "launch_protocol": "Startprotocol",
         "no_subject": "GEEN ONDERWERP",
         "status_created": "GEMAAKT",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "Schrijf uw e-mailreeks",
         "step_setup": "Instellen",
         "step_setup_desc": "Configureer uw campagne",
+        "schedule_timing": "Schema en timing",
+        "advanced_settings": "Geavanceerde instellingen",
         "step_final_review": "Eindbeoordeling",
         "step_final_review_desc": "Laatste controle en lancering",
         "error_add_content": "Voeg wat inhoud toe aan uw {{mode}} e-mail voordat u doorgaat.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "Afmeldlink",
         "recipients_senders": "Ontvangers en afzenders",
         "setup_audience": "Stel uw campagnedoelgroep en accounts in",
+        "sender_accounts": "Accounts verzenden",
+        "active_senders": "Actieve accounts",
+        "select_accounts_desc": "Verbind accounts met deze reeks",
+        "choose_senders_btn": "Selecteer Accounts",
+        "configure_schedule_btn": "Schema configureren",
+        "modify_settings_btn": "Instellingen wijzigen",
+        "sender_rotation": "Accountrotatie",
+        "account_health": "Accountstatus",
+        "trust_score": "Score",
+        "optimal_delivery": "Optimale levering",
+        "intelligent_sending": "Intelligent verzenden",
+        "sender_rotation_count": "Afzenderrotatie ({{count}})",
+        "more_accounts": "+{{count}} meer accounts",
+        "no_sender_set": "Geen afzender ingesteld",
+        "confirm_selection": "Bevestig selectie",
+        "high_inboxing_enabled": "Optimale levering ingeschakeld",
         "add_contacts": "Contactpersonen toevoegen",
         "add_sender": "Afzender",
         "selected_audience": "toevoegen Geselecteerde doelgroep",
@@ -795,8 +833,8 @@
                 "gmail": "GoogleGmail",
                 "outlook": "openen Microsoft Outlook",
                 "smtp": "Aangepaste SMTP",
-                "bulk": "Bulkimport",
                 "smtp_desc": "Handmatige instelling",
+                "bulk": "Bulkimport",
                 "bulk_desc": "XLSX-upload"
             },
             "secure_title": "Beveiliging op ondernemingsniveau",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "toevoegen Maak verbinding met Google Mail",
             "btn_connect_outlook": "Maak verbinding met Microsoft Outlook Mail",
+            "smtp_success": "SMTP-verbinding succesvol",
+            "smtp_fail": "SMTP-verbinding mislukt",
+            "imap_success": "IMAP-verbinding succesvol",
+            "imap_fail": "IMAP-verbinding mislukt",
+            "empty_provider": "Selecteer een aanbieder",
+            "empty_desc": "Kies hierboven Gmail, Outlook of Aangepaste SMTP.",
+            "encrypted_note": "End-to-end gecodeerd",
+            "smtp_config_note": "Als u deze leeg laat, proberen we uw verzendinstellingen automatisch te gebruiken.",
             "bulk": {
                 "title": "Accounts bulksgewijs uploaden",
                 "desc": "Upload een Excel-bestand (.xlsx) met kolommen: e-mailadres, domein, wachtwoord, type (aapanel/postal), voornaam, achternaam.",
@@ -876,16 +922,8 @@
             "err_no_headers": "Geen headers gevonden in bestand",
             "err_read_fail": "Kan bestand niet lezen",
             "err_map_required": "Wijs alle verplichte velden toe",
-            "smtp_success": "SMTP-verbinding succesvol",
-            "smtp_fail": "SMTP-verbinding mislukt",
-            "imap_success": "IMAP-verbinding succesvol",
-            "imap_fail": "IMAP-verbinding mislukt",
             "bulk_success": "Bulkupload gelukt",
-            "bulk_error": "Bulkupload mislukt",
-            "empty_provider": "Selecteer een aanbieder",
-            "empty_desc": "Kies hierboven Gmail, Outlook of Aangepaste SMTP.",
-            "encrypted_note": "End-to-end gecodeerd",
-            "smtp_config_note": "Als u deze leeg laat, proberen we uw verzendinstellingen automatisch te gebruiken."
+            "bulk_error": "Bulkupload mislukt"
         },
         "template": {
             "title": {
@@ -977,8 +1015,8 @@
                 "health": "Afzenderstatus",
                 "setup_type": "Installatietype",
                 "sender_id": "Afzender-ID",
-                "direct": "Direct SMTP/IMAP",
-                "oauth": "OAuth 2.0",
+                "direct": "openen Direct SMTP/IMAP",
+                "oauth": "openen OAuth 2.0",
                 "outgoing": "Uitgaande configuratie (SMTP)",
                 "incoming": "Inkomende configuratie (IMAP)",
                 "host": "SMTP-host",
@@ -1020,13 +1058,13 @@
         "subtitle": "Kies het perfecte plan voor uw outreachbehoeften. Schaal uw koude e-mailspel zonder grenzen.",
         "custom_price": "Aangepast",
         "popular": "Populaire keuze",
-        "per_user": "/mo",
+        "per_user": "openen /mo",
         "billing_suffix": "per gebruiker / maand",
         "custom_billing": "afgestemd op uw behoeften",
         "current_plan": "Huidig ​​abonnement",
         "upgrade": "Upgrade naar Pro",
         "contact_sales": "Neem contact op met verkoop",
-        "price_monthly": "${{price}}",
+        "price_monthly": "openen ${{price}}",
         "help_title": "Heeft u vragen over prijzen?",
         "help_desc": "Ons team staat voor u klaar om u te helpen bij het vinden van de perfecte inrichting voor uw organisatie.",
         "contact_us": "Neem contact op met onze specialisten op",
@@ -1161,7 +1199,7 @@
         "value_high": "Hoog",
         "value_average": "Gemiddeld",
         "value_low": "Laag",
-        "value_elite": "Elite",
+        "value_elite": "openen Elite",
         "value_solid": "Stevig",
         "value_needs_work": "Heeft werk nodig",
         "rec_deliverability_high": "Uw bouncepercentage is enigszins hoog. We raden u aan uw lijst te verifiëren met een tool als NeverBounce vóór uw volgende verzending.",
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "Je onderwerpregels klinken goed! Overweeg om de 'curiosity-gap'-stijl die u momenteel gebruikt, te verdubbelen.",
         "rec_conversion_low": "Er zijn weinig reacties. Probeer een duidelijkere 'Call to Action' (CTA) toe te voegen of een zachte vraag als 'Was dit nuttig?' om de wrijving te verminderen.",
         "rec_conversion_high": "Geweldige conversie! Uw waardepropositie is duidelijk. Zorg ervoor dat uw verkoopteam binnen 4 uur actie onderneemt voor het beste resultaat."
+    },
+    "crm": {
+        "title": "CRM-integratie",
+        "subtitle": "Inkomstenhub",
+        "pipeline": "openen Pijpleiding",
+        "description": "Verbind uw outreach-werkruimte met uw favoriete CRM om leads te synchroniseren en activiteiten automatisch vast te leggen.",
+        "drag_desc": "Sleep leads tussen fasen. Klik op een kaart om details te bekijken en de dealwaarde in te stellen.",
+        "connect_crm": "Verbind CRM",
+        "add_column": "Kolom",
+        "all_campaigns": "toevoegen Alle campagnes",
+        "total": "Totaal",
+        "value": "Waarde",
+        "leads_label": "Leidt",
+        "drop_leads": "Zet leads hier neer",
+        "loading": "laden...",
+        "build_funnel": "Bouw uw trechter",
+        "add_first_col": "Voeg uw eerste kolom toe om leads door de fasen te volgen.",
+        "create_initial": "Maak eerste kolom",
+        "footer_msg1": "Leads gaan automatisch vooruit wanneer",
+        "footer_msg2": "Antwoordintenties",
+        "footer_msg3": "worden gedetecteerd",
+        "search_placeholder": "Zoek een aanwijzing...",
+        "stages": {
+            "leads": "Nieuwe leads",
+            "contacted": "Contact opgenomen met",
+            "replied": "Geantwoord",
+            "meeting_booked": "Vergadering geboekt",
+            "closed": "Gesloten",
+            "bounced": "Gestuiterd",
+            "unsubscribed": "Uitgeschreven"
+        },
+        "lead_card": {
+            "last_activity": "Laatste activiteit:",
+            "campaign": "Campagne:",
+            "view_profile": "Bekijk profiel"
+        },
+        "connect": "Verbind",
+        "connected": "Verbonden",
+        "status_ready": "openen Klaar om te synchroniseren",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Synchroniseer contacten en registreer tijdlijngebeurtenissen."
+        },
+        "salesforce": {
+            "title": "Salesforce",
+            "desc": "Beheer leads en kansen in realtime."
+        },
+        "pipedrive": {
+            "title": "Pijpaandrijving",
+            "desc": "Volg de voortgang van deals en activiteitenlogboeken."
+        },
+        "add_column_modal_title": "Nieuwe kolom toevoegen",
+        "column_name_label": "Kolomnaam",
+        "column_name_placeholder": "bijvoorbeeld gekwalificeerde leads",
+        "select_color_label": "Selecteer Kolomkleur",
+        "link_intent_label": "Link naar AI-intentie (optioneel)",
+        "link_intent_desc": "Leads met deze intentie worden hier automatisch naartoe verplaatst",
+        "select_intent_placeholder": "Selecteer een intentie...",
+        "add_column_btn": "Kolom",
+        "cancel_btn": "toevoegen Annuleren",
+        "status": "Klaar om te synchroniseren"
+    },
+    "integrations": {
+        "header_title": "Integraties",
+        "header_subtitle": "Marktplaats",
+        "header_desc": "Verbind uw favoriete CRM- en datatools om uw outreach-workflow te automatiseren.",
+        "search_placeholder": "Zoekintegraties (HubSpot, Salesforce, Instantly...)",
+        "no_results": "Er zijn geen integraties gevonden die overeenkomen met uw zoekopdracht.",
+        "connect_btn": "Verbind",
+        "disconnect_btn": "Ontkoppel",
+        "disconnecting_btn": "openen Verbinding verbreken...",
+        "disconnecting": "Verbinding met {{name}}...",
+        "connected": "Verbonden",
+        "never_synced": "Nooit gesynchroniseerd",
+        "learn_how": "Leer hoe",
+        "connect_app": "+ Connect-app",
+        "confirm_disconnect_title": "Bevestig de verbinding",
+        "confirm_disconnect_desc1": "Weet u zeker dat u",
+        "confirm_disconnect_desc2": "wilt verbreken ? Unibox kan geen leads of gegevens meer synchroniseren met deze service.",
+        "disconnect_success": "wordt verbroken De verbinding met {{name}}",
+        "complete_connection": "openen Volledige verbinding",
+        "verify_oauth_desc": "We hebben de inlogpagina {{name}} in een nieuw tabblad geopend. Zodra u succesvol bent ingelogd en de app heeft geautoriseerd, klikt u op de onderstaande knop om de verbinding te voltooien.",
+        "oauth_initiating": "OAuth 2.0-stroom initiëren voor {{name}}...",
+        "oauth_success": "Verbonden met {{name}} via OAuth!",
+        "api_key_label": "API-toegangssleutel",
+        "api_key_placeholder": "Voer uw {{name}} API-sleutel in...",
+        "api_key_desc": "U kunt uw API-sleutel vinden in de {{name}} dashboardinstellingen. Voor uw veiligheid coderen wij deze sleutel.",
+        "verify_btn": "Verifiëren en verbinden",
+        "verifying_btn": "Verifiëren...",
+        "upcoming_connections": "Aankomende verbindingen",
+        "stay_tuned": "We voegen voortdurend nieuwe integraties toe. Blijf op de hoogte voor meer!",
+        "secure": "Veilig",
+        "complete_auth": "Voltooi {{name}} autorisatie",
+        "types": {
+            "crm": "is succesvol verbroken CRM",
+            "data": "Gegevens",
+            "outreach": "Bereik"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "Synchroniseer uw leads en activiteiten met HubSpot CRM met behulp van een 1-klik verbindende OAuth-stroom."
+            },
+            "salesforce": {
+                "desc": "Verbind uw bedrijfsworkflows met de Salesforce Web Server-stroom."
+            },
+            "instantly": {
+                "desc": "Verbind uw Instantly.ai-campagnes voor naadloze outreach-synchronisatie."
+            },
+            "apollo": {
+                "desc": "Verrijk uw leads met Apollo.io B2B-database-inzichten."
+            },
+            "leadmagic": {
+                "desc": "Verrijk leads met firmagrafische data via de Leadmagic X-API-Key."
+            },
+            "clay": {
+                "desc": "Synchroniseer uitgaande gegevens naar Clay-tabellen via hun JSON HTTP API."
+            }
+        }
     }
 }

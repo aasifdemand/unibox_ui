@@ -93,7 +93,9 @@ export const useMessageFilters = ({
         const email = match ? match[1] : from;
         const nameMatch = from.match(/^([^<]+)/);
         const name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email.split('@')[0];
-        return { name: name || email.split('@')[0] || i18n.t('mailboxes.unknown_sender', 'Unknown') };
+        return {
+          name: name || email.split('@')[0] || i18n.t('mailboxes.unknown_sender', 'Unknown'),
+        };
       }
       if (message?.from?.emailAddress) {
         return {
@@ -113,7 +115,10 @@ export const useMessageFilters = ({
     try {
       if (message?.subject) return message.subject;
       if (message?.payload?.headers) {
-        return message.payload.headers.find((h) => h.name === 'Subject')?.value || i18n.t('mailboxes.no_subject', '(no subject)');
+        return (
+          message.payload.headers.find((h) => h.name === 'Subject')?.value ||
+          i18n.t('mailboxes.no_subject', '(no subject)')
+        );
       }
     } catch (e) {
       console.error('Error getting subject:', e);
@@ -347,7 +352,7 @@ export const useTokenWarning = (selectedMailbox, onRefresh) => {
                   toast.dismiss(t.id);
                   onRefresh();
                 }}
-                className="mt-2 text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+                className="mt-2 text-sm bg-orange-600 text-white px-3 py-1 rounded-lg hover:bg-orange-700"
               >
                 Refresh now
               </button>

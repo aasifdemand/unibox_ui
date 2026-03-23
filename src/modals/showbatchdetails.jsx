@@ -75,9 +75,9 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
   const getVerificationIcon = useCallback((status) => {
     switch (status) {
       case 'valid':
-        return <CheckCircle className="w-4 h-4 text-emerald-500" />;
+        return <CheckCircle className="w-4 h-4 text-orange-500" />;
       case 'invalid':
-        return <XCircle className="w-4 h-4 text-rose-500" />;
+        return <XCircle className="w-4 h-4 text-orange-500" />;
       case 'risky':
         return <AlertCircle className="w-4 h-4 text-amber-500" />;
       default:
@@ -88,9 +88,9 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
   const getVerificationBadgeClass = useCallback((status) => {
     switch (status) {
       case 'valid':
-        return 'bg-emerald-50 text-emerald-600 border border-emerald-100';
+        return 'bg-orange-50 text-orange-600 border border-orange-100';
       case 'invalid':
-        return 'bg-rose-50 text-rose-600 border border-rose-100';
+        return 'bg-orange-50 text-orange-600 border border-orange-100';
       case 'risky':
         return 'bg-amber-50 text-amber-600 border border-amber-100';
       default:
@@ -112,19 +112,19 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
       maxWidth="max-w-6xl"
       closeOnBackdrop={true}
     >
-      <div className="bg-linear-to-br from-indigo-600 to-blue-700 p-8 relative overflow-hidden group">
+      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-          <Users className="w-20 h-20 text-blue-400" />
+          <Users className="w-20 h-20 text-orange-400" />
         </div>
         <div className="relative flex items-center gap-4">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center border border-blue-500/30">
-            <FileSpreadsheet className="w-6 h-6 text-blue-400" />
+          <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30">
+            <FileSpreadsheet className="w-6 h-6 text-orange-400" />
           </div>
           <div>
             <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
               {t('modals.details.batch')}
             </h3>
-            <p className="text-[10px] font-bold text-indigo-100/60 uppercase tracking-widest mt-0.5">
+            <p className="text-[10px] font-bold text-orange-100/60 uppercase tracking-widest mt-0.5">
               {t('modals.details.subtitle')}
             </p>
           </div>
@@ -135,8 +135,8 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="relative">
-              <div className="w-16 h-16 border-4 border-slate-100 border-t-indigo-600 rounded-full animate-spin"></div>
-              <div className="absolute inset-0 bg-indigo-500/10 blur-2xl rounded-full"></div>
+              <div className="w-16 h-16 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 bg-orange-500/10 blur-2xl rounded-full"></div>
             </div>
             <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-8">
               {t('modals.details.loading_batch')}
@@ -147,17 +147,21 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
             {/* Batch Info Header */}
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
-                  <FileSpreadsheet className="w-7 h-7 text-emerald-600" />
+                <div className="w-14 h-14 bg-orange-50 rounded-lg flex items-center justify-center border border-orange-100">
+                  <FileSpreadsheet className="w-7 h-7 text-orange-600" />
                 </div>
                 <div>
                   <h4 className="text-lg font-extrabold text-slate-800 uppercase tracking-tighter">
                     {selectedBatch?.originalFilename}
                   </h4>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 flex items-center gap-2">
-                    <span>{t('modals.details.batch_id')}: {selectedBatch?.id}</span>
+                    <span>
+                      {t('modals.details.batch_id')}: {selectedBatch?.id}
+                    </span>
                     <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                    <span>{t('modals.details.uploaded')}: {formatDate(selectedBatch?.createdAt)}</span>
+                    <span>
+                      {t('modals.details.uploaded')}: {formatDate(selectedBatch?.createdAt)}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -203,11 +207,11 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`bg-slate-50 rounded-2xl p-4 border border-slate-100 group hover:border-${stat.color}-200 hover:shadow-lg transition-all`}
+                    className={`bg-slate-50 rounded-lg p-4 border border-slate-100 group hover:border-${stat.color}-200 hover:shadow-sm transition-all`}
                   >
                     <div className="flex items-center gap-3 mb-3">
                       <div
-                        className={`w-8 h-8 rounded-xl bg-${stat.color}-50 flex items-center justify-center`}
+                        className={`w-8 h-8 rounded-md bg-${stat.color}-50 flex items-center justify-center`}
                       >
                         <stat.icon className={`w-4 h-4 text-${stat.color}-600`} />
                       </div>
@@ -226,13 +230,13 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <div className="relative group">
-                    <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                    <Search className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
                     <input
                       type="text"
                       placeholder={t('modals.details.filters.search_placeholder')}
                       value={searchTerm}
                       onChange={handleSearchChange}
-                      className="w-full ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 outline-none transition-all"
+                      className="w-full ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -242,7 +246,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                     <select
                       value={verificationFilter}
                       onChange={handleFilterChange}
-                      className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none"
+                      className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
                     >
                       <option value="all">{t('modals.details.filters.all_status')}</option>
                       <option value="valid">{t('audience.valid')}</option>
@@ -255,7 +259,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                   <Button
                     onClick={handleExport}
                     variant="primary"
-                    className="px-6 py-3 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
+                    className="px-6 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
                   >
                     <Download className="w-4 h-4" />
                     {t('common.export')}
@@ -297,12 +301,12 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="group hover:bg-indigo-50/30 transition-colors"
+                        className="group hover:bg-orange-50/30 transition-colors"
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
-                              <Mail className="w-4 h-4 text-slate-500 group-hover:text-indigo-600" />
+                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                              <Mail className="w-4 h-4 text-slate-500 group-hover:text-orange-600" />
                             </div>
                             <span className="text-sm font-bold text-slate-700 group-hover:text-slate-800">
                               {record.email || '—'}
@@ -316,11 +320,13 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                           <div className="flex items-center gap-2">
                             {getVerificationIcon(record.verificationStatus)}
                             <span
-                              className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-xl ${getVerificationBadgeClass(
+                              className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-md ${getVerificationBadgeClass(
                                 record.verificationStatus,
                               )}`}
                             >
-                              {record.verificationStatus ? t(`audience.${record.verificationStatus}`) : t('modals.details.table.unverified')}
+                              {record.verificationStatus
+                                ? t(`audience.${record.verificationStatus}`)
+                                : t('modals.details.table.unverified')}
                             </span>
                           </div>
                         </td>
@@ -331,7 +337,9 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm font-bold text-slate-600">
-                            {record.verifiedAt ? formatDate(record.verifiedAt) : t('modals.details.table.never')}
+                            {record.verifiedAt
+                              ? formatDate(record.verifiedAt)
+                              : t('modals.details.table.never')}
                           </span>
                         </td>
                         <td className="px-6 py-4">
@@ -345,10 +353,12 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                       <tr>
                         <td colSpan={6} className="px-6 py-16 text-center">
                           <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">
+                            <div className="w-16 h-16 rounded-lg bg-slate-50 flex items-center justify-center mb-4">
                               <FileSpreadsheet className="w-8 h-8 text-slate-300" />
                             </div>
-                            <p className="text-sm font-bold text-slate-400">{t('modals.details.table.no_records')}</p>
+                            <p className="text-sm font-bold text-slate-400">
+                              {t('modals.details.table.no_records')}
+                            </p>
                             <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-1">
                               {t('modals.details.table.try_adjusting')}
                             </p>
@@ -365,23 +375,30 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
             {totalPages > 1 && (
               <div className="flex items-center justify-between pt-8 mt-6 border-t-2 border-slate-100">
                 <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
-                  {t('modals.details.pagination.showing', { start: indexOfFirstRecord + 1, end: indexOfLastRecord, total: totalRecords })}
+                  {t('modals.details.pagination.showing', {
+                    start: indexOfFirstRecord + 1,
+                    end: indexOfLastRecord,
+                    total: totalRecords,
+                  })}
                 </div>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="w-10 h-10 rounded-xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-indigo-500 hover:text-indigo-600 transition-all disabled:opacity-50 disabled:hover:border-slate-100 disabled:hover:text-slate-400"
+                    className="w-10 h-10 rounded-md bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-orange-500 hover:text-orange-600 transition-all disabled:opacity-50 disabled:hover:border-slate-100 disabled:hover:text-slate-400"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <span className="text-sm font-extrabold text-slate-800 px-4">
-                    {t('modals.details.pagination.page_status', { current: currentPage, total: totalPages })}
+                    {t('modals.details.pagination.page_status', {
+                      current: currentPage,
+                      total: totalPages,
+                    })}
                   </span>
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="w-10 h-10 rounded-xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-indigo-500 hover:text-indigo-600 transition-all disabled:opacity-50 disabled:hover:border-slate-100 disabled:hover:text-slate-400"
+                    className="w-10 h-10 rounded-md bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-orange-500 hover:text-orange-600 transition-all disabled:opacity-50 disabled:hover:border-slate-100 disabled:hover:text-slate-400"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
@@ -392,7 +409,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
             {/* Footer */}
             <div className="mt-6 pt-4 border-t-2 border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Shield className="w-4 h-4 text-emerald-500" />
+                <Shield className="w-4 h-4 text-orange-500" />
                 <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
                   {t('modals.details.footer.records_verified', { count: filteredRecords.length })}
                 </span>
@@ -400,7 +417,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
               <Button
                 onClick={handleExport}
                 variant="primary"
-                className="px-8 py-3 rounded-2xl text-[10px] font-extrabold uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3"
+                className="px-8 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3"
               >
                 <Download className="w-4 h-4" />
                 {t('modals.details.footer.export_all')}

@@ -28,11 +28,11 @@ const COLORS = {
   gmail: '#EA4335',
   outlook: '#0078D4',
   smtp: '#34A853',
-  opens: '#3B82F6',
+  opens: '#e11d48',
   replies: '#10B981',
   bounce: '#EF4444',
   pending: '#94A3B8',
-  sent: '#3B82F6',
+  sent: '#e11d48',
 };
 
 const Analytics = () => {
@@ -60,7 +60,7 @@ const Analytics = () => {
     return (
       <div className="p-8 flex items-center justify-center h-100">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-lg shadow-blue-500/20"></div>
+          <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-sm shadow-orange-500/20"></div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
             {t('analytics.loading_analytics')}
           </p>
@@ -73,7 +73,7 @@ const Analytics = () => {
     return (
       <div className="p-8">
         <div className="premium-card p-12 text-center max-w-2xl mx-auto">
-          <div className="w-20 h-20 mx-auto rounded-3xl bg-red-50 flex items-center justify-center mb-6 border border-red-100 shadow-inner">
+          <div className="w-20 h-20 mx-auto rounded-lg bg-red-50 flex items-center justify-center mb-6 border border-red-100 shadow-inner">
             <Inbox className="w-10 h-10 text-red-500" />
           </div>
           <h3 className="text-2xl font-extrabold text-slate-800 mb-3 tracking-tight">
@@ -97,41 +97,52 @@ const Analytics = () => {
       title: t('analytics.total_campaigns'),
       value: overview?.totalCampaigns?.toString() || '0',
       change: t('analytics.active_count', { count: overview?.activeCampaigns || 0 }),
-      icon: <Mail className="w-6 h-6 text-blue-600" />,
-      color: 'from-blue-500 to-indigo-600',
-      bgColor: 'bg-blue-50',
+      icon: <Mail className="w-5 h-5 text-orange-600" />,
+      color: 'from-orange-500/30 to-orange-500/30',
+      iconColor: 'text-orange-600',
+      bgColor: 'bg-orange-50',
       description: t('analytics.completed_count', { count: overview?.completedCampaigns || 0 }),
       trend: 'up',
+      sparkline: [20, 35, 25, 45, 30, 55, 40],
     },
     {
       title: t('analytics.emails_sent'),
       value: overview?.totalEmailsSent?.toLocaleString() || '0',
       change: t('analytics.open_rate_value', { percentage: overview?.avgOpenRate || 0 }),
-      icon: <Send className="w-6 h-6 text-emerald-600" />,
-      color: 'from-emerald-500 to-teal-600',
-      bgColor: 'bg-emerald-50',
-      description: t('analytics.opens_count', { count: overview?.totalOpens?.toLocaleString() || 0 }),
+      icon: <Send className="w-5 h-5 text-orange-600" />,
+      color: 'from-orange-500/30 to-orange-500/30',
+      iconColor: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+      description: t('analytics.opens_count', {
+        count: overview?.totalOpens?.toLocaleString() || 0,
+      }),
       trend: 'up',
+      sparkline: [10, 25, 45, 30, 60, 50, 80],
     },
     {
       title: t('analytics.total_replies'),
       value: overview?.totalReplies?.toString() || '0',
       change: t('analytics.reply_rate_value', { percentage: metrics.replyRate }),
-      icon: <MessageCircle className="w-6 h-6 text-violet-600" />,
-      color: 'from-violet-500 to-purple-600',
-      bgColor: 'bg-violet-50',
+      icon: <MessageCircle className="w-5 h-5 text-orange-600" />,
+      color: 'from-orange-500/30 to-orange-500/30',
+      iconColor: 'text-orange-600',
+      bgColor: 'bg-orange-50',
       description: t('analytics.unique_replies_count', { count: overview?.totalReplied || 0 }),
       trend: 'up',
+      sparkline: [15, 20, 18, 25, 22, 30, 28],
     },
     {
       title: t('analytics.bounce_rate'),
       value: `${metrics.bounceRate}%`,
       change: t('analytics.bounces_count', { count: overview?.totalBounces || 0 }),
-      icon: <Inbox className="w-6 h-6 text-rose-600" />,
-      color: 'from-rose-500 to-red-600',
-      bgColor: 'bg-rose-50',
-      description: metrics.bounceRate > 5 ? t('analytics.needs_attention') : t('analytics.good_status'),
+      icon: <Inbox className="w-5 h-5 text-orange-600" />,
+      color: 'from-orange-500/30 to-orange-500/30',
+      iconColor: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+      description:
+        metrics.bounceRate > 5 ? t('analytics.needs_attention') : t('analytics.good_status'),
       trend: 'down',
+      sparkline: [20, 15, 25, 20, 30, 25, 20],
     },
   ];
 
@@ -139,12 +150,14 @@ const Analytics = () => {
     <div className="p-8 space-y-10 animate-in fade-in duration-700">
       {/* Analytics Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-4xl font-extrabold text-slate-800 tracking-tighter flex items-center">
-            {t('analytics.campaign_title')} <span className="text-gradient ltr:ml-3 ltr:mr-3 rtl:ml-3">{t('analytics.analytics_title')}</span>
-            {isRefreshing && <Loader2 className="w-6 h-6 ltr:ml-4 ltr:mr-4 rtl:ml-4 animate-spin text-blue-500" />}
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
+            {t('analytics.campaign_title')} <span className="ml-2">{t('analytics.analytics_title')}</span>
+            {isRefreshing && (
+              <Loader2 className="w-4 h-4 ml-3 animate-spin text-slate-400" />
+            )}
           </h1>
-          <p className="text-slate-500 font-medium mt-2 flex items-center gap-2">
+          <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
             {t('analytics.analytics_description')}
           </p>
@@ -155,7 +168,7 @@ const Analytics = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none w-full sm:w-auto ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none"
+              className="appearance-none w-full sm:w-auto ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>

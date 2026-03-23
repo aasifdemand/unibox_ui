@@ -8,6 +8,7 @@ import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginReactRefresh from 'eslint-plugin-react-refresh';
 import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default [
   {
@@ -32,6 +33,7 @@ export default [
       'react-hooks': pluginReactHooks,
       'react-refresh': pluginReactRefresh,
       prettier: prettier,
+      'unused-imports': unusedImports,
     },
     settings: {
       react: {
@@ -40,8 +42,13 @@ export default [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      'prettier/prettier': 'error',
-      'no-unused-vars': 'error',
+      'prettier/prettier': 'warn',
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+      ],
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],

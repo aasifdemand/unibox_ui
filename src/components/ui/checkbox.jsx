@@ -22,7 +22,7 @@ const Checkbox = ({
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <div className="flex items-start">
+      <div className="flex items-center">
         <div className="flex items-center h-5">
           <div className="relative flex items-center justify-center h-5">
             <input
@@ -41,12 +41,12 @@ const Checkbox = ({
                 ${
                   error
                     ? 'border-red-300 checked:border-red-600 checked:bg-red-600'
-                    : 'border-gray-300 checked:border-blue-600 checked:bg-blue-600'
+                    : 'border-gray-300 checked:border-orange-600 checked:bg-orange-600'
                 }
                 ${
                   disabled
                     ? 'cursor-not-allowed opacity-50'
-                    : 'cursor-pointer hover:border-blue-400 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                    : 'cursor-pointer hover:border-orange-400 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
                 }
                 focus:outline-none
               `}
@@ -68,8 +68,8 @@ const Checkbox = ({
             <label
               htmlFor={checkboxId}
               className={`
-                text-sm font-medium select-none flex items-start min-h-5
-                ${error ? 'text-red-700' : 'text-gray-700'}
+                text-[13px] font-semibold select-none flex items-start min-h-5
+                ${error ? 'text-red-600' : 'text-slate-700'}
                 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 ${labelClassName}
               `}

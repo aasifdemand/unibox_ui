@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import * as XLSX from 'xlsx';
 import { calculateVerificationTotals, resetUploadState } from '../audience-service';
@@ -16,7 +16,7 @@ export const useAudienceData = () => {
   const [selectedBatch, setSelectedBatch] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState([]);
 
   // Contacts state
   const [uploadStep, setUploadStep] = useState(1);
@@ -38,7 +38,12 @@ export const useAudienceData = () => {
   const BATCHES_PER_PAGE = 12;
 
   // React Query hooks
-  const { data: batchesData, pagination: batchesPagination, isLoading: isLoadingBatches, refetch: refetchBatches } = useBatches(batchPage, BATCHES_PER_PAGE);
+  const {
+    data: batchesData,
+    pagination: batchesPagination,
+    isLoading: isLoadingBatches,
+    refetch: refetchBatches,
+  } = useBatches(batchPage, BATCHES_PER_PAGE);
 
   const uploadBatch = useUploadBatch();
   const deleteBatch = useDeleteBatch();
@@ -109,7 +114,7 @@ export const useAudienceData = () => {
                   uniqueData.push(row);
                 }
               } else {
-                // Keep rows without emails for the server to handle if necessary, 
+                // Keep rows without emails for the server to handle if necessary,
                 // or skip them. Here we skip if the user specifically wants email-based dedupe.
                 uniqueData.push(row);
               }
@@ -128,20 +133,24 @@ export const useAudienceData = () => {
             // Create new workbook with cleaned data
             const newWs = XLSX.utils.json_to_sheet(uniqueData);
             const newWb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(newWb, newWs, "Contacts");
+            XLSX.utils.book_append_sheet(newWb, newWs, 'Contacts');
 
             // Create a blob
             const wbout = XLSX.write(newWb, { bookType: 'xlsx', type: 'array' });
-            const cleanedFile = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const cleanedFile = new Blob([wbout], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
 
             // Give it the same name
-            const fileWithMetadata = new File([cleanedFile], uploadedFile.name, { type: uploadedFile.type });
+            const fileWithMetadata = new File([cleanedFile], uploadedFile.name, {
+              type: uploadedFile.type,
+            });
             resolve(fileWithMetadata);
           } catch (err) {
             reject(err);
           }
         };
-        reader.onerror = () => reject(new Error("Failed to read file for deduplication"));
+        reader.onerror = () => reject(new Error('Failed to read file for deduplication'));
         reader.readAsArrayBuffer(uploadedFile);
       });
 
@@ -188,7 +197,6 @@ export const useAudienceData = () => {
     setMapping((prev) => ({ ...prev, ...autoMapping }));
   };
 
-
   const handleDeleteBatch = async (batchId) => {
     try {
       await deleteBatch.mutateAsync(batchId);
@@ -198,7 +206,6 @@ export const useAudienceData = () => {
       toast.error(`Failed to delete batch: ${error.message}`);
     }
   };
-
 
   return {
     // State

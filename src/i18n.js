@@ -24,45 +24,43 @@ import thTranslation from './locales/th.json';
 import plTranslation from './locales/pl.json';
 
 const resources = {
-    en: { translation: enTranslation },
-    es: { translation: esTranslation },
-    fr: { translation: frTranslation },
-    ar: { translation: arTranslation },
-    zh: { translation: zhTranslation },
-    de: { translation: deTranslation },
-    pt: { translation: ptTranslation },
-    hi: { translation: hiTranslation },
-    ur: { translation: urTranslation },
-    it: { translation: itTranslation },
-    ja: { translation: jaTranslation },
-    ru: { translation: ruTranslation },
-    ko: { translation: koTranslation },
-    tr: { translation: trTranslation },
-    nl: { translation: nlTranslation },
-    fa: { translation: faTranslation },
-    he: { translation: heTranslation },
-    vi: { translation: viTranslation },
-    id: { translation: idTranslation },
-    th: { translation: thTranslation },
-    pl: { translation: plTranslation },
+  en: { translation: enTranslation },
+  es: { translation: esTranslation },
+  fr: { translation: frTranslation },
+  ar: { translation: arTranslation },
+  zh: { translation: zhTranslation },
+  de: { translation: deTranslation },
+  pt: { translation: ptTranslation },
+  hi: { translation: hiTranslation },
+  ur: { translation: urTranslation },
+  it: { translation: itTranslation },
+  ja: { translation: jaTranslation },
+  ru: { translation: ruTranslation },
+  ko: { translation: koTranslation },
+  tr: { translation: trTranslation },
+  nl: { translation: nlTranslation },
+  fa: { translation: faTranslation },
+  he: { translation: heTranslation },
+  vi: { translation: viTranslation },
+  id: { translation: idTranslation },
+  th: { translation: thTranslation },
+  pl: { translation: plTranslation },
 };
 
-i18n
-    .use(initReactI18next)
-    .init({
-        resources,
-        lng: localStorage.getItem('i18nextLng') || 'en',
-        fallbackLng: 'en',
-        interpolation: {
-            escapeValue: false,
-        },
-    });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: localStorage.getItem('i18nextLng') || 'en',
+  fallbackLng: 'en',
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 // Handle RTL support dynamically based on the active language
 document.documentElement.dir = i18n.dir();
 
 i18n.on('languageChanged', (lng) => {
-    document.documentElement.dir = i18n.dir(lng);
+  document.documentElement.dir = i18n.dir(lng);
 });
 
 export default i18n;

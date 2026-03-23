@@ -11,6 +11,12 @@
         "templates": "Şablonlar",
         "subscription": "Abonelik",
         "settings": "Ayarlar",
+        "crm": "CRM",
+        "email_campaigns": "E-posta Kampanyaları",
+        "email_accounts": "E-posta Hesapları",
+        "contacts": "İletişim",
+        "global_analytics": "Analitik",
+        "integrations": "Entegrasyonlar",
         "navigation": "Navigasyon",
         "active": "Aktif",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "Mevcut oturumu kapatmak istediğinize emin misiniz? Tekrar giriş yapmanız gerekecek.",
             "confirm": "Çıkışı Onayla",
             "cancel": "Oturumu Açık Tut"
-        }
+        },
+        "admin": "Yönetici",
+        "administrator": "Yönetici",
+        "user": "Kullanıcı",
+        "u": "sen"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Tüm hakları saklıdır.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "Veya şununla üye ol",
             "already_account": "Zaten hesabınız var mı?",
             "sign_in_link": "Giriş yap"
+        },
+        "layout": {
+            "platform_live": "Platform Canlı",
+            "title_main": "The smarter way to",
+            "title_span": "'e ulaşmanın daha akıllı yolu sosyal yardım çalıştırın",
+            "subtitle": "Unibox, yapay zeka zenginleştirmesini, akıllı sıralamayı ve birleşik yanıt gelen kutusunu tek bir platformda birleştirir.",
+            "trusted_by": "'e ulaşmanın daha akıllı yolu",
+            "teams": "tarafından güvenilen sosyal yardım ekipleri"
         }
     },
     "pwa": {
@@ -135,9 +153,9 @@
         "displaying_count": "{{total}} içerisinden {{start}}-{{end}} gösteriliyor",
         "search_mailboxes": "Posta kutularında ara...",
         "all_providers": "TÜM SAĞLAYICILAR",
-        "gmail_provider": "GMAIL",
+        "gmail_provider": "tarafından güvenilen GMAIL",
         "outlook_provider": "GÖRÜNÜM",
-        "smtp_provider": "SMTP",
+        "smtp_provider": "'e ulaşmanın daha akıllı yolu SMTP",
         "reply": "Yanıtla",
         "forward": "İlet",
         "delete": "Sil",
@@ -186,7 +204,7 @@
         "new_badge": "Yeni",
         "search_placeholder": "Tüm posta kutularındaki iletileri arayın...",
         "all_types": "Tüm Türler",
-        "gmail": "Gmail",
+        "gmail": "'e ulaşmanın daha akıllı yolu Gmail",
         "outlook": "Görünüm",
         "smtp": "SMTP",
         "refresh": "Yenile",
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "Oluştur Kampanyalar",
         "subtitle": "Sosyal Yardım",
+        "sequence_details": "Oluştur Sıra Ayrıntıları",
         "header_description": "E-posta kampanyalarınızı oluşturun ve takip edin.",
         "header_subtitle": "E-posta kampanyalarınızı yönetin ve takip edin",
         "create_campaign": "Kampanya Oluştur",
@@ -303,6 +322,7 @@
         "campaign_date": "Kampanya Tarihi",
         "empty_log_title": "İşlem Günlüğünü Boşalt",
         "empty_log_subtitle": "Matris taraması tamamlandı. Hiçbir kampanya öğesi bulunamadı.",
+        "create_first_campaign": "İlk Kampanyayı Oluşturun",
         "launch_protocol": "Protokolü Başlat",
         "no_subject": "KONU YOK",
         "status_created": "OLUŞTURULDU",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "E-posta sıranızı yazın",
         "step_setup": "Kurulum",
         "step_setup_desc": "Kampanyanızı yapılandırın",
+        "schedule_timing": "Oluştur Program ve Zamanlama",
+        "advanced_settings": "Gelişmiş Ayarlar",
         "step_final_review": "Son İnceleme",
         "step_final_review_desc": "Son kontrol ve başlatma",
         "error_add_content": "Devam etmeden önce lütfen {{mode}} e-postanıza biraz içerik ekleyin.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "Abonelikten Çıkma Bağlantısı",
         "recipients_senders": "Alıcılar ve Gönderenler",
         "setup_audience": "Kampanya kitlenizi ve hesaplarınızı ayarlayın",
+        "sender_accounts": "Hesap Gönderme",
+        "active_senders": "Aktif Hesaplar",
+        "select_accounts_desc": "Hesapları bu diziye bağlayın",
+        "choose_senders_btn": "Hesap Seçin",
+        "configure_schedule_btn": "Oluştur Zamanlamayı Yapılandır",
+        "modify_settings_btn": "Ayarları Değiştir",
+        "sender_rotation": "Hesap Rotasyonu",
+        "account_health": "Hesap Sağlığı",
+        "trust_score": "Puan",
+        "optimal_delivery": "Optimum Teslimat",
+        "intelligent_sending": "Akıllı Gönderim",
+        "sender_rotation_count": "Gönderici Rotasyonu ({{count}})",
+        "more_accounts": "+{{count}} hesap daha",
+        "no_sender_set": "Gönderen ayarlanmadı",
+        "confirm_selection": "Seçimi Onayla",
+        "high_inboxing_enabled": "Optimum Teslimat Etkinleştirildi",
         "add_contacts": "Kişi Ekle",
         "add_sender": "Göndereni Ekle",
         "selected_audience": "Seçilmiş Kitle",
@@ -795,8 +833,8 @@
                 "gmail": "Oluştur Google Gmail",
                 "outlook": "Oluştur Microsoft Outlook",
                 "smtp": "Özel SMTP",
-                "bulk": "Toplu İçe Aktarma",
                 "smtp_desc": "Manuel kurulum",
+                "bulk": "Toplu İçe Aktarma",
                 "bulk_desc": "XLSX Yükle"
             },
             "secure_title": "Kurumsal Düzeyde Güvenlik",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "Google Mail'e bağlanın",
             "btn_connect_outlook": "Microsoft Outlook Mail'e bağlanın",
+            "smtp_success": "SMTP bağlantısı başarılı",
+            "smtp_fail": "SMTP bağlantısı başarısız oldu",
+            "imap_success": "IMAP bağlantısı başarılı",
+            "imap_fail": "IMAP bağlantısı başarısız oldu",
+            "empty_provider": "Bir Sağlayıcı Seçin",
+            "empty_desc": "Yukarıda Gmail, Outlook veya Özel SMTP'yi seçin.",
+            "encrypted_note": "Uçtan uca şifrelenmiş",
+            "smtp_config_note": "Bunları boş bırakırsanız gönderme ayarlarınızı otomatik olarak kullanmaya çalışırız.",
             "bulk": {
                 "title": "Toplu Yükleme Hesapları",
                 "desc": "Şu sütunları içeren bir Excel dosyası (.xlsx) yükleyin: e-posta, etki alanı, şifre, tür (aapanel/postal), ad, soyadı.",
@@ -876,16 +922,8 @@
             "err_no_headers": "Dosyada başlık bulunamadı",
             "err_read_fail": "Dosya okunamadı",
             "err_map_required": "Lütfen gerekli tüm alanları eşleştirin",
-            "smtp_success": "SMTP bağlantısı başarılı",
-            "smtp_fail": "SMTP bağlantısı başarısız oldu",
-            "imap_success": "IMAP bağlantısı başarılı",
-            "imap_fail": "IMAP bağlantısı başarısız oldu",
             "bulk_success": "Toplu yükleme başarılı",
-            "bulk_error": "Toplu yükleme başarısız oldu",
-            "empty_provider": "Bir Sağlayıcı Seçin",
-            "empty_desc": "Yukarıda Gmail, Outlook veya Özel SMTP'yi seçin.",
-            "encrypted_note": "Uçtan uca şifrelenmiş",
-            "smtp_config_note": "Bunları boş bırakırsanız gönderme ayarlarınızı otomatik olarak kullanmaya çalışırız."
+            "bulk_error": "Toplu yükleme başarısız oldu"
         },
         "template": {
             "title": {
@@ -978,7 +1016,7 @@
                 "setup_type": "Kurulum Türü",
                 "sender_id": "Gönderen Kimliği",
                 "direct": "Doğrudan SMTP/IMAP",
-                "oauth": "OAuth 2.0",
+                "oauth": "Oluştur OAuth 2.0",
                 "outgoing": "Giden Yapılandırma (SMTP)",
                 "incoming": "Gelen Yapılandırma (IMAP)",
                 "host": "SMTP Ana Bilgisayarı",
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "Konu satırlarınız iyi yankılanıyor! Şu anda kullanmakta olduğunuz 'merak boşluğu' stilini iki katına çıkarmayı düşünün.",
         "rec_conversion_low": "Yanıtlar düşük. Daha net bir 'Harekete Geçirici Mesaj' (CTA) veya 'Bu yardımcı oldu mu?' gibi yumuşak bir soru eklemeyi deneyin. sürtünmeyi azaltmak için.",
         "rec_conversion_high": "Harika dönüşüm! Değer öneriniz açıktır. En iyi sonuçları almak için satış ekibinizin 4 saat içinde takip ettiğinden emin olun."
+    },
+    "crm": {
+        "title": "CRM Entegrasyonu",
+        "subtitle": "Gelir Merkezi",
+        "pipeline": "Oluştur Boru hattı",
+        "description": "Potansiyel müşterileri senkronize etmek ve etkinlikleri otomatik olarak günlüğe kaydetmek için sosyal yardım çalışma alanınızı favori CRM'nize bağlayın.",
+        "drag_desc": "Potansiyel müşterileri aşamalar arasında sürükleyin. Ayrıntıları görüntülemek ve anlaşma değerini ayarlamak için herhangi bir kartı tıklayın.",
+        "connect_crm": "CRM'yi bağlayın",
+        "add_column": "Sütun Ekle",
+        "all_campaigns": "Tüm Kampanyalar",
+        "total": "Toplam",
+        "value": "Değer",
+        "leads_label": "Potansiyel Müşteriler",
+        "drop_leads": "Olası satışları buraya bırakın",
+        "loading": "yükleniyor...",
+        "build_funnel": "Dönüşüm huninizi oluşturun",
+        "add_first_col": "Potansiyel müşterileri aşamalar boyunca izlemeye başlamak için ilk sütununuzu ekleyin.",
+        "create_initial": "İlk Sütunu Oluştur",
+        "footer_msg1": "Oluştur Olası satışlar şu durumlarda otomatik olarak ilerler:",
+        "footer_msg2": "olduğunda müşteri adayları otomatik olarak ilerler. Yanıtlama Amaçları",
+        "footer_msg3": "tespit edildi",
+        "search_placeholder": "Oluştur Bir ipucu bulun...",
+        "stages": {
+            "leads": "Yeni Potansiyel Müşteriler",
+            "contacted": "İletişim",
+            "replied": "Yanıtlandı",
+            "meeting_booked": "Toplantı Rezervasyonu",
+            "closed": "Kapalı",
+            "bounced": "Geri döndü",
+            "unsubscribed": "Abonelikten çıkıldı"
+        },
+        "lead_card": {
+            "last_activity": "Son aktivite:",
+            "campaign": "Kampanya:",
+            "view_profile": "Profili Görüntüle"
+        },
+        "connect": "Bağlan",
+        "connected": "Bağlı",
+        "status_ready": "Oluştur Senkronizasyona hazır",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Kişileri senkronize edin ve zaman çizelgesi olaylarını günlüğe kaydedin."
+        },
+        "salesforce": {
+            "title": "Satış Gücü",
+            "desc": "Potansiyel müşterileri ve fırsatları gerçek zamanlı olarak yönetin."
+        },
+        "pipedrive": {
+            "title": "Pipedrive",
+            "desc": "Anlaşmanın ilerlemesini ve etkinlik günlüklerini izleyin."
+        },
+        "add_column_modal_title": "Yeni Sütun Ekle",
+        "column_name_label": "Sütun Adı",
+        "column_name_placeholder": "örneğin Nitelikli Potansiyel Müşteriler",
+        "select_color_label": "Sütun Rengini Seçin",
+        "link_intent_label": "Yapay Zeka Amacına Bağlantı (İsteğe bağlı)",
+        "link_intent_desc": "Bu amaçtaki potansiyel müşteriler otomatik olarak buraya taşınacak",
+        "select_intent_placeholder": "Bir amaç seçin...",
+        "add_column_btn": "Sütun Ekle",
+        "cancel_btn": "İptal",
+        "status": "Senkronizasyona Hazır"
+    },
+    "integrations": {
+        "header_title": "Oluştur Entegrasyonlar",
+        "header_subtitle": "Pazaryeri",
+        "header_desc": "Sosyal yardım iş akışınızı otomatikleştirmek için favori CRM'nizi ve veri araçlarınızı bağlayın.",
+        "search_placeholder": "Arama entegrasyonları (HubSpot, Salesforce, Instantly...)",
+        "no_results": "Aramanızla eşleşen entegrasyon bulunamadı.",
+        "connect_btn": "Bağlan",
+        "disconnect_btn": "Bağlantıyı kes",
+        "disconnecting_btn": "Oluştur Bağlantı kesiliyor...",
+        "disconnecting": "{{name}} bağlantısı kesiliyor...",
+        "connected": "Bağlı",
+        "never_synced": "Hiçbir Zaman Senkronize Edilmedi",
+        "learn_how": "Nasıl Yapılacağını Öğrenin",
+        "connect_app": "+ Uygulamayı Bağla",
+        "confirm_disconnect_title": "Bağlantı Kesilmesini Onayla",
+        "confirm_disconnect_desc1": "Bağlantıyı kesmek istediğinizden emin misiniz",
+        "confirm_disconnect_desc2": "? Unibox artık potansiyel müşterileri veya verileri bu hizmetle senkronize edemeyecek.",
+        "disconnect_success": "{{name}} ile bağlantı başarıyla kesildi",
+        "complete_connection": "Oluştur Bağlantıyı Tamamla",
+        "verify_oauth_desc": "{{name}} giriş sayfasını yeni bir sekmede açtık. Başarıyla oturum açıp uygulamayı yetkilendirdikten sonra bağlantıyı tamamlamak için aşağıdaki düğmeye tıklayın.",
+        "oauth_initiating": "{{name}} için OAuth 2.0 akışı başlatılıyor...",
+        "oauth_success": "OAuth aracılığıyla {{name}}'a bağlanıldı!",
+        "api_key_label": "API Erişim Anahtarı",
+        "api_key_placeholder": "{{name}} API anahtarınızı girin...",
+        "api_key_desc": "API anahtarınızı {{name}} kontrol paneli ayarlarında bulabilirsiniz. Güvenliğiniz için bu anahtarı şifreliyoruz.",
+        "verify_btn": "Doğrula ve Bağlan",
+        "verifying_btn": "Doğrulanıyor...",
+        "upcoming_connections": "Yaklaşan Bağlantılar",
+        "stay_tuned": "Sürekli olarak yeni entegrasyonlar ekliyoruz. Daha fazlası için bizi izlemeye devam edin!",
+        "secure": "Güvenli",
+        "complete_auth": "{{name}} Yetkilendirmesini Tamamlayın",
+        "types": {
+            "crm": "Oluştur CRM",
+            "data": "Veri",
+            "outreach": "Sosyal Yardım"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "Tek tıklamayla bağlanan OAuth akışını kullanarak potansiyel müşterilerinizi ve etkinliklerinizi HubSpot CRM ile senkronize edin."
+            },
+            "salesforce": {
+                "desc": "Kurumsal iş akışlarınızı Salesforce Web Sunucusu akışına bağlayın."
+            },
+            "instantly": {
+                "desc": "Sorunsuz sosyal yardım senkronizasyonu için Instantly.ai kampanyalarınızı bağlayın."
+            },
+            "apollo": {
+                "desc": "Potansiyel müşterilerinizi Apollo.io B2B veritabanı içgörüleriyle zenginleştirin."
+            },
+            "leadmagic": {
+                "desc": "Leadmagic X-API-Key aracılığıyla müşteri adaylarını firmaografik verilerle zenginleştirin."
+            },
+            "clay": {
+                "desc": "Giden verileri JSON HTTP API'leri aracılığıyla Clay tablolarıyla senkronize edin."
+            }
+        }
     }
 }

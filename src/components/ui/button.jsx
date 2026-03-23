@@ -18,9 +18,9 @@ const Button = ({
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:from-blue-700 hover:to-indigo-800 focus:ring-blue-500 shadow-lg shadow-blue-500/20',
+      'bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:from-orange-700 hover:to-orange-800 focus:ring-orange-500 shadow-sm shadow-orange-500/20',
     secondary: 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-500',
-    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-blue-500',
+    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-orange-500',
     ghost: 'text-slate-700 hover:bg-slate-100 focus:ring-slate-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
   };

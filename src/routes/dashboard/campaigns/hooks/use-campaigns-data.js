@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useDebounce } from '../../../../hooks/useDebounce';
 import {
   useCampaigns,
   useActivateCampaign,
@@ -12,16 +13,19 @@ import {
 export const useCampaignsData = () => {
   const navigate = useNavigate();
   const [selectedCampaigns, setSelectedCampaigns] = useState([]);
-  const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [campaignToEdit, setCampaignToEdit] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
   // React Query hooks
   const { data: campaigns = [], isLoading, refetch: refetchCampaigns } = useCampaigns();
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
   const activateCampaign = useActivateCampaign();
   const pauseCampaign = usePauseCampaign();
@@ -31,11 +35,14 @@ export const useCampaignsData = () => {
   // Filter campaigns
   const filteredCampaigns = campaigns.filter((campaign) => {
     const matchesSearch =
-      searchTerm === '' ||
-      campaign.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      campaign.subject?.toLowerCase().includes(searchTerm.toLowerCase());
+      debouncedSearchTerm === '' ||
+      campaign.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      campaign.subject?.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === 'all' || campaign.status === statusFilter;
+    const matchesStatus =
+      statusFilter.length === 0 ||
+      statusFilter.includes('all') ||
+      statusFilter.includes(campaign.status);
 
     return matchesSearch && matchesStatus;
   });
@@ -133,8 +140,9 @@ export const useCampaignsData = () => {
     }
   };
 
-  const handleEditCampaign = (campaignId) => {
-    navigate(`/dashboard/campaigns/${campaignId}/edit`);
+  const handleEditCampaign = (campaign) => {
+    setCampaignToEdit(campaign);
+    setIsEditModalOpen(true);
   };
 
   const handleViewCampaign = (campaignId) => {
@@ -255,11 +263,12 @@ export const useCampaignsData = () => {
   return {
     state: {
       selectedCampaigns,
-      viewMode,
       searchTerm,
       statusFilter,
       showDeleteModal,
       campaignToDelete,
+      isEditModalOpen,
+      campaignToEdit,
     },
     data: {
       campaigns,
@@ -296,11 +305,12 @@ export const useCampaignsData = () => {
       },
     },
     setters: {
-      setViewMode,
       setSearchTerm,
       setStatusFilter,
       setShowDeleteModal,
       setCurrentPage,
+      setIsEditModalOpen,
+      setCampaignToEdit,
     },
     handlers: {
       handleSelectAll,

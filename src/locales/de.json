@@ -11,6 +11,12 @@
         "templates": "Vorlagen",
         "subscription": "Abonnement",
         "settings": "Einstellungen",
+        "crm": "CRM",
+        "email_campaigns": "E-Mail-Kampagnen",
+        "email_accounts": "E-Mail-Konten",
+        "contacts": "Kontakte",
+        "global_analytics": "Analytik",
+        "integrations": "Integrationen",
         "navigation": "Navigation",
         "active": "Aktiv",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "Sind Sie sicher, dass Sie Ihre aktuelle Dashboard-Sitzung beenden möchten? Sie müssen sich erneut authentifizieren.",
             "confirm": "Abmelden bestätigen",
             "cancel": "Eingeloggt bleiben"
-        }
+        },
+        "admin": "Admin",
+        "administrator": "Administrator",
+        "user": "Benutzer",
+        "u": "U"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Alle Rechte vorbehalten.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "Oder melden Sie sich bei",
             "already_account": "an Sie haben bereits ein Konto?",
             "sign_in_link": "Anmelden"
+        },
+        "layout": {
+            "platform_live": "Plattform Live",
+            "title_main": "Der intelligentere Weg zu",
+            "title_span": "Öffentlichkeitsarbeit durchführen",
+            "subtitle": "Unibox kombiniert KI-Anreicherung, intelligente Sequenzierung und einen einheitlichen Antwort-Posteingang – alles auf einer Plattform.",
+            "trusted_by": "Vertrauenswürdig von",
+            "teams": "Outreach-Teams"
         }
     },
     "pwa": {
@@ -156,7 +174,7 @@
         "indexing_messages": "Nachrichten indizieren...",
         "updating_feed": "Feed wird aktualisiert...",
         "page": "Seite",
-        "showing": "Showing",
+        "showing": "Zeigt",
         "prev": "wird angezeigt Zurück",
         "next": "Weiter",
         "status": "wird angezeigt Status",
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "wird angezeigt Kampagnen",
         "subtitle": "Reichweite",
+        "sequence_details": "wird angezeigt Sequenzdetails",
         "header_description": "Erstellen und verfolgen Sie Ihre E-Mail-Kampagnen.",
         "header_subtitle": "Verwalten und verfolgen Sie Ihre E-Mail-Kampagnen",
         "create_campaign": "Kampagne erstellen",
@@ -303,6 +322,7 @@
         "campaign_date": "Kampagnendatum",
         "empty_log_title": "Leeres Betriebsprotokoll",
         "empty_log_subtitle": "Matrix-Scan abgeschlossen. Keine Kampagnen-Assets gefunden.",
+        "create_first_campaign": "Erste Kampagne erstellen",
         "launch_protocol": "Startprotokoll",
         "no_subject": "KEIN THEMA",
         "status_created": "ERSTELLT",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "Schreiben Sie Ihre E-Mail-Sequenz",
         "step_setup": "Einrichtung",
         "step_setup_desc": "Konfigurieren Sie Ihre Kampagne",
+        "schedule_timing": "wird angezeigt Zeitplan und Timing",
+        "advanced_settings": "Erweiterte Einstellungen",
         "step_final_review": "Abschließende Überprüfung",
         "step_final_review_desc": "Letzte Überprüfung und Einführung",
         "error_add_content": "Bitte fügen Sie Ihrer {{mode}}-E-Mail einige Inhalte hinzu, bevor Sie fortfahren.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "Abmeldelink",
         "recipients_senders": "Empfänger und Absender",
         "setup_audience": "Richten Sie Ihre Kampagnenzielgruppe und -konten ein",
+        "sender_accounts": "Konten senden",
+        "active_senders": "Aktive Konten",
+        "select_accounts_desc": "Verbinden Sie Konten mit dieser Reihenfolge",
+        "choose_senders_btn": "Wählen Sie Konten",
+        "configure_schedule_btn": "wird angezeigt Zeitplan konfigurieren",
+        "modify_settings_btn": "Einstellungen ändern",
+        "sender_rotation": "Kontorotation",
+        "account_health": "Kontozustand",
+        "trust_score": "Punktzahl",
+        "optimal_delivery": "Optimale Lieferung",
+        "intelligent_sending": "Intelligentes Senden",
+        "sender_rotation_count": "Senderdrehung ({{count}})",
+        "more_accounts": "+{{count}} weitere Konten",
+        "no_sender_set": "Kein Absender festgelegt",
+        "confirm_selection": "Auswahl bestätigen",
+        "high_inboxing_enabled": "Optimale Zustellung aktiviert",
         "add_contacts": "Kontakte hinzufügen",
         "add_sender": "Absender hinzufügen",
         "selected_audience": "Ausgewählte Zielgruppe",
@@ -795,8 +833,8 @@
                 "gmail": "konnte nicht gelöscht werden Google Gmail",
                 "outlook": "konnte nicht gelöscht werden Microsoft Outlook",
                 "smtp": "Benutzerdefiniertes SMTP",
-                "bulk": "Massenimport",
                 "smtp_desc": "Manuelle Einrichtung",
+                "bulk": "Massenimport",
                 "bulk_desc": "XLSX-Upload"
             },
             "secure_title": "Sicherheit auf Unternehmensniveau",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "Mit Google Mail verbinden",
             "btn_connect_outlook": "Verbinden Sie sich mit Microsoft Outlook Mail",
+            "smtp_success": "zu SMTP-Verbindung erfolgreich",
+            "smtp_fail": "SMTP-Verbindung fehlgeschlagen",
+            "imap_success": "IMAP-Verbindung erfolgreich",
+            "imap_fail": "IMAP-Verbindung fehlgeschlagen",
+            "empty_provider": "Wählen Sie einen Anbieter",
+            "empty_desc": "Wählen Sie oben Gmail, Outlook oder benutzerdefiniertes SMTP.",
+            "encrypted_note": "Ende-zu-Ende verschlüsselt",
+            "smtp_config_note": "Wenn Sie diese Felder leer lassen, versuchen wir, Ihre Versandeinstellungen automatisch zu verwenden.",
             "bulk": {
                 "title": "Massen-Upload-Konten",
                 "desc": "Laden Sie eine Excel-Datei (.xlsx) mit den folgenden Spalten hoch: E-Mail, Domäne, Passwort, Typ (aapanel/postal), Vorname, Nachname.",
@@ -876,16 +922,8 @@
             "err_no_headers": "In der Datei",
             "err_read_fail": "wurden keine Header gefunden Datei",
             "err_map_required": "konnte nicht gelesen werden Bitte ordnen Sie alle erforderlichen Felder",
-            "smtp_success": "zu SMTP-Verbindung erfolgreich",
-            "smtp_fail": "SMTP-Verbindung fehlgeschlagen",
-            "imap_success": "IMAP-Verbindung erfolgreich",
-            "imap_fail": "IMAP-Verbindung fehlgeschlagen",
             "bulk_success": "Massen-Upload erfolgreich",
-            "bulk_error": "Massen-Upload fehlgeschlagen",
-            "empty_provider": "Wählen Sie einen Anbieter",
-            "empty_desc": "Wählen Sie oben Gmail, Outlook oder benutzerdefiniertes SMTP.",
-            "encrypted_note": "Ende-zu-Ende verschlüsselt",
-            "smtp_config_note": "Wenn Sie diese Felder leer lassen, versuchen wir, Ihre Versandeinstellungen automatisch zu verwenden."
+            "bulk_error": "Massen-Upload fehlgeschlagen"
         },
         "template": {
             "title": {
@@ -1026,7 +1064,7 @@
         "current_plan": "Aktueller Plan",
         "upgrade": "Upgrade auf Pro",
         "contact_sales": "Kontaktieren Sie den Vertrieb",
-        "price_monthly": "${{price}}",
+        "price_monthly": "wird angezeigt ${{price}}",
         "help_title": "Haben Sie Fragen zur Preisgestaltung?",
         "help_desc": "Unser Team ist hier, um Ihnen dabei zu helfen, das perfekte Setup für Ihre Organisation zu finden.",
         "contact_us": "Kontaktieren Sie unsere Spezialisten unter",
@@ -1161,7 +1199,7 @@
         "value_high": "Hoch",
         "value_average": "Durchschnittlich",
         "value_low": "Niedrig",
-        "value_elite": "Elite",
+        "value_elite": "wird angezeigt Elite",
         "value_solid": "Solide",
         "value_needs_work": "Braucht Arbeit",
         "rec_deliverability_high": "Ihre Absprungrate ist etwas hoch. Wir empfehlen Ihnen, Ihre Liste vor dem nächsten Versand mit einem Tool wie NeverBounce zu überprüfen.",
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "Ihre Betreffzeilen kommen gut an! Erwägen Sie, den „Neugier-Gap“-Stil, den Sie derzeit verwenden, zu verdoppeln.",
         "rec_conversion_low": "Die Antworten sind gering. Versuchen Sie, einen klareren „Call to Action“ (CTA) oder eine sanfte Frage wie „War das hilfreich?“ hinzuzufügen. um die Reibung zu verringern.",
         "rec_conversion_high": "Toller Umbau! Ihr Wertversprechen ist klar. Stellen Sie sicher, dass Ihr Vertriebsteam innerhalb von 4 Stunden nachfragt, um optimale Ergebnisse zu erzielen."
+    },
+    "crm": {
+        "title": "CRM-Integration",
+        "subtitle": "Revenue Hub",
+        "pipeline": "wird angezeigt Pipeline",
+        "description": "Verbinden Sie Ihren Outreach-Arbeitsbereich mit Ihrem bevorzugten CRM, um Leads zu synchronisieren und Aktivitäten automatisch zu protokollieren.",
+        "drag_desc": "Ziehen Sie Leads zwischen den Phasen. Klicken Sie auf eine beliebige Karte, um Details anzuzeigen und den Dealwert festzulegen.",
+        "connect_crm": "CRM verbinden",
+        "add_column": "Spalte hinzufügen",
+        "all_campaigns": "Alle Kampagnen",
+        "total": "Gesamt",
+        "value": "Wert",
+        "leads_label": "Führt",
+        "drop_leads": "Lassen Sie Leads hier fallen",
+        "loading": "wird geladen...",
+        "build_funnel": "Bauen Sie Ihren Trichter",
+        "add_first_col": "Fügen Sie Ihre erste Spalte hinzu, um mit der Verfolgung von Leads über die einzelnen Phasen zu beginnen.",
+        "create_initial": "Erste Spalte erstellen",
+        "footer_msg1": "Leads schreiten automatisch voran, wenn",
+        "footer_msg2": "Antwortabsichten",
+        "footer_msg3": "werden erkannt",
+        "search_placeholder": "Finden Sie einen Hinweis...",
+        "stages": {
+            "leads": "Neue Leads",
+            "contacted": "Kontaktiert",
+            "replied": "Antwortete",
+            "meeting_booked": "Besprechung gebucht",
+            "closed": "Geschlossen",
+            "bounced": "Abgeprallt",
+            "unsubscribed": "Abgemeldet"
+        },
+        "lead_card": {
+            "last_activity": "Letzte Aktivität:",
+            "campaign": "Kampagne:",
+            "view_profile": "Profil anzeigen"
+        },
+        "connect": "Verbinden",
+        "connected": "Verbunden",
+        "status_ready": "Bereit zur Synchronisierung",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Kontakte synchronisieren und Timeline-Ereignisse protokollieren."
+        },
+        "salesforce": {
+            "title": "Salesforce",
+            "desc": "Verwalten Sie Leads und Opportunities in Echtzeit."
+        },
+        "pipedrive": {
+            "title": "Pipedrive",
+            "desc": "Verfolgen Sie den Geschäftsfortschritt und Aktivitätsprotokolle."
+        },
+        "add_column_modal_title": "Neue Spalte hinzufügen",
+        "column_name_label": "Spaltenname",
+        "column_name_placeholder": "z. B. Qualifizierte Leads",
+        "select_color_label": "Wählen Sie Spaltenfarbe",
+        "link_intent_label": "Link zum AI Intent (optional)",
+        "link_intent_desc": "Leads mit dieser Absicht werden automatisch hierher verschoben",
+        "select_intent_placeholder": "Wählen Sie eine Absicht aus...",
+        "add_column_btn": "Spalte hinzufügen",
+        "cancel_btn": "Abbrechen",
+        "status": "Bereit zur Synchronisierung"
+    },
+    "integrations": {
+        "header_title": "wird angezeigt Integrationen",
+        "header_subtitle": "Marktplatz",
+        "header_desc": "Verbinden Sie Ihre bevorzugten CRM- und Datentools, um Ihren Outreach-Workflow zu automatisieren.",
+        "search_placeholder": "Suchintegrationen (HubSpot, Salesforce, Instantly...)",
+        "no_results": "Es wurden keine Integrationen gefunden, die Ihrer Suche entsprechen.",
+        "connect_btn": "Verbinden",
+        "disconnect_btn": "Trennen",
+        "disconnecting_btn": "wird angezeigt Verbindung trennen...",
+        "disconnecting": "Verbindung zu {{name}} trennen...",
+        "connected": "Verbunden",
+        "never_synced": "Nie synchronisiert",
+        "learn_how": "Erfahren Sie, wie",
+        "connect_app": "+ App verbinden",
+        "confirm_disconnect_title": "Trennung bestätigen",
+        "confirm_disconnect_desc1": "Sind Sie sicher, dass Sie",
+        "confirm_disconnect_desc2": "trennen möchten? ? Unibox kann mit diesem Dienst keine Leads oder Daten mehr synchronisieren.",
+        "disconnect_success": "Erfolgreich von {{name}} getrennt",
+        "complete_connection": "wird angezeigt Vollständige Verbindung",
+        "verify_oauth_desc": "Wir haben die {{name}}-Anmeldeseite in einem neuen Tab geöffnet. Nachdem Sie sich erfolgreich angemeldet und die App autorisiert haben, klicken Sie auf die Schaltfläche unten, um die Verbindung herzustellen.",
+        "oauth_initiating": "Initiieren des OAuth 2.0-Flows für {{name}}...",
+        "oauth_success": "Über OAuth mit {{name}} verbunden!",
+        "api_key_label": "API-Zugriffsschlüssel",
+        "api_key_placeholder": "Geben Sie Ihren {{name}} API-Schlüssel ein...",
+        "api_key_desc": "Sie finden Ihren API-Schlüssel in den Dashboard-Einstellungen {{name}}. Wir verschlüsseln diesen Schlüssel zu Ihrer Sicherheit.",
+        "verify_btn": "Überprüfen und verbinden",
+        "verifying_btn": "Überprüfen...",
+        "upcoming_connections": "Bevorstehende Verbindungen",
+        "stay_tuned": "Wir fügen ständig neue Integrationen hinzu. Bleiben Sie dran für mehr!",
+        "secure": "Sicher",
+        "complete_auth": "Schließen Sie die {{name}}-Autorisierung ab",
+        "types": {
+            "crm": "wird angezeigt CRM",
+            "data": "Daten",
+            "outreach": "Reichweite"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "Synchronisieren Sie Ihre Leads und Aktivitäten mit HubSpot CRM mithilfe eines 1-Klick-Verbindungs-OAuth-Flows."
+            },
+            "salesforce": {
+                "desc": "Verbinden Sie Ihre Unternehmensworkflows mit dem Salesforce-Webserver-Flow."
+            },
+            "instantly": {
+                "desc": "Verbinden Sie Ihre Instantly.ai-Kampagnen für eine nahtlose Outreach-Synchronisierung."
+            },
+            "apollo": {
+                "desc": "Bereichern Sie Ihre Leads mit Einblicken in die B2B-Datenbank von Apollo.io."
+            },
+            "leadmagic": {
+                "desc": "Reichern Sie Leads mit firmografischen Daten über den Leadmagic X-API-Key an."
+            },
+            "clay": {
+                "desc": "Synchronisieren Sie ausgehende Daten über deren JSON-HTTP-API mit Clay-Tabellen."
+            }
+        }
     }
 }

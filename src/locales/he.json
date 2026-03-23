@@ -11,6 +11,12 @@
         "templates": "תבניות",
         "subscription": "מנוי",
         "settings": "הגדרות",
+        "crm": "CRM",
+        "email_campaigns": "מסעות פרסום בדוא\"ל",
+        "email_accounts": "חשבונות דוא\"ל",
+        "contacts": "אנשי קשר",
+        "global_analytics": "אנליטיקה",
+        "integrations": "אינטגרציות",
         "navigation": "ניווט",
         "active": "פעיל",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "האם אתה בטוח שברצונך לסיים את הפעלת לוח המחוונים הנוכחית שלך? תצטרך לאמת מחדש.",
             "confirm": "אשר התנתק",
             "cancel": "הישאר מחובר"
-        }
+        },
+        "admin": "מנהל",
+        "administrator": "מנהל",
+        "user": "משתמש",
+        "u": "U"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. כֹּל הַזְכוּיוֹת שְׁמוּרוֹת.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "או הירשם עם",
             "already_account": "יש לך כבר חשבון?",
             "sign_in_link": "היכנס"
+        },
+        "layout": {
+            "platform_live": "Platform Live",
+            "title_main": "הדרך החכמה יותר",
+            "title_span": "להפעיל הסברה",
+            "subtitle": "Unibox משלב העשרת בינה מלאכותית, רצף חכם ותיבת תשובות מאוחדת - הכל בפלטפורמה אחת.",
+            "trusted_by": "מהימן על ידי",
+            "teams": "צוותי הסברה"
         }
     },
     "pwa": {
@@ -259,7 +277,7 @@
         "compose_placeholder": "כתוב את המייל שלך כאן...",
         "live_content_canvas": "קנבס תוכן חי",
         "preview_style": "סגנון תצוגה מקדימה",
-        "high_fidelity": "High Fidelity",
+        "high_fidelity": "אֵיכוּת גבוֹהָה",
         "attachments_count": "קבצים מצורפים ({{count}})",
         "attach_file": "צרף קובץ",
         "attach_image": "צרף תמונה",
@@ -274,6 +292,7 @@
     "campaigns": {
         "title": "מסעות פרסום",
         "subtitle": "הסברה",
+        "sequence_details": "פרטי הרצף",
         "header_description": "צור ועקוב אחר מסעות הפרסום שלך בדוא\"ל.",
         "header_subtitle": "נהל ועקוב אחר מסעות הפרסום שלך בדוא\"ל",
         "create_campaign": "צור מסע פרסום",
@@ -299,6 +318,7 @@
         "campaign_date": "תאריך הקמפיין",
         "empty_log_title": "יומן פעולות ריק",
         "empty_log_subtitle": "סריקת המטריצה ​​הושלמה. לא נמצאו נכסי מסע פרסום.",
+        "create_first_campaign": "צור מסע פרסום ראשון",
         "launch_protocol": "פרוטוקול השקה",
         "no_subject": "ללא נושא",
         "status_created": "נוצר",
@@ -310,6 +330,8 @@
         "step_sequences_desc": "כתוב את רצף הדוא\"ל שלך",
         "step_setup": "הגדרה",
         "step_setup_desc": "הגדר את מסע הפרסום שלך",
+        "schedule_timing": "לוח זמנים ותזמון",
+        "advanced_settings": "הגדרות מתקדמות",
         "step_final_review": "סקירה סופית",
         "step_final_review_desc": "בדיקה והשקה אחרונים",
         "error_add_content": "אנא הוסף תוכן לאימייל {{mode}} שלך לפני שתמשיך.",
@@ -359,6 +381,22 @@
         "ph_unsubscribe": "ביטול הרשמה קישור",
         "recipients_senders": "נמענים ושולחים",
         "setup_audience": "הגדר את קהל וחשבונות מסע הפרסום שלך",
+        "sender_accounts": "שליחת חשבונות",
+        "active_senders": "חשבונות פעילים",
+        "select_accounts_desc": "חבר חשבונות לרצף זה",
+        "choose_senders_btn": "בחר חשבונות",
+        "configure_schedule_btn": "הגדר לוח זמנים",
+        "modify_settings_btn": "שנה הגדרות",
+        "sender_rotation": "סבב חשבון",
+        "account_health": "בריאות החשבון",
+        "trust_score": "ציון",
+        "optimal_delivery": "משלוח אופטימלי",
+        "intelligent_sending": "שליחה חכמה",
+        "sender_rotation_count": "סיבוב השולח ({{count}})",
+        "more_accounts": "+{{count}} חשבונות נוספים",
+        "no_sender_set": "לא הוגדר שולח",
+        "confirm_selection": "אשר את הבחירה",
+        "high_inboxing_enabled": "מסירה אופטימלית מופעלת",
         "add_contacts": "הוסף אנשי קשר",
         "add_sender": "הוסף שולח",
         "selected_audience": "קהל נבחר",
@@ -791,8 +829,8 @@
                 "gmail": "גוגל ג'ימייל",
                 "outlook": "Microsoft Outlook",
                 "smtp": "SMTP מותאם אישית",
-                "bulk": "יבוא בכמויות גדולות",
                 "smtp_desc": "הגדרה ידנית",
+                "bulk": "יבוא בכמויות גדולות",
                 "bulk_desc": "XLSX העלה"
             },
             "secure_title": "אבטחה בדרגה ארגונית",
@@ -848,6 +886,14 @@
             },
             "btn_connect_gmail": "התחבר עם Google Mail",
             "btn_connect_outlook": "התחבר עם Microsoft Outlook Mail",
+            "smtp_success": "חיבור SMTP הצליח",
+            "smtp_fail": "חיבור SMTP נכשל",
+            "imap_success": "חיבור IMAP הצליח",
+            "imap_fail": "חיבור IMAP נכשל",
+            "empty_provider": "בחר ספק",
+            "empty_desc": "בחר Gmail, Outlook או SMTP מותאם אישית למעלה.",
+            "encrypted_note": "מוצפן מקצה לקצה",
+            "smtp_config_note": "אם תשאיר אותם ריקים, ננסה להשתמש בהגדרות השליחה שלך באופן אוטומטי.",
             "bulk": {
                 "title": "העלאה בכמות גדולה חשבונות",
                 "desc": "העלה קובץ אקסל (.xlsx) עם עמודות: דואר אלקטרוני, דומיין, סיסמה, סוג (aapanel/postal), first_name, last_name.",
@@ -872,16 +918,8 @@
             "err_no_headers": "לא נמצאו כותרות בקובץ",
             "err_read_fail": "לא ניתן היה לקרוא את הקובץ",
             "err_map_required": "נא למפות את כל השדות הנדרשים",
-            "smtp_success": "חיבור SMTP הצליח",
-            "smtp_fail": "חיבור SMTP נכשל",
-            "imap_success": "חיבור IMAP הצליח",
-            "imap_fail": "חיבור IMAP נכשל",
             "bulk_success": "העלאה בכמות גדולה הצליחה",
-            "bulk_error": "העלאה בכמות גדולה נכשלה",
-            "empty_provider": "בחר ספק",
-            "empty_desc": "בחר Gmail, Outlook או SMTP מותאם אישית למעלה.",
-            "encrypted_note": "מוצפן מקצה לקצה",
-            "smtp_config_note": "אם תשאיר אותם ריקים, ננסה להשתמש בהגדרות השליחה שלך באופן אוטומטי."
+            "bulk_error": "העלאה בכמות גדולה נכשלה"
         },
         "template": {
             "title": {
@@ -1016,7 +1054,7 @@
         "subtitle": "בחר את התוכנית המושלמת לצרכי ההסברה שלך. קנה מידה של משחק הדוא\"ל הקר שלך ללא גבולות.",
         "custom_price": "מותאם אישית",
         "popular": "בחירה פופולרית",
-        "per_user": "/mo",
+        "per_user": "/מו",
         "billing_suffix": "למשתמש / חודש",
         "custom_billing": "מותאם לצרכים שלך",
         "current_plan": "תוכנית נוכחית",
@@ -1166,5 +1204,123 @@
         "rec_engagement_high": "שורות הנושא שלך מהדהדות היטב! שקול להכפיל את סגנון 'פער הסקרנות' שבו אתה משתמש כעת.",
         "rec_conversion_low": "התשובות נמוכות. נסה להוסיף 'קריאה לפעולה' (CTA) ברורה יותר או שאלה רכה כמו 'האם זה היה מועיל?' להורדת החיכוך.",
         "rec_conversion_high": "המרה נהדרת! הצעת הערך שלך ברורה. ודא שצוות המכירות שלך עוקב תוך 4 שעות לקבלת התוצאות הטובות ביותר."
+    },
+    "crm": {
+        "title": "שילוב CRM",
+        "subtitle": "מרכז הכנסות",
+        "pipeline": "צינור",
+        "description": "חבר את סביבת העבודה שלך ל-CRM המועדף עליך כדי לסנכרן לידים וליומן פעילויות באופן אוטומטי.",
+        "drag_desc": "גרור לידים בין שלבים. לחץ על כרטיס כלשהו כדי להציג פרטים ולהגדיר את ערך העסקה.",
+        "connect_crm": "חבר CRM",
+        "add_column": "הוסף עמודה",
+        "all_campaigns": "כל מסעות הפרסום",
+        "total": "סך הכל",
+        "value": "ערך",
+        "leads_label": "לידים",
+        "drop_leads": "זרוק לידים כאן",
+        "loading": "טוען...",
+        "build_funnel": "בנה את המשפך שלך",
+        "add_first_col": "הוסף את העמודה הראשונה שלך כדי להתחיל לעקוב אחר לידים לאורך שלבים.",
+        "create_initial": "צור עמודה ראשונה",
+        "footer_msg1": "לידים מתקדמים אוטומטית כאשר",
+        "footer_msg2": "כוונות תגובה",
+        "footer_msg3": "מזוהים",
+        "search_placeholder": "מצא מוביל...",
+        "stages": {
+            "leads": "לידים חדשים",
+            "contacted": "יצר קשר",
+            "replied": "השיב",
+            "meeting_booked": "פגישה הוזמנה",
+            "closed": "סָגוּר",
+            "bounced": "הוקפץ",
+            "unsubscribed": "בוטל מנוי"
+        },
+        "lead_card": {
+            "last_activity": "פעילות אחרונה:",
+            "campaign": "מסע פרסום:",
+            "view_profile": "צפה בפרופיל"
+        },
+        "connect": "התחבר",
+        "connected": "מחובר",
+        "status_ready": "מוכן לסנכרון",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "סנכרן אנשי קשר ורישום אירועי ציר זמן."
+        },
+        "salesforce": {
+            "title": "Salesforce",
+            "desc": "נהל לידים והזדמנויות בזמן אמת."
+        },
+        "pipedrive": {
+            "title": "Pipedrive",
+            "desc": "עקוב אחר התקדמות העסקה ויומני הפעילות."
+        },
+        "add_column_modal_title": "הוסף עמודה חדשה",
+        "column_name_label": "שם עמודה",
+        "column_name_placeholder": "למשל, לידים מוסמכים",
+        "select_color_label": "בחר צבע עמודה",
+        "link_intent_label": "קישור ל-AI Intent (אופציונלי)",
+        "link_intent_desc": "לידים עם כוונה זו יעברו לכאן באופן אוטומטי",
+        "select_intent_placeholder": "בחר כוונה...",
+        "add_column_btn": "הוסף עמודה",
+        "cancel_btn": "בטל",
+        "status": "מוכן לסנכרון"
+    },
+    "integrations": {
+        "header_title": "אינטגרציות",
+        "header_subtitle": "Marketplace",
+        "header_desc": "חבר את כלי ה-CRM והנתונים המועדפים עליך כדי להפוך את זרימת העבודה שלך לאוטומטית.",
+        "search_placeholder": "שילובי חיפוש (HubSpot, Salesforce, Instantly...)",
+        "no_results": "לא נמצאו אינטגרציות התואמות את החיפוש שלך.",
+        "connect_btn": "לְחַבֵּר",
+        "disconnect_btn": "נתק",
+        "disconnecting_btn": "מתנתק...",
+        "disconnecting": "מתנתק מ-{{name}}...",
+        "connected": "מחובר",
+        "never_synced": "אף פעם לא מסונכרן",
+        "learn_how": "למד כיצד",
+        "connect_app": "+ אפליקציית Connect",
+        "confirm_disconnect_title": "אשר ניתוק",
+        "confirm_disconnect_desc1": "האם אתה בטוח שברצונך לנתק",
+        "confirm_disconnect_desc2": "? Unibox לא תוכל עוד לסנכרן לידים או נתונים עם שירות זה.",
+        "disconnect_success": "ניתוק בהצלחה מ-{{name}}",
+        "complete_connection": "חיבור מלא",
+        "verify_oauth_desc": "פתחנו את דף ההתחברות {{name}} בכרטיסייה חדשה. לאחר שנכנסת בהצלחה ואישרת את האפליקציה, לחץ על הלחצן למטה כדי להשלים את החיבור.",
+        "oauth_initiating": "הפעלת זרימת OAuth 2.0 עבור {{name}}...",
+        "oauth_success": "מחובר ל-{{name}} באמצעות OAuth!",
+        "api_key_label": "מפתח גישה ל-API",
+        "api_key_placeholder": "הזן את מפתח ה-API שלך {{name}}...",
+        "api_key_desc": "אתה יכול למצוא את מפתח ה-API שלך בהגדרות לוח המחוונים {{name}}. אנו מצפינים מפתח זה למען אבטחתך.",
+        "verify_btn": "אמת והתחבר",
+        "verifying_btn": "מאמת...",
+        "upcoming_connections": "חיבורים קרובים",
+        "stay_tuned": "אנחנו כל הזמן מוסיפים אינטגרציות חדשות. הישארו מעודכנים לעוד!",
+        "secure": "מאובטח",
+        "complete_auth": "השלם {{name}} הרשאה",
+        "types": {
+            "crm": "CRM",
+            "data": "נתונים",
+            "outreach": "לְהַשִׂיג יוֹתֵר"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "סנכרן את הלידים והפעילויות שלך עם HubSpot CRM באמצעות זרימת OAuth המחברת בלחיצה אחת."
+            },
+            "salesforce": {
+                "desc": "חבר את זרימות העבודה הארגוניות שלך לזרימת שרת האינטרנט של Salesforce."
+            },
+            "instantly": {
+                "desc": "חבר את מסעות הפרסום שלך ב-Instantly.ai לסנכרון חלק."
+            },
+            "apollo": {
+                "desc": "העשיר את הלידים שלך עם תובנות מסד נתונים B2B של Apollo.io."
+            },
+            "leadmagic": {
+                "desc": "העשרת לידים בנתונים פירמוגרפיים באמצעות מפתח Leadmagic X-API."
+            },
+            "clay": {
+                "desc": "סנכרן נתונים יוצאים לטבלאות Clay באמצעות ה-JSON HTTP API שלהם."
+            }
+        }
     }
 }

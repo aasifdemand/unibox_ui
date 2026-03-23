@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import {
-  User,
-  Mail,
-  Calendar,
-  Tag,
-  Building,
-  Phone,
-  MapPin,
-  Globe,
-  ChevronDown,
-  X,
-} from 'lucide-react';
+import { User, Mail, Calendar, Tag, Building, Phone, MapPin, Globe, X } from 'lucide-react';
 
-const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, externalQuery = '', inlineMode = false }) => {
+const PersonalizationTokens = ({
+  onInsertToken,
+  userFields = [],
+  onClose,
+  externalQuery = '',
+  inlineMode = false,
+}) => {
   const [showAllTokens, setShowAllTokens] = useState(false);
   const searchQuery = externalQuery;
 
@@ -111,17 +106,17 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, extern
   const customTokens =
     userFields.length > 0
       ? [
-        {
-          category: 'Custom Fields',
-          tokens: userFields.map((field) => ({
-            token: `{{${field.fieldName}}}`,
-            label: field.displayName || field.fieldName,
-            icon: <Tag className="w-4 h-4" />,
-            description: `Custom field: ${field.fieldName}`,
-            isCustom: true,
-          })),
-        },
-      ]
+          {
+            category: 'Custom Fields',
+            tokens: userFields.map((field) => ({
+              token: `{{${field.fieldName}}}`,
+              label: field.displayName || field.fieldName,
+              icon: <Tag className="w-4 h-4" />,
+              description: `Custom field: ${field.fieldName}`,
+              isCustom: true,
+            })),
+          },
+        ]
       : [];
 
   const allTokens = [...systemTokens, ...customTokens];
@@ -144,7 +139,7 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, extern
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/60 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+    <div className="bg-white/95  border border-slate-200/60 rounded-lg shadow-sm overflow-hidden animate-in zoom-in-95 duration-300">
       {/* Tokens List */}
       <div className="max-h-60 overflow-y-auto p-1.5 custom-scrollbar">
         {filteredTokens.map((category, catIndex) => (
@@ -155,16 +150,18 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, extern
                   <button
                     key={tokenIndex}
                     onClick={() => handleTokenClick(token)}
-                    className={`flex items-center p-2 ltr:text-left ltr:text-right rtl:text-left rounded-xl border transition-all duration-200 group ${token.isCustom
-                      ? 'bg-purple-50/10 border-purple-100/50 hover:border-purple-300 hover:bg-purple-50'
-                      : 'bg-slate-50/30 border-slate-100/50 hover:border-blue-300 hover:bg-blue-50'
-                      }`}
+                    className={`flex items-center p-2 ltr:text-left ltr:text-right rtl:text-left rounded-md border transition-all duration-200 group ${
+                      token.isCustom
+                        ? 'bg-orange-50/10 border-orange-100/50 hover:border-orange-300 hover:bg-orange-50'
+                        : 'bg-slate-50/30 border-slate-100/50 hover:border-orange-300 hover:bg-orange-50'
+                    }`}
                   >
                     <div
-                      className={`w-6 h-6 rounded-lg flex items-center justify-center ltr:mr-2.5 rtl:ml-2.5 shrink-0 transition-transform group-hover:scale-110 ${token.isCustom ? 'bg-purple-100/50' : 'bg-blue-100/50'
-                        }`}
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center ltr:mr-2.5 rtl:ml-2.5 shrink-0 transition-transform group-hover:scale-110 ${
+                        token.isCustom ? 'bg-orange-100/50' : 'bg-orange-100/50'
+                      }`}
                     >
-                      <div className={`${token.isCustom ? 'text-purple-600' : 'text-blue-600'}`}>
+                      <div className={`${token.isCustom ? 'text-orange-600' : 'text-orange-600'}`}>
                         {React.cloneElement(token.icon, { className: 'w-3 h-3' })}
                       </div>
                     </div>
@@ -174,7 +171,7 @@ const PersonalizationTokens = ({ onInsertToken, userFields = [], onClose, extern
                           {token.label}
                         </span>
                       </div>
-                      <code className="text-[7px] bg-white/50 border border-slate-100/80 px-1.5 py-0.5 rounded-md font-mono text-blue-500/80 font-medium ml-2 shrink-0">
+                      <code className="text-[7px] bg-white/50 border border-slate-100/80 px-1.5 py-0.5 rounded-md font-mono text-orange-500/80 font-medium ml-2 shrink-0">
                         {token.token.replace(/[{}]/g, '')}
                       </code>
                     </div>

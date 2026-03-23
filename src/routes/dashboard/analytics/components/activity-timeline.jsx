@@ -1,15 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 import CustomTooltip from './custom-tooltip';
 
@@ -31,8 +23,9 @@ const ActivityTimeline = ({ data, hasValidData }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
         <div>
           <h3 className="text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
-            {t('analytics.campaign_activity_title')} <span className="text-blue-500">{t('analytics.activity_span')}</span>
-            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+            {t('analytics.campaign_activity_title')}{' '}
+            <span className="text-orange-500">{t('analytics.activity_span')}</span>
+            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
             {t('analytics.activity_subtitle')}
@@ -41,14 +34,14 @@ const ActivityTimeline = ({ data, hasValidData }) => {
         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
           <div className="flex items-center gap-4 px-4 py-2 bg-white rounded-full border border-slate-100 shadow-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
               <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
                 {t('analytics.emails_sent', 'EMAILS SENT')}
               </span>
             </div>
             <div className="w-px h-4 bg-slate-200 mx-2"></div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
               <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
                 {t('analytics.total_replies', 'TOTAL REPLIES')}
               </span>
@@ -59,7 +52,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
             <select
               value={timelineFilter}
               onChange={(e) => setTimelineFilter(e.target.value)}
-              className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-full text-[10px] uppercase tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer hover:bg-white transition-colors"
+              className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-full text-[10px] uppercase tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 cursor-pointer hover:bg-white transition-colors"
             >
               <option value="7">LAST 7 DAYS</option>
               <option value="30">LAST 30 DAYS</option>
@@ -88,8 +81,8 @@ const ActivityTimeline = ({ data, hasValidData }) => {
             >
               <defs>
                 <linearGradient id="colorSent" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={1} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.6} />
+                  <stop offset="5%" stopColor="#e11d48" stopOpacity={1} />
+                  <stop offset="95%" stopColor="#e11d48" stopOpacity={0.6} />
                 </linearGradient>
                 <linearGradient id="colorReplies" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#10B981" stopOpacity={1} />
@@ -145,7 +138,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
           </ResponsiveContainer>
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-slate-400 gap-4">
-            <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center border border-slate-100">
+            <div className="w-16 h-16 rounded-lg bg-slate-50 flex items-center justify-center border border-slate-100">
               <span className="w-8 h-8 opacity-20 block bg-slate-300 rounded-md"></span>
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-slate-300">

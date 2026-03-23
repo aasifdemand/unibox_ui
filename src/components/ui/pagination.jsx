@@ -57,10 +57,11 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`w-10 h-10 rounded-xl text-sm font-bold transition-all duration-200 ${currentPage === page
-              ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+          className={`w-10 h-10 rounded-md text-sm font-bold transition-all duration-200 ${
+            currentPage === page
+              ? 'bg-orange-600 text-white shadow-sm shadow-orange-200'
               : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+          }`}
         >
           {page}
         </button>
@@ -69,9 +70,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
   };
 
   return (
-    <div
-      className={`flex items-center justify-between px-6 py-4 ${className}`}
-    >
+    <div className={`flex items-center justify-between px-6 py-4 ${className}`}>
       <div className="text-sm text-slate-500 font-medium">
         Showing <span className="text-slate-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}
         <span className="text-slate-900">{Math.min(currentPage * itemsPerPage, totalItems)}</span>{' '}
@@ -82,7 +81,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -92,7 +91,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight className="w-5 h-5" />
         </button>

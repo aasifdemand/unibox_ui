@@ -45,15 +45,12 @@ const Settings = () => {
     setDeleteDialogOpen(true);
   };
 
-
-
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
     try {
       if (deleteTarget.type === 'sender') {
         await deleteSender.mutateAsync({ senderId: deleteTarget.id });
         toast.success(t('settings.delete.msg_sender'));
-
       }
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
@@ -101,7 +98,7 @@ const Settings = () => {
     return (
       <div className="p-8 flex items-center justify-center h-100">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-lg shadow-blue-500/20"></div>
+          <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-sm shadow-orange-500/20"></div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
             {t('settings.loading')}
           </p>
@@ -111,20 +108,18 @@ const Settings = () => {
   }
 
   return (
-    <div className="max-w-7xl w-full mx-auto p-6 md:p-10 space-y-8 animate-in fade-in duration-500">
+    <div className=" w-full p-6 space-y-8 animate-in fade-in duration-500">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
-        <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight flex items-center">
-            {t('settings.title')} <span className="text-gradient ms-4">{t('settings.subtitle_short') || 'Account'}</span>
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
+            {t('settings.title')} <span className="ml-2">{t('settings.subtitle_short') || 'Account'}</span>
           </h1>
-          <p className="text-slate-500 font-medium mt-2 text-sm">
-            {t('settings.subtitle')}
-          </p>
+          <p className="text-slate-500 text-sm mt-1">{t('settings.subtitle')}</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-100/50 shadow-sm shadow-emerald-500/5">
+          <span className="px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-orange-50 text-orange-600 border border-orange-100/50 shadow-sm shadow-orange-500/5">
             {t('settings.account_ready')}
           </span>
         </div>
@@ -133,31 +128,34 @@ const Settings = () => {
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         {/* Navigation Sidebar */}
         <aside className="lg:w-80 shrink-0 space-y-6 lg:sticky lg:top-24">
-          <div className="bg-white/40 backdrop-blur-2xl border border-slate-200/50 p-2.5 rounded-[2.5rem] shadow-2xl shadow-slate-900/5">
+          <div className="bg-white/40  border border-slate-200/50 p-2.5 rounded-xl shadow-sm shadow-slate-900/5">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => !item.disabled && setActiveMenu(item.id)}
                 disabled={item.disabled}
-                className={`w-full flex items-center p-3.5 rounded-[1.75rem] transition-all duration-300 group mb-1 last:mb-0 ${activeMenu === item.id
-                  ? 'bg-white text-blue-600 shadow-xl shadow-slate-900/5 ring-1 ring-slate-100'
-                  : item.disabled
-                    ? 'opacity-40 cursor-not-allowed grayscale'
-                    : 'text-slate-500 hover:bg-white/60 hover:text-slate-900'
-                  }`}
+                className={`w-full flex items-center p-3.5 rounded-lg transition-all duration-300 group mb-1 last:mb-0 ${
+                  activeMenu === item.id
+                    ? 'bg-white text-orange-600 shadow-sm shadow-slate-900/5 ring-1 ring-slate-100'
+                    : item.disabled
+                      ? 'opacity-40 cursor-not-allowed grayscale'
+                      : 'text-slate-500 hover:bg-white/60 hover:text-slate-900'
+                }`}
               >
                 <div
-                  className={`p-2.5 rounded-2xl ltr:mr-4 rtl:ml-4 transition-all duration-300 ${activeMenu === item.id
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-                    : 'bg-slate-50 border border-slate-100 text-slate-400 group-hover:bg-white group-hover:text-blue-500 group-hover:border-blue-100'
-                    }`}
+                  className={`p-2.5 rounded-lg ltr:mr-4 rtl:ml-4 transition-all duration-300 ${
+                    activeMenu === item.id
+                      ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20'
+                      : 'bg-slate-50 border border-slate-100 text-slate-400 group-hover:bg-white group-hover:text-orange-500 group-hover:border-orange-100'
+                  }`}
                 >
                   <item.icon className="w-4.5 h-4.5" />
                 </div>
                 <div className="ltr:text-left rtl:text-right">
                   <p
-                    className={`font-black tracking-tight text-xs uppercase ${activeMenu === item.id ? 'text-slate-900' : 'text-slate-500'
-                      }`}
+                    className={`font-black tracking-tight text-xs uppercase ${
+                      activeMenu === item.id ? 'text-slate-900' : 'text-slate-500'
+                    }`}
                   >
                     {item.label}
                   </p>
@@ -174,13 +172,15 @@ const Settings = () => {
             ))}
           </div>
 
-          <div className="p-8 rounded-[2.5rem] bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-2xl shadow-blue-500/20 relative overflow-hidden group">
+          <div className="p-8 rounded-xl bg-gradient-to-br from-orange-600 to-orange-700 text-white shadow-sm shadow-orange-500/20 relative overflow-hidden group">
             <div className="relative z-10">
-              <h4 className="text-sm font-black uppercase tracking-widest mb-2">{t('settings.help.title')}</h4>
-              <p className="text-[10px] text-blue-50/70 mb-6 font-bold uppercase tracking-widest leading-loose">
+              <h4 className="text-sm font-black uppercase tracking-widest mb-2">
+                {t('settings.help.title')}
+              </h4>
+              <p className="text-[10px] text-orange-50/70 mb-6 font-bold uppercase tracking-widest leading-loose">
                 {t('settings.help.desc')}
               </p>
-              <button className="text-[10px] font-black uppercase tracking-widest bg-white/20 hover:bg-white text-white hover:text-blue-600 border border-white/20 px-6 py-2.5 rounded-2xl transition-all duration-300 active:scale-95 shadow-lg">
+              <button className="text-[10px] font-black uppercase tracking-widest bg-white/20 hover:bg-white text-white hover:text-orange-600 border border-white/20 px-6 py-2.5 rounded-lg transition-all duration-300 active:scale-95 shadow-sm">
                 {t('settings.help.btn')}
               </button>
             </div>
@@ -190,7 +190,7 @@ const Settings = () => {
 
         {/* Content Area */}
         <main className="flex-1 min-w-0">
-          <div className="bg-white/40 backdrop-blur-2xl border border-slate-200/50 rounded-[3rem] shadow-2xl shadow-slate-900/5 min-h-125 overflow-hidden">
+          <div className="bg-white/40  border border-slate-200/50 rounded-2xl shadow-sm shadow-slate-900/5 min-h-125 overflow-hidden">
             <AnimatePresence mode="wait">
               {activeMenu === 'profile' && (
                 <motion.div
@@ -211,7 +211,7 @@ const Settings = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <SecurityTab />
+                  <SecurityTab user={user} />
                 </motion.div>
               )}
               {activeMenu === 'workspace' && (
@@ -244,22 +244,14 @@ const Settings = () => {
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         title={
-          deleteTarget?.type === 'sender'
-            ? t('settings.delete.sender')
-            : t('settings.delete.item')
+          deleteTarget?.type === 'sender' ? t('settings.delete.sender') : t('settings.delete.item')
         }
         description={
-          deleteTarget
-            ? t('settings.delete.confirm', { label: deleteTarget.label })
-            : ''
+          deleteTarget ? t('settings.delete.confirm', { label: deleteTarget.label }) : ''
         }
         confirmText={t('common.delete')}
         confirmVariant="danger"
-        isLoading={
-          deleteTarget?.type === 'sender'
-            ? deleteSender.isPending
-            : false
-        }
+        isLoading={deleteTarget?.type === 'sender' ? deleteSender.isPending : false}
         onCancel={() => {
           setDeleteDialogOpen(false);
           setDeleteTarget(null);

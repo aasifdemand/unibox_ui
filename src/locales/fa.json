@@ -11,6 +11,12 @@
         "templates": "قالب ها",
         "subscription": "اشتراک",
         "settings": "تنظیمات",
+        "crm": "CRM",
+        "email_campaigns": "کمپین های ایمیل",
+        "email_accounts": "حساب های ایمیل",
+        "contacts": "اطلاعات تماس",
+        "global_analytics": "تجزیه و تحلیل",
+        "integrations": "ادغام",
         "navigation": "ناوبری",
         "active": "فعال",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "آیا مطمئن هستید که می خواهید جلسه داشبورد فعلی خود را پایان دهید؟ باید دوباره احراز هویت کنید.",
             "confirm": "تایید خروج",
             "cancel": "وارد شوید"
-        }
+        },
+        "admin": "ادمین",
+        "administrator": "مدیر",
+        "user": "کاربر",
+        "u": "U"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. تمامی حقوق محفوظ است.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "یا با",
             "already_account": "ثبت نام کنید از قبل حساب کاربری دارید؟",
             "sign_in_link": "وارد شوید"
+        },
+        "layout": {
+            "platform_live": "بستر زنده",
+            "title_main": "راه هوشمندانه برای",
+            "title_span": "اجرا گسترش",
+            "subtitle": "یونی‌باکس غنی‌سازی هوش مصنوعی، توالی هوشمند و صندوق ورودی پاسخ یکپارچه را در یک پلتفرم ترکیب می‌کند.",
+            "trusted_by": "مورد اعتماد",
+            "teams": "تیم های اطلاع رسانی"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "کمپین ها",
         "subtitle": "اطلاع رسانی",
+        "sequence_details": "جزئیات دنباله",
         "header_description": "کمپین های ایمیل خود را ایجاد و پیگیری کنید.",
         "header_subtitle": "کمپین های ایمیل خود را مدیریت و پیگیری کنید",
         "create_campaign": "ایجاد کمپین",
@@ -303,6 +322,7 @@
         "campaign_date": "تاریخ کمپین",
         "empty_log_title": "گزارش عملیات خالی",
         "empty_log_subtitle": "اسکن ماتریس کامل شد. هیچ دارایی کمپین پیدا نشد.",
+        "create_first_campaign": "ایجاد اولین کمپین",
         "launch_protocol": "راه اندازی پروتکل",
         "no_subject": "بدون موضوع",
         "status_created": "ایجاد شد",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "دنباله ایمیل خود را بنویسید",
         "step_setup": "راه اندازی",
         "step_setup_desc": "کمپین خود را پیکربندی کنید",
+        "schedule_timing": "زمانبندی و زمانبندی",
+        "advanced_settings": "تنظیمات پیشرفته",
         "step_final_review": "بررسی نهایی",
         "step_final_review_desc": "آخرین بررسی و راه اندازی",
         "error_add_content": "لطفاً قبل از ادامه، مقداری محتوا به ایمیل {{mode}} خود اضافه کنید.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "لینک لغو اشتراک",
         "recipients_senders": "گیرندگان و فرستندگان",
         "setup_audience": "مخاطبان و حساب های کمپین خود را تنظیم کنید",
+        "sender_accounts": "ارسال حساب ها",
+        "active_senders": "حساب های فعال",
+        "select_accounts_desc": "حساب ها را به این دنباله متصل کنید",
+        "choose_senders_btn": "حساب ها",
+        "configure_schedule_btn": "پیکربندی زمانبندی",
+        "modify_settings_btn": "تغییر تنظیمات",
+        "sender_rotation": "را انتخاب کنید چرخش حساب",
+        "account_health": "سلامت حساب",
+        "trust_score": "امتیاز",
+        "optimal_delivery": "تحویل بهینه",
+        "intelligent_sending": "ارسال هوشمند",
+        "sender_rotation_count": "چرخش فرستنده ({{count}})",
+        "more_accounts": "+{{count}} حساب‌های بیشتر",
+        "no_sender_set": "بدون ارسال کننده",
+        "confirm_selection": "تایید انتخاب",
+        "high_inboxing_enabled": "تحویل بهینه فعال شد",
         "add_contacts": "افزودن مخاطبین",
         "add_sender": "افزودن فرستنده",
         "selected_audience": "مخاطب منتخب",
@@ -795,8 +833,8 @@
                 "gmail": "گوگل جیمیل",
                 "outlook": "Microsoft Outlook",
                 "smtp": "SMTP سفارشی",
-                "bulk": "واردات فله",
                 "smtp_desc": "راه اندازی دستی",
+                "bulk": "واردات فله",
                 "bulk_desc": "آپلود XLSX"
             },
             "secure_title": "امنیت درجه سازمانی",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "ارتباط با Google Mail",
             "btn_connect_outlook": "اتصال با Microsoft Outlook Mail",
+            "smtp_success": "اتصال SMTP موفقیت آمیز",
+            "smtp_fail": "اتصال SMTP ناموفق",
+            "imap_success": "اتصال IMAP موفقیت آمیز",
+            "imap_fail": "اتصال IMAP ناموفق",
+            "empty_provider": "یک ارائه دهنده انتخاب کنید",
+            "empty_desc": "Gmail، Outlook یا Custom SMTP را در بالا انتخاب کنید.",
+            "encrypted_note": "رمزگذاری سرتاسر",
+            "smtp_config_note": "اگر این موارد را خالی بگذارید، سعی می کنیم از تنظیمات ارسال شما به صورت خودکار استفاده کنیم.",
             "bulk": {
                 "title": "حساب های آپلود انبوه",
                 "desc": "یک فایل اکسل (xlsx.) را با ستون‌هایی آپلود کنید: ایمیل، دامنه، رمز عبور، نوع (aapanel/postal)، first_name، last_name.",
@@ -876,16 +922,8 @@
             "err_no_headers": "هیچ عنوانی در فایل",
             "err_read_fail": "یافت نشد فایل خوانده نشد",
             "err_map_required": "لطفاً همه فیلدهای الزامی را نقشه برداری کنید",
-            "smtp_success": "اتصال SMTP موفقیت آمیز",
-            "smtp_fail": "اتصال SMTP ناموفق",
-            "imap_success": "اتصال IMAP موفقیت آمیز",
-            "imap_fail": "اتصال IMAP ناموفق",
             "bulk_success": "آپلود انبوه با موفقیت",
-            "bulk_error": "آپلود انبوه انجام نشد",
-            "empty_provider": "یک ارائه دهنده انتخاب کنید",
-            "empty_desc": "Gmail، Outlook یا Custom SMTP را در بالا انتخاب کنید.",
-            "encrypted_note": "رمزگذاری سرتاسر",
-            "smtp_config_note": "اگر این موارد را خالی بگذارید، سعی می کنیم از تنظیمات ارسال شما به صورت خودکار استفاده کنیم."
+            "bulk_error": "آپلود انبوه انجام نشد"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "خطوط موضوع شما به خوبی طنین انداز هستند! سبک «شکاف کنجکاوی» را که در حال حاضر استفاده می‌کنید، دو برابر کنید.",
         "rec_conversion_low": "پاسخ ها کم است سعی کنید یک «Call to Action» (CTA) واضح‌تر یا یک سؤال نرم مانند «آیا این مفید بود؟» اضافه کنید. برای کاهش اصطکاک",
         "rec_conversion_high": "تبدیل عالی! ارزش پیشنهادی شما واضح است. اطمینان حاصل کنید که تیم فروش شما در عرض 4 ساعت برای بهترین نتیجه پیگیری می کند."
+    },
+    "crm": {
+        "title": "یکپارچه سازی CRM",
+        "subtitle": "مرکز درآمد",
+        "pipeline": "خط لوله",
+        "description": "برای همگام سازی سرنخ ها و ثبت خودکار فعالیت ها، فضای کاری خود را با CRM مورد علاقه خود متصل کنید.",
+        "drag_desc": "سرنخ ها را بین مراحل بکشید. برای مشاهده جز��یات و تنظیم ارزش معامله، روی هر کارتی کلیک کنید.",
+        "connect_crm": "اتصال CRM",
+        "add_column": "اضافه کردن ستون",
+        "all_campaigns": "همه کمپین ها",
+        "total": "مجموع",
+        "value": "ارزش",
+        "leads_label": "منجر می شود",
+        "drop_leads": "سرنخ ها را اینجا رها کنید",
+        "loading": "در حال بارگذاری...",
+        "build_funnel": "قیف خود را بسازید",
+        "add_first_col": "اولین ستون خود را اضافه کنید تا ردیابی سرنخ ها در مراحل مختلف شروع شود.",
+        "create_initial": "ایجاد اولین ستون",
+        "footer_msg1": "زمانی که",
+        "footer_msg2": "به طور خودکار پیشرفت می کند اهداف پاسخ",
+        "footer_msg3": "شناسایی می شوند",
+        "search_placeholder": "سرنخ پیدا کن...",
+        "stages": {
+            "leads": "سرنخ های جدید",
+            "contacted": "تماس گرفت",
+            "replied": "پاسخ داد",
+            "meeting_booked": "جلسه رزرو شد",
+            "closed": "بسته شده",
+            "bounced": "برگشت",
+            "unsubscribed": "لغو اشتراک"
+        },
+        "lead_card": {
+            "last_activity": "آخرین فعالیت:",
+            "campaign": "کمپین:",
+            "view_profile": "مشاهده نمایه"
+        },
+        "connect": "اتصال",
+        "connected": "متصل",
+        "status_ready": "آماده همگام سازی",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "همگام سازی مخاطبین و ثبت رویدادهای جدول زمانی."
+        },
+        "salesforce": {
+            "title": "نیروی فروش",
+            "desc": "سرنخ ها و فرصت ها را در زمان واقعی مدیریت کنید."
+        },
+        "pipedrive": {
+            "title": "پایپدرایو",
+            "desc": "پیگیری پیشرفت معامله و سیاهههای مربوط به فعالیت."
+        },
+        "add_column_modal_title": "اضافه کردن ستون جدید",
+        "column_name_label": "نام ستون",
+        "column_name_placeholder": "به عنوان مثال، سرنخ های واجد شرایط",
+        "select_color_label": "رنگ ستون",
+        "link_intent_label": "را انتخاب کنید پیوند به هدف هوش مصنوعی (اختیاری)",
+        "link_intent_desc": "سرنخ هایی با این هدف به طور خودکار به اینجا منتقل می شوند",
+        "select_intent_placeholder": "یک هدف را انتخاب کنید...",
+        "add_column_btn": "اضافه کردن ستون",
+        "cancel_btn": "لغو",
+        "status": "آماده همگام سازی"
+    },
+    "integrations": {
+        "header_title": "ادغام",
+        "header_subtitle": "بازار",
+        "header_desc": "CRM و ابزارهای داده مورد علاقه خود را برای خودکارسازی گردش کار فراگیر خود وصل کنید.",
+        "search_placeholder": "ادغام های جستجو (HubSpot، Salesforce، Instantly...)",
+        "no_results": "هیچ ادغامی مطابق با جستجوی شما یافت نشد.",
+        "connect_btn": "اتصال",
+        "disconnect_btn": "قطع کن",
+        "disconnecting_btn": "قطع شدن...",
+        "disconnecting": "قطع ارتباط از {{name}}...",
+        "connected": "متصل",
+        "never_synced": "هرگز همگام نشده",
+        "learn_how": "یاد بگیرید چگونه",
+        "connect_app": "+ برنامه اتصال",
+        "confirm_disconnect_title": "قطع ارتباط را تایید کنید",
+        "confirm_disconnect_desc1": "آیا مطمئنید که می‌خواهید ارتباط را قطع کنید",
+        "confirm_disconnect_desc2": "? Unibox دیگر نمی‌تواند سرنخ‌ها یا داده‌ها را با این سرویس همگام‌سازی کند.",
+        "disconnect_success": "با موفقیت از {{name}} قطع شد",
+        "complete_connection": "اتصال کامل",
+        "verify_oauth_desc": "ما صفحه ورود {{name}} را در یک برگه جدید باز کرده ایم. هنگامی که با موفقیت وارد سیستم شدید و برنامه را تأیید کردید، روی دکمه زیر کلیک کنید تا اتصال کامل شود.",
+        "oauth_initiating": "شروع جریان OAuth 2.0 برای {{name}}...",
+        "oauth_success": "از طریق OAuth به {{name}} متصل شد!",
+        "api_key_label": "کلید دسترسی به API",
+        "api_key_placeholder": "کلید API {{name}} خود را وارد کنید...",
+        "api_key_desc": "می توانید کلید API خود را در تنظیمات داشبورد {{name}} پیدا کنید. ما این کلید را برای امنیت شما رمزگذاری می کنیم.",
+        "verify_btn": "تأیید و اتصال",
+        "verifying_btn": "در حال تایید...",
+        "upcoming_connections": "اتصالات آینده",
+        "stay_tuned": "ما دائماً یکپارچه‌سازی‌های جدید را اضافه می‌کنیم. در ادامه با ما همراه باشید!",
+        "secure": "امن",
+        "complete_auth": "مجوز {{name}} را کامل کنید",
+        "types": {
+            "crm": "CRM",
+            "data": "داده ها",
+            "outreach": "فراگیری"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "سرنخ ها و فعالیت های خود را با HubSpot CRM با استفاده از یک جریان OAuth متصل با 1 کلیک همگام کنید."
+            },
+            "salesforce": {
+                "desc": "گردش کار سازمانی خود را با جریان وب سرور Salesforce متصل کنید."
+            },
+            "instantly": {
+                "desc": "کمپین‌های Instantly.ai خود را برای همگام‌سازی بی‌وقفه وصل کنید."
+            },
+            "apollo": {
+                "desc": "سرنخ های خود را با بینش پایگاه داده B2B Apollo.io غنی کنید."
+            },
+            "leadmagic": {
+                "desc": "از طریق Leadmagic X-API-Key، سرنخ ها را با داده های فیرموگرافیک غنی کنید."
+            },
+            "clay": {
+                "desc": "داده‌های خروجی را از طریق JSON HTTP API با جداول Clay همگام‌سازی کنید."
+            }
+        }
     }
 }

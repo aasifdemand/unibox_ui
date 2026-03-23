@@ -3,51 +3,204 @@ import { Outlet } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/shared/language-switcher';
+import { Zap, Shield, BarChart3, Mail } from 'lucide-react';
 
 const AuthLayout = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 relative overflow-hidden w-full">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px] animate-pulse"></div>
-        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] rounded-full bg-indigo-500/5 blur-[100px] animate-pulse [animation-delay:2s]"></div>
-        <div className="absolute -bottom-[10%] left-[20%] w-[35%] h-[35%] rounded-full bg-purple-500/5 blur-[110px] animate-pulse [animation-delay:4s]"></div>
-        {/* Subtle Texture */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
-      </div>
+    <div className="min-h-screen flex w-full">
 
-      {/* Language Switcher - top right */}
-      <div className="absolute top-6 ltr:right-6 rtl:left-6 z-50">
-        <LanguageSwitcher />
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        className="relative w-full max-w-sm md:max-w-md mx-auto"
+      {/* ── LEFT — Form column (app bg) ── */}
+      <div
+        className="relative flex flex-col w-full lg:w-1/2 min-h-screen px-8 py-10 md:px-16 overflow-y-auto"
+        style={{ backgroundColor: 'var(--background)' }}
       >
-        {/* Logo */}
-        <div className="flex justify-center mb-10">
+        {/* Logo + language top */}
+        <div className="flex items-center justify-between pb-12">
           <Logo />
+          <LanguageSwitcher />
         </div>
 
-        {/* Main Content */}
-        <div className="bg-white/70 backdrop-blur-2xl border border-white p-2 shadow-xl rounded-2xl">
-          <div className="p-6 md:p-8">
+        {/* Centered form container */}
+        <div className="flex flex-1 items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+            className="w-full max-w-[420px] bg-slate-50/80  border border-white/60 p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+          >
             <Outlet />
-          </div>
+          </motion.div>
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-center">
+        <div className="pt-10 text-center">
           <p className="text-xs text-slate-400">
             {t('auth.copyright', { year: new Date().getFullYear() })}
           </p>
         </div>
-      </motion.div>
+      </div>
+
+      {/* ── RIGHT — Branded cover panel (primary indigo) ── */}
+      <div className="hidden lg:flex lg:w-1/2 min-h-screen relative overflow-hidden flex-col items-center justify-center p-16">
+
+        {/* Primary gradient — #4f46e5 */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #7c3aed 100%)' }}
+        />
+        <div className="absolute top-0 left-0 w-[70%] h-[70%] rounded-full opacity-30 blur-[140px] pointer-events-none"
+          style={{ background: '#818cf8' }} />
+        <div className="absolute bottom-0 right-0 w-[55%] h-[55%] rounded-full opacity-20 blur-[120px] pointer-events-none"
+          style={{ background: '#a78bfa' }} />
+
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 max-w-md text-center">
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
+            className="inline-flex items-center gap-2 bg-white/15  border border-white/20 rounded-full px-4 py-2 mb-8"
+          >
+            <div className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
+            <span className="text-[11px] font-black text-white/90 uppercase tracking-widest">
+              {t('auth.layout.platform_live')}
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6 }}
+            className="text-4xl font-black text-white tracking-tight leading-tight mb-5"
+          >
+            {t('auth.layout.title_main')}
+            <span className="block text-orange-100 mt-1">{t('auth.layout.title_span')}</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.5 }}
+            className="text-orange-100/80 text-sm font-medium leading-relaxed mb-12"
+          >
+            {t('auth.layout.subtitle')}
+          </motion.p>
+          {/* Spherical Animated Platform Illustration */}
+          <div className="mt-16 relative flex items-center justify-center">
+
+            {/* Rotating Outer Ring */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute w-[500px] h-[500px] border border-white/5 rounded-full"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent)',
+              }}
+            />
+
+            {/* Pulsating Ambient Glow */}
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.3, 0.2]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute w-[350px] h-[350px] bg-orange-400 blur-[80px] rounded-full"
+            />
+
+            {/* The Sphere Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 w-72 h-72 lg:w-80 lg:h-80 rounded-full bg-slate-900/40  border border-white/10 shadow-[inset_0_0_80px_rgba(255,255,255,0.05),0_30px_60px_rgba(0,0,0,0.5)] overflow-hidden flex items-center justify-center"
+            >
+              {/* Internal Refraction Effect */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-[-50%] bg-linear-to-tr from-transparent via-white/10 to-transparent blur-2xl opacity-40"
+              />
+
+              <motion.img
+                animate={{
+                  y: [0, -10, 0],
+                  scale: [1, 1.02, 1]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                src="/illustrations/auth-hero.png"
+                alt="Unibox Platform"
+                className="relative z-10 w-full h-full object-cover rounded-full drop-shadow-[0_15px_35px_rgba(0,0,0,0.3)] transition-transform duration-700"
+              />
+            </motion.div>
+
+            {/* Floating particles/icons */}
+            {[
+              { delay: 0, x: -140, y: -100, size: 40, icon: Zap },
+              { delay: 1, x: 160, y: -60, size: 32, icon: Shield },
+              { delay: 2, x: 120, y: 120, size: 44, icon: BarChart3 },
+              { delay: 0.5, x: -25, y: -180, size: 28, icon: Mail },
+            ].map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  y: [p.y, p.y - 20, p.y],
+                  x: [p.x, p.x + 10, p.x],
+                  scale: [0.8, 1, 0.8]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  delay: p.delay,
+                  ease: "easeInOut"
+                }}
+                className="absolute z-20 bg-white/10  border border-white/20 rounded-md flex items-center justify-center shadow-sm"
+                style={{ width: p.size, height: p.size }}
+              >
+                <p.icon className="w-1/2 h-1/2 text-white/80" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Social proof */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.85, duration: 0.5 }}
+          className="relative z-10 mt-16 flex items-center gap-5"
+        >
+          <div className="flex -space-x-2">
+            {['#6366f1', '#8b5cf6', '#a855f7', '#ec4899'].map((c, i) => (
+              <div
+                key={i}
+                className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-white text-[10px] font-black"
+                style={{ backgroundColor: c, borderColor: 'rgba(255,255,255,0.3)' }}
+              >
+                {String.fromCharCode(65 + i)}
+              </div>
+            ))}
+          </div>
+          <p className="text-[11px] text-orange-100/70 font-medium">
+            {t('auth.layout.trusted_by')}{' '}
+            <span className="text-white font-bold">2,400+</span> {t('auth.layout.teams')}
+          </p>
+        </motion.div>
+      </div>
+
     </div>
   );
 };

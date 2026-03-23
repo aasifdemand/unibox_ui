@@ -7,33 +7,46 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import {
-  Pause,
   Send,
   Trash2,
-  TrendingUp,
   Zap,
-  BarChart3,
-  Target,
   ChevronUp,
   ChevronDown,
   ChevronsUpDown,
+  Mail,
+  MessageSquare,
+  AlertCircle,
+  ExternalLink,
+  Play,
+  Pause,
+  Edit2,
 } from 'lucide-react';
-import { calculateOpenRate, formatDate, getStatusInfo } from '../../campaign-utils';
+import {
+  calculateOpenRate,
+  calculateReplyRate,
+  calculateProgress,
+  calculateBounceRate,
+  calculateUnsubscribeRate,
+  formatDate,
+  formatDateTime,
+} from '../../campaign-utils';
 import { Link } from 'react-router-dom';
 
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
-  if (!isSorted) return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md group-hover/header:bg-slate-100 transition-all ml-1 opacity-0 group-hover/header:opacity-100">
-      <ChevronsUpDown className="w-3 h-3 text-slate-300 group-hover/header:text-slate-400" />
-    </div>
-  );
+  if (!isSorted)
+    return (
+      <div className="w-4 h-4 flex items-center justify-center rounded-md group-hover/header:bg-slate-100 transition-all ml-1 opacity-0 group-hover/header:opacity-100">
+        <ChevronsUpDown className="w-3 h-3 text-slate-300 group-hover/header:text-slate-400" />
+      </div>
+    );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-indigo-50/50 border border-indigo-100/50 ml-1">
-      {isSorted === 'desc'
-        ? <ChevronDown className="w-2.5 h-2.5 text-indigo-600" />
-        : <ChevronUp className="w-2.5 h-2.5 text-indigo-600" />
-      }
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+      {isSorted === 'desc' ? (
+        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+      ) : (
+        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+      )}
     </div>
   );
 };
@@ -46,6 +59,8 @@ const CampaignListView = ({
   isAnyLoading,
   handleActivateCampaign,
   handlePauseCampaign,
+  handleResumeCampaign,
+  handleEditCampaign,
   handleViewCampaign,
   handleDeleteClick,
   isLoadingAction,
@@ -53,236 +68,268 @@ const CampaignListView = ({
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
 
-  const columns = React.useMemo(() => [
-    {
-      id: 'selection',
-      header: ({ table }) => (
-        <input
-          type="checkbox"
-          checked={table.getIsAllPageRowsSelected()}
-          onChange={(e) => {
-            handleSelectAll(e.target.checked);
-            table.toggleAllPageRowsSelected(!!e.target.checked);
-          }}
-          className="w-5 h-5 text-indigo-600 rounded-lg border-slate-300 focus:ring-indigo-500 cursor-pointer shadow-xs"
-          disabled={isAnyLoading}
-        />
-      ),
-      cell: ({ row }) => (
-        <div className={`transition-opacity duration-300 ${row.getIsSelected() || selectedCampaigns.length > 0 ? 'opacity-100' : 'opacity-0 group-hover/row:opacity-100 focus-within:opacity-100'}`}>
-          <input
-            type="checkbox"
-            checked={row.getIsSelected()}
-            onChange={(e) => {
-              handleSelectCampaign(row.original.id);
-              row.toggleSelected(!!e.target.checked);
-            }}
-            className="w-5 h-5 text-indigo-600 rounded-lg border-slate-300 focus:ring-indigo-500 cursor-pointer shadow-xs transition-all"
-            disabled={isAnyLoading}
-          />
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'name',
-      header: ({ column }) => (
-        <button
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className="flex items-center group/header"
-        >
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-            {t('analytics.table_campaign')}
-          </span>
-          <SortIndicator column={column} />
-        </button>
-      ),
-      cell: ({ row }) => {
-        const campaign = row.original;
-        return (
-          <div className="flex items-center transition-transform duration-300 group-hover/row:translate-x-0.5">
-            <div className="w-11 h-11 rounded-xl bg-linear-to-br from-indigo-500 to-blue-600 flex items-center justify-center ltr:mr-4 rtl:ml-4 shadow-lg shadow-indigo-500/10 group-hover/row:scale-110 transition-transform duration-500">
-              <Send className="w-4.5 h-4.5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-slate-900 tracking-tight leading-none mb-1.5 group-hover/row:text-indigo-600 transition-colors">
-                {campaign.name}
-              </p>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest line-clamp-1 max-w-50">
-                {campaign.subject || t('campaigns.no_subject')}
-              </p>
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'status',
-      header: ({ column }) => (
-        <button
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className="flex items-center group/header"
-        >
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-            {t('mailboxes.status')}
-          </span>
-          <SortIndicator column={column} />
-        </button>
-      ),
-      cell: ({ row }) => {
-        const { label, color, icon } = getStatusInfo(row.original.status);
-        return (
-          <span className={`px-3 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest flex items-center gap-1.5 border w-fit ${color.replace('bg-', 'text-').replace('-100', '-600').replace('-50', '-100')}`}>
-            {icon}
-            {label}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: 'totalRecipients',
-      header: ({ column }) => (
-        <button
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className="flex items-center group/header"
-        >
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-            {t('analytics.recipients')}
-          </span>
-          <SortIndicator column={column} />
-        </button>
-      ),
-      cell: ({ row }) => (
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2 mb-0.5">
-            <Target className="w-3 h-3 text-slate-400" />
-            <span className="text-sm font-bold text-slate-900 tabular-nums">
-              {row.original.totalRecipients?.toLocaleString() || '0'}
-            </span>
-          </div>
-          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
-            {t('analytics.recipients')}
-          </span>
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'openRate',
-      header: ({ column }) => (
-        <div className="flex justify-end">
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: ({ column }) => (
           <button
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
             <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-              {t('analytics.open_rate')}
+              {t('campaigns.sequence_details')}
             </span>
             <SortIndicator column={column} />
           </button>
-        </div>
-      ),
-      cell: ({ row }) => {
-        const openRate = calculateOpenRate(row.original);
-        return (
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-sm font-bold text-indigo-600 tabular-nums">
-                {openRate}
-              </span>
-              {openRate !== '-' && parseFloat(openRate) > 30 && (
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
-              )}
+        ),
+        cell: ({ row }) => {
+          const campaign = row.original;
+          const progress = calculateProgress(campaign);
+          return (
+            <div className="flex items-center gap-4">
+              {/* Circular Progress */}
+              <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    className="text-slate-100"
+                    strokeWidth="3"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className={
+                      progress === 100
+                        ? 'text-orange-500 text-opacity-100'
+                        : campaign.status === 'paused'
+                          ? 'text-slate-400'
+                          : 'text-orange-400 text-opacity-80'
+                    }
+                    strokeDasharray={`${progress}, 100`}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center bg-white rounded-full m-1">
+                  <span className="text-[10px] font-bold text-slate-600">
+                    {campaign.status === 'paused' ? '(II)' : `${progress}%`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Details */}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="text-sm font-bold text-slate-800 hover:text-orange-600 cursor-pointer transition-colors max-w-[200px] truncate">
+                    {campaign.name}
+                  </p>
+                  <a
+                    href={`/dashboard/campaigns/${campaign.id}`}
+                    className="text-slate-400 hover:text-orange-600"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+                <div className="flex items-center gap-2 text-[11px] font-medium text-slate-500">
+                  <span className="capitalize">{campaign.status}</span>
+                  <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                  <span>
+                    {campaign.startedAt
+                      ? `Started at: ${formatDateTime(campaign.startedAt)}`
+                      : campaign.scheduledAt
+                        ? `Scheduled at: ${formatDateTime(campaign.scheduledAt)}`
+                        : formatDateTime(campaign.createdAt) || formatDate(campaign.createdAt)}
+                  </span>
+                </div>
+              </div>
             </div>
-            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest font-inter">
-              {t('analytics.stats')}
-            </span>
-          </div>
-        );
+          );
+        },
       },
-    },
-    {
-      accessorKey: 'createdAt',
-      header: ({ column }) => (
-        <div className="flex justify-end">
-          <button
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className="flex items-center group/header"
-          >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-              {t('common.date')}
-            </span>
-            <SortIndicator column={column} />
-          </button>
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="flex flex-col items-end">
-          <span className="text-xs font-bold text-slate-900 tracking-tight">
-            {formatDate(row.original.createdAt)}
-          </span>
-          <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-            {t('campaigns.status_created')}
-          </span>
-        </div>
-      ),
-    },
-    {
-      id: 'actions',
-      header: () => (
-        <div className="text-right">
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-            {t('analytics.table_actions')}
-          </span>
-        </div>
-      ),
-      cell: ({ row }) => {
-        const campaign = row.original;
-        return (
-          <div className="flex items-center justify-end gap-1.5 transition-transform duration-300 group-hover/row:-translate-x-0.5">
-            {campaign.status === 'draft' && (
-              <button
-                onClick={() => handleActivateCampaign(campaign.id)}
-                disabled={isLoadingAction.activate}
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-all shadow-xs hover:shadow-emerald-100"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            )}
-
-            {campaign.status === 'running' && (
-              <button
-                onClick={() => handlePauseCampaign(campaign.id)}
-                disabled={isLoadingAction.pause}
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-all shadow-xs hover:shadow-amber-100"
-              >
-                <Pause className="w-4 h-4" />
-              </button>
-            )}
-
-            <button
-              onClick={() => handleViewCampaign(campaign.id)}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all shadow-xs hover:shadow-indigo-100"
-            >
-              <BarChart3 className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => handleDeleteClick(campaign)}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all shadow-xs hover:shadow-rose-100"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+      {
+        id: 'report',
+        header: () => (
+          <div className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none text-left">
+            Report
           </div>
-        );
+        ),
+        cell: ({ row }) => {
+          const campaign = row.original;
+          const sent = campaign.totalSent || 0;
+          const opened = campaign.totalOpens || 0;
+          const openRate = calculateOpenRate(campaign);
+          const replied = campaign.totalReplied || 0;
+          const replyRate = calculateReplyRate(campaign);
+
+          const bounced = campaign.totalBounced || 0;
+          const senderBounced = campaign.totalSenderBounced || 0;
+
+          return (
+            <div className="flex items-center gap-6 text-[12px] whitespace-nowrap overflow-x-auto min-w-max pb-3 pt-3">
+              <div className="flex flex-col w-24">
+                <span className="font-bold text-orange-600 text-base mb-1">{sent}</span>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <Send className="w-3.5 h-3.5 text-orange-600" /> Sent
+                </span>
+              </div>
+              <div className="flex flex-col w-28">
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-bold text-fuchsia-600 text-base">{opened}</span>
+                  <span className="text-[10px] font-semibold text-fuchsia-600/50">
+                    {openRate !== '-' ? openRate : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-fuchsia-600" /> Opened
+                </span>
+              </div>
+              <div className="flex flex-col w-32">
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-bold text-orange-500 text-base">{replied}</span>
+                  <span className="text-[10px] font-semibold text-orange-500/50">
+                    {replyRate !== '-' ? replyRate : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <MessageSquare className="w-3.5 h-3.5 text-orange-500" /> Replied
+                </span>
+              </div>
+              <div className="flex flex-col w-24">
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-bold text-orange-500 text-base">{bounced}</span>
+                  <span className="text-[10px] font-semibold text-orange-500/50">
+                    {calculateBounceRate(campaign) !== '-'
+                      ? `(${calculateBounceRate(campaign)})`
+                      : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-orange-500" /> Bounced
+                </span>
+              </div>
+              <div className="flex flex-col w-32">
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-bold text-red-500 text-base">{senderBounced}</span>
+                  {/* Reusing bounce rate for sender bounce rate display to show it correctly relative to total sent */}
+                  <span className="text-[10px] font-semibold text-red-500/50">
+                    {campaign.totalSent
+                      ? `(${Math.round((senderBounced / campaign.totalSent) * 100)}%)`
+                      : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-red-500" /> Sender Bounced
+                </span>
+              </div>
+              <div className="flex flex-col w-32">
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="font-bold text-slate-500 text-base">
+                    {campaign.totalUnsubscribed || 0}
+                  </span>
+                  <span className="text-[10px] font-semibold text-slate-500/50">
+                    {calculateUnsubscribeRate(campaign) !== '-'
+                      ? `(${calculateUnsubscribeRate(campaign)})`
+                      : ''}
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-slate-500" /> Unsubscribed
+                </span>
+              </div>
+            </div>
+          );
+        },
       },
-    }
-  ], [t, isAnyLoading, isLoadingAction, selectedCampaigns, handleSelectAll, handleSelectCampaign, handleActivateCampaign, handlePauseCampaign, handleViewCampaign, handleDeleteClick]);
+      {
+        id: 'actions',
+        header: () => (
+          <div className="text-right">
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none"></span>
+          </div>
+        ),
+        cell: ({ row }) => {
+          const campaign = row.original;
+          return (
+            <div className="flex items-center justify-end gap-1.5 transition-transform duration-300">
+              {campaign.status === 'draft' || campaign.status === 'paused' ? (
+                <button
+                  onClick={() =>
+                    campaign.status === 'paused'
+                      ? handleResumeCampaign(campaign.id)
+                      : handleActivateCampaign(campaign.id)
+                  }
+                  title={campaign.status === 'paused' ? 'Resume Campaign' : 'Start Campaign'}
+                  disabled={isLoadingAction.activate || isLoadingAction.resume}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all border border-slate-200 shadow-sm"
+                >
+                  <Play className="w-3.5 h-3.5 ml-0.5" />
+                </button>
+              ) : campaign.status === 'running' ? (
+                <button
+                  onClick={() => handlePauseCampaign(campaign.id)}
+                  title="Pause Campaign"
+                  disabled={isLoadingAction.pause}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-all border border-slate-200 shadow-sm"
+                >
+                  <Pause className="w-3.5 h-3.5" />
+                </button>
+              ) : null}
+              <button
+                onClick={() => handleEditCampaign(campaign)}
+                disabled={!['draft', 'paused'].includes(campaign.status)}
+                title={
+                  !['draft', 'paused'].includes(campaign.status)
+                    ? 'Cannot edit while running'
+                    : 'Edit Campaign'
+                }
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all border border-slate-200 shadow-sm ${
+                  !['draft', 'paused'].includes(campaign.status)
+                    ? 'text-slate-200 cursor-not-allowed bg-slate-50'
+                    : 'text-slate-400 hover:text-orange-600 hover:bg-orange-50 hover:border-orange-200'
+                }`}
+              >
+                <Edit2 className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => handleDeleteClick(campaign)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all border border-slate-200 shadow-sm"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          );
+        },
+      },
+    ],
+    [
+      t,
+      isAnyLoading,
+      isLoadingAction,
+      selectedCampaigns,
+      handleSelectAll,
+      handleSelectCampaign,
+      handleActivateCampaign,
+      handlePauseCampaign,
+      handleResumeCampaign,
+      handleEditCampaign,
+      handleViewCampaign,
+      handleDeleteClick,
+    ],
+  );
 
   const table = useReactTable({
     data: campaigns,
     columns,
     state: {
       sorting,
-      rowSelection: Object.fromEntries(selectedCampaigns.map(id => [campaigns.findIndex(c => c.id === id), true])),
+      rowSelection: Object.fromEntries(
+        selectedCampaigns.map((id) => [campaigns.findIndex((c) => c.id === id), true]),
+      ),
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -292,55 +339,57 @@ const CampaignListView = ({
 
   if (campaigns.length === 0) {
     return (
-      <div className="premium-card bg-white border-none p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl shadow-indigo-900/2">
-        <div className="absolute top-0 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 w-125 h-75 bg-indigo-500/5 rounded-full blur-[100px] -mt-40"></div>
+      <div className="premium-card bg-white border-none p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm shadow-orange-900/2">
+        <div className="absolute top-0 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 w-125 h-75 bg-orange-500/5 rounded-full blur-[100px] -mt-40"></div>
         <div className="relative mb-10">
-          <div className="w-20 h-20 bg-linear-to-br from-blue-600 to-indigo-700 rounded-[28px] flex items-center justify-center rotate-3 shadow-2xl shadow-indigo-500/20">
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-600 to-orange-700 rounded-[28px] flex items-center justify-center rotate-3 shadow-sm shadow-orange-500/20">
             <Zap className="w-8 h-8 text-white" />
           </div>
         </div>
         <h3 className="text-2xl font-extrabold text-slate-800 tracking-tighter mb-4">
           {t('campaigns.empty_log_title')}
         </h3>
-        <p className="text-sm font-medium text-slate-400 max-w-sm mb-10 leading-relaxed uppercase tracking-widest text-[10px]">
+        <p className="text-sm font-medium text-slate-400 max-w-sm mb-10 leading-relaxed tracking-widest text-[10px]">
           {t('campaigns.empty_log_subtitle')}
         </p>
         <Link
           to={'/dashboard/campaigns/create'}
           className="btn-primary py-3 px-8 text-white font-extrabold uppercase tracking-widest text-[10px]"
         >
-          {t('campaigns.launch_protocol')}
+          {t('campaigns.create_first_campaign')}
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="premium-card border border-slate-200/60 bg-white p-2 shadow-xl shadow-slate-900/5 overflow-hidden rounded-[2rem]">
+    <div className="border border-slate-200/60 bg-white shadow-sm overflow-hidden rounded-lg">
       <div className="overflow-x-auto no-scrollbar">
         <table className="w-full border-separate border-spacing-0">
           <thead>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id} className="bg-slate-50/80 backdrop-blur-md">
-                {headerGroup.headers.map(header => (
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className="bg-slate-50/80 ">
+                {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
                     className="py-5 px-6 border-b border-slate-200/60 transition-colors first:ltr:rounded-tl-2xl last:ltr:rounded-tr-2xl"
                   >
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-slate-100">
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className={`group/row hover:bg-slate-50/50 transition-all duration-300 cursor-default ${row.getIsSelected() ? 'bg-indigo-50/30' : ''}`}
+                className={`group/row hover:bg-slate-50/80 transition-all duration-300 cursor-default even:bg-slate-50 ${row.getIsSelected() ? 'bg-orange-50/40' : ''}`}
               >
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="py-4 px-6 border-b border-slate-50/50">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="py-4 px-6 border-b border-slate-100">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

@@ -11,6 +11,12 @@
         "templates": "ٹیمپلیٹس",
         "subscription": "سبسکرپشن",
         "settings": "ترتیبات",
+        "crm": "CRM",
+        "email_campaigns": "Email Campaigns",
+        "email_accounts": "Email Accounts",
+        "contacts": "Contacts",
+        "global_analytics": "Analytics",
+        "integrations": "Integrations",
         "navigation": "نیویگیشن",
         "active": "فعال",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "کیا آپ واقعی اپنے موجودہ ڈیش بورڈ سیشن ��و ختم کرنا چاہتے ہیں؟ آپ کو دوبارہ تصدیق کرنے کی ضرورت ہوگی۔",
             "confirm": "لاگ آؤٹ کی تصدیق کریں",
             "cancel": "لاگ ان رہیں"
-        }
+        },
+        "admin": "ایڈمن",
+        "administrator": "ایڈمنسٹریٹر",
+        "user": "صارف",
+        "u": "یو"
     },
     "auth": {
         "copyright": "© {{year}} Unibox۔ جملہ حقوق محفوظ ہیں۔",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "یا",
             "already_account": "کے ساتھ سائن اپ کریں۔ پہلے سے ہی اکاؤنٹ ہے؟",
             "sign_in_link": "سائن ان کریں"
+        },
+        "layout": {
+            "platform_live": "پلیٹ فارم لائیو",
+            "title_main": "کا بہترین طریقہ",
+            "title_span": "آؤٹ ریچ چلائیں",
+            "subtitle": "Unibox AI افزودگی، سمارٹ سیکوینسنگ، اور ایک متحد جوابی ان باکس کو یکجا کرتا ہے — یہ سب ایک پلیٹ فارم میں ہے۔",
+            "trusted_by": "ٹرسٹڈ از",
+            "teams": "آؤٹ ریچ ٹیمیں"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "مہمات",
         "subtitle": "آؤٹ ریچ",
+        "sequence_details": "ترتیب کی تفصیلات",
         "header_description": "اپنی ای میل مہمات بنائیں اور ٹریک کریں۔",
         "header_subtitle": "اپنی ای میل مہمات کا نظم کریں اور ٹریک کریں",
         "create_campaign": "مہم بنائیں",
@@ -303,6 +322,7 @@
         "campaign_date": "مہم کی تاریخ",
         "empty_log_title": "خالی آپریشن لاگ",
         "empty_log_subtitle": "میٹرکس اسکین مکمل۔ مہم کے کوئی اثاثے نہیں ملے۔",
+        "create_first_campaign": "پہلی مہم بنائیں",
         "launch_protocol": "پروٹوکول لانچ کریں",
         "no_subject": "کوئی موضوع نہیں۔",
         "status_created": "تخلیق کردہ",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "اپنا ای میل ترتیب لکھیں",
         "step_setup": "سیٹ اپ",
         "step_setup_desc": "اپنی مہم کو ترتیب دیں",
+        "schedule_timing": "شیڈول اور ٹائمنگ",
+        "advanced_settings": "اعلی درجے کی ترتیبات",
         "step_final_review": "حتمی جائزہ",
         "step_final_review_desc": "آخری چیک اور لانچ",
         "error_add_content": "براہ کرم آگے بڑھنے سے پہلے اپنے {{mode}} ای میل میں کچھ مواد شامل کریں۔",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "ان سبسکرائب لنک",
         "recipients_senders": "وصول کنندگان اور بھیجنے والے",
         "setup_audience": "اپنے مہم کے سامعین اور اکاؤنٹس ترتیب دیں",
+        "sender_accounts": "اکاؤنٹس بھیجنا",
+        "active_senders": "ایکٹو اکاؤنٹس",
+        "select_accounts_desc": "اکاؤنٹس کو اس ترتیب سے جوڑیں",
+        "choose_senders_btn": "اکاؤنٹس کو منتخب کریں",
+        "configure_schedule_btn": "شیڈول ترتیب دیں",
+        "modify_settings_btn": "ترتیبات میں ترمیم کریں",
+        "sender_rotation": "اکاؤنٹ کی گردش",
+        "account_health": "اکاؤنٹ ہیلتھ",
+        "trust_score": "سکور",
+        "optimal_delivery": "بہترین ڈیلیوری",
+        "intelligent_sending": "ذہین بھیجنا",
+        "sender_rotation_count": "بھیجنے والے کی گردش ({{count}})",
+        "more_accounts": "+{{count}} مزید اکاؤنٹس",
+        "no_sender_set": "کوئی بھیجنے والا سیٹ نہیں",
+        "confirm_selection": "انتخاب کی تصدیق کریں",
+        "high_inboxing_enabled": "بہترین ڈیلیوری فعال",
         "add_contacts": "رابطے شامل کریں",
         "add_sender": "بھیجنے والے کو شامل کریں",
         "selected_audience": "منتخب سامعین",
@@ -526,7 +564,7 @@
     "audience": {
         "title": "وصول کنندگان اور بھیجنے والے",
         "subtitle": "اپنی میلنگ لسٹ اور بھیجنے والے اکاؤنٹس کا نظم کریں",
-        "import_batches": "Import Batches",
+        "import_batches": "امپورٹ بیچز",
         "header_description": "پلیٹ فارم پر اپنی میلنگ لسٹ اور بھیجنے والے اکاؤنٹس کا نظم کریں۔",
         "refresh": "تازہ کریں",
         "add_contacts": "رابطے شامل کریں",
@@ -546,7 +584,7 @@
         "uploaded": "اپ لوڈ کردہ",
         "processing": "پروسیسنگ",
         "completed": "مکمل",
-        "verifying": "Verifying",
+        "verifying": "تصدیق کر رہا ہے",
         "failed": "ناکام",
         "loading_contacts": "رابطے لوڈ ہو رہے ہیں...",
         "no_contacts_title": "کوئی رابطہ نہیں",
@@ -795,8 +833,8 @@
                 "gmail": "گوگل جی میل",
                 "outlook": "مائیکروسافٹ آؤٹ لک",
                 "smtp": "حسب ضرورت SMTP",
-                "bulk": "بلک امپورٹ",
                 "smtp_desc": "دستی سیٹ اپ",
+                "bulk": "بلک امپورٹ",
                 "bulk_desc": "XLSX اپ لوڈ"
             },
             "secure_title": "انٹرپرائز گریڈ سیکورٹی",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "گوگل میل کے ساتھ جڑیں",
             "btn_connect_outlook": "Microsoft Outlook Mail کے ساتھ جڑیں",
+            "smtp_success": "SMTP کنکشن کامیاب",
+            "smtp_fail": "SMTP کنکشن ناکام ہو گیا",
+            "imap_success": "IMAP کنکشن کامیاب",
+            "imap_fail": "IMAP کنکشن ناکام ہو گیا",
+            "empty_provider": "ایک فراہم کنندہ کو منتخب کریں",
+            "empty_desc": "اوپر Gmail، Outlook، یا حسب ضرورت SMTP منتخب کریں۔",
+            "encrypted_note": "اینڈ ٹو اینڈ انکرپٹڈ",
+            "smtp_config_note": "اگر آپ ان کو خالی چھوڑ دیتے ہیں، تو ہم آپ کی بھیجنے کی ترتیبات کو خود بخود استعمال کرنے کی کوشش کریں گے۔",
             "bulk": {
                 "title": "بلک اپ لوڈ اکاؤنٹس",
                 "desc": "کالم کے ساتھ ایکسل فائل (.xlsx) اپ لوڈ کریں: ای میل، ڈومین، پاس ورڈ، قسم (aapanel/postal)، first_name، last_name۔",
@@ -876,16 +922,8 @@
             "err_no_headers": "فائل میں کوئی ہیڈر نہیں ملا",
             "err_read_fail": "فائل نہیں پڑھ سکی",
             "err_map_required": "براہ کرم تمام مطلوبہ فیلڈز کا نقشہ بنائیں",
-            "smtp_success": "SMTP کنکشن کامیاب",
-            "smtp_fail": "SMTP کنکشن ناکام ہو گیا",
-            "imap_success": "IMAP کنکشن کامیاب",
-            "imap_fail": "IMAP کنکشن ناکام ہو گیا",
             "bulk_success": "بلک اپ لوڈ کامیاب",
-            "bulk_error": "بلک اپ لوڈ ناکام",
-            "empty_provider": "ایک فراہم کنندہ کو منتخب کریں",
-            "empty_desc": "اوپر Gmail، Outlook، یا حسب ضرورت SMTP منتخب کریں۔",
-            "encrypted_note": "اینڈ ٹو اینڈ انکرپٹڈ",
-            "smtp_config_note": "اگر آپ ان کو خالی چھوڑ دیتے ہیں، تو ہم آپ کی بھیجنے کی ترتیبات کو خود بخود استعمال کرنے کی کوشش کریں گے۔"
+            "bulk_error": "بلک اپ لوڈ ناکام"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "آپ کے موضوع کی سطریں اچھی طرح سے گونج رہی ہیں! 'کیوریوسٹی گیپ' اسٹائل کو دوگنا کرنے پر غور کریں جسے آپ فی الحال استعمال کر رہے ہیں۔",
         "rec_conversion_low": "جوابات کم ہیں۔ ایک واضح 'کال ٹو ایکشن' (CTA) یا نرم سوال جیسے 'کیا یہ مددگار تھا؟' شامل کرنے کی کوشش کریں۔ رگڑ کو کم کرنے کے لئے.",
         "rec_conversion_high": "زبردست تبدیلی! آپ کی قدر کی تجویز واضح ہے۔ یقینی بنائیں کہ آپ کی سیلز ٹیم بہترین نتائج کے لیے 4 گھنٹے کے اندر فالو اپ کر رہی ہے۔"
+    },
+    "crm": {
+        "title": "CRM Integration",
+        "subtitle": "Revenue Hub",
+        "pipeline": "Pipeline",
+        "description": "Connect your outreach workspace with your favorite CRM to sync leads and log activities automatically.",
+        "drag_desc": "Drag leads between stages. Click any card to view details and set deal value.",
+        "connect_crm": "Connect CRM",
+        "add_column": "Add Column",
+        "all_campaigns": "All Campaigns",
+        "total": "Total",
+        "value": "Value",
+        "leads_label": "Leads",
+        "drop_leads": "Drop leads here",
+        "loading": "loading...",
+        "build_funnel": "Build your funnel",
+        "add_first_col": "Add your first column to start tracking leads through stages.",
+        "create_initial": "Create First Column",
+        "footer_msg1": "خود بخود ترقی کرتا ہے جب",
+        "footer_msg2": "جواب دینے کے ارادے",
+        "footer_msg3": "پتہ چلا ہے",
+        "search_placeholder": "ایک لیڈ تلاش کریں...",
+        "stages": {
+            "leads": "نئے لیڈز",
+            "contacted": "رابطہ کیا",
+            "replied": "جواب دیا",
+            "meeting_booked": "میٹنگ بک ہوئی",
+            "closed": "بند",
+            "bounced": "اچھال دیا",
+            "unsubscribed": "ان سبسکرائب شدہ"
+        },
+        "lead_card": {
+            "last_activity": "آخری سرگرمی:",
+            "campaign": "مہم:",
+            "view_profile": "پروفائل دیکھیں"
+        },
+        "connect": "Connect",
+        "connected": "Connected",
+        "status_ready": "Ready to sync",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Sync contacts and log timeline events."
+        },
+        "salesforce": {
+            "title": "Salesforce",
+            "desc": "Manage leads and opportunities in real-time."
+        },
+        "pipedrive": {
+            "title": "Pipedrive",
+            "desc": "Track deal progress and activity logs."
+        },
+        "add_column_modal_title": "Add New Column",
+        "column_name_label": "Column Name",
+        "column_name_placeholder": "e.g., Qualified Leads",
+        "select_color_label": "Select Column Color",
+        "link_intent_label": "Link to AI Intent (Optional)",
+        "link_intent_desc": "Leads with this intent will move here automatically",
+        "select_intent_placeholder": "ایک ارادہ منتخب کریں...",
+        "add_column_btn": "کالم شامل کریں",
+        "cancel_btn": "منسوخ کریں",
+        "status": "Ready to Sync"
+    },
+    "integrations": {
+        "header_title": "انضمام",
+        "header_subtitle": "بازار",
+        "header_desc": "اپنے آؤٹ ریچ ورک فلو کو خودکار کرنے کے لیے اپنے پسندیدہ CRM اور ڈیٹا ٹولز کو جوڑیں۔",
+        "search_placeholder": "انضمام تلاش کریں (HubSpot, Salesforce, Instantly...)",
+        "no_results": "آپ کی تلاش سے مماثل کوئی انضمام نہیں ملا۔",
+        "connect_btn": "جڑیں",
+        "disconnect_btn": "منقطع کریں",
+        "disconnecting_btn": "منقطع ہو رہا ہے...",
+        "disconnecting": "{{name}} سے منقطع ہو رہا ہے...",
+        "connected": "منسلک",
+        "never_synced": "کبھی بھی مطابقت پذیر نہیں",
+        "learn_how": "جانیں کیسے",
+        "connect_app": "+ کنیکٹ ایپ",
+        "confirm_disconnect_title": "منقطع ہونے کی تصدیق کریں",
+        "confirm_disconnect_desc1": "کیا آپ واقعی رابطہ منقطع کرنا چاہتے ہیں",
+        "confirm_disconnect_desc2": "? Unibox اب اس سروس کے ساتھ لیڈز یا ڈیٹا کی مطابقت پذیری نہیں کر سکے گا۔",
+        "disconnect_success": "{{name}} سے کامیابی کے ساتھ منقطع ہو گیا",
+        "complete_connection": "مکمل کنکشن",
+        "verify_oauth_desc": "ہم نے {{name}} لاگ ان صفحہ کو ایک نئے ٹیب میں کھولا ہے۔ ایک بار جب آپ کامیابی کے ساتھ لاگ ان ہو جائیں اور ایپ کو اختیار کر لیں، تو کنکشن مکمل کرنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔",
+        "oauth_initiating": "{{name}} کے لیے OAuth 2.0 کا بہاؤ شروع کرنا...",
+        "oauth_success": "OAuth کے ذریعے {{name}} سے منسلک!",
+        "api_key_label": "API رسائی کلید",
+        "api_key_placeholder": "اپنی {{name}} API کلید درج کریں...",
+        "api_key_desc": "آپ اپنی API کلید {{name}} ڈیش بورڈ کی ترتیبات میں تلاش کر سکتے ہیں۔ ہم آپ کی سیکیورٹی کے لیے اس کلید ��و خفیہ کرتے ہیں۔",
+        "verify_btn": "تصدیق کریں اور جڑیں",
+        "verifying_btn": "تصدیق کر رہا ہے...",
+        "upcoming_connections": "آنے والے کنکشنز",
+        "stay_tuned": "ہم مسلسل نئے انضمام شامل کر رہے ہیں۔ مزید کے لئے دیکھتے رہیں!",
+        "secure": "محفوظ",
+        "complete_auth": "مکمل {{name}} اجازت",
+        "types": {
+            "crm": "CRM",
+            "data": "ڈیٹا",
+            "outreach": "آؤٹ ریچ"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "اپنی لیڈز اور سرگرمیوں کو HubSpot CRM کے ساتھ مربوط کرنے والے OAuth فلو کو 1-کلک کے ساتھ ہم آہنگ کریں۔"
+            },
+            "salesforce": {
+                "desc": "سیلز فورس ویب سرور فلو کے ساتھ اپنے انٹرپرائز ورک فلو کو جوڑیں۔"
+            },
+            "instantly": {
+                "desc": "ہموار آؤٹ ریچ سنک کے لیے اپنی Instantly.ai مہمات کو مربوط کریں۔"
+            },
+            "apollo": {
+                "desc": "Apollo.io B2B ڈیٹا بیس بصیرت کے ساتھ اپنے لیڈز کو مزید تقویت بخشیں۔"
+            },
+            "leadmagic": {
+                "desc": "Leadmagic X-API-Key کے ذریعے فرموگرافک ڈیٹا کے ساتھ آگے بڑھیں۔"
+            },
+            "clay": {
+                "desc": "ان کے JSON HTTP API کے ذریعے کلے ٹیبلز سے آؤٹ باؤنڈ ڈیٹا کی مطابقت پذیری کریں۔"
+            }
+        }
     }
 }

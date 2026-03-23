@@ -53,10 +53,12 @@ const transformSenderToMailbox = (sender) => {
     isActive: sender.isActive !== undefined ? sender.isActive : true,
     createdAt: sender.createdAt,
     updatedAt: sender.updatedAt,
-    lastSyncAt: sender.lastInboxSyncAt || sender.lastUsedAt || null,
+    lastSyncAt: sender.lastSyncAt || sender.lastInboxSyncAt || sender.lastUsedAt || null,
     expiresAt: sender.expiresAt,
     stats: {
       dailySent: sender.dailySentCount || 0,
+      reputationScore: sender.stats?.reputationScore || 0,
+      healthStatus: sender.stats?.healthStatus || 'unknown',
     },
   };
 };
@@ -90,6 +92,7 @@ export const useMailboxes = ({
     enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
     retry: 1,
   });
 };

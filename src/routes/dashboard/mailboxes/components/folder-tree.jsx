@@ -39,10 +39,8 @@ const FolderTree = ({
     if (isFolderType(folder, 'inbox')) return <InboxIcon className="w-4 h-4" />;
     if (isFolderType(folder, 'sent')) return <SendIcon className="w-4 h-4" />;
     if (isFolderType(folder, 'drafts')) return <File className="w-4 h-4" />;
-    if (isFolderType(folder, 'spam'))
-      return <AlertTriangle className="w-4 h-4 text-amber-500" />;
-    if (isFolderType(folder, 'trash'))
-      return <Trash2 className="w-4 h-4 text-red-500" />;
+    if (isFolderType(folder, 'spam')) return <AlertTriangle className="w-4 h-4 text-amber-500" />;
+    if (isFolderType(folder, 'trash')) return <Trash2 className="w-4 h-4 text-red-500" />;
     if (isFolderType(folder, 'archive')) return <Archive className="w-4 h-4" />;
     if (isFolderType(folder, 'starred') || isFolderType(folder, 'important'))
       return <Star className="w-4 h-4 text-amber-500 fill-amber-500" />;
@@ -77,28 +75,28 @@ const FolderTree = ({
       <div key={folder.id}>
         <button
           onClick={() => onSelectFolder(folder)}
-          className={`group w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl transition-all duration-300 border border-transparent ${isSelected
-            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-            : 'hover:bg-slate-100 text-slate-600 hover:text-slate-800'
-            }`}
+          className={`group w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-300 border border-transparent ${
+            isSelected
+              ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20'
+              : 'hover:bg-slate-100 text-slate-600 hover:text-slate-800'
+          }`}
           style={{ paddingLeft: `${depth * 16 + 16}px` }}
         >
           <span
-            className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-white' : 'text-slate-400 group-hover:text-blue-500'}`}
+            className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-white' : 'text-slate-400 group-hover:text-orange-500'}`}
           >
             {getFolderIcon(folder)}
           </span>
-          <span
-            className={`text-sm truncate ${isSelected ? 'font-bold' : 'font-semibold'}`}
-          >
+          <span className={`text-sm truncate ${isSelected ? 'font-bold' : 'font-semibold'}`}>
             {getFolderName(folder)}
           </span>
           {folder.unreadCount > 0 && (
             <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ltr:ml-2 ltr:mr-2 rtl:ml-2 shadow-xs border ${isSelected
-                ? 'bg-white/20 text-white border-white/20'
-                : 'bg-blue-50 text-blue-600 border-blue-100'
-                }`}
+              className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ltr:ml-2 ltr:mr-2 rtl:ml-2 shadow-xs border ${
+                isSelected
+                  ? 'bg-white/20 text-white border-white/20'
+                  : 'bg-orange-50 text-orange-600 border-orange-100'
+              }`}
             >
               {folder.unreadCount}
             </span>
@@ -112,8 +110,9 @@ const FolderTree = ({
               className={`ltr:ml-2 ltr:mr-2 rtl:ml-2 p-1 rounded-lg transition-colors ${isSelected ? 'hover:bg-white/10' : 'hover:bg-slate-200'}`}
             >
               <ChevronRight
-                className={`w-4 h-4 transition-transform duration-300 ${isSelected ? 'text-white' : 'text-slate-400'} ${isExpanded ? 'rotate-90' : ''
-                  }`}
+                className={`w-4 h-4 transition-transform duration-300 ${isSelected ? 'text-white' : 'text-slate-400'} ${
+                  isExpanded ? 'rotate-90' : ''
+                }`}
               />
             </div>
           )}
@@ -145,16 +144,26 @@ const FolderTree = ({
 
     const getSystemOrder = (type) => {
       switch (type) {
-        case 'inbox': return 1;
-        case 'sent': return 2;
-        case 'drafts': return 3;
-        case 'trash': return 4;
-        case 'spam': return 5;
-        case 'archive': return 6;
-        case 'outbox': return 7;
-        case 'starred': return 8;
-        case 'important': return 9;
-        default: return 99;
+        case 'inbox':
+          return 1;
+        case 'sent':
+          return 2;
+        case 'drafts':
+          return 3;
+        case 'trash':
+          return 4;
+        case 'spam':
+          return 5;
+        case 'archive':
+          return 6;
+        case 'outbox':
+          return 7;
+        case 'starred':
+          return 8;
+        case 'important':
+          return 9;
+        default:
+          return 99;
       }
     };
 
@@ -198,9 +207,11 @@ const FolderTree = ({
         {otherFolders.length > 8 && (
           <button
             onClick={onToggleShowAll}
-            className="text-[10px] font-bold text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100/50 transition-all"
+            className="text-[10px] font-bold text-orange-600 hover:text-orange-800 uppercase tracking-widest bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100/50 transition-all"
           >
-            {showAll ? t('mailboxes.collapse') : t('mailboxes.more_folders', { count: otherFolders.length - 8 })}
+            {showAll
+              ? t('mailboxes.collapse')
+              : t('mailboxes.more_folders', { count: otherFolders.length - 8 })}
           </button>
         )}
       </div>

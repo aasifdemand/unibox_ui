@@ -11,6 +11,12 @@
         "templates": "Mẫu",
         "subscription": "Đăng ký",
         "settings": "Cài đặt",
+        "crm": "CRM",
+        "email_campaigns": "Chiến dịch Email",
+        "email_accounts": "Tài khoản Email",
+        "contacts": "Liên hệ",
+        "global_analytics": "Phân tích",
+        "integrations": "Tích hợp",
         "navigation": "Điều hướng",
         "active": "Đang hoạt động",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "Bạn có chắc chắn muốn kết thúc phiên bảng điều khiển hiện tại của mình không? Bạn sẽ cần phải xác thực lại.",
             "confirm": "Xác nhận Đăng xuất",
             "cancel": "Duy trì trạng thái đăng nhập"
-        }
+        },
+        "admin": "Quản trị viên",
+        "administrator": "Quản trị viên",
+        "user": "Người dùng",
+        "u": "Bạn"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Mọi quyền được bảo lưu.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "Hoặc đăng ký với",
             "already_account": "Đã có tài khoản?",
             "sign_in_link": "Đăng nhập"
+        },
+        "layout": {
+            "platform_live": "Nền t��ng trực tiếp",
+            "title_main": "Cách thông minh hơn để",
+            "title_span": "chạy tiếp cận",
+            "subtitle": "Unibox kết hợp khả năng làm giàu AI, sắp xếp thông minh và hộp thư trả lời thống nhất — tất cả trong một nền tảng.",
+            "trusted_by": "Được tin cậy bởi",
+            "teams": "đội tiếp cận"
         }
     },
     "pwa": {
@@ -171,7 +189,7 @@
         "linked_yet": "đã liên kết chưa",
         "connect_description_centralize": "Kết nối các tài khoản email của tổ chức để tập trung việc tiếp cận và quản lý của bạn.",
         "table_mailbox": "Hộp Thư",
-        "table_email": "Email",
+        "table_email": "E-mail",
         "table_status": "Trạng thái",
         "table_volume": "Khối lượng",
         "table_last_sync": "Đồng bộ hóa lần cuối",
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "Chiến dịch",
         "subtitle": "Tiếp cận",
+        "sequence_details": "Chi tiết trình tự",
         "header_description": "Tạo và theo dõi các chiến dịch email của bạn.",
         "header_subtitle": "Quản lý và theo dõi các chiến dịch email của bạn",
         "create_campaign": "Tạo chiến dịch",
@@ -303,6 +322,7 @@
         "campaign_date": "Ngày Chiến dịch",
         "empty_log_title": "Nhật ký hoạt động trống",
         "empty_log_subtitle": "Quét ma trận hoàn tất. Không tìm thấy nội dung chiến dịch nào.",
+        "create_first_campaign": "Tạo Chiến dịch Đầu tiên",
         "launch_protocol": "Giao thức khởi chạy",
         "no_subject": "KHÔNG CÓ CHỦ ĐỀ",
         "status_created": "TẠO",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "Viết chuỗi email của bạn",
         "step_setup": "Thiết lập",
         "step_setup_desc": "Định cấu hình chiến dịch của bạn",
+        "schedule_timing": "Lịch trình & Thời gian",
+        "advanced_settings": "Cài đặt nâng cao",
         "step_final_review": "Đánh giá cuối cùng",
         "step_final_review_desc": "Kiểm tra lần cuối và khởi chạy",
         "error_add_content": "Vui lòng thêm một số nội dung vào email {{mode}} của bạn trước khi tiếp tục.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "Liên kết hủy đăng ký",
         "recipients_senders": "Người nhận & Người gửi",
         "setup_audience": "Thiết lập đối tượng và tài khoản cho chiến dịch của bạn",
+        "sender_accounts": "Gửi tài khoản",
+        "active_senders": "Tài khoản đang hoạt động",
+        "select_accounts_desc": "Kết nối các tài khoản với chuỗi này",
+        "choose_senders_btn": "Chọn tài khoản",
+        "configure_schedule_btn": "Cấu hình lịch trình",
+        "modify_settings_btn": "Sửa đổi cài đặt",
+        "sender_rotation": "Xoay vòng tài khoản",
+        "account_health": "Tình trạng tài khoản",
+        "trust_score": "Điểm",
+        "optimal_delivery": "Giao hàng tối ưu",
+        "intelligent_sending": "Gửi thông minh",
+        "sender_rotation_count": "Xoay vòng người gửi ({{count}})",
+        "more_accounts": "+{{count}} thêm tài khoản",
+        "no_sender_set": "Chưa đặt người gửi",
+        "confirm_selection": "Xác nhận lựa chọn",
+        "high_inboxing_enabled": "Đã bật phân phối tối ưu",
         "add_contacts": "Thêm liên hệ",
         "add_sender": "Thêm người gửi",
         "selected_audience": "Đối tượng được chọn",
@@ -795,8 +833,8 @@
                 "gmail": "Google Gmail",
                 "outlook": "Microsoft Outlook",
                 "smtp": "SMTP tùy chỉnh",
-                "bulk": "Nhập số lượng lớn",
                 "smtp_desc": "Thiết lập thủ công",
+                "bulk": "Nhập số lượng lớn",
                 "bulk_desc": "Tải lên XLSX"
             },
             "secure_title": "Bảo mật cấp doanh nghiệp",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "Kết nối với Google Mail",
             "btn_connect_outlook": "Kết nối với Thư Microsoft Outlook",
+            "smtp_success": "Kết nối SMTP thành công",
+            "smtp_fail": "Kết nối SMTP không thành công",
+            "imap_success": "Kết nối IMAP thành công",
+            "imap_fail": "Kết nối IMAP không thành công",
+            "empty_provider": "Chọn nhà cung cấp",
+            "empty_desc": "Chọn Gmail, Outlook hoặc SMTP tùy chỉnh ở trên.",
+            "encrypted_note": "Mã hóa hai đầu",
+            "smtp_config_note": "Nếu bạn để trống những mục này, chúng tôi sẽ cố gắng tự động sử dụng cài đặt gửi của bạn.",
             "bulk": {
                 "title": "Tài khoản tải lên hàng loạt",
                 "desc": "Tải lên tệp Excel (.xlsx) với các cột: email, tên miền, mật khẩu, loại (aapanel/postal), first_name, Last_name.",
@@ -876,16 +922,8 @@
             "err_no_headers": "Không tìm thấy tiêu đề trong tệp",
             "err_read_fail": "Không thể đọc tệp",
             "err_map_required": "Vui lòng ánh xạ tất cả các trường bắt buộc",
-            "smtp_success": "Kết nối SMTP thành công",
-            "smtp_fail": "Kết nối SMTP không thành công",
-            "imap_success": "Kết nối IMAP thành công",
-            "imap_fail": "Kết nối IMAP không thành công",
             "bulk_success": "Tải lên hàng loạt thành công",
-            "bulk_error": "Tải lên hàng loạt không thành công",
-            "empty_provider": "Chọn nhà cung cấp",
-            "empty_desc": "Chọn Gmail, Outlook hoặc SMTP tùy chỉnh ở trên.",
-            "encrypted_note": "Mã hóa hai đầu",
-            "smtp_config_note": "Nếu bạn để trống những mục này, chúng tôi sẽ cố gắng tự động sử dụng cài đặt gửi của bạn."
+            "bulk_error": "Tải lên hàng loạt không thành công"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "Dòng chủ đề của bạn đang tạo được tiếng vang tốt! Hãy cân nhắc việc nhân đôi phong cách 'khoảng cách tò mò' mà bạn hiện đang sử dụng.",
         "rec_conversion_low": "Số câu trả lời thấp. Hãy thử thêm 'Kêu gọi hành động' (CTA) rõ ràng hơn hoặc một câu hỏi nhẹ nhàng như 'Điều này có hữu ích không?' để giảm ma sát.",
         "rec_conversion_high": "Chuyển đổi tuyệt vời! Đề xuất giá trị của bạn rất rõ ràng. Đảm bảo đội ngũ bán hàng của bạn sẽ theo dõi trong vòng 4 giờ để có kết qu�� tốt nhất."
+    },
+    "crm": {
+        "title": "Tích hợp CRM",
+        "subtitle": "Trung tâm doanh thu",
+        "pipeline": "Đường ống",
+        "description": "Kết nối không gian làm việc tiếp cận cộng đồng của bạn với CRM yêu thích để tự động đồng bộ hóa khách hàng tiềm năng và ghi nhật ký hoạt động.",
+        "drag_desc": "Kéo dẫn giữa các giai đoạn. Nhấp vào bất kỳ thẻ nào để xem chi tiết và đặt giá trị giao dịch.",
+        "connect_crm": "Kết nối CRM",
+        "add_column": "Thêm cột",
+        "all_campaigns": "Tất cả chiến dịch",
+        "total": "Tổng cộng",
+        "value": "Giá trị",
+        "leads_label": "Dẫn",
+        "drop_leads": "Thả khách hàng tiềm năng tại đây",
+        "loading": "đang tải...",
+        "build_funnel": "Xây dựng kênh của bạn",
+        "add_first_col": "Thêm cột đầu tiên của bạn để bắt đầu theo dõi khách hàng tiềm năng qua các giai đoạn.",
+        "create_initial": "Tạo Cột Đầu Tiên",
+        "footer_msg1": "Dẫn đầu tự động tiến triển khi",
+        "footer_msg2": "Ý định trả lời",
+        "footer_msg3": "được phát hiện",
+        "search_placeholder": "Tìm đầu mối...",
+        "stages": {
+            "leads": "Khách hàng tiềm năng mới",
+            "contacted": "Đã liên hệ",
+            "replied": "Đã trả lời",
+            "meeting_booked": "Đã đặt cuộc họp",
+            "closed": "Đã đóng",
+            "bounced": "Bị trả lại",
+            "unsubscribed": "Hủy đăng ký"
+        },
+        "lead_card": {
+            "last_activity": "Hoạt động gần đây nhất:",
+            "campaign": "Chiến dịch:",
+            "view_profile": "Xem hồ sơ"
+        },
+        "connect": "Kết nối",
+        "connected": "Đã kết nối",
+        "status_ready": "Sẵn sàng đồng bộ",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Đồng bộ hóa danh bạ và ghi lại các sự kiện theo dòng thời gian."
+        },
+        "salesforce": {
+            "title": "Lực lượng bán hàng",
+            "desc": "Quản lý khách hàng tiềm năng và cơ hội trong thời gian thực."
+        },
+        "pipedrive": {
+            "title": "Ổ đĩa đường ống",
+            "desc": "Theo dõi tiến trình giao dịch và nhật ký hoạt động."
+        },
+        "add_column_modal_title": "Thêm cột mới",
+        "column_name_label": "Tên cột",
+        "column_name_placeholder": "ví dụ: Khách hàng tiềm năng đủ điều kiện",
+        "select_color_label": "Chọn màu cột",
+        "link_intent_label": "Liên kết đến Ý định AI (Tùy chọn)",
+        "link_intent_desc": "Khách hàng tiềm năng có mục đích này sẽ tự động di chuyển đến đây",
+        "select_intent_placeholder": "Chọn ý định...",
+        "add_column_btn": "Thêm cột",
+        "cancel_btn": "Hủy",
+        "status": "Sẵn sàng đồng bộ hóa"
+    },
+    "integrations": {
+        "header_title": "Tích hợp",
+        "header_subtitle": "Chợ",
+        "header_desc": "Kết nối các công cụ dữ liệu và CRM yêu thích của bạn để tự động hóa quy trình tiếp cận của bạn.",
+        "search_placeholder": "Tích hợp tìm kiếm (HubSpot, Salesforce, Instant...)",
+        "no_results": "Không tìm thấy tích hợp nào phù hợp với tìm kiếm của bạn.",
+        "connect_btn": "Kết nối",
+        "disconnect_btn": "Ngắt kết nối",
+        "disconnecting_btn": "Đang ngắt kết nối...",
+        "disconnecting": "Đang ngắt kết nối khỏi {{name}}...",
+        "connected": "Đã kết nối",
+        "never_synced": "Chưa bao giờ được đồng bộ hóa",
+        "learn_how": "Tìm hiểu cách thức",
+        "connect_app": "+ Kết nối ứng dụng",
+        "confirm_disconnect_title": "Xác nhận ngắt kết nối",
+        "confirm_disconnect_desc1": "Bạn có chắc chắn muốn ngắt kết nối",
+        "confirm_disconnect_desc2": "? Unibox sẽ không thể đồng bộ hóa khách hàng tiềm năng hoặc dữ liệu với dịch vụ này nữa.",
+        "disconnect_success": "Đã ngắt kết nối thành công khỏi {{name}}",
+        "complete_connection": "Kết nối hoàn chỉnh",
+        "verify_oauth_desc": "Chúng tôi đã mở trang đăng nhập {{name}} trong tab mới. Khi bạn đã đăng nhập thành công và ủy quyền cho ��ng dụng, hãy nhấp vào nút bên dưới để hoàn tất kết nối.",
+        "oauth_initiating": "Đang khởi tạo luồng OAuth 2.0 cho {{name}}...",
+        "oauth_success": "Đã kết nối với {{name}} qua OAuth!",
+        "api_key_label": "Khóa truy cập API",
+        "api_key_placeholder": "Nhập khóa API {{name}} của bạn...",
+        "api_key_desc": "Bạn có thể tìm thấy khóa API của mình trong cài đặt bảng thông tin {{name}}. Chúng tôi mã hóa khóa này để bảo mật cho bạn.",
+        "verify_btn": "Xác minh & Kết nối",
+        "verifying_btn": "Đang xác minh...",
+        "upcoming_connections": "Kết nối sắp tới",
+        "stay_tuned": "Chúng tôi liên tục bổ sung thêm các tích hợp mới. Hãy theo dõi để biết thêm!",
+        "secure": "Bảo mật",
+        "complete_auth": "Hoàn thành ủy quyền {{name}}",
+        "types": {
+            "crm": "CRM",
+            "data": "Dữ liệu",
+            "outreach": "Tiếp cận"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "Đồng bộ hóa khách hàng tiềm năng và hoạt động của bạn với HubSpot CRM bằng luồng OAuth kết nối chỉ bằng 1 cú nhấp chuột."
+            },
+            "salesforce": {
+                "desc": "Kết nối quy trình làm việc doanh nghiệp của bạn với luồng Máy chủ Web Salesforce."
+            },
+            "instantly": {
+                "desc": "Kết nối các chiến dịch Instantly.ai của bạn để đồng bộ hóa tiếp cận liền mạch."
+            },
+            "apollo": {
+                "desc": "Làm phong phú thêm khách hàng tiềm năng của bạn với thông tin chi tiết về cơ sở dữ liệu B2B của Apollo.io."
+            },
+            "leadmagic": {
+                "desc": "Làm phong phú thêm dữ liệu dẫn đầu bằng dữ liệu công ty thông qua Leadmagic X-API-Key."
+            },
+            "clay": {
+                "desc": "Đồng bộ hóa dữ liệu gửi đi với các bảng Clay thông qua API JSON HTTP của chúng."
+            }
+        }
     }
 }

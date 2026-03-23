@@ -1,4 +1,4 @@
-import { Lock, ShieldCheck, Save, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { Lock, ShieldCheck, Save, Loader2, CheckCircle, XCircle, Chrome } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Input from '../../../../components/ui/input';
@@ -7,8 +7,9 @@ import { useChangePassword } from '../../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 
-const SecurityTab = () => {
+const SecurityTab = ({ user }) => {
   const { t } = useTranslation();
+  const isGoogleUser = !!user?.googleId;
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -32,7 +33,7 @@ const SecurityTab = () => {
   const getStrengthColor = () => {
     if (passwordStrength <= 2) return 'bg-red-500';
     if (passwordStrength <= 3) return 'bg-yellow-500';
-    if (passwordStrength <= 4) return 'bg-blue-500';
+    if (passwordStrength <= 4) return 'bg-orange-500';
     return 'bg-green-500';
   };
 
@@ -89,157 +90,184 @@ const SecurityTab = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid gap-10">
-          {/* Current Password */}
-          <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
-              {t('settings.security.current_password')}
-            </label>
-            <Input.Password
-              icon={Lock}
-              placeholder="••••••••"
-              value={formData.currentPassword}
-              onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
-              required
-              className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* New Password */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
-                {t('settings.security.new_password')}
-              </label>
-              <Input.Password
-                icon={ShieldCheck}
-                placeholder="••••••••"
-                value={formData.newPassword}
-                onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                required
-                className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
-              />
-
-              {/* Password Strength Indicator */}
-              {formData.newPassword && (
-                <div className="mt-6 space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                      {t('settings.security.strength', { level: getStrengthText() })}
-                    </span>
-                    <span className="text-[10px] font-black text-slate-400">
-                      {passwordStrength}/5
-                    </span>
-                  </div>
-                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                    <div
-                      className={`h-full ${getStrengthColor()} transition-all duration-300 shadow-sm`}
-                      style={{ width: `${strengthPercentage}%` }}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-2.5 mt-4">
-                    <div className="flex items-center gap-3">
-                      {passwordChecks.minLength ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
-                      )}
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        {t('settings.security.checks.min_chars')}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {passwordChecks.hasUpperCase ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
-                      )}
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        {t('settings.security.checks.upper')}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {passwordChecks.hasLowerCase ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
-                      )}
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        {t('settings.security.checks.lower')}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {passwordChecks.hasNumber ? (
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5 text-slate-200" />
-                      )}
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                        {t('settings.security.checks.number')}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
+        {/* Google Auth Banner */}
+        {isGoogleUser && (
+          <div className="mb-8 flex items-start gap-4 p-5 rounded-lg bg-orange-50/60 border border-orange-100/70">
+            <div className="w-9 h-9 rounded-md bg-white border border-orange-100 flex items-center justify-center shrink-0 shadow-sm">
+              <Chrome className="w-4.5 h-4.5 text-orange-500" />
             </div>
+            <div>
+              <p className="text-xs font-black text-slate-800 uppercase tracking-widest mb-1">
+                {t('settings.security.google_auth_title', 'Signed in with Google')}
+              </p>
+              <p className="text-[10px] font-bold text-slate-500 leading-relaxed">
+                {t(
+                  'settings.security.google_auth_desc',
+                  'Your account uses Google for authentication. Password management is handled through your Google account.',
+                )}
+              </p>
+            </div>
+          </div>
+        )}
 
-            {/* Confirm New Password */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
-                {t('settings.security.confirm_password')}
-              </label>
-              <Input.Password
-                icon={ShieldCheck}
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                required
-                className="bg-white/50 border-slate-200/60 rounded-2xl h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-blue-500/10"
-              />
+        <form onSubmit={handleSubmit}>
+          <fieldset
+            disabled={isGoogleUser}
+            className={isGoogleUser ? 'opacity-40 pointer-events-none select-none' : ''}
+          >
+            <div className="grid gap-10">
+              {/* Current Password */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+                  {t('settings.security.current_password')}
+                </label>
+                <Input.Password
+                  icon={Lock}
+                  placeholder="••••••••"
+                  value={formData.currentPassword}
+                  onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
+                  required
+                  className="bg-white/50 border-slate-200/60 rounded-lg h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-orange-500/10"
+                />
+              </div>
 
-              {/* Password Match Indicator */}
-              {formData.confirmPassword && (
-                <div className="mt-4 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/50 border border-slate-100/50">
-                  {formData.newPassword === formData.confirmPassword ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                {/* New Password */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+                    {t('settings.security.new_password')}
+                  </label>
+                  <Input.Password
+                    icon={ShieldCheck}
+                    placeholder="••••••••"
+                    value={formData.newPassword}
+                    onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                    required
+                    className="bg-white/50 border-slate-200/60 rounded-lg h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-orange-500/10"
+                  />
+
+                  {/* Password Strength Indicator */}
+                  {formData.newPassword && (
+                    <div className="mt-6 space-y-4 bg-slate-50/50 p-4 rounded-lg border border-slate-100/50">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                          {t('settings.security.strength', { level: getStrengthText() })}
+                        </span>
+                        <span className="text-[10px] font-black text-slate-400">
+                          {passwordStrength}/5
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                        <div
+                          className={`h-full ${getStrengthColor()} transition-all duration-300 shadow-sm`}
+                          style={{ width: `${strengthPercentage}%` }}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-2.5 mt-4">
+                        <div className="flex items-center gap-3">
+                          {passwordChecks.minLength ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-slate-200" />
+                          )}
+                          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            {t('settings.security.checks.min_chars')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {passwordChecks.hasUpperCase ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-slate-200" />
+                          )}
+                          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            {t('settings.security.checks.upper')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {passwordChecks.hasLowerCase ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-slate-200" />
+                          )}
+                          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            {t('settings.security.checks.lower')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {passwordChecks.hasNumber ? (
+                            <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
+                          ) : (
+                            <XCircle className="w-3.5 h-3.5 text-slate-200" />
+                          )}
+                          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                            {t('settings.security.checks.number')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Confirm New Password */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1">
+                    {t('settings.security.confirm_password')}
+                  </label>
+                  <Input.Password
+                    icon={ShieldCheck}
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    required
+                    className="bg-white/50 border-slate-200/60 rounded-lg h-12 text-sm font-bold placeholder:text-slate-300 focus:ring-orange-500/10"
+                  />
+
+                  {/* Password Match Indicator */}
+                  {formData.confirmPassword && (
+                    <div className="mt-4 flex items-center gap-2.5 px-3 py-2 rounded-md bg-slate-50/50 border border-slate-100/50">
+                      {formData.newPassword === formData.confirmPassword ? (
+                        <>
+                          <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-orange-600">
+                            {t('settings.security.match')}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="w-3.5 h-3.5 text-red-500" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-red-600">
+                            {t('settings.security.mismatch')}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-10 mt-6 border-t border-slate-100/50 flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={changePassword.isPending || isGoogleUser}
+                  className="bg-orange-600 hover:bg-black text-white px-10 py-3 rounded-lg shadow-sm shadow-orange-500/20 hover:shadow-black/20 transition-all duration-300 active:scale-95 text-[11px] font-black uppercase tracking-widest"
+                >
+                  {changePassword.isPending ? (
                     <>
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
-                        {t('settings.security.match')}
-                      </span>
+                      <Loader2 className="w-4 h-4 ltr:mr-3 rtl:ml-3 animate-spin" />
+                      {t('settings.security.updating')}
                     </>
                   ) : (
                     <>
-                      <XCircle className="w-3.5 h-3.5 text-red-500" />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-red-600">
-                        {t('settings.security.mismatch')}
-                      </span>
+                      <Save className="w-4 h-4 ltr:mr-3 rtl:ml-3" />
+                      {t('settings.security.change_password')}
                     </>
                   )}
-                </div>
-              )}
+                </Button>
+              </div>
             </div>
-          </div>
-
-          <div className="pt-10 mt-6 border-t border-slate-100/50 flex justify-end">
-            <Button
-              type="submit"
-              disabled={changePassword.isPending}
-              className="bg-blue-600 hover:bg-black text-white px-10 py-6 rounded-3xl shadow-xl shadow-blue-500/20 hover:shadow-black/20 transition-all duration-300 active:scale-95 text-[11px] font-black uppercase tracking-widest"
-            >
-              {changePassword.isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 ltr:mr-3 rtl:ml-3 animate-spin" />
-                  {t('settings.security.updating')}
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 ltr:mr-3 rtl:ml-3" />
-                  {t('settings.security.change_password')}
-                </>
-              )}
-            </Button>
-          </div>
+          </fieldset>
         </form>
       </div>
     </motion.div>

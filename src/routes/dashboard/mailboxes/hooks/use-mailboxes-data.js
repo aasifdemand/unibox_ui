@@ -1,9 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useMessageFilters } from './index';
+import { useDebounce } from '../../../../hooks/useDebounce';
 import {
   formatMessageDate,
   getSenderInfo,
@@ -67,6 +67,7 @@ export const useMailboxesData = () => {
   const [filterStarred, setFilterStarred] = useState(false);
   const [filterAttachments, setFilterAttachments] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 400);
   const [dateRange, setDateRange] = useState('all');
 
   const [isComposing, setIsComposing] = useState(false);
@@ -76,8 +77,9 @@ export const useMailboxesData = () => {
   // Mailbox list state
   const [mailboxPage, setMailboxPage] = useState(1);
   const [mailboxSearch, setMailboxSearch] = useState('');
-  const [mailboxViewMode, setMailboxViewMode] = useState('grid');
-  const [mailboxTypeFilter, setMailboxTypeFilter] = useState('all');
+  const debouncedMailboxSearch = useDebounce(mailboxSearch, 400);
+
+  const [mailboxTypeFilter, setMailboxTypeFilter] = useState([]);
   const [selectedSenderIds, setSelectedSenderIds] = useState([]);
   const MAILBOX_PAGE_SIZE = 10;
 
@@ -97,8 +99,12 @@ export const useMailboxesData = () => {
   } = useMailboxes({
     page: mailboxPage,
     limit: MAILBOX_PAGE_SIZE,
-    search: mailboxSearch,
-    type: mailboxTypeFilter,
+    search: debouncedMailboxSearch,
+    type: Array.isArray(mailboxTypeFilter)
+      ? mailboxTypeFilter.length > 0
+        ? mailboxTypeFilter.join(',')
+        : 'all'
+      : mailboxTypeFilter || 'all',
   });
 
   const bulkDeleteSenders = useBulkDeleteSenders();
@@ -114,14 +120,14 @@ export const useMailboxesData = () => {
     selectedFolder,
     currentMessageId,
     PAGE_SIZE,
-    searchQuery,
+    debouncedSearchQuery,
   );
   const outlook = useOutlookData(
     selectedMailbox,
     selectedFolder,
     currentMessageId,
     PAGE_SIZE,
-    searchQuery,
+    debouncedSearchQuery,
   );
   const smtp = useSmtpData(
     selectedMailbox,
@@ -129,7 +135,7 @@ export const useMailboxesData = () => {
     currentMessageId,
     currentPage,
     PAGE_SIZE,
-    searchQuery,
+    debouncedSearchQuery,
   );
 
   // Helpers to get the right provider data
@@ -150,7 +156,7 @@ export const useMailboxesData = () => {
   const messages = useMemo(() => {
     if (!selectedMailbox || !provider) return [];
 
-    if (searchQuery) {
+    if (debouncedSearchQuery) {
       const searchData = provider.queries.search?.data;
       if (selectedMailbox.type === 'smtp') return searchData?.messages || [];
       return searchData?.pages?.flatMap((p) => p.messages) || [];
@@ -190,7 +196,7 @@ export const useMailboxesData = () => {
       if (isFolderType(selectedFolder, 'outbox')) return getMsgs(q.outbox);
       if (isFolderType(selectedFolder, 'drafts')) return getMsgs(q.drafts);
 
-      // If it's a special folder but not one of the above, it's safer to return [] 
+      // If it's a special folder but not one of the above, it's safer to return []
       // while loading or if it's disabled in useOutlookData.
       if (provider.queries?.isSpecialFolder) {
         return [];
@@ -215,7 +221,7 @@ export const useMailboxesData = () => {
     }
 
     return [];
-  }, [selectedMailbox, selectedFolder, currentPage, searchQuery, provider?.queries]);
+  }, [selectedMailbox, selectedFolder, currentPage, debouncedSearchQuery, provider?.queries]);
 
   const folders = useMemo(() => {
     if (!selectedMailbox) return [];
@@ -239,7 +245,7 @@ export const useMailboxesData = () => {
     filterUnread,
     filterStarred,
     filterAttachments,
-    searchQuery,
+    searchQuery: debouncedSearchQuery,
     dateRange,
   });
 
@@ -249,7 +255,7 @@ export const useMailboxesData = () => {
   useEffect(() => {
     if (!selectedMailbox || !provider) return;
 
-    if (searchQuery) {
+    if (debouncedSearchQuery) {
       const searchData = provider.queries.search?.data;
       if (selectedMailbox.type === 'smtp') {
         setHasNextPage(false);
@@ -257,7 +263,12 @@ export const useMailboxesData = () => {
       } else {
         setHasNextPage(provider.queries.search.hasNextPage);
         const firstSearchPage = searchData?.pages?.[0];
-        setTotalMessages(firstSearchPage?.totalResults || firstSearchPage?.resultSizeEstimate || firstSearchPage?.count || 0);
+        setTotalMessages(
+          firstSearchPage?.totalResults ||
+            firstSearchPage?.resultSizeEstimate ||
+            firstSearchPage?.count ||
+            0,
+        );
       }
       return;
     }
@@ -286,16 +297,24 @@ export const useMailboxesData = () => {
                     : q.messages;
 
       // Use specialized count from folder metadata if available (immediate and accurate)
-      const folderTotal = selectedFolder?.totalItemCount || selectedFolder?.messagesTotal || selectedFolder?.totalCount || selectedFolder?.itemCount;
+      const folderTotal =
+        selectedFolder?.totalItemCount ||
+        selectedFolder?.messagesTotal ||
+        selectedFolder?.totalCount ||
+        selectedFolder?.itemCount;
 
       const firstPage = query.data?.pages?.[0];
-      const queryTotal = firstPage?.totalResults || firstPage?.resultSizeEstimate || firstPage?.count;
+      const queryTotal =
+        firstPage?.totalResults || firstPage?.resultSizeEstimate || firstPage?.count;
 
-      total = folderTotal || queryTotal ||
+      total =
+        folderTotal ||
+        queryTotal ||
         query.data?.pages?.reduce((acc, p) => {
           const msgs = p?.messages || p?.drafts || p || [];
           return acc + (Array.isArray(msgs) ? msgs.length : 0);
-        }, 0) || 0;
+        }, 0) ||
+        0;
       hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === 'outlook') {
       const query = !selectedFolder
@@ -317,16 +336,23 @@ export const useMailboxesData = () => {
                       : q.messages;
 
       // Use totalResults or count from the first page, prioritizing folder metadata
-      const folderTotal = selectedFolder?.totalItemCount || selectedFolder?.totalCount || selectedFolder?.itemCount || selectedFolder?.count;
+      const folderTotal =
+        selectedFolder?.totalItemCount ||
+        selectedFolder?.totalCount ||
+        selectedFolder?.itemCount ||
+        selectedFolder?.count;
 
       const firstPage = query.data?.pages?.[0];
       const queryTotal = firstPage?.count || firstPage?.totalResults;
 
-      total = folderTotal || queryTotal ||
+      total =
+        folderTotal ||
+        queryTotal ||
         query.data?.pages?.reduce((acc, p) => {
           const msgs = p?.messages || p?.value || p || [];
           return acc + (Array.isArray(msgs) ? msgs.length : 0);
-        }, 0) || 0;
+        }, 0) ||
+        0;
       hasNext = query.hasNextPage;
     } else if (selectedMailbox.type === 'smtp') {
       const query = !selectedFolder
@@ -350,7 +376,7 @@ export const useMailboxesData = () => {
     setTotalMessages(total);
     setHasNextPage(hasNext);
     setHasPreviousPage(currentPage > 1);
-  }, [selectedMailbox, selectedFolder, currentPage, searchQuery, provider?.queries]);
+  }, [selectedMailbox, selectedFolder, currentPage, debouncedSearchQuery, provider?.queries]);
 
   useEffect(() => {
     if (selectedFolder) {
@@ -382,12 +408,13 @@ export const useMailboxesData = () => {
   }, []);
 
   const handleMailboxTypeChange = useCallback((type) => {
-    setMailboxTypeFilter(type);
+    setMailboxTypeFilter((prev) => {
+      const current = Array.isArray(prev) ? prev : [];
+      if (type === 'all') return [];
+      if (current.includes(type)) return current.filter((t) => t !== type);
+      return [...current, type];
+    });
     setMailboxPage(1);
-  }, []);
-
-  const handleToggleMailboxViewMode = useCallback(() => {
-    setMailboxViewMode((prev) => (prev === 'grid' ? 'list' : 'grid'));
   }, []);
 
   const handleSelectFolder = useCallback((folder) => {
@@ -672,6 +699,26 @@ export const useMailboxesData = () => {
     }
   }, [selectedMailbox, provider, selectedFolder]);
 
+  const handleMailboxSync = useCallback(
+    async (mailboxId, type) => {
+      try {
+        let mut;
+        if (type === 'gmail') mut = gmail.mutations.sync;
+        else if (type === 'outlook') mut = outlook.mutations.sync;
+        else if (type === 'smtp') mut = smtp.mutations.sync;
+
+        if (!mut) return;
+
+        await mut.mutateAsync({ mailboxId });
+        toast.success('Mailbox sync started');
+        refetchMailboxes();
+      } catch (e) {
+        toast.error('Failed to start sync');
+      }
+    },
+    [gmail.mutations, outlook.mutations, smtp.mutations, refetchMailboxes],
+  );
+
   const handleRefreshToken = useCallback(async () => {
     if (!selectedMailbox || !provider || selectedMailbox.type === 'smtp') return;
     try {
@@ -705,7 +752,7 @@ export const useMailboxesData = () => {
       const q = provider?.queries;
       let activeQuery = null;
 
-      if (searchQuery && q?.search) {
+      if (debouncedSearchQuery && q?.search) {
         activeQuery = q.search;
       } else if (selectedMailbox.type === 'gmail') {
         activeQuery = !selectedFolder
@@ -751,7 +798,7 @@ export const useMailboxesData = () => {
     }
 
     setCurrentPage((prev) => prev + 1);
-  }, [hasNextPage, selectedMailbox, provider, searchQuery, selectedFolder, currentPage]);
+  }, [hasNextPage, selectedMailbox, provider, debouncedSearchQuery, selectedFolder, currentPage]);
 
   const handlePreviousPage = useCallback(() => {
     if (hasPreviousPage) setCurrentPage((prev) => prev - 1);
@@ -865,7 +912,7 @@ export const useMailboxesData = () => {
       mailboxPage,
       mailboxSearch,
       mailboxTypeFilter,
-      mailboxViewMode,
+
       currentPage,
       hasNextPage,
       hasPreviousPage,
@@ -888,7 +935,7 @@ export const useMailboxesData = () => {
         if (!selectedMailbox) return 0;
         const f = folders || [];
 
-        const inboxFolder = f.find(item => isFolderType(item, 'inbox'));
+        const inboxFolder = f.find((item) => isFolderType(item, 'inbox'));
         if (selectedMailbox.type === 'gmail') {
           return inboxFolder?.messagesUnread || 0;
         }
@@ -898,7 +945,9 @@ export const useMailboxesData = () => {
         if (selectedMailbox.type === 'smtp') {
           // SMTP folders are structured differently in the API response sometimes
           const smtpFolders = f.folders || f;
-          const smtpInbox = Array.isArray(smtpFolders) ? smtpFolders.find(item => isFolderType(item, 'inbox')) : null;
+          const smtpInbox = Array.isArray(smtpFolders)
+            ? smtpFolders.find((item) => isFolderType(item, 'inbox'))
+            : null;
           return smtpInbox?.unreadCount || 0;
         }
         return 0;
@@ -920,21 +969,32 @@ export const useMailboxesData = () => {
 
         const activeQuery = !selectedFolder
           ? q.messages
-          : isFolderType(selectedFolder, 'sent') ? q.sent
-            : isFolderType(selectedFolder, 'trash') ? q.trash
-              : isFolderType(selectedFolder, 'spam') ? q.spam
-                : isFolderType(selectedFolder, 'starred') ? q.starred
-                  : isFolderType(selectedFolder, 'important') ? q.important
-                    : isFolderType(selectedFolder, 'drafts') ? q.drafts
-                      : isFolderType(selectedFolder, 'archive') ? q.archive
-                        : isFolderType(selectedFolder, 'outbox') ? q.outbox
+          : isFolderType(selectedFolder, 'sent')
+            ? q.sent
+            : isFolderType(selectedFolder, 'trash')
+              ? q.trash
+              : isFolderType(selectedFolder, 'spam')
+                ? q.spam
+                : isFolderType(selectedFolder, 'starred')
+                  ? q.starred
+                  : isFolderType(selectedFolder, 'important')
+                    ? q.important
+                    : isFolderType(selectedFolder, 'drafts')
+                      ? q.drafts
+                      : isFolderType(selectedFolder, 'archive')
+                        ? q.archive
+                        : isFolderType(selectedFolder, 'outbox')
+                          ? q.outbox
                           : q.messages;
 
         return activeQuery?.isLoading || activeQuery?.isFetching || activeQuery?.isFetchingNextPage;
       })(),
       isMessageLoading: provider?.queries.message?.isLoading,
       isSyncing: provider?.mutations.sync.isLoading,
-      isSending: provider?.mutations.sendMessage.isPending || provider?.mutations.reply.isPending || provider?.mutations.forward.isPending,
+      isSending:
+        provider?.mutations.sendMessage.isPending ||
+        provider?.mutations.reply.isPending ||
+        provider?.mutations.forward.isPending,
     },
     error: provider?.queries.messages.error || provider?.queries.search?.error,
     setters: {
@@ -956,7 +1016,6 @@ export const useMailboxesData = () => {
       setMailboxPage,
       setMailboxSearch,
       setMailboxTypeFilter,
-      setMailboxViewMode,
     },
     handlers: {
       handleSelectMailbox,
@@ -994,8 +1053,9 @@ export const useMailboxesData = () => {
       refetchMailboxes,
       handleMailboxPageChange,
       handleMailboxSearchChange,
-      handleToggleMailboxViewMode,
+
       handleMailboxTypeChange,
+      handleMailboxSync,
     },
     utils: {
       formatMessageDate,

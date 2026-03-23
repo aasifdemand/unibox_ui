@@ -1,24 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
+@theme {
+  /* Enforce Strict Apollo/Smartlead Minimalist Aesthetic Globally */
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 10px;
+  --radius-3xl: 12px;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.02);
+  --shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.03), 0 1px 2px -1px rgb(0 0 0 / 0.02);
+  --shadow-lg: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.02);
+  --shadow-xl: 0 10px 15px -3px rgb(0 0 0 / 0.04), 0 4px 6px -4px rgb(0 0 0 / 0.02);
+  --shadow-2xl: 0 15px 25px -4px rgb(0 0 0 / 0.04), 0 6px 10px -5px rgb(0 0 0 / 0.02);
+}
+
 :root {
-  --primary: #4f46e5;
-  --primary-glow: rgba(79, 70, 229, 0.3);
-  --secondary: #6366f1;
+  --primary: #ea580c;
+  --primary-glow: rgba(234, 88, 12, 0.3);
+  --secondary: #f97316;
   --accent: #f43f5e;
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
   --surface: #ffffff;
-  --background: #f8fafc;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --glass: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --shadow-sm: 0 2px 4px rgba(79, 70, 229, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(79, 70, 229, 0.08), 0 2px 4px -1px rgba(79, 70, 229, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(79, 70, 229, 0.08), 0 4px 6px -2px rgba(79, 70, 229, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(79, 70, 229, 0.04);
+  --background: #fdfdfd;
+  --text-main: #18181b;
+  --text-muted: #52525b;
+  --glass: #ffffff;
+  --glass-border: #e4e4e7;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 10px 15px rgba(0, 0, 0, 0.04);
 }
 
 body {
@@ -30,7 +44,7 @@ body {
   color: var(--text-main);
   background-color: var(--background);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale
 }
 
 h1,
@@ -43,49 +57,44 @@ h6 {
   letter-spacing: -0.02em;
 }
 
-
-
 .premium-card {
   background: var(--surface);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
 .premium-card:hover {
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
-  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(234, 88, 12, 0.2);
 }
 
 .glass-card {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface);
   border: 1px solid var(--glass-border);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-md);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
-  @apply bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200;
+  @apply bg-orange-600 text-white px-5 py-2.5 rounded-md text-[13px] font-semibold shadow-sm hover:bg-orange-700 transition-all duration-200;
 }
 
 .btn-secondary {
-  @apply bg-white text-slate-700 px-8 py-3 rounded-xl font-semibold border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all duration-200;
+  @apply bg-white text-zinc-700 px-5 py-2.5 rounded-md text-[13px] font-semibold border border-zinc-200 shadow-sm hover:bg-zinc-50 transition-all duration-200;
 }
 
 .input-premium {
-  @apply w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all duration-200 outline-none;
+  @apply w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-md text-[13px] focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all duration-200 outline-none shadow-sm;
 }
 
 .floating-sidebar {
-  @apply bg-white/80 backdrop-blur-xl border-r border-slate-200/60 shadow-2xl;
+  @apply bg-white border-r border-zinc-200;
 }
 
 .text-gradient {
-  @apply bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-orange-600 via-orange-600 to-red-600 bg-clip-text text-transparent;
 }
 
 /* Modal styles */
@@ -337,16 +346,28 @@ body.modal-open {
   font-style: italic;
 }
 
-/* Hide scrollbar for custom-scrollbar class */
+/* Styled scrollbar for Kanban/Lists */
 .custom-scrollbar::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }
 
 .custom-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
 }
 
 @keyframes shimmer {
@@ -367,4 +388,14 @@ body.modal-open {
   pointer-events: none;
   height: 0;
   font-style: italic;
+}
+
+/* CRM Focus Ring Kill */
+.crm-module *,
+.crm-module *:focus,
+.crm-module *:focus-visible,
+.crm-module *:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }

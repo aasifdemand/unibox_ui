@@ -1,6 +1,6 @@
 {
     "common": {
-        "email": "Email",
+        "email": "电子邮件",
         "dashboard": "仪表板",
         "growth_platform": "成长平台",
         "main_dashboard": "主仪表板",
@@ -11,6 +11,12 @@
         "templates": "模板",
         "subscription": "订阅",
         "settings": "设置",
+        "crm": "客户关系管理",
+        "email_campaigns": "Email Campaigns",
+        "email_accounts": "Email Accounts",
+        "contacts": "Contacts",
+        "global_analytics": "Analytics",
+        "integrations": "Integrations",
         "navigation": "导航",
         "active": "活跃",
         "status": {
@@ -19,7 +25,7 @@
             "scheduled": "预定",
             "completed": "已完成"
         },
-        "date": "Date",
+        "date": "日期",
         "search": "搜索",
         "documentation": "文档",
         "privacy": "隐私",
@@ -70,7 +76,11 @@
             "desc": "您确定要结束当前的仪表板会话吗？您将需要重新进行身份验证。",
             "confirm": "确认退出",
             "cancel": "保持登录状态"
-        }
+        },
+        "admin": "管理员",
+        "administrator": "管理员",
+        "user": "用户",
+        "u": "你"
     },
     "auth": {
         "copyright": "© {{year}} Unibox。版权所有。",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "或使用",
             "already_account": "注册已经有帐户？",
             "sign_in_link": "登录"
+        },
+        "layout": {
+            "platform_live": "平台直播",
+            "title_main": "更明智的方式",
+            "title_span": "开展外展",
+            "subtitle": "Unibox 将人工智能丰富、智能排序和统一回复收件箱结合在一个平台上。",
+            "trusted_by": "深受",
+            "teams": "信赖外展团队"
         }
     },
     "pwa": {
@@ -126,7 +144,7 @@
     "mailboxes": {
         "mail": "邮件",
         "subtitle": "账户",
-        "viewing_conversation": "Viewing Conversation",
+        "viewing_conversation": "查看对话",
         "connected_description": "{{count}} 连接的帐户已同步并准备就绪。",
         "conversation": "对话",
         "connected_accounts": "{{count}} 关联帐户",
@@ -159,7 +177,7 @@
         "showing": "显示",
         "prev": "上一页",
         "next": "下一页",
-        "status": "Status",
+        "status": "状态",
         "no_messages": "没有找到消息",
         "empty_search": "尝试不同的搜索词",
         "empty_unread": "没有未读消息",
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "活动",
         "subtitle": "外展",
+        "sequence_details": "序列详细信息",
         "header_description": "创建并跟踪您���电子邮件活动。",
         "header_subtitle": "管理和跟踪您的电子邮件营销活动",
         "create_campaign": "创建活动",
@@ -303,6 +322,7 @@
         "campaign_date": "活动日期",
         "empty_log_title": "清空操作日志",
         "empty_log_subtitle": "矩阵扫描完成。未找到活动资产。",
+        "create_first_campaign": "创建第一个营销活动",
         "launch_protocol": "启动协议",
         "no_subject": "没有主题",
         "status_created": "已创建",
@@ -311,11 +331,13 @@
         "step_import_leads": "导入线索",
         "step_import_leads_desc": "轻松添加您的联系人",
         "step_sequences": "序列",
-        "step_sequences_desc": "Write your email sequence",
-        "step_setup": "Setup",
+        "step_sequences_desc": "写下您的电子邮件序列",
+        "step_setup": "设置",
         "step_setup_desc": "Configure your campaign",
-        "step_final_review": "Final Review",
-        "step_final_review_desc": "Last check & launch",
+        "schedule_timing": "日程安排和时间",
+        "advanced_settings": "高级设置",
+        "step_final_review": "最终审查",
+        "step_final_review_desc": "最后检查并启动",
         "error_add_content": "在继续之前，请在您的 {{mode}} 电子邮件中添加一些内容。",
         "plain_text": "纯文本",
         "step_indicator": "{{total}} 的步骤 {{current}}",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "取消订阅链接",
         "recipients_senders": "收件人和发件人",
         "setup_audience": "设置您的活动受众和帐户",
+        "sender_accounts": "发送帐户",
+        "active_senders": "活跃账户",
+        "select_accounts_desc": "将帐户连接到此序列",
+        "choose_senders_btn": "选择帐户",
+        "configure_schedule_btn": "配置时间表",
+        "modify_settings_btn": "Modify Settings",
+        "sender_rotation": "账户轮换",
+        "account_health": "帐户健康",
+        "trust_score": "分数",
+        "optimal_delivery": "最佳交付",
+        "intelligent_sending": "智能发送",
+        "sender_rotation_count": "发送器轮换 ({{count}})",
+        "more_accounts": "+{{count}}更多帐户",
+        "no_sender_set": "未设置发件人",
+        "confirm_selection": "Confirm Selection",
+        "high_inboxing_enabled": "Optimal Delivery Enabled",
         "add_contacts": "添加联系人",
         "add_sender": "添加发件人",
         "selected_audience": "选定的观众",
@@ -795,8 +833,8 @@
                 "gmail": "谷歌 Gmail",
                 "outlook": "微软 Outlook",
                 "smtp": "自定义 SMTP",
-                "bulk": "批量导入",
                 "smtp_desc": "手动设置",
+                "bulk": "批量导入",
                 "bulk_desc": "XLSX 上传"
             },
             "secure_title": "企业级安全",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "连接 Google Mail",
             "btn_connect_outlook": "连接 Microsoft Outlook 邮件",
+            "smtp_success": "SMTP 连接成功",
+            "smtp_fail": "SMTP 连接失败",
+            "imap_success": "IMAP 连接成功",
+            "imap_fail": "IMAP 连接失败",
+            "empty_provider": "选择提供商",
+            "empty_desc": "选择上面的 Gmail、Outlook 或自定义 SMTP。",
+            "encrypted_note": "端到端加密",
+            "smtp_config_note": "如果您将这些留空，我们将尝试自动使用您的发送设置。",
             "bulk": {
                 "title": "批量上传帐户",
                 "desc": "上传包含以下列的 Excel 文件 (.xlsx)：电子邮件、域名、密码、类型（aapanel/邮政）、名字、姓氏。",
@@ -876,16 +922,8 @@
             "err_no_headers": "在文件",
             "err_read_fail": "中找不到标头无法读取文件",
             "err_map_required": "请映射所有必填字段",
-            "smtp_success": "SMTP 连接成功",
-            "smtp_fail": "SMTP 连接失败",
-            "imap_success": "IMAP 连接成功",
-            "imap_fail": "IMAP 连接失败",
             "bulk_success": "批量上传成功",
-            "bulk_error": "批量上传失败",
-            "empty_provider": "选择提供商",
-            "empty_desc": "选择上面的 Gmail、Outlook 或自定义 SMTP。",
-            "encrypted_note": "端到端加密",
-            "smtp_config_note": "如果您将这些留空，我们将尝试自动使用您的发送设置。"
+            "bulk_error": "批量上传失败"
         },
         "template": {
             "title": {
@@ -902,7 +940,7 @@
                 "name": "模板名称",
                 "subject": "电子邮件主题",
                 "placeholder_name": "例如欢迎系列 - 第一天",
-                "placeholder_subject": "例如【V0】您好，欢迎来到我们的平台！",
+                "placeholder_subject": "e.g. Hello {{first_name}}, welcome to our platform!",
                 "placeholder_content": "在此输入您的电子邮件内容...使用 {{sender_name}} 作为发件人姓名"
             },
             "labels": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "你的主题很能引起共鸣！考虑加倍你当前使用的“好奇心差距”风格。",
         "rec_conversion_low": "回复率很低。尝试添加更清晰的“号召性用语”(CTA) 或温和的询问，例如“这有帮助吗？”以降低摩擦力。",
         "rec_conversion_high": "伟大的转变！您的价值主张很明确。确保您的销售团队在 4 小时内跟进，以获得最佳结果。"
+    },
+    "crm": {
+        "title": "CRM Integration",
+        "subtitle": "Revenue Hub",
+        "pipeline": "管道",
+        "description": "将您的外展工作区与您最喜欢的 CRM 连接起来，自动同步潜在客户并记录活动。",
+        "drag_desc": "在阶段之间拖动线索。单击任何卡可查看详细信息并设置交易价值。",
+        "connect_crm": "连接 CRM",
+        "add_column": "添加列",
+        "all_campaigns": "所有活动",
+        "total": "总计",
+        "value": "价值",
+        "leads_label": "潜在客户",
+        "drop_leads": "在这里留下线索",
+        "loading": "正在加载...",
+        "build_funnel": "建立你的渠道",
+        "add_first_col": "添加第一列以开始跟踪各个阶段的潜在客户。",
+        "create_initial": "创建第一列",
+        "footer_msg1": "潜在客户自动进展时",
+        "footer_msg2": "回复意向",
+        "footer_msg3": "检测到",
+        "search_placeholder": "寻找线索...",
+        "stages": {
+            "leads": "新线索",
+            "contacted": "联系过",
+            "replied": "已回复",
+            "meeting_booked": "会议已预订",
+            "closed": "已关闭",
+            "bounced": "退回",
+            "unsubscribed": "取消订阅"
+        },
+        "lead_card": {
+            "last_activity": "上次活动：",
+            "campaign": "活动：",
+            "view_profile": "查看资料"
+        },
+        "connect": "连接",
+        "connected": "已连接",
+        "status_ready": "准备同步",
+        "hubspot": {
+            "title": "集线点",
+            "desc": "同步联系人并记录时间线事件。"
+        },
+        "salesforce": {
+            "title": "销售人员",
+            "desc": "实时管理潜在客户和机会。"
+        },
+        "pipedrive": {
+            "title": "管道传动",
+            "desc": "跟踪交易进度和活动日志。"
+        },
+        "add_column_modal_title": "添加新列",
+        "column_name_label": "列名称",
+        "column_name_placeholder": "例如，合格的潜在客户",
+        "select_color_label": "选择列颜色",
+        "link_intent_label": "链接到 AI 意图（可选）",
+        "link_intent_desc": "具有此意图的潜在客户将自动移至此处",
+        "select_intent_placeholder": "选择一个意图...",
+        "add_column_btn": "添加列",
+        "cancel_btn": "取消",
+        "status": "准备同步"
+    },
+    "integrations": {
+        "header_title": "集成",
+        "header_subtitle": "市场",
+        "header_desc": "连接您最喜欢的 CRM 和数据工具，以自动化您的外展工作流程。",
+        "search_placeholder": "搜索集成（HubSpot、Salesforce、Instanly...）",
+        "no_results": "未找到与您的搜索匹配的集成。",
+        "connect_btn": "连接",
+        "disconnect_btn": "断开连接",
+        "disconnecting_btn": "正在断开连接...",
+        "disconnecting": "正在与 {{name}} 断开连接...",
+        "connected": "已连接",
+        "never_synced": "从未同步",
+        "learn_how": "了解如何",
+        "connect_app": "+ 连接应用程序",
+        "confirm_disconnect_title": "确认断开连接",
+        "confirm_disconnect_desc1": "您确定要断开连接吗",
+        "confirm_disconnect_desc2": "？ Unibox 将无法再与此服务同步销售线索或数据。",
+        "disconnect_success": "与{{name}}成功断开连接",
+        "complete_connection": "完成连接",
+        "verify_oauth_desc": "我们在新选项卡中打开了 {{name}} 登录页面。成功登录并授权应用程序后，单击下面的按钮即可完成连接。",
+        "oauth_initiating": "正在启动 {{name}} 的 OAuth 2.0 流程...",
+        "oauth_success": "通过 OAuth 连接到 {{name}}！",
+        "api_key_label": "API 访问密钥",
+        "api_key_placeholder": "输入您的 {{name}} API 密钥...",
+        "api_key_desc": "您可以在 {{name}} 仪表板设置中找到您的 API 密钥。为了您的安全，我们对此密钥进行加密。",
+        "verify_btn": "验证并连接",
+        "verifying_btn": "正在验证...",
+        "upcoming_connections": "即将到来的连接",
+        "stay_tuned": "我们不断添加新的集成。请继续关注更多！",
+        "secure": "安全",
+        "complete_auth": "完成{{name}}授权",
+        "types": {
+            "crm": "客户关系管理",
+            "data": "数据",
+            "outreach": "外展"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "使用一键连接 OAuth 流程将您的销售线索和活动与 HubSpot CRM 同步。"
+            },
+            "salesforce": {
+                "desc": "将您的企业工作流程与 Salesforce Web Server 流程​​连接起来。"
+            },
+            "instantly": {
+                "desc": "连接您的 Instantly.ai 营销活动以实现无缝外展同步。"
+            },
+            "apollo": {
+                "desc": "利用 Apollo.io B2B 数据库洞察丰富您的销售线索。"
+            },
+            "leadmagic": {
+                "desc": "通过 Leadmagic X-API-Key 丰富销售线索的公司统计数据。"
+            },
+            "clay": {
+                "desc": "通过 JSON HTTP API 将出站数据同步到 Clay 表。"
+            }
+        }
     }
 }

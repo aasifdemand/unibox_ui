@@ -11,6 +11,12 @@
         "templates": "テンプレート",
         "subscription": "サブスクリプション",
         "settings": "設定",
+        "crm": "CRM",
+        "email_campaigns": "電子メール キャンペーン",
+        "email_accounts": "電子メール アカウント",
+        "contacts": "連絡先",
+        "global_analytics": "分析",
+        "integrations": "統合",
         "navigation": "ナビゲーション",
         "active": "アクティブ",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "現在のセッションを終了してもよろしいですか？再認証が必要になります。",
             "confirm": "ログアウトを確認",
             "cancel": "ログインを継続"
-        }
+        },
+        "admin": "管理者",
+        "administrator": "管理者",
+        "user": "ユーザー",
+        "u": "う"
     },
     "auth": {
         "copyright": "© {{year}} ユニボックス。無断転載を禁じます。",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "または次で登録",
             "already_account": "既にアカウントをお持ちですか？",
             "sign_in_link": "サインイン"
+        },
+        "layout": {
+            "platform_live": "プラットフォームライブ",
+            "title_main": "The smarter way to",
+            "title_span": "のより賢い方法アウトリーチを実行する",
+            "subtitle": "Unibox は、AI エンリッチメント、スマート シーケンス、統合された返信受信トレイをすべて 1 つのプラットフォームに組み合わせています。",
+            "trusted_by": "のより賢い方法",
+            "teams": "によって信頼されていますアウトリーチチーム"
         }
     },
     "pwa": {
@@ -137,7 +155,7 @@
         "all_providers": "すべてのプロバイダー",
         "gmail_provider": "Gメール",
         "outlook_provider": "見通し",
-        "smtp_provider": "SMTP",
+        "smtp_provider": "によって信頼されていますSMTP",
         "reply": "返信",
         "forward": "転送",
         "delete": "削除",
@@ -188,7 +206,7 @@
         "all_types": "すべてのタイプ",
         "gmail": "Gメール",
         "outlook": "見通し",
-        "smtp": "SMTP",
+        "smtp": "のより賢い方法SMTP",
         "refresh": "リフレッシュ",
         "compose": "作曲",
         "inbox": "受信箱",
@@ -233,7 +251,7 @@
         "save_offline": "オフラインで保存",
         "move_to_trash": "ゴミ箱に移動",
         "received_on": "受信日",
-        "to_label": "To",
+        "to_label": "のより賢い方法",
         "cc_label": "へCC",
         "pinned_message": "固定メッセージ",
         "priority_inbox_label": "優先トレイ",
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "へキャンペーン",
         "subtitle": "アウトリーチ",
+        "sequence_details": "へシーケンスの詳細",
         "header_description": "電子メール キャンペーンを作成して追跡します。",
         "header_subtitle": "電子メール キャンペーンを管理および追跡する",
         "create_campaign": "キャンペーンを作成する",
@@ -303,6 +322,7 @@
         "campaign_date": "キャンペーン日",
         "empty_log_title": "空の操作ログ",
         "empty_log_subtitle": "マトリックススキャンが完了しました。キャンペーン アセットが見つかりません。",
+        "create_first_campaign": "最初のキャンペーンを作成する",
         "launch_protocol": "起動プロトコル",
         "no_subject": "件名がありません",
         "status_created": "作成されました",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "電子メールのシーケンスを書きます",
         "step_setup": "セットアップ",
         "step_setup_desc": "キャンペーンを設定する",
+        "schedule_timing": "へスケジュールとタイミング",
+        "advanced_settings": "詳細設定",
         "step_final_review": "最終レビュー",
         "step_final_review_desc": "最終チェックと起動",
         "error_add_content": "続行する前に、{{mode}} メールにコンテンツを追加してください。",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "購読解除リンク",
         "recipients_senders": "受信者と送信者",
         "setup_audience": "キャンペーンの対象ユーザーとアカウントを設定する",
+        "sender_accounts": "アカウントを送信中",
+        "active_senders": "アクティブなアカウント",
+        "select_accounts_desc": "アカウントをこのシーケンスに接続します",
+        "choose_senders_btn": "アカウントを選択",
+        "configure_schedule_btn": "へスケジュールを構成する",
+        "modify_settings_btn": "設定を変更する",
+        "sender_rotation": "アカウントのローテーション",
+        "account_health": "アカウントの健全性",
+        "trust_score": "スコア",
+        "optimal_delivery": "最適な配送",
+        "intelligent_sending": "インテリジェントな送信",
+        "sender_rotation_count": "センダーローテーション({{count}})",
+        "more_accounts": "+{{count}} 個以上のアカウント",
+        "no_sender_set": "送信者が設定されていません",
+        "confirm_selection": "選択を確認",
+        "high_inboxing_enabled": "最適な配信が有効になりました",
         "add_contacts": "連絡先を追加",
         "add_sender": "送信者の追加",
         "selected_audience": "選択された視聴者",
@@ -795,8 +833,8 @@
                 "gmail": "削除できませんでしたGoogle Gmail",
                 "outlook": "削除できませんでしたMicrosoft Outlook",
                 "smtp": "カスタム SMTP",
-                "bulk": "一括インポート",
                 "smtp_desc": "手動セットアップ",
+                "bulk": "一括インポート",
                 "bulk_desc": "XLSX アップロード"
             },
             "secure_title": "エンタープライズ グレードのセキュリティ",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "Google Mail に接続する",
             "btn_connect_outlook": "Microsoft Outlook メールに接続する",
+            "smtp_success": "SMTP接続に成功しました",
+            "smtp_fail": "SMTP 接続に失敗しました",
+            "imap_success": "IMAP 接続が成功しました",
+            "imap_fail": "IMAP 接続に失敗しました",
+            "empty_provider": "プロバイダーを選択します",
+            "empty_desc": "上で Gmail、Outlook、またはカスタム SMTP を選択します。",
+            "encrypted_note": "エンドツーエンド暗号化",
+            "smtp_config_note": "これらを空のままにすると、送信設定が自動的に使用されます。",
             "bulk": {
                 "title": "アカウントを一括アップロード",
                 "desc": "電子メール、ドメイン、パスワード、種類 (aapanel/postal)、名、姓の列を含む Excel ファイル (.xlsx) をアップロードします。",
@@ -876,16 +922,8 @@
             "err_no_headers": "ファイル",
             "err_read_fail": "にヘッダーが見つかりません。ファイルを読み取れませんでした",
             "err_map_required": "すべての必須フィールドをマップしてください",
-            "smtp_success": "SMTP接続に成功しました",
-            "smtp_fail": "SMTP 接続に失敗しました",
-            "imap_success": "IMAP 接続が成功しました",
-            "imap_fail": "IMAP 接続に失敗しました",
             "bulk_success": "一括アップロードが成功しました",
-            "bulk_error": "一括アップロードに失敗しました",
-            "empty_provider": "プロバイダーを選択します",
-            "empty_desc": "上で Gmail、Outlook、またはカスタム SMTP を選択します。",
-            "encrypted_note": "エンドツーエンド暗号化",
-            "smtp_config_note": "これらを空のままにすると、送信設定が自動的に使用されます。"
+            "bulk_error": "一括アップロードに失敗しました"
         },
         "template": {
             "title": {
@@ -978,7 +1016,7 @@
                 "setup_type": "セットアップタイプ",
                 "sender_id": "送信者 ID",
                 "direct": "ダイレクト SMTP/IMAP",
-                "oauth": "OAuth 2.0",
+                "oauth": "へOAuth 2.0",
                 "outgoing": "送信構成 (SMTP)",
                 "incoming": "受信構成 (IMAP)",
                 "host": "SMTP ホスト",
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "あなたの件名は反響が大きかったです。現在使用している「好奇心ギャップ」スタイルをさらに強化することを検討してください。",
         "rec_conversion_low": "返信は少ないです。より明確な「行動喚起」（CTA）を追加するか、「これは役に立ちましたか？」のような穏やかな質問を追加してみてください��摩擦を下げるため。",
         "rec_conversion_high": "すごい変換ですね！あなたの価値提案は明確です。最良の結果を得るために、営業チームが 4 時間以内にフォローアップを行っていることを確認してください。"
+    },
+    "crm": {
+        "title": "CRM の統合",
+        "subtitle": "収益ハブ",
+        "pipeline": "へパイプライン",
+        "description": "アウトリーチ ワークスペースをお気に入りの CRM に接続して、リードを同期し、アクティビティを自動的に記録します。",
+        "drag_desc": "リードをステージ間でドラッグします。任意のカードをクリックして詳細を表示し、取引額を設定します。",
+        "connect_crm": "CRM を接続する",
+        "add_column": "列の追加",
+        "all_campaigns": "すべてのキャンペーン",
+        "total": "合計",
+        "value": "値",
+        "leads_label": "リード",
+        "drop_leads": "見込み客をここにドロップします",
+        "loading": "読み込み中...",
+        "build_funnel": "ファネルを構築する",
+        "add_first_col": "最初の列を追加して、段階的にリードの追跡を開始します。",
+        "create_initial": "最初の列を作成",
+        "footer_msg1": "へリードは次の場合に自動的に進行します。",
+        "footer_msg2": "の場合、リードは自動的に進行します。返信の意図",
+        "footer_msg3": "検出されます",
+        "search_placeholder": "へ手がかりを見つけてください...",
+        "stages": {
+            "leads": "新しいリード",
+            "contacted": "連絡済み",
+            "replied": "返信しました",
+            "meeting_booked": "会議が予約されました",
+            "closed": "閉店",
+            "bounced": "バウンスしました",
+            "unsubscribed": "購読を解除しました"
+        },
+        "lead_card": {
+            "last_activity": "最後のアクティビティ:",
+            "campaign": "キャンペーン:",
+            "view_profile": "プロフィールを見る"
+        },
+        "connect": "接続",
+        "connected": "接続されました",
+        "status_ready": "へ同期の準備ができました",
+        "hubspot": {
+            "title": "ハブスポット",
+            "desc": "連絡先を同期し、タイムライン イベントを記録します。"
+        },
+        "salesforce": {
+            "title": "セールスフォース",
+            "desc": "リードと商談をリアルタイムで管理します。"
+        },
+        "pipedrive": {
+            "title": "パイプドライブ",
+            "desc": "取引の進行状況とアクティビティのログを追跡します。"
+        },
+        "add_column_modal_title": "新しい列を追加",
+        "column_name_label": "列名",
+        "column_name_placeholder": "例: 適格なリード",
+        "select_color_label": "列の色を選択",
+        "link_intent_label": "AI インテントへのリンク (オプション)",
+        "link_intent_desc": "この意図を持つ見込み客は自動的にここに移動します",
+        "select_intent_placeholder": "インテントを選択してく��さい...",
+        "add_column_btn": "列を追加",
+        "cancel_btn": "キャンセル",
+        "status": "同期の準備ができました"
+    },
+    "integrations": {
+        "header_title": "へ統合",
+        "header_subtitle": "マーケットプレイス",
+        "header_desc": "お気に入りの CRM ツールとデータ ツールを接続して、アウトリーチ ワークフローを自動化します。",
+        "search_placeholder": "検索統合 (HubSpot、Salesforce、Instantly...)",
+        "no_results": "検索に一致する統合は見つかりませんでした。",
+        "connect_btn": "接続",
+        "disconnect_btn": "切断",
+        "disconnecting_btn": "へ切断中...",
+        "disconnecting": "{{name}} から切断しています...",
+        "connected": "接続されました",
+        "never_synced": "同期されません",
+        "learn_how": "方法を学ぶ",
+        "connect_app": "+ アプリを接続",
+        "confirm_disconnect_title": "切断を確認します",
+        "confirm_disconnect_desc1": "切断してもよろしいですか",
+        "confirm_disconnect_desc2": "? Unibox は、リードやデータをこのサービスと同期できなくなります。",
+        "disconnect_success": "{{name}} から正常に切断されました",
+        "complete_connection": "へ接続が完了しました",
+        "verify_oauth_desc": "{{name}} ログイン ページを新しいタブに開きました。正常にログインしてアプリを認証したら、下のボタンをクリックして接続を完了します。",
+        "oauth_initiating": "{{name}} の OAuth 2.0 フローを開始しています...",
+        "oauth_success": "OAuthで{{name}}に接続しました！",
+        "api_key_label": "API アクセス キー",
+        "api_key_placeholder": "{{name}} API キーを入力してください...",
+        "api_key_desc": "API キーは {{name}} ダッシュボード設定で確認できます。セキュリティのためにこのキーを暗号化します。",
+        "verify_btn": "確認して接続",
+        "verifying_btn": "確認中...",
+        "upcoming_connections": "今後の接続",
+        "stay_tuned": "私たちは常に新しい統合を追加しています。今後の続報をお楽しみに！",
+        "secure": "安全",
+        "complete_auth": "{{name}} 認証を完了する",
+        "types": {
+            "crm": "へCRM",
+            "data": "データ",
+            "outreach": "アウトリーチ"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "ワンクリック接続の OAuth フローを使用して、リードとアクティビティを HubSpot CRM と同期します。"
+            },
+            "salesforce": {
+                "desc": "エンタープライズ ワークフローを Salesforce Web サーバー フローに接続します。"
+            },
+            "instantly": {
+                "desc": "Instantly.ai キャンペーンを接続して、アウトリーチをシームレスに同期します。"
+            },
+            "apollo": {
+                "desc": "Apollo.io B2B データベースの洞察でリードを強化します。"
+            },
+            "leadmagic": {
+                "desc": "Leadmagic X-API-Key を介して企業データを活用してリードを強化します。"
+            },
+            "clay": {
+                "desc": "JSON HTTP API を介して送信データを Clay テーブルに同期します。"
+            }
+        }
     }
 }

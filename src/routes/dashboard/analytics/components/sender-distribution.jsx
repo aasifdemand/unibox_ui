@@ -11,7 +11,8 @@ const SenderDistribution = ({ data, COLORS }) => {
     <div className="premium-card p-8 h-full flex flex-col">
       <div className="mb-8">
         <h3 className="text-xl font-black text-slate-900 tracking-tight">
-          {t('analytics.sender_distribution_title')} <span className="text-indigo-500">{t('analytics.distribution_span')}</span>
+          {t('analytics.sender_distribution_title')}{' '}
+          <span className="text-orange-500">{t('analytics.distribution_span')}</span>
         </h3>
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
           {t('analytics.distribution_subtitle')}
@@ -106,7 +107,9 @@ const SenderDistribution = ({ data, COLORS }) => {
                 </div>
 
                 <div className="flex justify-between mt-1.5 px-0.5">
-                  <span className="text-[10px] font-bold text-slate-400">{t('analytics.active_suffix', { count: item.count })}</span>
+                  <span className="text-[10px] font-bold text-slate-400">
+                    {t('analytics.active_suffix', { count: item.count })}
+                  </span>
                   <span className="text-[10px] font-bold text-slate-500">
                     {t('analytics.sent_suffix', { count: (item.sent || 0).toLocaleString() })}
                   </span>
@@ -117,7 +120,7 @@ const SenderDistribution = ({ data, COLORS }) => {
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 gap-4">
-          <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center border border-slate-100">
+          <div className="w-16 h-16 rounded-lg bg-slate-50 flex items-center justify-center border border-slate-100">
             <PieChart className="w-8 h-8 opacity-20" />
           </div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-300">

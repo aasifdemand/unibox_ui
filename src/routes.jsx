@@ -21,14 +21,15 @@ const CreateCampaign = lazy(() => import('./routes/dashboard/campaigns/create-ca
 const ViewCampaign = lazy(() => import('./routes/dashboard/campaigns/view-campaign'));
 const Audience = lazy(() => import('./routes/dashboard/audience'));
 const Analytics = lazy(() => import('./routes/dashboard/analytics'));
-const Subscription = lazy(() => import('./routes/dashboard/subscription'));
 const Settings = lazy(() => import('./routes/dashboard/settings'));
+const CRM = lazy(() => import('./routes/dashboard/crm'));
+const Integrations = lazy(() => import('./routes/dashboard/integrations'));
 const Notifications = lazy(() => import('./routes/dashboard/notifications'));
 const Landing = lazy(() => import('./routes/landing'));
 
 const LoadingFallback = () => (
   <div className="flex h-screen w-full items-center justify-center bg-slate-50">
-    <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+    <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
   </div>
 );
 
@@ -37,12 +38,7 @@ const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         {/* Auth routes (ONLY for logged-out users) */}
-        <Route
-          path="auth"
-          element={
-            <AuthRoute />
-          }
-        >
+        <Route path="auth" element={<AuthRoute />}>
           <Route element={<AuthLayout />}>
             <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />
@@ -52,28 +48,22 @@ const AppRoutes = () => {
           </Route>
         </Route>
 
-        <Route
-          path="/"
-          element={<Landing />}
-        />
+        <Route path="/" element={<Landing />} />
 
         {/* Protected app routes (ONLY for logged-in users) */}
-        <Route
-          path="dashboard"
-          element={
-            <ProtectedRoute />
-          }
-        >
+        <Route path="dashboard" element={<ProtectedRoute />}>
+          <Route path="campaigns/create" element={<CreateCampaign />} />
           <Route element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="mailboxes" element={<Mailboxes />} />
             <Route path="campaigns" element={<Campaigns />} />
-            <Route path="campaigns/create" element={<CreateCampaign />} />
+
             <Route path="campaigns/:id" element={<ViewCampaign />} />
             <Route path="audience" element={<Audience />} />
+            <Route path="crm" element={<CRM />} />
+            <Route path="integrations" element={<Integrations />} />
             <Route path="analytics" element={<Analytics />} />
 
-            <Route path="subscription" element={<Subscription />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />
           </Route>

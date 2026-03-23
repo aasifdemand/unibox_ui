@@ -5,19 +5,19 @@ const SOCKET_BASE = API_URL.replace(/\/api\/v1\/?$/, '');
 
 // Initialize a generic socket client
 export const socket = io(SOCKET_BASE, {
-    autoConnect: false, // We'll connect manually when we confirm auth
-    withCredentials: true,
-    transports: ['websocket', 'polling'],
+  autoConnect: false, // We'll connect manually when we confirm auth
+  withCredentials: true,
+  transports: ['websocket', 'polling'],
 });
 
 export const connectSocket = () => {
-    if (!socket.connected) {
-        socket.connect();
-    }
+  if (!socket.connected) {
+    socket.connect();
+  }
 };
 
 export const disconnectSocket = () => {
-    if (socket.connected) {
-        socket.disconnect();
-    }
+  if (socket.connected) {
+    socket.disconnect();
+  }
 };

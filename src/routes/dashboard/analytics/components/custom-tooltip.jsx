@@ -5,9 +5,20 @@ const CustomTooltip = ({ active, payload, label }) => {
   const { t } = useTranslation();
   if (active && payload && payload.length) {
     // Find specific data points for calculations
-    const sentItem = payload.find((p) => p.name?.includes('Sent') || p.name?.includes('Enviados') || p.name?.includes('Envoyés') || p.dataKey === 'sent');
+    const sentItem = payload.find(
+      (p) =>
+        p.name?.includes('Sent') ||
+        p.name?.includes('Enviados') ||
+        p.name?.includes('Envoyés') ||
+        p.dataKey === 'sent',
+    );
     const repliedItem = payload.find(
-      (p) => p.name?.includes('Replied') || p.name?.includes('Replies') || p.name?.includes('Respuestas') || p.name?.includes('Réponses') || p.dataKey === 'replies',
+      (p) =>
+        p.name?.includes('Replied') ||
+        p.name?.includes('Replies') ||
+        p.name?.includes('Respuestas') ||
+        p.name?.includes('Réponses') ||
+        p.dataKey === 'replies',
     );
 
     const sentValue = sentItem?.value || 0;
@@ -16,7 +27,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     const replyRate = sentValue > 0 ? ((repliedValue / sentValue) * 100).toFixed(1) : 0;
 
     return (
-      <div className="bg-white/95 backdrop-blur-2xl p-5 rounded-3xl shadow-2xl border border-white ring-1 ring-slate-900/5 min-w-50 animate-in fade-in zoom-in duration-200">
+      <div className="bg-white/95  p-5 rounded-lg shadow-sm border border-white ring-1 ring-slate-900/5 min-w-50 animate-in fade-in zoom-in duration-200">
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 border-b border-slate-100/80 pb-3">
           {label}
         </p>
@@ -45,7 +56,7 @@ const CustomTooltip = ({ active, payload, label }) => {
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
                 {t('analytics.reply_rate')}
               </span>
-              <span className="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100/50">
+              <span className="text-[11px] font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100/50">
                 {replyRate}%
               </span>
             </div>

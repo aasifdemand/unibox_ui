@@ -115,7 +115,7 @@ export const useCampaignAnalytics = (id) => {
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800 border border-orange-200">
             <CheckCircle className="w-4 h-4 ltr:mr-1.5 rtl:ml-1.5" />
             Completed
           </span>
@@ -189,6 +189,16 @@ export const useCampaignAnalytics = (id) => {
         ? campaign.totalClicks
         : recipients.filter((r) => r.clickedAt).length;
 
+    const totalBounced =
+      campaign.totalBounced !== undefined
+        ? campaign.totalBounced
+        : recipients.filter((r) => r.status === 'bounced').length;
+
+    const totalUnsubscribed =
+      campaign.totalUnsubscribed !== undefined
+        ? campaign.totalUnsubscribed
+        : recipients.filter((r) => r.status === 'unsubscribed').length;
+
     const progress = totalRecipients
       ? Math.min(100, Math.round((totalSent / totalRecipients) * 100))
       : 0;
@@ -203,6 +213,8 @@ export const useCampaignAnalytics = (id) => {
       totalReplied,
       totalOpened,
       totalClicked,
+      totalBounced,
+      totalUnsubscribed,
       uniqueContacted,
       progress,
     };
@@ -227,7 +239,7 @@ export const useCampaignAnalytics = (id) => {
     let text = campaign.textBody;
 
     if (activeStepIndex > 0 && steps.length > 0) {
-      const step = steps.find(s => s.stepOrder === activeStepIndex);
+      const step = steps.find((s) => s.stepOrder === activeStepIndex);
       if (step) {
         subject = step.subject;
         html = step.htmlBody;
@@ -252,10 +264,10 @@ export const useCampaignAnalytics = (id) => {
       campaign.htmlBody,
       campaign.textBody,
       campaign.previewText,
-      ...steps.flatMap(s => [s.subject, s.htmlBody, s.textBody])
+      ...steps.flatMap((s) => [s.subject, s.htmlBody, s.textBody]),
     ];
 
-    const all = allText.flatMap(text => extractPlaceholders(text));
+    const all = allText.flatMap((text) => extractPlaceholders(text));
     return [...new Set(all)];
   }, [campaign, steps]);
 

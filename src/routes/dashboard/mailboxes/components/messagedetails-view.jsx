@@ -1,23 +1,8 @@
 import { useTranslation } from 'react-i18next';
+import { File, Paperclip } from 'lucide-react';
 import {
-  ChevronRight,
-  Download,
-  Eye,
-  EyeOff,
-  File,
-  MoreVertical,
-  Paperclip,
-  Printer,
-  Reply,
-  Send,
-  Star,
-  Trash2,
-} from 'lucide-react';
-import {
-  formatMessageDate,
   getSenderInfo as getSenderInfoUtil,
   getSubject as getSubjectUtil,
-  getInitials,
   formatFileSize,
 } from '../utils/utils';
 import { format } from 'date-fns';
@@ -55,7 +40,7 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
     margin: 1em 0;
   }
   a { 
-    color: #6366f1; /* primary-500 */
+    color: #e11d48; /* primary-500 */
     text-decoration: underline; 
     word-break: break-all;
   }
@@ -81,10 +66,14 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
     table-layout: fixed;
   }
   /* Preserve original email styling if it exists */
-  ${htmlContent.includes('<style>') ? '' : `
+  ${
+    htmlContent.includes('<style>')
+      ? ''
+      : `
     ul, ol { margin-bottom: 1.25em; padding-left: 1.5em; }
     li { margin-bottom: 0.5em; }
-  `}
+  `
+  }
 </style>
 </head>
 <body>
@@ -106,7 +95,7 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
             body.offsetHeight || 0,
             html.clientHeight || 0,
             html.scrollHeight || 0,
-            html.offsetHeight || 0
+            html.offsetHeight || 0,
           );
           if (newHeight > 0) {
             setHeight(`${newHeight + 30}px`); // Add slight padding
@@ -212,7 +201,18 @@ const MessageDetailView = ({
 
     const urlRegex = /(https?:\/\/[^\s]+)/gi;
     const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
-    const signatureWords = ['Cheers', 'Best', 'Regards', 'Sincerely', 'Thanks', 'Bästa', 'Hälsningar', 'Yours', 'Talk soon', 'Kind regards'];
+    const signatureWords = [
+      'Cheers',
+      'Best',
+      'Regards',
+      'Sincerely',
+      'Thanks',
+      'Bästa',
+      'Hälsningar',
+      'Yours',
+      'Talk soon',
+      'Kind regards',
+    ];
 
     const linkify = (t) => {
       if (typeof t !== 'string') return t;
@@ -220,14 +220,24 @@ const MessageDetailView = ({
       return parts.map((part, i) => {
         if (part.match(urlRegex)) {
           return (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-semibold decoration-blue-600/30 underline-offset-4">
+            <a
+              key={i}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-orange-600 hover:underline font-semibold decoration-orange-600/30 underline-offset-4"
+            >
               {part}
             </a>
           );
         }
         if (part.match(emailRegex)) {
           return (
-            <a key={i} href={`mailto:${part}`} className="text-blue-600 hover:underline font-semibold decoration-blue-600/30 underline-offset-4">
+            <a
+              key={i}
+              href={`mailto:${part}`}
+              className="text-orange-600 hover:underline font-semibold decoration-orange-600/30 underline-offset-4"
+            >
               {part}
             </a>
           );
@@ -251,8 +261,8 @@ const MessageDetailView = ({
       const trimmed = line.trim();
 
       // Signature detection (start of signature)
-      const isSignatureStart = signatureWords.some(word =>
-        trimmed.toLowerCase().startsWith(word.toLowerCase())
+      const isSignatureStart = signatureWords.some((word) =>
+        trimmed.toLowerCase().startsWith(word.toLowerCase()),
       );
 
       if (isSignatureStart && currentBlock?.type !== 'signature') {
@@ -306,9 +316,14 @@ const MessageDetailView = ({
         {blocks.map((block, bIdx) => {
           if (block.type === 'quote') {
             return (
-              <blockquote key={bIdx} className="border-l-4 border-slate-200 pl-8 my-8 text-slate-500 italic bg-linear-to-r from-slate-50/80 to-transparent py-5 rounded-r-[2.5rem]">
+              <blockquote
+                key={bIdx}
+                className="border-l-4 border-slate-200 pl-8 my-8 text-slate-500 italic bg-gradient-to-r from-slate-50/80 to-transparent py-5 rounded-r-[2.5rem]"
+              >
                 {block.lines.map((l, lIdx) => (
-                  <div key={lIdx} className="leading-relaxed">{linkify(l) || '\u00A0'}</div>
+                  <div key={lIdx} className="leading-relaxed">
+                    {linkify(l) || '\u00A0'}
+                  </div>
                 ))}
               </blockquote>
             );
@@ -316,11 +331,16 @@ const MessageDetailView = ({
 
           if (block.type === 'list') {
             return (
-              <ul key={bIdx} className="list-none space-y-4 ltr:pl-5 rtl:pr-5 border-l border-slate-100 ltr:ml-2 rtl:mr-2">
+              <ul
+                key={bIdx}
+                className="list-none space-y-4 ltr:pl-5 rtl:pr-5 border-l border-slate-100 ltr:ml-2 rtl:mr-2"
+              >
                 {block.items.map((item, iIdx) => (
                   <li key={iIdx} className="flex items-start group">
-                    <span className="shrink-0 ltr:mr-4 rtl:ml-4 w-1.5 h-1.5 rounded-full bg-blue-500/30 group-hover:bg-blue-500 mt-2.5 transition-colors" />
-                    <span className="text-base font-medium leading-relaxed tracking-tight text-slate-600">{linkify(item)}</span>
+                    <span className="shrink-0 ltr:mr-4 rtl:ml-4 w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover:bg-orange-500 mt-2.5 transition-colors" />
+                    <span className="text-base font-medium leading-relaxed tracking-tight text-slate-600">
+                      {linkify(item)}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -331,7 +351,10 @@ const MessageDetailView = ({
             return (
               <div key={bIdx} className="pt-4 border-t border-slate-100/50 mt-10 space-y-1">
                 {block.lines.map((l, lIdx) => (
-                  <div key={lIdx} className="text-[15px] font-semibold text-slate-500 leading-relaxed italic opacity-90">
+                  <div
+                    key={lIdx}
+                    className="text-[15px] font-semibold text-slate-500 leading-relaxed italic opacity-90"
+                  >
                     {linkify(l)}
                   </div>
                 ))}
@@ -341,7 +364,10 @@ const MessageDetailView = ({
 
           // Paragraph
           return (
-            <p key={bIdx} className="text-[16px] font-medium text-slate-600 leading-[1.6] tracking-tight">
+            <p
+              key={bIdx}
+              className="text-[16px] font-medium text-slate-600 leading-[1.6] tracking-tight"
+            >
               {linkify(block.content)}
             </p>
           );
@@ -396,7 +422,9 @@ const MessageDetailView = ({
 
     // Refined HTML detection helper
     const isHtmlContent = (content) => {
-      return /<(?:p|div|br|table|html|body|span|b|i|strong|em|h[1-6]|hr|ul|ol|li)[^>]*?>/i.test(content);
+      return /<(?:p|div|br|table|html|body|span|b|i|strong|em|h[1-6]|hr|ul|ol|li)[^>]*?>/i.test(
+        content,
+      );
     };
 
     // Priority 1: Direct HTML property (Common for SMTP and updated models)
@@ -413,7 +441,11 @@ const MessageDetailView = ({
       if (message?.payload?.body?.data) {
         const content = decodeGmailData(message.payload.body.data);
         if (isHtmlContent(content)) {
-          return <div className="mail-content-html w-full max-w-none"><SafeHtmlRenderer htmlContent={content} /></div>;
+          return (
+            <div className="mail-content-html w-full max-w-none">
+              <SafeHtmlRenderer htmlContent={content} />
+            </div>
+          );
         }
         return formatPlainText(content);
       }
@@ -455,7 +487,11 @@ const MessageDetailView = ({
     if (message?.text || message?.body) {
       const content = message.text || message.body;
       if (isHtmlContent(content)) {
-        return <div className="mail-content-html w-full max-w-none"><SafeHtmlRenderer htmlContent={content} /></div>;
+        return (
+          <div className="mail-content-html w-full max-w-none">
+            <SafeHtmlRenderer htmlContent={content} />
+          </div>
+        );
       }
       return formatPlainText(content);
     }
@@ -468,23 +504,33 @@ const MessageDetailView = ({
   };
 
   return (
-    <div className={`flex flex-col animate-in fade-in duration-500 ${isIntegrated ? 'w-full' : 'h-full bg-slate-50 overflow-hidden'}`}>
-
+    <div
+      className={`flex flex-col animate-in fade-in duration-500 ${isIntegrated ? 'w-full' : 'h-full bg-slate-50 overflow-hidden'}`}
+    >
       {/* Message Content Area */}
-      <div className={`min-w-0 ${isIntegrated ? 'p-0 w-full' : 'flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8'}`}>
-        <div dir="auto" className={`mx-auto space-y-8 min-w-0 w-full ${isIntegrated ? 'max-w-none' : 'max-w-5xl'}`}>
+      <div
+        className={`min-w-0 ${isIntegrated ? 'p-0 w-full' : 'flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8'}`}
+      >
+        <div
+          dir="auto"
+          className={`mx-auto space-y-8 min-w-0 w-full ${isIntegrated ? 'max-w-none' : 'max-w-5xl'}`}
+        >
           {/* Sender & Context Header */}
-          <div className={`${isIntegrated ? 'p-6 md:p-8 bg-transparent' : 'premium-card p-6 md:p-10 bg-white shadow-xl shadow-slate-200/50'} relative overflow-hidden group border-b border-slate-100`}>
+          <div
+            className={`${isIntegrated ? 'p-6 md:p-8 bg-transparent' : 'premium-card p-6 md:p-10 bg-white shadow-sm shadow-slate-200/50'} relative overflow-hidden group border-b border-slate-100`}
+          >
             {/* Background Decorative Element */}
             {!isIntegrated && (
-              <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-linear-to-bl from-blue-500/5 to-transparent rounded-full -ltr:mr-20 rtl:ml-20 -mt-20 blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
+              <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-linear-to-bl from-orange-500/5 to-transparent rounded-full -ltr:mr-20 rtl:ml-20 -mt-20 blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
             )}
 
             <div className="flex flex-col gap-2 relative z-10">
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-black text-slate-800 tracking-tight">{sender.name}</p>
+                    <p className="text-sm font-black text-slate-800 tracking-tight">
+                      {sender.name}
+                    </p>
                     <p className="text-xs font-bold text-slate-400">&lt;{sender.email}&gt;</p>
                   </div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
@@ -500,7 +546,8 @@ const MessageDetailView = ({
                     <div className="flex flex-wrap gap-1">
                       {recipients.map((r, i) => (
                         <span key={i} className="text-slate-500 text-[10px] font-bold">
-                          {r}{i < recipients.length - 1 ? ',' : ''}
+                          {r}
+                          {i < recipients.length - 1 ? ',' : ''}
                         </span>
                       ))}
                     </div>
@@ -513,7 +560,8 @@ const MessageDetailView = ({
                       <div className="flex flex-wrap gap-1">
                         {ccRecipients.map((r, i) => (
                           <span key={i} className="text-slate-500 text-[10px] font-bold">
-                            {r}{i < ccRecipients.length - 1 ? ',' : ''}
+                            {r}
+                            {i < ccRecipients.length - 1 ? ',' : ''}
                           </span>
                         ))}
                       </div>
@@ -528,7 +576,7 @@ const MessageDetailView = ({
           {attachments.length > 0 && (
             <div className={`space-y-4 ${isIntegrated ? 'px-6 md:px-8' : ''}`}>
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center">
-                <Paperclip className="w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 text-blue-500" />
+                <Paperclip className="w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 text-orange-500" />
                 {t('mailboxes.attached_media_assets', { count: attachments.length })}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -538,14 +586,14 @@ const MessageDetailView = ({
                     onClick={() =>
                       onDownload?.(att.id || att.attachmentId || att.partId, att.filename)
                     }
-                    className="bg-white border border-slate-200 rounded-2xl p-4 hover:shadow-lg hover:shadow-blue-500/5 hover:border-blue-200 cursor-pointer transition-all group/att"
+                    className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-sm hover:shadow-orange-500/5 hover:border-orange-200 cursor-pointer transition-all group/att"
                   >
                     <div className="flex items-center mb-4">
-                      <div className="p-3 bg-slate-50 group-hover/att:bg-blue-50 rounded-xl transition-colors">
-                        <File className="w-6 h-6 text-slate-400 group-hover/att:text-blue-500 transition-colors" />
+                      <div className="p-3 bg-slate-50 group-hover/att:bg-orange-50 rounded-md transition-colors">
+                        <File className="w-6 h-6 text-slate-400 group-hover/att:text-orange-500 transition-colors" />
                       </div>
                     </div>
-                    <p className="text-sm font-bold text-slate-800 truncate group-hover/att:text-blue-600 transition-colors">
+                    <p className="text-sm font-bold text-slate-800 truncate group-hover/att:text-orange-600 transition-colors">
                       {att.filename}
                     </p>
                     <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">
@@ -559,12 +607,12 @@ const MessageDetailView = ({
 
           {/* Main Message Body */}
           <div className={`${isIntegrated ? '' : 'premium-card bg-white'} min-h-100 min-w-0`}>
-            <div className={`p-8 md:p-12 prose max-w-none text-slate-800 overflow-x-auto ${isIntegrated ? '' : ''}`}>
+            <div
+              className={`p-8 md:p-12 prose max-w-none text-slate-800 overflow-x-auto ${isIntegrated ? '' : ''}`}
+            >
               {renderMessageBody()}
             </div>
           </div>
-
-
         </div>
       </div>
     </div>

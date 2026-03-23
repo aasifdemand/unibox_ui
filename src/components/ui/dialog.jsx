@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AlertCircle, Shield, CheckCircle, Info } from 'lucide-react';
 import Modal from '../shared/modal';
 import { motion } from 'motion/react';
@@ -24,11 +22,11 @@ const Dialog = ({
     switch (confirmVariant) {
       case 'danger':
         return {
-          icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
-          bg: 'bg-rose-50',
-          border: 'border-rose-100',
-          button: 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20',
-          gradient: 'from-rose-600 to-red-600',
+          icon: <AlertCircle className="w-6 h-6 text-orange-500" />,
+          bg: 'bg-orange-50',
+          border: 'border-orange-100',
+          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
+          gradient: 'from-orange-600 to-red-700',
         };
       case 'warning':
         return {
@@ -40,27 +38,27 @@ const Dialog = ({
         };
       case 'success':
         return {
-          icon: <CheckCircle className="w-6 h-6 text-emerald-500" />,
-          bg: 'bg-emerald-50',
-          border: 'border-emerald-100',
-          button: 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20',
-          gradient: 'from-emerald-600 to-green-600',
+          icon: <CheckCircle className="w-6 h-6 text-orange-500" />,
+          bg: 'bg-orange-50',
+          border: 'border-orange-100',
+          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
+          gradient: 'from-orange-600 to-green-700',
         };
       case 'info':
         return {
-          icon: <Info className="w-6 h-6 text-blue-500" />,
-          bg: 'bg-blue-50',
-          border: 'border-blue-100',
-          button: 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/20',
-          gradient: 'from-blue-600 to-indigo-600',
+          icon: <Info className="w-6 h-6 text-orange-500" />,
+          bg: 'bg-orange-50',
+          border: 'border-orange-100',
+          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
+          gradient: 'from-orange-600 to-orange-700',
         };
       default:
         return {
-          icon: <AlertCircle className="w-6 h-6 text-rose-500" />,
-          bg: 'bg-rose-50',
-          border: 'border-rose-100',
-          button: 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20',
-          gradient: 'from-rose-600 to-red-600',
+          icon: <AlertCircle className="w-6 h-6 text-orange-500" />,
+          bg: 'bg-orange-50',
+          border: 'border-orange-100',
+          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
+          gradient: 'from-orange-600 to-red-700',
         };
     }
   };
@@ -69,9 +67,9 @@ const Dialog = ({
 
   return (
     <Modal isOpen={open} onClose={() => setOpen(false)} maxWidth="max-w-md" closeOnBackdrop={true}>
-      <div className="bg-inherit rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-inherit rounded-lg overflow-hidden shadow-sm">
         {/* Premium Header - Dynamic based on variant */}
-        <div className={`bg-linear-to-r ${styles.gradient} p-8 relative overflow-hidden group`}>
+        <div className={`bg-gradient-to-br ${styles.gradient} p-8 relative overflow-hidden group`}>
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -85,7 +83,7 @@ const Dialog = ({
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center border border-white/30 backdrop-blur-sm"
+                className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center border border-white/30 "
               >
                 {styles.icon}
               </motion.div>
@@ -116,7 +114,7 @@ const Dialog = ({
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, type: 'spring', stiffness: 260, damping: 20 }}
-              className={`w-12 h-12 rounded-2xl ${styles.bg} flex items-center justify-center shrink-0 border ${styles.border}`}
+              className={`w-12 h-12 rounded-lg ${styles.bg} flex items-center justify-center shrink-0 border ${styles.border}`}
             >
               {styles.icon}
             </motion.div>
@@ -140,11 +138,11 @@ const Dialog = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-rose-50/50 p-5 rounded-2xl border border-rose-100 mb-6"
+              className="bg-amber-50/50 p-4 rounded-lg border border-amber-100 mb-6"
             >
               <div className="flex gap-3">
-                <Shield className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
-                <p className="text-[11px] font-bold text-rose-700 leading-relaxed">
+                <Shield className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <p className="text-[11px] font-bold text-amber-700 leading-relaxed">
                   {t('dialog.permanent_warning')}
                 </p>
               </div>
@@ -161,7 +159,7 @@ const Dialog = ({
             <button
               onClick={onCancel}
               disabled={isLoading}
-              className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 hover:border-slate-300 transition-all active:scale-95 disabled:opacity-50"
+              className="px-6 py-3 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 hover:border-slate-300 transition-all active:scale-95 disabled:opacity-50"
             >
               {cancelText}
             </button>
@@ -169,7 +167,7 @@ const Dialog = ({
             <button
               onClick={onConfirm}
               disabled={isLoading}
-              className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white shadow-xl hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 ${styles.button}`}
+              className={`px-8 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest text-white shadow-sm hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 ${styles.button}`}
             >
               {isLoading ? (
                 <>

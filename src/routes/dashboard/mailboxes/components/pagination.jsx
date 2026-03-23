@@ -51,10 +51,11 @@ const Pagination = ({
         <button
           key={page}
           onClick={() => onPageChange?.(page)}
-          className={`w-8 h-8 rounded-lg text-[11px] font-bold transition-all ${currentPage === page
-            ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-            : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+          className={`w-8 h-8 rounded-lg text-[11px] font-bold transition-all ${
+            currentPage === page
+              ? 'bg-orange-600 text-white shadow-sm shadow-orange-200'
+              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+          }`}
         >
           {page}
         </button>
@@ -65,7 +66,6 @@ const Pagination = ({
   return (
     <div className="flex items-center justify-between py-4 px-4">
       <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-
         {totalMessages > 0 && (
           <span className="mx-2 font-bold text-slate-500">
             {t('mailboxes.showing')} {startMessageCount} - {endMessageCount}{' '}

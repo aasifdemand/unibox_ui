@@ -1,5 +1,5 @@
-import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target } from "lucide-react";
-import { Activity } from "react";
+import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target } from 'lucide-react';
+import { Activity } from 'react';
 
 const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, steps }) => {
   return (
@@ -7,11 +7,11 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
       {/* Left Column: Progress & Details */}
       <div className="lg:col-span-2 space-y-8">
         {/* Campaign Progress */}
-        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2">
+        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                <Activity className="w-5 h-5 text-indigo-600" />
+                <Activity className="w-5 h-5 text-orange-600" />
                 Campaign Progress
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -19,10 +19,10 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
               </p>
             </div>
             <div className="ltr:text-right rtl:text-left">
-              <span className="text-3xl font-black text-indigo-600 tabular-nums">
+              <span className="text-3xl font-black text-orange-600 tabular-nums">
                 {stats.progress}%
               </span>
-              <p className="text-[10px] font-black text-indigo-300 uppercase tracking-widest leading-none">
+              <p className="text-[10px] font-black text-orange-300 uppercase tracking-widest leading-none">
                 Complete
               </p>
             </div>
@@ -31,7 +31,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
           <div className="space-y-6">
             <div className="relative h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40 p-0.5">
               <div
-                className="h-full bg-linear-to-r from-indigo-500 via-indigo-600 to-indigo-700 rounded-full transition-all duration-1000 ease-out shadow-lg shadow-indigo-500/20"
+                className="h-full bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/20"
                 style={{ width: `${stats.progress}%` }}
               >
                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-size-[40px_40px] animate-[shimmer_2s_infinite_linear]"></div>
@@ -51,7 +51,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
                   Total Sent
                 </span>
-                <span className="text-2xl font-black text-emerald-600 tracking-tighter tabular-nums">
+                <span className="text-2xl font-black text-orange-600 tracking-tighter tabular-nums">
                   {stats.totalSent.toLocaleString()}
                 </span>
               </div>
@@ -61,9 +61,9 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
 
         {/* Campaign Sequence Logic */}
         {steps && steps.length > 1 && (
-          <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2">
+          <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-              <Activity className="w-5 h-5 text-indigo-600" />
+              <Activity className="w-5 h-5 text-orange-600" />
               Campaign Sequence
             </h3>
 
@@ -74,8 +74,13 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
               <div className="space-y-10 relative">
                 {steps.map((step, idx) => (
                   <div key={step.id} className="flex gap-6">
-                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-lg relative z-10 ${idx === 0 ? 'bg-indigo-600 text-white shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-400'
-                      }`}>
+                    <div
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 shadow-sm relative z-10 ${
+                        idx === 0
+                          ? 'bg-orange-600 text-white shadow-orange-200'
+                          : 'bg-white border border-slate-200 text-slate-400'
+                      }`}
+                    >
                       {idx === 0 ? <Send className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
                     </div>
                     <div className="flex-1 pt-1">
@@ -113,9 +118,9 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
         )}
 
         {/* Campaign Details */}
-        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2">
+        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-            <Database className="w-5 h-5 text-indigo-600" />
+            <Database className="w-5 h-5 text-orange-600" />
             Campaign Details
           </h3>
 
@@ -134,10 +139,14 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
             </div>
             <div className="space-y-6">
               <DetailItem label="Created Date" value={formatDate(campaign.createdAt)} />
-              <DetailItem
-                label="Scheduled For"
-                value={campaign.scheduledAt ? formatDate(campaign.scheduledAt) : 'Immediate'}
-              />
+              {campaign.startedAt ? (
+                <DetailItem label="Started At" value={formatDate(campaign.startedAt)} />
+              ) : (
+                <DetailItem
+                  label="Scheduled For"
+                  value={campaign.scheduledAt ? formatDate(campaign.scheduledAt) : 'Immediate'}
+                />
+              )}
               <DetailItem label="Last Updated" value={formatDate(campaign.updatedAt)} />
               <DetailItem
                 label="Sending Rate"
@@ -150,9 +159,9 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
 
       {/* Right Column: Settings */}
       <div className="space-y-8">
-        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-2xl shadow-slate-900/2 h-full">
+        <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2 h-full">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-            <Settings2 className="w-5 h-5 text-indigo-600" />
+            <Settings2 className="w-5 h-5 text-orange-600" />
             Campaign Settings
           </h3>
 
@@ -177,15 +186,15 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
             />
 
             <div className="pt-8 mt-8 border-t border-slate-100">
-              <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-200">
+              <div className="p-4 bg-orange-50/50 rounded-lg border border-orange-100 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-md bg-orange-600 flex items-center justify-center shrink-0 shadow-sm shadow-orange-200">
                   <ShieldCheck className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-indigo-900 uppercase tracking-widest mb-1">
+                  <p className="text-[10px] font-black text-orange-900 uppercase tracking-widest mb-1">
                     Campaign Status
                   </p>
-                  <p className="text-[11px] font-medium text-indigo-700 leading-tight">
+                  <p className="text-[11px] font-medium text-orange-700 leading-tight">
                     All settings verified. Campaign is optimized and ready.
                   </p>
                 </div>
@@ -209,7 +218,7 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
       {value}
     </p>
     {subValue && (
-      <p className="text-[9px] font-bold text-indigo-400 uppercase tracking-widest mt-1">
+      <p className="text-[9px] font-bold text-orange-400 uppercase tracking-widest mt-1">
         {subValue}
       </p>
     )}
@@ -219,17 +228,17 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
 const SettingItem = ({ icon, label, status, desc }) => (
   <div className="flex items-start gap-4 group">
     <div
-      className={`p-3 rounded-xl transition-all duration-300 ${status ? 'bg-emerald-50 text-emerald-600 scale-110 shadow-lg shadow-emerald-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
+      className={`p-3 rounded-md transition-all duration-300 ${status ? 'bg-orange-50 text-orange-600 scale-110 shadow-sm shadow-orange-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
     >
       {icon}
     </div>
     <div className="flex-1">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-black text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
+        <p className="text-sm font-black text-slate-900 tracking-tight group-hover:text-orange-600 transition-colors">
           {label}
         </p>
         <span
-          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}
+          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-400'}`}
         >
           {status ? 'Active' : 'Disabled'}
         </span>

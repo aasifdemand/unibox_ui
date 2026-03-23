@@ -11,6 +11,12 @@
         "templates": "เทมเพลต",
         "subscription": "สมัครสมาชิก",
         "settings": "การตั้งค่า",
+        "crm": "ซีอาร์เอ็ม",
+        "email_campaigns": "แคมเปญอีเมล",
+        "email_accounts": "บัญชีอีเมล",
+        "contacts": "ผู้ติดต่อ",
+        "global_analytics": "การวิเคราะห์",
+        "integrations": "การเชื่อมต่อ",
         "navigation": "การนำทาง",
         "active": "ใช้งาน",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "คุณแน่ใจหรือไม่ว่าต้องการสิ้นสุดเซสชันแดชบอร์ดปัจจุบันของคุณ คุณจะต้องตรวจสอบสิทธิ์อีกครั้ง",
             "confirm": "ยืนยันการออกจากระบบ",
             "cancel": "อยู่ในระบบ"
-        }
+        },
+        "admin": "Admin",
+        "administrator": "Administrator",
+        "user": "User",
+        "u": "U"
     },
     "auth": {
         "copyright": "© {{year}} ยูนิบ็อกซ์ สงวนลิขสิทธิ์.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "หรือลงทะเบียนกับ",
             "already_account": "มีบัญชีอยู่แล้ว?",
             "sign_in_link": "เข้าสู่ระบบ"
+        },
+        "layout": {
+            "platform_live": "Platform Live",
+            "title_main": "The smarter way to",
+            "title_span": "run outreach",
+            "subtitle": "Unibox combines AI enrichment, smart sequencing, and a unified reply inbox — all in one platform.",
+            "trusted_by": "ได้รับความไว้วางใจจาก",
+            "teams": "ทีมงานประชาสัมพันธ์"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "แคมเปญ",
         "subtitle": "การประชาสัมพันธ์",
+        "sequence_details": "รายละเอียดลำดับ",
         "header_description": "สร้างและติดตามแคมเปญอีเมลของคุณ",
         "header_subtitle": "จัดการและติดตามแคมเปญอีเมลของคุณ",
         "create_campaign": "สร้างแคมเปญ",
@@ -303,6 +322,7 @@
         "campaign_date": "วันที่ของแคมเปญ",
         "empty_log_title": "บันทึกการดำเนินงานที่ว่างเปล่า",
         "empty_log_subtitle": "การสแกนเมทริกซ์เสร็จสมบูรณ์ ไม่พบเนื้อหาแคมเปญ",
+        "create_first_campaign": "สร้างแคมเปญแรก",
         "launch_protocol": "เปิดตัวโปรโตคอล",
         "no_subject": "ไม่มีหัวเรื่อง",
         "status_created": "สร้าง",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "เขียนลำดับอีเมลของคุณ",
         "step_setup": "ตั้งค่า",
         "step_setup_desc": "กำหนดค่าแคมเปญของคุณ",
+        "schedule_timing": "กำหนดการและเวลา",
+        "advanced_settings": "การตั้งค่าขั้นสูง",
         "step_final_review": "รีวิวครั้งสุดท้าย",
         "step_final_review_desc": "ตรวจสอบและเปิดตัวครั้งล่าสุด",
         "error_add_content": "โปรดเพิ่มเนื้อหา��งในอีเมล {{mode}} ของคุณก่อนดำเนินการต่อ",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "ลิงค์ยกเลิกการสมัคร",
         "recipients_senders": "ผู้รับและผู้ส่ง",
         "setup_audience": "ตั้งค่าผู้ชมแคมเปญและบัญชีของคุณ",
+        "sender_accounts": "การส่งบัญชี",
+        "active_senders": "บัญชีที่ใช้งาน",
+        "select_accounts_desc": "เชื่อมต่อบัญชีกับลำดับนี้",
+        "choose_senders_btn": "เลือกบ��ญชี",
+        "configure_schedule_btn": "กำหนดค่ากำหนดการ",
+        "modify_settings_btn": "แก้ไขการตั้งค่า",
+        "sender_rotation": "การหมุนเวียนบัญชี",
+        "account_health": "ความสมบูรณ์ของบัญชี",
+        "trust_score": "คะแนน",
+        "optimal_delivery": "การส่งมอบที่เหมาะสมที่สุด",
+        "intelligent_sending": "การส่งอัจฉริยะ",
+        "sender_rotation_count": "การหมุนตัวส่ง ({{count}})",
+        "more_accounts": "+{{count}} บัญชีเพิ่มเติม",
+        "no_sender_set": "ไม่มีการตั้งค่าผู้ส่ง",
+        "confirm_selection": "ยืนยันการเลือก",
+        "high_inboxing_enabled": "เปิดใช้งานการจัดส่งที่เหมาะสมที่สุด",
         "add_contacts": "เพิ่มผู้ติดต่อ",
         "add_sender": "เพิ่มผู้ส่ง",
         "selected_audience": "ผู้ชมที่เลือก",
@@ -500,7 +538,7 @@
         "goal": {
             "title": "เป้าหมายรายเดือน",
             "growth": "การเติบโตของพื้นที่ทำงาน",
-            "description": "คุณได้ทำเป้าหมายแคมเปญ {{completed}} ของ {{goal}} ในเดือนนี้สำเร็จแล้ว {{completed}}"
+            "description": "You've completed {{completed}} of your {{goal}} campaigns goal for this month."
         },
         "upcoming": {
             "title": "เร็วๆ นี้",
@@ -795,8 +833,8 @@
                 "gmail": "กูเกิล จีเมล",
                 "outlook": "ไมโครซอฟต์ เอาท์ลุค",
                 "smtp": "SMTP แบบกำหนดเอง",
-                "bulk": "การนำเข้าจำนวนมาก",
                 "smtp_desc": "การตั้งค่าด้วยตนเอง",
+                "bulk": "การนำเข้าจำนวนมาก",
                 "bulk_desc": "XLSX อัปโหลด"
             },
             "secure_title": "การรักษาความปลอดภัยระดับองค์กร",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "เชื่อมต่อกับ Google Mail",
             "btn_connect_outlook": "เชื่อมต่อกับจดหมาย Microsoft Outlook",
+            "smtp_success": "การเชื่อมต่อ SMTP สำเร็จ",
+            "smtp_fail": "การเชื่อมต่อ SMTP ล้มเหลว",
+            "imap_success": "การเชื่อมต่อ IMAP สำเร็จ",
+            "imap_fail": "การเชื่อมต่อ IMAP ล้มเหลว",
+            "empty_provider": "เลือกผู้ให้บริการ",
+            "empty_desc": "เลือก Gmail, Outlook หรือ SMTP แบบกำหนดเองด้านบน",
+            "encrypted_note": "เข้ารหัสตั้งแต่ต้นทางถึงปลายทาง",
+            "smtp_config_note": "หากคุณเว้นว่างไว้ เราจะพยายามใช้การตั้งค่าการส่งของคุณโดยอัตโนมัติ",
             "bulk": {
                 "title": "อัปโหลดบัญชีจำนวนมาก",
                 "desc": "อัปโหลดไฟล์ Excel (.xlsx) โดยมีคอลัมน์: อีเมล โดเมน รหัสผ่าน ประเภท (aapanel/ไปรษณีย์) first_name นามสกุล",
@@ -876,16 +922,8 @@
             "err_no_headers": "ไม่พบส่วนหัวในไฟล์",
             "err_read_fail": "ไม่สามารถอ่านไฟล์",
             "err_map_required": "โปรดแมปช่องที่ต้องกรอกทั้งหมด",
-            "smtp_success": "การเชื่อมต่อ SMTP สำเร็จ",
-            "smtp_fail": "การเชื่อมต่อ SMTP ล้มเหลว",
-            "imap_success": "การเชื่อมต่อ IMAP สำเร็จ",
-            "imap_fail": "การเชื่อมต่อ IMAP ล้มเหลว",
             "bulk_success": "การอัปโหลดจำนวนมากสำเร็จ",
-            "bulk_error": "การอัปโหลดจำนวนมากล้มเหลว",
-            "empty_provider": "เลือกผู้ให้บริการ",
-            "empty_desc": "เลือก Gmail, Outlook หรือ SMTP แบบกำหนดเองด้านบน",
-            "encrypted_note": "เข้ารหัสตั้งแต่ต้นทางถึงปลายทาง",
-            "smtp_config_note": "หากคุณเว้นว่างไว้ เราจะพยายามใช้การตั้งค่าการส่งของคุณโดยอัตโนมัติ"
+            "bulk_error": "การอัปโหลดจำนวนมากล้มเหลว"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "หัวเรื่องของคุณสะท้อนได้ดี! ลองพิจารณาสไตล์ 'ช่องว่างความอยากรู้อยากเห็น' ที่คุณกำลังใช้อยู่เป็นสองเท่า",
         "rec_conversion_low": "การตอบกลับมีน้อย ลองเพิ่ม 'คำกระตุ้นการตัดสินใจ' (CTA) ที่ชัดเจนยิ่งขึ้น หรือคำถามเบาๆ เช่น 'สิ่งนี้มีประโยชน์หรือไม่' เพื่อลดแรงเสียดทาน",
         "rec_conversion_high": "การแปลงที่ยอดเยี่ยม! คุณค่าที่คุณนำเสนอมีความชัดเจน ตรวจสอบให้แน่ใจว่าทีมขายของคุณติดตามผลภายใน 4 ชั่วโมงเพื่อให้ได้ผลลัพธ์ที่ดีที่สุด"
+    },
+    "crm": {
+        "title": "บูรณาการ CRM",
+        "subtitle": "ศูนย์รายได้",
+        "pipeline": "ไปป์ไลน์",
+        "description": "เชื่อมต่อพื้นที่ทำงานเผยแพร่ประชาสัมพันธ์ของคุณกับ CRM ที่คุณชื่นชอบเพื่อซิงค์ลูกค้าเป้าหมายและบันทึกกิจกรรมโดยอัตโนมัติ",
+        "drag_desc": "Drag leads between stages. Click any card to view details and set deal value.",
+        "connect_crm": "Connect CRM",
+        "add_column": "Add Column",
+        "all_campaigns": "แคมเปญทั้งหมด",
+        "total": "รวม",
+        "value": "ค่า",
+        "leads_label": "โอกาสในการขาย",
+        "drop_leads": "วางโอกาสในการขายที่นี่",
+        "loading": "กำลังโหลด...",
+        "build_funnel": "สร้างช่องทางของคุณ",
+        "add_first_col": "เพิ่มคอลัมน์แรกของคุณเพื่อเริ่มติดตามลูกค้าเป้าหมายตามแต่ละขั้นตอน",
+        "create_initial": "สร้างคอลัมน์แรก",
+        "footer_msg1": "โอกาสในการขายจะคืบหน้าโดยอัตโนมัติเมื่อ",
+        "footer_msg2": "เจตนาตอบกลับ",
+        "footer_msg3": "ถูกตรวจพบ",
+        "search_placeholder": "หาเบาะแส...",
+        "stages": {
+            "leads": "โอกาสในการขายใหม่",
+            "contacted": "ติดต่อ",
+            "replied": "ตอบ",
+            "meeting_booked": "จองการประชุมแล้ว",
+            "closed": "ปิด",
+            "bounced": "เด้ง",
+            "unsubscribed": "ยกเลิกการสมัคร"
+        },
+        "lead_card": {
+            "last_activity": "กิจกรรมล่าสุด:",
+            "campaign": "แคมเปญ:",
+            "view_profile": "ดูโปรไฟล์"
+        },
+        "connect": "เชื่อมต่อ",
+        "connected": "เชื่อมต่อ",
+        "status_ready": "Ready to sync",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "ซิง���์รายชื่อและบันทึกเหตุการณ์ไทม์ไลน์"
+        },
+        "salesforce": {
+            "title": "พนักงานขาย",
+            "desc": "จัดการโอกาสในการขายและโอกาสแบบเรียลไทม์"
+        },
+        "pipedrive": {
+            "title": "ไปป์ไดรฟ์",
+            "desc": "ติดตามความคืบหน้าของข้อตกลงและบันทึกกิจกรรม"
+        },
+        "add_column_modal_title": "Add New Column",
+        "column_name_label": "Column Name",
+        "column_name_placeholder": "e.g., Qualified Leads",
+        "select_color_label": "เลือกสีของคอลัมน์",
+        "link_intent_label": "ลิงก์ไปยัง AI Intent (ไม่บังคับ)",
+        "link_intent_desc": "โอกาสในการขายที่มีเจตนานี้จะย้ายมาที่นี่โดยอัตโนมัติ",
+        "select_intent_placeholder": "เลือกความตั้งใจ...",
+        "add_column_btn": "เพิ่มคอลัมน์",
+        "cancel_btn": "ยกเลิก",
+        "status": "พร้อมซิงค์"
+    },
+    "integrations": {
+        "header_title": "บูรณาการ",
+        "header_subtitle": "ตลาด",
+        "header_desc": "เชื่อมต่อ CRM ที่คุณชื่นชอบและเครื่องมือข้อมูลเพื่อทำให้เวิร์กโฟลว์การเผยแพร่ประชาสัมพันธ์ของคุณเป็นแบบอัตโนมัติ",
+        "search_placeholder": "การบูรณาการการค้นหา (HubSpot, Salesforce, ทันที...)",
+        "no_results": "ไม่พบการบูรณาการที่ตรงกับการค้นหาของคุณ",
+        "connect_btn": "เชื่อมต่อ",
+        "disconnect_btn": "ตัดการเชื่อมต่อ",
+        "disconnecting_btn": "กำลังยกเลิกการเชื่อมต่อ...",
+        "disconnecting": "กำลังตัดการเชื่อมต่อจาก {{name}}...",
+        "connected": "เชื่อมต่อ",
+        "never_synced": "ไม่เคยซิงค์",
+        "learn_how": "เรียนรู้วิธีการ",
+        "connect_app": "+ เชื่อมต่อแอป",
+        "confirm_disconnect_title": "ยืนยันการตัดการเชื่อมต่อ",
+        "confirm_disconnect_desc1": "คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการเชื่อมต่อ",
+        "confirm_disconnect_desc2": "? Unibox จะไม่สามารถซิงค์โอกาสในการขายหรือข้อมูลกับบริการนี้ได้อีกต่อไป",
+        "disconnect_success": "ตัดการเชื่อมต่อจาก {{name}} สำเร็จแล้ว",
+        "complete_connection": "การเชื่อมต่อเสร็จสมบูรณ์",
+        "verify_oauth_desc": "เราได้เปิดหน้าเข้าสู่ระบบ {{name}} ในแท็บใหม่ เมื่อคุณเข้าสู่ระบบและอนุญาตแอปสำเร็จแล้ว ให้คลิกปุ่มด้านล่างเพื่อทำการเชื่อมต่อให้เสร็จสิ้น",
+        "oauth_initiating": "กำลังเริ่มต้นโฟลว์ OAuth 2.0 สำหรับ {{name}}...",
+        "oauth_success": "เชื่อมต่อกับ {{name}} ผ่าน OAuth!",
+        "api_key_label": "รหัสการเข้าถึง API",
+        "api_key_placeholder": "ป้อนคีย์ API {{name}} ของคุณ...",
+        "api_key_desc": "คุณสามารถค้นหาคีย์ API ของคุณได้ในการตั้งค่าแดชบอร์ด {{name}} เราเข้ารหัสคีย์นี้เพื่อความปลอดภัยของคุณ",
+        "verify_btn": "ตรวจสอบและเชื่อมต่อ",
+        "verifying_btn": "กำลังยืนยัน...",
+        "upcoming_connections": "การเชื่อมต่อที่กำลังจะเกิดขึ้น",
+        "stay_tuned": "เรากำลังเพิ่มการบูรณาการใหม่ๆ อย่างต่อเนื่อง คอยติดตามข้อมูลเพิ่มเติม!",
+        "secure": "ปลอดภัย",
+        "complete_auth": "ดำเนินการอนุญาต {{name}} ให้เสร็จสมบูรณ์",
+        "types": {
+            "crm": "ซีอาร์เอ็ม",
+            "data": "ข้อมูล",
+            "outreach": "การขยายงาน"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "ซ���งค์โอกาสในการขายและกิจกรรมของคุณกับ HubSpot CRM โดยใช้โฟลว์ OAuth ที่เชื่อมต่อเพียงคลิกเดียว"
+            },
+            "salesforce": {
+                "desc": "เชื่อมต่อเวิร์กโฟลว์องค์กรของคุณกับโฟลว์เว็บเซิร์ฟเวอร์ของ Salesforce"
+            },
+            "instantly": {
+                "desc": "เชื่อมต่อแคมเปญ Instantly.ai ของคุณเพื่อการซิงค์การเข้าถึงที่ราบรื่น"
+            },
+            "apollo": {
+                "desc": "เพิ่มโอกาสในการขายของคุณด้วยข้อ��ูลเชิงลึกของฐานข้อมูล Apollo.io B2B"
+            },
+            "leadmagic": {
+                "desc": "เติมเต็มข้อมูลลูกค้าเป้าหมายด้วยข้อมูลบริษัทผ่าน Leadmagic X-API-Key"
+            },
+            "clay": {
+                "desc": "ซิงค์ข้อมูลขาออกไปยังตาราง Clay ผ่าน JSON HTTP API"
+            }
+        }
     }
 }

@@ -129,7 +129,7 @@ export const getStatusBadgeClass = (status) => {
     case 'failed':
       return 'bg-red-100 text-red-800';
     case 'uploaded':
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-orange-100 text-orange-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }

@@ -48,7 +48,7 @@ export const getStatusInfo = (status) => {
       };
     case 'completed':
       return {
-        color: 'bg-blue-100 text-blue-800 border-blue-200',
+        color: 'bg-orange-100 text-orange-800 border-orange-200',
         icon: <CheckCircle className="w-4 h-4" />,
         label: 'Completed',
       };
@@ -104,4 +104,20 @@ export const calculateReplyRate = (campaign) => {
   if (uniqueContacted === 0) return '-';
   const replies = campaign.totalReplied || 0;
   return `${Math.round((replies / uniqueContacted) * 100)}%`;
+};
+
+// Calculate bounce rate
+export const calculateBounceRate = (campaign) => {
+  const sent = campaign.totalSent;
+  if (!sent) return '-';
+  const bounced = campaign.totalBounced || 0;
+  return `${Math.round((bounced / sent) * 100)}%`;
+};
+
+// Calculate unsubscribe rate
+export const calculateUnsubscribeRate = (campaign) => {
+  const sent = campaign.totalSent;
+  if (!sent) return '-';
+  const unsubscribed = campaign.totalUnsubscribed || 0;
+  return `${Math.round((unsubscribed / sent) * 100)}%`;
 };

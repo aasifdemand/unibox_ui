@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getPersistentFolders, setPersistentFolders } from '../routes/dashboard/mailboxes/utils/persistent-cache';
+import {
+  getPersistentFolders,
+  setPersistentFolders,
+} from '../routes/dashboard/mailboxes/utils/persistent-cache';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

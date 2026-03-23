@@ -64,7 +64,7 @@ const ViewCampaign = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <div className="relative">
-          <div className="w-20 h-20 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+          <div className="w-20 h-20 border-4 border-gray-200 border-t-orange-600 rounded-full animate-spin"></div>
         </div>
         <p className="mt-4 text-sm text-gray-500">Loading...</p>
       </div>
@@ -141,7 +141,7 @@ const ViewCampaign = () => {
         </motion.div>
 
         <div className="space-y-8">
-          <div className="flex items-center gap-1 p-1 bg-slate-100/50 backdrop-blur-md rounded-2xl w-fit border border-slate-200/50 shadow-sm">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/50  rounded-lg w-fit border border-slate-200/50 shadow-sm">
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'analytics', label: 'Analytics' },
@@ -152,10 +152,11 @@ const ViewCampaign = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-xl ${activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/20'
-                  : 'text-slate-400 hover:text-slate-600 hover:bg-white'
-                  }`}
+                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-md ${
+                  activeTab === tab.id
+                    ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/20'
+                    : 'text-slate-400 hover:text-slate-600 hover:bg-white'
+                }`}
               >
                 {tab.label}
               </button>

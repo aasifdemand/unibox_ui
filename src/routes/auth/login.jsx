@@ -8,6 +8,7 @@ import { loginSchema } from '../../validators/login.schema';
 import { useToast } from '../../hooks/useToast';
 import { mapZodErrors } from '../../utils/map-zod';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -101,16 +102,25 @@ const Login = () => {
 
   return (
     <>
-      <div className="text-center mb-8 md:mb-10">
-        <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">
-          {t('auth.login.title')} <span className="text-gradient">{t('auth.login.title_span')}</span>
+      <div className="text-center mb-10">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="w-12 h-12 bg-orange-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-orange-100"
+        >
+          <Mail className="w-6 h-6 text-orange-600" />
+        </motion.div>
+        <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          {t('auth.login.title')}{' '}
+          <span className="text-gradient leading-relaxed">{t('auth.login.title_span')}</span>
         </h2>
-        <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
+        <p className="text-[14px] font-medium text-slate-500 mt-1">
           {t('auth.login.subtitle')}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label={t('auth.login.email_label')}
           type="email"
@@ -122,23 +132,13 @@ const Login = () => {
           icon={Mail}
           error={errors.email}
           disabled={isLoading}
-          className="rounded-2xl border-slate-200/60"
+          className="rounded-lg border-slate-200/60"
         />
 
-        <div className="space-y-2">
-          <div className="flex justify-between items-center px-1">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              {t('auth.login.password_label')}
-            </label>
-            <button
-              onClick={handleForgotPassword}
-              className="text-[10px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-widest transition-colors"
-              type="button"
-              disabled={isLoading}
-            >
-              {t('auth.login.forgot_password')}
-            </button>
-          </div>
+        <div className="space-y-1.5">
+          <label className="text-[13px] font-semibold text-slate-700 px-1">
+            {t('auth.login.password_label')}
+          </label>
 
           <Input.Password
             name="password"
@@ -148,75 +148,70 @@ const Login = () => {
             required
             error={errors.password}
             disabled={isLoading}
-            className="rounded-2xl border-slate-200/60"
+            className="rounded-lg border-slate-200/60"
           />
+
+          <div className="flex justify-end px-1 pt-0.5">
+            <button
+              onClick={handleForgotPassword}
+              className="text-[13px] font-semibold text-orange-600 hover:text-orange-700 transition-colors"
+              type="button"
+              disabled={isLoading}
+            >
+              {t('auth.login.forgot_password')}
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center justify-between px-1">
-          <Checkbox
-            name="rememberMe"
-            checked={formData.rememberMe}
-            onChange={handleCheckboxChange}
-            label={
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                {t('auth.login.remember_me')}
-              </span>
-            }
+
+
+        <div className="space-y-3 pt-2">
+          <button
+            type="submit"
+            className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
             disabled={isLoading}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="btn-primary w-full py-4 rounded-2xl text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-          ) : (
-            t('auth.login.sign_in_btn')
-          )}
-        </button>
-      </form>
-
-      {/* Divider */}
-      <div className="mt-10">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-100"></div>
-          </div>
-          <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]">
-            <span className="px-4 bg-white/70 backdrop-blur-md text-slate-400">
-              {t('auth.login.or_continue_with')}
-            </span>
-          </div>
-        </div>
-
-        {/* Google Login */}
-        <div className="mt-8">
+          >
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              t('auth.login.sign_in_btn')
+            )}
+          </button>
           <button
             type="button"
-            className="w-full py-4 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-700 uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95 disabled:opacity-50"
+            className="w-full py-3 bg-white rounded-md text-[14px] font-bold text-slate-700 tracking-tight flex items-center justify-center gap-3 hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95 disabled:opacity-50"
             onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)}
             disabled={isLoading}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
             </svg>
-            Google
+            Continue with Google
           </button>
         </div>
-      </div>
+      </form>
 
       <div className="mt-10 text-center">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+        <p className="text-[13px] font-medium text-slate-500">
           {t('auth.login.no_account')}{' '}
           <Link
             to="/auth/signup"
-            className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ltr:ml-1 rtl:mr-1"
+            className="text-orange-600 hover:text-orange-700 font-bold transition-colors ltr:ml-1 rtl:mr-1"
           >
             {t('auth.login.sign_up_link')}
           </Link>

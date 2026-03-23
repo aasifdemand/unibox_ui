@@ -383,9 +383,9 @@ export const useExportVerificationResults = () => {
         CreatedAt: record.createdAt ? new Date(record.createdAt).toLocaleString() : '',
         ...(record.verificationMeta && typeof record.verificationMeta === 'object'
           ? Object.keys(record.verificationMeta).reduce((acc, key) => {
-            acc[`Verification_${key}`] = record.verificationMeta[key];
-            return acc;
-          }, {})
+              acc[`Verification_${key}`] = record.verificationMeta[key];
+              return acc;
+            }, {})
           : {}),
       }));
 

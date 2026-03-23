@@ -256,36 +256,6 @@ export const initiateOutlookOAuth = () => {
 };
 
 // =========================
-// BULK UPLOAD SENDERS
-// =========================
-const bulkUploadSenders = async (file) => {
-  const formData = new FormData();
-  formData.append('file', file);
-
-  const res = await fetch(`${API_URL}/senders/bulk-upload`, {
-    method: 'POST',
-    credentials: 'include',
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Bulk upload failed');
-  return data;
-};
-
-export const useBulkUploadSenders = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: bulkUploadSenders,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
-    },
-  });
-};
-
-// =========================
 // BULK DELETE SENDERS
 // =========================
 const bulkDeleteSenders = async (senderIds) => {

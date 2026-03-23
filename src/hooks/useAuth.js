@@ -290,7 +290,10 @@ export const useUpdateProfile = () => {
   return useMutation({
     mutationFn: updateProfile,
     onSuccess: (updatedUser) => {
-      queryClient.setQueryData(authKeys.user(), updatedUser);
+      queryClient.setQueryData(authKeys.user(), (old) => ({
+        ...old,
+        ...updatedUser,
+      }));
     },
   });
 };

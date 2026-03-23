@@ -11,6 +11,12 @@
         "templates": "قوالب",
         "subscription": "الاشتراك",
         "settings": "الإعدادات",
+        "crm": "إدارة علاقات العملاء",
+        "email_campaigns": "حملات البريد الإلكتروني",
+        "email_accounts": "حسابات البريد الإلكتروني",
+        "contacts": "جهات الاتصال",
+        "global_analytics": "تحليلات",
+        "integrations": "التكامل",
         "navigation": "الملاحة",
         "active": "نشط",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "هل أن�� متأكد أنك تريد إنهاء جلسة لوحة المعلومات الحالية؟ سوف تحتاج إلى إعادة المصادقة.",
             "confirm": "تأكيد الخروج",
             "cancel": "البقاء مسجل الدخول"
-        }
+        },
+        "admin": "المشرف",
+        "administrator": "المسؤول",
+        "user": "المستخدم",
+        "u": "ش"
     },
     "auth": {
         "copyright": "© {{year}} يونيبوكس. جميع الحقوق محفوظة.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "أو قم بالتسجيل باستخدام",
             "already_account": "هل لديك حساب بالفعل؟",
             "sign_in_link": "تسجيل الدخول"
+        },
+        "layout": {
+            "platform_live": "منصة لايف",
+            "title_main": "الطريقة الأكثر ذكاءً لـ",
+            "title_span": "تشغيل التوعية",
+            "subtitle": "يجمع Unibox بين إثراء الذكاء الاصطناعي والتسلسل الذكي وصندوق الرد الوارد الموحد - كل ذلك في نظام أساسي واحد.",
+            "trusted_by": "موثوق به",
+            "teams": "فرق التوعية"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "حملات",
         "subtitle": "التوعية",
+        "sequence_details": "تفاصيل التسلسل",
         "header_description": "إنشاء وتتبع حملات البريد الإلكتروني الخاصة بك.",
         "header_subtitle": "إدارة وتتبع حملات البريد الإلكتروني الخاصة بك",
         "create_campaign": "إنشاء حملة",
@@ -303,6 +322,7 @@
         "campaign_date": "تاريخ الحملة",
         "empty_log_title": "سجل العمليات الفارغة",
         "empty_log_subtitle": "اكتمل فحص المصفوفة. لم يتم العثور على أصول الحملة.",
+        "create_first_campaign": "إنشاء الحملة الأولى",
         "launch_protocol": "إطلاق البروتوكول",
         "no_subject": "لا يوجد موضوع",
         "status_created": "تم الإنشاء",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "اكتب تسلسل بريدك الإلكتروني",
         "step_setup": "الإعداد",
         "step_setup_desc": "قم بتكوين حملتك",
+        "schedule_timing": "الجدول والتوقيت",
+        "advanced_settings": "الإعدادات المتقدمة",
         "step_final_review": "المراجعة النهائية",
         "step_final_review_desc": "آخر فحص وإطلاق",
         "error_add_content": "يرجى إضافة بعض المحتوى إلى بريدك الإلكتروني {{mode}} قبل المتابعة.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "رابط إلغاء الاشتراك",
         "recipients_senders": "المستلمون والمرسلون",
         "setup_audience": "قم بإعداد جمهور حملتك وحساباتك",
+        "sender_accounts": "ارسال الحسابات",
+        "active_senders": "الحسابات النشطة",
+        "select_accounts_desc": "ربط الحسابات بهذا التسلسل",
+        "choose_senders_btn": "حدد الحسابات",
+        "configure_schedule_btn": "تكوين الجدول",
+        "modify_settings_btn": "تعديل الإعدادات",
+        "sender_rotation": "دوران الحساب",
+        "account_health": "صحة الحساب",
+        "trust_score": "النتيجة",
+        "optimal_delivery": "التسليم الأمثل",
+        "intelligent_sending": "إرسال ذكي",
+        "sender_rotation_count": "دوران المرسل ({{count}})",
+        "more_accounts": "+{{count}} المزيد من الحسابات",
+        "no_sender_set": "لم يتم تعيين المرسل",
+        "confirm_selection": "تأكيد الاختيار",
+        "high_inboxing_enabled": "تم تمكين التسليم الأمثل",
         "add_contacts": "إضافة جهات اتصال",
         "add_sender": "إضافة مرسل",
         "selected_audience": "الجمهور المختار",
@@ -795,8 +833,8 @@
                 "gmail": "جوجل جيميل",
                 "outlook": "مايكروسوفت أوتلوك",
                 "smtp": "مخصص SMTP",
-                "bulk": "استيراد بالجملة",
                 "smtp_desc": "الإعداد اليدوي",
+                "bulk": "استيراد بالجملة",
                 "bulk_desc": "تحميل XLSX"
             },
             "secure_title": "أمان على مستوى المؤسسات",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "تواصل مع بريد جوجل",
             "btn_connect_outlook": "تواصل مع بريد Microsoft Outlook",
+            "smtp_success": "تم الاتصال بـ SMTP بنجاح",
+            "smtp_fail": "فشل اتصال SMTP",
+            "imap_success": "تم الاتصال بـ IMAP بنجاح",
+            "imap_fail": "فشل اتصال IMAP",
+            "empty_provider": "حدد موفر",
+            "empty_desc": "اختر Gmail أو Outlook أو SMTP المخصص أعلاه.",
+            "encrypted_note": "مشفرة من طرف إلى طرف",
+            "smtp_config_note": "إذا تركت هذه فارغة، فسنحاول استخدام إعدادات الإرسال الخاصة بك تلقائيًا.",
             "bulk": {
                 "title": "حسابات التحميل المجمع",
                 "desc": "قم بتحميل ملف Excel (.xlsx) مع الأعمدة: البريد الإلكتروني، المجال، كلمة المرور، النوع (aapanel/postal)، الاسم الأول، الاسم الأخير.",
@@ -876,16 +922,8 @@
             "err_no_headers": "لم يتم العثور على رؤوس في الملف",
             "err_read_fail": "تعذرت قراءة الملف",
             "err_map_required": "يرجى ��عيين كافة الحقول المطلوبة",
-            "smtp_success": "تم الاتصال بـ SMTP بنجاح",
-            "smtp_fail": "فشل اتصال SMTP",
-            "imap_success": "تم الاتصال بـ IMAP بنجاح",
-            "imap_fail": "فشل اتصال IMAP",
             "bulk_success": "تم التحميل المجمع بنجاح",
-            "bulk_error": "فشل التحميل المجمع",
-            "empty_provider": "حدد موفر",
-            "empty_desc": "اختر Gmail أو Outlook أو SMTP المخصص أعلاه.",
-            "encrypted_note": "مشفرة من طرف إلى طرف",
-            "smtp_config_note": "إذا تركت هذه فارغة، فسنحاول استخدام إعدادات الإرسال الخاصة بك تلقائيًا."
+            "bulk_error": "فشل التحميل المجمع"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "سطور موضوعك لها صدى جيد! فكر في مضاعفة أسلوب \"فجوة الفضول\" الذي تستخدمه حاليًا.",
         "rec_conversion_low": "الردود منخفضة. حاول إضافة عبارة \"حث على اتخاذ إجراء\" (CTA) أكثر وضوحًا أو سؤال بسيط مثل \"هل كان هذا مفيدًا؟\" لتقليل الاحتكاك.",
         "rec_conversion_high": "تحويل عظيم! عرض القيمة الخاص بك واضح. تأكد من قيام فريق المبيعات الخاص بك بالمتابعة خلال 4 ساعات للحصول على أفضل النتائج."
+    },
+    "crm": {
+        "title": "تكامل إدارة علاقات العملاء",
+        "subtitle": "مركز الإيرادات",
+        "pipeline": "خط أنابيب",
+        "description": "قم بتوصيل مساحة عمل التواصل الخاصة بك مع نظام إدارة علاقات العملاء (CRM) المفضل لديك لمزامنة العملاء المتوقعين وتسجيل الأنشطة تلقائيًا.",
+        "drag_desc": "سحب الخيوط بين المراحل. انقر فوق أي بطاقة لعرض التفاصيل وتحديد قيمة الصفقة.",
+        "connect_crm": "ربط إدارة علاقات العملاء",
+        "add_column": "إضافة عمود",
+        "all_campaigns": "جميع الحملات",
+        "total": "المجموع",
+        "value": "القيمة",
+        "leads_label": "يؤدي",
+        "drop_leads": "قم بإسقاط العملاء المتوقعين هنا",
+        "loading": "جاري التحميل...",
+        "build_funnel": "قم ببناء مسار التحويل الخاص بك",
+        "add_first_col": "أضف عمودك الأول لبدء تتبع العملاء المحتملين عبر المراحل.",
+        "create_initial": "إنشاء العمود الأول",
+        "footer_msg1": "يؤدي التقدم تلقائيا عندما",
+        "footer_msg2": "نوايا الرد",
+        "footer_msg3": "تم الكشف",
+        "search_placeholder": "ابحث عن عميل محتمل...",
+        "stages": {
+            "leads": "عروض جديدة",
+            "contacted": "تم الاتصال",
+            "replied": "أجاب",
+            "meeting_booked": "تم حجز الاجتماع",
+            "closed": "مغلق",
+            "bounced": "ارتد",
+            "unsubscribed": "غير مشترك"
+        },
+        "lead_card": {
+            "last_activity": "النشاط الأخير:",
+            "campaign": "الحملة:",
+            "view_profile": "عرض الملف الشخصي"
+        },
+        "connect": "تواصل",
+        "connected": "متصل",
+        "status_ready": "جاهز للمزامنة",
+        "hubspot": {
+            "title": "هب سبوت",
+            "desc": "مزامنة جهات الاتصال وتسجيل أحداث الجدول الزمني."
+        },
+        "salesforce": {
+            "title": "قوة المبيعات",
+            "desc": "إدارة العملاء المحتملين والفرص في الوقت الحقيقي."
+        },
+        "pipedrive": {
+            "title": "محرك الأنابيب",
+            "desc": "تتبع تقدم الصفقة وسجلات النشاط."
+        },
+        "add_column_modal_title": "إضافة عمود جديد",
+        "column_name_label": "اسم العمود",
+        "column_name_placeholder": "على سبيل المثال، العملاء المتوقعون المؤهلون",
+        "select_color_label": "حدد لون العمود",
+        "link_intent_label": "الارتباط بـ AI Intent (اختياري)",
+        "link_intent_desc": "سيتم نقل العملاء المتوقعين الذين لديهم هذه النية إلى هنا تلقائيًا",
+        "select_intent_placeholder": "حدد نية...",
+        "add_column_btn": "إضافة عمود",
+        "cancel_btn": "إلغاء",
+        "status": "جاهز للمزامنة"
+    },
+    "integrations": {
+        "header_title": "التكامل",
+        "header_subtitle": "السوق",
+        "header_desc": "قم بتوصيل أدوات إدارة علاقات العملاء (CRM) وأدوات البيانات المفضلة لديك لأتمتة سير عمل التواصل الخاص بك.",
+        "search_placeholder": "عمليات تكامل البحث (HubSpot، Salesforce، Instantly...)",
+        "no_results": "لم يتم العثور على عمليات تكامل تطابق بحثك.",
+        "connect_btn": "تواصل",
+        "disconnect_btn": "قطع الاتصال",
+        "disconnecting_btn": "قطع الاتصال...",
+        "disconnecting": "يتم الآن قطع الاتصال من {{name}}...",
+        "connected": "متصل",
+        "never_synced": "لم تتم المزامنة مطلقًا",
+        "learn_how": "تعلم كيف",
+        "connect_app": "+ ربط التطبيق",
+        "confirm_disconnect_title": "تأكيد قطع الاتصال",
+        "confirm_disconnect_desc1": "هل أنت متأكد أنك تريد قطع الاتصال",
+        "confirm_disconnect_desc2": "؟ لن يتمكن Unibox بعد الآن من مزامنة العملاء المتوقعين أو البيانات مع هذه الخدمة.",
+        "disconnect_success": "تم قطع الاتصال بنجاح من {{name}}",
+        "complete_connection": "اتصال كامل",
+        "verify_oauth_desc": "لقد فتحنا صفحة تسجيل الدخول {{name}} في علامة تبويب جديدة. بمجرد تسجيل الدخول بنجاح والترخيص للتطبيق، انقر فوق الزر أدناه لإكمال الاتصال.",
+        "oauth_initiating": "بدء تدفق OAuth 2.0 لـ {{name}}...",
+        "oauth_success": "متصل بـ {{name}} عبر OAuth!",
+        "api_key_label": "مفتاح الوصول لواجهة برمجة التطبيقات",
+        "api_key_placeholder": "أدخل مفتاح واجهة برمجة التطبيقات {{name}}...",
+        "api_key_desc": "يمكنك العثور على مفتاح API الخاص بك في إعدادات لوحة المعلومات {{name}}. نحن نقوم بتشفير هذا المفتاح من أجل أمانك.",
+        "verify_btn": "التحقق والاتصال",
+        "verifying_btn": "التحقق...",
+        "upcoming_connections": "الاتصالات القادمة",
+        "stay_tuned": "نحن نضيف باستمرار عمليات تكامل جديدة. ترقبوا المزيد!",
+        "secure": "آمن",
+        "complete_auth": "أكمل {{name}} التفويض",
+        "types": {
+            "crm": "إدارة علاقات العملاء",
+            "data": "��يانات",
+            "outreach": "التوعية"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "قم بمزامنة العملاء المتوقعين والأنشطة الخاصة بك مع HubSpot CRM باستخدام تدفق OAuth المتصل بنقرة واحدة."
+            },
+            "salesforce": {
+                "desc": "قم بتوصيل سير عمل مؤسستك بتدفق Salesforce Web Server."
+            },
+            "instantly": {
+                "desc": "قم بتوصيل حملاتك على Instantly.ai للحصول على مزامنة تواصل سلسة."
+            },
+            "apollo": {
+                "desc": "قم بإثراء عملائك المحتملين باستخدام رؤى قاعدة بيانات Apollo.io B2B."
+            },
+            "leadmagic": {
+                "desc": "إثراء العملاء المحتملين ببيانات الشركة عبر Leadmagic X-API-Key."
+            },
+            "clay": {
+                "desc": "مزامنة البيانات الصادرة مع جداول Clay عبر JSON HTTP API الخاصة بهم."
+            }
+        }
     }
 }

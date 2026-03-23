@@ -37,12 +37,12 @@ export const ErrorAlert = ({
       buttonBg: 'hover:bg-green-100',
     },
     info: {
-      bg: 'bg-blue-50',
-      border: 'border-blue-200',
-      text: 'text-blue-700',
-      icon: <Info className="w-5 h-5 text-blue-600" />,
-      buttonHover: 'hover:text-blue-800',
-      buttonBg: 'hover:bg-blue-100',
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      text: 'text-orange-700',
+      icon: <Info className="w-5 h-5 text-orange-600" />,
+      buttonHover: 'hover:text-orange-800',
+      buttonBg: 'hover:bg-orange-100',
     },
   };
 
@@ -116,7 +116,7 @@ export const ToastAlert = ({ error, onClear, variant = 'error', duration = 5000 
           onClear?.();
         }}
         variant={variant}
-        className="shadow-lg max-w-md"
+        className="shadow-sm max-w-md"
       />
     </div>
   );
@@ -143,7 +143,7 @@ export const BannerAlert = ({ error, onClear, variant = 'error', title, classNam
       icon: <CheckCircle className="w-5 h-5 text-white" />,
     },
     info: {
-      bg: 'bg-blue-600',
+      bg: 'bg-orange-600',
       text: 'text-white',
       icon: <Info className="w-5 h-5 text-white" />,
     },

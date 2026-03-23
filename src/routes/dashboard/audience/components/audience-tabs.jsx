@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Download,
   Eye,
@@ -6,10 +7,37 @@ import {
   Upload,
   ChevronLeft,
   ChevronRight,
+  ChevronsUpDown,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 import { useExportBatch } from '../../../../hooks/useBatches';
-import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+} from '@tanstack/react-table';
+
+const SortIndicator = ({ column }) => {
+  const isSorted = column.getIsSorted();
+  if (!isSorted)
+    return (
+      <div className="w-4 h-4 flex items-center justify-center rounded-md group-hover/header:bg-slate-100 transition-all ml-1 opacity-0 group-hover/header:opacity-100">
+        <ChevronsUpDown className="w-3 h-3 text-slate-300 group-hover/header:text-slate-400" />
+      </div>
+    );
+  return (
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+      {isSorted === 'desc' ? (
+        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+      ) : (
+        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+      )}
+    </div>
+  );
+};
 
 const AudienceTabs = ({
   isLoadingBatches,
@@ -23,12 +51,196 @@ const AudienceTabs = ({
 }) => {
   const { t } = useTranslation();
   const exportBatch = useExportBatch();
+  const [sorting, setSorting] = React.useState([]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'originalFilename',
+        header: ({ column }) => (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="flex items-center group/header"
+          >
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              {t('audience.batch_name', 'Batch Name')}
+            </span>
+            <SortIndicator column={column} />
+          </button>
+        ),
+        cell: ({ row }) => {
+          const batch = row.original;
+          return (
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600">
+                <FileSpreadsheet className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-800 text-sm">{batch.originalFilename}</p>
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'status',
+        header: ({ column }) => (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="flex items-center group/header"
+          >
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              {t('audience.status', 'Status')}
+            </span>
+            <SortIndicator column={column} />
+          </button>
+        ),
+        cell: ({ row }) => {
+          const status = row.original.status;
+          return (
+            <div className="flex items-center gap-2">
+              <div
+                className={`w-1.5 h-1.5 rounded-full ${
+                  ['completed', 'verified'].includes(status)
+                    ? 'bg-orange-500'
+                    : status === 'processing'
+                      ? 'bg-amber-500 animate-pulse'
+                      : 'bg-orange-500'
+                }`}
+              ></div>
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
+                {t(`audience.${status}`)}
+              </span>
+            </div>
+          );
+        },
+      },
+      {
+        id: 'valid',
+        header: () => (
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('audience.valid', 'Valid')}
+          </span>
+        ),
+        cell: ({ row }) => (
+          <span className="text-sm font-extrabold text-orange-600 tabular-nums">
+            {row.original.verification?.valid ?? 0}
+          </span>
+        ),
+      },
+      {
+        id: 'risky',
+        header: () => (
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('audience.risky', 'Risky')}
+          </span>
+        ),
+        cell: ({ row }) => (
+          <span className="text-sm font-extrabold text-amber-600 tabular-nums">
+            {row.original.verification?.risky ?? 0}
+          </span>
+        ),
+      },
+      {
+        id: 'invalid',
+        header: () => (
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('audience.invalid', 'Invalid')}
+          </span>
+        ),
+        cell: ({ row }) => (
+          <span className="text-sm font-extrabold text-orange-600 tabular-nums">
+            {row.original.verification?.invalid ?? 0}
+          </span>
+        ),
+      },
+      {
+        id: 'unverified',
+        header: () => (
+          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            {t('audience.unverified', 'Unverified')}
+          </span>
+        ),
+        cell: ({ row }) => (
+          <span className="text-sm font-extrabold text-slate-600 tabular-nums">
+            {row.original.verification?.unverified ?? 0}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: ({ column }) => (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="flex items-center group/header"
+          >
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              {t('audience.uploaded_on', 'Uploaded On')}
+            </span>
+            <SortIndicator column={column} />
+          </button>
+        ),
+        cell: ({ row }) => (
+          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
+            {new Date(row.original.createdAt).toLocaleDateString()}
+          </span>
+        ),
+      },
+      {
+        id: 'actions',
+        header: () => (
+          <div className="text-right px-6">
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              {t('audience.actions', 'Actions')}
+            </span>
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="flex items-center justify-end gap-2 px-6">
+            <button
+              onClick={() => openBatchDetails(row.original)}
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              title={t('audience.view_details')}
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => exportBatch.mutate({ batchId: row.original.id })}
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              title={t('audience.export')}
+            >
+              <Download className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleDeleteBatch(row.original.id)}
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              title={t('audience.delete')}
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    [t, exportBatch, openBatchDetails, handleDeleteBatch],
+  );
+
+  const table = useReactTable({
+    data: filteredBatches,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
   return (
     <div className="w-full">
-      {/* Contact Lists Grid */}
       {isLoadingBatches ? (
         <div className="flex flex-col items-center justify-center p-20 gap-4">
-          <div className="w-12 h-12 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
             {t('audience.loading_contacts')}
           </p>
@@ -55,114 +267,38 @@ const AudienceTabs = ({
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBatches.map((batch) => (
-            <div
-              key={batch.id}
-              className="premium-card bg-white border-slate-200/60 p-6 hover:shadow-2xl hover:shadow-blue-500/8 group transition-all duration-500"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-500">
-                    <FileSpreadsheet className="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-500" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="font-extrabold text-slate-800 truncate tracking-tight text-sm">
-                      {batch.originalFilename}
-                    </h4>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div
-                        className={`w-1.5 h-1.5 rounded-full ${['completed', 'verified'].includes(batch.status)
-                          ? 'bg-emerald-500'
-                          : batch.status === 'processing'
-                            ? 'bg-amber-500 animate-pulse'
-                            : 'bg-rose-500'
-                          }`}
-                      ></div>
-                      <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                        {t(`audience.${batch.status}`)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => openBatchDetails(batch)}
-                    className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteBatch(batch.id)}
-                    className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-y-4 gap-x-6 mb-8 mt-2">
-                <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                    {t('audience.valid')}
-                  </p>
-                  <p className="text-lg font-extrabold text-emerald-600 tabular-nums leading-none">
-                    {batch.verification?.valid ?? 0}
-                  </p>
-                </div>
-                <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                    {t('audience.risky')}
-                  </p>
-                  <p className="text-lg font-extrabold text-amber-600 tabular-nums leading-none">
-                    {batch.verification?.risky ?? 0}
-                  </p>
-                </div>
-                <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                    {t('audience.invalid')}
-                  </p>
-                  <p className="text-lg font-extrabold text-rose-600 tabular-nums leading-none">
-                    {batch.verification?.invalid ?? 0}
-                  </p>
-                </div>
-                <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  <p className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest mb-1">
-                    {t('audience.unverified')}
-                  </p>
-                  <p className="text-lg font-extrabold text-slate-600 tabular-nums leading-none">
-                    {batch.verification?.unverified ?? 0}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-5 border-t border-slate-100">
-                <div className="flex flex-col">
-                  <span className="text-[8px] font-extrabold text-slate-300 uppercase tracking-widest">
-                    {t('audience.uploaded_on')}
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-500">
-                    {new Date(batch.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => openBatchDetails(batch)}
-                    className="px-4 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-slate-600 transition-all"
-                  >
-                    {t('audience.view_details')}
-                  </button>
-                  <button
-                    onClick={() => exportBatch.mutate({ batchId: batch.id })}
-                    className="px-4 py-2 bg-blue-50 hover:bg-blue-100 rounded-xl text-[10px] font-extrabold uppercase tracking-widest text-blue-600 transition-all flex items-center gap-2"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    {t('audience.export')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white rounded-[2rem] border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="w-full text-start border-collapse border-separate border-spacing-0">
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className="bg-slate-50/80 ">
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className="px-6 py-5 border-b border-slate-200/60 transition-colors first:ltr:rounded-tl-2xl last:ltr:rounded-tr-2xl text-left"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="group/row hover:bg-slate-50/50 transition-colors">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="px-6 py-4 border-b border-slate-50/50">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
@@ -170,23 +306,25 @@ const AudienceTabs = ({
       {!isLoadingBatches && pagination && pagination.pages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 mt-8 gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+            <div className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
             <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
               {pagination.total?.toLocaleString()} {t('audience.total_batches') || 'Total Batches'}
             </p>
           </div>
 
-          <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl border border-slate-100 shadow-sm">
+          <div className="flex items-center gap-1 bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm">
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
 
             <div className="px-4 flex items-center gap-2">
-              <span className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg">{currentPage}</span>
+              <span className="text-xs font-black text-orange-600 bg-orange-50 px-3 py-1.5 rounded-lg">
+                {currentPage}
+              </span>
               <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
               <span className="text-xs font-black text-slate-600">{pagination.pages}</span>
             </div>
@@ -194,7 +332,7 @@ const AudienceTabs = ({
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === pagination.pages}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

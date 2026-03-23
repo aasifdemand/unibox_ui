@@ -26,11 +26,11 @@ export const LoadingSpinner = ({
 
   if (fullPage) {
     return (
-      <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-white/80  z-50 flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
-            <Loader2 className={`${spinnerSize} text-blue-600 animate-spin mx-auto`} />
-            <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 to-indigo-600/20 blur-xl rounded-full -z-10"></div>
+            <Loader2 className={`${spinnerSize} text-orange-600 animate-spin mx-auto`} />
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
           </div>
           {text && <p className={`${textSize} text-gray-600 font-medium mt-4`}>{text}</p>}
         </div>
@@ -41,8 +41,8 @@ export const LoadingSpinner = ({
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div className="relative">
-        <Loader2 className={`${spinnerSize} text-blue-600 animate-spin`} />
-        <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 to-indigo-600/20 blur-xl rounded-full -z-10"></div>
+        <Loader2 className={`${spinnerSize} text-orange-600 animate-spin`} />
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
       </div>
       {text && <p className={`${textSize} text-gray-600 font-medium mt-2`}>{text}</p>}
     </div>
@@ -66,8 +66,8 @@ export const PageLoader = ({ progress, text = 'Loading...' }) => {
     <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
       <div className="w-64">
         <div className="relative">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto" />
-          <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 to-indigo-600/20 blur-xl rounded-full -z-10"></div>
+          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto" />
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
         </div>
         <p className="text-sm text-gray-600 font-medium text-center mt-4">{text}</p>
 
@@ -79,7 +79,7 @@ export const PageLoader = ({ progress, text = 'Loading...' }) => {
             </div>
             <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-linear-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-300"
+                className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -113,10 +113,10 @@ export const SkeletonLoader = ({ type = 'list', count = 3 }) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {Array.from({ length: count }).map((_, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-gray-200/50 p-6 animate-pulse">
+          <div key={i} className="bg-white rounded-lg border border-gray-200/50 p-6 animate-pulse">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gray-200 rounded-xl ltr:mr-4 rtl:ml-4"></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-md ltr:mr-4 rtl:ml-4"></div>
                 <div className="space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-32"></div>
                   <div className="h-3 bg-gray-200 rounded w-24"></div>

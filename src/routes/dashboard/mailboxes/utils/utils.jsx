@@ -79,7 +79,10 @@ export const getSubject = (message) => {
   try {
     if (message?.subject) return message.subject;
     if (message?.payload?.headers) {
-      return message.payload.headers.find((h) => h.name === 'Subject')?.value || i18n.t('mailboxes.no_subject', '(no subject)');
+      return (
+        message.payload.headers.find((h) => h.name === 'Subject')?.value ||
+        i18n.t('mailboxes.no_subject', '(no subject)')
+      );
     }
   } catch (e) {
     console.error('Error getting subject:', e);
@@ -223,7 +226,7 @@ export const getInitials = (name) => {
   return cleanName.charAt(0).toUpperCase() || name.charAt(0).toUpperCase() || '?';
 };
 
-export const getProviderIcon = (type, className = "w-6 h-6") => {
+export const getProviderIcon = (type, className = 'w-6 h-6') => {
   switch (type) {
     case 'gmail':
       return <Gmail className={className} />;

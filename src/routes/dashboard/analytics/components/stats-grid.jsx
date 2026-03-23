@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { TrendingUp, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const StatsGrid = ({ stats }) => {
@@ -12,53 +11,68 @@ const StatsGrid = ({ stats }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="premium-card p-6 overflow-hidden relative group cursor-pointer hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500"
+          className="premium-card p-6 overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-sm hover:shadow-slate-200/50 transition-all duration-500 border-b-4 border-slate-200/60 hover:border-orange-500/50"
         >
-          {/* Dynamic Decorative Elements */}
+          {/* Dynamic Gradient Background - Always visible but subtle */}
           <div
-            className={`absolute -inset-inline-end-6 -top-6 w-32 h-32 rounded-full opacity-[0.03] blur-2xl group-hover:opacity-10 transition-opacity bg-linear-to-br ${stat.color}`}
+            className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}
           ></div>
 
-          <div className="flex items-center justify-between mb-6 relative z-10">
+          <div className="flex items-start justify-between mb-8 relative z-10">
             <div
-              className={`w-12 h-12 rounded-2xl ${stat.bgColor} border border-white flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform duration-500`}
+              className={`w-12 h-12 rounded-lg ${stat.bgColor} border border-white/50 flex items-center justify-center shadow-sm shadow-slate-200/50 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
             >
               {stat.icon}
             </div>
-            <div className="px-2 py-1 bg-slate-50 border border-slate-100 rounded-lg flex items-center gap-1.5 transition-colors group-hover:bg-white group-hover:border-blue-100">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
-              <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">
-                {t('analytics.stats')}
-              </span>
+            <div className="flex flex-col items-end">
+              <div className="px-2 py-1 bg-white border border-slate-100/50 rounded-lg flex items-center gap-1.5 transition-colors group-hover:border-orange-100 mb-2 shadow-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
+                <span className="text-[10px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
+                  {t('analytics.stats')}
+                </span>
+              </div>
+              {/* Small Sparkline SVG */}
+              <div className="w-16 h-8 opacity-60 group-hover:opacity-100 transition-opacity">
+                <svg viewBox="0 0 100 40" className="w-full h-full">
+                  <polyline
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={stat.iconColor}
+                    points={
+                      stat.sparkline
+                        ?.map((val, i) => `${i * (100 / (stat.sparkline.length - 1))},${40 - val}`)
+                        .join(' ') || '0,0'
+                    }
+                  />
+                </svg>
+              </div>
             </div>
           </div>
 
           <div className="relative z-10">
-            <p className="text-[10px] font-extrabold text-slate-400 mb-1 uppercase tracking-[0.15em]">
+            <p className="text-[11px] font-semibold text-slate-500 mb-1">
               {stat.title}
             </p>
-            <div className="flex items-end gap-3">
-              <h3 className="text-3xl font-extrabold text-slate-800 tracking-tighter tabular-nums leading-none">
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-4xl font-black text-slate-800 tracking-tighter tabular-nums leading-none group-hover:scale-105 transition-transform origin-left">
                 {stat.value}
               </h3>
               <div
-                className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-extrabold mb-0.5 ${stat.trend === 'up' ? 'text-blue-600 bg-blue-50' : 'text-slate-400 bg-slate-50'}`}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${stat.trend === 'up' ? 'text-orange-600 bg-orange-50' : 'text-slate-400 bg-slate-50'} group-hover:bg-white transition-colors shadow-xs`}
               >
-                {stat.trend === 'up' ? (
-                  <TrendingUp className="w-3 h-3" />
-                ) : (
-                  <Clock className="w-3 h-3" />
-                )}
-                {stat.change.split(' ')[0]}
+                {stat.trend === 'up' ? '↑' : '↓'} {stat.change.split(' ')[0]}
               </div>
             </div>
 
-            <p className="text-xs text-slate-500 font-bold mt-4 opacity-80 group-hover:opacity-100 transition-opacity">
-              {stat.description}
-            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-[11px] text-slate-500 font-bold opacity-80 group-hover:opacity-100 transition-opacity">
+                {stat.description}
+              </p>
+            </div>
           </div>
-
-
         </motion.div>
       ))}
     </div>

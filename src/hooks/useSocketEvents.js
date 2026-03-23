@@ -7,18 +7,18 @@ import { socket } from '../lib/socket';
  * @param {function} callback - Fired when the event is received
  */
 export const useSocketEvents = (eventName, callback) => {
-    useEffect(() => {
-        // If not connected, connect
-        if (!socket.connected) {
-            socket.connect();
-        }
+  useEffect(() => {
+    // If not connected, connect
+    if (!socket.connected) {
+      socket.connect();
+    }
 
-        // Attach event listener
-        socket.on(eventName, callback);
+    // Attach event listener
+    socket.on(eventName, callback);
 
-        // Cleanup listener on unmount
-        return () => {
-            socket.off(eventName, callback);
-        };
-    }, [eventName, callback]);
+    // Cleanup listener on unmount
+    return () => {
+      socket.off(eventName, callback);
+    };
+  }, [eventName, callback]);
 };

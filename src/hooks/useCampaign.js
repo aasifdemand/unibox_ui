@@ -37,6 +37,7 @@ export const useCampaigns = () => {
     queryFn: fetchCampaigns,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
+    placeholderData: (previousData) => previousData,
   });
 };
 
@@ -135,8 +136,12 @@ export const useCreateCampaign = () => {
   return useMutation({
     mutationFn: createCampaign,
     onSuccess: (newCampaign) => {
-      // Update campaigns list cache
-      queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
+      // Invalidate to ensure we get the full list from server next time
+      queryClient.invalidateQueries({ queryKey: campaignKeys.lists() });
+
+      // Update campaigns list cache for immediate feedback
+      queryClient.setQueryData(campaignKeys.lists(), (old) => {
+        if (!old || !Array.isArray(old)) return [newCampaign];
         return [newCampaign, ...old];
       });
       // Set as current campaign
@@ -168,8 +173,12 @@ export const useUpdateCampaign = () => {
   return useMutation({
     mutationFn: updateCampaign,
     onSuccess: (updatedCampaign, { campaignId }) => {
+      queryClient.invalidateQueries({ queryKey: campaignKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: campaignKeys.detail(campaignId) });
+
       // Update in lists
-      queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
+      queryClient.setQueryData(campaignKeys.lists(), (old) => {
+        if (!old || !Array.isArray(old)) return [updatedCampaign];
         return old.map((campaign) =>
           campaign.id === campaignId ? { ...campaign, ...updatedCampaign } : campaign,
         );
@@ -370,8 +379,11 @@ export const useDuplicateCampaign = () => {
   return useMutation({
     mutationFn: duplicateCampaign,
     onSuccess: (newCampaign) => {
+      queryClient.invalidateQueries({ queryKey: campaignKeys.lists() });
+
       // Add to lists
-      queryClient.setQueryData(campaignKeys.lists(), (old = []) => {
+      queryClient.setQueryData(campaignKeys.lists(), (old) => {
+        if (!old || !Array.isArray(old)) return [newCampaign];
         return [newCampaign, ...old];
       });
     },

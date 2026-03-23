@@ -34,17 +34,17 @@ const Input = ({
     ? 'border-red-300 focus:border-red-500 ring-red-500/10'
     : success
       ? 'border-green-300 focus:border-green-500 ring-green-500/10'
-      : 'border-gray-200 focus:border-blue-500 ring-blue-500/5';
+      : 'border-gray-200 focus:border-orange-500 ring-orange-500/5';
   const disabledStyles = disabled
     ? 'bg-gray-50 cursor-not-allowed opacity-70'
-    : 'bg-white/50 backdrop-blur-sm';
+    : 'bg-white/50 ';
 
   return (
     <div className="space-y-2">
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ltr:ml-1 ltr:mr-1 rtl:ml-1"
+          className="block text-[13px] font-semibold text-slate-700 ltr:ml-1 ltr:mr-1 rtl:ml-1"
         >
           {label}
           {required && <span className="text-red-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>}
@@ -56,15 +56,6 @@ const Input = ({
         transition={{ duration: 0.2 }}
         className="relative"
       >
-        {/* Left Icon */}
-        {Icon && (
-          <div className="absolute inset-y-0 ltr:left-0 ltr:right-0 rtl:left-0 ltr:pl-3 ltr:pr-3 rtl:pl-3 flex items-center pointer-events-none">
-            <Icon
-              className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-blue-500' : 'text-gray-400'}`}
-            />
-          </div>
-        )}
-
         {/* Input Field */}
         <input
           id={inputId}
@@ -85,13 +76,22 @@ const Input = ({
             ${baseStyles}
             ${stateStyles}
             ${disabledStyles}
-            ${Icon ? 'ltr:pl-10 ltr:pr-10 rtl:pl-10' : ''}
-            ${type === 'password' || showClearButton ? 'ltr:pr-10 rtl:pl-10' : ''}
+            ${Icon ? 'pl-11' : ''}
+            ${type === 'password' || showClearButton ? 'pr-11' : ''}
             ${isFocused ? 'ring-4' : ''}
             ${className}
           `}
           {...props}
         />
+
+        {/* Left Icon */}
+        {Icon && (
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
+            <Icon
+              className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-orange-600' : 'text-slate-500'}`}
+            />
+          </div>
+        )}
 
         {/* Password Toggle */}
         {type === 'password' && (
@@ -131,7 +131,7 @@ const Input = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             id={helperId}
-            className={`text-[10px] font-bold uppercase tracking-widest px-1 ${
+            className={`text-[12px] font-medium px-1 ${
               error ? 'text-red-500' : success ? 'text-green-500' : 'text-slate-400'
             }`}
           >

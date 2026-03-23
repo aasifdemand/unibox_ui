@@ -11,6 +11,12 @@
         "templates": "Templat",
         "subscription": "Berlangganan",
         "settings": "Pengaturan",
+        "crm": "CRM",
+        "email_campaigns": "Kampanye Email",
+        "email_accounts": "Akun Email",
+        "contacts": "Kontak",
+        "global_analytics": "Analisis",
+        "integrations": "Integrasi",
         "navigation": "Navigasi",
         "active": "Aktif",
         "status": {
@@ -70,7 +76,11 @@
             "desc": "Apakah Anda yakin ingin mengakhiri sesi dasbor saat ini? Anda perlu mengautentikasi ulang.",
             "confirm": "Konfirmasi Logout",
             "cancel": "Tetap Masuk"
-        }
+        },
+        "admin": "Admin",
+        "administrator": "Pengurus",
+        "user": "Pengguna",
+        "u": "kamu"
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Semua hak dilindungi undang-undang.",
@@ -116,6 +126,14 @@
             "or_sign_up_with": "Atau daftar dengan",
             "already_account": "Sudah punya akun?",
             "sign_in_link": "Masuk"
+        },
+        "layout": {
+            "platform_live": "Platform Langsung",
+            "title_main": "Cara yang lebih cerdas untuk",
+            "title_span": "menjalankan sosialisasi",
+            "subtitle": "Unibox menggabungkan pengayaan AI, pengurutan cerdas, dan kotak masuk balasan terpadu — semuanya dalam satu platform.",
+            "trusted_by": "Dipercaya oleh",
+            "teams": "tim penjangkauan"
         }
     },
     "pwa": {
@@ -278,6 +296,7 @@
     "campaigns": {
         "title": "Kampanye",
         "subtitle": "Penjangkauan",
+        "sequence_details": "Detail Urutan",
         "header_description": "Buat dan lacak kampanye email Anda.",
         "header_subtitle": "Kelola dan lacak kampanye email Anda",
         "create_campaign": "Buat Kampanye",
@@ -303,6 +322,7 @@
         "campaign_date": "Tanggal Kampanye",
         "empty_log_title": "Log Operasi Kosong",
         "empty_log_subtitle": "Pemindaian matriks selesai. Tidak ada aset kampanye yang ditemukan.",
+        "create_first_campaign": "Buat Kampanye Pertama",
         "launch_protocol": "Peluncuran Protokol",
         "no_subject": "TIDAK ADA SUBJEK",
         "status_created": "DIBUAT",
@@ -314,6 +334,8 @@
         "step_sequences_desc": "Tulis urutan email Anda",
         "step_setup": "Pengaturan",
         "step_setup_desc": "Konfigurasikan kampanye Anda",
+        "schedule_timing": "Jadwal & Waktu",
+        "advanced_settings": "Pengaturan Lanjutan",
         "step_final_review": "Tinjauan Akhir",
         "step_final_review_desc": "Pemeriksaan & peluncuran terakhir",
         "error_add_content": "Silakan tambahkan beberapa konten ke email {{mode}} Anda sebelum melanjutkan.",
@@ -363,6 +385,22 @@
         "ph_unsubscribe": "Tautan Berhenti Berlangganan",
         "recipients_senders": "Penerima & Pengirim",
         "setup_audience": "Siapkan audiens dan akun kampanye Anda",
+        "sender_accounts": "Mengirim Akun",
+        "active_senders": "Akun Aktif",
+        "select_accounts_desc": "Hubungkan akun ke urutan ini",
+        "choose_senders_btn": "Pilih Akun",
+        "configure_schedule_btn": "Konfigurasikan Jadwal",
+        "modify_settings_btn": "Ubah Pengaturan",
+        "sender_rotation": "Rotasi Akun",
+        "account_health": "Kesehatan Akun",
+        "trust_score": "Skor",
+        "optimal_delivery": "Pengiriman Optimal",
+        "intelligent_sending": "Pengiriman Cerdas",
+        "sender_rotation_count": "Rotasi Pengirim ({{count}})",
+        "more_accounts": "+{{count}} akun lainnya",
+        "no_sender_set": "Tidak ada pengirim yang ditetapkan",
+        "confirm_selection": "Konfirmasi Pilihan",
+        "high_inboxing_enabled": "Pengiriman Optimal Diaktifkan",
         "add_contacts": "Tambahkan Kontak",
         "add_sender": "Tambahkan Pengirim",
         "selected_audience": "Pemirsa Terpilih",
@@ -795,8 +833,8 @@
                 "gmail": "Google Gmail",
                 "outlook": "Microsoft Outlook",
                 "smtp": "SMTP Khusus",
-                "bulk": "Impor Massal",
                 "smtp_desc": "Pengaturan manual",
+                "bulk": "Impor Massal",
                 "bulk_desc": "Unggah XLSX"
             },
             "secure_title": "Keamanan Tingkat Perusahaan",
@@ -852,6 +890,14 @@
             },
             "btn_connect_gmail": "Terhubung dengan Google Mail",
             "btn_connect_outlook": "Terhubung dengan Microsoft Outlook Mail",
+            "smtp_success": "Koneksi SMTP berhasil",
+            "smtp_fail": "Koneksi SMTP gagal",
+            "imap_success": "Koneksi IMAP berhasil",
+            "imap_fail": "Koneksi IMAP gagal",
+            "empty_provider": "Pilih Penyedia",
+            "empty_desc": "Pilih Gmail, Outlook, atau SMTP Khusus di atas.",
+            "encrypted_note": "Terenkripsi ujung ke ujung",
+            "smtp_config_note": "Jika Anda membiarkannya kosong, kami akan mencoba menggunakan pengaturan pengiriman Anda secara otomatis.",
             "bulk": {
                 "title": "Akun Unggah Massal",
                 "desc": "Upload file Excel (.xlsx) dengan kolom: email, domain, password, type (aapanel/postal), first_name, last_name.",
@@ -876,16 +922,8 @@
             "err_no_headers": "Tidak ada header yang ditemukan di file",
             "err_read_fail": "Tidak dapat membaca berkas",
             "err_map_required": "Harap petakan semua bidang yang wajib diisi",
-            "smtp_success": "Koneksi SMTP berhasil",
-            "smtp_fail": "Koneksi SMTP gagal",
-            "imap_success": "Koneksi IMAP berhasil",
-            "imap_fail": "Koneksi IMAP gagal",
             "bulk_success": "Upload massal berhasil",
-            "bulk_error": "Gagal mengunggah secara massal",
-            "empty_provider": "Pilih Penyedia",
-            "empty_desc": "Pilih Gmail, Outlook, atau SMTP Khusus di atas.",
-            "encrypted_note": "Terenkripsi ujung ke ujung",
-            "smtp_config_note": "Jika Anda membiarkannya kosong, kami akan mencoba menggunakan pengaturan pengiriman Anda secara otomatis."
+            "bulk_error": "Gagal mengunggah secara massal"
         },
         "template": {
             "title": {
@@ -1170,5 +1208,123 @@
         "rec_engagement_high": "Baris subjek Anda beresonansi dengan baik! Pertimbangkan untuk menggandakan gaya 'celah rasa ingin tahu' yang saat ini Anda gunakan.",
         "rec_conversion_low": "Balasannya rendah. Coba tambahkan 'Ajakan Bertindak' (CTA) yang lebih jelas atau pertanyaan lembut seperti 'Apakah ini membantu?' untuk menurunkan gesekan.",
         "rec_conversion_high": "Konversi yang luar biasa! Proposisi nilai Anda jelas. Pastikan tim penjualan Anda menindaklanjuti dalam waktu 4 jam untuk hasil terbaik."
+    },
+    "crm": {
+        "title": "Integrasi CRM",
+        "subtitle": "Pusat Pendapatan",
+        "pipeline": "Saluran pipa",
+        "description": "Hubungkan ruang kerja penjangkauan Anda dengan CRM favorit Anda untuk menyinkronkan prospek dan mencatat aktivitas secara otomatis.",
+        "drag_desc": "Seret prospek antar tahap. Klik kartu mana saja untuk melihat detail dan menetapkan nilai kesepakatan.",
+        "connect_crm": "Hubungkan CRM",
+        "add_column": "Tambahkan Kolom",
+        "all_campaigns": "Semua Kampanye",
+        "total": "Jumlah",
+        "value": "Nilai",
+        "leads_label": "Memimpin",
+        "drop_leads": "Letakkan prospek di sini",
+        "loading": "memuat...",
+        "build_funnel": "Bangun corong Anda",
+        "add_first_col": "Tambahkan kolom pertama Anda untuk mulai melacak prospek melalui tahapan.",
+        "create_initial": "Buat Kolom Pertama",
+        "footer_msg1": "Prospek secara otomatis maju ketika",
+        "footer_msg2": "Maksud Balasan",
+        "footer_msg3": "terdeteksi",
+        "search_placeholder": "Temukan petunjuk...",
+        "stages": {
+            "leads": "Prospek Baru",
+            "contacted": "Dihubungi",
+            "replied": "Dibalas",
+            "meeting_booked": "Rapat Dipesan",
+            "closed": "Tertutup",
+            "bounced": "Terpental",
+            "unsubscribed": "Berhenti berlangganan"
+        },
+        "lead_card": {
+            "last_activity": "Aktivitas terakhir:",
+            "campaign": "Kampanye:",
+            "view_profile": "Lihat Profil"
+        },
+        "connect": "Hubungkan",
+        "connected": "Terhubung",
+        "status_ready": "Siap disinkronkan",
+        "hubspot": {
+            "title": "HubSpot",
+            "desc": "Sinkronkan kontak dan catat peristiwa garis waktu."
+        },
+        "salesforce": {
+            "title": "Tenaga Penjualan",
+            "desc": "Kelola prospek dan peluang secara real-time."
+        },
+        "pipedrive": {
+            "title": "Penggerak pipa",
+            "desc": "Lacak kemajuan kesepakatan dan log aktivitas."
+        },
+        "add_column_modal_title": "Tambahkan Kolom Baru",
+        "column_name_label": "Nama Kolom",
+        "column_name_placeholder": "misalnya, Prospek Berkualitas",
+        "select_color_label": "Pilih Warna Kolom",
+        "link_intent_label": "Tautan ke AI Intent (Opsional)",
+        "link_intent_desc": "Prospek dengan niat ini akan pindah ke sini secara otomatis",
+        "select_intent_placeholder": "Pilih maksud...",
+        "add_column_btn": "Tambahkan Kolom",
+        "cancel_btn": "Batalkan",
+        "status": "Siap Disinkronkan"
+    },
+    "integrations": {
+        "header_title": "Integrasi",
+        "header_subtitle": "Pasar",
+        "header_desc": "Hubungkan CRM dan alat data favorit Anda untuk mengotomatiskan alur kerja penjangkauan Anda.",
+        "search_placeholder": "Integrasi pencarian (HubSpot, Salesforce, Instantly...)",
+        "no_results": "Tidak ada integrasi yang cocok dengan penelusuran Anda.",
+        "connect_btn": "Hubungkan",
+        "disconnect_btn": "Putuskan sambungan",
+        "disconnecting_btn": "Memutuskan hubungan...",
+        "disconnecting": "Memutuskan sambungan dari {{name}}...",
+        "connected": "Terhubung",
+        "never_synced": "Tidak Pernah Disinkronkan",
+        "learn_how": "Pelajari Caranya",
+        "connect_app": "+ Hubungkan Aplikasi",
+        "confirm_disconnect_title": "Konfirmasi Pemutusan",
+        "confirm_disconnect_desc1": "Apakah Anda yakin ingin memutuskan sambungan",
+        "confirm_disconnect_desc2": "? Unibox tidak lagi dapat menyinkronkan prospek atau data dengan layanan ini.",
+        "disconnect_success": "Berhasil memutuskan sambungan dari {{name}}",
+        "complete_connection": "Koneksi Lengkap",
+        "verify_oauth_desc": "Kami telah membuka halaman login {{name}} di tab baru. Setelah Anda berhasil masuk dan mengotorisasi aplikasi, klik tombol di bawah untuk menyelesaikan koneksi.",
+        "oauth_initiating": "Memulai alur OAuth 2.0 untuk {{name}}...",
+        "oauth_success": "Terhubung ke {{name}} melalui OAuth!",
+        "api_key_label": "Kunci Akses API",
+        "api_key_placeholder": "Masukkan kunci API {{name}} Anda...",
+        "api_key_desc": "Anda dapat menemukan kunci API Anda di pengaturan dasbor {{name}}. Kami mengenkripsi kunci ini untuk keamanan Anda.",
+        "verify_btn": "Verifikasi & Hubungkan",
+        "verifying_btn": "Memverifikasi...",
+        "upcoming_connections": "Koneksi Mendatang",
+        "stay_tuned": "Kami terus menambahkan integrasi baru. Nantikan selengkapnya!",
+        "secure": "Aman",
+        "complete_auth": "Selesaikan {{name}} Otorisasi",
+        "types": {
+            "crm": "CRM",
+            "data": "Data",
+            "outreach": "Penjangkauan"
+        },
+        "apps": {
+            "hubspot": {
+                "desc": "Sinkronkan prospek dan aktivitas Anda dengan HubSpot CRM menggunakan alur OAuth penghubung 1-klik."
+            },
+            "salesforce": {
+                "desc": "Hubungkan alur kerja perusahaan Anda dengan alur Salesforce Web Server."
+            },
+            "instantly": {
+                "desc": "Hubungkan kampanye Instantly.ai Anda untuk sinkronisasi penjangkauan yang lancar."
+            },
+            "apollo": {
+                "desc": "Perkaya prospek Anda dengan wawasan basis data B2B Apollo.io."
+            },
+            "leadmagic": {
+                "desc": "Perkaya prospek dengan data firmografis melalui Leadmagic X-API-Key."
+            },
+            "clay": {
+                "desc": "Sinkronkan data keluar ke tabel Clay melalui API HTTP JSON-nya."
+            }
+        }
     }
 }

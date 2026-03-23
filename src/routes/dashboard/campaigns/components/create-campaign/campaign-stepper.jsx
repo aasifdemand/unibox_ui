@@ -3,56 +3,65 @@ import { Check } from 'lucide-react';
 
 const CampaignStepper = ({ steps, currentStep }) => {
   return (
-    <div className="w-full mb-8 pt-6 px-4">
-      <div className="w-full max-w-6xl mx-auto flex items-center justify-between">
-        {steps.map((step, index) => {
-          const isActive = currentStep === step.number;
-          const isCompleted = currentStep > step.number;
+    <div className="flex items-center justify-between w-full px-8">
+      {steps.map((step, index) => {
+        const isActive = currentStep === step.number;
+        const isCompleted = currentStep > step.number;
 
-          return (
-            <React.Fragment key={step.number}>
-              {/* Step Item */}
-              <div className={`flex items-center gap-3 shrink-0 ${!isActive && !isCompleted ? 'opacity-70' : ''}`}>
-                {/* Circle */}
-                <div
-                  className={`
-                    w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-300
-                    ${isCompleted
-                      ? 'bg-blue-600 text-white shadow-sm'
+        return (
+          <React.Fragment key={step.number}>
+            {/* Step Item */}
+            <div className="flex items-center gap-3 py-2 transition-all">
+              <div
+                className={`
+                  w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
+                  ${
+                    isCompleted
+                      ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/20'
                       : isActive
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-white text-slate-400 border-[1.5px] border-slate-300'
-                    }
-                  `}
-                >
-                  {isCompleted ? <Check className="w-4 h-4 text-white hover:scale-110 transition-transform" strokeWidth={3} /> : step.number}
-                </div>
+                        ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/40 scale-110'
+                        : 'border-2 border-slate-200 text-slate-400 bg-white'
+                  }
+                `}
+              >
+                {isCompleted ? (
+                  <Check className="w-4 h-4 text-white" strokeWidth={4} />
+                ) : (
+                  step.number
+                )}
+              </div>
 
-                {/* Title */}
+              <div className="flex flex-col items-start">
                 <span
                   className={`
-                    text-xs sm:text-sm font-semibold tracking-wide transition-colors duration-300
-                    ${isActive ? 'text-slate-900' : isCompleted ? 'text-slate-700' : 'text-slate-500'}
-                  `}
+                    text-[10px] font-black uppercase tracking-[0.2em] transition-colors duration-300
+                    ${isActive ? 'text-orange-600' : isCompleted ? 'text-slate-800' : 'text-slate-400'}
+                    `}
+                >
+                  Step {step.number}
+                </span>
+                <span
+                  className={`
+                    text-[11px] font-bold transition-colors duration-300 whitespace-nowrap
+                    ${isActive ? 'text-slate-900' : isCompleted ? 'text-slate-600' : 'text-slate-300'}
+                    `}
                 >
                   {step.title}
                 </span>
               </div>
+            </div>
 
-              {/* Connecting Line */}
-              {index < steps.length - 1 && (
-                <div className="flex-auto mx-4 sm:mx-6">
-                  <div className="h-[2px] w-full bg-slate-200 rounded-full overflow-hidden relative">
-                    <div
-                      className={`absolute inset-y-0 left-0 bg-blue-600 transition-all duration-700 ease-in-out ${isCompleted ? 'w-full' : 'w-0'}`}
-                    />
-                  </div>
-                </div>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </div>
+            {/* Connecting Line */}
+            {index < steps.length - 1 && (
+              <div className="flex-1 h-[2px] mx-4 bg-slate-100 overflow-hidden">
+                <div
+                  className={`h-full bg-orange-600 transition-all duration-700 ease-in-out ${isCompleted ? 'w-full' : 'w-0'}`}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };

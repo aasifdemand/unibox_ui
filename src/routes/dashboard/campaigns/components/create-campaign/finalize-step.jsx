@@ -1,190 +1,274 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Clock, Shield, Zap, Activity, Gauge, User, Mail, Database } from 'lucide-react';
-import Input from '../../../../../components/ui/input';
+import {
+  Clock,
+  Activity,
+  Gauge,
+  Mail,
+  Database,
+  CheckCircle2,
+  BarChart3,
+  MousePointer2,
+  Trash2,
+  Sparkles,
+} from 'lucide-react';
 
 const Step3Finalize = ({
-  register,
-  errors,
   watch,
-  watchScheduleType,
+  setValue,
   selectedBatch,
-  selectedSender,
+
+  watchSenderIds = [],
+  senders = [],
 }) => {
   const { t } = useTranslation();
   const campaignName = watch('name');
   const subject = watch('subject');
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Premium Campaign Summary */}
-      <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm">
-        <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/30 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Shield className="w-6 h-6 text-white" />
+    <div className="max-w-5xl mx-auto space-y-10 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* Launch Readiness Header */}
+      <div className="bg-orange-600 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-sm shadow-orange-600/20 group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:scale-110 transition-transform duration-700" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl group-hover:scale-125 transition-transform duration-1000" />
+
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-6 text-center md:text-left flex-col md:flex-row">
+            <div className="w-20 h-20 bg-white/20  rounded-[2rem] flex items-center justify-center border border-white/20 shadow-sm group-hover:rotate-12 transition-transform duration-500">
+              <Sparkles className="w-10 h-10 text-white fill-white/20" />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
-                {t('campaigns.campaign_summary')}
-              </h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                {t('campaigns.review_settings')}
+              <h2 className="text-3xl font-black tracking-tight">
+                {campaignName || 'Untitled Campaign'}
+              </h2>
+              <p className="text-orange-100 font-medium mt-1 flex items-center gap-2 justify-center md:justify-start">
+                <CheckCircle2 className="w-4 h-4 text-white" /> {t('campaigns.ready_to_send')}
               </p>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-[9px] font-extrabold text-emerald-700 uppercase tracking-widest">
-              {t('campaigns.ready_to_send')}
-            </span>
-          </div>
-        </div>
 
-        <div className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="group p-5 bg-slate-50/50 rounded-3xl border-2 border-slate-100 hover:border-blue-200 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
-                    <Zap className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('campaigns.campaign_name')}
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-slate-800 truncate">
-                  {campaignName || t('campaigns.untitled_campaign')}
-                </p>
-              </div>
-
-              <div className="group p-5 bg-slate-50/50 rounded-3xl border-2 border-slate-100 hover:border-indigo-200 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
-                    <Mail className="w-4 h-4 text-indigo-600" />
-                  </div>
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('campaigns.email_subject')}
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-slate-800 line-clamp-1">
-                  {subject || t('campaigns.no_subject_set')}
-                </p>
-              </div>
+          <div className="flex bg-white/10  rounded-lg p-6 border border-white/10 items-center gap-6">
+            <div className="text-center">
+              <p className="text-[10px] font-black uppercase tracking-widest text-orange-200">
+                Total Leads
+              </p>
+              <p className="text-2xl font-black mt-1">
+                {(selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0}
+              </p>
             </div>
-
-            <div className="space-y-4">
-              <div className="group p-5 bg-slate-50/50 rounded-3xl border-2 border-slate-100 hover:border-emerald-200 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
-                    <Database className="w-4 h-4 text-emerald-600" />
-                  </div>
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('campaigns.recipient_list')}
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedBatch?.originalFilename || t('campaigns.no_list_selected')}
-                </p>
-              </div>
-
-              <div className="group p-5 bg-slate-50/50 rounded-3xl border-2 border-slate-100 hover:border-purple-200 transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
-                    <User className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-                    {t('campaigns.sender_account')}
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-slate-800 truncate">
-                  {selectedSender?.email || t('campaigns.no_sender_selected')}
-                </p>
-              </div>
+            <div className="w-px h-10 bg-white/10" />
+            <div className="text-center">
+              <p className="text-[10px] font-black uppercase tracking-widest text-orange-200">
+                Avg. Delay
+              </p>
+              <p className="text-2xl font-black mt-1">{watch('sendingInterval')}m</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Campaign Logic Summary */}
-        <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-orange-600" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Core Details */}
+        <div className="lg:col-span-2 space-y-8">
+          <div className="bg-white border-2 border-slate-100 rounded-[3rem] p-10 shadow-sm space-y-8">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                <Activity className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+                Campaign Infrastructure
+              </h3>
             </div>
-            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">
-              Campaign Protocol
-            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 hover:border-orange-100 transition-colors">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-orange-600">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    {t('campaigns.sender_rotation_count', { count: watchSenderIds.length })}
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  {senders
+                    .filter((s) => watchSenderIds.includes(s.id))
+                    .slice(0, 3)
+                    .map((s) => (
+                      <p
+                        key={s.id}
+                        className="text-[11px] font-bold text-slate-800 truncate flex items-center gap-2"
+                      >
+                        <div className="w-1 h-1 rounded-full bg-orange-400" />
+                        {s.email}
+                      </p>
+                    ))}
+                  {watchSenderIds.length > 3 && (
+                    <p className="text-[10px] text-slate-400 font-bold italic ml-3">
+                      {t('campaigns.more_accounts', { count: watchSenderIds.length - 3 })}
+                    </p>
+                  )}
+                  {watchSenderIds.length === 0 && (
+                    <p className="text-sm font-bold text-slate-800">
+                      {t('campaigns.no_sender_set')}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 hover:border-orange-100 transition-colors">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50 text-orange-600">
+                    <Database className="w-4 h-4" />
+                  </div>
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    Lead Database
+                  </span>
+                </div>
+                <p className="text-sm font-bold text-slate-800 truncate">
+                  {selectedBatch?.originalFilename || 'No list selected'}
+                </p>
+                <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-1">
+                  {(selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0} Ready
+                  Prospects
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-amber-600">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  Primary Email Subject
+                </span>
+              </div>
+              <p className="text-sm font-bold text-slate-800 line-clamp-1">
+                {subject || '(No Subject)'}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule Plan</span>
-              <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest">
-                {watchScheduleType === 'now' ? 'Immediate Execution' : 'Scheduled Release'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sending Throttle</span>
-              <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest">
-                {watch('throttlePerMinute')} EMAILS / MIN
-              </span>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Compliance Status</span>
-              <div className="flex items-center gap-1.5">
-                <Shield className="w-3 h-3 text-emerald-500" />
-                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Verified</span>
+          <div className="bg-white border-2 border-slate-100 rounded-[3rem] p-10 shadow-sm space-y-8">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                <Clock className="w-5 h-5" />
               </div>
+              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+                Protocol & Timing
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Days', val: (watch('sendingDays') || []).length, desc: 'Active days' },
+                { label: 'Window', val: '9-6', desc: 'Working hours' },
+                { label: 'Leads', val: watch('maxLeadsPerDay'), desc: 'Daily max' },
+                { label: 'Interval', val: `${watch('sendingInterval')}m`, desc: 'Wait time' },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-5 bg-slate-50/50 rounded-lg border border-slate-100 flex flex-col items-center text-center"
+                >
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                    {item.label}
+                  </p>
+                  <p className="text-lg font-black text-slate-800 mt-1">{item.val}</p>
+                  <p className="text-[10px] text-slate-400 font-medium">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Tracking & Launch */}
-        <div className="bg-indigo-600 rounded-[2.5rem] p-8 text-white flex flex-col justify-between shadow-2xl shadow-indigo-500/20">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
+        {/* Tracking & Engagement */}
+        <div className="space-y-8">
+          <div className="bg-white rounded-[3rem] p-10 border-2 border-slate-100 shadow-sm space-y-8 h-full">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100/50">
+                <BarChart3 className="w-5 h-5 text-orange-600" />
+              </div>
+              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+                Engagement Tracking
+              </h3>
             </div>
-            <h3 className="text-xs font-black uppercase tracking-widest">
-              Launch Rules
-            </h3>
-          </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Open Tracking</span>
-              <div
-                onClick={() => setValue('trackOpens', !watch('trackOpens'))}
-                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('trackOpens') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
-              >
-                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('trackOpens') ? 'left-[17px]' : 'left-[3px]'}`} />
+            <div className="space-y-4">
+              {[
+                {
+                  id: 'trackOpens',
+                  label: 'Open Tracking',
+                  icon: BarChart3,
+                  color: 'text-orange-600',
+                  bgColor: 'bg-orange-50',
+                },
+                {
+                  id: 'trackClicks',
+                  label: 'Click Tracking',
+                  icon: MousePointer2,
+                  color: 'text-orange-600',
+                  bgColor: 'bg-orange-50',
+                },
+                {
+                  id: 'unsubscribeLink',
+                  label: 'Unsubscribe Link',
+                  icon: Trash2,
+                  color: 'text-orange-600',
+                  bgColor: 'bg-orange-50',
+                },
+              ].map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-[2rem] border border-slate-100 group hover:border-orange-100 transition-all"
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-10 h-10 rounded-md ${item.bgColor} flex items-center justify-center`}
+                    >
+                      <item.icon className={`w-5 h-5 ${item.color}`} />
+                    </div>
+                    <span className="text-xs font-bold text-slate-700">{item.label}</span>
+                  </div>
+                  <div
+                    onClick={() => setValue(item.id, !watch(item.id))}
+                    className={`w-12 h-7 rounded-full relative cursor-pointer transition-all duration-300 shadow-inner ${watch(item.id) ? 'bg-orange-600' : 'bg-slate-200'}`}
+                  >
+                    <div
+                      className={`absolute top-[4.5px] w-4.5 h-4.5 bg-white rounded-full shadow-md transition-all duration-300 ${watch(item.id) ? 'left-[24px]' : 'left-[5px]'}`}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 bg-orange-50/50 rounded-[2rem] border border-orange-100">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50">
+                  <Gauge className="w-4 h-4 text-orange-500" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-orange-600/60">
+                  Deliverability Health
+                </span>
+              </div>
+              <div className="h-2.5 bg-orange-100/50 rounded-full overflow-hidden p-0.5">
+                <div className="h-full bg-orange-500 rounded-full w-[95%] shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
+              </div>
+              <div className="flex justify-between mt-3">
+                <span className="text-[9px] font-black text-orange-600/60 uppercase tracking-widest">
+                  Optimal
+                </span>
+                <span className="text-[10px] font-bold text-orange-700">95% Health</span>
               </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Click Tracking</span>
-              <div
-                onClick={() => setValue('trackClicks', !watch('trackClicks'))}
-                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('trackClicks') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
-              >
-                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('trackClicks') ? 'left-[17px]' : 'left-[3px]'}`} />
-              </div>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-              <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Unsubscribe Footer</span>
-              <div
-                onClick={() => setValue('unsubscribeLink', !watch('unsubscribeLink'))}
-                className={`w-9 h-5 rounded-full relative cursor-pointer transition-all duration-300 ${watch('unsubscribeLink') ? 'bg-white/30 shadow-[0_0_10px_rgba(255,255,255,0.2)]' : 'bg-black/20'}`}
-              >
-                <div className={`absolute top-[3px] w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-all duration-300 ${watch('unsubscribeLink') ? 'left-[17px]' : 'left-[3px]'}`} />
-              </div>
+
+            <div className="pt-6">
+              <p className="text-[9px] text-slate-400 font-bold uppercase text-center leading-relaxed italic tracking-wider">
+                Sequences are encrypted and routed through warmed infrastructure for maximum
+                inboxing.
+              </p>
             </div>
           </div>
-
-          <p className="text-[9px] text-white/40 font-medium uppercase text-center leading-relaxed mt-6">
-            Clicking the launch button will initiate the campaign sequence across your selected sending infrastructure.
-          </p>
         </div>
       </div>
     </div>

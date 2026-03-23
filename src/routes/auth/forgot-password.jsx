@@ -6,6 +6,7 @@ import { useForgotPassword } from '../../hooks/useAuth';
 import { forgotPasswordSchema } from '../../validators/forgot-password.schema';
 import { useToast } from '../../hooks/useToast';
 import { mapZodErrors } from '../../utils/map-zod';
+import { motion } from "motion/react"
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -43,20 +44,25 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <div className="text-center mb-8 md:mb-10">
-        <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-blue-100">
-          <Mail className="w-8 h-8 text-blue-600" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">
-          Reset <span className="text-gradient">Password</span>
+      <div className="text-center mb-10">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="w-12 h-12 bg-orange-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-orange-100"
+        >
+          <Mail className="w-6 h-6 text-orange-600" />
+        </motion.div>
+        <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          Reset <span className="text-gradient leading-relaxed">Password</span>
         </h2>
-        <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">
+        <p className="text-[14px] font-medium text-slate-500 mt-1">
           We&apos;ll send you instructions
         </p>
       </div>
 
       {!isSubmitted ? (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Email"
             type="email"
@@ -72,65 +78,67 @@ const ForgotPassword = () => {
             icon={Mail}
             error={errors.email}
             disabled={forgotPassword.isPending}
-            className="rounded-2xl border-slate-200/60"
+            className="rounded-lg border-slate-200/60"
           />
 
-          <button
-            type="submit"
-            className="btn-primary w-full py-4 rounded-2xl text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-            disabled={forgotPassword.isPending}
-          >
-            {forgotPassword.isPending ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            ) : (
-              'Send Instructions'
-            )}
-          </button>
+          <div className="pt-2">
+            <button
+              type="submit"
+              className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
+              disabled={forgotPassword.isPending}
+            >
+              {forgotPassword.isPending ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                'Send Instructions'
+              )}
+            </button>
+          </div>
         </form>
       ) : (
         <div className="text-center space-y-8 animate-in fade-in zoom-in duration-500">
-          <div className="p-6 bg-emerald-50/50 backdrop-blur-sm rounded-3xl border border-emerald-100/50">
-            <p className="text-sm font-bold text-emerald-800 leading-relaxed uppercase tracking-wider">
+          <div className="p-6 bg-orange-50/50  rounded-lg border border-orange-100/50">
+            <p className="text-[14px] font-bold text-orange-800 leading-relaxed">
               Check your email
             </p>
-            <p className="text-xs text-emerald-700 mt-2 font-medium">
+            <p className="text-xs text-orange-700 mt-2 font-medium">
               We&apos;ve sent reset instructions to <br />
-              <strong className="text-emerald-900">{email}</strong>
+              <strong className="text-orange-900">{email}</strong>
             </p>
           </div>
 
           <div className="space-y-4">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-loose">
+            <p className="text-[13px] font-medium text-slate-500">
               Didn&apos;t receive it? Check your spam folder or try again.
             </p>
 
-            <div className="flex flex-col gap-3">
-              <button
-                type="button"
-                className="w-full py-3 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-700 uppercase tracking-widest hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95"
-                onClick={() => setIsSubmitted(false)}
-              >
-                Try again
-              </button>
+          <div className="space-y-3 pt-4">
+            <button
+              type="button"
+              className="w-full py-3.5 bg-white border border-slate-200 rounded-md text-[14px] font-bold text-slate-700 tracking-tight hover:bg-slate-50 transition-all border-dashed shadow-xs active:scale-95"
+              onClick={() => setIsSubmitted(false)}
+            >
+              Try again
+            </button>
 
-              <button
-                type="button"
-                className="w-full py-3 text-xs font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 transition-colors"
-                onClick={() => navigate('/auth/login')}
-              >
-                Back to sign in
-              </button>
-            </div>
+            <button
+              type="button"
+              className="w-full py-2 text-[13px] font-semibold text-orange-600 hover:text-orange-700 transition-colors"
+              onClick={() => navigate('/auth/login')}
+            >
+              Back to sign in
+            </button>
+          </div>
           </div>
         </div>
       )}
 
       {!isSubmitted && (
         <div className="mt-10 text-center">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+          <p className="text-[13px] font-medium text-slate-500">
             <Link
               to="/auth/login"
-              className="text-blue-600 hover:text-blue-700 font-extrabold transition-colors ml-1"
+              className="text-orange-600 hover:text-orange-700 font-bold transition-colors ml-1"
             >
               Back to sign in
             </Link>
