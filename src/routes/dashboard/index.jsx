@@ -38,6 +38,7 @@ import ShowSender from '../../modals/showsender';
 import { useAudienceData } from './audience/hooks/use-audience-data';
 import ShowCreateCampaign from '../../modals/showcreatecampaign';
 import RecentCampaignsTable from './components/recent-campaigns-table';
+import { SkeletonLoader } from '../../components/ui/loading-spinner';
 
 // Import React Query hooks
 import { useCampaigns } from '../../hooks/useCampaign';
@@ -502,10 +503,15 @@ const Dashboard = () => {
 
   if (isLoading && campaigns.length === 0) {
     return (
-      <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('dashboard.loading_data')}</p>
+      <div className="p-4 md:p-8 w-full">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
+          <div className="h-10 w-48 bg-slate-200 animate-pulse rounded-lg" />
+          <div className="h-10 w-64 bg-slate-200 animate-pulse rounded-lg" />
+        </div>
+        <SkeletonLoader type="card" count={4} />
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 h-96 bg-slate-100 animate-pulse rounded-2xl" />
+          <div className="h-96 bg-slate-100 animate-pulse rounded-2xl" />
         </div>
       </div>
     );

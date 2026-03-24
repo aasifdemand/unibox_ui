@@ -55,9 +55,9 @@ const MeshBackground = () => (
     <div className="absolute -bottom-20 right-1/3 w-[400px] h-[400px] rounded-full bg-orange-100/40 blur-[90px]" />
     {/* grid overlay */}
     <div
-      className="absolute inset-0 opacity-[0.025]"
+      className="absolute inset-0 opacity-[0.08]"
       style={{
-        backgroundImage: `linear-gradient(#e11d48 1px,transparent 1px),linear-gradient(90deg,#e11d48 1px,transparent 1px)`,
+        backgroundImage: `linear-gradient(#f97316 1px,transparent 1px),linear-gradient(90deg,#f97316 1px,transparent 1px)`,
         backgroundSize: '60px 60px',
       }}
     />
@@ -304,7 +304,7 @@ const Landing = () => {
     <div className="min-h-screen bg-[#fafafa] text-slate-900 font-sans selection:bg-orange-100 selection:text-orange-900">
       {/* ── NAV ── */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white/85  shadow-sm border-b border-slate-100 py-3' : 'bg-transparent py-5'}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-orange-200/50 py-3' : 'bg-transparent border-b border-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <motion.div
@@ -1190,7 +1190,7 @@ const Landing = () => {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-slate-900 text-slate-400 pt-16 pb-8 px-6">
+      <footer className="bg-slate-50 border-t border-slate-200 text-slate-500 pt-16 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             <div className="col-span-2 md:col-span-1">
@@ -1199,7 +1199,7 @@ const Landing = () => {
                   <Mail className="text-white w-4 h-4" />
                 </div>
                 <span
-                  className="text-xl font-black text-white tracking-tight"
+                  className="text-xl font-black text-slate-900 tracking-tight"
                   style={{ fontFamily: 'Outfit, sans-serif' }}
                 >
                   Unibox.
@@ -1213,7 +1213,7 @@ const Landing = () => {
                   <a
                     key={i}
                     href="#"
-                    className="w-8 h-8 bg-slate-800 hover:bg-orange-600 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-8 h-8 bg-slate-100 hover:bg-orange-100 hover:text-orange-600 text-slate-500 rounded-lg flex items-center justify-center transition-colors"
                   >
                     <Icon className="w-4 h-4" />
                   </a>
@@ -1228,11 +1228,11 @@ const Landing = () => {
               { title: 'Legal', links: ['Privacy', 'Terms', 'Security', 'Cookies'] },
             ].map((col) => (
               <div key={col.title}>
-                <h4 className="text-white font-bold text-sm mb-4">{col.title}</h4>
+                <h4 className="text-slate-900 font-bold text-sm mb-4">{col.title}</h4>
                 <ul className="space-y-3">
                   {col.links.map((link) => (
                     <li key={link}>
-                      <a href="#" className="text-sm hover:text-white transition-colors">
+                      <a href="#" className="text-sm hover:text-orange-600 transition-colors">
                         {link}
                       </a>
                     </li>
@@ -1242,11 +1242,11 @@ const Landing = () => {
             ))}
           </div>
 
-          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+          <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
             <div>© 2024 Unibox. All rights reserved.</div>
             <div className="flex gap-6">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((l) => (
-                <a key={l} href="#" className="hover:text-white transition-colors">
+                <a key={l} href="#" className="hover:text-orange-600 transition-colors">
                   {l}
                 </a>
               ))}

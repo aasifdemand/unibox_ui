@@ -8,6 +8,7 @@ import {
   useMarkAllNotificationsRead,
   useDeleteNotification,
 } from '../../hooks/useNotifications';
+import { SkeletonLoader } from '../../components/ui/loading-spinner';
 
 const ICONS = {
   success: CheckCircle,
@@ -185,8 +186,17 @@ const NotificationsPage = () => {
         <main className="flex-1 min-w-0">
           <div className="bg-white/40  border border-slate-200/50 rounded-2xl shadow-sm shadow-slate-900/5 min-h-[500px] overflow-hidden p-6 md:p-8">
             {isLoading ? (
-              <div className="flex items-center justify-center min-h-[400px]">
-                <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin shadow-sm shadow-orange-500/20"></div>
+              <div className="space-y-6">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="p-8 rounded-xl border border-slate-100 bg-white/50 flex gap-6 animate-pulse">
+                    <div className="w-14 h-14 rounded-lg bg-slate-100 shrink-0" />
+                    <div className="flex-1 space-y-3">
+                      <div className="h-5 w-48 bg-slate-200 rounded-md" />
+                      <div className="h-4 w-full bg-slate-100 rounded-md" />
+                      <div className="h-3 w-32 bg-slate-50 rounded-md" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : notifications.length === 0 ? (
               <div className="py-32 px-6 text-center flex flex-col items-center">

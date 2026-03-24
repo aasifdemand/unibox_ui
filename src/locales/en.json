@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. All rights reserved.",
+        "layout": {
+            "login_title": "The smarter way to scale your outreach",
+            "login_subtitle": "Access your unified inbox, AI-powered sequencing, and real-time analytics. Join 2,400+ teams who have already transformed their growth engine with Unibox.",
+            "login_badge": "SIGN IN",
+            "signup_title": "Start your journey towards hyper-growth",
+            "signup_subtitle": "Create your workspace in seconds and unlock the full power of automated outreach. No credit card required to start your 14-day premium trial.",
+            "signup_badge": "GET STARTED",
+            "verify_title": "Secure your Unibox workspace",
+            "verify_subtitle": "We've sent a secure authentication link to your email address. Verifying your identity ensures your data remains protected within our encrypted vault.",
+            "verify_badge": "VERIFICATION",
+            "verify_help": "We've sent a verification email to your address. Please check your inbox and spam folder. The link will expire in 24 hours.",
+            "forgot_title": "Recover your account access",
+            "forgot_subtitle": "Enter the email associated with your Unibox account and we'll send you a secure link to reset your credentials and regain access to your dashboard.",
+            "forgot_badge": "RESET PASSWORD",
+            "forgot_help": "Enter your email address and we'll send you a link to reset your password. You'll be able to create a new password within minutes.",
+            "reset_title": "Design your new credentials",
+            "reset_subtitle": "Ensure your workspace remains fortified. Choose a strong, unique password to secure your account and resume your outreach operations.",
+            "reset_badge": "UPDATE PASSWORD",
+            "reset_help": "Make sure your new password is strong and secure. Use at least 8 characters with a mix of letters, numbers, and symbols.",
+            "platform_live": "PLATFORM LIVE",
+            "title_main": "Smart Analytics for",
+            "title_span": "Modern Teams",
+            "subtitle": "Transform your data into actionable insights with AI-powered analytics",
+            "trusted_by": "Trusted by",
+            "teams": "outreach teams"
+        },
         "login": {
             "title": "Welcome",
             "title_span": "Back",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Or sign up with",
             "already_account": "Already have an account?",
             "sign_in_link": "Sign in"
-        },
-        "layout": {
-            "platform_live": "Platform Live",
-            "title_main": "The smarter way to",
-            "title_span": "run outreach",
-            "subtitle": "Unibox combines AI enrichment, smart sequencing, and a unified reply inbox — all in one platform.",
-            "trusted_by": "Trusted by",
-            "teams": "outreach teams"
         }
     },
     "pwa": {

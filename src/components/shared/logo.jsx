@@ -18,9 +18,7 @@ const Logo = () => {
         <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent">
           Unibox
         </h1>
-        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
-          Campaign Platform
-        </p>
+
       </div>
     </div>
   );

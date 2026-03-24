@@ -10,6 +10,7 @@ import {
   useSyncIntegration,
 } from '../../../hooks/useIntegrations';
 import Dialog from '../../../components/ui/dialog';
+import { SkeletonLoader } from '../../../components/ui/loading-spinner';
 
 const Logo = ({ src, alt, className, wrapperClassName }) => {
   const [error, setError] = useState(false);
@@ -227,6 +228,21 @@ const Integrations = () => {
       toast.error(error.message);
     }
   };
+
+  if (isLoading && connectedIntegrations.length === 0) {
+    return (
+      <div className="w-full mx-auto px-4 md:px-8 pb-8 space-y-8 animate-in fade-in duration-700">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div className="flex flex-col space-y-2">
+            <div className="h-8 w-64 bg-slate-200 animate-pulse rounded-lg" />
+            <div className="h-4 w-[400px] bg-slate-100 animate-pulse rounded-lg" />
+          </div>
+          <div className="h-12 w-full md:w-80 bg-slate-50 animate-pulse rounded-lg border border-slate-100" />
+        </div>
+        <SkeletonLoader type="card" count={6} />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mx-auto px-4 md:px-8 pb-8 space-y-8 animate-in fade-in duration-700">

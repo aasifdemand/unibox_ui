@@ -8,8 +8,8 @@ import ProtectedRoute from './routes/protected-route';
 import AuthRoute from './routes/auth-route';
 
 // Lazy-loaded route components
+import Login from './routes/auth/login';
 const Signup = lazy(() => import('./routes/auth/signup'));
-const Login = lazy(() => import('./routes/auth/login'));
 const ForgotPassword = lazy(() => import('./routes/auth/forgot-password'));
 const ResetPassword = lazy(() => import('./routes/auth/reset-password'));
 const VerifyAccount = lazy(() => import('./routes/auth/verify-account'));
@@ -25,11 +25,17 @@ const Settings = lazy(() => import('./routes/dashboard/settings'));
 const CRM = lazy(() => import('./routes/dashboard/crm'));
 const Integrations = lazy(() => import('./routes/dashboard/integrations'));
 const Notifications = lazy(() => import('./routes/dashboard/notifications'));
-const Landing = lazy(() => import('./routes/landing'));
+import Landing from './routes/landing';
 
 const LoadingFallback = () => (
-  <div className="flex h-screen w-full items-center justify-center bg-slate-50">
-    <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
+  <div className="flex h-screen w-full flex-col items-center justify-center bg-[#fafafa]">
+    <div className="relative">
+      <div className="absolute inset-0 bg-orange-500/20 blur-2xl rounded-full" />
+      <Loader2 className="h-12 w-12 animate-spin text-orange-600 relative z-10" />
+    </div>
+    <p className="mt-6 text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase animate-pulse">
+      Initialising Unibox
+    </p>
   </div>
 );
 

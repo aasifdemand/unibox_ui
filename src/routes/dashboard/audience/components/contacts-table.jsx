@@ -32,6 +32,7 @@ import {
   Users,
   Tag,
 } from 'lucide-react';
+import { SkeletonLoader } from '../../../../components/ui/loading-spinner';
 
 import { formatDate } from '../audience-service';
 import { useAllContacts } from '../hooks/use-all-contacts';
@@ -495,11 +496,13 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
 
   if (isLoading)
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <div className="w-12 h-12 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin" />
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-          Loading contacts...
-        </p>
+      <div className="space-y-4">
+        <div className="flex items-center justify-end px-1">
+          <div className="h-9 w-24 bg-slate-100 animate-pulse rounded-md" />
+        </div>
+        <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm">
+          <SkeletonLoader type="list" count={10} />
+        </div>
       </div>
     );
 

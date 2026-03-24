@@ -159,10 +159,9 @@ const DashboardLayout = () => {
       <div
         className={`transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'lg:ltr:pl-[64px] lg:rtl:pr-[64px]' : 'lg:ltr:pl-[240px] lg:rtl:pr-[240px]'}`}
       >
-        {/* Strict Flush Header */}
+        {/* Header */}
         <header
-          className={`fixed top-0 z-40 h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 transition-all duration-300 ease-in-out ltr:left-0 ltr:right-0 rtl:right-0 rtl:left-0 ${sidebarCollapsed ? 'lg:ltr:left-[64px] lg:rtl:right-[64px]' : 'lg:ltr:left-[240px] lg:rtl:right-[240px]'
-            }`}
+          className="h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0"
         >
           {/* Left: Sidebar Toggle + Breadcrumb */}
           <div className="flex items-center gap-3 min-w-0">
@@ -269,9 +268,9 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="pt-[56px] w-full min-h-screen"
+          className="w-full flex-1 overflow-y-auto custom-scrollbar"
         >
-          <div className="p-2 w-full  min-h-[calc(100vh-144px)]">
+          <div className="p-4 w-full">
             <Outlet />
           </div>
         </motion.main>

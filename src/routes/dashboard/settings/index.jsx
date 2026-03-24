@@ -14,6 +14,7 @@ import { useSenders, useDeleteSender } from '../../../hooks/useSenders';
 import { useBatches } from '../../../hooks/useBatches';
 import { useCampaigns } from '../../../hooks/useCampaign';
 import toast from 'react-hot-toast';
+import { SkeletonLoader } from '../../../components/ui/loading-spinner';
 
 const Settings = () => {
   const { t } = useTranslation();
@@ -96,12 +97,31 @@ const Settings = () => {
 
   if (userLoading) {
     return (
-      <div className="p-8 flex items-center justify-center h-100">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-sm shadow-orange-500/20"></div>
-          <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">
-            {t('settings.loading')}
-          </p>
+      <div className="p-8 space-y-10 animate-in fade-in duration-500">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+          <div className="space-y-2">
+            <div className="h-8 w-64 bg-slate-200 animate-pulse rounded-lg" />
+            <div className="h-4 w-96 bg-slate-100 animate-pulse rounded-lg" />
+          </div>
+          <div className="h-10 w-32 bg-slate-50 animate-pulse rounded-lg border border-slate-100" />
+        </div>
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <aside className="lg:w-80 shrink-0 space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-14 bg-slate-50 border border-slate-100 rounded-xl animate-pulse" />
+            ))}
+          </aside>
+          <main className="flex-1 min-w-0 bg-white/40 border border-slate-200/50 rounded-2xl p-8 min-h-[400px]">
+            <div className="space-y-6">
+              <div className="h-8 w-48 bg-slate-200 animate-pulse rounded-md" />
+              <div className="h-4 w-full bg-slate-100 animate-pulse rounded-md" />
+              <div className="h-32 w-full bg-slate-50 animate-pulse rounded-xl" />
+              <div className="grid grid-cols-2 gap-6">
+                <div className="h-12 bg-slate-100 animate-pulse rounded-lg" />
+                <div className="h-12 bg-slate-100 animate-pulse rounded-lg" />
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     );
