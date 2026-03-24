@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import LoadingSpinner from './components/ui/loading-spinner';
 
 import AuthLayout from './layouts/auth.layout';
 import DashboardLayout from './layouts/dashboard.layout';
@@ -28,15 +29,7 @@ const Notifications = lazy(() => import('./routes/dashboard/notifications'));
 import Landing from './routes/landing';
 
 const LoadingFallback = () => (
-  <div className="flex h-screen w-full flex-col items-center justify-center bg-[#fafafa]">
-    <div className="relative">
-      <div className="absolute inset-0 bg-orange-500/20 blur-2xl rounded-full" />
-      <Loader2 className="h-12 w-12 animate-spin text-orange-600 relative z-10" />
-    </div>
-    <p className="mt-6 text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase animate-pulse">
-      Initialising Unibox
-    </p>
-  </div>
+  <LoadingSpinner fullPage size="xl" text="Loading.." />
 );
 
 const AppRoutes = () => {

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Loader2 } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export const LoadingSpinner = ({
   size = 'md',
@@ -8,45 +8,47 @@ export const LoadingSpinner = ({
   className = '',
 }) => {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16',
+    sm: 'w-8 h-8',
+    md: 'w-16 h-16',
+    lg: 'w-24 h-24',
+    xl: 'w-32 h-32',
   };
 
   const textSizeClasses = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
-    xl: 'text-lg',
+    sm: 'text-[10px]',
+    md: 'text-xs',
+    lg: 'text-sm',
+    xl: 'text-base',
   };
 
   const spinnerSize = sizeClasses[size] || sizeClasses.md;
   const textSize = textSizeClasses[size] || textSizeClasses.md;
 
+  const content = (
+    <div className={`relative flex flex-col items-center justify-center ${className}`}>
+      {/* Custom Grid Loader */}
+      <div className="loader-grid mb-8" />
+
+      {/* Text Below */}
+      {text && (
+        <div className="relative z-10 flex items-center justify-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-orange-500/10 shadow-sm">
+          <p className={`${textSize} text-zinc-900 font-bold uppercase tracking-[0.2em] text-center animate-pulse`}>
+            {text}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
   if (fullPage) {
     return (
-      <div className="fixed inset-0 bg-white/80  z-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <Loader2 className={`${spinnerSize} text-orange-600 animate-spin mx-auto`} />
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
-          </div>
-          {text && <p className={`${textSize} text-gray-600 font-medium mt-4`}>{text}</p>}
-        </div>
+      <div className="fixed inset-0 bg-[#FAFAFA]/90 backdrop-blur-sm z-[9999] flex items-center justify-center">
+        {content}
       </div>
     );
   }
 
-  return (
-    <div className={`flex flex-col items-center justify-center ${className}`}>
-      <div className="relative">
-        <Loader2 className={`${spinnerSize} text-orange-600 animate-spin`} />
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
-      </div>
-      {text && <p className={`${textSize} text-gray-600 font-medium mt-2`}>{text}</p>}
-    </div>
-  );
+  return content;
 };
 
 // Inline spinner for buttons and small areas
@@ -63,24 +65,22 @@ export const InlineSpinner = ({ size = 'sm', className = '' }) => {
 // Page loader with optional progress bar
 export const PageLoader = ({ progress, text = 'Loading...' }) => {
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
-      <div className="w-64">
-        <div className="relative">
-          <Loader2 className="w-12 h-12 text-orange-600 animate-spin mx-auto" />
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-orange-600/20 blur-xl rounded-full -z-10"></div>
-        </div>
-        <p className="text-sm text-gray-600 font-medium text-center mt-4">{text}</p>
+    <div className="fixed inset-0 bg-[#FAFAFA] z-[9999] flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center">
+        <LoadingSpinner size="lg" text={text} />
 
         {progress !== undefined && (
-          <div className="mt-6 w-full">
-            <div className="flex justify-between text-xs text-gray-500 mb-1">
-              <span>Loading...</span>
+          <div className="mt-12 w-64">
+            <div className="flex justify-between text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">
+              <span>{text}</span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
+            <div className="w-full h-1.5 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200/50">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                className="h-full bg-orange-600 rounded-full"
+                transition={{ duration: 0.5, ease: "easeOut" }}
               />
             </div>
           </div>

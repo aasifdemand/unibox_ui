@@ -131,11 +131,10 @@ const MailboxList = ({
         ),
         cell: ({ row }) => (
           <span
-            className={`text-[10px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block ${
-              row.original.isVerified
+            className={`text-[10px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block ${row.original.isVerified
                 ? 'bg-orange-50 text-orange-600 border-orange-100'
                 : 'bg-amber-50 text-amber-600 border-amber-100'
-            }`}
+              }`}
           >
             {row.original.isVerified ? t('mailboxes.status_active') : t('mailboxes.status_warning')}
           </span>
@@ -315,7 +314,7 @@ const MailboxList = ({
 
   return (
     <div className="h-full overflow-y-auto p-4 md:p-8 animate-in fade-in duration-500">
-      <div className="bg-white rounded-[2rem] border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
+      <div className="bg-white rounded-xl border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-start border-collapse border-separate border-spacing-0">
             <thead>
