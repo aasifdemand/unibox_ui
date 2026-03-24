@@ -17,10 +17,10 @@ const Smtp = (props) => (
       fillOpacity="0.05"
     />
 
-    {/* The Signature Teal Top Flap - Scaled up */}
+    {/* The Signature Orange Top Flap - Scaled up */}
     <path
       d="M20 100L256 260L492 100H20Z"
-      fill="#00B2A9"
+      fill="#ea580c"
       stroke="#1A252F"
       strokeWidth="28"
       strokeLinejoin="round"
@@ -36,7 +36,7 @@ const Smtp = (props) => (
     />
 
     {/* Subtle Glow - Tighter and more focused */}
-    <circle cx="256" cy="256" r="220" fill="#00B2A9" fillOpacity="0.03" />
+    <circle cx="256" cy="256" r="220" fill="#ea580c" fillOpacity="0.03" />
   </svg>
 );
 
