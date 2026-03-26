@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Users,
   Send,
@@ -11,72 +12,73 @@ import {
 } from 'lucide-react';
 
 const CampaignMetrics = ({ campaign, stats }) => {
+  const { t } = useTranslation();
   const metrics = [
     {
-      label: 'Total Recipients',
+      label: t('campaigns.metrics.total_recipients', 'Total Recipients'),
       value: stats.totalRecipients,
       icon: <Users className="w-5 h-5" />,
       theme: 'indigo',
-      description: campaign.ListUploadBatch?.originalFilename || 'Recipient List',
-      subLabel: 'Total Reach',
+      description: campaign.ListUploadBatch?.originalFilename || t('campaigns.metrics.recipient_list', 'Recipient List'),
+      subLabel: t('campaigns.metrics.total_reach', 'Total Reach'),
     },
     {
-      label: 'Emails Sent',
+      label: t('campaigns.metrics.emails_sent', 'Emails Sent'),
       value: stats.totalSent,
       icon: <Send className="w-5 h-5" />,
       theme: 'emerald',
-      description: `${stats.progress}% Completed`,
-      subLabel: 'Current Status',
+      description: t('campaigns.metrics.completed_percent', { percent: stats.progress }),
+      subLabel: t('campaigns.metrics.current_status', 'Current Status'),
     },
     {
-      label: 'Total Opens',
+      label: t('campaigns.metrics.total_opens', 'Total Opens'),
       value: stats.totalOpened,
       icon: <Mail className="w-5 h-5" />,
       theme: 'purple',
       description: stats.uniqueContacted
-        ? `${Math.round((stats.totalOpened / stats.uniqueContacted) * 100)}% Open Rate`
-        : '0% Open Rate',
-      subLabel: 'Engagement',
+        ? t('campaigns.metrics.open_rate_percent', { percent: Math.round((stats.totalOpened / stats.uniqueContacted) * 100) })
+        : t('campaigns.metrics.open_rate_percent', { percent: 0 }),
+      subLabel: t('campaigns.metrics.engagement', 'Engagement'),
     },
     {
-      label: 'Total Clicks',
+      label: t('campaigns.metrics.total_clicks', 'Total Clicks'),
       value: stats.totalClicked,
       icon: <MousePointer2 className="w-5 h-5" />,
       theme: 'blue',
       description: stats.uniqueContacted
-        ? `${Math.round((stats.totalClicked / stats.uniqueContacted) * 100)}% Click Rate`
-        : '0% Click Rate',
-      subLabel: 'Link Clicks',
+        ? t('campaigns.metrics.click_rate_percent', { percent: Math.round((stats.totalClicked / stats.uniqueContacted) * 100) })
+        : t('campaigns.metrics.click_rate_percent', { percent: 0 }),
+      subLabel: t('campaigns.metrics.link_clicks', 'Link Clicks'),
     },
     {
-      label: 'Total Replies',
+      label: t('campaigns.metrics.total_replies', 'Total Replies'),
       value: stats.totalReplied,
       icon: <MessageCircle className="w-5 h-5" />,
       theme: 'amber',
       description: stats.uniqueContacted
-        ? `${Math.round((stats.totalReplied / stats.uniqueContacted) * 100)}% Reply Rate`
-        : '0% Reply Rate',
-      subLabel: 'Responses',
+        ? t('campaigns.metrics.reply_rate_percent', { percent: Math.round((stats.totalReplied / stats.uniqueContacted) * 100) })
+        : t('campaigns.metrics.reply_rate_percent', { percent: 0 }),
+      subLabel: t('campaigns.metrics.responses', 'Responses'),
     },
     {
-      label: 'Bounced',
+      label: t('campaigns.metrics.bounced', 'Bounced'),
       value: stats.totalBounced || 0,
       icon: <AlertTriangle className="w-5 h-5" />,
       theme: 'rose',
       description: stats.totalSent
-        ? `${Math.round(((stats.totalBounced || 0) / stats.totalSent) * 100)}% Bounce Rate`
-        : '0% Bounce Rate',
-      subLabel: 'Delivery Issues',
+        ? t('campaigns.metrics.bounce_rate_percent', { percent: Math.round(((stats.totalBounced || 0) / stats.totalSent) * 100) })
+        : t('campaigns.metrics.bounce_rate_percent', { percent: 0 }),
+      subLabel: t('campaigns.metrics.delivery_issues', 'Delivery Issues'),
     },
     {
-      label: 'Unsubscribed',
+      label: t('campaigns.metrics.unsubscribed', 'Unsubscribed'),
       value: stats.totalUnsubscribed || 0,
       icon: <UserMinus className="w-5 h-5" />,
       theme: 'slate',
       description: stats.totalSent
-        ? `${Math.round(((stats.totalUnsubscribed || 0) / stats.totalSent) * 100)}% Unsub Rate`
-        : '0% Unsub Rate',
-      subLabel: 'Opt-Outs',
+        ? t('campaigns.metrics.unsub_rate_percent', { percent: Math.round(((stats.totalUnsubscribed || 0) / stats.totalSent) * 100) })
+        : t('campaigns.metrics.unsub_rate_percent', { percent: 0 }),
+      subLabel: t('campaigns.metrics.opt_outs', 'Opt-Outs'),
     },
   ];
 
