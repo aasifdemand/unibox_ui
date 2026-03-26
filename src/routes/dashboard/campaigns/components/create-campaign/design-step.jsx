@@ -5,7 +5,7 @@ import { Tag, Plus, Clock, MessageSquare, Trash2, Mail, Loader2, Sparkles, Alert
 import HtmlEmailEditor from '../../../../../components/shared/html-editor';
 import HighlightedInput from '../../../../../components/shared/highlighted-input';
 import Modal from '../../../../../components/shared/modal';
-import { useGenerateSequence } from '../../../../../hooks/useAi';
+import { useStreamSequence } from '../../../../../hooks/useAi';
 import { toast } from 'react-hot-toast';
 
 const getPlaceholders = (t) => [
@@ -161,7 +161,8 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [aiGoal, setAiGoal] = useState('');
   const [aiTone, setAiTone] = useState('professional');
-  const generateAi = useGenerateSequence();
+  const [isStreaming, setIsStreaming] = useState(false);
+  const streamAi = useStreamSequence();
 
   // Watchers
   const mainSubject = watch('subject') || '';
@@ -331,44 +332,116 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
       return;
     }
 
+    setIsStreaming(true);
+    setIsAiModalOpen(false); // Close modal immediately to show the editor
+    setActiveStepIndex(0); // Ensure we are looking at the first step
+
     try {
       const variables = allPlaceholders.map((p) => p.key);
-      const sequence = await generateAi.mutateAsync({ 
-        goal: aiGoal, 
-        tone: aiTone, 
-        stepsCount, 
-        variables 
-      });
+      let finalContent = '';
 
-      if (sequence && sequence.length > 0) {
-        // Auto-register any new placeholders AI might have invented
-        const allText = sequence.map((s) => s.subject + ' ' + s.body).join(' ');
-        const foundTokens = allText.match(/{{\s*([\w.]+)\s*}}/g) || [];
-        foundTokens.forEach((token) => registerPlaceholder(token));
+      // Improved helper to extract multiple email objects from partial JSON
+      const extractEmails = (text) => {
+        const emails = [];
+        // Matches all occurrences of {"subject": "...", "body": "..."} even if partial
+        const emailMatches = text.matchAll(/\{\s*"subject":\s*"([^"]*)"?(?:,\s*"body":\s*"([^"]*)"?)?/g);
+        
+        for (const match of emailMatches) {
+          const subject = (match[1] || '').replace(/\\n/g, ' ');
+          let body = (match[2] || '');
+          
+          // Convert escaped newlines and literals to HTML for the editor
+          body = body.replace(/\\n/g, '<br />');
+          
+          emails.push({ subject, body });
+        }
+        return emails;
+      };
 
-        // Set Main Email (Step 0)
-        setValue('subject', sequence[0].subject, { shouldValidate: true });
-        setValue('htmlBody', sequence[0].body, { shouldValidate: true });
+      await streamAi(
+        { goal: aiGoal, tone: aiTone, stepsCount, variables },
+        (chunk) => {
+          finalContent = chunk;
 
-        // Set Follow-ups (Step 1+)
-        const followUps = sequence.slice(1).map((s, i) => ({
-          stepOrder: i + 1,
-          subject: s.subject,
-          htmlBody: s.body, // Mapping AI 'body' to 'htmlBody'
-          textBody: '',
-          delayMinutes: 4320 * (i + 1), // 3 days, 6 days, etc.
-          condition: 'no_reply',
-        }));
+          // Update main editor and steps in real-time
+          const discoveredEmails = extractEmails(chunk);
+          if (discoveredEmails.length > 0) {
+            // Update the first email directly
+            if (discoveredEmails[0].subject) {
+              setValue('subject', discoveredEmails[0].subject, { shouldValidate: true });
+            }
+            if (discoveredEmails[0].body) {
+              setValue('htmlBody', discoveredEmails[0].body, { shouldValidate: true });
+            }
 
-        setValue('steps', followUps, { shouldValidate: true });
-        setActiveStepIndex(0); // Switch to main email view
-        setIsAiModalOpen(false);
-        setAiGoal('');
-        toast.success('Campaign sequence generated successfully!');
-      }
+            // Update follow-up steps if any discovered
+            if (discoveredEmails.length > 1) {
+              const followUps = discoveredEmails.slice(1).map((em, i) => ({
+                stepOrder: i + 1,
+                subject: em.subject || `Follow-up ${i + 1}`,
+                htmlBody: em.body || '',
+                textBody: '',
+                delayMinutes: 4320 * (i + 1),
+                condition: 'no_reply',
+              }));
+              setValue('steps', followUps, { shouldValidate: true });
+            }
+          }
+        },
+        () => {
+          // On End - finalize everything precisely
+          try {
+            let sequence = [];
+            try {
+              const bracketMatch = finalContent.match(/\[[\s\S]*\]/) || finalContent.match(/\{[\s\S]*\}/);
+              const jsonStr = bracketMatch ? bracketMatch[0] : finalContent;
+              sequence = JSON.parse(jsonStr);
+              
+              if (!Array.isArray(sequence) && sequence.steps) sequence = sequence.steps;
+              if (!Array.isArray(sequence) && sequence.emails) sequence = sequence.emails;
+              if (!Array.isArray(sequence) && sequence.sequence) sequence = sequence.sequence;
+              if (!Array.isArray(sequence)) sequence = [sequence];
+            } catch (pErr) {
+               console.warn("Standard JSON parse failed, falling back to discovered emails:", pErr.message);
+               // Use discovered emails from the final stream as fallback
+               sequence = extractEmails(finalContent);
+            }
+
+            if (sequence.length > 0) {
+              setValue('subject', sequence[0].subject, { shouldValidate: true });
+              setValue('htmlBody', (sequence[0].body || '').replace(/\n/g, '<br />'), { shouldValidate: true });
+
+              const followUps = sequence.slice(1).map((s, i) => ({
+                stepOrder: i + 1,
+                subject: s.subject || `Follow-up ${i + 1}`,
+                htmlBody: (s.body || '').replace(/\n/g, '<br />'),
+                textBody: '',
+                delayMinutes: 4320 * (i + 1),
+                condition: 'no_reply',
+              }));
+
+              setValue('steps', followUps, { shouldValidate: true });
+              toast.success('Campaign sequence architected successfully!');
+            } else {
+              throw new Error("No emails found in sequence.");
+            }
+          } catch (e) {
+            console.error('Failed to parse final AI output:', e);
+            toast.error('Generation complete, but could not parse the format.');
+          } finally {
+            setIsStreaming(false);
+          }
+        },
+        (err) => {
+          console.error('AI Stream Failed:', err);
+          toast.error('Failed to generate sequence. Please try again.');
+          setIsStreaming(false);
+        }
+      );
     } catch (error) {
       console.error('AI Generation Failed:', error);
       toast.error('Failed to generate sequence. Please try again.');
+      setIsStreaming(false);
     }
   };
 
@@ -512,6 +585,12 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
           {/* Header row */}
           <div className="px-6 py-4 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
             <h2 className="text-sm font-bold text-slate-700">Stage {activeStepIndex + 1}: Email</h2>
+            {isStreaming && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-100 rounded-full animate-pulse shadow-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+                <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest">AI Architecting...</span>
+              </div>
+            )}
           </div>
 
           {/* Follow-up Settings Bar */}
@@ -693,14 +772,14 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
       </div>
 
       {/* AI GENERATION MODAL */}
-      <Modal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)} maxWidth="max-w-3xl">
-        <div className="relative overflow-hidden bg-white/95 backdrop-blur-md rounded-[32px]">
+      <Modal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)} maxWidth="max-w-2xl">
+        <div className="relative overflow-hidden bg-white/95 backdrop-blur-md rounded-3xl">
           {/* Decorative Elements */}
           <div className="absolute -top-32 -right-32 w-80 h-80 bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r from-orange-500 via-amber-500 to-orange-600" />
 
-          <div className="p-8 md:p-10 space-y-8 relative z-10">
+          <div className="p-6 md:p-8 space-y-6 relative z-10">
             {/* Modal Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -718,21 +797,21 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
               </div>
               <button
                 onClick={() => setIsAiModalOpen(false)}
-                className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
+                className="w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
               >
-                <X className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
+                <X className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
               </button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-12 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="lg:col-span-12 space-y-6">
                 {/* Goal Field */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
                     {t('campaigns.design.goal_label', "What's your campaign goal?")}
                   </label>
                   <textarea
-                    className="w-full h-32 bg-slate-50/50 border-2 border-slate-100 rounded-2xl p-6 text-[15px] font-bold text-slate-700 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-medium leading-relaxed shadow-inner"
+                    className="w-full h-28 bg-slate-50/50 border-2 border-slate-100 rounded-xl p-4 text-sm font-bold text-slate-700 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-medium leading-relaxed shadow-inner"
                     placeholder={t('campaigns.design.goal_placeholder', "e.g. Schedule a demo for our new SEO tool. Target audience: SaaS Founders. Value Prop: We find 20% more broken links than competitors.")}
                     value={aiGoal}
                     onChange={(e) => setAiGoal(e.target.value)}
@@ -741,13 +820,13 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Tone Selector */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
                       {t('campaigns.design.tone_label', 'Tone of Voice')}
                     </label>
                     <div className="relative group/select">
                       <select
-                        className="w-full h-12 pl-5 pr-12 bg-slate-50/50 border-2 border-slate-100 rounded-xl text-[13px] font-bold text-slate-700 hover:border-orange-200 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
+                        className="w-full h-10 pl-4 pr-10 bg-slate-50/50 border-2 border-slate-100 rounded-lg text-[13px] font-bold text-slate-700 hover:border-orange-200 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
                         value={aiTone}
                         onChange={(e) => setAiTone(e.target.value)}
                       >
@@ -760,7 +839,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
                   </div>
 
                   {/* Length Selector */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
                       {t('campaigns.design.sequence_length', 'Sequence Length')}
                     </label>
@@ -770,9 +849,9 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
                           key={num}
                           type="button"
                           onClick={() => setStepsCount(num)}
-                          className={`h-12 rounded-xl text-xs font-black transition-all flex flex-col items-center justify-center border-2 group relative overflow-hidden ${
+                          className={`h-10 rounded-lg text-xs font-black transition-all flex flex-col items-center justify-center border-2 group relative overflow-hidden ${
                             stepsCount === num
-                              ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-600/30 scale-105 z-10'
+                              ? 'bg-orange-600 border-orange-600 text-white shadow-md shadow-orange-600/30 scale-105 z-10'
                               : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-orange-200 hover:bg-white'
                           }`}
                         >
@@ -792,16 +871,16 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
             </div>
             
             {/* SMART TIPS SECTION */}
-            <div className="p-6 bg-slate-50/50 border-2 border-slate-100 rounded-2xl space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Tag className="w-4 h-4 text-orange-600" />
+            <div className="p-4 bg-slate-50/50 border-2 border-slate-100 rounded-xl space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-orange-100 rounded-md">
+                  <Tag className="w-3 h-3 text-orange-600" />
                 </div>
-                <h4 className="text-[11px] font-black text-slate-500 uppercase tracking-widest">
+                <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                   {t('campaigns.design.tips', 'Smart Personalization Tips')}
                 </h4>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                   { title: 'Spintax', text: t('campaigns.design.tip_spintax', 'Use curly braces for Spintax: {Hi|Hello|Hey}') },
                   { title: 'Safe Logic', text: t('campaigns.design.tip_logic', 'AI uses {{#if}} for safe custom variable fallbacks.') },
@@ -815,29 +894,29 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <button
                 onClick={handleAiGenerate}
-                disabled={generateAi.isPending || !aiGoal.trim()}
-                className="w-full h-14 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-slate-900/20 hover:bg-slate-800 hover:translate-y-[-2px] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
+                disabled={isStreaming || !aiGoal.trim()}
+                className="w-full h-12 bg-orange-600 text-white rounded-lg text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-orange-600/20 hover:bg-orange-700 hover:-translate-y-px active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
               >
-                <div className="absolute inset-0 bg-linear-to-r from-orange-600/0 via-orange-600/10 to-orange-600/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                {generateAi.isPending ? (
+                <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                {isStreaming ? (
                   <>
-                    <Loader2 className="w-6 h-6 animate-spin text-orange-500" />
+                    <Loader2 className="w-5 h-5 animate-spin text-white" />
                     <span className="animate-pulse">{t('campaigns.design.generating', 'Architecting Sequence...')}</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-6 h-6 text-orange-500 group-hover:rotate-12 transition-transform" />
+                    <Sparkles className="w-5 h-5 text-white group-hover:rotate-12 transition-transform" />
                     {t('campaigns.design.generate_btn', 'Generate Sequence')}
                   </>
                 )}
               </button>
 
-              <div className="flex items-center gap-3 justify-center text-[10px] font-black text-slate-400 tracking-widest bg-slate-50/50 py-3 rounded-xl border border-slate-100">
-                <AlertCircle className="w-3.5 h-3.5 text-orange-500 animate-pulse" />
-                <span className="uppercase">{t('campaigns.design.warning_replace', 'Warning: This will replace your current sequence draft')}</span>
+              <div className="flex items-center gap-2 justify-center text-[9px] font-bold text-slate-400 tracking-widest bg-slate-50/50 py-2 rounded-lg border border-slate-100 uppercase">
+                <AlertCircle className="w-3 h-3 text-orange-500" />
+                <span>{t('campaigns.design.warning_replace', 'Warning: This will replace your current sequence draft')}</span>
               </div>
             </div>
           </div>

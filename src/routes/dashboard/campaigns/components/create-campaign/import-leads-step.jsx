@@ -16,7 +16,7 @@ import ShowUpload from '../../../../../modals/showupload';
 import { useUploadBatch } from '../../../../../hooks/useBatches';
 
 const ImportLeadsStep = ({
-  setValue,
+  
   handleBatchSelect,
   watchListBatchId,
   verifiedBatches = [],
@@ -83,7 +83,7 @@ const ImportLeadsStep = ({
       <div className="text-center space-y-3">
         <h2 className="text-4xl font-black text-slate-900 tracking-tight">Add Leads to Campaign</h2>
         <p className="text-base font-medium text-slate-400 max-w-md mx-auto">
-          Choose how you'd like to import your prospects for this sequence
+          Choose how you&apos;d like to import your prospects for this sequence
         </p>
       </div>
 
@@ -120,7 +120,7 @@ const ImportLeadsStep = ({
                 or drag and drop
               </p>
               <p className="text-sm font-medium text-slate-400">
-                Import a new spreadsheet and we'll automatically map the fields for you.
+                Import a new spreadsheet and we&apos;ll automatically map the fields for you.
               </p>
             </div>
             <div className="absolute bottom-6 right-8 flex items-center gap-2 text-orange-600 font-bold text-xs opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
@@ -130,11 +130,11 @@ const ImportLeadsStep = ({
         </div>
 
         <div className="relative flex items-center py-2">
-          <div className="flex-grow border-t-2 border-slate-100"></div>
-          <span className="flex-shrink-0 mx-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100/50">
+          <div className="grow border-t-2 border-slate-100"></div>
+          <span className="shrink-0 mx-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100/50">
             OR SELECT FROM
           </span>
-          <div className="flex-grow border-t-2 border-slate-100"></div>
+          <div className="grow border-t-2 border-slate-100"></div>
         </div>
 
         {/* Saved Lists Section */}
