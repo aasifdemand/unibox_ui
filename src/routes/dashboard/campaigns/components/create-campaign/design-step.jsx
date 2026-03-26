@@ -700,15 +700,15 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
           <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r from-orange-500 via-amber-500 to-orange-600" />
 
-          <div className="p-10 md:p-14 space-y-10 relative z-10">
+          <div className="p-8 md:p-10 space-y-8 relative z-10">
             {/* Modal Header */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-orange-600 flex items-center justify-center shadow-xl shadow-orange-600/30 rotate-3 transform-gpu">
-                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center shadow-lg shadow-orange-600/30 rotate-3 transform-gpu">
+                  <Sparkles className="w-5 h-5 text-white animate-pulse" />
                 </div>
-                <div className="space-y-1">
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tighter leading-none">
+                <div className="space-y-0.5">
+                  <h2 className="text-xl font-black text-slate-800 tracking-tighter leading-none">
                     {t('campaigns.design.ai_modal_title', 'AI Sequence Architect')}
                   </h2>
                   <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
@@ -718,28 +718,28 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
               </div>
               <button
                 onClick={() => setIsAiModalOpen(false)}
-                className="w-12 h-12 rounded-2xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
+                className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
               >
-                <X className="w-6 h-6 text-slate-400 group-hover:text-slate-600" />
+                <X className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
               </button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-              <div className="lg:col-span-12 space-y-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-12 space-y-8">
                 {/* Goal Field */}
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
                     {t('campaigns.design.goal_label', "What's your campaign goal?")}
                   </label>
                   <textarea
-                    className="w-full h-44 bg-slate-50/50 border-2 border-slate-100 rounded-[24px] p-8 text-base font-bold text-slate-700 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-normal leading-relaxed shadow-inner"
+                    className="w-full h-32 bg-slate-50/50 border-2 border-slate-100 rounded-2xl p-6 text-[15px] font-bold text-slate-700 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-medium leading-relaxed shadow-inner"
                     placeholder={t('campaigns.design.goal_placeholder', "e.g. Schedule a demo for our new SEO tool. Target audience: SaaS Founders. Value Prop: We find 20% more broken links than competitors.")}
                     value={aiGoal}
                     onChange={(e) => setAiGoal(e.target.value)}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Tone Selector */}
                   <div className="space-y-4">
                     <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
@@ -747,7 +747,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
                     </label>
                     <div className="relative group/select">
                       <select
-                        className="w-full h-16 pl-6 pr-12 bg-slate-50/50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 hover:border-orange-200 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
+                        className="w-full h-12 pl-5 pr-12 bg-slate-50/50 border-2 border-slate-100 rounded-xl text-[13px] font-bold text-slate-700 hover:border-orange-200 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
                         value={aiTone}
                         onChange={(e) => setAiTone(e.target.value)}
                       >
@@ -770,9 +770,9 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
                           key={num}
                           type="button"
                           onClick={() => setStepsCount(num)}
-                          className={`h-16 rounded-2xl text-[13px] font-black transition-all flex flex-col items-center justify-center border-2 group relative overflow-hidden ${
+                          className={`h-12 rounded-xl text-xs font-black transition-all flex flex-col items-center justify-center border-2 group relative overflow-hidden ${
                             stepsCount === num
-                              ? 'bg-orange-600 border-orange-600 text-white shadow-xl shadow-orange-600/30 scale-105 z-10'
+                              ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-600/30 scale-105 z-10'
                               : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-orange-200 hover:bg-white'
                           }`}
                         >
@@ -792,7 +792,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
             </div>
             
             {/* SMART TIPS SECTION */}
-            <div className="p-10 bg-slate-50/50 border-2 border-slate-100 rounded-[24px] space-y-6">
+            <div className="p-6 bg-slate-50/50 border-2 border-slate-100 rounded-2xl space-y-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-orange-100 rounded-lg">
                   <Tag className="w-4 h-4 text-orange-600" />
@@ -815,11 +815,11 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
               </div>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4">
               <button
                 onClick={handleAiGenerate}
                 disabled={generateAi.isPending || !aiGoal.trim()}
-                className="w-full h-20 bg-slate-900 text-white rounded-[24px] text-sm font-black uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/40 hover:bg-slate-800 hover:translate-y-[-4px] active:scale-95 transition-all flex items-center justify-center gap-4 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
+                className="w-full h-14 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-slate-900/20 hover:bg-slate-800 hover:translate-y-[-2px] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
               >
                 <div className="absolute inset-0 bg-linear-to-r from-orange-600/0 via-orange-600/10 to-orange-600/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 {generateAi.isPending ? (
