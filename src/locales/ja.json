@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} ユニボックス。無断転載を禁じます。",
+        "layout": {
+            "login_title": "アウトリーチを拡大するためのより賢い方法",
+            "login_subtitle": "統合された受信トレイ、AI を活用したシーケンス、リアルタイム分析にアクセスします。 Unibox ですでに成長エンジンを変革している 2,400 以上のチームに参加してください。",
+            "login_badge": "サインイン",
+            "signup_title": "超成長に向けた旅を始めましょう",
+            "signup_subtitle": "ワークスペースを数秒で作成し、自動化されたアウトリーチの機能を最大限に活用します。 14 日間のプレミアム トライアルを開始するのにクレジット カードは必要ありません。",
+            "signup_badge": "始めましょう",
+            "verify_title": "Unibox ワークスペースを保護します",
+            "verify_subtitle": "安全な認証リンクをあなたの電子メール アドレスに送信しました。本人確認を行うことで、データは暗号化された保管庫内で確実に保護されます。",
+            "verify_badge": "検証",
+            "verify_help": "あなたのアドレスに確認メールを送信しました。受信箱とスパムフォルダーを確認してください。リンクは 24 時間で期限切れになります。",
+            "forgot_title": "アカウントへのアクセスを回復します",
+            "forgot_subtitle": "Unibox アカウントに関連付けられた電子メールを入力すると、資格情報をリセットしてダッシュボードへのアクセスを取り戻すための安全なリンクが送信されます。",
+            "forgot_badge": "パスワードをリセッ��",
+            "forgot_help": "電子メール アドレスを入力すると、パスワードをリセットするためのリンクが送信されます。数分以内に新しいパスワードを作成できるようになります。",
+            "reset_title": "新しい資格情報を設計する",
+            "reset_subtitle": "ワークスペースが強化された状態に保たれるようにしてください。アカウントを保護し、アウトリーチ活動を再開するには、強力で固有のパスワードを選択してください。",
+            "reset_badge": "パスワードを更新",
+            "reset_help": "新しいパスワードが強力で安全であることを確認してください。文字、数字、記号を組み合わせた 8 文字以上を使用してください。",
+            "platform_live": "プラットフォームライブ",
+            "title_main": "The smarter way to",
+            "title_span": "のより賢い方法アウトリーチを実行する",
+            "subtitle": "Unibox は、AI エンリッチメント、スマート シーケンス、統合された返信受信トレイをすべて 1 つのプラットフォームに組み合わせています。",
+            "trusted_by": "のより賢い方法",
+            "teams": "によって信頼されていますアウトリーチチーム"
+        },
         "login": {
             "title": "おかえりなさい",
             "title_span": "",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "または次で登録",
             "already_account": "既にアカウントをお持ちですか？",
             "sign_in_link": "サインイン"
-        },
-        "layout": {
-            "platform_live": "プラットフォームライブ",
-            "title_main": "The smarter way to",
-            "title_span": "のより賢い方法アウトリーチを実行する",
-            "subtitle": "Unibox は、AI エンリッチメント、スマート シーケンス、統合された返信受信トレイをすべて 1 つのプラットフォームに組み合わせています。",
-            "trusted_by": "のより賢い方法",
-            "teams": "によって信頼されていますアウトリーチチーム"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "キャンペーンが正常に作成されました。",
         "err_create_failed": "キャンペーン作成エラー: {{message}}",
         "create_campaign_btn": "キャンペーンを作成する",
+        "steps": {
+            "setup": "セットアップ",
+            "audience": "観客",
+            "design": "デザイン",
+            "finalize": "仕上げる"
+        },
+        "design": {
+            "ai_modal_title": "AI シーケンス アーキテクト",
+            "ai_modal_subtitle": "目標を説明すると、当社のローカル AI が複数ステップのキャンペーン シーケンス全体を構築します。",
+            "goal_label": "キャンペーンの目標",
+            "goal_placeholder": "例: 新しい SEO ツールを英国のマーケティング代理店に宣伝します...",
+            "tone_label": "声の調子",
+            "tone_professional": "プロフェッショナルで大胆",
+            "tone_casual": "カジュアル＆フレンドリー",
+            "tone_urgent": "緊急かつ直接",
+            "sequence_length": "シーケンスの長さ",
+            "step_count": "{{count}} ステップ シーケンス",
+            "recommended": "推奨",
+            "generate_btn": "シーケンスを生成",
+            "generating": "建築中...",
+            "tips": "賢いパーソナライゼーションのヒント",
+            "tip_spintax": "Spintax には中括弧を使用します: {Hi|Hello|Hey}",
+            "tip_logic": "AI は安全なカスタム変数フォールバックのために {{#if}} を使用します。",
+            "tip_tags": "システムタグ: {{sl_time_of_day}}、{{sl_day_of_week}}",
+            "health_alert_title": "配信アラート: データが欠落しています",
+            "health_alert_action": "アクションが必要です",
+            "health_alert_desc": "キャンペーンでは {{vars}} を使用していますが、これらのフィールドは見込み客リストにありません。今すぐ送信すると空白が生じ、スパム フィルターが作動します。",
+            "enrich_apollo": "Apollo で充実",
+            "update_leads": "見込み客リストを更新する",
+            "quick_add": "変数のクイック追加",
+            "quick_add_placeholder": "例: favourite_coffee",
+            "step_title": "ステップ {{index}}: {{type}}",
+            "main_email": "メインメール",
+            "follow_up": "フォローアップ",
+            "add_step": "フォローアップ ステップを追加",
+            "delete_step": "ステップを削除",
+            "time_of_day": "時刻",
+            "day_of_week": "曜日"
+        },
         "step_contacts": "連絡先",
         "step_contacts_desc": "誰にメールしてるの？",
         "step_content": "内容",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "JSON HTTP API を介して送信データを Clay テーブルに同期します。"
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "分析",
+            "overview": "概要",
+            "content": "内容",
+            "recipients": "受信者",
+            "replies": "返信"
+        },
+        "analytics": {
+            "title": "キャンペーンのパフォーマンス",
+            "subtitle": "リアルタイムのエンゲージメント指標と傾向",
+            "realtime_monitoring": "リアルタイム監視",
+            "growth_insights": "成長に関する洞察",
+            "delivery_score": "配信スコア",
+            "engagement_pulse": "エンゲージメントパルス",
+            "conversion_ratio": "変換率",
+            "performance_summary": "パフォーマンスの概要",
+            "engagement_over_time": "時間の経過に伴うエンゲージメント",
+            "hourly_performance": "時間ごとのパフォーマンス",
+            "peak_engagement_window": "ピークエンゲージメントウィンドウ",
+            "top_subject_lines": "上位の件名",
+            "best_performing_time": "送信に最適な時間帯",
+            "open_rate_trend": "開封率の傾向",
+            "reply_distribution": "返信の配布",
+            "sender_health": "送信者の健全性の内訳"
+        },
+        "overview": {
+            "campaign_id": "キャンペーン ID",
+            "created_on": "作成日",
+            "last_activity": "最後のアクティビティ",
+            "status_description": "このシーケンスの現在の状態",
+            "sending_schedule": "送信スケジュール",
+            "assigned_mailboxes": "割り当てられたメールボックス",
+            "total_leads": "合計リード",
+            "active_now": "現在アクティブです",
+            "sequences_sent": "送信されたシーケンス",
+            "campaign_objective": "キャンペーンの目的"
+        },
+        "content": {
+            "sequence_structure": "シーケンス構造",
+            "step_label": "ステップ {{count}}",
+            "subject": "件名",
+            "body_preview": "本文のプレビュー",
+            "delay": "遅れ",
+            "edit_sequence": "シーケンスの編集",
+            "view_spintax": "スピンタックスのバリエーションを表示"
+        },
+        "recipients": {
+            "all_contacts": "すべての連絡先",
+            "search_leads": "リードを検索します...",
+            "status_filter": "ステータス フィルター",
+            "last_contacted": "最終連絡先",
+            "engagement_level": "婚約",
+            "view_profile": "プロフィールを見る",
+            "export_leads": "リードのエクスポート"
+        },
+        "replies": {
+            "inbox_activity": "受信トレイのアクティビティ",
+            "ai_intent_detection": "AI 意図検出",
+            "mark_as_interested": "興味があるとしてマーク",
+            "move_to_crm": "CRM に移動",
+            "reply_content": "返信内容",
+            "no_replies_yet": "最初の応答を待っています..."
         }
     }
 }

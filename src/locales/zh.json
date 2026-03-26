@@ -12,11 +12,11 @@
         "subscription": "订阅",
         "settings": "设置",
         "crm": "客户关系管理",
-        "email_campaigns": "Email Campaigns",
-        "email_accounts": "Email Accounts",
-        "contacts": "Contacts",
-        "global_analytics": "Analytics",
-        "integrations": "Integrations",
+        "email_campaigns": "电子邮件活动",
+        "email_accounts": "电子邮件帐户",
+        "contacts": "联系方式",
+        "global_analytics": "分析",
+        "integrations": "集成",
         "navigation": "导航",
         "active": "活跃",
         "status": {
@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox。版权所有。",
+        "layout": {
+            "login_title": "扩大外展范围的更明智方法",
+            "login_subtitle": "访问您的统一收件箱、人工智能驱动的排序和实时分析。加入 2,400 多个团队，他们已经通过 Unibox 改变了他们的增长引擎。",
+            "login_badge": "登录",
+            "signup_title": "开始您的高速增长之旅",
+            "signup_subtitle": "在几秒钟内创建您的工作空间并释放自动化外展的全部功能。无需信用卡即可开始 14 天高级试用。",
+            "signup_badge": "开始吧",
+            "verify_title": "保护您的 Unibox 工作空间",
+            "verify_subtitle": "我们已将安全身份验证链接发送到您的电子邮件地址。验证您的身份可确保您的数据在我们的加密保管库中受到保护。",
+            "verify_badge": "确认",
+            "verify_help": "我们已向您的地址发送了一封验证电子邮件。请检查您的收件箱和垃圾邮件文件夹。该链接将在 24 小时后过期。",
+            "forgot_title": "恢复您的帐户访问权限",
+            "forgot_subtitle": "输入与您的 Unibox 帐户关联的电子邮件，我们将向您发送一个安全链接，以重置您的凭据并重新访问您的仪表板。",
+            "forgot_badge": "重置密码",
+            "forgot_help": "输入您的电子邮件地址，我们将向您发送用于重置密码的链接。您将能够在几分钟内创建新密码。",
+            "reset_title": "设计您的新凭证",
+            "reset_subtitle": "确保您的工作空间保持坚固。选择一个强而独特的密码来保护您的帐户并恢复您的外展操作。",
+            "reset_badge": "更新密码",
+            "reset_help": "确保您的新密码强大且安全。使用至��� 8 个字母、数字和符号混合的字符。",
+            "platform_live": "平台直播",
+            "title_main": "更明智的方式",
+            "title_span": "开展外展",
+            "subtitle": "Unibox 将人工智能丰富、智能排序和统一回复收件箱结合在一个平台上。",
+            "trusted_by": "深受",
+            "teams": "信赖外展团队"
+        },
         "login": {
             "title": "欢迎",
             "title_span": "返回",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "或使用",
             "already_account": "注册已经有帐户？",
             "sign_in_link": "登录"
-        },
-        "layout": {
-            "platform_live": "平台直播",
-            "title_main": "更明智的方式",
-            "title_span": "开展外展",
-            "subtitle": "Unibox 将人工智能丰富、智能排序和统一回复收件箱结合在一个平台上。",
-            "trusted_by": "深受",
-            "teams": "信赖外展团队"
         }
     },
     "pwa": {
@@ -390,7 +408,7 @@
         "select_accounts_desc": "将帐户连接到此序列",
         "choose_senders_btn": "选择帐户",
         "configure_schedule_btn": "配置时间表",
-        "modify_settings_btn": "Modify Settings",
+        "modify_settings_btn": "修改设置",
         "sender_rotation": "账户轮换",
         "account_health": "帐户健康",
         "trust_score": "分数",
@@ -399,8 +417,8 @@
         "sender_rotation_count": "发送器轮换 ({{count}})",
         "more_accounts": "+{{count}}更多帐户",
         "no_sender_set": "未设置发件人",
-        "confirm_selection": "Confirm Selection",
-        "high_inboxing_enabled": "Optimal Delivery Enabled",
+        "confirm_selection": "确认选择",
+        "high_inboxing_enabled": "启用最佳交付",
         "add_contacts": "添加联系人",
         "add_sender": "添加发件人",
         "selected_audience": "选定的观众",
@@ -410,7 +428,7 @@
         "upload_now": "立即上传",
         "sending_accounts": "发送帐户",
         "choose_sender": "选择哪个帐户将发送这些电子邮件",
-        "pagination_of": "of",
+        "pagination_of": "的",
         "syncing_accounts": "的",
         "no_senders_found": "正在同步帐户...",
         "connect_sender_hint": "未找到发送帐户",
@@ -452,6 +470,45 @@
         "msg_campaign_created": "活动创建成功！",
         "err_create_failed": "创建活动时出错：{{message}}",
         "create_campaign_btn": "创建活动",
+        "steps": {
+            "setup": "设置",
+            "audience": "观众",
+            "design": "设计",
+            "finalize": "完成"
+        },
+        "design": {
+            "ai_modal_title": "AI序列架构师",
+            "ai_modal_subtitle": "描述您的目标，我们的本地人工智能将构建您的整个多步骤活动序列。",
+            "goal_label": "活动目标",
+            "goal_placeholder": "例如，向英国的营销机构推广我们的新 SEO 工具...",
+            "tone_label": "语气",
+            "tone_professional": "专业大胆",
+            "tone_casual": "休闲友好",
+            "tone_urgent": "紧急且直接",
+            "sequence_length": "序列长度",
+            "step_count": "{{count}} 步骤顺序",
+            "recommended": "受到推崇的",
+            "generate_btn": "生成序列",
+            "generating": "架构...",
+            "tips": "智能个性化提示",
+            "tip_spintax": "Spintax 使用花括号：{Hi|Hello|Hey}",
+            "tip_logic": "AI 使用 {{#if}} 进行安全的自定义变量后备。",
+            "tip_tags": "系统标签：{{sl_time_of_day}}、{{sl_day_of_week}}",
+            "health_alert_title": "送达率警报：丢失数据",
+            "health_alert_action": "需要采取行动",
+            "health_alert_desc": "您的广告系列使用 {{vars}}，但这些字段不在您的潜在客户列表中。现在发送将导致空格，从而触发垃圾邮件过滤器。",
+            "enrich_apollo": "与阿波罗一起丰富",
+            "update_leads": "更新潜在客户列表",
+            "quick_add": "快速添加变量",
+            "quick_add_placeholder": "例如，favorite_coffee",
+            "step_title": "步骤{{index}}：{{type}}",
+            "main_email": "主要电子邮件",
+            "follow_up": "后续",
+            "add_step": "添加后续步骤",
+            "delete_step": "删除步骤",
+            "time_of_day": "一天中的时间",
+            "day_of_week": "星期几"
+        },
         "step_contacts": "联系方式",
         "step_contacts_desc": "你给谁发电子邮件？",
         "step_content": "内容",
@@ -536,7 +593,7 @@
             "draft": "草稿"
         },
         "goal": {
-            "title": "Monthly Goal",
+            "title": "每月目标",
             "growth": "工作空间增长",
             "description": "您已完成本月 {{goal}} 个广告系列目标的 {{completed}} 个。"
         },
@@ -940,7 +997,7 @@
                 "name": "模板名称",
                 "subject": "电子邮件主题",
                 "placeholder_name": "例如欢迎系列 - 第一天",
-                "placeholder_subject": "e.g. Hello {{first_name}}, welcome to our platform!",
+                "placeholder_subject": "例如【V0】您好，欢迎来到我们的平台！",
                 "placeholder_content": "在此输入您的电子邮件内容...使用 {{sender_name}} 作为发件人姓名"
             },
             "labels": {
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "通过 JSON HTTP API 将出站数据同步到 Clay 表。"
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "分析",
+            "overview": "概述",
+            "content": "内容",
+            "recipients": "收件人",
+            "replies": "回复"
+        },
+        "analytics": {
+            "title": "活动表现",
+            "subtitle": "实时参与度指标和趋势",
+            "realtime_monitoring": "实时监控",
+            "growth_insights": "增长洞察",
+            "delivery_score": "交付分数",
+            "engagement_pulse": "参与脉冲",
+            "conversion_ratio": "转化率",
+            "performance_summary": "性能总结",
+            "engagement_over_time": "随着时间的推移，参与度",
+            "hourly_performance": "每小时表现",
+            "peak_engagement_window": "高峰参与窗口",
+            "top_subject_lines": "热门主题行",
+            "best_performing_time": "最佳发送时间",
+            "open_rate_trend": "打开率趋势",
+            "reply_distribution": "回复分布",
+            "sender_health": "发件人健康状况细分"
+        },
+        "overview": {
+            "campaign_id": "活动 ID",
+            "created_on": "创建于",
+            "last_activity": "上次活动",
+            "status_description": "该序列的当前状态",
+            "sending_schedule": "发送时间表",
+            "assigned_mailboxes": "分配的邮箱",
+            "total_leads": "总销售线索",
+            "active_now": "现在活跃",
+            "sequences_sent": "发送的序列",
+            "campaign_objective": "活动目标"
+        },
+        "content": {
+            "sequence_structure": "序列结构",
+            "step_label": "步骤{{count}}",
+            "subject": "主题",
+            "body_preview": "身体预览",
+            "delay": "延迟",
+            "edit_sequence": "编辑序列",
+            "view_spintax": "查看 Spintax 变体"
+        },
+        "recipients": {
+            "all_contacts": "所有联系人",
+            "search_leads": "搜索线索...",
+            "status_filter": "状态过滤器",
+            "last_contacted": "最后联系",
+            "engagement_level": "订婚",
+            "view_profile": "查看个人资料",
+            "export_leads": "出口线索"
+        },
+        "replies": {
+            "inbox_activity": "收件箱活动",
+            "ai_intent_detection": "人工智能意图检测",
+            "mark_as_interested": "标记为感兴趣",
+            "move_to_crm": "迁移到 CRM",
+            "reply_content": "回复内容",
+            "no_replies_yet": "等待第一个回复..."
         }
     }
 }

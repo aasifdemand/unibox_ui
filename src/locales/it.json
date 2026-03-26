@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Tutti i diritti riservati.",
+        "layout": {
+            "login_title": "Il modo più intelligente per ampliare la tua portata",
+            "login_subtitle": "Accedi alla tua casella di posta unificata, al sequenziamento basato sull'intelligenza artificiale e all'analisi in tempo reale. Unisciti agli oltre 2.400 team che hanno già trasformato il loro motore di crescita con Unibox.",
+            "login_badge": "ACCEDI",
+            "signup_title": "Inizia il tuo viaggio verso l'iper-crescita",
+            "signup_subtitle": "Crea il tuo spazio di lavoro in pochi secondi e sfrutta tutta la potenza della comunicazione automatizzata. Non è richiesta alcuna carta di credito per iniziare la prova premium di 14 giorni.",
+            "signup_badge": "INIZIA",
+            "verify_title": "Proteggi il tuo spazio di lavoro Unibox",
+            "verify_subtitle": "Abbiamo inviato un collegamento di autenticazione sicura al tuo indirizzo email. La verifica della tua identità garantisce che i tuoi dati rimangano protetti all'interno del nostro deposito crittografato.",
+            "verify_badge": "VERIFICA",
+            "verify_help": "Abbiamo inviato un'e-mail di verifica al tuo indirizzo. Controlla la tua casella di posta e la cartella spam. Il collegamento scadrà tra 24 ore.",
+            "forgot_title": "Recupera l'accesso al tuo account",
+            "forgot_subtitle": "Inserisci l'e-mail associata al tuo account Unibox e ti invieremo un collegamento sicuro per reimpostare le tue credenziali e riottenere l'accesso alla tua dashboard.",
+            "forgot_badge": "RESETTA PASSWORD",
+            "forgot_help": "Inserisci il tuo indirizzo email e ti invieremo un collegamento per reimpostare la password. Potrai creare una nuova password in pochi minuti.",
+            "reset_title": "Progetta le tue nuove credenziali",
+            "reset_subtitle": "Assicurati che il tuo spazio di lavoro rimanga fortificato. Scegli una password complessa e univoca per proteggere il tuo account e riprendere le tue operazioni di sensibilizzazione.",
+            "reset_badge": "AGGIORNA PASSWORD",
+            "reset_help": "Assicurati che la tua nuova password sia forte e sicura. Utilizza almeno 8 caratteri con un mix di lettere, numeri e simboli.",
+            "platform_live": "Piattaforma live",
+            "title_main": "Il modo più intelligente per",
+            "title_span": "eseguire la sensibilizzazione",
+            "subtitle": "Unibox combina l'arricchimento dell'intelligenza artificiale, il sequenziamento intelligente e una casella di posta di risposta unificata, tutto in un'unica piattaforma.",
+            "trusted_by": "Scelto da",
+            "teams": "squadre di sensibilizzazione"
+        },
         "login": {
             "title": "Bentornato",
             "title_span": "",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "O registrati con",
             "already_account": "Hai già un account?",
             "sign_in_link": "Accedi"
-        },
-        "layout": {
-            "platform_live": "Piattaforma live",
-            "title_main": "Il modo più intelligente per",
-            "title_span": "eseguire la sensibilizzazione",
-            "subtitle": "Unibox combina l'arricchimento dell'intelligenza artificiale, il sequenziamento intelligente e una casella di posta di risposta unificata, tutto in un'unica piattaforma.",
-            "trusted_by": "Scelto da",
-            "teams": "squadre di sensibilizzazione"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Campagna creata con successo!",
         "err_create_failed": "Errore durante la creazione della campagna: {{message}}",
         "create_campaign_btn": "Crea campagna",
+        "steps": {
+            "setup": "Impostare",
+            "audience": "Pubblico",
+            "design": "Progettazione",
+            "finalize": "Finalizza"
+        },
+        "design": {
+            "ai_modal_title": "Architetto di sequenze AI",
+            "ai_modal_subtitle": "Descrivi il tuo obiettivo e la nostra intelligenza artificiale locale progetterà l'intera sequenza della campagna in più fasi.",
+            "goal_label": "Obiettivo della campagna",
+            "goal_placeholder": "ad esempio, Promuovi il nostro nuovo strumento SEO presso le agenzie di marketing nel Regno Unito...",
+            "tone_label": "Tono di voce",
+            "tone_professional": "Professionale e audace",
+            "tone_casual": "Informale e amichevole",
+            "tone_urgent": "Urgente e diretto",
+            "sequence_length": "Lunghezza della sequenza",
+            "step_count": "{{count}} Sequenza di passi",
+            "recommended": "Consigliato",
+            "generate_btn": "Genera sequenza",
+            "generating": "Architettare...",
+            "tips": "Suggerimenti intelligenti per la personalizzazione",
+            "tip_spintax": "Usa le parentesi graffe per Spintax: {Ciao|Ciao|Ehi}",
+            "tip_logic": "L'intelligenza artificiale utilizza {{#if}} per fallback sicuri delle variabili personalizzate.",
+            "tip_tags": "Tag di sistema: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Avviso di consegna: dati mancanti",
+            "health_alert_action": "Azione richiesta",
+            "health_alert_desc": "La tua campagna utilizza {{vars}}, ma questi campi non sono nell'elenco dei lead. L'invio ora risulterà in spazi vuoti, che attivano i filtri antispam.",
+            "enrich_apollo": "Arricchisci con Apollo",
+            "update_leads": "Aggiorna elenco lead",
+            "quick_add": "Aggiunta rapida variabile",
+            "quick_add_placeholder": "ad esempio, caffè_preferito",
+            "step_title": "Passo {{index}}: {{type}}",
+            "main_email": "E-mail principale",
+            "follow_up": "Seguito",
+            "add_step": "Aggiungi passaggio di follow-up",
+            "delete_step": "Elimina passaggio",
+            "time_of_day": "Ora del giorno",
+            "day_of_week": "Giorno della settimana"
+        },
         "step_contacts": "Contatti",
         "step_contacts_desc": "A chi stai inviando un'e-mail?",
         "step_content": "Contenuto",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "Sincronizza i dati in uscita sulle tabelle Clay tramite la loro API HTTP JSON."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analisi",
+            "overview": "Panoramica",
+            "content": "Contenuto",
+            "recipients": "Destinatari",
+            "replies": "Risposte"
+        },
+        "analytics": {
+            "title": "Rendimento della campagna",
+            "subtitle": "Metriche e tendenze del coinvolgimento in tempo reale",
+            "realtime_monitoring": "Monitoraggio in tempo reale",
+            "growth_insights": "Approfondimenti sulla crescita",
+            "delivery_score": "Punteggio di consegna",
+            "engagement_pulse": "Impulso di coinvolgimento",
+            "conversion_ratio": "Rapporto di conversione",
+            "performance_summary": "Riepilogo delle prestazioni",
+            "engagement_over_time": "Coinvolgimento nel tempo",
+            "hourly_performance": "Rendimento orario",
+            "peak_engagement_window": "Finestra di picco del coinvolgimento",
+            "top_subject_lines": "Righe principali dell'oggetto",
+            "best_performing_time": "Il momento migliore per inviare",
+            "open_rate_trend": "Andamento del tasso di apertura",
+            "reply_distribution": "Distribuzione delle risposte",
+            "sender_health": "Analisi dello stato del mittente"
+        },
+        "overview": {
+            "campaign_id": "ID campagna",
+            "created_on": "Creato il",
+            "last_activity": "Ultima attività",
+            "status_description": "Stato attuale di questa sequenza",
+            "sending_schedule": "Programmazione invio",
+            "assigned_mailboxes": "Caselle di posta assegnate",
+            "total_leads": "Lead totali",
+            "active_now": "Attivo adesso",
+            "sequences_sent": "Sequenze inviate",
+            "campaign_objective": "Obiettivo della campagna"
+        },
+        "content": {
+            "sequence_structure": "Struttura della sequenza",
+            "step_label": "Passo {{count}}",
+            "subject": "Oggetto",
+            "body_preview": "Anteprima del corpo",
+            "delay": "Ritardo",
+            "edit_sequence": "Modifica sequenza",
+            "view_spintax": "Visualizza le varianti Spintax"
+        },
+        "recipients": {
+            "all_contacts": "Tutti i contatti",
+            "search_leads": "Cerca lead...",
+            "status_filter": "Filtro stato",
+            "last_contacted": "Ultimo contatto",
+            "engagement_level": "Coinvolgimento",
+            "view_profile": "Visualizza profilo",
+            "export_leads": "Esportazione di lead"
+        },
+        "replies": {
+            "inbox_activity": "Attività della posta in arrivo",
+            "ai_intent_detection": "Rilevamento dell'intento dell'IA",
+            "mark_as_interested": "Segna come interessato",
+            "move_to_crm": "Passa al CRM",
+            "reply_content": "Contenuto della risposta",
+            "no_replies_yet": "In attesa della prima risposta..."
         }
     }
 }

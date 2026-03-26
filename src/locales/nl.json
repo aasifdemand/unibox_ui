@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Alle rechten voorbehouden.",
+        "layout": {
+            "login_title": "De slimmere manier om uw bereik te schalen",
+            "login_subtitle": "Krijg toegang tot uw uniforme inbox, AI-aangedreven sequencing en realtime analyses. Sluit je aan bij meer dan 2.400 teams die hun groeimotor al hebben getransformeerd met Unibox.",
+            "login_badge": "AANMELDEN",
+            "signup_title": "Begin uw reis naar hypergroei",
+            "signup_subtitle": "Creëer uw werkruimte in enkele seconden en ontgrendel de volledige kracht van geautomatiseerd outreach. Er is geen creditcard vereist om uw premium proefperiode van 14 dagen te starten.",
+            "signup_badge": "AAN DE SLAG",
+            "verify_title": "Beveilig uw Unibox-werkruimte",
+            "verify_subtitle": "We hebben een beveiligde authenticatielink naar uw e-mailadres gestuurd. Het verifiëren van uw identiteit zorgt ervoor dat uw gegevens beschermd blijven in onze gecodeerde kluis.",
+            "verify_badge": "VERIFICATIE",
+            "verify_help": "We hebben een verificatie-e-mail naar uw adres gestuurd. Controleer uw inbox en spammap. De link vervalt binnen 24 uur.",
+            "forgot_title": "Herstel uw accounttoegang",
+            "forgot_subtitle": "Voer het e-mailadres in dat aan uw Unibox-account is gekoppeld en we sturen u een beveiligde link om uw inloggegevens opnieuw in te stellen en weer toegang te krijgen tot uw dashboard.",
+            "forgot_badge": "WACHTWOORD RESETTEN",
+            "forgot_help": "Vul uw e-mailadres in en wij sturen u een link om uw wachtwoord opnieuw in te stellen. Binnen enkele minuten kunt u een nieuw wachtwoord aanmaken.",
+            "reset_title": "Ontwerp uw nieuwe inloggegevens",
+            "reset_subtitle": "Zorg ervoor dat uw werkruimte versterkt blijft. Kies een sterk, uniek wachtwoord om uw account te beveiligen en uw outreach-activiteiten te hervatten.",
+            "reset_badge": "WACHTWOORD UPDATEN",
+            "reset_help": "Zorg ervoor dat uw nieuwe wachtwoord sterk en veilig is. Gebruik minimaal 8 tekens met een combinatie van letters, cijfers en symbolen.",
+            "platform_live": "Platformlive",
+            "title_main": "De slimmere manier om",
+            "title_span": "outreach uitvoeren",
+            "subtitle": "Unibox combineert AI-verrijking, slimme sequencing en een uniforme antwoordinbox – alles in één platform.",
+            "trusted_by": "Vertrouwd door",
+            "teams": "outreachteams"
+        },
         "login": {
             "title": "Welkom",
             "title_span": "terug",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Of registreer met",
             "already_account": "Heeft u al een account?",
             "sign_in_link": "Inloggen"
-        },
-        "layout": {
-            "platform_live": "Platformlive",
-            "title_main": "De slimmere manier om",
-            "title_span": "outreach uitvoeren",
-            "subtitle": "Unibox combineert AI-verrijking, slimme sequencing en een uniforme antwoordinbox – alles in één platform.",
-            "trusted_by": "Vertrouwd door",
-            "teams": "outreachteams"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Campagne succesvol gemaakt!",
         "err_create_failed": "Fout bij maken van campagne: {{message}}",
         "create_campaign_btn": "Campagne maken",
+        "steps": {
+            "setup": "Instellen",
+            "audience": "Publiek",
+            "design": "Ontwerp",
+            "finalize": "Voltooi"
+        },
+        "design": {
+            "ai_modal_title": "AI-sequentiearchitect",
+            "ai_modal_subtitle": "Beschrijf uw doel en onze lokale AI zal uw volledige campagnereeks in meerdere stappen vormgeven.",
+            "goal_label": "Campagnedoel",
+            "goal_placeholder": "Promoot bijvoorbeeld onze nieuwe SEO-tool bij marketingbureaus in Groot-Brittannië...",
+            "tone_label": "Toon van stem",
+            "tone_professional": "Professioneel en krachtig",
+            "tone_casual": "Casual en vriendelijk",
+            "tone_urgent": "Dringend en direct",
+            "sequence_length": "Sequentielengte",
+            "step_count": "{{count}} Stapsequentie",
+            "recommended": "Aanbevolen",
+            "generate_btn": "Reeks genereren",
+            "generating": "Architecten...",
+            "tips": "Slimme personalisatietips",
+            "tip_spintax": "Gebruik accolades voor Spintax: {Hallo|Hallo|Hé}",
+            "tip_logic": "AI gebruikt {{#if}} voor veilige terugval van aangepaste variabelen.",
+            "tip_tags": "Systeemtags: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Leverbaarheidswaarschuwing: ontbrekende gegevens",
+            "health_alert_action": "Actie vereist",
+            "health_alert_desc": "Uw campagne gebruikt {{vars}}, maar deze velden staan ​​niet in uw leadlijst. Als u nu verzendt, worden er lege spaties weergegeven, waardoor spamfilters worden geactiveerd.",
+            "enrich_apollo": "Verrijk met Apollo",
+            "update_leads": "Leadlijst bijwerken",
+            "quick_add": "Variabele snel toevoegen",
+            "quick_add_placeholder": "bijvoorbeeld favoriete_koffie",
+            "step_title": "Stap {{index}}: {{type}}",
+            "main_email": "Hoofd-e-mailadres",
+            "follow_up": "Vervolg",
+            "add_step": "Vervolgstap toevoegen",
+            "delete_step": "Verwijder stap",
+            "time_of_day": "Tijd van de dag",
+            "day_of_week": "Dag van de week"
+        },
         "step_contacts": "Contacten",
         "step_contacts_desc": "Wie e-mail je?",
         "step_content": "Inhoud",
@@ -1248,7 +1305,7 @@
         "connected": "Verbonden",
         "status_ready": "openen Klaar om te synchroniseren",
         "hubspot": {
-            "title": "HubSpot",
+            "title": "openen HubSpot",
             "desc": "Synchroniseer contacten en registreer tijdlijngebeurtenissen."
         },
         "salesforce": {
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "Synchroniseer uitgaande gegevens naar Clay-tabellen via hun JSON HTTP API."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analyse",
+            "overview": "Overzicht",
+            "content": "Inhoud",
+            "recipients": "Ontvangers",
+            "replies": "Antwoorden"
+        },
+        "analytics": {
+            "title": "Campagneprestaties",
+            "subtitle": "Realtime betrokkenheidsstatistieken en trends",
+            "realtime_monitoring": "Realtime monitoring",
+            "growth_insights": "Groei-inzichten",
+            "delivery_score": "Leveringsscore",
+            "engagement_pulse": "Betrokkenheidsimpuls",
+            "conversion_ratio": "Conversieratio",
+            "performance_summary": "Prestatieoverzicht",
+            "engagement_over_time": "Betrokkenheid in de loop van de tijd",
+            "hourly_performance": "Prestaties per uur",
+            "peak_engagement_window": "Piekbetrokkenheidsperiode",
+            "top_subject_lines": "Bovenste onderwerpregels",
+            "best_performing_time": "Beste tijd om",
+            "open_rate_trend": "te verzenden Trend open tarief",
+            "reply_distribution": "Antwoorddistributie",
+            "sender_health": "Uitsplitsing van de status van de afzender"
+        },
+        "overview": {
+            "campaign_id": "Campagne-ID",
+            "created_on": "Gemaakt op",
+            "last_activity": "Laatste activiteit",
+            "status_description": "Huidige status van deze reeks",
+            "sending_schedule": "Schema verzenden",
+            "assigned_mailboxes": "Toegewezen mailboxen",
+            "total_leads": "Totaal aantal leads",
+            "active_now": "Nu actief",
+            "sequences_sent": "Reeksen verzonden",
+            "campaign_objective": "Campagnedoelstelling"
+        },
+        "content": {
+            "sequence_structure": "Sequentiestructuur",
+            "step_label": "Stap {{count}}",
+            "subject": "Onderwerp",
+            "body_preview": "Lichaamsvoorbeeld",
+            "delay": "Vertraging",
+            "edit_sequence": "Reeks bewerken",
+            "view_spintax": "Bekijk Spintax-variaties"
+        },
+        "recipients": {
+            "all_contacts": "Alle contacten",
+            "search_leads": "Leads zoeken...",
+            "status_filter": "Statusfilter",
+            "last_contacted": "Laatst gecontacteerd",
+            "engagement_level": "Betrokkenheid",
+            "view_profile": "Bekijk profiel",
+            "export_leads": "Leads exporteren"
+        },
+        "replies": {
+            "inbox_activity": "Inbox-activiteit",
+            "ai_intent_detection": "Detectie van AI-intentie",
+            "mark_as_interested": "Markeer als geïnteresseerd",
+            "move_to_crm": "Ga naar CRM",
+            "reply_content": "Antwoordinhoud",
+            "no_replies_yet": "Wachten op de eerste reactie..."
         }
     }
 }

@@ -77,13 +77,39 @@
             "confirm": "ยืนยันการออกจากระบบ",
             "cancel": "อยู่ในระบบ"
         },
-        "admin": "Admin",
-        "administrator": "Administrator",
-        "user": "User",
-        "u": "U"
+        "admin": "ผู้ดูแลระบบ",
+        "administrator": "ผู้ดูแลระบบ",
+        "user": "ผู้ใช้",
+        "u": "คุณ"
     },
     "auth": {
         "copyright": "© {{year}} ยูนิบ็อกซ์ สงวนลิขสิทธิ์.",
+        "layout": {
+            "login_title": "วิธีที่ชาญฉลาดกว่าในการขยายการเข้าถึงของคุณ",
+            "login_subtitle": "เข้าถึงกล่องจดหมายรวมของคุณ การจัดลำดับที่ขับเคลื่อนโดย AI และการวิเคราะห์แบบเรียลไทม์ เข้าร่วมกับทีมกว่า 2,400+ ทีมที่ได้เปลี่ยนแปลงกลไกการเติบโตด้วย Unibox",
+            "login_badge": "เข้าสู่ระบบ",
+            "signup_title": "เริ่มต้นการเดินทางของคุณสู่การเติบโตแบบก้าวกระโดด",
+            "signup_subtitle": "สร้างพื้นที่ทำงานของคุณในไม่กี่วินาทีและปลดล็อกศักยภาพเต็มรูปแบบของการเผยแพร่ประชาสัมพันธ์แบบอัตโนมัติ ไม่ต้องใช้บัตรเครดิตเพื่อเริ่มทดลองใช้งานพรีเมียม 14 วัน",
+            "signup_badge": "เริ่มต้น",
+            "verify_title": "รักษาความปลอดภัยพื้นที่ทำงาน Unibox ของคุณ",
+            "verify_subtitle": "เราได้ส่งลิงก์การรับรองความถูกต้องที่ปลอดภัยไปยังที่อยู่อีเมลของคุณแล้ว การยืนยันตัวตนของคุณทำให้มั่นใจได้ว่าข้อมูลของคุณยังคงได้รับการปกป้องภายในห้องนิรภัยที่เข้ารหัสของเรา",
+            "verify_badge": "การยืนยัน",
+            "verify_help": "เราได���ส่งอีเมลยืนยันไปยังที่อยู่ของคุณแล้ว โปรดตรวจสอบกล่องจดหมายและโฟลเดอร์สแปมของคุณ ลิงก์จะหมดอายุใน 24 ชั่วโมง",
+            "forgot_title": "กู้คืนการเข้าถึงบัญชีของคุณ",
+            "forgot_subtitle": "ป้อนอีเมลที่เชื่อมโยงกับบัญชี Unibox ของคุณ แล้วเราจะส่งลิงก์ที่ปลอดภัยไปให้คุณเพื่อรีเซ็ตข้อมูลรับรองของคุณและรับสิทธิ์เข้าถึงแดชบอร์ดของคุณอีกครั้ง",
+            "forgot_badge": "รีเซ็ตรหัสผ่าน",
+            "forgot_help": "ป้อนที่อยู่อีเมลของคุณแล้วเราจะส่งลิงก์เพื่อรีเซ็ตรหัสผ่านของคุณ คุณจะสามารถสร้างรหัสผ่านใหม่ได้ภายในไม่กี่นาที",
+            "reset_title": "ออกแบบข้อมูลรับรองใหม่ของคุณ",
+            "reset_subtitle": "ตรวจสอบให้แน่ใจว่าพื้นที่ทำงานของคุณยังคงแข็งแกร่ง เลือกรหัสผ่านที่รัดกุมและไม่ซ้ำกันเพื่อรักษาความปลอดภัยให้กับบัญชีของคุณและดำเนินการเผยแพร่ต่อ",
+            "reset_badge": "อัปเดตรหัสผ่าน",
+            "reset_help": "ตรวจสอบให้แน่ใจว่ารหัสผ่านให���่ของคุณแข็งแกร่งและปลอดภัย ใช้อักขระอย่างน้อย 8 ตัวโดยผสมตัวอักษร ตัวเลข และสัญลักษณ์",
+            "platform_live": "Platform Live",
+            "title_main": "The smarter way to",
+            "title_span": "run outreach",
+            "subtitle": "Unibox combines AI enrichment, smart sequencing, and a unified reply inbox — all in one platform.",
+            "trusted_by": "ได้รับความไว้วางใจจาก",
+            "teams": "ทีมงานประชาสัมพันธ์"
+        },
         "login": {
             "title": "ยินดีต้อนรับ",
             "title_span": "กลับ",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "หรือลงทะเบียนกับ",
             "already_account": "มีบัญชีอยู่แล้ว?",
             "sign_in_link": "เข้าสู่ระบบ"
-        },
-        "layout": {
-            "platform_live": "Platform Live",
-            "title_main": "The smarter way to",
-            "title_span": "run outreach",
-            "subtitle": "Unibox combines AI enrichment, smart sequencing, and a unified reply inbox — all in one platform.",
-            "trusted_by": "ได้รับความไว้วางใจจาก",
-            "teams": "ทีมงานประชาสัมพันธ์"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "สร้างแคมเปญสำเร็จแล้ว!",
         "err_create_failed": "เกิดข้อผิดพลาดในการสร้างแคมเปญ: {{message}}",
         "create_campaign_btn": "สร้างแคมเปญ",
+        "steps": {
+            "setup": "ตั้งค่า",
+            "audience": "ผู้ชม",
+            "design": "ออกแบบ",
+            "finalize": "จบ"
+        },
+        "design": {
+            "ai_modal_title": "สถาปนิกลำดับ AI",
+            "ai_modal_subtitle": "อธิบายเป้าหมายของคุณ แล้ว AI ในพื้นที่ของเราจะออกแบบลำดับแคมเปญหลายขั้นตอนทั้งหมดของคุณ",
+            "goal_label": "เป้าหมายของแคมเปญ",
+            "goal_placeholder": "เช่น โปรโมตเครื่องมือ SEO ใหม่ของเราให้กับเอเจนซี่การตลาดในสหราชอาณาจักร...",
+            "tone_label": "น้ำเสียง",
+            "tone_professional": "เป็นมืออาชีพและกล้าหาญ",
+            "tone_casual": "สบายๆ และเป็นมิตร",
+            "tone_urgent": "ด่วนและตรง",
+            "sequence_length": "ความยาวลำดับ",
+            "step_count": "{{count}} ลำดับขั้นตอน",
+            "recommended": "แนะนำ",
+            "generate_btn": "สร้างลำดับ",
+            "generating": "สถาปัตยกรรม...",
+            "tips": "เคล็ดลับการปรับเปลี่ยนในแบบของคุณอย่างชาญฉลาด",
+            "tip_spintax": "ใช้วงเล็บปีกกาสำหรับ Spintax: {Hi|Hello|Hey}",
+            "tip_logic": "AI ใช้ {{#if}} สำหรับทางเลือกตัวแปรแบบกำหนดเองที่ปลอดภัย",
+            "tip_tags": "แท็กของระบบ: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "การแจ้งเตือนความสามารถในการจัดส่ง: ข้อมูลหายไป",
+            "health_alert_action": "จำเป็นต้องดำเนินการ",
+            "health_alert_desc": "แคมเปญของคุณใช้ {{vars}} แต่ช่องเหล่านี้ไม่อยู่ในรายการโอกาสในการขายของคุณ การส่งตอนนี้จะทำให้เกิดช่องว่าง ซึ่งจะทำให้เกิดตัวกรองสแปม",
+            "enrich_apollo": "อิ่มอร่อยกับอพอลโล",
+            "update_leads": "อัปเดตรายชื่อลูกค้าเป้าหมาย",
+            "quick_add": "เพิ่มตัวแปรด่วน",
+            "quick_add_placeholder": "เช่น favorite_coffee",
+            "step_title": "ขั้นตอน {{index}}: {{type}}",
+            "main_email": "อีเมลหลัก",
+            "follow_up": "ติดตามผล",
+            "add_step": "เพิ่มขั้นตอนการติดตามผล",
+            "delete_step": "ลบขั้นตอน",
+            "time_of_day": "Time of Day",
+            "day_of_week": "Day of Week"
+        },
         "step_contacts": "ติดต่อ",
         "step_contacts_desc": "คุณกำลังส่งอีเมลถึงใคร?",
         "step_content": "เนื้อหา",
@@ -1259,9 +1316,9 @@
             "title": "ไปป์ไดรฟ์",
             "desc": "ติดตามความคืบหน้าของข้อตกลงและบันทึกกิจกรรม"
         },
-        "add_column_modal_title": "Add New Column",
-        "column_name_label": "Column Name",
-        "column_name_placeholder": "e.g., Qualified Leads",
+        "add_column_modal_title": "เพิ่มคอลัมน์ใหม่",
+        "column_name_label": "ชื่อคอลัมน์",
+        "column_name_placeholder": "เช่น โอกาสในการขายที่ผ่านการรับรอง",
         "select_color_label": "เลือกสีของคอลัมน์",
         "link_intent_label": "ลิงก์ไปยัง AI Intent (ไม่บังคับ)",
         "link_intent_desc": "โอกาสในการขายที่มีเจตนานี้จะย้ายมาที่นี่โดยอัตโนมัติ",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "ซิงค์ข้อมูลขาออกไปยังตาราง Clay ผ่าน JSON HTTP API"
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "การวิเคราะห์",
+            "overview": "ภาพรวม",
+            "content": "เนื้อหา",
+            "recipients": "ผู้รับ",
+            "replies": "ตอบกลับ"
+        },
+        "analytics": {
+            "title": "ประสิทธิภาพแคมเปญ",
+            "subtitle": "ตัวชี้วัดและแนวโน้มการมีส่วนร่วมแบบเรียลไทม์",
+            "realtime_monitoring": "การตรวจสอบแบบเรียลไทม์",
+            "growth_insights": "ข้อมูลเชิงลึกด้านการเติบโต",
+            "delivery_score": "คะแนนการส่งมอบ",
+            "engagement_pulse": "ชีพจรการมีส่วนร่วม",
+            "conversion_ratio": "อัตราการแปลง",
+            "performance_summary": "สรุปประสิทธิภาพ",
+            "engagement_over_time": "การมีส่วนร่วมเมื่อเวลาผ่านไป",
+            "hourly_performance": "ประสิทธิภาพรายชั่วโมง",
+            "peak_engagement_window": "ช่วงระยะเวลาการมีส่วนร่วมสูงสุด",
+            "top_subject_lines": "หัวเรื่องยอดนิยม",
+            "best_performing_time": "เวลาที่ดีที่สุดในการส่ง",
+            "open_rate_trend": "แนวโน้มอัตราการเปิด",
+            "reply_distribution": "การกระจายคำตอบ",
+            "sender_health": "รายละเอียดสุขภาพของผู้ส่ง"
+        },
+        "overview": {
+            "campaign_id": "รหัสแคมเปญ",
+            "created_on": "สร้างเมื่อ",
+            "last_activity": "กิจกรรมล่าสุด",
+            "status_description": "สถานะปัจจุบันของลำดับนี้",
+            "sending_schedule": "กำหนดการส่ง",
+            "assigned_mailboxes": "กล่องจดหมายที่ได้รับมอบหมาย",
+            "total_leads": "จำนวนลูกค้าเป้าหมายทั้งหมด",
+            "active_now": "ใช้งานอยู่ตอนนี้",
+            "sequences_sent": "ลำดับที่ส่ง",
+            "campaign_objective": "วัตถุประสงค์ของแคมเปญ"
+        },
+        "content": {
+            "sequence_structure": "โครงสร้างลำดับ",
+            "step_label": "ขั้นตอน {{count}}",
+            "subject": "หัวเรื่อง",
+            "body_preview": "ตัวอย่างร่างกาย",
+            "delay": "ล่าช้า",
+            "edit_sequence": "แก้ไขลำดับ",
+            "view_spintax": "ดูรูปแบบ Spintax"
+        },
+        "recipients": {
+            "all_contacts": "ที่อยู่ติดต่อทั้งหมด",
+            "search_leads": "ค้นหาลูกค้าเป้าหมาย...",
+            "status_filter": "ตัวกรองสถานะ",
+            "last_contacted": "ติดต่อล่าสุด",
+            "engagement_level": "การมีส่วนร่วม",
+            "view_profile": "ดูโปรไฟล์",
+            "export_leads": "โอกาสในการขาย"
+        },
+        "replies": {
+            "inbox_activity": "กิจกรรมกล่องจดหมาย",
+            "ai_intent_detection": "การตรวจจับเจตนาของ AI",
+            "mark_as_interested": "ทำเครื่องหมายว่าสนใจ",
+            "move_to_crm": "ย้ายไปที่ CRM",
+            "reply_content": "ตอบเนื้อหา",
+            "no_replies_yet": "กำลังรอการตอบกลับครั้ง���รก..."
         }
     }
 }

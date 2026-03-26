@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. כֹּל הַזְכוּיוֹת שְׁמוּרוֹת.",
+        "layout": {
+            "login_title": "הדרך החכמה יותר להרחיב את היקף החשיפה שלך",
+            "login_subtitle": "גש לתיבת הדואר הנכנס המאוחדת שלך, לרצף המופעל על ידי בינה מלאכותית וניתוח בזמן אמת. הצטרף ל-2,400+ צוותים שכבר שינו את מנוע הצמיחה שלהם עם Unibox.",
+            "login_badge": "היכ��ס",
+            "signup_title": "התחל את המסע שלך לעבר היפר-צמיחה",
+            "signup_subtitle": "צור את סביבת העבודה שלך בשניות ופתח את מלוא העוצמה של הסברה אוטומטית. אין צורך בכרטיס אשראי כדי להתחיל את ניסיון הפרימיום של 14 יום.",
+            "signup_badge": "התחל",
+            "verify_title": "אבטח את סביבת העבודה שלך ב-Unibox",
+            "verify_subtitle": "שלחנו קישור אימות מאובטח לכתובת האימייל שלך. אימות הזהות שלך מבטיח שהנתונים שלך יישארו מוגנים בתוך הכספת המוצפנת שלנו.",
+            "verify_badge": "אימות",
+            "verify_help": "שלחנו אימייל אימות לכתובת שלך. בדוק את תיבת הדואר הנכנס שלך ואת תיקיית הספאם. הקישור יפוג בעוד 24 שעות.",
+            "forgot_title": "שחזר את הגישה לחשבון שלך",
+            "forgot_subtitle": "הזן את האימייל המשויך לחשבון ה-Unibox שלך ואנו נשלח לך קישור מאובטח לאיפוס האישורים שלך ולקבל בחזרה גישה למרכז השליטה שלך.",
+            "forgot_badge": "איפוס סיסמה",
+            "forgot_help": "הזן את כתובת הדוא\"ל שלך ואנו נשלח לך קישור לאיפוס הסיסמה שלך. תוכל ליצור סיסמה חדשה תוך דקות.",
+            "reset_title": "עצב את האישורים החדשים שלך",
+            "reset_subtitle": "ודא שמרחב העבודה שלך נשאר מבוצר. בחר סיסמה חזקה וייחודית כדי לאבטח את חשבונך ולחדש את פעולות ההסברה שלך.",
+            "reset_badge": "עדכן סיסמה",
+            "reset_help": "ודא שהסיסמה החדשה שלך חזקה ומאובטחת. השתמש ב-8 תווים לפחות עם שילוב של אותיות, מספרים וסמלים.",
+            "platform_live": "Platform Live",
+            "title_main": "הדרך החכמה יותר",
+            "title_span": "להפעיל הסברה",
+            "subtitle": "Unibox משלב העשרת בינה מלאכותית, רצף חכם ותיבת תשובות מאוחדת - הכל בפלטפורמה אחת.",
+            "trusted_by": "מהימן על ידי",
+            "teams": "צוותי הסברה"
+        },
         "login": {
             "title": "ברוך הבא",
             "title_span": "חזרה",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "או הירשם עם",
             "already_account": "יש לך כבר חשבון?",
             "sign_in_link": "היכנס"
-        },
-        "layout": {
-            "platform_live": "Platform Live",
-            "title_main": "הדרך החכמה יותר",
-            "title_span": "להפעיל הסברה",
-            "subtitle": "Unibox משלב העשרת בינה מלאכותית, רצף חכם ותיבת תשובות מאוחדת - הכל בפלטפורמה אחת.",
-            "trusted_by": "מהימן על ידי",
-            "teams": "צוותי הסברה"
         }
     },
     "pwa": {
@@ -448,6 +466,45 @@
         "msg_campaign_created": "הקמפיין נוצר בהצלחה!",
         "err_create_failed": "שגיאה ביצירת מסע פרסום: {{message}}",
         "create_campaign_btn": "צור מסע פרסום",
+        "steps": {
+            "setup": "הגדרה",
+            "audience": "קהל",
+            "design": "עיצוב",
+            "finalize": "סיים"
+        },
+        "design": {
+            "ai_modal_title": "AI Sequence Architect",
+            "ai_modal_subtitle": "תאר את המטרה שלך, וה-AI המקומי שלנו יעצב את כל רצף הקמפיינים הרב-שלבי שלך.",
+            "goal_label": "יעד הקמפיין",
+            "goal_placeholder": "למשל, קדם את כלי ה-SEO החדש שלנו לסוכנויות שיווק בבריטניה...",
+            "tone_label": "טון הקול",
+            "tone_professional": "מקצועי ומודגש",
+            "tone_casual": "מזדמנים וידידותיים",
+            "tone_urgent": "דחוף וישיר",
+            "sequence_length": "אורך רצף",
+            "step_count": "{{count}} רצף שלבים",
+            "recommended": "מומלץ",
+            "generate_btn": "צור רצף",
+            "generating": "אדריכלות...",
+            "tips": "טיפים להתאמה אישית חכמה",
+            "tip_spintax": "השתמש בפלטה מתולתלת עבור Spintax: {היי|שלום|היי}",
+            "tip_logic": "בינה מלאכותית משתמשת ב-{{#if}} להחזרות בטוחות של משתנים מותאמים אישית.",
+            "tip_tags": "תגיות מערכת: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "התראת מסירה: חסרים נתונים",
+            "health_alert_action": "נדרשת פעולה",
+            "health_alert_desc": "מסע הפרסום שלך משתמש ב-{{vars}}, אך השדות האלה אינם ברשימת הפניות שלך. שליחה כעת תגרום לרווחים ריקים, מה שמפעיל מסנני דואר זבל.",
+            "enrich_apollo": "העשרה באפולו",
+            "update_leads": "עדכון רשימת לידים",
+            "quick_add": "הוסף משתנה מהיר",
+            "quick_add_placeholder": "למשל, מועדף_קפה",
+            "step_title": "שלב {{index}}: {{type}}",
+            "main_email": "דוא\"ל ראשי",
+            "follow_up": "מעקב",
+            "add_step": "הוסף שלב מעקב",
+            "delete_step": "מחק שלב",
+            "time_of_day": "שעה ביום",
+            "day_of_week": "יום בשבוע"
+        },
         "step_contacts": "אנשי קשר",
         "step_contacts_desc": "למי אתה שולח מייל?",
         "step_content": "תוכן",
@@ -1321,6 +1378,71 @@
             "clay": {
                 "desc": "סנכרן נתונים יוצאים לטבלאות Clay באמצעות ה-JSON HTTP API שלהם."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "אנליטיקה",
+            "overview": "סקירה כללית",
+            "content": "תוכן",
+            "recipients": "נמענים",
+            "replies": "תשובות"
+        },
+        "analytics": {
+            "title": "ביצועי מסע פרסום",
+            "subtitle": "מדדי מעורבות ומגמות בזמן אמת",
+            "realtime_monitoring": "ניטור בזמן אמת",
+            "growth_insights": "תובנות צמיחה",
+            "delivery_score": "ציון מסירה",
+            "engagement_pulse": "דופק אירוסין",
+            "conversion_ratio": "יחס המרה",
+            "performance_summary": "סיכום ביצועים",
+            "engagement_over_time": "מעורבות לאורך זמן",
+            "hourly_performance": "ביצוע לפי שעה",
+            "peak_engagement_window": "חלון מעורבות שיא",
+            "top_subject_lines": "שורות הנושא העליון",
+            "best_performing_time": "הזמן הטוב ביותר לשלוח",
+            "open_rate_trend": "מגמת שער פתיחה",
+            "reply_distribution": "הפצת תשובות",
+            "sender_health": "פירוט בריאות השולח"
+        },
+        "overview": {
+            "campaign_id": "מזהה מסע פרסום",
+            "created_on": "נוצר בתאריך",
+            "last_activity": "פעילות אחרונה",
+            "status_description": "מצב נוכחי של רצף זה",
+            "sending_schedule": "לוח זמנים שליחה",
+            "assigned_mailboxes": "תיבות דואר שהוקצו",
+            "total_leads": "סך כל הפניות",
+            "active_now": "פעיל עכשיו",
+            "sequences_sent": "רצפים שנשלחו",
+            "campaign_objective": "מטרת הקמפיין"
+        },
+        "content": {
+            "sequence_structure": "מבנה רצף",
+            "step_label": "שלב {{count}}",
+            "subject": "נושא",
+            "body_preview": "תצוגה מקדימה של גוף",
+            "delay": "עיכוב",
+            "edit_sequence": "ערוך רצף",
+            "view_spintax": "הצג וריאציות Spintax"
+        },
+        "recipients": {
+            "all_contacts": "כל אנשי הקשר",
+            "search_leads": "חיפוש לידים...",
+            "status_filter": "מסנן מצב",
+            "last_contacted": "פניה אחרונה",
+            "engagement_level": "אירוסין",
+            "view_profile": "צפה בפרופיל",
+            "export_leads": "ייצוא לידים"
+        },
+        "replies": {
+            "inbox_activity": "פעילות תיבת דואר נכנס",
+            "ai_intent_detection": "זיהוי כוונות בינה מלאכותית",
+            "mark_as_interested": "סמן כמתעניין",
+            "move_to_crm": "העבר ל-CRM",
+            "reply_content": "תוכן תגובה",
+            "no_replies_yet": "מחכה לתגובה ראשונה..."
         }
     }
 }

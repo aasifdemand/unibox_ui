@@ -1,7 +1,8 @@
-import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target } from 'lucide-react';
-import { Activity } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target, Activity } from 'lucide-react';
 
 const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, steps }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
       {/* Left Column: Progress & Details */}
@@ -12,10 +13,10 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
             <div>
               <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                 <Activity className="w-5 h-5 text-orange-600" />
-                Campaign Progress
+                {t('campaigns.overview.progress', 'Campaign Progress')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                Live Sending Progress
+                {t('campaigns.overview.live_progress', 'Live Sending Progress')}
               </p>
             </div>
             <div className="ltr:text-right rtl:text-left">
@@ -23,7 +24,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
                 {stats.progress}%
               </span>
               <p className="text-[10px] font-black text-orange-300 uppercase tracking-widest leading-none">
-                Complete
+                {t('campaigns.overview.complete', 'Complete')}
               </p>
             </div>
           </div>
@@ -31,7 +32,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
           <div className="space-y-6">
             <div className="relative h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40 p-0.5">
               <div
-                className="h-full bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/20"
+                className="h-full bg-linear-to-r from-orange-500 via-orange-600 to-orange-700 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/20"
                 style={{ width: `${stats.progress}%` }}
               >
                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-size-[40px_40px] animate-[shimmer_2s_infinite_linear]"></div>
@@ -41,7 +42,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
             <div className="grid grid-cols-2 gap-8 py-4 px-2">
               <div className="flex flex-col">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
-                  Remaining
+                  {t('campaigns.overview.remaining', 'Remaining')}
                 </span>
                 <span className="text-2xl font-black text-slate-900 tracking-tighter tabular-nums">
                   {Math.max(0, stats.totalRecipients - stats.totalSent).toLocaleString()}
@@ -49,7 +50,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
               </div>
               <div className="flex flex-col ltr:text-right rtl:text-left">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
-                  Total Sent
+                  {t('campaigns.overview.total_sent', 'Total Sent')}
                 </span>
                 <span className="text-2xl font-black text-orange-600 tracking-tighter tabular-nums">
                   {stats.totalSent.toLocaleString()}
@@ -64,7 +65,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
           <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
               <Activity className="w-5 h-5 text-orange-600" />
-              Campaign Sequence
+              {t('campaigns.overview.sequence', 'Campaign Sequence')}
             </h3>
 
             <div className="relative">
@@ -86,26 +87,26 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
                     <div className="flex-1 pt-1">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-sm font-black text-slate-900 tracking-tight">
-                          Step {idx + 1}: {idx === 0 ? 'Initial Email' : 'Follow-up Email'}
+                          {t('campaigns.overview.step', 'Step')} {idx + 1}: {idx === 0 ? t('campaigns.overview.initial_email', 'Initial Email') : t('campaigns.overview.follow_up_email', 'Follow-up Email')}
                         </p>
                         {idx > 0 && (
                           <div className="px-3 py-1 bg-amber-50 rounded-lg border border-amber-100">
                             <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">
-                              Wait {Math.round(step.delayMinutes / 1440)} Days
+                               {t('campaigns.overview.wait', 'Wait')} {Math.round(step.delayMinutes / 1440)} {t('campaigns.overview.days', 'Days')}
                             </span>
                           </div>
                         )}
                       </div>
                       <p className="text-xs font-bold text-slate-400 truncate max-w-md">
-                        Subject: {step.subject}
+                        {t('campaigns.overview.subject_label', 'Subject')}: {step.subject}
                       </p>
                       {idx > 0 && (
                         <div className="mt-3 flex items-center gap-2">
-                          <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">
-                            Condition:
+                           <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">
+                            {t('campaigns.overview.condition_label', 'Condition')}:
                           </span>
                           <span className="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                            {step.condition === 'no_reply' ? 'If No Reply' : 'Always Send'}
+                            {step.condition === 'no_reply' ? t('campaigns.overview.if_no_reply', 'If No Reply') : t('campaigns.overview.always_send', 'Always Send')}
                           </span>
                         </div>
                       )}
@@ -121,36 +122,36 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
         <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
             <Database className="w-5 h-5 text-orange-600" />
-            Campaign Details
+            {t('campaigns.overview.details', 'Campaign Details')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="space-y-6">
-              <DetailItem label="Campaign Name" value={previews.campaignName} />
+              <DetailItem label={t('campaigns.overview.name', 'Campaign Name')} value={previews.campaignName} />
               <DetailItem
-                label="Subject Line"
+                label={t('campaigns.overview.subject', 'Subject Line')}
                 value={previews.subject}
                 subValue={
-                  placeholders.length > 0 ? `Variables used: ${placeholders.join(', ')}` : null
+                  placeholders.length > 0 ? `${t('campaigns.overview.vars_used', 'Variables used')}: ${placeholders.join(', ')}` : null
                 }
               />
-              <DetailItem label="Preview Text" value={previews.previewText || 'Not set'} />
-              <DetailItem label="Sender Type" value={campaign.senderType || 'Standard'} uppercase />
+              <DetailItem label={t('campaigns.overview.preview_text', 'Preview Text')} value={previews.previewText || t('campaigns.overview.not_set', 'Not set')} />
+              <DetailItem label={t('campaigns.overview.sender_type', 'Sender Type')} value={campaign.senderType === 'standard' ? t('campaigns.overview.sender_standard', 'Standard') : (campaign.senderType || t('campaigns.overview.sender_standard', 'Standard'))} uppercase />
             </div>
             <div className="space-y-6">
-              <DetailItem label="Created Date" value={formatDate(campaign.createdAt)} />
+              <DetailItem label={t('campaigns.overview.created_date', 'Created Date')} value={formatDate(campaign.createdAt)} />
               {campaign.startedAt ? (
-                <DetailItem label="Started At" value={formatDate(campaign.startedAt)} />
+                <DetailItem label={t('campaigns.overview.started_at', 'Started At')} value={formatDate(campaign.startedAt)} />
               ) : (
                 <DetailItem
-                  label="Scheduled For"
-                  value={campaign.scheduledAt ? formatDate(campaign.scheduledAt) : 'Immediate'}
+                  label={t('campaigns.overview.scheduled_for', 'Scheduled For')}
+                  value={campaign.scheduledAt ? formatDate(campaign.scheduledAt) : t('campaigns.overview.immediate', 'Immediate')}
                 />
               )}
-              <DetailItem label="Last Updated" value={formatDate(campaign.updatedAt)} />
+              <DetailItem label={t('campaigns.overview.last_updated', 'Last Updated')} value={formatDate(campaign.updatedAt)} />
               <DetailItem
-                label="Sending Rate"
-                value={`${campaign.throttlePerMinute || 10} emails / min`}
+                label={t('campaigns.overview.sending_rate', 'Sending Rate')}
+                value={`${campaign.throttlePerMinute || 10} ${t('campaigns.overview.emails_per_min', 'emails / min')}`}
               />
             </div>
           </div>
@@ -162,27 +163,30 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
         <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2 h-full">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
             <Settings2 className="w-5 h-5 text-orange-600" />
-            Campaign Settings
+            {t('campaigns.overview.settings', 'Campaign Settings')}
           </h3>
 
           <div className="space-y-6">
             <SettingItem
               icon={<Activity className="w-4 h-4" />}
-              label="Track Opens"
+              label={t('campaigns.overview.track_opens', 'Track Opens')}
               status={campaign.trackOpens}
-              desc="Monitor when recipients open your emails"
+              desc={t('campaigns.overview.track_opens_desc', 'Monitor when recipients open your emails')}
+              t={t}
             />
             <SettingItem
               icon={<Target className="w-4 h-4" />}
-              label="Track Clicks"
+              label={t('campaigns.overview.track_clicks', 'Track Clicks')}
               status={campaign.trackClicks}
-              desc="Track link interactions within emails"
+              desc={t('campaigns.overview.track_clicks_desc', 'Track link interactions within emails')}
+              t={t}
             />
             <SettingItem
               icon={<ExternalLink className="w-4 h-4" />}
-              label="Unsubscribe Link"
+              label={t('campaigns.overview.unsub_link', 'Unsubscribe Link')}
               status={campaign.unsubscribeLink}
-              desc="Include mandatory opt-out option"
+              desc={t('campaigns.overview.unsub_link_desc', 'Include mandatory opt-out option')}
+              t={t}
             />
 
             <div className="pt-8 mt-8 border-t border-slate-100">
@@ -225,7 +229,7 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
   </div>
 );
 
-const SettingItem = ({ icon, label, status, desc }) => (
+const SettingItem = ({ icon, label, status, desc, t }) => (
   <div className="flex items-start gap-4 group">
     <div
       className={`p-3 rounded-md transition-all duration-300 ${status ? 'bg-orange-50 text-orange-600 scale-110 shadow-sm shadow-orange-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
@@ -240,7 +244,7 @@ const SettingItem = ({ icon, label, status, desc }) => (
         <span
           className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-400'}`}
         >
-          {status ? 'Active' : 'Disabled'}
+          {status ? t('campaigns.overview.active', 'Active') : t('campaigns.overview.disabled', 'Disabled')}
         </span>
       </div>
       <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 transition-colors">

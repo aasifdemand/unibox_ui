@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { calculateAvgResponseTime } from '../../hooks/use-campaign-analytics';
 import {
   BarChart3,
@@ -10,6 +11,7 @@ import {
 } from 'lucide-react';
 
 const AnalyticsTab = ({ campaign, stats }) => {
+  const { t } = useTranslation();
   const openRate = stats.uniqueContacted
     ? Math.round((stats.totalOpened / stats.uniqueContacted) * 100)
     : 0;
@@ -34,39 +36,39 @@ const AnalyticsTab = ({ campaign, stats }) => {
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-orange-600" />
-              Performance Overview
+              {t('campaigns.analytics.performance_overview', 'Performance Overview')}
             </h3>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-              Key performance metrics
+              {t('campaigns.analytics.performance_desc', 'Key performance metrics')}
             </p>
           </div>
           <div className="px-4 py-2 bg-orange-50 rounded-md border border-orange-100 flex items-center gap-2">
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
             <span className="text-[10px] font-black text-orange-700 uppercase tracking-widest">
-              Live Data
+              {t('campaigns.analytics.live_data', 'Live Data')}
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <StatMini label="Total Sent" value={stats.totalSent.toLocaleString()} theme="slate" />
+          <StatMini label={t('campaigns.analytics.total_sent', 'Total Sent')} value={stats.totalSent.toLocaleString()} theme="slate" />
           <StatMini
-            label="Open Rate"
+            label={t('campaigns.analytics.open_rate', 'Open Rate')}
             value={`${openRate}%`}
             theme="indigo"
-            trend={openRate > 25 ? 'Good' : 'Stable'}
+            trend={openRate > 25 ? t('campaigns.analytics.trend_good', 'Good') : t('campaigns.analytics.trend_stable', 'Stable')}
           />
           <StatMini
-            label="Click Rate"
+            label={t('campaigns.analytics.click_rate', 'Click Rate')}
             value={`${clickRate}%`}
             theme="purple"
-            trend={clickRate > 5 ? 'High' : 'Stable'}
+            trend={clickRate > 5 ? t('campaigns.analytics.trend_high', 'High') : t('campaigns.analytics.trend_stable', 'Stable')}
           />
           <StatMini
-            label="Reply Rate"
+            label={t('campaigns.analytics.reply_rate', 'Reply Rate')}
             value={`${replyRate}%`}
             theme="emerald"
-            trend={replyRate > 2 ? 'Active' : 'Stable'}
+            trend={replyRate > 2 ? t('campaigns.analytics.trend_active', 'Active') : t('campaigns.analytics.trend_stable', 'Stable')}
           />
         </div>
       </div>
@@ -76,36 +78,36 @@ const AnalyticsTab = ({ campaign, stats }) => {
         <div className="premium-card bg-white border-slate-200/60 p-10 shadow-sm shadow-slate-900/2">
           <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mb-10">
             <TrendingUp className="w-5 h-5 text-orange-600" />
-            Engagement Rates
+            {t('campaigns.analytics.engagement_rates', 'Engagement Rates')}
           </h3>
 
           <div className="space-y-10">
             <ProgressBar
-              label="Open Rate"
+              label={t('campaigns.analytics.open_rate', 'Open Rate')}
               value={openRate}
               theme="indigo"
               icon={<TrendingUp className="w-3 h-3" />}
             />
             <ProgressBar
-              label="Click Rate"
+              label={t('campaigns.analytics.click_rate', 'Click Rate')}
               value={clickRate}
               theme="purple"
               icon={<MousePointer2 className="w-3 h-3" />}
             />
             <ProgressBar
-              label="Reply Rate"
+              label={t('campaigns.analytics.reply_rate', 'Reply Rate')}
               value={replyRate}
               theme="emerald"
               icon={<MessageSquare className="w-3 h-3" />}
             />
             <ProgressBar
-              label="Bounce Rate"
+              label={t('campaigns.analytics.bounce_rate', 'Bounce Rate')}
               value={bounceRate}
               theme="rose"
               icon={<TrendingUp className="w-3 h-3" />}
             />
             <ProgressBar
-              label="Unsubscribe Rate"
+              label={t('campaigns.analytics.unsubscribe_rate', 'Unsubscribe Rate')}
               value={unsubRate}
               theme="slate"
               icon={<TrendingUp className="w-3 h-3" />}
@@ -117,7 +119,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
         <div className="premium-card bg-white border-slate-200/60 p-10 shadow-sm shadow-slate-900/2">
           <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mb-10">
             <Zap className="w-5 h-5 text-orange-600" />
-            Response Statistics
+            {t('campaigns.analytics.response_stats', 'Response Statistics')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -127,14 +129,14 @@ const AnalyticsTab = ({ campaign, stats }) => {
                   <Clock className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  Avg Response Time
+                  {t('campaigns.analytics.avg_response_time', 'Avg Response Time')}
                 </span>
               </div>
               <p className="text-3xl font-black text-slate-900 tracking-tighter tabular-nums">
                 {calculateAvgResponseTime(campaign.CampaignRecipients)}
               </p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">
-                Time Analysis
+                {t('campaigns.analytics.time_analysis', 'Time Analysis')}
               </p>
             </div>
 
@@ -144,14 +146,14 @@ const AnalyticsTab = ({ campaign, stats }) => {
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  Total Replies
+                  {t('campaigns.analytics.total_replies', 'Total Replies')}
                 </span>
               </div>
               <p className="text-3xl font-black text-slate-900 tracking-tighter tabular-nums">
                 {stats.totalReplied.toLocaleString()}
               </p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">
-                Verified Replies
+                {t('campaigns.analytics.verified_replies', 'Verified Replies')}
               </p>
             </div>
           </div>
@@ -159,7 +161,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
           <div className="mt-8 p-4 bg-orange-50/40 rounded-lg border border-orange-100 flex items-center gap-4">
             <ShieldCheck className="w-5 h-5 text-orange-600 shrink-0" />
             <p className="text-[11px] font-medium text-orange-700 leading-tight">
-              These metrics are calculated based on campaign data for accuracy.
+              {t('campaigns.analytics.data_note', 'These metrics are calculated based on campaign data for accuracy.')}
             </p>
           </div>
         </div>

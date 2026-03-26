@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox۔ جملہ حقوق محفوظ ہیں۔",
+        "layout": {
+            "login_title": "The smarter way to scale your outreach",
+            "login_subtitle": "Access your unified inbox, AI-powered sequencing, and real-time analytics. Join 2,400+ teams who have already transformed their growth engine with Unibox.",
+            "login_badge": "SIGN IN",
+            "signup_title": "Start your journey towards hyper-growth",
+            "signup_subtitle": "Create your workspace in seconds and unlock the full power of automated outreach. No credit card required to start your 14-day premium trial.",
+            "signup_badge": "GET STARTED",
+            "verify_title": "Secure your Unibox workspace",
+            "verify_subtitle": "We've sent a secure authentication link to your email address. Verifying your identity ensures your data remains protected within our encrypted vault.",
+            "verify_badge": "VERIFICATION",
+            "verify_help": "ہم نے آپ کے پتے پر ایک تصدیقی ای میل بھیجی ہے۔ براہ کرم اپنا ان باکس اور اسپام فولڈر چیک کریں۔ لنک کی میعاد 24 گھنٹے میں ختم ہو جائے گی۔",
+            "forgot_title": "اپنے اکاؤنٹ تک رسائی بحال کریں",
+            "forgot_subtitle": "اپنے Unibox اکاؤنٹ سے وابستہ ای میل درج کریں اور ہم آپ کو آپ کی اسناد کو دوبارہ ترتیب دینے اور آپ کے ڈیش بورڈ تک دوبارہ رسائی حاصل کرنے کے لیے ایک محفوظ لنک بھیجیں گے۔",
+            "forgot_badge": "پاس ورڈ دوبارہ ترتیب دیں",
+            "forgot_help": "اپنا ای میل ایڈریس درج کریں اور ہم آپ کو اپنا پاس ورڈ دوبارہ ترتیب دینے کے لیے ایک لنک بھیجیں گے۔ آپ منٹوں میں ایک نیا پاس ورڈ بنا سکیں گے۔",
+            "reset_title": "اپنی نئی اسناد ڈیزائن کریں",
+            "reset_subtitle": "یقینی بنائیں کہ آپ کے کام کی جگہ مضبوط ہے۔ اپنے اکاؤنٹ کو محفوظ بنانے اور اپنے آؤٹ ریچ آپریشنز کو دوبارہ شروع کرنے کے لیے ایک مضبوط، منفرد پاس ورڈ کا انتخاب کریں۔",
+            "reset_badge": "پاس ورڈ اپ ڈیٹ کریں",
+            "reset_help": "یقینی بنائیں کہ آپ کا نیا پاس ورڈ مضبوط اور محفوظ ہے۔ حروف، اعداد اور علامتوں کے مرکب کے ساتھ کم از کم 8 حروف کا استعمال کریں۔",
+            "platform_live": "پلیٹ فارم لائیو",
+            "title_main": "کا بہترین طریقہ",
+            "title_span": "آؤٹ ریچ چلائیں",
+            "subtitle": "Unibox AI افزودگی، سمارٹ سیکوینسنگ، اور ایک متحد جوابی ان باکس کو یکجا کرتا ہے — یہ سب ایک پلیٹ فارم میں ہے۔",
+            "trusted_by": "ٹرسٹڈ از",
+            "teams": "آؤٹ ریچ ٹیمیں"
+        },
         "login": {
             "title": "خوش آمدید",
             "title_span": "واپس",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "یا",
             "already_account": "کے ساتھ سائن اپ کریں۔ پہلے سے ہی اکاؤنٹ ہے؟",
             "sign_in_link": "سائن ان کریں"
-        },
-        "layout": {
-            "platform_live": "پلیٹ فارم لائیو",
-            "title_main": "کا بہترین طریقہ",
-            "title_span": "آؤٹ ریچ چلائیں",
-            "subtitle": "Unibox AI افزودگی، سمارٹ سیکوینسنگ، اور ایک متحد جوابی ان باکس کو یکجا کرتا ہے — یہ سب ایک پلیٹ فارم میں ہے۔",
-            "trusted_by": "ٹرسٹڈ از",
-            "teams": "آؤٹ ریچ ٹیمیں"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "مہم کامیابی کے ساتھ بنائی گئی!",
         "err_create_failed": "مہم بنانے میں خرابی: {{message}}",
         "create_campaign_btn": "مہم بنائیں",
+        "steps": {
+            "setup": "Setup",
+            "audience": "Audience",
+            "design": "Design",
+            "finalize": "Finalize"
+        },
+        "design": {
+            "ai_modal_title": "AI Sequence Architect",
+            "ai_modal_subtitle": "Describe your goal, and our local AI will architect your entire multi-step campaign sequence.",
+            "goal_label": "Campaign Goal",
+            "goal_placeholder": "e.g., Promote our new SEO tool to marketing agencies in the UK...",
+            "tone_label": "Tone of Voice",
+            "tone_professional": "Professional & Bold",
+            "tone_casual": "Casual & Friendly",
+            "tone_urgent": "Urgent & Direct",
+            "sequence_length": "Sequence Length",
+            "step_count": "{{count}} مرحلہ ترتیب",
+            "recommended": "تجویز کردہ",
+            "generate_btn": "ترتیب پیدا کریں",
+            "generating": "تعمیراتی...",
+            "tips": "اسمارٹ پرسنلائزیشن ٹپس",
+            "tip_spintax": "Spintax کے لیے گھوبگھرالی منحنی خطوط وحدانی استعمال کریں: {Hi|Hello|Hey}",
+            "tip_logic": "AI محفوظ کسٹم متغیر فال بیکس کے لیے {{#if}} استعمال کرتا ہے۔",
+            "tip_tags": "سسٹم ٹیگز: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "ڈیلیوریبلٹی الرٹ: گمشدہ ڈیٹا",
+            "health_alert_action": "ایکشن درکار ہے",
+            "health_alert_desc": "آپ کی مہم {{vars}} استعمال کرتی ہے، لیکن یہ فیلڈز آپ کی لیڈ لسٹ میں نہیں ہیں۔ ابھی بھیجنے کے نتیجے میں خالی جگہیں ہوں گی، جو اسپام فلٹرز کو متحرک کرتی ہے۔",
+            "enrich_apollo": "اپالو کے ساتھ افزودہ کریں",
+            "update_leads": "لیڈ لسٹ کو اپ ڈیٹ کریں",
+            "quick_add": "فوری اضافہ متغیر",
+            "quick_add_placeholder": "جیسے، پسندیدہ_کافی",
+            "step_title": "Step {{index}}: {{type}}",
+            "main_email": "Main Email",
+            "follow_up": "Follow-up",
+            "add_step": "Add Follow-up Step",
+            "delete_step": "Delete Step",
+            "time_of_day": "Time of Day",
+            "day_of_week": "Day of Week"
+        },
         "step_contacts": "رابطے",
         "step_contacts_desc": "آپ کس کو ای میل کر رہے ہیں؟",
         "step_content": "مواد",
@@ -1218,14 +1275,14 @@
         "connect_crm": "Connect CRM",
         "add_column": "Add Column",
         "all_campaigns": "All Campaigns",
-        "total": "Total",
-        "value": "Value",
-        "leads_label": "Leads",
-        "drop_leads": "Drop leads here",
-        "loading": "loading...",
-        "build_funnel": "Build your funnel",
-        "add_first_col": "Add your first column to start tracking leads through stages.",
-        "create_initial": "Create First Column",
+        "total": "کل",
+        "value": "قدر",
+        "leads_label": "لیڈز",
+        "drop_leads": "ڈراپ یہاں لیڈز",
+        "loading": "لوڈ ہو رہا ہے...",
+        "build_funnel": "اپنا چمنی بنائیں",
+        "add_first_col": "مراحل کے ذریعے لیڈز کو ٹریک کرنا شروع کرنے کے لیے اپنا پہلا کالم شامل کریں۔",
+        "create_initial": "پہلا کالم بنائیں",
         "footer_msg1": "خود بخود ترقی کرتا ہے جب",
         "footer_msg2": "جواب دینے کے ارادے",
         "footer_msg3": "پتہ چلا ہے",
@@ -1244,16 +1301,16 @@
             "campaign": "مہم:",
             "view_profile": "پروفائل دیکھیں"
         },
-        "connect": "Connect",
-        "connected": "Connected",
-        "status_ready": "Ready to sync",
+        "connect": "جڑیں",
+        "connected": "منسلک",
+        "status_ready": "مطابقت پذیری کے لیے تیار",
         "hubspot": {
             "title": "HubSpot",
-            "desc": "Sync contacts and log timeline events."
+            "desc": "رابطوں کو سنک کریں اور ٹائم لائن ایونٹس کو لاگ کریں۔"
         },
         "salesforce": {
-            "title": "Salesforce",
-            "desc": "Manage leads and opportunities in real-time."
+            "title": "سیلز فورس",
+            "desc": "ریئل ٹائم میں لیڈز اور مواقع کا نظم کریں۔"
         },
         "pipedrive": {
             "title": "Pipedrive",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "ان کے JSON HTTP API کے ذریعے کلے ٹیبلز سے آؤٹ باؤنڈ ڈیٹا کی مطابقت پذیری کریں۔"
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analytics",
+            "overview": "Overview",
+            "content": "Content",
+            "recipients": "Recipients",
+            "replies": "Replies"
+        },
+        "analytics": {
+            "title": "Campaign Performance",
+            "subtitle": "ریئل ٹائم انگیجمنٹ میٹرکس اور ٹرینڈز",
+            "realtime_monitoring": "ریئل ٹائم مانیٹرنگ",
+            "growth_insights": "ترقی کی بصیرت",
+            "delivery_score": "ڈیلیوری سکور",
+            "engagement_pulse": "منگنی کی نبض",
+            "conversion_ratio": "تبادلوں کا تناسب",
+            "performance_summary": "کارکردگی کا خلاصہ",
+            "engagement_over_time": "وقت کے ساتھ مصروفیت",
+            "hourly_performance": "ہر گھنٹے کی کارکردگی",
+            "peak_engagement_window": "چوٹی کی منگنی کی کھڑکی",
+            "top_subject_lines": "ٹاپ سبجیکٹ لائنز",
+            "best_performing_time": "بھیجنے کا بہترین وقت",
+            "open_rate_trend": "اوپن ریٹ ٹرینڈ",
+            "reply_distribution": "جواب کی تقسیم",
+            "sender_health": "بھیجنے والے کی صحت کی خرابی"
+        },
+        "overview": {
+            "campaign_id": "مہم ID",
+            "created_on": "پر بنایا گیا",
+            "last_activity": "آخری سرگرمی",
+            "status_description": "اس ترتیب کی موجودہ حالت",
+            "sending_schedule": "بھیجنے کا شیڈول",
+            "assigned_mailboxes": "تفویض کردہ میل باکسز",
+            "total_leads": "ٹوٹل لیڈز",
+            "active_now": "ابھی ایکٹو",
+            "sequences_sent": "ترتیب بھیجے گئے",
+            "campaign_objective": "مہم کا مقصد"
+        },
+        "content": {
+            "sequence_structure": "ترتیب کی ساخت",
+            "step_label": "مرحلہ {{count}}",
+            "subject": "موضوع",
+            "body_preview": "جسمانی پیش نظارہ",
+            "delay": "تاخیر",
+            "edit_sequence": "ترتیب میں ترمیم کریں",
+            "view_spintax": "Spintax تغیرات دیکھیں"
+        },
+        "recipients": {
+            "all_contacts": "تمام رابطے",
+            "search_leads": "تلاش لیڈز...",
+            "status_filter": "اسٹیٹس فلٹر",
+            "last_contacted": "آخری رابطہ",
+            "engagement_level": "منگنی",
+            "view_profile": "پروفائل دیکھیں",
+            "export_leads": "ایکسپورٹ لیڈز"
+        },
+        "replies": {
+            "inbox_activity": "ان باکس سرگرمی",
+            "ai_intent_detection": "AI ارادے کا پتہ لگانا",
+            "mark_as_interested": "دلچسپی کے طور پر نشان زد کریں",
+            "move_to_crm": "CRM پر جائیں",
+            "reply_content": "جوابی مواد",
+            "no_replies_yet": "پہلے جواب کا انتظار ہے..."
         }
     }
 }

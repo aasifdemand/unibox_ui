@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}}Unibox. Tous droits réservés.",
+        "layout": {
+            "login_title": "La façon la plus intelligente d'étendre votre portée",
+            "login_subtitle": "Accédez à votre boîte de réception unifiée, à un séquençage basé sur l'IA et à des analyses en temps réel. Rejoignez plus de 2 400 équipes qui ont déjà transformé leur moteur de croissance avec Unibox.",
+            "login_badge": "CONNEXION",
+            "signup_title": "Commencez votre voyage vers l’hyper-croissance",
+            "signup_subtitle": "Créez votre espace de travail en quelques secondes et débloquez toute la puissance de la sensibilisation automatisée. Aucune carte de crédit requise pour démarrer votre essai premium de 14 jours.",
+            "signup_badge": "COMMENCER",
+            "verify_title": "Sécurisez votre espace de travail Unibox",
+            "verify_subtitle": "Nous avons envoyé un lien d'authentification sécurisé à votre adresse e-mail. La vérification de votre identité garantit que vos données restent protégées dans notre coffre-fort crypté.",
+            "verify_badge": "VÉRIFICATION",
+            "verify_help": "Nous avons envoyé un e-mail de vérification à votre adresse. Veuillez vérifier votre boîte de réception et votre dossier spam. Le lien expirera dans 24 heures.",
+            "forgot_title": "Récupérez l'accès à votre compte",
+            "forgot_subtitle": "Entrez l'e-mail associé à votre compte Unibox et nous vous enverrons un lien sécurisé pour réinitialiser vos informations d'identification et retrouver l'accès à votre tableau de bord.",
+            "forgot_badge": "RÉINITIALISER LE MOT DE PASSE",
+            "forgot_help": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe. Vous pourrez créer un nouveau mot de passe en quelques minutes.",
+            "reset_title": "Concevez vos nouvelles informations d'identification",
+            "reset_subtitle": "Assurez-vous que votre espace de travail reste fortifié. Choisissez un mot de passe fort et unique pour sécuriser votre compte et reprendre vos opérations de sensibilisation.",
+            "reset_badge": "MISE À JOUR DU MOT DE PASSE",
+            "reset_help": "Assurez-vous que votre nouveau mot de passe est fort et sécurisé. Utilisez au moins 8 caractères avec un mélange de lettres, de chiffres et de symboles.",
+            "platform_live": "Plateforme en direct",
+            "title_main": "La façon la plus intelligente de",
+            "title_span": "mener des actions de sensibilisation",
+            "subtitle": "Unibox combine l'enrichissement de l'IA, le séquençage intelligent et une boîte de réception de réponse unifiée, le tout sur une seule plateforme.",
+            "trusted_by": "Approuvé par",
+            "teams": "équipes de sensibilisation"
+        },
         "login": {
             "title": "Bienvenue",
             "title_span": "Retour",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Ou inscrivez-vous avec",
             "already_account": "Vous avez déjà un compte ?",
             "sign_in_link": "Connectez-vous"
-        },
-        "layout": {
-            "platform_live": "Plateforme en direct",
-            "title_main": "La façon la plus intelligente de",
-            "title_span": "mener des actions de sensibilisation",
-            "subtitle": "Unibox combine l'enrichissement de l'IA, le séquençage intelligent et une boîte de réception de réponse unifiée, le tout sur une seule plateforme.",
-            "trusted_by": "Approuvé par",
-            "teams": "équipes de sensibilisation"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Campagne créée avec succès !",
         "err_create_failed": "Erreur lors de la création de la campagne : {{message}}",
         "create_campaign_btn": "Créer la campagne",
+        "steps": {
+            "setup": "Configuration",
+            "audience": "Public",
+            "design": "Conception",
+            "finalize": "Finaliser"
+        },
+        "design": {
+            "ai_modal_title": "Architecte de séquence IA",
+            "ai_modal_subtitle": "Décrivez votre objectif et notre IA locale ��laborera l'intégralité de votre séquence de campagne en plusieurs étapes.",
+            "goal_label": "Objectif de la campagne",
+            "goal_placeholder": "par exemple, faites la promotion de notre nouvel outil de référencement auprès des agences de marketing au Royaume-Uni...",
+            "tone_label": "Ton de voix",
+            "tone_professional": "Professionnel et audacieux",
+            "tone_casual": "Décontracté et convivial",
+            "tone_urgent": "Urgent et direct",
+            "sequence_length": "Longueur de la séquence",
+            "step_count": "{{count}} Séquence d'étapes",
+            "recommended": "Recommandé",
+            "generate_btn": "Générer une séquence",
+            "generating": "Architecture...",
+            "tips": "Conseils de personnalisation intelligents",
+            "tip_spintax": "Utilisez des accolades pour Spintax : {Salut|Bonjour|Hey}",
+            "tip_logic": "L'IA utilise {{#if}} pour des solutions de repli sécurisées de variables personnalisées.",
+            "tip_tags": "Balises système : {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Alerte de délivrabilité : données manquantes",
+            "health_alert_action": "Action requise",
+            "health_alert_desc": "Votre campagne utilise {{vars}}, mais ces champs ne figurent pas dans votre liste de prospects. L'envoi maintenant entraînera la création d'espaces vides, ce qui déclenchera des filtres anti-spam.",
+            "enrich_apollo": "Enrichissez avec Apollo",
+            "update_leads": "Mettre à jour la liste des prospects",
+            "quick_add": "Ajout rapide d'une variable",
+            "quick_add_placeholder": "par exemple, favorite_coffee",
+            "step_title": "Étape {{index}} : {{type}}",
+            "main_email": "E-mail principal",
+            "follow_up": "Suivi",
+            "add_step": "Ajouter une étape de suivi",
+            "delete_step": "Supprimer l'étape",
+            "time_of_day": "Heure de la journée",
+            "day_of_week": "Jour de la semaine"
+        },
         "step_contacts": "Contacts",
         "step_contacts_desc": "À qui envoyez-vous des e-mails ?",
         "step_content": "Contenu",
@@ -1326,6 +1383,71 @@
             "clay": {
                 "desc": "Synchronisez les données sortantes avec les tables Clay via leur API HTTP JSON."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analyse",
+            "overview": "Aperçu",
+            "content": "Contenu",
+            "recipients": "Destinataires",
+            "replies": "Réponses"
+        },
+        "analytics": {
+            "title": "Performances de la campagne",
+            "subtitle": "Mesures et tendances d'engagement en temps réel",
+            "realtime_monitoring": "Surveillance en temps réel",
+            "growth_insights": "Perspectives de croissance",
+            "delivery_score": "Score de livraison",
+            "engagement_pulse": "Impulsion d’engagement",
+            "conversion_ratio": "Taux de conversion",
+            "performance_summary": "Résumé des performances",
+            "engagement_over_time": "Engagement au fil du temps",
+            "hourly_performance": "Performance horaire",
+            "peak_engagement_window": "Fenêtre d’engagement maximale",
+            "top_subject_lines": "Principales lignes d'objet",
+            "best_performing_time": "Meilleur moment pour envoyer",
+            "open_rate_trend": "Tendance du taux d'ouverture",
+            "reply_distribution": "Distribution des réponses",
+            "sender_health": "Répartition de l’état de santé de l’expéditeur"
+        },
+        "overview": {
+            "campaign_id": "ID de campagne",
+            "created_on": "Créé le",
+            "last_activity": "Dernière activité",
+            "status_description": "État actuel de cette séquence",
+            "sending_schedule": "Calendrier d'envoi",
+            "assigned_mailboxes": "Boîtes aux lettres attribuées",
+            "total_leads": "Nombre total de prospects",
+            "active_now": "Actif maintenant",
+            "sequences_sent": "Séquences envoyées",
+            "campaign_objective": "Objectif de la campagne"
+        },
+        "content": {
+            "sequence_structure": "Structure de séquence",
+            "step_label": "Étape {{count}}",
+            "subject": "Sujet",
+            "body_preview": "Aperçu du corps",
+            "delay": "Retard",
+            "edit_sequence": "Modifier la séquence",
+            "view_spintax": "Voir les variations de Spintax"
+        },
+        "recipients": {
+            "all_contacts": "Tous les contacts",
+            "search_leads": "Rechercher des pistes...",
+            "status_filter": "Filtre d'état",
+            "last_contacted": "Dernier contacté",
+            "engagement_level": "Fiançailles",
+            "view_profile": "Voir le profil",
+            "export_leads": "Pistes d'exportation"
+        },
+        "replies": {
+            "inbox_activity": "Activité de la boîte de réception",
+            "ai_intent_detection": "Détection d'intention d'IA",
+            "mark_as_interested": "Marquer comme intéressé",
+            "move_to_crm": "Passer au CRM",
+            "reply_content": "Contenu de la réponse",
+            "no_replies_yet": "En attente d'une première réponse..."
         }
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Download, MessageCircle, Eye, Users, Mail, ShieldCheck } from 'lucide-react';
 
 const RecipientsTab = ({
@@ -8,6 +9,7 @@ const RecipientsTab = ({
   viewReply,
   setSelectedRecipientForPreview,
 }) => {
+  const { t } = useTranslation();
   const recipients = campaign.CampaignRecipients || [];
 
   const handleExportCsv = () => {
@@ -50,9 +52,9 @@ const RecipientsTab = ({
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-black text-slate-900 tracking-tight">Recipients</h3>
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.recipients.title', 'Recipients')}</h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                Manage campaign recipients
+                {t('campaigns.recipients.desc', 'Manage campaign recipients')}
               </p>
             </div>
           </div>
@@ -60,10 +62,10 @@ const RecipientsTab = ({
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-end ltr:mr-4 rtl:ml-4">
               <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest leading-none">
-                {stats.totalRecipients} Total
+                {t('campaigns.recipients.total_count', { count: stats.totalRecipients })}
               </span>
               <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                RECIPIENT COUNT
+                {t('campaigns.recipients.count_label', 'RECIPIENT COUNT')}
               </span>
             </div>
             <button
@@ -71,7 +73,7 @@ const RecipientsTab = ({
               className="h-11 px-6 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
-              Export CSV
+              {t('campaigns.recipients.export_csv', 'Export CSV')}
             </button>
           </div>
         </div>
@@ -84,27 +86,27 @@ const RecipientsTab = ({
               <tr className="border-b border-slate-100">
                 <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Recipient Info
+                    {t('campaigns.recipients.info_header', 'Recipient Info')}
                   </span>
                 </th>
                 <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Status
+                    {t('campaigns.recipients.status_header', 'Status')}
                   </span>
                 </th>
                 <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Last Sent
+                    {t('campaigns.recipients.last_sent_header', 'Last Sent')}
                   </span>
                 </th>
                 <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Replied At
+                    {t('campaigns.recipients.replied_at_header', 'Replied At')}
                   </span>
                 </th>
                 <th className="py-5 px-6 ltr:text-right rtl:text-left">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                    Actions
+                    {t('campaigns.recipients.actions_header', 'Actions')}
                   </span>
                 </th>
               </tr>
@@ -118,16 +120,16 @@ const RecipientsTab = ({
                         {recipient.email}
                       </span>
                       <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
-                        {recipient.name || 'N/A'}
+                        {recipient.name || t('campaigns.common.na', 'N/A')}
                       </span>
                     </div>
                   </td>
                   <td className="py-5 px-6">
-                    <RecipientStatusBadge status={recipient.status} />
+                    <RecipientStatusBadge status={recipient.status} t={t} />
                   </td>
                   <td className="py-5 px-6">
                     <span className="text-[11px] font-black text-slate-500 tabular-nums uppercase">
-                      {recipient.lastSentAt ? formatDate(recipient.lastSentAt) : 'Pending'}
+                      {recipient.lastSentAt ? formatDate(recipient.lastSentAt) : t('campaigns.recipients.status_pending', 'Pending')}
                     </span>
                   </td>
                   <td className="py-5 px-6">
@@ -143,11 +145,11 @@ const RecipientsTab = ({
                           className="h-8 px-4 bg-orange-50 text-orange-700 hover:bg-orange-100 rounded-md font-black uppercase tracking-widest text-[9px] transition-all flex items-center gap-1.5"
                         >
                           <Eye className="w-3.5 h-3.5" />
-                          View Reply
+                          {t('campaigns.recipients.view_reply', 'View Reply')}
                         </button>
                       ) : (
                         <div className="h-8 px-4 text-slate-300 font-black uppercase tracking-widest text-[9px] flex items-center">
-                          No Reply
+                          {t('campaigns.recipients.no_reply', 'No Reply')}
                         </div>
                       )}
                       <button
@@ -174,9 +176,9 @@ const RecipientsTab = ({
                 <ShieldCheck className="w-5 h-5 text-orange-200" />
               </div>
             </div>
-            <h4 className="text-xl font-black text-slate-900 tracking-tight">No Recipients</h4>
+            <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.recipients.empty_title', 'No Recipients')}</h4>
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
-              Recipients will appear here once the campaign starts sending.
+              {t('campaigns.recipients.empty_desc', 'Recipients will appear here once the campaign starts sending.')}
             </p>
           </div>
         )}
@@ -185,32 +187,32 @@ const RecipientsTab = ({
   );
 };
 
-const RecipientStatusBadge = ({ status }) => {
+const RecipientStatusBadge = ({ status, t }) => {
   const configs = {
     replied: {
       bg: 'bg-orange-50 text-orange-700 border-orange-100',
       icon: <MessageCircle className="w-3 h-3" />,
-      label: 'Replied',
+      label: t('campaigns.recipients.status_replied', 'Replied'),
     },
     sent: {
       bg: 'bg-orange-50 text-orange-700 border-orange-100',
       icon: <Mail className="w-3 h-3" />,
-      label: 'Sent',
+      label: t('campaigns.recipients.status_sent', 'Sent'),
     },
     bounced: {
       bg: 'bg-orange-50 text-orange-700 border-orange-100',
       icon: <ShieldCheck className="w-3 h-3" />,
-      label: 'Bounced',
+      label: t('campaigns.recipients.status_bounced', 'Bounced'),
     },
     failed: {
       bg: 'bg-red-50 text-red-700 border-red-100',
       icon: <ShieldCheck className="w-3 h-3" />,
-      label: 'Failed',
+      label: t('campaigns.recipients.status_failed', 'Failed'),
     },
     default: {
       bg: 'bg-slate-50 text-slate-500 border-slate-100',
       icon: <Users className="w-3 h-3" />,
-      label: 'Pending',
+      label: t('campaigns.recipients.status_pending', 'Pending'),
     },
   };
 

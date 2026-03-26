@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Mọi quyền được bảo lưu.",
+        "layout": {
+            "login_title": "Cách thông minh hơn để mở rộng phạm vi tiếp cận của bạn",
+            "login_subtitle": "Truy cập hộp thư đến hợp nhất của bạn, sắp xếp theo thứ tự được hỗ trợ bởi AI và phân tích theo thời gian thực. Tham gia cùng hơn 2.400 nhóm đã chuyển đổi động cơ tăng trưởng của họ với Unibox.",
+            "login_badge": "ĐĂNG NHẬP",
+            "signup_title": "Bắt đầu hành trình hướng tới siêu tăng trưởng",
+            "signup_subtitle": "Tạo không gian làm việc của bạn trong vài giây và khai thác toàn bộ sức mạnh của khả năng tiếp cận tự động. Không cần thẻ tín dụng để bắt đầu dùng thử cao cấp 14 ngày.",
+            "signup_badge": "BẮT ĐẦU",
+            "verify_title": "Bảo mật không gian làm việc Unibox của bạn",
+            "verify_subtitle": "Chúng tôi đã gửi liên kết xác thực an toàn đến địa chỉ email của bạn. Việc xác minh danh tính của bạn đảm bảo dữ liệu của bạn vẫn được bảo vệ trong kho tiền được mã hóa của chúng tôi.",
+            "verify_badge": "XÁC MINH",
+            "verify_help": "Chúng tôi đã gửi email xác minh đến địa chỉ của bạn. Vui lòng kiểm tra hộp thư đến và thư mục thư rác của bạn. Liên kết sẽ hết hạn sau 24 giờ.",
+            "forgot_title": "Khôi phục quyền truy cập tài khoản của bạn",
+            "forgot_subtitle": "Nhập email được liên kết với tài khoản Unibox của bạn và chúng tôi sẽ gửi cho bạn một liên kết an toàn để đặt lại thông tin đăng nhập và lấy lại quyền truy cập vào bảng điều khiển của bạn.",
+            "forgot_badge": "ĐẶT LẠI MẬT KHẨU",
+            "forgot_help": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu của bạn. Bạn sẽ có thể tạo mật khẩu mới trong vòng vài phút.",
+            "reset_title": "Thiết kế thông tin xác thực mới của bạn",
+            "reset_subtitle": "Đảm bảo không gian làm việc của bạn vẫn được củng cố. Chọn một mật khẩu mạnh, duy nhất để bảo mật tài khoản của bạn và tiếp tục các hoạt động tiếp cận cộng đồng của bạn.",
+            "reset_badge": "CẬP NHẬT MẬT KHẨU",
+            "reset_help": "Đảm bảo mật khẩu mới của bạn mạnh và an toàn. Sử dụng ít nhất 8 ký tự kết hợp giữa chữ cái, số và ký hiệu.",
+            "platform_live": "Nền t��ng trực tiếp",
+            "title_main": "Cách thông minh hơn để",
+            "title_span": "chạy tiếp cận",
+            "subtitle": "Unibox kết hợp khả năng làm giàu AI, sắp xếp thông minh và hộp thư trả lời thống nhất — tất cả trong một nền tảng.",
+            "trusted_by": "Được tin cậy bởi",
+            "teams": "đội tiếp cận"
+        },
         "login": {
             "title": "Chào mừng",
             "title_span": "Quay lại",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Hoặc đăng ký với",
             "already_account": "Đã có tài khoản?",
             "sign_in_link": "Đăng nhập"
-        },
-        "layout": {
-            "platform_live": "Nền t��ng trực tiếp",
-            "title_main": "Cách thông minh hơn để",
-            "title_span": "chạy tiếp cận",
-            "subtitle": "Unibox kết hợp khả năng làm giàu AI, sắp xếp thông minh và hộp thư trả lời thống nhất — tất cả trong một nền tảng.",
-            "trusted_by": "Được tin cậy bởi",
-            "teams": "đội tiếp cận"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Chiến dịch được tạo thành công!",
         "err_create_failed": "Lỗi tạo chiến dịch: {{message}}",
         "create_campaign_btn": "Tạo chiến dịch",
+        "steps": {
+            "setup": "Thiết lập",
+            "audience": "Khán giả",
+            "design": "Thiết kế",
+            "finalize": "Hoàn thiện"
+        },
+        "design": {
+            "ai_modal_title": "Kiến trúc sư trình tự AI",
+            "ai_modal_subtitle": "Hãy mô tả mục tiêu của bạn và AI địa phương của chúng tôi sẽ thiết kế toàn bộ chuỗi chiến dịch gồm nhiều bước của bạn.",
+            "goal_label": "Mục tiêu chiến dịch",
+            "goal_placeholder": "ví dụ: Quảng cáo công cụ SEO mới của chúng tôi tới các đại lý tiếp thị ở Vương quốc Anh...",
+            "tone_label": "Giọng nói",
+            "tone_professional": "Chuyên nghiệp & táo bạo",
+            "tone_casual": "Bình thường & Thân thiện",
+            "tone_urgent": "Khẩn cấp & Trực tiếp",
+            "sequence_length": "Độ dài chuỗi",
+            "step_count": "{{count}} Trình tự bước",
+            "recommended": "Khuyến khích",
+            "generate_btn": "Tạo chuỗi",
+            "generating": "Kiến trúc...",
+            "tips": "Mẹo cá nhân hóa thông minh",
+            "tip_spintax": "Sử dụng dấu ngoặc nhọn cho Spintax: {Hi|Hello|Hey}",
+            "tip_logic": "AI sử dụng {{#if}} để dự phòng biến tùy chỉnh an toàn.",
+            "tip_tags": "Thẻ hệ thống: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Cảnh báo về khả năng cung cấp: Thiếu dữ liệu",
+            "health_alert_action": "Hành động bắt buộc",
+            "health_alert_desc": "Chiến dịch của bạn sử dụng {{vars}}, nh��ng các trường này không có trong danh sách khách hàng tiềm năng của bạn. Việc gửi bây giờ sẽ dẫn đến các khoảng trống, điều này sẽ kích hoạt các bộ lọc thư rác.",
+            "enrich_apollo": "Làm giàu với Apollo",
+            "update_leads": "Cập nhật danh sách khách hàng tiềm năng",
+            "quick_add": "Thêm nhanh biến",
+            "quick_add_placeholder": "ví dụ: favorite_coffee",
+            "step_title": "Bước {{index}}: {{type}}",
+            "main_email": "Email chính",
+            "follow_up": "Theo dõi",
+            "add_step": "Thêm bước theo dõi",
+            "delete_step": "Xóa Bước",
+            "time_of_day": "Thời gian trong ngày",
+            "day_of_week": "Ngày trong tuần"
+        },
         "step_contacts": "Liên hệ",
         "step_contacts_desc": "Bạn đang gửi email cho ai?",
         "step_content": "Nội dung",
@@ -1058,7 +1115,7 @@
         "subtitle": "Chọn kế hoạch hoàn hảo cho nhu cầu tiếp cận của bạn. Mở rộng quy mô trò chơi email ngẫu nhiên của bạn mà không có giới hạn.",
         "custom_price": "Tùy chỉnh",
         "popular": "Lựa chọn phổ biến",
-        "per_user": "/mo",
+        "per_user": "/tháng",
         "billing_suffix": "mỗi người dùng / tháng",
         "custom_billing": "phù hợp với nhu cầu của bạn",
         "current_plan": "Gói hiện tại",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "Đồng bộ hóa dữ liệu gửi đi với các bảng Clay thông qua API JSON HTTP của chúng."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Phân tích",
+            "overview": "Tổng quan",
+            "content": "Nội dung",
+            "recipients": "Người nhận",
+            "replies": "Trả lời"
+        },
+        "analytics": {
+            "title": "Hiệu suất Chiến dịch",
+            "subtitle": "Số liệu và xu hướng tương tác theo thời gian thực",
+            "realtime_monitoring": "Giám sát thời gian thực",
+            "growth_insights": "Thông tin chi tiết về tăng trưởng",
+            "delivery_score": "Điểm giao hàng",
+            "engagement_pulse": "Xung tương tác",
+            "conversion_ratio": "Tỷ lệ chuyển đổi",
+            "performance_summary": "Tóm tắt hiệu suất",
+            "engagement_over_time": "Tương tác theo thời gian",
+            "hourly_performance": "Hiệu suất hàng giờ",
+            "peak_engagement_window": "Cửa sổ tương tác đỉnh cao",
+            "top_subject_lines": "Dòng chủ đề hàng đầu",
+            "best_performing_time": "Thời điểm tốt nhất để gửi",
+            "open_rate_trend": "Xu hướng tỷ lệ mở",
+            "reply_distribution": "Trả lời Phân phối",
+            "sender_health": "Phân tích tình trạng người gửi"
+        },
+        "overview": {
+            "campaign_id": "ID chiến dịch",
+            "created_on": "Được tạo vào ngày",
+            "last_activity": "Hoạt động cuối cùng",
+            "status_description": "Trạng thái hiện tại của chuỗi này",
+            "sending_schedule": "Lịch gửi",
+            "assigned_mailboxes": "Hộp thư được chỉ định",
+            "total_leads": "Tổng số khách hàng tiềm năng",
+            "active_now": "Đang hoạt động",
+            "sequences_sent": "Trình tự đã gửi",
+            "campaign_objective": "Mục tiêu chiến dịch"
+        },
+        "content": {
+            "sequence_structure": "Cấu trúc trình tự",
+            "step_label": "Bước {{count}}",
+            "subject": "Chủ đề",
+            "body_preview": "Xem trước cơ thể",
+            "delay": "Trì hoãn",
+            "edit_sequence": "Chỉnh sửa trình tự",
+            "view_spintax": "Xem các biến thể Spintax"
+        },
+        "recipients": {
+            "all_contacts": "Tất cả liên hệ",
+            "search_leads": "Tìm kiếm khách hàng tiềm năng...",
+            "status_filter": "Bộ lọc trạng thái",
+            "last_contacted": "Liên hệ lần cuối",
+            "engagement_level": "Tương tác",
+            "view_profile": "Xem hồ sơ",
+            "export_leads": "Đầu mối xuất khẩu"
+        },
+        "replies": {
+            "inbox_activity": "Hoạt động hộp thư đến",
+            "ai_intent_detection": "Phát hiện ý định AI",
+            "mark_as_interested": "Đánh dấu là quan tâm",
+            "move_to_crm": "Chuyển sang CRM",
+            "reply_content": "Trả lời Nội dung",
+            "no_replies_yet": "Đang chờ phản hồi đầu tiên..."
         }
     }
 }

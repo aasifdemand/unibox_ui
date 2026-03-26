@@ -6,7 +6,6 @@ import {
   Plus,
   LayoutDashboard,
   RefreshCw,
-  Loader2,
   X,
   Palette,
   Globe,
@@ -15,7 +14,6 @@ import {
   Target,
   Trash2,
 } from 'lucide-react';
-import { SkeletonLoader } from '../../../components/ui/loading-spinner';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   DndContext,
@@ -57,7 +55,7 @@ const SortableLeadCard = ({ lead, onOpen }) => {
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0">
       <LeadCard
         lead={lead}
-        onClick={(e) => {
+        onClick={() => {
           if (!isDragging) onOpen(lead);
         }}
       />
@@ -66,12 +64,12 @@ const SortableLeadCard = ({ lead, onOpen }) => {
 };
 
 // ─── Droppable Column ─────────────────────────────────────────────────────────
-const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories, activeId }) => {
+const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
   const leadIds = stage.leads.map((l) => l.id);
   const { t } = useTranslation()
 
   return (
-    <div tabIndex={-1} className="w-[300px] flex-shrink-0 flex flex-col h-full bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden outline-none focus:outline-none focus:ring-0">
+    <div tabIndex={-1} className="w-[300px] shrink-0 flex flex-col h-full bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden outline-none focus:outline-none focus:ring-0">
       {/* Stage Header */}
       <div
         className="p-4 flex items-center justify-between bg-slate-50 border-b border-slate-200"
@@ -82,7 +80,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories, activeId }
             className="w-2 h-2 rounded-full shadow-sm"
             style={{ backgroundColor: stage.color || '#e11d48' }}
           />
-          <h3 className="text-[11px] font-black text-slate-800 tracking-[0.1em] uppercase">
+          <h3 className="text-[11px] font-black text-slate-800 tracking-widest uppercase">
             {t(`crm.stages.${stage.name.toLowerCase().replace(/ /g, '_')}`, stage.name)}
           </h3>
           <span className="bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg text-[10px] font-black shadow-sm">
@@ -259,7 +257,7 @@ const CRMIntegration = () => {
         <div className="h-full border border-slate-200 rounded-lg bg-white p-6 overflow-hidden">
           <div className="flex gap-5 h-full">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-[300px] flex-shrink-0 flex flex-col h-full border border-slate-100 rounded-lg overflow-hidden">
+              <div key={i} className="w-[300px] shrink-0 flex flex-col h-full border border-slate-100 rounded-lg overflow-hidden">
                 <div className="h-14 bg-slate-50 border-b border-slate-100 p-4 shrink-0" />
                 <div className="p-4 space-y-4 flex-1 bg-slate-50/20">
                   {[1, 2, 3].map((j) => (
@@ -406,7 +404,7 @@ const CRMIntegration = () => {
               {pipeline.length > 0 && (
                 <div
                   onClick={() => setIsAddStageOpen(true)}
-                  className="w-[260px] flex-shrink-0 h-full border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-4 hover:bg-white hover:border-orange-300 transition-all cursor-pointer group bg-slate-50/40"
+                  className="w-[260px] shrink-0 h-full border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-4 hover:bg-white hover:border-orange-300 transition-all cursor-pointer group bg-slate-50/40"
                 >
                   <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-slate-300 group-hover:text-orange-600 shadow-sm transition-all border border-slate-100 group-hover:scale-110">
                     <Plus className="w-8 h-8" />
@@ -447,123 +445,140 @@ const CRMIntegration = () => {
       {/* Add Column Modal */}
       <AnimatePresence>
         {isAddStageOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsAddStageOpen(false)}
-              className="absolute inset-0 bg-slate-900/40 "
+              className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
             />
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 30 }}
+              initial={{ scale: 0.9, opacity: 0, y: 40 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 30 }}
-              className="relative w-full max-w-lg bg-white rounded-[24px] overflow-hidden shadow-[0_24px_48px_-8px_rgba(0,0,0,0.15)] border border-slate-100"
+              exit={{ scale: 0.9, opacity: 0, y: 40 }}
+              className="relative w-full max-w-lg bg-white rounded-[32px] overflow-hidden shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] border border-slate-100"
             >
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-lg font-black text-slate-800 tracking-tight">
-                    {t('crm.add_column_modal_title', 'Add New Column')}
-                  </h2>
+              {/* Header Decorative Element */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-orange-500 via-amber-500 to-orange-600" />
+              
+              <div className="p-10">
+                <div className="flex items-center justify-between mb-10">
+                  <div className="space-y-1">
+                    <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none">
+                      {t('crm.add_column_modal_title', 'Add New Column')}
+                    </h2>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                      Pipeline Configuration
+                    </p>
+                  </div>
                   <button
                     onClick={() => setIsAddStageOpen(false)}
-                    className="w-8 h-8 rounded-full hover:bg-slate-50 flex items-center justify-center transition-all group"
+                    className="w-10 h-10 rounded-2xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
                   >
-                    <X className="w-4 h-4 text-slate-400 group-hover:text-slate-800" />
+                    <X className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
                   </button>
                 </div>
 
-                <form onSubmit={handleAddStage} className="space-y-8">
-                  <div>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 block">
-                      {t('crm.select_color_label', 'Select Column Color')}
-                    </label>
-                    <p className="text-[11px] font-bold text-slate-400 mb-4 tracking-tight">
-                      Name and color help identify this stage in your pipeline.
-                    </p>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 block">
-                      {t('crm.column_name_label', 'Column Name')}
-                    </label>
-                    <div className="flex gap-3">
-                      <input
-                        type="text"
-                        value={newStageName}
-                        onChange={(e) => setNewStageName(e.target.value)}
-                        placeholder={t('crm.column_name_placeholder', 'e.g., Qualified Leads')}
-                        className="flex-1 px-5 py-3.5 bg-white border border-slate-200 rounded-md text-sm font-bold placeholder:text-slate-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all outline-none"
-                      />
-                      <div className="relative group">
-                        <button
-                          type="button"
-                          className="w-14 h-14 rounded-md border border-slate-200 flex items-center justify-center shadow-sm overflow-hidden"
-                          style={{ backgroundColor: newStageColor }}
-                        >
-                          <Palette
-                            className={`w-5 h-5 ${newStageColor === '#ffffff' ? 'text-slate-400' : 'text-white drop-shadow-md'}`}
+                <form onSubmit={handleAddStage} className="space-y-10">
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">
+                        {t('crm.column_name_label', 'Column Name')}
+                      </label>
+                      <div className="flex gap-4">
+                        <div className="flex-1 relative group">
+                          <input
+                            type="text"
+                            value={newStageName}
+                            onChange={(e) => setNewStageName(e.target.value)}
+                            placeholder={t('crm.column_name_placeholder', 'e.g., Qualified Leads')}
+                            className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:border-orange-500/50 focus:bg-white focus:ring-8 focus:ring-orange-500/5 transition-all outline-none"
+                            autoFocus
                           />
-                        </button>
-                        <div className="absolute top-full right-0 mt-3 p-3 bg-white border border-slate-200 rounded-lg shadow-sm hidden group-hover:grid grid-cols-4 gap-2 z-50">
-                          {[
-                            '#e11d48',
-                            '#ef4444',
-                            '#10b981',
-                            '#f59e0b',
-                            '#a855f7',
-                            '#e11d48',
-                            '#ff4081',
-                            '#64748b',
-                          ].map((c) => (
-                            <button
-                              key={c}
-                              type="button"
-                              onClick={() => setNewStageColor(c)}
-                              className="w-6 h-6 rounded-lg shadow-inner ring-2 ring-white"
-                              style={{ backgroundColor: c }}
+                        </div>
+                        <div className="relative group/picker">
+                          <button
+                            type="button"
+                            className="w-14 h-14 rounded-2xl border-2 border-slate-100 flex items-center justify-center shadow-sm overflow-hidden transition-all hover:scale-105 active:scale-95 hover:border-orange-200"
+                            style={{ backgroundColor: newStageColor }}
+                          >
+                            <Palette
+                              className={`w-6 h-6 ${
+                                ['#ffffff', '#f8fafc', '#f1f5f9'].includes(newStageColor.toLowerCase()) 
+                                  ? 'text-slate-400' 
+                                  : 'text-white drop-shadow-md'
+                              }`}
                             />
-                          ))}
+                          </button>
+                          <div className="absolute top-full right-0 mt-4 p-4 bg-white border border-slate-100 rounded-2xl shadow-2xl hidden group-hover/picker:grid grid-cols-4 gap-3 z-110 animate-in fade-in zoom-in-95 duration-200">
+                            {[
+                              '#f97316', // unibox orange
+                              '#f59e0b', // amber
+                              '#ef4444', // red
+                              '#8b5cf6', // violet
+                              '#3b82f6', // blue
+                              '#10b981', // emerald
+                              '#06b6d4', // cyan
+                              '#64748b', // slate
+                            ].map((c) => (
+                              <button
+                                key={c}
+                                type="button"
+                                onClick={() => setNewStageColor(c)}
+                                className={`w-8 h-8 rounded-xl shadow-inner transition-transform hover:scale-110 active:scale-90 ring-2 ring-white ${newStageColor === c ? 'ring-offset-2 ring-orange-500 scale-110' : ''}`}
+                                style={{ backgroundColor: c }}
+                              />
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">
-                      {t('crm.link_intent_label', 'Link to AI Intent (Optional)')}
-                    </label>
-                    <p className="text-[10px] font-medium text-slate-400 mb-4 tracking-tight">
-                      {t('crm.link_intent_desc', 'Leads with this intent will move here automatically')}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between px-1">
+                      <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                        {t('crm.link_intent_label', 'Link to AI Intent')}
+                      </label>
+                      <span className="text-[10px] font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md uppercase">
+                        Optional
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-bold text-slate-400 mb-2 leading-relaxed">
+                      {t('crm.link_intent_desc', 'Leads with this intent will move here automatically.')}
                     </p>
                     <div className="relative group/select">
                       <select
                         value={newReplyCategory}
                         onChange={(e) => setNewReplyCategory(e.target.value)}
-                        className="w-full h-14 pl-5 pr-12 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all appearance-none cursor-pointer"
+                        className="w-full h-14 pl-6 pr-12 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 outline-none focus:ring-8 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white transition-all appearance-none cursor-pointer"
                       >
-                        <option value="">{t('crm.select_intent_placeholder', 'Select an intent...')}</option>
+                        <option value="">{t('crm.select_intent_placeholder', 'Select an automated intent...')}</option>
                         {categories.map((cat) => (
                           <option key={cat.id} value={cat.id}>
                             {cat.name}
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none group-focus-within/select:text-orange-500 transition-colors" />
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4 pt-4">
                     <button
+                      type="button"
                       onClick={() => setIsAddStageOpen(false)}
-                      className="flex-1 h-14 rounded-2xl text-xs font-black tracking-widest text-slate-500 hover:bg-slate-50 transition-all active:scale-95"
+                      className="flex-1 h-14 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all active:scale-95"
                     >
                       {t('crm.cancel_btn', 'Cancel')}
                     </button>
                     <button
                       type="submit"
                       disabled={addStageMutation.isPending || !newStageName.trim()}
-                      className="flex-2 h-14 px-8 bg-slate-900 text-white rounded-2xl text-xs font-black tracking-widest shadow-sm shadow-slate-900/20 hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100"
+                      className="flex-2 h-14 bg-orange-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-orange-600/20 hover:bg-orange-700 hover:translate-y-[-2px] transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100"
                     >
-                      {addStageMutation.isPending ? 'Creating...' : t('crm.add_column_btn', 'Add Column')}
+                      {addStageMutation.isPending ? 'Creating Stage...' : t('crm.add_column_btn', 'Add Column')}
                     </button>
                   </div>
                 </form>

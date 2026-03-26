@@ -1,15 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Edit, Trash2, Play, Pause, Download, Loader2, Rocket } from 'lucide-react';
 
-const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getStatusBadge }) => {
+const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getStatusBadge, stats }) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 animate-in fade-in slide-in-from-top-4 duration-700">
       <div className="flex items-center gap-6">
         <Link
           to="/dashboard/campaigns"
           className="group relative w-12 h-12 flex items-center justify-center bg-white border border-slate-200 rounded-lg hover:border-orange-500 hover:shadow-sm hover:shadow-orange-500/10 transition-all duration-300 active:scale-95"
-          title="Back to Campaigns"
+          title={t('campaigns.header.back_to_campaigns', 'Back to Campaigns')}
         >
           <ArrowLeft className="w-5 h-5 text-slate-400 group-hover:text-orange-600 transition-colors" />
         </Link>
@@ -22,7 +24,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
-              Subject:
+              {t('campaigns.header.subject_label', 'Subject')}:
             </span>
             <p className="text-sm font-bold text-slate-500 tracking-tight">{previews.subject}</p>
           </div>
@@ -42,7 +44,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             ) : (
               <Rocket className="w-4 h-4" />
             )}
-            Start Campaign
+            {t('campaigns.header.start_campaign', 'Start Campaign')}
           </button>
         )}
 
@@ -57,7 +59,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             ) : (
               <Pause className="w-4 h-4" />
             )}
-            Pause
+            {t('campaigns.header.pause', 'Pause')}
           </button>
         )}
 
@@ -72,7 +74,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             ) : (
               <Play className="w-4 h-4" />
             )}
-            Resume
+            {t('campaigns.header.resume', 'Resume')}
           </button>
         )}
 
@@ -82,7 +84,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all"
           >
             <Edit className="w-4 h-4" />
-            Edit
+            {t('campaigns.header.edit', 'Edit')}
           </Link>
         )}
 
@@ -96,14 +98,14 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           ) : (
             <Trash2 className="w-4 h-4" />
           )}
-          Delete
+          {t('campaigns.header.delete', 'Delete')}
         </button>
 
         <button
           onClick={() => {
             const csvContent =
               'data:text/csv;charset=utf-8,' +
-              'Campaign Name,Status,Total Recipients,Sent,Opened,Clicked,Replied,Bounced,Unsubscribed\n' +
+              `${t('campaigns.header.csv_name', 'Campaign Name')},${t('campaigns.header.csv_status', 'Status')},${t('campaigns.header.csv_total', 'Total Recipients')},${t('campaigns.header.csv_sent', 'Sent')},${t('campaigns.header.csv_opened', 'Opened')},${t('campaigns.header.csv_clicked', 'Clicked')},${t('campaigns.header.csv_replied', 'Replied')},${t('campaigns.header.csv_bounced', 'Bounced')},${t('campaigns.header.csv_unsubscribed', 'Unsubscribed')}\n` +
               `"${previews.campaignName}",${campaign.status},${stats.totalRecipients},${stats.totalSent},${stats.totalOpened},${stats.totalClicked},${stats.totalReplied},${stats.totalBounced || 0},${stats.totalUnsubscribed || 0}`;
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement('a');
@@ -113,7 +115,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             link.click();
             document.body.removeChild(link);
           }}
-          title="Export Stats to CSV"
+          title={t('campaigns.header.export_stats', 'Export Stats to CSV')}
           className="w-12 h-12 flex items-center justify-center bg-white border border-slate-200 text-slate-400 hover:text-slate-900 rounded-lg transition-all shadow-sm"
         >
           <Download className="w-5 h-5" />

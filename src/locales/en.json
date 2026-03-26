@@ -464,7 +464,46 @@
         "err_content_req": "Email content is required",
         "msg_campaign_created": "Campaign created successfully!",
         "err_create_failed": "Error creating campaign: {{message}}",
-        "create_campaign_btn": "Create Campaign"
+        "create_campaign_btn": "Create Campaign",
+        "steps": {
+            "setup": "Setup",
+            "audience": "Audience",
+            "design": "Design",
+            "finalize": "Finalize"
+        },
+        "design": {
+            "ai_modal_title": "AI Sequence Architect",
+            "ai_modal_subtitle": "Describe your goal, and our local AI will architect your entire multi-step campaign sequence.",
+            "goal_label": "Campaign Goal",
+            "goal_placeholder": "e.g., Promote our new SEO tool to marketing agencies in the UK...",
+            "tone_label": "Tone of Voice",
+            "tone_professional": "Professional & Bold",
+            "tone_casual": "Casual & Friendly",
+            "tone_urgent": "Urgent & Direct",
+            "sequence_length": "Sequence Length",
+            "step_count": "{{count}} Step Sequence",
+            "recommended": "Recommended",
+            "generate_btn": "Generate Sequence",
+            "generating": "Architecting...",
+            "tips": "Smart Personalization Tips",
+            "tip_spintax": "Use curly braces for Spintax: {Hi|Hello|Hey}",
+            "tip_logic": "AI uses {{#if}} for safe custom variable fallbacks.",
+            "tip_tags": "System tags: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Deliverability Alert: Missing Data",
+            "health_alert_action": "Action Required",
+            "health_alert_desc": "Your campaign uses {{vars}}, but these fields aren't in your lead list. Sending now will result in blank spaces, which triggers spam filters.",
+            "enrich_apollo": "Enrich with Apollo",
+            "update_leads": "Update Lead List",
+            "quick_add": "Quick Add Variable",
+            "quick_add_placeholder": "e.g., favorite_coffee",
+            "step_title": "Step {{index}}: {{type}}",
+            "main_email": "Main Email",
+            "follow_up": "Follow-up",
+            "add_step": "Add Follow-up Step",
+            "delete_step": "Delete Step",
+            "time_of_day": "Time of Day",
+            "day_of_week": "Day of Week"
+        }
     },
     "dashboard": {
         "header_title": "Main",
@@ -1302,6 +1341,71 @@
             "clay": {
                 "desc": "Sync outbound data to Clay tables via their JSON HTTP API."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analytics",
+            "overview": "Overview",
+            "content": "Content",
+            "recipients": "Recipients",
+            "replies": "Replies"
+        },
+        "analytics": {
+            "title": "Campaign Performance",
+            "subtitle": "Real-time engagement metrics and trends",
+            "realtime_monitoring": "Real-time Monitoring",
+            "growth_insights": "Growth Insights",
+            "delivery_score": "Delivery Score",
+            "engagement_pulse": "Engagement Pulse",
+            "conversion_ratio": "Conversion Ratio",
+            "performance_summary": "Performance Summary",
+            "engagement_over_time": "Engagement Over Time",
+            "hourly_performance": "Hourly Performance",
+            "peak_engagement_window": "Peak Engagement Window",
+            "top_subject_lines": "Top Subject Lines",
+            "best_performing_time": "Best time to send",
+            "open_rate_trend": "Open Rate Trend",
+            "reply_distribution": "Reply Distribution",
+            "sender_health": "Sender Health Breakdown"
+        },
+        "overview": {
+            "campaign_id": "Campaign ID",
+            "created_on": "Created On",
+            "last_activity": "Last Activity",
+            "status_description": "Current state of this sequence",
+            "sending_schedule": "Sending Schedule",
+            "assigned_mailboxes": "Assigned Mailboxes",
+            "total_leads": "Total Leads",
+            "active_now": "Active Now",
+            "sequences_sent": "Sequences Sent",
+            "campaign_objective": "Campaign Objective"
+        },
+        "content": {
+            "sequence_structure": "Sequence Structure",
+            "step_label": "Step {{count}}",
+            "subject": "Subject",
+            "body_preview": "Body Preview",
+            "delay": "Delay",
+            "edit_sequence": "Edit Sequence",
+            "view_spintax": "View Spintax Variations"
+        },
+        "recipients": {
+            "all_contacts": "All Contacts",
+            "search_leads": "Search leads...",
+            "status_filter": "Status Filter",
+            "last_contacted": "Last Contacted",
+            "engagement_level": "Engagement",
+            "view_profile": "View Profile",
+            "export_leads": "Export Leads"
+        },
+        "replies": {
+            "inbox_activity": "Inbox Activity",
+            "ai_intent_detection": "AI Intent Detection",
+            "mark_as_interested": "Mark as Interested",
+            "move_to_crm": "Move to CRM",
+            "reply_content": "Reply Content",
+            "no_replies_yet": "Waiting for first response..."
         }
     }
 }

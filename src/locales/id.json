@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Semua hak dilindungi undang-undang.",
+        "layout": {
+            "login_title": "Cara yang lebih cerdas untuk meningkatkan jangkauan Anda",
+            "login_subtitle": "Akses kotak masuk terpadu Anda, pengurutan yang didukung AI, dan analisis waktu nyata. Bergabunglah dengan 2.400+ tim yang telah mengubah mesin pertumbuhan mereka dengan Unibox.",
+            "login_badge": "MASUK",
+            "signup_title": "Mulailah perjalanan Anda menuju pertumbuhan hiper",
+            "signup_subtitle": "Ciptakan ruang kerja Anda dalam hitungan detik dan dapatkan manfaat penuh dari penjangkauan otomatis. Tidak diperlukan kartu kredit untuk memulai uji coba premium 14 hari Anda.",
+            "signup_badge": "MULAI",
+            "verify_title": "Amankan ruang kerja Unibox Anda",
+            "verify_subtitle": "Kami telah mengirimkan tautan autentikasi aman ke alamat email Anda. Memverifikasi identitas Anda memastikan data Anda tetap terlindungi dalam brankas terenkripsi kami.",
+            "verify_badge": "VERIFIKASI",
+            "verify_help": "Kami telah mengirimkan email verifikasi ke alamat Anda. Silakan periksa kotak masuk dan folder spam Anda. Tautan akan kedaluwarsa dalam 24 jam.",
+            "forgot_title": "Pulihkan akses akun Anda",
+            "forgot_subtitle": "Masukkan email yang terkait dengan akun Unibox Anda dan kami akan mengirimkan Anda tautan aman untuk mengatur ulang kredensial Anda dan mendapatkan kembali akses ke dasbor Anda.",
+            "forgot_badge": "RESET KATA SANDI",
+            "forgot_help": "Masukkan alamat email Anda dan kami akan mengirimkan Anda tautan untuk mengatur ulang kata sandi Anda. Anda akan dapat membuat kata sandi baru dalam beberapa menit.",
+            "reset_title": "Rancang kredensial baru Anda",
+            "reset_subtitle": "Pastikan ruang kerja Anda tetap terlindungi. Pilih kata sandi yang kuat dan unik untuk mengamankan akun Anda dan melanjutkan operasi penjangkauan Anda.",
+            "reset_badge": "PERBARUI SANDI",
+            "reset_help": "Pastikan kata sandi baru Anda kuat dan aman. Gunakan minimal 8 karakter dengan campuran huruf, angka, dan simbol.",
+            "platform_live": "Platform Langsung",
+            "title_main": "Cara yang lebih cerdas untuk",
+            "title_span": "menjalankan sosialisasi",
+            "subtitle": "Unibox menggabungkan pengayaan AI, pengurutan cerdas, dan kotak masuk balasan terpadu — semuanya dalam satu platform.",
+            "trusted_by": "Dipercaya oleh",
+            "teams": "tim penjangkauan"
+        },
         "login": {
             "title": "Selamat datang",
             "title_span": "Kembali",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Atau daftar dengan",
             "already_account": "Sudah punya akun?",
             "sign_in_link": "Masuk"
-        },
-        "layout": {
-            "platform_live": "Platform Langsung",
-            "title_main": "Cara yang lebih cerdas untuk",
-            "title_span": "menjalankan sosialisasi",
-            "subtitle": "Unibox menggabungkan pengayaan AI, pengurutan cerdas, dan kotak masuk balasan terpadu — semuanya dalam satu platform.",
-            "trusted_by": "Dipercaya oleh",
-            "teams": "tim penjangkauan"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Kampanye berhasil dibuat!",
         "err_create_failed": "Kesalahan saat membuat kampanye: {{message}}",
         "create_campaign_btn": "Buat Kampanye",
+        "steps": {
+            "setup": "Pengaturan",
+            "audience": "Hadirin",
+            "design": "Desain",
+            "finalize": "Selesaikan"
+        },
+        "design": {
+            "ai_modal_title": "Arsitek Urutan AI",
+            "ai_modal_subtitle": "Jelaskan tujuan Anda, dan AI lokal kami akan merancang seluruh rangkaian kampanye multi-langkah Anda.",
+            "goal_label": "Sasaran Kampanye",
+            "goal_placeholder": "misalnya, Promosikan alat SEO baru kami ke agen pemasaran di Inggris...",
+            "tone_label": "Nada Suara",
+            "tone_professional": "Profesional & Berani",
+            "tone_casual": "Santai & Ramah",
+            "tone_urgent": "Mendesak & Langsung",
+            "sequence_length": "Panjang Urutan",
+            "step_count": "{{count}} Urutan Langkah",
+            "recommended": "Direkomendasikan",
+            "generate_btn": "Hasilkan Urutan",
+            "generating": "Arsitek...",
+            "tips": "Tips Personalisasi Cerdas",
+            "tip_spintax": "Gunakan kurung kurawal untuk Spintax: {Hi|Halo|Hai}",
+            "tip_logic": "AI menggunakan {{#if}} untuk penggantian variabel khusus yang aman.",
+            "tip_tags": "Tag sistem: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Peringatan Keterkiriman: Data Hilang",
+            "health_alert_action": "Diperlukan Tindakan",
+            "health_alert_desc": "Kampanye Anda menggunakan {{vars}}, namun bidang ini tidak ada dalam daftar prospek Anda. Mengirim sekarang akan menghasilkan ruang kosong, yang memicu filter spam.",
+            "enrich_apollo": "Perkaya dengan Apollo",
+            "update_leads": "Perbarui Daftar Prospek",
+            "quick_add": "Tambahkan Variabel Cepat",
+            "quick_add_placeholder": "misalnya, kopi_favorit",
+            "step_title": "Langkah {{index}}: {{type}}",
+            "main_email": "Email Utama",
+            "follow_up": "Tindak lanjut",
+            "add_step": "Tambahkan Langkah Tindak Lanjut",
+            "delete_step": "Hapus Langkah",
+            "time_of_day": "Waktu Hari",
+            "day_of_week": "Hari dalam Seminggu"
+        },
         "step_contacts": "Kontak",
         "step_contacts_desc": "Siapa yang Anda kirimi email?",
         "step_content": "Konten",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "Sinkronkan data keluar ke tabel Clay melalui API HTTP JSON-nya."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analisis",
+            "overview": "Ikhtisar",
+            "content": "Konten",
+            "recipients": "Penerima",
+            "replies": "Balasan"
+        },
+        "analytics": {
+            "title": "Kinerja Kampanye",
+            "subtitle": "Metrik dan tren keterlibatan waktu nyata",
+            "realtime_monitoring": "Pemantauan Waktu Nyata",
+            "growth_insights": "Wawasan Pertumbuhan",
+            "delivery_score": "Skor Pengiriman",
+            "engagement_pulse": "Pulsa Keterlibatan",
+            "conversion_ratio": "Rasio Konversi",
+            "performance_summary": "Ringkasan Kinerja",
+            "engagement_over_time": "Keterlibatan Seiring Waktu",
+            "hourly_performance": "Kinerja Setiap Jam",
+            "peak_engagement_window": "Jendela Keterlibatan Puncak",
+            "top_subject_lines": "Baris Subjek Teratas",
+            "best_performing_time": "Waktu terbaik untuk mengirim",
+            "open_rate_trend": "Tren Tarif Terbuka",
+            "reply_distribution": "Distribusi Balasan",
+            "sender_health": "Gangguan Kesehatan Pengirim"
+        },
+        "overview": {
+            "campaign_id": "ID Kampanye",
+            "created_on": "Dibuat Pada",
+            "last_activity": "Aktivitas Terakhir",
+            "status_description": "Keadaan saat ini dari urutan ini",
+            "sending_schedule": "Jadwal Pengiriman",
+            "assigned_mailboxes": "Kotak Surat yang Ditugaskan",
+            "total_leads": "Total Prospek",
+            "active_now": "Aktif Sekarang",
+            "sequences_sent": "Urutan Dikirim",
+            "campaign_objective": "Tujuan Kampanye"
+        },
+        "content": {
+            "sequence_structure": "Struktur Urutan",
+            "step_label": "Langkah {{count}}",
+            "subject": "Subyek",
+            "body_preview": "Pratinjau Tubuh",
+            "delay": "Penundaan",
+            "edit_sequence": "Edit Urutan",
+            "view_spintax": "Lihat Variasi Spintax"
+        },
+        "recipients": {
+            "all_contacts": "Semua Kontak",
+            "search_leads": "Petunjuk pencarian...",
+            "status_filter": "Filter Status",
+            "last_contacted": "Terakhir Dihubungi",
+            "engagement_level": "Keterlibatan",
+            "view_profile": "Lihat Profil",
+            "export_leads": "Ekspor Prospek"
+        },
+        "replies": {
+            "inbox_activity": "Aktivitas Kotak Masuk",
+            "ai_intent_detection": "Deteksi Niat AI",
+            "mark_as_interested": "Tandai sebagai Tertarik",
+            "move_to_crm": "Pindah ke CRM",
+            "reply_content": "Balasan Konten",
+            "no_replies_yet": "Menunggu respon pertama..."
         }
     }
 }

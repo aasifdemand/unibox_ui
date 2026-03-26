@@ -84,6 +84,32 @@
     },
     "auth": {
         "copyright": "© {{year}} Unibox. Tüm hakları saklıdır.",
+        "layout": {
+            "login_title": "Erişiminizi ölçeklendirmenin daha akıllı yolu",
+            "login_subtitle": "Birleşik gelen kutunuza, yapay zeka destekli sıralamaya ve gerçek zamanlı analizlere erişin. Büyüme motorlarını Unibox ile dönüştürmüş olan 2.400'den fazla ekibe katılın.",
+            "login_badge": "OTURUM AÇ",
+            "signup_title": "Hiper büyümeye doğru yolculuğunuza başlayın",
+            "signup_subtitle": "Çalışma alanınızı saniyeler içinde oluşturun ve otomatik desteğin tüm gücünün kilidini açın. 14 günlük premium denemenizi başlatmak için kredi kartı gerekmez.",
+            "signup_badge": "BAŞLAYIN",
+            "verify_title": "Unibox çalışma alanınızı güvence altına alın",
+            "verify_subtitle": "E-posta adresinize güvenli bir kimlik doğrulama bağlantısı gönderdik. Kimliğinizi doğrulamak, verilerinizin şifrelenmiş kasamızda korunmasını sağlar.",
+            "verify_badge": "DOĞRULAMA",
+            "verify_help": "Adresinize bir doğrulama e-postası gönderdik. Lütfen gelen kutunuzu ve spam klasörünüzü kontrol edin. Bağlantının süresi 24 saat içinde dolacaktır.",
+            "forgot_title": "Hesap erişiminizi kurtarın",
+            "forgot_subtitle": "Unibox hesabınızla ilişkili e-postayı girin; kimlik bilgilerinizi sıfırlamanız ve kontrol panelinize yeniden erişim kazanmanız için size güvenli bir bağlantı göndereceğiz.",
+            "forgot_badge": "ŞİFREYİ SIFIRLAYIN",
+            "forgot_help": "E-posta adresinizi girin, size şifrenizi sıfırlamanız için bir bağlantı göndereceğiz. Birkaç dakika içinde yeni bir şifre oluşturabileceksiniz.",
+            "reset_title": "Yeni kimlik bilgilerinizi tasarlayın",
+            "reset_subtitle": "Çalışma alanınızın güçlendirilmiş kalmasını sağlayın. Hesabınızın güvenliğini sağlamak ve sosyal yardım operasyonlarınızı sürdürmek için güçlü, benzersiz bir şifre seçin.",
+            "reset_badge": "ŞİFREYİ GÜNCELLE",
+            "reset_help": "Yeni şifrenizin güçlü ve güvenli olduğundan emin olun. Harf, rakam ve simgelerin karışımından oluşan en az 8 karakter kullanın.",
+            "platform_live": "Platform Canlı",
+            "title_main": "The smarter way to",
+            "title_span": "'e ulaşmanın daha akıllı yolu sosyal yardım çalıştırın",
+            "subtitle": "Unibox, yapay zeka zenginleştirmesini, akıllı sıralamayı ve birleşik yanıt gelen kutusunu tek bir platformda birleştirir.",
+            "trusted_by": "'e ulaşmanın daha akıllı yolu",
+            "teams": "tarafından güvenilen sosyal yardım ekipleri"
+        },
         "login": {
             "title": "Hoş Geldiniz",
             "title_span": "",
@@ -126,14 +152,6 @@
             "or_sign_up_with": "Veya şununla üye ol",
             "already_account": "Zaten hesabınız var mı?",
             "sign_in_link": "Giriş yap"
-        },
-        "layout": {
-            "platform_live": "Platform Canlı",
-            "title_main": "The smarter way to",
-            "title_span": "'e ulaşmanın daha akıllı yolu sosyal yardım çalıştırın",
-            "subtitle": "Unibox, yapay zeka zenginleştirmesini, akıllı sıralamayı ve birleşik yanıt gelen kutusunu tek bir platformda birleştirir.",
-            "trusted_by": "'e ulaşmanın daha akıllı yolu",
-            "teams": "tarafından güvenilen sosyal yardım ekipleri"
         }
     },
     "pwa": {
@@ -452,6 +470,45 @@
         "msg_campaign_created": "Kampanya başarıyla oluşturuldu!",
         "err_create_failed": "Kampanya oluşturulurken hata oluştu: {{message}}",
         "create_campaign_btn": "Kampanya Oluştur",
+        "steps": {
+            "setup": "Oluştur Kurulum",
+            "audience": "İzleyici",
+            "design": "Tasarım",
+            "finalize": "Sonlandır"
+        },
+        "design": {
+            "ai_modal_title": "Yapay Zeka Dizi Mimarı",
+            "ai_modal_subtitle": "Hedefinizi açıklayın; yerel yapay zekamız çok adımlı kampanya dizinizin tamamını tasarlayacaktır.",
+            "goal_label": "Kampanya Hedefi",
+            "goal_placeholder": "ör., Yeni SEO aracımızı Birleşik Krallık'taki pazarlama ajanslarına tanıtın...",
+            "tone_label": "Ses Tonu",
+            "tone_professional": "Profesyonel ve Cesur",
+            "tone_casual": "Rahat ve Arkadaş canlısı",
+            "tone_urgent": "Acil ve Direkt",
+            "sequence_length": "Sıra Uzunluğu",
+            "step_count": "{{count}} Adım Sırası",
+            "recommended": "Önerilen",
+            "generate_btn": "Sıra Oluştur",
+            "generating": "Mimarlık...",
+            "tips": "Akıllı Kişiselleştirme İpuçları",
+            "tip_spintax": "Spintax için süslü parantezleri kullanın: {Hi|Merhaba|Hey}",
+            "tip_logic": "Yapay zeka, güvenli özel değişken geri dönüşleri için {{#if}} kullanır.",
+            "tip_tags": "Sistem etiketleri: {{sl_time_of_day}}, {{sl_day_of_week}}",
+            "health_alert_title": "Teslim Edilebilirlik Uyarısı: Eksik Veri",
+            "health_alert_action": "İşlem Gerekli",
+            "health_alert_desc": "Kampanyanız {{vars}} kullanıyor ancak bu alanlar potansiyel müşteri listenizde yok. Şimdi göndermek, spam filtrelerini tetikleyen boş alanlarla sonuçlanacaktır.",
+            "enrich_apollo": "Apollo ile zenginleştirin",
+            "update_leads": "Potansiyel Müşteri Listesini Güncelle",
+            "quick_add": "Hızlı Ekleme Değişkeni",
+            "quick_add_placeholder": "örneğin favori_kahve",
+            "step_title": "Adım {{index}}: {{type}}",
+            "main_email": "Ana E-posta",
+            "follow_up": "Takip",
+            "add_step": "Takip Adımı Ekle",
+            "delete_step": "Adımı Sil",
+            "time_of_day": "Günün Saati",
+            "day_of_week": "Haftanın Günü"
+        },
         "step_contacts": "İletişim",
         "step_contacts_desc": "Kime e-posta gönderiyorsun?",
         "step_content": "İçerik",
@@ -1325,6 +1382,71 @@
             "clay": {
                 "desc": "Giden verileri JSON HTTP API'leri aracılığıyla Clay tablolarıyla senkronize edin."
             }
+        }
+    },
+    "campaign_view": {
+        "tabs": {
+            "analytics": "Analitik",
+            "overview": "Genel Bakış",
+            "content": "İçerik",
+            "recipients": "Alıcılar",
+            "replies": "Yanıtlar"
+        },
+        "analytics": {
+            "title": "Kampanya Performansı",
+            "subtitle": "Gerçek zamanlı etkileşim ölçümleri ve trendleri",
+            "realtime_monitoring": "Gerçek Zamanlı İzleme",
+            "growth_insights": "Büyüme Analizleri",
+            "delivery_score": "Teslimat Puanı",
+            "engagement_pulse": "Nişan Nabzı",
+            "conversion_ratio": "Dönüşüm Oranı",
+            "performance_summary": "Performans Özeti",
+            "engagement_over_time": "Zaman İçinde Katılım",
+            "hourly_performance": "Saatlik Performans",
+            "peak_engagement_window": "En Yüksek Etkileşim Aralığı",
+            "top_subject_lines": "En Önemli Konu Satırları",
+            "best_performing_time": "Göndermek için en iyi zaman",
+            "open_rate_trend": "Açık Oran Trendi",
+            "reply_distribution": "Cevap Dağıtımı",
+            "sender_health": "Gönderenin Sağlık Durumu Dağılımı"
+        },
+        "overview": {
+            "campaign_id": "Kampanya Kimliği",
+            "created_on": "Oluşturulma Tarihi",
+            "last_activity": "Son Etkinlik",
+            "status_description": "Bu dizinin mevcut durumu",
+            "sending_schedule": "Gönderim Programı",
+            "assigned_mailboxes": "Atanan Posta Kutuları",
+            "total_leads": "Toplam Potansiyel Müşteriler",
+            "active_now": "Şu anda Aktif",
+            "sequences_sent": "Gönderilen Diziler",
+            "campaign_objective": "Kampanya Amacı"
+        },
+        "content": {
+            "sequence_structure": "Sıra Yapısı",
+            "step_label": "Adım {{count}}",
+            "subject": "Konu",
+            "body_preview": "Gövde Önizlemesi",
+            "delay": "Gecikme",
+            "edit_sequence": "Sırayı Düzenle",
+            "view_spintax": "Spintax Varyasyonlarını Görüntüle"
+        },
+        "recipients": {
+            "all_contacts": "Tüm Kişiler",
+            "search_leads": "Potansiyel müşteri ara...",
+            "status_filter": "Durum Filtresi",
+            "last_contacted": "Son İletişime Geçilen",
+            "engagement_level": "Nişan",
+            "view_profile": "Profili Görüntüle",
+            "export_leads": "İhracat Potansiyel Müşterileri"
+        },
+        "replies": {
+            "inbox_activity": "Gelen Kutusu Etkinliği",
+            "ai_intent_detection": "Yapay Zeka Niyet Tespiti",
+            "mark_as_interested": "İlgileniyor Olarak İşaretle",
+            "move_to_crm": "CRM'e Geçiş",
+            "reply_content": "Yanıt İçeriği",
+            "no_replies_yet": "İlk yanıtı bekliyorum..."
         }
     }
 }

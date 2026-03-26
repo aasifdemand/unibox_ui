@@ -42,7 +42,7 @@ export default [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      'prettier/prettier': 'warn',
+      'prettier/prettier': 'off',
       'no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [

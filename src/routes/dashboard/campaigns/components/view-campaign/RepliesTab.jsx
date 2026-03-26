@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageCircle, Eye, Reply, ShieldCheck } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
 
 const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
+  const { t } = useTranslation();
   const repliesList = Array.isArray(replies) ? replies : [];
 
   return (
@@ -12,10 +14,10 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <Reply className="w-5 h-5 text-orange-600" />
-              Campaign Replies
+              {t('campaigns.replies.title', 'Campaign Replies')}
             </h3>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-              Manage replies from this campaign
+              {t('campaigns.replies.desc', 'Manage replies from this campaign')}
             </p>
           </div>
           <div className="flex flex-col items-end">
@@ -23,7 +25,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               {repliesList.length}
             </span>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">
-              Total Replies
+              {t('campaigns.replies.total_label', 'Total Replies')}
             </p>
           </div>
         </div>
@@ -37,7 +39,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               </div>
             </div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
-              Loading replies...
+              {t('campaigns.replies.loading', 'Loading replies...')}
             </p>
           </div>
         ) : repliesList && repliesList.length > 0 ? (
@@ -59,17 +61,17 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                         </div>
                         <div>
                           <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-tight">
-                            {recipient?.name || reply.replyFrom?.split('@')[0] || 'Unknown'}
+                            {recipient?.name || reply.replyFrom?.split('@')[0] || t('campaigns.common.unknown', 'Unknown')}
                           </h4>
                           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            {reply.replyFrom || 'No Email'}
+                            {reply.replyFrom || t('campaigns.common.no_email', 'No Email')}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-1">
                         <p className="text-sm font-black text-slate-800 tracking-tight">
-                          {reply.subject || 'No Subject'}
+                          {reply.subject || t('campaigns.common.no_subject', 'No Subject')}
                         </p>
                         <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 italic">
                           &quot;
@@ -89,7 +91,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                           </span>
                         </div>
                         <span className="text-[11px] font-black text-slate-300 tabular-nums uppercase">
-                          Received: {formatDate(reply.receivedAt)}
+                          {t('campaigns.replies.received_label', 'Received')}: {formatDate(reply.receivedAt)}
                         </span>
                         {reply.email?.subject && (
                           <span className="text-[11px] font-black text-slate-300 tabular-nums uppercase">
@@ -105,7 +107,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                       className="h-12 px-6 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-sm shadow-orange-600/20 group-hover:shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-2 shrink-0 self-center"
                     >
                       <Eye className="w-4 h-4" />
-                      View Message
+                      {t('campaigns.replies.view_msg', 'View Message')}
                     </Button>
                   </div>
                 </div>
@@ -122,9 +124,9 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                 <ShieldCheck className="w-5 h-5 text-orange-200" />
               </div>
             </div>
-            <h4 className="text-xl font-black text-slate-900 tracking-tight">No replies yet</h4>
+            <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.replies.empty_title', 'No replies yet')}</h4>
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
-              When you receive replies from this campaign, they will appear here.
+              {t('campaigns.replies.empty_desc', 'When you receive replies from this campaign, they will appear here.')}
             </p>
           </div>
         )}
