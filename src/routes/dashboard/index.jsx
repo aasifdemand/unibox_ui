@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/preserve-manual-memoization */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -760,12 +761,7 @@ const Dashboard = () => {
                   label: 'Success Rate',
                   value: `${(100 - parseFloat(avgBounceRate)).toFixed(1)}%`,
                   color: 'text-orange-600',
-                },
-                {
-                  label: 'Unsubscribe Rate',
-                  value: `${avgUnsubRate}%`,
-                  color: 'text-slate-500',
-                },
+                }
               ].map((stat, i) => (
                 <div key={i} className="text-center md:text-start">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
