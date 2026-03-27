@@ -143,7 +143,7 @@ const Mailboxes = () => {
       )}
 
       {(!isLoading.isMailboxes || data.mailboxes.length > 0) && (
-        <div className="flex-1 overflow-hidden relative min-w-0">
+        <div className="flex-1 overflow-hidden relative min-w-0 min-h-[450px]">
           <AnimatePresence mode="wait">
             {state.view === 'list' && (
               <motion.div

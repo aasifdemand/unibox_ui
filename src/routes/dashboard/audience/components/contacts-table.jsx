@@ -171,7 +171,7 @@ const ColumnSelector = ({ visibleCols, onToggle }) => {
   }, []);
 
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative z-5100" ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2 px-3.5 py-2 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm"
@@ -339,7 +339,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
         cell: (info) => (
           <div className="flex items-center gap-2 min-w-[120px]">
             {info.getValue() ? (
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
+              <div className="w-7 h-7 rounded-full bg-linear-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
                 {info
                   .getValue()
                   .split(' ')
@@ -531,9 +531,9 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-h-[450px]">
       {/* Toolbar: column selector */}
-      <div className="flex items-center justify-end px-1">
+      <div className="flex items-center justify-end px-1 relative z-50">
         <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
       </div>
 

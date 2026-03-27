@@ -9,10 +9,8 @@ import {
   BarChart3,
   Settings,
   Search,
-  HelpCircle,
   Zap,
   Mailbox,
-  ChevronRight,
   PanelLeftClose,
   PanelLeftOpen,
   Link2,
@@ -145,7 +143,7 @@ const DashboardLayout = () => {
           icon: <Mailbox className="w-4 h-4" />,
         })),
     ].slice(0, 8);
-  }, [searchQuery, campaigns, mailboxes]);
+  }, [searchQuery, campaigns, mailboxes,t]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-[#FAFAFA] text-zinc-900 selection:bg-orange-100 selection:text-orange-900 font-sans">

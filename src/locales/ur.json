@@ -710,7 +710,8 @@
             "avg_open": "اوسط اوپن ریٹ",
             "avg_click": "اوسط کلک کی شرح",
             "avg_reply": "اوسط جواب کی شرح",
-            "deliverability": "ڈیلیوریبلٹی"
+            "deliverability": "ڈیلیوریبلٹی",
+            "avg_sent": "Avg Daily Sent"
         },
         "table": {
             "campaign": "مہم",
@@ -1519,7 +1520,7 @@
     },
     "campaign_view": {
         "tabs": {
-            "analytics": "Analytics",
+            "analytics": "تجزیات",
             "overview": "جائزہ",
             "content": "مواد",
             "recipients": "وصول کنندگان",

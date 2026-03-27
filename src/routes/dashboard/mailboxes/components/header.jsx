@@ -158,7 +158,7 @@ const Header = ({
               <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
                 {view === 'list' && (
                   <>
-                    {t('mailboxes.mail')} <span className="ml-2">{t('mailboxes.subtitle')}</span>
+                    {t('mailboxes.mail')}
                   </>
                 )}
                 {view === 'messages' && (

@@ -710,7 +710,8 @@
             "avg_open": "Rata-rata Tingkat Terbuka",
             "avg_click": "Rata-rata Rasio Klik",
             "avg_reply": "Rata-rata Tingkat Balasan",
-            "deliverability": "Keterkiriman"
+            "deliverability": "Keterkiriman",
+            "avg_sent": "Rata-rata Pengiriman Harian"
         },
         "table": {
             "campaign": "Kampanye",

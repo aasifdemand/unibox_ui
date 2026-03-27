@@ -710,7 +710,8 @@
             "avg_open": "Tỷ lệ mở trung bình",
             "avg_click": "Tỷ lệ nhấp trung bình",
             "avg_reply": "Tỷ lệ trả lời trung bình",
-            "deliverability": "Khả năng giao hàng"
+            "deliverability": "Khả năng giao hàng",
+            "avg_sent": "Trung bình hàng ngày được gửi"
         },
         "table": {
             "campaign": "Chiến dịch",

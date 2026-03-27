@@ -740,7 +740,7 @@ const Dashboard = () => {
               </ResponsiveContainer>
             </div>
 
-            <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-6 p-4 bg-slate-50/50 rounded-lg border border-slate-100">
+            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 p-4 bg-slate-50/50 rounded-lg border border-slate-100">
               {[
                 {
                   label: t('dashboard.performance.avg_sent') || 'Avg Daily Sent',

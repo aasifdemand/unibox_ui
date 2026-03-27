@@ -710,7 +710,8 @@
             "avg_open": "Taxa média de abertura",
             "avg_click": "Taxa média de cliques",
             "avg_reply": "Taxa média de resposta",
-            "deliverability": "Capacidade de entrega"
+            "deliverability": "Capacidade de entrega",
+            "avg_sent": "Média diária enviada"
         },
         "table": {
             "campaign": "Campanha",

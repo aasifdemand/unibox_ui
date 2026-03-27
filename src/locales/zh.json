@@ -710,7 +710,8 @@
             "avg_open": "平均打开率",
             "avg_click": "平均点击率",
             "avg_reply": "平均回复率",
-            "deliverability": "交付能力"
+            "deliverability": "交付能力",
+            "avg_sent": "每日平均发送"
         },
         "table": {
             "campaign": "活动",

@@ -706,7 +706,8 @@
             "avg_open": "Średni współczynnik otwarć",
             "avg_click": "Średni współczynnik kliknięć",
             "avg_reply": "Średni współczynnik odpowiedzi",
-            "deliverability": "Dostarczalność"
+            "deliverability": "Dostarczalność",
+            "avg_sent": "Średnia liczba wysłanych dziennie"
         },
         "table": {
             "campaign": "Kampania",

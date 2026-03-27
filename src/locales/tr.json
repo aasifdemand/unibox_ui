@@ -710,7 +710,8 @@
             "avg_open": "Ort. Açılma Oranı",
             "avg_click": "Ort. Tıklama Oranı",
             "avg_reply": "Ortalama Yanıt Oranı",
-            "deliverability": "Teslim Edilebilirlik"
+            "deliverability": "Teslim Edilebilirlik",
+            "avg_sent": "Oluştur Ortalama Günlük Gönderilen"
         },
         "table": {
             "campaign": "Kampanya",

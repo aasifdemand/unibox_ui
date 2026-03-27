@@ -710,7 +710,8 @@
             "avg_open": "Gem. openingspercentage",
             "avg_click": "Gem. klikpercentage",
             "avg_reply": "Gem. antwoordpercentage",
-            "deliverability": "Leverbaarheid"
+            "deliverability": "Leverbaarheid",
+            "avg_sent": "Gemiddeld dagelijks verzonden"
         },
         "table": {
             "campaign": "Campagne",

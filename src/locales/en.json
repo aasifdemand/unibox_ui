@@ -699,7 +699,8 @@
             "avg_open": "Avg Open Rate",
             "avg_click": "Avg Click Rate",
             "avg_reply": "Avg Reply Rate",
-            "deliverability": "Deliverability"
+            "deliverability": "Deliverability",
+            "avg_sent": "Avg Daily Sent"
         },
         "table": {
             "campaign": "Campaign",

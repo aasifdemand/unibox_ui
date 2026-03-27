@@ -710,7 +710,8 @@
             "avg_open": "Tasa media de apertura",
             "avg_click": "Tasa media de clics",
             "avg_reply": "Tasa media de respuesta",
-            "deliverability": "Entregabilidad"
+            "deliverability": "Entregabilidad",
+            "avg_sent": "Promedio diario enviado"
         },
         "table": {
             "campaign": "Campaña",

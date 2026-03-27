@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import CampaignsHeader from './components/campaign/campaigns-header';
 import CampaignListView from './components/campaign/campaign-list-view';
 import EditCampaignModal from './components/campaign/edit-campaign-modal';
-import { motion } from 'motion/react';
 // Hooks
 import { useCampaignsData } from './hooks/use-campaigns-data';
 import ShowDelete from '../../../modals/showdelete';
@@ -95,7 +94,7 @@ const Campaigns = () => {
         <div className="space-y-8">
           {/* Campaigns Grid/List View */}
           <div className="w-full">
-            <div className="min-h-100 relative">
+            <div className="min-h-[450px] relative">
               <CampaignListView
                 campaigns={paginatedCampaigns}
                 selectedCampaigns={selectedCampaigns}

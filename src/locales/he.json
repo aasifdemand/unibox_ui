@@ -706,7 +706,8 @@
             "avg_open": "שיעור פתיחה ממוצע",
             "avg_click": "שיעור קליקים ממוצע",
             "avg_reply": "שיעור תגובות ממוצע",
-            "deliverability": "מסירה"
+            "deliverability": "מסירה",
+            "avg_sent": "ממוצע שנשלח מדי יום"
         },
         "table": {
             "campaign": "מסע פרסום",

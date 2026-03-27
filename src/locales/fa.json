@@ -710,7 +710,8 @@
             "avg_open": "میانگین نرخ باز شدن",
             "avg_click": "میانگین نرخ کلیک",
             "avg_reply": "میانگین نرخ پاسخ",
-            "deliverability": "قابلیت تحویل"
+            "deliverability": "قابلیت تحویل",
+            "avg_sent": "میانگین ارسال روزانه"
         },
         "table": {
             "campaign": "کمپین",

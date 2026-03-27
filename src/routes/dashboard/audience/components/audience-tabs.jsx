@@ -267,16 +267,16 @@ const AudienceTabs = ({
           </button>
         </div>
       ) : (
-        <div className="bg-white rounded-[2rem] border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
+        <div className="bg-white rounded-lg border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
           <div className="overflow-x-auto no-scrollbar">
-            <table className="w-full text-start border-collapse border-separate border-spacing-0">
+            <table className="w-full text-start border-collapse  border-spacing-0">
               <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id} className="bg-slate-50/80 ">
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="px-6 py-5 border-b border-slate-200/60 transition-colors first:ltr:rounded-tl-2xl last:ltr:rounded-tr-2xl text-left"
+                        className="px-6 py-5 border-b border-slate-200/60 transition-colors text-left"
                       >
                         {header.isPlaceholder
                           ? null

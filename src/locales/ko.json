@@ -711,7 +711,8 @@
             "avg_open": "평균 공개율",
             "avg_click": "평균 클릭률",
             "avg_reply": "평균 응답률",
-            "deliverability": "배달 가능성"
+            "deliverability": "배달 가능성",
+            "avg_sent": "에 답장함 일일 평균 전송량"
         },
         "table": {
             "campaign": "캠페인",

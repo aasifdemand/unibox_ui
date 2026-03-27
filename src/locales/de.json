@@ -710,7 +710,8 @@
             "avg_open": "Durchschnittliche Öffnungsrate",
             "avg_click": "Durchschnittliche Klickrate",
             "avg_reply": "Durchschnittliche Antwortrate",
-            "deliverability": "Zustellbarkeit"
+            "deliverability": "Zustellbarkeit",
+            "avg_sent": "Durchschnittlicher täglicher Versand"
         },
         "table": {
             "campaign": "Kampagne",

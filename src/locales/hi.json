@@ -710,7 +710,8 @@
             "avg_open": "औसत ओपन रेट",
             "avg_click": "औसत क्लिक दर",
             "avg_reply": "औसत उत्तर दर",
-            "deliverability": "वितरणीयता"
+            "deliverability": "वितरणीयता",
+            "avg_sent": "औसत दैनिक भेजा गया"
         },
         "table": {
             "campaign": "अभियान",

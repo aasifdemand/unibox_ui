@@ -710,7 +710,8 @@
             "avg_open": "平均開封率",
             "avg_click": "平均クリック率",
             "avg_reply": "平均返信率",
-            "deliverability": "到達性"
+            "deliverability": "到達性",
+            "avg_sent": "で作成されました1 日あたりの平均送信数"
         },
         "table": {
             "campaign": "キャンペーン",

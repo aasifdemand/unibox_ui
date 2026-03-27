@@ -710,7 +710,8 @@
             "avg_open": "Taux d'ouverture moyen",
             "avg_click": "Taux de clic moyen",
             "avg_reply": "Taux de réponse moyen",
-            "deliverability": "Délivrabilité"
+            "deliverability": "Délivrabilité",
+            "avg_sent": "Moy. quotidienne envoyée"
         },
         "table": {
             "campaign": "Campagne",
