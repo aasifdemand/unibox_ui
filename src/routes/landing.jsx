@@ -33,7 +33,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 /* ─────────────────────────── tiny helpers ─────────────────────────── */
 const GradientText = ({ children, className = '' }) => (
   <span
-    className={`bg-gradient-to-r from-orange-500 via-orange-500 to-orange-600 bg-clip-text text-transparent ${className}`}
+    className={`bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 bg-clip-text text-transparent ${className}`}
   >
     {children}
   </span>
@@ -121,10 +121,9 @@ const Counter = ({ target, suffix = '' }) => {
 const Landing = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredFeature, setHoveredFeature] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [demoPlaying, setDemoPlaying] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+  
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
@@ -291,12 +290,12 @@ const Landing = () => {
   ];
 
   const integrations = [
-    { name: 'Gmail', logo: 'G', color: 'bg-gradient-to-br from-red-400 to-orange-500' },
-    { name: 'Outlook', logo: 'O', color: 'bg-gradient-to-br from-orange-400 to-orange-500' },
-    { name: 'Yahoo', logo: 'Y', color: 'bg-gradient-to-br from-orange-400 to-orange-500' },
-    { name: 'iCloud', logo: 'I', color: 'bg-gradient-to-br from-slate-400 to-slate-500' },
-    { name: 'Zoho', logo: 'Z', color: 'bg-gradient-to-br from-orange-400 to-orange-500' },
-    { name: 'Proton', logo: 'P', color: 'bg-gradient-to-br from-orange-400 to-orange-500' },
+    { name: 'Gmail', logo: 'G', color: 'bg-linear-to-br from-red-400 to-orange-500' },
+    { name: 'Outlook', logo: 'O', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
+    { name: 'Yahoo', logo: 'Y', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
+    { name: 'iCloud', logo: 'I', color: 'bg-linear-to-br from-slate-400 to-slate-500' },
+    { name: 'Zoho', logo: 'Z', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
+    { name: 'Proton', logo: 'P', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
   ];
 
   /* ═══════════════════ RENDER ═══════════════════ */
@@ -314,7 +313,7 @@ const Landing = () => {
           >
             <div className="relative w-9 h-9">
               <div className="absolute inset-0 bg-orange-600 rounded-md blur-md opacity-50" />
-              <div className="relative w-full h-full bg-gradient-to-br from-orange-500 to-orange-700 rounded-md flex items-center justify-center shadow-sm">
+              <div className="relative w-full h-full bg-linear-to-br from-orange-500 to-orange-700 rounded-md flex items-center justify-center shadow-sm">
                 <Mail className="text-white w-4 h-4" />
               </div>
             </div>
@@ -416,7 +415,7 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.05 }}
-                className="text-6xl md:text-7xl lg:text-[5.5rem] font-black leading-[1.0] tracking-tighter mb-7"
+                className="text-6xl md:text-7xl lg:text-[5.5rem] font-black leading-none tracking-tighter mb-7"
                 style={{ fontFamily: 'Outfit, sans-serif' }}
               >
                 Master Your
@@ -446,7 +445,7 @@ const Landing = () => {
                 >
                   <span className="relative z-10">Start Free Trial</span>
                   <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-linear-to-r from-orange-600 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
                 <button className="px-8 py-4 bg-white/80  border border-slate-200 text-slate-700 rounded-lg font-bold text-sm hover:bg-white hover:shadow-sm transition-all flex items-center justify-center gap-2">
                   <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
@@ -479,7 +478,7 @@ const Landing = () => {
               className="relative"
             >
               {/* glow halo */}
-              <div className="absolute inset-8 bg-gradient-to-br from-orange-400/30 to-orange-400/20 rounded-lg blur-2xl" />
+              <div className="absolute inset-8 bg-linear-to-br from-orange-400/30 to-orange-400/20 rounded-lg blur-2xl" />
 
               <GlassCard hover={false} className="rounded-lg overflow-hidden p-1 bg-white/90">
                 {/* fake browser chrome */}
@@ -570,7 +569,7 @@ const Landing = () => {
                         className="flex items-center gap-3 p-3 bg-slate-50 rounded-md border border-slate-100"
                       >
                         <div
-                          className={`w-2 h-2 rounded-full flex-shrink-0 ${seq.status === 'Running' ? 'bg-green-400 animate-pulse' : 'bg-amber-400'}`}
+                          className={`w-2 h-2 rounded-full shrink-0 ${seq.status === 'Running' ? 'bg-green-400 animate-pulse' : 'bg-amber-400'}`}
                         />
                         <div className="flex-1 min-w-0">
                           <div className="text-xs font-semibold text-slate-700 truncate">
@@ -581,11 +580,11 @@ const Landing = () => {
                               initial={{ width: 0 }}
                               animate={{ width: `${seq.pct}%` }}
                               transition={{ delay: 0.8, duration: 0.8 }}
-                              className="h-full bg-gradient-to-r from-orange-500 to-orange-500 rounded-full"
+                              className="h-full bg-linear-to-r from-orange-500 to-orange-500 rounded-full"
                             />
                           </div>
                         </div>
-                        <div className="text-xs text-slate-400 flex-shrink-0">
+                        <div className="text-xs text-slate-400 shrink-0">
                           {seq.sent.toLocaleString()}
                         </div>
                       </div>
@@ -601,7 +600,7 @@ const Landing = () => {
                 transition={{ delay: 0.9 }}
                 className="absolute -right-4 top-1/3 bg-white rounded-lg shadow-sm shadow-orange-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-orange-500 rounded-md flex items-center justify-center">
+                <div className="w-9 h-9 bg-linear-to-br from-green-400 to-orange-500 rounded-md flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -621,7 +620,7 @@ const Landing = () => {
                 transition={{ delay: 1.0 }}
                 className="absolute -left-4 bottom-16 bg-white rounded-lg shadow-sm shadow-orange-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-gradient-to-br from-orange-500 to-orange-600 rounded-md flex items-center justify-center">
+                <div className="w-9 h-9 bg-linear-to-br from-orange-500 to-orange-600 rounded-md flex items-center justify-center">
                   <Mail className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -660,7 +659,7 @@ const Landing = () => {
       </section>
 
       {/* ── STATS ── */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+      <section className="py-20 px-6 bg-linear-to-b from-white to-slate-50">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((s, i) => (
@@ -671,7 +670,7 @@ const Landing = () => {
                 transition={{ delay: i * 0.08 }}
                 className="relative bg-white rounded-lg border border-slate-100 p-6 text-center shadow-sm overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50/0 to-orange-50/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-br from-orange-50/0 to-orange-50/60 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
                   <div className="inline-flex items-center justify-center w-10 h-10 bg-orange-50 rounded-md mb-4 text-orange-500 group-hover:bg-orange-100 transition-colors">
                     {s.icon}
@@ -722,13 +721,11 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                onHoverStart={() => setHoveredFeature(i)}
-                onHoverEnd={() => setHoveredFeature(null)}
                 className="relative bg-white rounded-lg border border-slate-200 p-7 hover:border-orange-200 hover:shadow-sm hover:shadow-orange-50 transition-all duration-300 group cursor-default overflow-hidden"
               >
                 {/* gradient line top */}
                 <div
-                  className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${f.accent} opacity-0 group-hover:opacity-100 transition-opacity`}
+                  className={`absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r ${f.accent} opacity-0 group-hover:opacity-100 transition-opacity`}
                 />
 
                 <div
@@ -747,7 +744,7 @@ const Landing = () => {
                   {f.stats.map((s, j) => (
                     <li key={j} className="flex items-center gap-2 text-sm text-slate-600">
                       <div
-                        className={`w-4 h-4 rounded-full ${f.bg} ${f.text} flex items-center justify-center flex-shrink-0`}
+                        className={`w-4 h-4 rounded-full ${f.bg} ${f.text} flex items-center justify-center shrink-0`}
                       >
                         <Check className="w-2.5 h-2.5" />
                       </div>
@@ -766,7 +763,7 @@ const Landing = () => {
             className="mt-8 bg-white border border-slate-200 rounded-lg px-8 py-5 flex flex-wrap items-center justify-between gap-5"
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center shrink-0">
                 <Globe className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -825,7 +822,7 @@ const Landing = () => {
                 className="group bg-slate-50 rounded-lg border border-slate-200 p-6 hover:border-orange-200 hover:bg-white hover:shadow-sm hover:shadow-orange-50 transition-all duration-300 cursor-default"
               >
                 <div
-                  className={`w-11 h-11 rounded-md bg-gradient-to-br ${f.accent} flex items-center justify-center text-white mb-5 shadow-md`}
+                  className={`w-11 h-11 rounded-md bg-linear-to-br ${f.accent} flex items-center justify-center text-white mb-5 shadow-md`}
                 >
                   {f.icon}
                 </div>
@@ -839,7 +836,7 @@ const Landing = () => {
                 <ul className="space-y-1.5">
                   {f.details.map((d, j) => (
                     <li key={j} className="text-xs text-slate-500 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-orange-300 flex-shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-orange-300 shrink-0" />
                       {d}
                     </li>
                   ))}
@@ -884,20 +881,20 @@ const Landing = () => {
                   (step, i) => (
                     <div
                       key={step}
-                      className={`flex items-center gap-4 px-4 py-3.5 rounded-md transition-all ${demoPlaying && activeTab === i ? 'bg-orange-50 border border-orange-100' : 'hover:bg-white hover:border hover:border-slate-200'}`}
+                      className={`flex items-center gap-4 px-4 py-3.5 rounded-md transition-all ${demoPlaying ? 'bg-orange-50 border border-orange-100' : 'hover:bg-white hover:border hover:border-slate-200'}`}
                     >
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black flex-shrink-0 transition-all ${demoPlaying && activeTab === i ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-500'}`}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-all ${demoPlaying  ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-500'}`}
                         style={{ fontFamily: 'Outfit, sans-serif' }}
                       >
-                        {demoPlaying && activeTab > i ? (
+                        {demoPlaying  ? (
                           <Check className="w-4 h-4 text-green-500" style={{ color: 'inherit' }} />
                         ) : (
                           i + 1
                         )}
                       </div>
                       <span
-                        className={`text-sm font-semibold ${demoPlaying && activeTab === i ? 'text-orange-700' : 'text-slate-600'}`}
+                        className={`text-sm font-semibold ${demoPlaying  ? 'text-orange-700' : 'text-slate-600'}`}
                       >
                         Step {i + 1}: {step}
                       </span>
@@ -927,7 +924,7 @@ const Landing = () => {
                         <motion.div
                           animate={{ width: ['0%', '100%'] }}
                           transition={{ duration: 5, repeat: Infinity }}
-                          className="h-full bg-gradient-to-r from-orange-500 to-orange-500 rounded-full"
+                          className="h-full bg-linear-to-r from-orange-500 to-orange-500 rounded-full"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
@@ -1007,11 +1004,11 @@ const Landing = () => {
                   ))}
                 </div>
                 <p className="text-slate-700 text-sm leading-relaxed mb-6 relative z-10">
-                  "{t.content}"
+                  &quot;{t.content}&quot;
                 </p>
                 <div className="flex items-center gap-3 relative z-10">
                   <div
-                    className={`w-10 h-10 rounded-md bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-xs font-black flex-shrink-0`}
+                    className={`w-10 h-10 rounded-md bg-linear-to-br ${t.color} flex items-center justify-center text-white text-xs font-black shrink-0`}
                     style={{ fontFamily: 'Outfit, sans-serif' }}
                   >
                     {t.avatar}
@@ -1044,7 +1041,7 @@ const Landing = () => {
                 Simple, <GradientText>transparent pricing</GradientText>
               </h2>
               <p className="text-lg text-slate-500">
-                Choose the plan that fits your team's needs. All plans include a 14-day free trial.
+                Choose the plan that fits your team&apos;s needs. All plans include a 14-day free trial.
               </p>
             </motion.div>
           </div>
@@ -1058,14 +1055,14 @@ const Landing = () => {
                 transition={{ delay: i * 0.1 }}
                 className={`relative rounded-lg border p-8 transition-all duration-300 ${
                   plan.popular
-                    ? 'bg-gradient-to-b from-orange-600 to-orange-700 border-transparent shadow-sm shadow-orange-200 scale-105 text-white'
+                    ? 'bg-linear-to-b from-orange-600 to-orange-700 border-transparent shadow-sm shadow-orange-200 scale-105 text-white'
                     : 'bg-white border-slate-200 hover:border-orange-200 hover:shadow-sm hover:shadow-orange-50'
                 }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                     <div
-                      className="bg-gradient-to-r from-amber-400 to-orange-400 text-white text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full shadow-sm"
+                      className="bg-linear-to-r from-amber-400 to-orange-400 text-white text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full shadow-sm"
                       style={{ fontFamily: 'Outfit, sans-serif' }}
                     >
                       Most Popular
@@ -1101,7 +1098,7 @@ const Landing = () => {
                   {plan.features.map((f, j) => (
                     <li key={j} className="flex items-center gap-3 text-sm">
                       <div
-                        className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${plan.popular ? 'bg-white/20' : 'bg-orange-50'}`}
+                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.popular ? 'bg-white/20' : 'bg-orange-50'}`}
                       >
                         <Check
                           className={`w-3 h-3 ${plan.popular ? 'text-white' : 'text-orange-600'}`}
@@ -1138,7 +1135,7 @@ const Landing = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="relative bg-gradient-to-br from-orange-600 via-orange-700 to-orange-700 rounded-lg p-16 text-white overflow-hidden text-center"
+            className="relative bg-linear-to-br from-orange-600 via-orange-700 to-orange-700 rounded-lg p-16 text-white overflow-hidden text-center"
           >
             {/* grid texture */}
             <div
