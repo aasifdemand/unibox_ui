@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "تأكيد الحذف",
         "email": "البريد الإلكتروني",
         "dashboard": "لوحة القيادة",
         "growth_platform": "منصة النمو",

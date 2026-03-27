@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Xác nhận xóa",
         "email": "Email",
         "dashboard": "Trang tổng quan",
         "growth_platform": "Nền tảng tăng trưởng",

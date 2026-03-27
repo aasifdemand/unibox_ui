@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Confirmer la suppression",
         "email": "Courriel",
         "dashboard": "Tableau de bord",
         "growth_platform": "Plateforme de Croissance",
@@ -237,7 +238,7 @@
         "starred": "Suivis",
         "important": "Important",
         "category_personal": "Personnel",
-        "category_social": "Social",
+        "category_social": "Sociale",
         "category_promotions": "Promotions",
         "category_updates": "Mises à jour",
         "category_forums": "Forums",

@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "确认删除",
         "email": "电子邮件",
         "dashboard": "仪表板",
         "growth_platform": "成长平台",

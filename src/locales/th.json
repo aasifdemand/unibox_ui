@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "ยืนยันการลบ",
         "email": "อีเมล์",
         "dashboard": "แดชบอร์ด",
         "growth_platform": "แพลตฟอร์มการเติบโต",
@@ -637,9 +638,9 @@
         },
         "common": {
             "unknown": "ไม่ทราบ",
-            "no_email": "No Email",
-            "no_subject": "No Subject",
-            "na": "N/A"
+            "no_email": "ไม่มีอีเมล",
+            "no_subject": "ไม่มีหัวเรื่อง",
+            "na": "ไม่มี"
         },
         "step_contacts": "ติดต่อ",
         "step_contacts_desc": "คุณกำลังส่งอีเมลถึงใคร?",
@@ -727,7 +728,7 @@
         "goal": {
             "title": "เป้าหมายรายเดือน",
             "growth": "การเติบโตของพื้นที่ทำงาน",
-            "description": "You've completed {{completed}} of your {{goal}} campaigns goal for this month."
+            "description": "คุณได้ทำเป้าหมายแคมเปญ {{completed}} ของ {{goal}} ในเดือนนี้สำเร็จแล้ว {{completed}}"
         },
         "upcoming": {
             "title": "เร็วๆ นี้",

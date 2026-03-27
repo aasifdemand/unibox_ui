@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Confirm Deletion",
         "email": "ای میل",
         "dashboard": "ڈیش بورڈ",
         "growth_platform": "گروتھ پلیٹ فارم",
@@ -1519,8 +1520,8 @@
     "campaign_view": {
         "tabs": {
             "analytics": "Analytics",
-            "overview": "Overview",
-            "content": "Content",
+            "overview": "جائزہ",
+            "content": "مواد",
             "recipients": "وصول کنندگان",
             "replies": "جوابات"
         },

@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Conferma eliminazione",
         "email": "E-mail",
         "dashboard": "Cruscotto",
         "growth_platform": "Piattaforma di Crescita",
@@ -1019,7 +1020,7 @@
             },
             "subtitle": "Configura la tua infrastruttura per l'invio di email",
             "types": {
-                "gmail": "Google Gmail",
+                "gmail": "GoogleGmail",
                 "outlook": "Microsoft Outlook",
                 "smtp": "SMTP personalizzato",
                 "smtp_desc": "Configurazione manuale",

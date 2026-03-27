@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "تایید حذف",
         "email": "ایمیل",
         "dashboard": "داشبورد",
         "growth_platform": "بستر رشد",
@@ -566,7 +567,7 @@
             "title": "گیرندگان",
             "desc": "مدیریت گیرندگان کمپین",
             "total_count": "{{count}} مجموع",
-            "count_label": "RECIPIENT COUNT",
+            "count_label": "تعداد گیرندگان",
             "export_csv": "صادرات CSV",
             "info_header": "اطلاعات گیرنده",
             "status_header": "وضعیت",

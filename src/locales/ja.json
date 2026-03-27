@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "削除を確認します",
         "email": "電子メール",
         "dashboard": "ダッシュボード",
         "growth_platform": "成長プラットフォーム",
@@ -571,7 +572,7 @@
             "info_header": "受信者情報",
             "status_header": "ステータス",
             "last_sent_header": "最後に送信されました",
-            "replied_at_header": "Replied At",
+            "replied_at_header": "で作成されました返信先",
             "actions_header": "に返信しましたアクション",
             "status_pending": "保留中",
             "status_replied": "返信しました",

@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Подтвердить удаление",
         "email": "Электронная почта",
         "dashboard": "Панель управления",
         "growth_platform": "Платформа роста",

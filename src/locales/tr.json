@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Silmeyi Onayla",
         "email": "E-posta",
         "dashboard": "Panel",
         "growth_platform": "Büyüme Platformu",
@@ -539,7 +540,7 @@
             "status": "Durum",
             "subject": "Konu",
             "created_at": "Oluşturulma Tarihi",
-            "updated_at": "Updated At",
+            "updated_at": "Oluştur Güncelleme Tarihi:",
             "sender_info": "Güncelleme Tarihi: GÖNDEREN BİLGİSİ",
             "sending_as": "Farklı Gönderme",
             "tracking": "TAKİP",

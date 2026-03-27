@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "אשר מחיקה",
         "email": "דוא\"ל",
         "dashboard": "לוח מחוונים",
         "growth_platform": "פלטפורמת צמיחה",

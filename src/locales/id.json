@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Konfirmasi Penghapusan",
         "email": "Surel",
         "dashboard": "Dasbor",
         "growth_platform": "Platform Pertumbuhan",

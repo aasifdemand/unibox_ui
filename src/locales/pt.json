@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Confirmar exclusão",
         "email": "E-mail",
         "dashboard": "Painel",
         "growth_platform": "Plataforma de crescimento",

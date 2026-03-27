@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Bevestig verwijdering",
         "email": "E-mail",
         "dashboard": "Dashboard",
         "growth_platform": "Groeitplatform",
@@ -411,7 +412,7 @@
         "modify_settings_btn": "Instellingen wijzigen",
         "sender_rotation": "Accountrotatie",
         "account_health": "Accountstatus",
-        "trust_score": "Score",
+        "trust_score": "Scoren",
         "optimal_delivery": "Optimale levering",
         "intelligent_sending": "Intelligent verzenden",
         "sender_rotation_count": "Afzenderrotatie ({{count}})",

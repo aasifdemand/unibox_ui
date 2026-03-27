@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "Bestätigen Sie den Löschvorgang",
         "email": "E-Mail",
         "dashboard": "Dashboard",
         "growth_platform": "Wachstumsplattform",

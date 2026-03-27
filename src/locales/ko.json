@@ -1,5 +1,6 @@
 {
     "common": {
+        "confirm_deletion": "삭제 확인",
         "email": "이메일",
         "dashboard": "대시보드",
         "growth_platform": "성장 플랫폼",
@@ -1492,7 +1493,7 @@
         "secure": "안전한",
         "complete_auth": "{{name}} 인증 완료",
         "types": {
-            "crm": "CRM",
+            "crm": "에 답장함 CRM",
             "data": "데이터",
             "outreach": "쭉 내밀다"
         },
