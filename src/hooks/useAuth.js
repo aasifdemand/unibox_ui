@@ -1,7 +1,5 @@
-// hooks/useAuth.js
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiClient } from '../lib/api';
 
 // Query keys
 export const authKeys = {
@@ -13,9 +11,7 @@ export const authKeys = {
 // CHECK AUTH QUERY
 // =========================
 const fetchCurrentUser = async () => {
-  const res = await fetch(`${API_URL}/users/me`, {
-    credentials: 'include',
-  });
+  const res = await apiClient('/users/me');
 
   if (!res.ok) {
     if (res.status === 401) {
@@ -43,10 +39,8 @@ export const useCurrentUser = () => {
 // LOGIN MUTATION
 // =========================
 const loginUser = async ({ email, password, rememberMe }) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
+  const res = await apiClient('/auth/login', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, rememberMe }),
   });
 
@@ -71,13 +65,11 @@ export const useLogin = () => {
 };
 
 // =========================
-// SIGNUP MUTATION - UPDATED
+// SIGNUP MUTATION
 // =========================
 const signupUser = async ({ name, email, password }) => {
-  const res = await fetch(`${API_URL}/auth/signup`, {
+  const res = await apiClient('/auth/signup', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password }),
   });
 
@@ -87,24 +79,21 @@ const signupUser = async ({ name, email, password }) => {
     throw new Error(data.message || 'Signup failed');
   }
 
-  return data; // Returns { message, data: { email, requiresVerification } }
+  return data;
 };
 
 export const useSignup = () => {
   return useMutation({
     mutationFn: signupUser,
-    // Don't auto-login anymore - user needs to verify email first
   });
 };
 
 // =========================
-// VERIFY ACCOUNT MUTATION - NEW
+// VERIFY ACCOUNT MUTATION
 // =========================
 const verifyAccount = async ({ email, otp }) => {
-  const res = await fetch(`${API_URL}/auth/verify-account`, {
+  const res = await apiClient('/auth/verify-account', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, otp }),
   });
 
@@ -123,20 +112,17 @@ export const useVerifyAccount = () => {
   return useMutation({
     mutationFn: verifyAccount,
     onSuccess: async () => {
-      // Auto-login after successful verification
       await queryClient.invalidateQueries({ queryKey: authKeys.user() });
     },
   });
 };
 
 // =========================
-// RESEND VERIFICATION MUTATION - NEW
+// RESEND VERIFICATION MUTATION
 // =========================
 const resendVerification = async (email) => {
-  const res = await fetch(`${API_URL}/auth/resend-verification`, {
+  const res = await apiClient('/auth/resend-verification', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
 
@@ -159,9 +145,8 @@ export const useResendVerification = () => {
 // LOGOUT MUTATION
 // =========================
 const logoutUser = async () => {
-  const res = await fetch(`${API_URL}/auth/logout`, {
+  const res = await apiClient('/auth/logout', {
     method: 'POST',
-    credentials: 'include',
   });
 
   if (!res.ok) {
@@ -179,9 +164,11 @@ export const useLogout = () => {
     mutationFn: logoutUser,
     onSuccess: () => {
       queryClient.clear();
+      window.location.href = '/auth/login';
     },
     onError: () => {
       queryClient.clear();
+      window.location.href = '/auth/login';
     },
   });
 };
@@ -190,10 +177,8 @@ export const useLogout = () => {
 // FORGOT PASSWORD MUTATION
 // =========================
 const forgotPassword = async (email) => {
-  const res = await fetch(`${API_URL}/auth/forgot-password`, {
+  const res = await apiClient('/auth/forgot-password', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
 
@@ -216,10 +201,8 @@ export const useForgotPassword = () => {
 // RESET PASSWORD MUTATION
 // =========================
 const resetPassword = async ({ token, newPassword }) => {
-  const res = await fetch(`${API_URL}/auth/reset-password`, {
+  const res = await apiClient('/auth/reset-password', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token, newPassword }),
   });
 
@@ -242,10 +225,8 @@ export const useResetPassword = () => {
 // CHANGE PASSWORD MUTATION
 // =========================
 const changePassword = async ({ currentPassword, newPassword }) => {
-  const res = await fetch(`${API_URL}/users/change-password`, {
+  const res = await apiClient('/users/change-password', {
     method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ currentPassword, newPassword }),
   });
 
@@ -268,10 +249,8 @@ export const useChangePassword = () => {
 // UPDATE PROFILE MUTATION
 // =========================
 const updateProfile = async (userData) => {
-  const res = await fetch(`${API_URL}/users/profile`, {
+  const res = await apiClient('/users/profile', {
     method: 'PATCH',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData),
   });
 
@@ -302,9 +281,8 @@ export const useUpdateProfile = () => {
 // REFRESH TOKEN MUTATION
 // =========================
 const refreshToken = async () => {
-  const res = await fetch(`${API_URL}/auth/refresh-token`, {
+  const res = await apiClient('/auth/refresh-token', {
     method: 'POST',
-    credentials: 'include',
   });
 
   const data = await res.json();
@@ -335,10 +313,8 @@ export const useOAuthCallback = () => {
 
   return useMutation({
     mutationFn: async ({ provider, code, state }) => {
-      const res = await fetch(`${API_URL}/auth/${provider}/callback`, {
+      const res = await apiClient(`/auth/${provider}/callback`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, state }),
       });
 
@@ -355,3 +331,4 @@ export const useOAuthCallback = () => {
     },
   });
 };
+

@@ -7,22 +7,21 @@ const ProtectedRoute = () => {
   const {
     data: user,
     isLoading,
-    isError,
   } = useCurrentUser({
     retry: false,
   });
 
   useEffect(() => {
-    // ONLY redirect if we definitely know there's no user (success but null)
-    // Avoid redirecting on ERROR states (like CORS block) to prevent infinite loops
-    if (!isLoading && !isError) {
+    if (!isLoading) {
       if (!user) {
+        // If not authenticated or session expired, redirect to login
         navigate('/auth/login', { replace: true });
       } else if (!user.isVerified) {
+        // If not verified, redirect to verification page
         navigate('/auth/verify-account', { state: { email: user.email }, replace: true });
       }
     }
-  }, [user, isLoading, isError, navigate]);
+  }, [user, isLoading, navigate]);
 
   if (isLoading) {
     return (

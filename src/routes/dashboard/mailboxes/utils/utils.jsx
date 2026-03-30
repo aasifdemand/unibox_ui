@@ -35,39 +35,56 @@ export const getSenderInfo = (message, isSent = false) => {
   let email = '',
     name = '';
   try {
+    const headerName = isSent ? 'To' : 'From';
+    
+    // 1. Try payload headers with case-insensitive search
     if (message?.payload?.headers) {
-      const headerName = isSent ? 'To' : 'From';
-      const headerValue = message.payload.headers.find((h) => h.name === headerName)?.value || '';
-      const match = headerValue.match(/<([^>]+)>/);
-      email = match ? match[1] : headerValue;
-      const nameMatch = headerValue.match(/^([^<]+)/);
-      name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
-    } else if (isSent && (message?.toRecipients?.[0] || message?.to)) {
-      let to = message.toRecipients?.[0]?.emailAddress || message.to;
-      if (Array.isArray(to)) to = to[0];
+      const header = message.payload.headers.find(
+        (h) => h.name.toLowerCase() === headerName.toLowerCase()
+      );
+      const headerValue = header?.value || '';
 
-      if (typeof to === 'string') {
-        const match = to.match(/<([^>]+)>/);
-        email = match ? match[1] : to;
-        const nameMatch = to.match(/^([^<]+)/);
+      if (headerValue) {
+        const match = headerValue.match(/<([^>]+)>/);
+        email = match ? match[1] : headerValue;
+        const nameMatch = headerValue.match(/^([^<]+)/);
         name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
-      } else {
-        email = to?.address || to?.email || '';
-        name = to?.name || email.split('@')[0];
       }
-    } else if (message?.from?.emailAddress) {
-      email = message.from.emailAddress.address || '';
-      name = (message.from.emailAddress.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
-    } else if (message?.from?.email) {
-      email = message.from.email;
-      name = (message.from.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
-    } else if (typeof message?.from === 'string') {
-      email = message.from;
-      name = email.split('@')[0];
+    }
+
+    // 2. Fallbacks if name/email still empty
+    if (!name || !email) {
+      if (isSent && (message?.toRecipients?.[0] || message?.to)) {
+        let to = message.toRecipients?.[0]?.emailAddress || message.to;
+        if (Array.isArray(to)) to = to[0];
+
+        if (typeof to === 'string') {
+          const match = to.match(/<([^>]+)>/);
+          email = match ? match[1] : to;
+          const nameMatch = to.match(/^([^<]+)/);
+          name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
+        } else {
+          email = to?.address || to?.email || '';
+          name = to?.name || email.split('@')[0];
+        }
+      } else if (message?.from?.emailAddress) {
+        email = message.from.emailAddress.address || '';
+        name = (message.from.emailAddress.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
+      } else if (message?.from?.email) {
+        email = message.from.email;
+        name = (message.from.name || email.split('@')[0]).replace(/["“”'‘’]/g, '');
+      } else if (typeof message?.from === 'string') {
+        const fromStr = message.from;
+        const match = fromStr.match(/<([^>]+)>/);
+        email = match ? match[1] : fromStr;
+        const nameMatch = fromStr.match(/^([^<]+)/);
+        name = nameMatch ? nameMatch[1].trim().replace(/["“”'‘’]/g, '') : email.split('@')[0];
+      }
     }
   } catch (e) {
     console.error('Error parsing sender:', e);
   }
+
   return {
     email,
     name: name || email.split('@')[0] || i18n.t('mailboxes.unknown_sender', 'Unknown'),

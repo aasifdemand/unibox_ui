@@ -74,7 +74,7 @@ const MessagesView = forwardRef(
     const { t } = useTranslation();
     return (
       <div className="px-4 md:px-8 pb-4 h-[calc(100vh-160px)] min-h-0 flex flex-col">
-        <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-sm shadow-slate-200/40 flex-1 flex flex-col overflow-hidden">
+        <div className="bg-white border-2 border-slate-100 rounded-2xl shadow-sm shadow-slate-200/40 flex-1 flex flex-col overflow-hidden">
           {/* Search and Filters - Integrated in Card Top - Hidden in Detail View */}
           {view !== 'message' && (
             <div className="px-6 py-4 border-b border-slate-100 bg-white/50 ">
@@ -86,7 +86,7 @@ const MessagesView = forwardRef(
                     placeholder={t('mailboxes.messages_search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full ltr:pl-11 rtl:pr-11 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-sm font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none shadow-xs"
+                    className="w-full ltr:pl-11 rtl:pr-11 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-sm font-medium placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none shadow-xs"
                   />
                   {searchQuery && (
                     <button
@@ -103,7 +103,7 @@ const MessagesView = forwardRef(
                     <select
                       value={dateRange}
                       onChange={(e) => onDateRangeChange(e.target.value)}
-                      className="appearance-none px-4 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-700 shadow-xs focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none cursor-pointer"
+                      className="appearance-none px-4 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-metadata text-slate-700 shadow-xs focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none cursor-pointer"
                     >
                       <option value="all">{t('mailboxes.temporal_all')}</option>
                       <option value="today">{t('mailboxes.temporal_today')}</option>
@@ -115,7 +115,7 @@ const MessagesView = forwardRef(
 
                   <button
                     onClick={onFilterStarred}
-                    className={`px-5 py-3 rounded-lg flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
+                    className={`px-5 py-3 rounded-lg flex items-center text-metadata transition-all border shadow-xs active:scale-95 ${
                       filterStarred
                         ? 'bg-amber-500 text-white border-amber-600 shadow-sm shadow-amber-500/20'
                         : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
@@ -129,7 +129,7 @@ const MessagesView = forwardRef(
 
                   <button
                     onClick={onFilterAttachments}
-                    className={`px-5 py-3 rounded-lg flex items-center text-[10px] font-black uppercase tracking-widest transition-all border shadow-xs active:scale-95 ${
+                    className={`px-5 py-3 rounded-lg flex items-center text-metadata transition-all border shadow-xs active:scale-95 ${
                       filterAttachments
                         ? 'bg-orange-600 text-white border-orange-700 shadow-sm shadow-orange-500/20'
                         : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
@@ -219,7 +219,7 @@ const MessagesView = forwardRef(
                         </div>
                       </div>
                       <div className="flex flex-col items-center gap-2 mt-8">
-                        <span className="text-sm font-black text-slate-800 uppercase tracking-[0.3em] animate-pulse">
+                        <span className="text-metadata text-slate-800 animate-pulse">
                           {t('mailboxes.indexing_messages')}
                         </span>
                       </div>
@@ -236,7 +236,7 @@ const MessagesView = forwardRef(
                     <div className="flex-1 flex flex-col overflow-hidden">
                       {isLoadingMessages && (
                         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-50/40 -[2px]">
-                          <div className="flex flex-col items-center gap-4 p-8 bg-white/80 rounded-[2.5rem] shadow-sm border border-white">
+                          <div className="flex flex-col items-center gap-4 p-8 bg-white/80 rounded-2xl shadow-sm border border-white">
                             <div className="relative">
                               <div className="w-12 h-12 border-4 border-slate-100 rounded-full"></div>
                               <div className="absolute top-0 w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>

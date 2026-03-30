@@ -96,7 +96,7 @@ const AuthLayout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-            className="w-full max-w-[420px] bg-white/90 backdrop-blur-sm border border-orange-100/60 p-8 md:p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(249,115,22,0.08)]"
+            className="w-full max-w-[420px] bg-white/90 backdrop-blur-sm border border-orange-100/60 p-8 md:p-10 rounded-2xl shadow-[0_20px_50px_rgba(249,115,22,0.08)]"
           >
             <Outlet />
           </motion.div>

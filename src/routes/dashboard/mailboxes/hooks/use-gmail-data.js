@@ -52,8 +52,8 @@ export const useGmailData = (
       isFolderType(selectedFolder, 'drafts'));
 
   const gmailMessagesQuery = useGmailMessagesQuery(
-    isGmail && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
-    selectedFolder?.id ? [selectedFolder.id] : ['INBOX'],
+    isGmail && selectedFolder && !isSpecialFolder ? mailboxId : null,
+    selectedFolder?.id ? [selectedFolder.id] : [],
     PAGE_SIZE,
   );
 

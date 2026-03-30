@@ -52,8 +52,8 @@ export const useOutlookData = (
       isFolderType(selectedFolder, 'drafts'));
 
   const outlookMessagesQuery = useOutlookMessagesQuery(
-    isOutlook && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
-    selectedFolder?.id || 'inbox',
+    isOutlook && selectedFolder && !isSpecialFolder ? mailboxId : null,
+    selectedFolder?.id,
     PAGE_SIZE,
   );
 

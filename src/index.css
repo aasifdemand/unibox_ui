@@ -55,6 +55,7 @@ h5,
 h6 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 .premium-card {
@@ -279,7 +280,7 @@ body.modal-open {
 .ProseMirror h1,
 .mail-content-html h1 {
   font-size: 2.25rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
@@ -398,6 +399,25 @@ body.modal-open {
   outline: none !important;
   box-shadow: none !important;
   -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Typography Tokens */
+@layer components {
+  .text-metadata {
+    @apply text-[10px] font-semibold uppercase tracking-widest text-slate-400;
+  }
+
+  .text-sender {
+    @apply text-sm font-semibold tracking-tight;
+  }
+
+  .text-subject {
+    @apply text-sm font-semibold tracking-tight;
+  }
+
+  .text-preview {
+    @apply text-xs font-normal text-slate-500 leading-relaxed;
+  }
 }
 
 /* Custom Grid Loader */

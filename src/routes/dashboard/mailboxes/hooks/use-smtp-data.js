@@ -49,10 +49,10 @@ export const useSmtpData = (
       isFolderType(selectedFolder, 'archive'));
 
   const smtpMessagesQuery = useSmtpMessagesQuery(
-    isSmtp && (!selectedFolder || !isSpecialFolder) ? mailboxId : null,
+    isSmtp && selectedFolder && !isSpecialFolder ? mailboxId : null,
     currentPage || 1,
     PAGE_SIZE,
-    selectedFolder?.name || 'INBOX',
+    selectedFolder?.name,
   );
 
   const smtpSentQuery = useSmtpSentMessagesQuery(

@@ -25,6 +25,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.FRONTEND_PATH }}
+            git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/aasifdemand/unibox_ui.git
             git fetch origin main
             git reset --hard origin/main
             rm -rf dist

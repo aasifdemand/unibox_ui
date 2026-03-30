@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -154,7 +155,7 @@ export const useMailboxesData = () => {
   // =========================
 
   const messages = useMemo(() => {
-    if (!selectedMailbox || !provider) return [];
+    if (!selectedMailbox || !provider || !selectedFolder) return [];
 
     if (debouncedSearchQuery) {
       const searchData = provider.queries.search?.data;
@@ -265,16 +266,16 @@ export const useMailboxesData = () => {
         const firstSearchPage = searchData?.pages?.[0];
         setTotalMessages(
           firstSearchPage?.totalResults ||
-            firstSearchPage?.resultSizeEstimate ||
-            firstSearchPage?.count ||
-            0,
+          firstSearchPage?.resultSizeEstimate ||
+          firstSearchPage?.count ||
+          0,
         );
       }
       return;
     }
 
     const q = provider.queries;
-    const pageIndex = currentPage - 1;
+
 
     let total = 0;
     let hasNext = false;

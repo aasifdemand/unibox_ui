@@ -87,12 +87,12 @@ const FolderTree = ({
           >
             {getFolderIcon(folder)}
           </span>
-          <span className={`text-sm truncate ${isSelected ? 'font-bold' : 'font-semibold'}`}>
+          <span className={`text-sender truncate ${isSelected ? 'font-bold' : 'font-semibold'}`}>
             {getFolderName(folder)}
           </span>
           {folder.unreadCount > 0 && (
             <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ltr:ml-2 ltr:mr-2 rtl:ml-2 shadow-xs border ${
+              className={`text-metadata px-2 py-0.5 rounded-lg ltr:ml-2 ltr:mr-2 rtl:ml-2 shadow-xs border ${
                 isSelected
                   ? 'bg-white/20 text-white border-white/20'
                   : 'bg-orange-50 text-orange-600 border-orange-100'
@@ -201,13 +201,13 @@ const FolderTree = ({
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6 px-1">
-        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+        <h3 className="text-metadata text-slate-400">
           {t('mailboxes.workspace')} {type}
         </h3>
         {otherFolders.length > 8 && (
           <button
             onClick={onToggleShowAll}
-            className="text-[10px] font-bold text-orange-600 hover:text-orange-800 uppercase tracking-widest bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100/50 transition-all"
+            className="text-metadata text-orange-600 hover:text-orange-800 bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100/50 transition-all"
           >
             {showAll
               ? t('mailboxes.collapse')
