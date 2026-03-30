@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal } from 'lucide-react';
+import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal, Users } from 'lucide-react';
 import FilterDropdown from '../../../../components/ui/filter-dropdown';
+import { ColumnSelector } from './contacts-table';
 
 const AudienceHeader = ({
   activeTab,
@@ -10,6 +11,8 @@ const AudienceHeader = ({
   setSearchTerm,
   filterStatus,
   setFilterStatus,
+  visibleCols,
+  toggleCol,
 }) => {
   const { t } = useTranslation();
 
@@ -30,7 +33,8 @@ const AudienceHeader = ({
               <span className="ml-2">{t('audience.subtitle')}</span>
             )}
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
+            <Users className="w-4 h-4 text-orange-500" />
             {t('audience.header_description')}
           </p>
         </div>
@@ -42,7 +46,7 @@ const AudienceHeader = ({
             }
           >
             {/* View/Tab Filter */}
-            <div className="flex flex-col gap-2 w-full mb-1">
+            <div className="flex flex-col gap-2 w-full mb-1 ">
               <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2 flex items-center gap-2">
                 <SlidersHorizontal className="w-3 h-3" />
                 {t('audience.view_type', 'View')}
@@ -153,6 +157,10 @@ const AudienceHeader = ({
               </>
             )}
           </FilterDropdown>
+
+          {activeTab === 'contacts' && (
+            <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
+          )}
 
           <button
             onClick={() => window.location.reload()}

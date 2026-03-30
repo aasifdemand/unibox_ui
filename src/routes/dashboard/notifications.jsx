@@ -50,7 +50,7 @@ const NotificationsPage = () => {
   const handleDelete = (id) => deleteMutation.mutate(id);
 
   return (
-    <div className="mx-auto p-6 space-y-8 animate-in fade-in duration-500">
+    <div className="mx-auto p-4 space-y-8 animate-in fade-in duration-500">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
         <div className="flex flex-col">

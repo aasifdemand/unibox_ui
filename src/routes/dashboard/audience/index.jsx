@@ -56,6 +56,18 @@ const Audience = () => {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [batchToDelete, setBatchToDelete] = useState(null);
+  const [visibleCols, setVisibleCols] = useState(
+    new Set(['jobTitle', 'company', 'location', 'phone', 'emails'])
+  );
+
+  const toggleCol = (c) => {
+    setVisibleCols((prev) => {
+      const n = new Set(prev);
+      if (n.has(c)) n.delete(c);
+      else n.add(c);
+      return n;
+    });
+  };
 
   const triggerDeleteBatch = (batchId) => {
     const batch = filteredBatches.find((b) => b.id === batchId);
@@ -81,7 +93,7 @@ const Audience = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-6 px-4 md:px-8 pb-8"
+      className="space-y-6 p-4"
     >
       {/* Header */}
       <motion.div
@@ -97,6 +109,8 @@ const Audience = () => {
           setSearchTerm={setSearchTerm}
           filterStatus={filterStatus}
           setFilterStatus={setFilterStatus}
+          visibleCols={visibleCols}
+          toggleCol={toggleCol}
         />
       </motion.div>
 
@@ -111,6 +125,8 @@ const Audience = () => {
             searchTerm={searchTerm}
             filterStatus={filterStatus}
             setShowUploadModal={setShowUploadModal}
+            visibleCols={visibleCols}
+            toggleCol={toggleCol}
           />
         ) : (
           <AudienceTabs

@@ -14,6 +14,8 @@ import {
   Image as ImageIcon,
   Paperclip,
   CheckCircle,
+  AtSign,
+  Inbox
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -140,7 +142,7 @@ const Header = ({
     }
   };
   return (
-    <div className="w-full px-4 md:px-8 mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
+    <div className="w-full mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full mx-auto">
         <div className="flex items-center gap-6">
           {view !== 'list' && (
@@ -184,7 +186,7 @@ const Header = ({
 
               {view === 'messages' && selectedMailbox && (
                 <div className="hidden sm:flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-sm shadow-orange-500/50"></div>
+                  <AtSign className="w-3.5 h-3.5 text-orange-500" />
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-xs">
                     {selectedMailbox.email}
                   </span>
@@ -195,7 +197,7 @@ const Header = ({
             <div className="flex items-center gap-3 mt-2 font-sans">
               {view === 'list' && (
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-sm shadow-orange-500/50"></div>
+                  <Inbox className="w-3.5 h-3.5 text-orange-500" />
                   <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">
                     {t('mailboxes.connected_accounts', { count: mailboxesCount })}
                   </p>
@@ -324,7 +326,7 @@ const Header = ({
               <button
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="p-3 bg-slate-50 hover:bg-white rounded-lg border border-slate-200 transition-all shadow-xs group"
+                className="w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shadow-sm group"
                 title="Refresh Mailboxes"
               >
                 <RefreshCw
@@ -363,12 +365,10 @@ const Header = ({
               ) : (
                 <button
                   onClick={() => setShowSenderModal(true)}
-                  className="btn-primary flex items-center py-3 px-8 whitespace-nowrap shadow-sm shadow-orange-500/20 active:scale-95 transition-all"
+                  className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-extrabold uppercase tracking-widest text-[11px] rounded-md"
                 >
-                  <Plus className="w-4 h-4 me-2 shrink-0" />
-                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">
-                    {t('mailboxes.add_mailbox')}
-                  </span>
+                  <Plus className="w-4 h-4 text-white" />
+                  {t('mailboxes.add_mailbox')}
                 </button>
               )}
 

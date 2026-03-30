@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
@@ -245,7 +246,7 @@ const Integrations = () => {
   }
 
   return (
-    <div className="w-full mx-auto px-4 md:px-8 pb-8 space-y-8 animate-in fade-in duration-700">
+    <div className="w-full mx-auto p-4 pb-8 space-y-8 animate-in fade-in duration-700">
       {/* Header Aligned with Campaigns */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div className="flex flex-col">
@@ -279,7 +280,7 @@ const Integrations = () => {
             layout
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-[12px] border border-[#f0f0f0] shadow-[0px_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0px_8px_24px_rgba(0,0,0,0.06)] transition-all flex flex-col relative overflow-hidden h-full"
+            className="bg-white rounded-3xl border border-[#f0f0f0] shadow-[0px_4px_16px_rgba(0,0,0,0.02)] hover:shadow-[0px_8px_24px_rgba(0,0,0,0.06)] transition-all flex flex-col relative overflow-hidden h-full"
           >
             {item.status === 'connected' && (
               <div className="absolute top-3 right-3 bg-[#e8f5e9] text-[#2e7d32] text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
@@ -331,7 +332,7 @@ const Integrations = () => {
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="w-2.5 h-2.5 ml-[1px]"
+                      className="w-2.5 h-2.5 ml-px"
                       stroke="currentColor"
                       strokeWidth="2.5"
                       strokeLinecap="round"
@@ -383,7 +384,7 @@ const Integrations = () => {
       {/* API Key Modal - Refined Style */}
       <AnimatePresence>
         {selectedIntegration && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

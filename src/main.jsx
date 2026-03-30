@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { queryClient } from './lib/query-client.js';
 import { QueryClientProvider } from '@tanstack/react-query';
 import './i18n';
+import SessionExpiredModal from './components/shared/session-expired-modal.jsx';
 import { registerSW } from 'virtual:pwa-register';
 registerSW({
   immediate: true,
@@ -38,6 +39,7 @@ createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes />
+        <SessionExpiredModal />
         <Toaster
           position="top-right"
           reverseOrder={false}

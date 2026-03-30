@@ -273,7 +273,7 @@ const CRMIntegration = () => {
   }
 
   return (
-    <div tabIndex={-1} className="crm-module w-full mx-auto px-4 md:px-8 pb-8 space-y-8 outline-none focus:outline-none focus:ring-0">
+    <div tabIndex={-1} className="crm-module w-full mx-auto p-4 space-y-8 outline-none focus:outline-none focus:ring-0">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col">

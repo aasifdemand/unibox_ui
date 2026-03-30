@@ -268,7 +268,7 @@ const DashboardLayout = () => {
           transition={{ duration: 0.3 }}
           className="w-full flex-1 overflow-y-auto custom-scrollbar"
         >
-          <div className="p-4 w-full">
+          <div className="p-2  w-full max-w-full mx-auto">
             <Outlet />
           </div>
         </motion.main>

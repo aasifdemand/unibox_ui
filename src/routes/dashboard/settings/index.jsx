@@ -96,7 +96,7 @@ const Settings = () => {
 
   if (userLoading) {
     return (
-      <div className="p-8 space-y-10 animate-in fade-in duration-500">
+      <div className="p-4 space-y-10 animate-in fade-in duration-500">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
           <div className="space-y-2">
             <div className="h-8 w-64 bg-slate-200 animate-pulse rounded-lg" />
@@ -127,7 +127,7 @@ const Settings = () => {
   }
 
   return (
-    <div className=" w-full p-6 space-y-8 animate-in fade-in duration-500">
+    <div className=" w-full p-4 space-y-8 animate-in fade-in duration-500">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
         <div className="flex flex-col">

@@ -441,4 +441,22 @@ body.modal-open {
 @keyframes l32-2 {
   0%, 40% { background-position: 0 0, 0 50%, 0 100%, 50% 100%, 100% 100%, 100% 50%, 100% 0, 50% 0, 50% 50%; }
   60%, 100% { background-position: 0 50%, 0 100%, 50% 100%, 100% 100%, 100% 50%, 100% 0, 50% 0, 0 0, 50% 50%; }
-}
+}
+
+
+select {
+  font-size: 12px !important;
+}
+
+input {
+  font-size: 12px !important;
+}
+
+button {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+textarea {
+  font-size: 12px !important;
+}

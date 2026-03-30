@@ -158,7 +158,7 @@ const SortIndicator = ({ column }) => {
 };
 
 // ─── Column Selector Dropdown ─────────────────────────────────────────────────
-const ColumnSelector = ({ visibleCols, onToggle }) => {
+export const ColumnSelector = ({ visibleCols, onToggle }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -171,10 +171,10 @@ const ColumnSelector = ({ visibleCols, onToggle }) => {
   }, []);
 
   return (
-    <div className="relative z-5100" ref={ref}>
+    <div className="relative z-5100 " ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 px-3.5 py-2 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm"
+        className="flex items-center gap-2 px-3.5 py-3 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm"
       >
         <Columns3 className="w-3.5 h-3.5" />
         Columns
@@ -497,9 +497,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
   if (isLoading)
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-end px-1">
-          <div className="h-9 w-24 bg-slate-100 animate-pulse rounded-md" />
-        </div>
+        <div className="flex items-center justify-end px-1" />
         <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm">
           <SkeletonLoader type="list" count={10} />
         </div>
@@ -533,9 +531,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
   return (
     <div className="space-y-4 min-h-[450px]">
       {/* Toolbar: column selector */}
-      <div className="flex items-center justify-end px-1 relative z-50">
-        <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
-      </div>
+      <div className="flex items-center justify-end px-1 relative z-50 h-px" />
 
       <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm shadow-slate-200/20">
         <div className="overflow-x-auto custom-scrollbar scroll-smooth">

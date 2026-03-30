@@ -157,7 +157,7 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="p-8 space-y-10 animate-in fade-in duration-700">
+    <div className="p-4 space-y-10 animate-in fade-in duration-700">
       {/* Analytics Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex flex-col">

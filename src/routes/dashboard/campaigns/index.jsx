@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import CampaignsHeader from './components/campaign/campaigns-header';
 import CampaignListView from './components/campaign/campaign-list-view';
 import EditCampaignModal from './components/campaign/edit-campaign-modal';
@@ -32,7 +31,7 @@ const Campaigns = () => {
       isAnyLoading,
       main: isLoading,
       action: isLoadingAction,
-      bulkAction: isBulkActionLoading,
+     
     },
     setters: {
       setSearchTerm,
@@ -40,7 +39,7 @@ const Campaigns = () => {
       setShowDeleteModal,
       setCurrentPage,
       setIsEditModalOpen,
-      setCampaignToEdit,
+      
     },
     handlers: {
       handleSelectAll,
@@ -54,10 +53,10 @@ const Campaigns = () => {
       handleViewCampaign,
     },
   } = useCampaignsData();
-  const { t } = useTranslation();
+  
 
   return (
-    <div className="w-full mx-auto px-4 md:px-8 pb-8 space-y-2 animate-in fade-in duration-700">
+    <div className="w-full mx-auto p-4   space-y-2 animate-in fade-in duration-700">
       {showDeleteModal && (
         <ShowDelete
           campaign={campaignToDelete}

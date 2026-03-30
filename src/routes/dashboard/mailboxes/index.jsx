@@ -66,7 +66,7 @@ const Mailboxes = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-50 min-w-0">
+    <div className="w-full p-4 h-full flex flex-col bg-slate-50 min-w-0">
       <Header
         view={state.view}
         selectedMailbox={state.selectedMailbox}

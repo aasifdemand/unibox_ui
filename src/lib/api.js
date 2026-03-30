@@ -2,8 +2,13 @@
  * A global API client wrapper for fetch to handle session expiration (autologout)
  */
 
+import { SESSION_EXPIRED_EVENT } from './session-events';
+
 const API_URL = import.meta.env.VITE_API_URL;
 let refreshingPromise = null;
+
+// Prevent firing the session-expired event multiple times in the same session
+let sessionExpiredFired = false;
 
 const isAuthRequest = (endpoint) => {
   const authEndpoints = [
@@ -17,6 +22,12 @@ const isAuthRequest = (endpoint) => {
     '/auth/reset-password',
   ];
   return authEndpoints.some((auth) => endpoint.startsWith(auth));
+};
+
+const dispatchSessionExpired = () => {
+  if (sessionExpiredFired) return;
+  sessionExpiredFired = true;
+  window.dispatchEvent(new CustomEvent(SESSION_EXPIRED_EVENT));
 };
 
 export const apiClient = async (endpoint, options = {}) => {
@@ -44,14 +55,24 @@ export const apiClient = async (endpoint, options = {}) => {
       });
     }
 
-    const refreshRes = await refreshingPromise;
+    let refreshRes;
+    try {
+      refreshRes = await refreshingPromise;
+    } catch (err) {
+      console.error('[API] Refresh token request failed:', err);
+    }
 
-    if (refreshRes.ok) {
+    if (refreshRes && refreshRes.ok) {
       // Refresh succeeded, retry original request
       return fetch(`${API_URL}${endpoint}`, defaultOptions);
     }
-    
-    // Refresh failed, return original 401
+
+    // Both access-token request AND refresh-token failed → session is truly expired.
+    // Fire a DOM event so the SessionExpiredModal can show a user-friendly popup.
+    console.warn('[API] Session definitively expired. Dispatching popup event.');
+    dispatchSessionExpired();
+
+    // Still return the 401 so callers can handle it if they choose
     return response;
   }
 

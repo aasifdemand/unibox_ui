@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, RefreshCcw, Search, Filter, CheckCircle } from 'lucide-react';
+import { Plus, RefreshCcw, Search, Filter, CheckCircle, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FilterDropdown from '../../../../../components/ui/filter-dropdown';
 
@@ -14,13 +14,14 @@ const CampaignsHeader = ({
   const { t } = useTranslation();
 
   return (
-    <div className="w-full mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+    <div className="w-full animate-in fade-in slide-in-from-top-4 duration-700 pb-4 md:pb-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
             {t('campaigns.title')} <span className="ml-2">{t('campaigns.subtitle')}</span>
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
+            <Target className="w-4 h-4 text-orange-500" />
             {t('campaigns.header_description')}
           </p>
         </div>

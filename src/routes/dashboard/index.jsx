@@ -519,7 +519,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 w-full animate-in fade-in duration-500">
+    <div className="p-4  w-full animate-in fade-in duration-500">
       {/* Header - Premium Alignment */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
         <div className="flex flex-col">

@@ -43,10 +43,8 @@ const MailboxList = ({
   onSelect,
   getProviderIcon,
   timeAgo,
-  format,
   selectedSenderIds = [],
   onCheckSender,
-  onCheckAllSenders,
   onSync,
   isSyncingMailboxId,
 }) => {
@@ -298,7 +296,7 @@ const MailboxList = ({
   if (mailboxes.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] px-6 text-center animate-in fade-in duration-700 slide-in-from-bottom-4">
-        <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-4xl flex items-center justify-center mb-8 shadow-sm shadow-orange-500/20">
+        <div className="w-24 h-24 bg-linear-to-br from-orange-500 to-orange-600 rounded-4xl flex items-center justify-center mb-8 shadow-sm shadow-orange-500/20">
           <Mail className="w-10 h-10 text-white" />
         </div>
         <h3 className="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">
@@ -313,7 +311,7 @@ const MailboxList = ({
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4 md:p-8 animate-in fade-in duration-500">
+    <div className="h-full overflow-y-auto  animate-in fade-in duration-500 mt-4 md:mt-6">
       <div className="bg-white rounded-xl border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-start border-collapse border-separate border-spacing-0">
