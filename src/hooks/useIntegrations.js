@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+import { api } from '../lib/api';
 
 /**
  * Fetch all user integrations.
@@ -9,7 +8,7 @@ export const useIntegrations = () => {
   return useQuery({
     queryKey: ['integrations'],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/integrations`, { credentials: 'include' });
+      const res = await api.get('/integrations');
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch integrations');
       return data.data;
@@ -25,12 +24,7 @@ export const useConnectIntegration = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ service, type, authType, credentials }) => {
-      const res = await fetch(`${API_URL}/integrations`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ service, type, authType, credentials }),
-        credentials: 'include',
-      });
+      const res = await api.post('/integrations', { service, type, authType, credentials });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to connect integration');
       return data;
@@ -48,10 +42,7 @@ export const useDisconnectIntegration = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (service) => {
-      const res = await fetch(`${API_URL}/integrations/${service}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/integrations/${service}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to disconnect integration');
       return data;
@@ -69,10 +60,7 @@ export const useSyncIntegration = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (service) => {
-      const res = await fetch(`${API_URL}/integrations/${service}/sync`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/integrations/${service}/sync`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to sync integration');
       return data;

@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { api } from '../lib/api';
 
 /**
  * Fetch the CRM pipeline (stages and leads).
@@ -9,7 +8,7 @@ export const useCrmPipeline = () => {
   return useQuery({
     queryKey: ['crm-pipeline'],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/crm/pipeline`, { credentials: 'include' });
+      const res = await api.get('/crm/pipeline');
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch pipeline');
       return data.data;
@@ -24,7 +23,7 @@ export const useReplyCategories = () => {
   return useQuery({
     queryKey: ['crm-reply-categories'],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/crm/reply-categories`, { credentials: 'include' });
+      const res = await api.get('/crm/reply-categories');
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch reply categories');
       return data.data;
@@ -39,12 +38,7 @@ export const useMoveLead = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ leadId, stageId }) => {
-      const res = await fetch(`${API_URL}/crm/leads/move`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leadId, stageId }),
-        credentials: 'include',
-      });
+      const res = await api.post('/crm/leads/move', { leadId, stageId });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to move lead');
       return data;
@@ -62,12 +56,7 @@ export const useAddCrmStage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ name, color, replyCategory }) => {
-      const res = await fetch(`${API_URL}/crm/stages`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, color, replyCategory }),
-        credentials: 'include',
-      });
+      const res = await api.post('/crm/stages', { name, color, replyCategory });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to add column');
       return data;
@@ -85,12 +74,7 @@ export const useReorderCrmStages = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (stageIds) => {
-      const res = await fetch(`${API_URL}/crm/stages/reorder`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stageIds }),
-        credentials: 'include',
-      });
+      const res = await api.put('/crm/stages/reorder', { stageIds });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to reorder columns');
       return data;
@@ -108,10 +92,7 @@ export const useDeleteCrmStage = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (stageId) => {
-      const res = await fetch(`${API_URL}/crm/stages/${stageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/crm/stages/${stageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete stage');
       return data;
@@ -129,12 +110,7 @@ export const useUpdateLead = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ leadId, value, notes, tags }) => {
-      const res = await fetch(`${API_URL}/crm/leads/${leadId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value, notes, tags }),
-        credentials: 'include',
-      });
+      const res = await api.patch(`/crm/leads/${leadId}`, { value, notes, tags });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to update lead');
       return data;

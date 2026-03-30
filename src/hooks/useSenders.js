@@ -1,5 +1,5 @@
-// hooks/useSenders.js
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../lib/api';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,9 +18,7 @@ const fetchSenders = async (params = {}) => {
   if (params.page) queryParams.append('page', params.page);
   if (params.limit) queryParams.append('limit', params.limit);
 
-  const res = await fetch(`${API_URL}/senders?${queryParams.toString()}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/senders?${queryParams.toString()}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch senders');
   return data;
@@ -39,9 +37,7 @@ export const useSenders = (params = {}) => {
 // GET SINGLE SENDER
 // =========================
 const fetchSender = async (senderId) => {
-  const res = await fetch(`${API_URL}/senders/${senderId}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/senders/${senderId}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch sender');
   return data.data;
@@ -75,12 +71,7 @@ const createSmtpSender = async (senderData) => {
     imapPassword: senderData.imapPassword || senderData.password,
   };
 
-  const res = await fetch(`${API_URL}/senders/create`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formattedData),
-  });
+  const res = await api.post('/senders/create', formattedData);
 
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to create SMTP sender');
@@ -108,11 +99,8 @@ export const useCreateSmtpSender = () => {
 // DELETE SENDER
 // =========================
 const deleteSender = async ({ senderId, senderType }) => {
-  const url = `${API_URL}/senders/${senderId}${senderType ? `?type=${senderType}` : ''}`;
-  const res = await fetch(url, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
+  const path = `/senders/${senderId}${senderType ? `?type=${senderType}` : ''}`;
+  const res = await api.delete(path);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to delete sender');
   return { senderId, message: data.message };
@@ -140,12 +128,7 @@ export const useDeleteSender = () => {
 // UPDATE SENDER
 // =========================
 const updateSender = async ({ senderId, ...updateData }) => {
-  const res = await fetch(`${API_URL}/senders/${senderId}`, {
-    method: 'PUT',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updateData),
-  });
+  const res = await api.put(`/senders/${senderId}`, updateData);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to update sender');
   return data.data;
@@ -175,17 +158,12 @@ export const useUpdateSender = () => {
 // TEST SMTP CONNECTION
 // =========================
 const testSmtp = async (smtpConfig) => {
-  const res = await fetch(`${API_URL}/senders/test-smtp`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      host: smtpConfig.host,
-      port: smtpConfig.port,
-      secure: smtpConfig.secure,
-      user: smtpConfig.username,
-      password: smtpConfig.password,
-    }),
+  const res = await api.post('/senders/test-smtp', {
+    host: smtpConfig.host,
+    port: smtpConfig.port,
+    secure: smtpConfig.secure,
+    user: smtpConfig.username,
+    password: smtpConfig.password,
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'SMTP connection failed');
@@ -202,17 +180,12 @@ export const useTestSmtp = () => {
 // TEST IMAP CONNECTION
 // =========================
 const testImap = async (imapConfig) => {
-  const res = await fetch(`${API_URL}/senders/test-imap`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      host: imapConfig.host,
-      port: imapConfig.port,
-      secure: imapConfig.secure,
-      user: imapConfig.user || imapConfig.username,
-      password: imapConfig.password,
-    }),
+  const res = await api.post('/senders/test-imap', {
+    host: imapConfig.host,
+    port: imapConfig.port,
+    secure: imapConfig.secure,
+    user: imapConfig.user || imapConfig.username,
+    password: imapConfig.password,
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'IMAP connection failed');
@@ -229,10 +202,7 @@ export const useTestImap = () => {
 // TEST EXISTING SENDER
 // =========================
 const testSender = async (senderId) => {
-  const res = await fetch(`${API_URL}/senders/${senderId}/test`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  const res = await api.post(`/senders/${senderId}/test`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to test sender');
   return data;
@@ -259,12 +229,7 @@ export const initiateOutlookOAuth = () => {
 // BULK DELETE SENDERS
 // =========================
 const bulkDeleteSenders = async (senderIds) => {
-  const res = await fetch(`${API_URL}/senders/bulk-delete`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ senderIds }),
-  });
+  const res = await api.post('/senders/bulk-delete', { senderIds });
 
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Bulk delete failed');

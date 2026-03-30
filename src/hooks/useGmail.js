@@ -4,8 +4,7 @@ import {
   getPersistentFolders,
   setPersistentFolders,
 } from '../routes/dashboard/mailboxes/utils/persistent-cache';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api } from '../lib/api';
 
 // Query keys
 export const gmailKeys = {
@@ -34,11 +33,11 @@ export const useGmailMessagesQuery = (mailboxId, labelIds = ['INBOX'], maxResult
   return useInfiniteQuery({
     queryKey: gmailKeys.messages(mailboxId, labelIds),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/messages?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/messages?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
       if (labelIds) url += `&labelIds=${labelIds.join(',')}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch messages');
       return data.data;
@@ -55,10 +54,10 @@ export const useGmailSentMessagesQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.sent(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/sent?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/sent?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch sent messages');
       return data.data;
@@ -75,10 +74,10 @@ export const useGmailTrashMessagesQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.trash(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/trash?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/trash?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch trash messages');
       return data.data;
@@ -95,10 +94,10 @@ export const useGmailSpamMessagesQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.spam(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/spam?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/spam?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch spam messages');
       return data.data;
@@ -115,10 +114,10 @@ export const useGmailStarredMessagesQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.starred(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/starred?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/starred?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch starred messages');
       return data.data;
@@ -135,10 +134,10 @@ export const useGmailImportantMessagesQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.important(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/important?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/important?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch important messages');
       return data.data;
@@ -155,10 +154,10 @@ export const useGmailDraftsQuery = (mailboxId, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.drafts(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/drafts?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/drafts?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch drafts');
       return data.data;
@@ -175,9 +174,7 @@ export const useGmailMessageQuery = (mailboxId, messageId) => {
   return useQuery({
     queryKey: gmailKeys.message(mailboxId, messageId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/gmail/${mailboxId}/messages/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch message');
       return data.data;
@@ -192,9 +189,7 @@ export const useGmailLabelsQuery = (mailboxId) => {
   const query = useQuery({
     queryKey: gmailKeys.labels(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/labels`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/gmail/${mailboxId}/labels`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch labels');
       return data.data;
@@ -218,11 +213,11 @@ export const useGmailThreadsQuery = (mailboxId, labelIds = ['INBOX'], maxResults
   return useInfiniteQuery({
     queryKey: gmailKeys.threads(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/threads?maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/threads?maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
       if (labelIds) url += `&labelIds=${labelIds.join(',')}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch threads');
       return data.data;
@@ -239,9 +234,7 @@ export const useGmailProfileQuery = (mailboxId) => {
   return useQuery({
     queryKey: gmailKeys.profile(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/profile`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/gmail/${mailboxId}/profile`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch profile');
       return data.data;
@@ -256,10 +249,10 @@ export const useGmailSearchQuery = (mailboxId, query, maxResults = 10) => {
   return useInfiniteQuery({
     queryKey: gmailKeys.search(mailboxId, query),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/search?query=${encodeURIComponent(query)}&maxResults=${maxResults}`;
+      let url = `/mailboxes/gmail/${mailboxId}/search?query=${encodeURIComponent(query)}&maxResults=${maxResults}`;
       if (pageParam) url += `&pageToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to search messages');
       return data.data;
@@ -276,10 +269,7 @@ export const useGmailAttachmentsQuery = (mailboxId, messageId) => {
   return useQuery({
     queryKey: gmailKeys.attachments(mailboxId, messageId),
     queryFn: async () => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/attachments`,
-        { credentials: 'include' },
-      );
+      const res = await api.get(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/attachments`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch attachments');
       return data.data;
@@ -299,12 +289,7 @@ export const useSendGmailMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/send`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, cc, bcc, subject, body, html, attachments }),
-      });
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/send`, { to, cc, bcc, subject, body, html, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send email');
       return data;
@@ -324,15 +309,7 @@ export const useReplyToGmailMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, body, html, replyAll, attachments }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/reply`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ body, html, replyAll, attachments }),
-        },
-      );
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/reply`, { body, html, replyAll, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send reply');
       return data;
@@ -352,15 +329,7 @@ export const useForwardGmailMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, to, body, html, attachments }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/forward`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to, body, html, attachments }),
-        },
-      );
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/forward`, { to, body, html, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to forward message');
       return data;
@@ -377,19 +346,14 @@ export const useCreateGmailDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/drafts`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to,
-          cc,
-          bcc,
-          subject,
-          body,
-          html,
-          attachments,
-        }),
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/drafts`, {
+        to,
+        cc,
+        bcc,
+        subject,
+        body,
+        html,
+        attachments,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create draft');
@@ -409,19 +373,14 @@ export const useUpdateGmailDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, draftId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/drafts/${draftId}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to,
-          cc,
-          bcc,
-          subject,
-          body,
-          html,
-          attachments,
-        }),
+      const res = await api.put(`/mailboxes/gmail/${mailboxId}/drafts/${draftId}`, {
+        to,
+        cc,
+        bcc,
+        subject,
+        body,
+        html,
+        attachments,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to update draft');
@@ -441,10 +400,7 @@ export const useDeleteGmailDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, draftId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/drafts/${draftId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/gmail/${mailboxId}/drafts/${draftId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete draft');
       return data;
@@ -463,10 +419,7 @@ export const useSendGmailDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, draftId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/drafts/${draftId}/send`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/drafts/${draftId}/send`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send draft');
       return data;
@@ -486,13 +439,7 @@ export const useMarkGmailAsReadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/read`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/read`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as read');
       return data;
@@ -517,13 +464,7 @@ export const useMarkGmailAsUnreadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/unread`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/unread`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as unread');
       return data;
@@ -548,15 +489,7 @@ export const useToggleGmailStarMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, starred }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/star`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ starred }),
-        },
-      );
+      const res = await api.put(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/star`, { starred });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to toggle star');
       return data;
@@ -581,15 +514,7 @@ export const useToggleGmailImportantMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, important }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/important`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ important }),
-        },
-      );
+      const res = await api.put(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/important`, { important });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to toggle important');
       return data;
@@ -614,10 +539,7 @@ export const useDeleteGmailMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/gmail/${mailboxId}/messages/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete message');
       return data;
@@ -634,13 +556,7 @@ export const usePermanentlyDeleteGmailMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/permanent`,
-        {
-          method: 'DELETE',
-          credentials: 'include',
-        },
-      );
+      const res = await api.delete(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/permanent`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to permanently delete message');
       return data;
@@ -657,15 +573,7 @@ export const useModifyGmailLabelsMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, addLabelIds = [], removeLabelIds = [] }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/labels`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ addLabelIds, removeLabelIds }),
-        },
-      );
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/labels`, { addLabelIds, removeLabelIds });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to modify labels');
       return data;
@@ -690,12 +598,7 @@ export const useBatchGmailOperationsMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageIds, operation, labelIds }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/batch`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messageIds, operation, labelIds }),
-      });
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/batch`, { messageIds, operation, labelIds });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to perform batch operation');
       return data;
@@ -710,10 +613,7 @@ export const useBatchGmailOperationsMutation = () => {
 export const useDownloadGmailAttachment = () => {
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, attachmentId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/gmail/${mailboxId}/messages/${messageId}/attachments/${attachmentId}`,
-        { credentials: 'include' },
-      );
+      const res = await api.get(`/mailboxes/gmail/${mailboxId}/messages/${messageId}/attachments/${attachmentId}`);
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
         throw new Error(error.message || 'Failed to download attachment');
@@ -729,13 +629,10 @@ export const useSyncGmailMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, folderId = 'INBOX' }) => {
-      let url = `${API_URL}/mailboxes/gmail/${mailboxId}/sync`;
+      let url = `/mailboxes/gmail/${mailboxId}/sync`;
       if (folderId) url += `?folderId=${folderId}`;
 
-      const res = await fetch(url, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to sync mailbox');
       return data;
@@ -753,10 +650,7 @@ export const useRefreshGmailTokenMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/refresh`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/refresh`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to refresh token');
       return data;
@@ -778,10 +672,7 @@ export const useDisconnectGmailMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/gmail/${mailboxId}/disconnect`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/gmail/${mailboxId}/disconnect`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
       return data;

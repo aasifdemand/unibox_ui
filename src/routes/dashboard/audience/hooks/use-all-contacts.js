@@ -1,7 +1,6 @@
 // hooks/useAllContacts.js
 import { useQuery } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api } from '../../../../lib/api';
 
 const fetchAllContacts = async (params = {}) => {
   // Send limit, page, searchTerm, filterStatus
@@ -16,9 +15,7 @@ const fetchAllContacts = async (params = {}) => {
       : params.filterStatus || 'all',
   });
 
-  const res = await fetch(`${API_URL}/lists/contacts?${searchParams.toString()}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/lists/contacts?${searchParams.toString()}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch contacts');
   return data.data; // { contacts: [...], pagination: { total, page, limit, pages } }

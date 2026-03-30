@@ -171,10 +171,10 @@ const AudienceHeader = ({
           </button>
           <button
             onClick={() => setShowUploadModal(true)}
-            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-black uppercase tracking-widest text-[11px] rounded-md shrink-0"
+            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-black  tracking-widest text-[11px] rounded-md shrink-0"
           >
             <Upload className="w-4 h-4" />
-            <span className="text-[11px] font-black uppercase tracking-widest text-white">
+            <span className="text-[11px] font-semibold  tracking-widest text-white">
               {t('audience.add_contacts')}
             </span>
           </button>

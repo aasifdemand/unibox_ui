@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api } from '../lib/api';
 
 // =========================
 // FETCH NOTIFICATIONS
@@ -22,9 +21,7 @@ const fetchNotifications = async (params = {}) => {
   }
 
   const searchParams = new URLSearchParams(mergedParams);
-  const res = await fetch(`${API_URL}/notifications?${searchParams.toString()}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/notifications?${searchParams.toString()}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch notifications');
   return data.data;
@@ -42,10 +39,7 @@ export const useNotifications = (params = {}) => {
 // MARK NOTIFICATION READ
 // =========================
 const markNotificationRead = async (id) => {
-  const res = await fetch(`${API_URL}/notifications/${id}/read`, {
-    method: 'PUT',
-    credentials: 'include',
-  });
+  const res = await api.put(`/notifications/${id}/read`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to mark notification as read');
   return data.data;
@@ -65,10 +59,7 @@ export const useMarkNotificationRead = () => {
 // MARK ALL READ
 // =========================
 const markAllNotificationsRead = async () => {
-  const res = await fetch(`${API_URL}/notifications/mark-all-read`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  const res = await api.post('/notifications/mark-all-read');
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to mark all notifications as read');
   return data;
@@ -89,10 +80,7 @@ export const useMarkAllNotificationsRead = () => {
 // DELETE NOTIFICATION
 // =========================
 const deleteNotification = async (id) => {
-  const res = await fetch(`${API_URL}/notifications/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
+  const res = await api.delete(`/notifications/${id}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to delete notification');
   return data;

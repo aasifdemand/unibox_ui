@@ -4,8 +4,7 @@ import {
   getPersistentFolders,
   setPersistentFolders,
 } from '../routes/dashboard/mailboxes/utils/persistent-cache';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api, } from '../lib/api';
 
 // Query keys
 export const smtpKeys = {
@@ -32,8 +31,8 @@ export const useSmtpMessagesQuery = (mailboxId, page = 1, limit = 10, folder = '
   return useQuery({
     queryKey: smtpKeys.messages(mailboxId, folder, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages?page=${page}&limit=${limit}&folder=${encodeURIComponent(folder)}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/messages?page=${page}&limit=${limit}&folder=${encodeURIComponent(folder)}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch messages');
       return data.data;
@@ -48,8 +47,8 @@ export const useSmtpSentMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
     queryKey: smtpKeys.sent(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/sent?page=${page}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/sent?page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch sent messages');
       return data.data;
@@ -64,8 +63,8 @@ export const useSmtpDraftMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
     queryKey: smtpKeys.drafts(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/drafts?page=${page}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/drafts?page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch drafts');
       return data.data;
@@ -80,8 +79,8 @@ export const useSmtpTrashMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
     queryKey: smtpKeys.trash(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/trash?page=${page}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/trash?page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch trash messages');
       return data.data;
@@ -96,8 +95,8 @@ export const useSmtpSpamMessagesQuery = (mailboxId, page = 1, limit = 10) => {
   return useQuery({
     queryKey: smtpKeys.spam(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/spam?page=${page}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/spam?page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch spam messages');
       return data.data;
@@ -112,8 +111,8 @@ export const useSmtpArchiveMessagesQuery = (mailboxId, page = 1, limit = 10) => 
   return useQuery({
     queryKey: smtpKeys.archive(mailboxId, page),
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/archive?page=${page}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/archive?page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch archive messages');
       return data.data;
@@ -128,8 +127,8 @@ export const useSmtpMessageQuery = (mailboxId, messageId, folder = 'INBOX') => {
   return useQuery({
     queryKey: [...smtpKeys.message(mailboxId, messageId), folder],
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}?folder=${encodeURIComponent(folder)}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/messages/${messageId}?folder=${encodeURIComponent(folder)}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch message');
       return data.data;
@@ -144,9 +143,7 @@ export const useSmtpFoldersQuery = (mailboxId) => {
   const query = useQuery({
     queryKey: smtpKeys.folders(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/folders`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/smtp/${mailboxId}/folders`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch folders');
       return data.data;
@@ -170,9 +167,7 @@ export const useSmtpStatusQuery = (mailboxId) => {
   return useQuery({
     queryKey: smtpKeys.status(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/status`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/smtp/${mailboxId}/status`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to get status');
       return data.data;
@@ -187,8 +182,8 @@ export const useSmtpSearchQuery = (mailboxId, query, folder = 'INBOX', limit = 5
   return useQuery({
     queryKey: [...smtpKeys.search(mailboxId, query), folder, limit],
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/search?query=${encodeURIComponent(query)}&folder=${encodeURIComponent(folder)}&limit=${limit}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/search?query=${encodeURIComponent(query)}&folder=${encodeURIComponent(folder)}&limit=${limit}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to search messages');
       return data.data;
@@ -203,8 +198,8 @@ export const useSmtpAttachmentsQuery = (mailboxId, messageId, folder = 'INBOX') 
   return useQuery({
     queryKey: [...smtpKeys.attachments(mailboxId, messageId), folder],
     queryFn: async () => {
-      const url = `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/attachments?folder=${encodeURIComponent(folder)}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const url = `/mailboxes/smtp/${mailboxId}/messages/${messageId}/attachments?folder=${encodeURIComponent(folder)}`;
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch attachments');
       return data.data;
@@ -224,12 +219,7 @@ export const useSendSmtpMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/send`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, cc, bcc, subject, body, html, attachments }),
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/send`, { to, cc, bcc, subject, body, html, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send email');
       return data;
@@ -246,12 +236,7 @@ export const useCreateSmtpDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/drafts`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, cc, bcc, subject, body, html, attachments }),
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/drafts`, { to, cc, bcc, subject, body, html, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create draft');
       return data;
@@ -270,19 +255,14 @@ export const useUpdateSmtpDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/drafts/${messageId}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to,
-          cc,
-          bcc,
-          subject,
-          body,
-          html,
-          attachments,
-        }),
+      const res = await api.put(`/mailboxes/smtp/${mailboxId}/drafts/${messageId}`, {
+        to,
+        cc,
+        bcc,
+        subject,
+        body,
+        html,
+        attachments,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to update draft');
@@ -302,10 +282,7 @@ export const useDeleteSmtpDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/drafts/${messageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/smtp/${mailboxId}/drafts/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete draft');
       return data;
@@ -324,10 +301,7 @@ export const useSendSmtpDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/drafts/${messageId}/send`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/drafts/${messageId}/send`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send draft');
       return data;
@@ -347,13 +321,7 @@ export const useMarkSmtpAsReadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, folder = 'INBOX' }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/read?folder=${encodeURIComponent(folder)}`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/read?folder=${encodeURIComponent(folder)}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as read');
       return data;
@@ -370,13 +338,7 @@ export const useMarkSmtpAsUnreadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, folder = 'INBOX' }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/unread?folder=${encodeURIComponent(folder)}`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/unread?folder=${encodeURIComponent(folder)}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as unread');
       return data;
@@ -393,12 +355,7 @@ export const useToggleSmtpFlagMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, flagged, folder = 'INBOX' }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/flag`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ flagged, folder }),
-      });
+      const res = await api.put(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/flag`, { flagged, folder });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to toggle flag');
       return data;
@@ -415,13 +372,7 @@ export const useDeleteSmtpMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, folder = 'INBOX' }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}?folder=${encodeURIComponent(folder)}`,
-        {
-          method: 'DELETE',
-          credentials: 'include',
-        },
-      );
+      const res = await api.delete(`/mailboxes/smtp/${mailboxId}/messages/${messageId}?folder=${encodeURIComponent(folder)}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete message');
       return data;
@@ -438,12 +389,7 @@ export const useMoveSmtpMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, sourceFolder, targetFolder }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/move`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceFolder, targetFolder }),
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/move`, { sourceFolder, targetFolder });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to move message');
       return data;
@@ -460,12 +406,7 @@ export const useCopySmtpMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, sourceFolder = 'INBOX', targetFolder }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/copy`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceFolder, targetFolder }),
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/copy`, { sourceFolder, targetFolder });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to copy message');
       return data;
@@ -482,12 +423,7 @@ export const useBatchSmtpOperationsMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageIds, operation, targetFolder, folder = 'INBOX' }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/batch`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messageIds, operation, targetFolder, folder }),
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/batch`, { messageIds, operation, targetFolder, folder });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to perform batch operation');
       return data;
@@ -502,10 +438,7 @@ export const useBatchSmtpOperationsMutation = () => {
 export const useDownloadSmtpAttachment = () => {
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, attachmentId, folder = 'INBOX' }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/smtp/${mailboxId}/messages/${messageId}/attachments/${attachmentId}?folder=${encodeURIComponent(folder)}`,
-        { credentials: 'include' },
-      );
+      const res = await api.get(`/mailboxes/smtp/${mailboxId}/messages/${messageId}/attachments/${attachmentId}?folder=${encodeURIComponent(folder)}`);
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
         throw new Error(error.message || 'Failed to download attachment');
@@ -521,13 +454,10 @@ export const useSyncSmtpMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, folder = 'INBOX' }) => {
-      let url = `${API_URL}/mailboxes/smtp/${mailboxId}/sync`;
+      let url = `/mailboxes/smtp/${mailboxId}/sync`;
       if (folder) url += `?folder=${encodeURIComponent(folder)}`;
 
-      const res = await fetch(url, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to sync mailbox');
       return data;
@@ -545,10 +475,7 @@ export const useDisconnectSmtpMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/smtp/${mailboxId}/disconnect`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/smtp/${mailboxId}/disconnect`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
       return data;

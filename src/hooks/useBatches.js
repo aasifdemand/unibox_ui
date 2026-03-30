@@ -1,7 +1,5 @@
-// hooks/useBatches.js
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api, apiClient } from '../lib/api';
 
 // Query keys
 export const batchKeys = {
@@ -18,9 +16,7 @@ export const batchKeys = {
 // FETCH ALL BATCHES
 // =========================
 const fetchBatches = async (page = 1, limit = 20) => {
-  const res = await fetch(`${API_URL}/lists/batches?page=${page}&limit=${limit}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/lists/batches?page=${page}&limit=${limit}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch batches');
   return data;
@@ -45,9 +41,7 @@ export const useBatches = (page = 1, limit = 20) => {
 // GET BATCH STATUS WITH VERIFICATION RESULTS
 // =========================
 const fetchBatchStatus = async (batchId, page = 1, limit = 20) => {
-  const res = await fetch(`${API_URL}/lists/batch/${batchId}/status?page=${page}&limit=${limit}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/lists/batch/${batchId}/status?page=${page}&limit=${limit}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch batch status');
   return data.data;
@@ -205,9 +199,8 @@ export const useVerificationTotals = () => {
 // UPLOAD BATCH
 // =========================
 const uploadBatch = async (formData) => {
-  const res = await fetch(`${API_URL}/lists/upload`, {
+  const res = await apiClient('/lists/upload', {
     method: 'POST',
-    credentials: 'include',
     body: formData,
   });
   const data = await res.json();
@@ -230,10 +223,7 @@ export const useUploadBatch = () => {
 // DELETE BATCH
 // =========================
 const deleteBatch = async (batchId) => {
-  const res = await fetch(`${API_URL}/lists/batch/${batchId}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
+  const res = await api.delete(`/lists/batch/${batchId}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to delete batch');
   return data;
@@ -256,10 +246,7 @@ export const useDeleteBatch = () => {
 // DELETE INDIVIDUAL CONTACT
 // =========================
 const deleteContact = async (recordId) => {
-  const res = await fetch(`${API_URL}/lists/contact/${recordId}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
+  const res = await api.delete(`/lists/contact/${recordId}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to delete contact');
   return data;
@@ -280,10 +267,7 @@ export const useDeleteContact = () => {
 // RETRY BATCH
 // =========================
 const retryBatch = async (batchId) => {
-  const res = await fetch(`${API_URL}/lists/batch/${batchId}/retry`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  const res = await api.post(`/lists/batch/${batchId}/retry`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to retry batch');
   return data;
@@ -305,10 +289,7 @@ export const useRetryBatch = () => {
 // EXPORT BATCH
 // =========================
 const exportBatch = async ({ batchId, format = 'csv' }) => {
-  const res = await fetch(`${API_URL}/lists/batch/${batchId}/export?format=${format}`, {
-    method: 'GET',
-    credentials: 'include',
-  });
+  const res = await api.get(`/lists/batch/${batchId}/export?format=${format}`);
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));

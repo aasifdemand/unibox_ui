@@ -4,8 +4,7 @@ import {
   getPersistentFolders,
   setPersistentFolders,
 } from '../routes/dashboard/mailboxes/utils/persistent-cache';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api } from '../lib/api';
 
 // Query keys
 export const outlookKeys = {
@@ -33,11 +32,11 @@ export const useOutlookMessagesQuery = (mailboxId, folderId = 'inbox', top = 10)
   return useInfiniteQuery({
     queryKey: outlookKeys.messages(mailboxId, folderId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/messages?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/messages?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
       if (folderId && folderId !== 'inbox') url += `&folderId=${folderId}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch messages');
       return data.data;
@@ -54,10 +53,10 @@ export const useOutlookSentMessagesQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.sent(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/sent?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/sent?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch sent messages');
       return data.data;
@@ -74,10 +73,10 @@ export const useOutlookTrashMessagesQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.trash(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/trash?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/trash?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch trash messages');
       return data.data;
@@ -94,10 +93,10 @@ export const useOutlookSpamMessagesQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.spam(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/spam?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/spam?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch spam messages');
       return data.data;
@@ -114,10 +113,10 @@ export const useOutlookArchiveMessagesQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.archive(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/archive?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/archive?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch archive messages');
       return data.data;
@@ -134,10 +133,10 @@ export const useOutlookOutboxMessagesQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.outbox(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/outbox?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/outbox?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch outbox messages');
       return data.data;
@@ -154,10 +153,10 @@ export const useOutlookDraftsQuery = (mailboxId, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.drafts(mailboxId),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/drafts?top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/drafts?top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch drafts');
       return data.data;
@@ -174,9 +173,7 @@ export const useOutlookMessageQuery = (mailboxId, messageId) => {
   return useQuery({
     queryKey: outlookKeys.message(mailboxId, messageId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/outlook/${mailboxId}/messages/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch message');
       return data.data;
@@ -191,9 +188,7 @@ export const useOutlookFoldersQuery = (mailboxId) => {
   const query = useQuery({
     queryKey: outlookKeys.folders(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/folders`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/outlook/${mailboxId}/folders`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch folders');
       return data.data;
@@ -217,9 +212,7 @@ export const useOutlookProfileQuery = (mailboxId) => {
   return useQuery({
     queryKey: outlookKeys.profile(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/profile`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/outlook/${mailboxId}/profile`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch profile');
       return data.data;
@@ -234,10 +227,10 @@ export const useOutlookSearchQuery = (mailboxId, query, top = 10) => {
   return useInfiniteQuery({
     queryKey: outlookKeys.search(mailboxId, query),
     queryFn: async ({ pageParam = null }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/search?query=${encodeURIComponent(query)}&top=${top}`;
+      let url = `/mailboxes/outlook/${mailboxId}/search?query=${encodeURIComponent(query)}&top=${top}`;
       if (pageParam) url += `&skipToken=${pageParam}`;
 
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await api.get(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to search messages');
       return data.data;
@@ -254,10 +247,7 @@ export const useOutlookAttachmentsQuery = (mailboxId, messageId) => {
   return useQuery({
     queryKey: outlookKeys.attachments(mailboxId, messageId),
     queryFn: async () => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/attachments`,
-        { credentials: 'include' },
-      );
+      const res = await api.get(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/attachments`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch attachments');
       return data.data;
@@ -287,20 +277,15 @@ export const useSendOutlookMessageMutation = () => {
       attachments,
       saveToSent = true,
     }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/send`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to,
-          cc,
-          bcc,
-          subject,
-          body,
-          html,
-          attachments,
-          saveToSent,
-        }),
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/send`, {
+        to,
+        cc,
+        bcc,
+        subject,
+        body,
+        html,
+        attachments,
+        saveToSent,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send email');
@@ -323,15 +308,7 @@ export const useReplyToOutlookMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, body, html, replyAll, attachments }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/reply`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ body, html, replyAll, attachments }),
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/reply`, { body, html, replyAll, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send reply');
       return data;
@@ -353,15 +330,7 @@ export const useForwardOutlookMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, to, body, html, attachments }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/forward`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to, body, html, attachments }),
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/forward`, { to, body, html, attachments });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to forward message');
       return data;
@@ -380,19 +349,14 @@ export const useCreateOutlookDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, to, cc, bcc, subject, body, html, attachments }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/drafts`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to,
-          cc,
-          bcc,
-          subject,
-          body,
-          html,
-          attachments,
-        }),
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/drafts`, {
+        to,
+        cc,
+        bcc,
+        subject,
+        body,
+        html,
+        attachments,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create draft');
@@ -412,12 +376,7 @@ export const useUpdateOutlookDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, to, cc, bcc, subject, body, html }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/drafts/${messageId}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, cc, bcc, subject, body, html }),
-      });
+      const res = await api.put(`/mailboxes/outlook/${mailboxId}/drafts/${messageId}`, { to, cc, bcc, subject, body, html });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to update draft');
       return data;
@@ -436,10 +395,7 @@ export const useDeleteOutlookDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/drafts/${messageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/outlook/${mailboxId}/drafts/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete draft');
       return data;
@@ -458,13 +414,7 @@ export const useSendOutlookDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/drafts/${messageId}/send`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/drafts/${messageId}/send`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send draft');
       return data;
@@ -486,15 +436,7 @@ export const useCreateOutlookReplyDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, replyAll = false }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/createReplyDraft`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ replyAll }),
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/createReplyDraft`, { replyAll });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create reply draft');
       return data;
@@ -513,13 +455,7 @@ export const useCreateOutlookForwardDraftMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/createForwardDraft`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/createForwardDraft`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create forward draft');
       return data;
@@ -538,13 +474,7 @@ export const useMarkOutlookAsReadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/read`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/read`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as read');
       return data;
@@ -569,13 +499,7 @@ export const useMarkOutlookAsUnreadMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/unread`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-        },
-      );
+      const res = await api.put(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/unread`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to mark as unread');
       return data;
@@ -600,15 +524,7 @@ export const useToggleOutlookFlagMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, flagStatus }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/flag`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ flagStatus }),
-        },
-      );
+      const res = await api.put(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/flag`, { flagStatus });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to toggle flag');
       return data;
@@ -630,10 +546,7 @@ export const useDeleteOutlookMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/outlook/${mailboxId}/messages/${messageId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete message');
       return data;
@@ -650,15 +563,7 @@ export const useMoveOutlookMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, destinationFolderId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/move`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ destinationFolderId }),
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/move`, { destinationFolderId });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to move message');
       return data;
@@ -680,15 +585,7 @@ export const useCopyOutlookMessageMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, destinationFolderId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/copy`,
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ destinationFolderId }),
-        },
-      );
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/copy`, { destinationFolderId });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to copy message');
       return data;
@@ -710,12 +607,7 @@ export const useBatchOutlookOperationsMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, messageIds, operation, destinationFolderId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/batch`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messageIds, operation, destinationFolderId }),
-      });
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/batch`, { messageIds, operation, destinationFolderId });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to perform batch operation');
       return data;
@@ -732,12 +624,7 @@ export const useCreateOutlookFolderMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, displayName, parentFolderId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/folders`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ displayName, parentFolderId }),
-      });
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/folders`, { displayName, parentFolderId });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to create folder');
       return data;
@@ -756,12 +643,7 @@ export const useUpdateOutlookFolderMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, folderId, displayName }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/folders/${folderId}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ displayName }),
-      });
+      const res = await api.put(`/mailboxes/outlook/${mailboxId}/folders/${folderId}`, { displayName });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to update folder');
       return data;
@@ -780,10 +662,7 @@ export const useDeleteOutlookFolderMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, folderId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/folders/${folderId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      const res = await api.delete(`/mailboxes/outlook/${mailboxId}/folders/${folderId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete folder');
       return data;
@@ -803,10 +682,7 @@ export const useDeleteOutlookFolderMutation = () => {
 export const useDownloadOutlookAttachment = () => {
   return useMutation({
     mutationFn: async ({ mailboxId, messageId, attachmentId }) => {
-      const res = await fetch(
-        `${API_URL}/mailboxes/outlook/${mailboxId}/messages/${messageId}/attachments/${attachmentId}`,
-        { credentials: 'include' },
-      );
+      const res = await api.get(`/mailboxes/outlook/${mailboxId}/messages/${messageId}/attachments/${attachmentId}`);
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
         throw new Error(error.message || 'Failed to download attachment');
@@ -822,13 +698,10 @@ export const useSyncOutlookMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId, folderId = 'inbox' }) => {
-      let url = `${API_URL}/mailboxes/outlook/${mailboxId}/sync`;
+      let url = `/mailboxes/outlook/${mailboxId}/sync`;
       if (folderId) url += `?folderId=${folderId}`;
 
-      const res = await fetch(url, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to sync mailbox');
       return data;
@@ -846,10 +719,7 @@ export const useRefreshOutlookTokenMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/refresh`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/refresh`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to refresh token');
       return data;
@@ -871,10 +741,7 @@ export const useDisconnectOutlookMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await fetch(`${API_URL}/mailboxes/outlook/${mailboxId}/disconnect`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/mailboxes/outlook/${mailboxId}/disconnect`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
       return data;

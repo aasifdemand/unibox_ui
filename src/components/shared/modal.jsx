@@ -39,7 +39,7 @@ const Modal = ({ isOpen, onClose, children, maxWidth = 'max-w-6xl', closeOnBackd
               duration: 0.4,
               ease: [0.23, 1, 0.32, 1],
             }}
-            className={`relative w-full ${maxWidth} max-h-[95vh] flex flex-col shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] rounded-[2.5rem] overflow-hidden bg-white`}
+            className={`relative w-full ${maxWidth} max-h-[95vh] flex flex-col shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden bg-white`}
           >
             {/* Close button - more premium style */}
             {onClose && (

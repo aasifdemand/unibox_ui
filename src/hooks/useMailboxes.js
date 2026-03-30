@@ -1,7 +1,5 @@
-// hooks/useMailboxes.js
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { api } from '../lib/api';
 
 // Query keys
 export const mailboxKeys = {
@@ -19,9 +17,7 @@ const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' 
     type,
   });
 
-  const res = await fetch(`${API_URL}/mailboxes?${queryParams}`, {
-    credentials: 'include',
-  });
+  const res = await api.get(`/mailboxes?${queryParams}`);
 
   if (!res.ok) {
     throw new Error('Failed to fetch mailboxes');
@@ -102,9 +98,7 @@ export const useMailbox = (mailboxId) => {
   return useQuery({
     queryKey: mailboxKeys.detail(mailboxId),
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/mailboxes/${mailboxId}`, {
-        credentials: 'include',
-      });
+      const res = await api.get(`/mailboxes/${mailboxId}`);
 
       if (!res.ok) {
         throw new Error('Mailbox not found');

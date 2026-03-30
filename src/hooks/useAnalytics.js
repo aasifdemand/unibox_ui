@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiClient } from '../lib/api';
 
 // Query keys
 export const analyticsKeys = {
@@ -28,9 +27,7 @@ export const analyticsKeys = {
  * Returns overall platform metrics
  */
 const fetchGlobalOverview = async () => {
-  const response = await fetch(`${API_URL}/analytics/overview`, {
-    credentials: 'include',
-  });
+  const response = await apiClient('/analytics/overview');
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch global overview');
   return data.data;
@@ -50,9 +47,7 @@ export const useGlobalOverview = () => {
  * Returns performance metrics (open rates, reply rates, etc.)
  */
 const fetchPerformanceMetrics = async () => {
-  const response = await fetch(`${API_URL}/analytics/performance`, {
-    credentials: 'include',
-  });
+  const response = await apiClient('/analytics/performance');
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch performance metrics');
   return data.data;
@@ -71,9 +66,7 @@ export const usePerformanceMetrics = () => {
  * Returns campaign activity over time
  */
 const fetchTimelineData = async (period = 'week') => {
-  const response = await fetch(`${API_URL}/analytics/timeline?period=${period}`, {
-    credentials: 'include',
-  });
+  const response = await apiClient(`/analytics/timeline?period=${period}`);
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch timeline data');
   return data.data;
@@ -92,9 +85,7 @@ export const useTimelineData = (period = 'week') => {
  * Returns top performing campaigns
  */
 const fetchTopCampaigns = async (limit = 5) => {
-  const response = await fetch(`${API_URL}/analytics/top-campaigns?limit=${limit}`, {
-    credentials: 'include',
-  });
+  const response = await apiClient(`/analytics/top-campaigns?limit=${limit}`);
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch top campaigns');
   return data.data;
@@ -113,9 +104,7 @@ export const useTopCampaigns = (limit = 5) => {
  * Returns most recent replies across all campaigns
  */
 const fetchRecentReplies = async (limit = 10) => {
-  const response = await fetch(`${API_URL}/analytics/recent-replies?limit=${limit}`, {
-    credentials: 'include',
-  });
+  const response = await apiClient(`/analytics/recent-replies?limit=${limit}`);
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch recent replies');
   return data.data;
@@ -135,9 +124,7 @@ export const useRecentReplies = (limit = 10) => {
  * Returns performance breakdown by sender
  */
 const fetchSenderStats = async () => {
-  const response = await fetch(`${API_URL}/analytics/sender-stats`, {
-    credentials: 'include',
-  });
+  const response = await apiClient('/analytics/sender-stats');
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch sender stats');
   return data.data;
@@ -156,9 +143,7 @@ export const useSenderStats = () => {
  * Returns hourly sending patterns
  */
 const fetchHourlyStats = async () => {
-  const response = await fetch(`${API_URL}/analytics/hourly`, {
-    credentials: 'include',
-  });
+  const response = await apiClient('/analytics/hourly');
   const data = await response.json();
   if (!response.ok) throw new Error(data.message || 'Failed to fetch hourly stats');
   return data.data;

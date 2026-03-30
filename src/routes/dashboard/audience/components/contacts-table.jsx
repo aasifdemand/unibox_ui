@@ -242,13 +242,13 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
 };
 
 // ─── Main Component ───────────────────────────────────────────────────────────
+import { api } from '../../../../lib/api';
 const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [sorting, setSorting] = useState([]);
   const [enrichingId, setEnrichingId] = useState(null);
   const [visibleCols, setVisibleCols] = useState(new Set());
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
 
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
   useEffect(() => {
@@ -281,10 +281,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     setEnrichingId(contact.id);
     const toastId = toast.loading(`Enriching ${contact.email}...`);
     try {
-      const res = await fetch(`${API_URL}/lists/contact/${contact.id}/enrich`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const res = await api.post(`/lists/contact/${contact.id}/enrich`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Enrichment failed');
       toast.dismiss(toastId);

@@ -49,9 +49,9 @@ const MessageActionsHeader = ({
       ) : (
         <button
           onClick={onCompose}
-          className="btn-primary flex items-center gap-2 transition-all transition-all relative overflow-hidden"
+          className="btn-primary flex items-center gap-2 transition-all  relative overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -ltr:translate-x-full rtl:-translate-x-full group-hover:ltr:translate-x-full rtl:-translate-x-full transition-transform duration-700"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -ltr:translate-x-full rtl:-translate-x-full group-hover:ltr:translate-x-full rtl:-translate-x-full transition-transform duration-700"></div>
           <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           <span>{t('mailboxes.compose')}</span>
         </button>

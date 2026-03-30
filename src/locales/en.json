@@ -647,7 +647,7 @@
             "last_30": "Last 30 days",
             "last_90": "Last 90 days"
         },
-        "refresh_data": "Sync data",
+        "refresh_data": "Refresh data",
         "syncing": "Syncing...",
         "loading_data": "Synchronizing dashboard data...",
         "stats": {

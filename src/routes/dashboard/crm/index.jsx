@@ -393,7 +393,7 @@ const CRMIntegration = () => {
                   </div>
                   <button
                     onClick={() => setIsAddStageOpen(true)}
-                    className="bg-orange-600 text-white px-10 py-5 rounded-[24px] text-xs font-black tracking-widest hover:bg-orange-700 transition-all active:scale-95 shadow-lg shadow-orange-600/20"
+                    className="bg-orange-600 text-white px-10 py-4 rounded-lg text-xs font-black tracking-widest hover:bg-orange-700 transition-all active:scale-95 shadow-lg shadow-orange-600/20"
                   >
                     {t('crm.create_initial', 'Create First Column')}
                   </button>

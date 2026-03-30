@@ -365,7 +365,7 @@ const Header = ({
               ) : (
                 <button
                   onClick={() => setShowSenderModal(true)}
-                  className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-extrabold uppercase tracking-widest text-[11px] rounded-md"
+                  className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-extrabold  tracking-widest text-[11px] rounded-md"
                 >
                   <Plus className="w-4 h-4 text-white" />
                   {t('mailboxes.add_mailbox')}

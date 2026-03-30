@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+import { api } from '../lib/api';
 
 /**
  * Hook to generate an AI email sequence.
@@ -8,12 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
 export const useGenerateSequence = () => {
   return useMutation({
     mutationFn: async ({ goal, tone = 'professional', stepsCount = 3, variables = [] }) => {
-      const res = await fetch(`${API_URL}/ai/generate-sequence`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ goal, tone, stepsCount, variables }),
-        credentials: 'include',
-      });
+      const res = await api.post('/ai/generate-sequence', { goal, tone, stepsCount, variables });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to generate sequence');
       return data.data;
@@ -34,10 +28,7 @@ export const useStreamSequence = () => {
         variables: JSON.stringify(variables)
       }).toString();
 
-      const response = await fetch(`${API_URL}/ai/generate-sequence-stream?${queryParams}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
+      const response = await api.get(`/ai/generate-sequence-stream?${queryParams}`);
 
       if (!response.ok) {
         throw new Error('Failed to start stream');

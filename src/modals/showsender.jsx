@@ -119,10 +119,10 @@ const ShowSender = ({
         setShowSenderModal(false);
         clearTestResults();
       }}
-      maxWidth="max-w-3xl"
+      maxWidth="max-w-4xl"
       closeOnBackdrop={true}
     >
-      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Mail className="w-20 h-20 text-orange-400" />
         </div>
@@ -183,7 +183,7 @@ const ShowSender = ({
                 clearTestResults();
               }}
               disabled={isSubmitting}
-              className={`group relative p-4 sm:p-5 rounded-[2rem] border-2 transition-all duration-500 ${
+              className={`group relative p-4 sm:p-5 rounded-lg border-2 transition-all duration-500 ${
                 senderType === item.type
                   ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-sm shadow-${item.color}-500/10`
                   : 'border-slate-50 bg-white hover:border-slate-200'
@@ -224,12 +224,12 @@ const ShowSender = ({
                 transition={{ duration: 0.3 }}
               >
                 <div
-                  className={`p-6 rounded-[2.5rem] border-2 ${senderType === 'gmail' ? 'bg-orange-50/20 border-orange-100' : 'bg-orange-50/20 border-orange-100'} relative overflow-hidden`}
+                  className={`p-6 rounded-lg border-2 ${senderType === 'gmail' ? 'bg-orange-50/20 border-orange-100' : 'bg-orange-50/20 border-orange-100'} relative overflow-hidden`}
                 >
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/50">
                       <Shield
-                        className={`w-8 h-8 ${senderType === 'gmail' ? 'text-orange-500' : 'text-orange-500'}`}
+                        className={`w-8 h-8 ${senderType === 'gmail' ? 'text-orange-600' : 'text-orange-500'}`}
                       />
                     </div>
                     <div>
@@ -287,7 +287,7 @@ const ShowSender = ({
                   <div className="mt-6 flex justify-center">
                     <button
                       onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
-                      className={`px-12 py-5 rounded-lg text-[11px] font-extrabold uppercase tracking-widest text-white shadow-sm transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
+                      className={`px-12 py-4 rounded-lg text-[11px] font-extrabold uppercase tracking-widest text-white shadow-sm transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
                         senderType === 'gmail'
                           ? 'bg-orange-600 shadow-orange-600/30'
                           : 'bg-orange-600 shadow-orange-600/30'
@@ -342,7 +342,7 @@ const ShowSender = ({
                         }
                         required
                         disabled={isSubmitting}
-                        className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
+                        className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
                         placeholder="e.g. John Smith"
                       />
                     </div>
@@ -356,14 +356,14 @@ const ShowSender = ({
                         onChange={(e) => setSmtpData({ ...smtpData, email: e.target.value })}
                         required
                         disabled={isSubmitting}
-                        className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
+                        className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
                         placeholder="sender@example.com"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-slate-50/50 p-2 rounded-4xl border-2 border-slate-100 flex gap-2">
+                <div className="bg-slate-50/50 p-2 rounded-lg border-2 border-slate-100 flex gap-2">
                   {[
                     { id: 'smtp', label: t('modals.sender.tabs.smtp'), icon: Smtp },
                     {
@@ -412,7 +412,7 @@ const ShowSender = ({
                             type="text"
                             value={smtpData.host}
                             onChange={(e) => setSmtpData({ ...smtpData, host: e.target.value })}
-                            className="w-full h-14 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-6 rtl:pl-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                            className="w-full h-12 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-6 rtl:pl-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                             placeholder={t('modals.sender.fields.placeholder_host_smtp')}
                           />
                         </div>
@@ -430,7 +430,7 @@ const ShowSender = ({
                             type="text"
                             value={smtpData.port}
                             onChange={(e) => setSmtpData({ ...smtpData, port: e.target.value })}
-                            className="w-full h-14 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                            className="w-full h-12 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                             placeholder={t('modals.sender.fields.placeholder_port_smtp')}
                           />
                         </div>
@@ -449,7 +449,7 @@ const ShowSender = ({
                             })
                           }
                           required
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                           placeholder={t('modals.sender.fields.placeholder_email')}
                         />
                       </div>
@@ -468,7 +468,7 @@ const ShowSender = ({
                               })
                             }
                             required
-                            className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none ltr:pr-14 rtl:pl-14"
+                            className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none ltr:pr-14 rtl:pl-14"
                             placeholder={t('modals.sender.fields.placeholder_pass')}
                           />
                           <button
@@ -570,7 +570,7 @@ const ShowSender = ({
                               imapHost: e.target.value,
                             })
                           }
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                           placeholder={t('modals.sender.fields.placeholder_host_imap')}
                         />
                       </div>
@@ -587,7 +587,7 @@ const ShowSender = ({
                               imapPort: e.target.value,
                             })
                           }
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                           placeholder={t('modals.sender.fields.placeholder_port_imap')}
                         />
                       </div>
@@ -604,7 +604,7 @@ const ShowSender = ({
                               imapUser: e.target.value,
                             })
                           }
-                          className="w-full h-14 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                           placeholder={t('modals.sender.fields.placeholder_email')}
                         />
                       </div>
@@ -622,7 +622,7 @@ const ShowSender = ({
                                 imapPassword: e.target.value,
                               })
                             }
-                            className="w-full h-14 ltr:pl-6 ltr:pr-6 rtl:pl-6 ltr:pr-12 rtl:pl-12 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
+                            className="w-full h-12 ltr:pl-6 ltr:pr-6 rtl:pl-6 ltr:pr-12 rtl:pl-12 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
                             placeholder={t('modals.sender.fields.placeholder_pass')}
                           />
                           <button
@@ -752,7 +752,7 @@ const ShowSender = ({
             <button
               type="button"
               onClick={() => setShowSenderModal(false)}
-              className="px-8 py-4 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
+              className="px-8 py-3 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
             >
               {t('common.cancel')}
             </button>
@@ -762,7 +762,7 @@ const ShowSender = ({
                 onClick={handleSmtpSubmit}
                 disabled={isSubmitting || !smtpData.host || !smtpData.password}
                 variant="primary"
-                className="px-10 py-4 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+                className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin text-white" />

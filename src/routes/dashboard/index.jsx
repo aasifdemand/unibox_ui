@@ -546,7 +546,7 @@ const Dashboard = () => {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="btn-primary flex items-center text-[10px] font-extrabold uppercase tracking-widest transition-all"
+            className="btn-primary flex items-center text-[10px] font-extrabold  tracking-widest transition-all"
           >
             {!isRefreshing && <RefreshCw className="w-4 h-4 me-2.5" />}
             {isRefreshing ? t('dashboard.syncing') : t('dashboard.refresh_data')}
@@ -827,7 +827,7 @@ const Dashboard = () => {
                       className="flex gap-6 group"
                     >
                       {/* Timeline Dot & Line Column */}
-                      <div className="flex flex-col items-center flex-shrink-0 relative">
+                      <div className="flex flex-col items-center shrink-0 relative">
                         <div
                           className={`w-3.5 h-3.5 rounded-full ${activity.icon} border-2 border-white shadow-md relative z-10 group-hover:scale-125 transition-all duration-500`}
                         />
