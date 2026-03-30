@@ -14,7 +14,6 @@ import { useSenders, useDeleteSender } from '../../../hooks/useSenders';
 import { useBatches } from '../../../hooks/useBatches';
 import { useCampaigns } from '../../../hooks/useCampaign';
 import toast from 'react-hot-toast';
-import { SkeletonLoader } from '../../../components/ui/loading-spinner';
 
 const Settings = () => {
   const { t } = useTranslation();
@@ -139,7 +138,7 @@ const Settings = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-orange-50 text-orange-600 border border-orange-100/50 shadow-sm shadow-orange-500/5">
+          <span className="px-4 py-1.5 rounded-lg text-metadata bg-orange-50 text-orange-600 border border-orange-100/50">
             {t('settings.account_ready')}
           </span>
         </div>
@@ -173,18 +172,18 @@ const Settings = () => {
                 </div>
                 <div className="ltr:text-left rtl:text-right">
                   <p
-                    className={`font-black tracking-tight text-xs uppercase ${
-                      activeMenu === item.id ? 'text-slate-900' : 'text-slate-500'
+                    className={`text-sender ${
+                      activeMenu === item.id ? 'text-slate-900 font-semibold' : 'text-slate-500 font-medium'
                     }`}
                   >
                     {item.label}
                   </p>
-                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5 opacity-60">
+                  <p className="text-xs text-slate-400 font-normal mt-0.5 opacity-70">
                     {item.description}
                   </p>
                 </div>
                 {item.disabled && (
-                  <span className="ltr:ml-auto ltr:mr-auto rtl:ml-auto text-[7px] bg-slate-200/50 text-slate-500 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">
+                  <span className="ltr:ml-auto rtl:mr-auto text-metadata bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full">
                     {t('settings.menu.soon')}
                   </span>
                 )}
@@ -192,19 +191,19 @@ const Settings = () => {
             ))}
           </div>
 
-          <div className="p-8 rounded-xl bg-gradient-to-br from-orange-600 to-orange-700 text-white shadow-sm shadow-orange-500/20 relative overflow-hidden group">
-            <div className="relative z-10">
-              <h4 className="text-sm font-black uppercase tracking-widest mb-2">
-                {t('settings.help.title')}
-              </h4>
-              <p className="text-[10px] text-orange-50/70 mb-6 font-bold uppercase tracking-widest leading-loose">
-                {t('settings.help.desc')}
-              </p>
-              <button className="text-[10px] font-black uppercase tracking-widest bg-white/20 hover:bg-white text-white hover:text-orange-600 border border-white/20 px-6 py-2.5 rounded-lg transition-all duration-300 active:scale-95 shadow-sm">
-                {t('settings.help.btn')}
-              </button>
+          <div className="p-6 rounded-xl bg-white border border-slate-200/80 shadow-sm relative overflow-hidden group">
+            <div className="w-10 h-10 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center mb-4">
+              <SettingsIcon className="w-5 h-5 text-orange-600" />
             </div>
-            <SettingsIcon className="absolute -ltr:right-6 rtl:left-6 -bottom-6 w-32 h-32 text-white/10 rotate-12 group-hover:rotate-45 transition-transform duration-2000 pointer-events-none" />
+            <h4 className="text-sm font-semibold text-slate-800 mb-1.5">
+              {t('settings.help.title')}
+            </h4>
+            <p className="text-xs text-slate-500 font-normal mb-5 leading-relaxed">
+              {t('settings.help.desc')}
+            </p>
+            <button className="text-metadata text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-100 px-4 py-2 rounded-lg transition-all duration-200 active:scale-95">
+              {t('settings.help.btn')}
+            </button>
           </div>
         </aside>
 
