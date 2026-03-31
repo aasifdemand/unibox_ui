@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -23,6 +24,8 @@ const BatchDetailsModal = ({
   setRecordsPage,
 }) => {
   const { t } = useTranslation();
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   if (!show) return null;
 
@@ -196,7 +199,7 @@ const BatchDetailsModal = ({
                           </td>
                           <td className="px-6 py-4">
                             <span className="text-slate-500 font-medium">
-                              {formatDate(contact.createdAt)}
+                              {formatDate(contact.createdAt, userTz)}
                             </span>
                           </td>
                         </tr>

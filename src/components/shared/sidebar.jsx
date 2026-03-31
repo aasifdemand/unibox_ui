@@ -22,9 +22,12 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
     try {
       await logout.mutateAsync();
       setShowLogoutDialog(false);
-      navigate('/auth/login');
+      navigate('/auth/login', { replace: true });
     } catch (error) {
       console.error('Logout failed:', error);
+      // Even if API fails (e.g. 401 already expired), force the user out
+      setShowLogoutDialog(false);
+      navigate('/auth/login', { replace: true });
     }
   };
 
@@ -90,7 +93,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                 {t('common.main_dashboard')}
               </div>
             )}
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
 
@@ -137,7 +140,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                     )}
                     
                     {sidebarCollapsed && activeHover === item.path && (
-                      <div className="absolute left-full ltr:ml-2 rtl:mr-2 px-2.5 py-1.5 bg-zinc-900 text-white text-[11px] font-semibold rounded shadow-sm z-[100] whitespace-nowrap animate-in fade-in slide-in-from-left-1 duration-200 pointer-events-none">
+                      <div className="absolute left-full ltr:ml-2 rtl:mr-2 px-2.5 py-1.5 bg-zinc-900 text-white text-[11px] font-semibold rounded shadow-sm z-100 whitespace-nowrap animate-in fade-in slide-in-from-left-1 duration-200 pointer-events-none">
                         {item.label}
                       </div>
                     )}

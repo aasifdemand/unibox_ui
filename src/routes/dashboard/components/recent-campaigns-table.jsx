@@ -52,7 +52,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
           return (
             <div className="flex items-center gap-4 transition-transform duration-300 group-hover/row:translate-x-0.5">
               {/* Circular Progress */}
-              <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center">
+              <div className="relative w-12 h-12 shrink-0 flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                   <path
                     className="text-slate-100"
@@ -254,19 +254,14 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
         <p className="text-slate-500 font-medium mb-8 max-w-xs mx-auto">
           {t('dashboard.empty.description')}
         </p>
-        <Link
-          to="/dashboard/campaigns/create"
-          className="btn-primary py-3 px-8 shadow-sm shadow-orange-500/20 active:scale-95"
-        >
-          {t('dashboard.empty.create_first')}
-        </Link>
+       
       </div>
     );
   }
 
   return (
     <div className="overflow-x-auto no-scrollbar">
-      <table className="w-full text-start border-collapse border-separate border-spacing-0">
+      <table className="w-full text-start border-collapse  border-spacing-0">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="bg-slate-50/80 ">

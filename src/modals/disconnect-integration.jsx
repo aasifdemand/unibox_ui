@@ -18,7 +18,7 @@ const DisconnectIntegration = ({
       maxWidth="max-w-md"
       closeOnBackdrop={true}
     >
-      <div className="bg-gradient-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Unplug className="w-16 h-16 text-white" />
         </div>

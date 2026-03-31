@@ -377,7 +377,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         <div className="px-8 py-6 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-600 to-orange-600 rounded-lg flex items-center justify-center shadow-sm shadow-orange-500/20">
+              <div className="w-12 h-12 bg-linear-to-br from-orange-600 to-orange-600 rounded-lg flex items-center justify-center shadow-sm shadow-orange-500/20">
                 <Send className="w-6 h-6 text-white" />
               </div>
               <div>

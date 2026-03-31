@@ -36,6 +36,7 @@ import { SkeletonLoader } from '../../../../components/ui/loading-spinner';
 
 import { formatDate } from '../audience-service';
 import { useAllContacts } from '../hooks/use-all-contacts';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 import { useDebounce } from '../../../../hooks/useDebounce';
 import { toast } from 'react-hot-toast';
 
@@ -243,12 +244,14 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 import { api } from '../../../../lib/api';
-const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
+const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols }) => {
   const { t } = useTranslation();
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sorting, setSorting] = useState([]);
   const [enrichingId, setEnrichingId] = useState(null);
-  const [visibleCols, setVisibleCols] = useState(new Set());
 
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
   useEffect(() => {
@@ -268,16 +271,8 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
   });
   const { pages: totalPages, total: totalRecords } = pagination;
 
-  const toggleCol = (id) => {
-    setVisibleCols((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
-
   // Enrich handler
-  const handleEnrich = async (contact) => {
+  const handleEnrich = React.useCallback(async (contact) => {
     setEnrichingId(contact.id);
     const toastId = toast.loading(`Enriching ${contact.email}...`);
     try {
@@ -294,7 +289,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     } finally {
       setEnrichingId(null);
     }
-  };
+  }, [refetch]);
 
   const columns = useMemo(() => {
     const base = [
@@ -443,7 +438,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
         ),
         cell: (info) => (
           <span className="text-slate-500 whitespace-nowrap font-medium text-[12px]">
-            {formatDate(info.getValue())}
+            {formatDate(info.getValue(), userTz)}
           </span>
         ),
       },
@@ -479,7 +474,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal }) => {
     ];
 
     return [...base, ...metaCols, ...end];
-  }, [visibleCols, t, enrichingId]);
+  }, [visibleCols, t, enrichingId, userTz, handleEnrich]);
 
   const table = useReactTable({
     data: currentRecords,

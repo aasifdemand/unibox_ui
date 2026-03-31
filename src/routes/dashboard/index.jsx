@@ -18,6 +18,7 @@ import {
   Plus,
   ChevronDown,
   AlertCircle,
+  LayoutDashboard,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import {
@@ -36,6 +37,8 @@ import { toast } from 'react-hot-toast';
 // Import components & modals
 import ShowUpload from '../../modals/showupload';
 import ShowSender from '../../modals/showsender';
+import QuickCreateCampaignModal from '../../modals/QuickCreateCampaignModal';
+import CreateColumn from '../../modals/CreateColumn';
 import { useAudienceData } from './audience/hooks/use-audience-data';
 import ShowCreateCampaign from '../../modals/showcreatecampaign';
 import RecentCampaignsTable from './components/recent-campaigns-table';
@@ -50,6 +53,12 @@ import {
   initiateOutlookOAuth,
 } from '../../hooks/useSenders';
 import { useBatches, useVerificationTotals } from '../../hooks/useBatches';
+import { useCurrentUser } from '../../hooks/useAuth';
+import { 
+  formatInTimezone, 
+  isSameMonthInTimezone, 
+  getDaysUntilInTimezone 
+} from '../../utils/date-utils';
 
 const QuickActionContent = ({ action }) => (
   <>
@@ -74,6 +83,12 @@ const Dashboard = () => {
   const [timeRange, setTimeRange] = useState('30');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateCampaignModal, setShowCreateCampaignModal] = useState(false);
+  const [showQuickCreateModal, setShowQuickCreateModal] = useState(false);
+  const [isAddStageOpen, setIsAddStageOpen] = useState(false);
+
+  // Get Current User Profile
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   // Audience Modal Logic
   const audienceData = useAudienceData();
@@ -172,7 +187,7 @@ const Dashboard = () => {
   const totalOpens = campaigns.reduce((sum, c) => sum + (c.totalOpens || 0), 0);
   const totalReplied = campaigns.reduce((sum, c) => sum + (c.totalReplied || 0), 0);
   const totalBounced = campaigns.reduce((sum, c) => sum + (c.totalBounced || 0), 0);
-  const totalUnsubscribed = campaigns.reduce((sum, c) => sum + (c.totalUnsubscribed || 0), 0);
+ 
   const totalClicks = campaigns.reduce((sum, c) => sum + (c.totalClicks || 0), 0);
 
   // Calculate rates
@@ -180,7 +195,7 @@ const Dashboard = () => {
   const avgClickRate = totalSent > 0 ? ((totalClicks / totalSent) * 100).toFixed(1) : '0.0';
   const avgReplyRate = totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : '0.0';
   const avgBounceRate = totalSent > 0 ? ((totalBounced / totalSent) * 100).toFixed(1) : '0.0';
-  const avgUnsubRate = totalSent > 0 ? ((totalUnsubscribed / totalSent) * 100).toFixed(1) : '0.0';
+  
 
   // Contact stats
   const totalContacts = batches.reduce((acc, batch) => acc + (batch.totalRecords || 0), 0);
@@ -244,6 +259,8 @@ const Dashboard = () => {
           statusLabel = campaign.status;
       }
 
+      const launchDate = campaign.scheduledAt || campaign.createdAt;
+      
       return {
         id: campaign.id,
         name: campaign.name,
@@ -256,39 +273,29 @@ const Dashboard = () => {
         clickRate,
         bounceRate,
         sentCount: campaign.totalSent || 0,
-        sentDate: campaign.scheduledAt
-          ? new Date(campaign.scheduledAt).toLocaleDateString(undefined, {
+        sentDate: campaign.status === 'draft' 
+          ? t('dashboard.table.draft')
+          : formatInTimezone(launchDate, userTz, {
               month: 'short',
               day: 'numeric',
-              year: 'numeric',
-            })
-          : campaign.status === 'draft'
-            ? t('dashboard.table.draft')
-            : new Date(campaign.createdAt).toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              }),
+              year: 'numeric'
+            }),
         progress,
       };
     });
 
-  // Calculate campaign goal progress
+  // Calculate campaign goal progress - Timezone Aware
   const monthlyGoal = 30; // Target campaigns per month
-  const campaignsThisMonth = campaigns.filter((c) => {
-    const createdAt = new Date(c.createdAt);
-    const now = new Date();
-    return createdAt.getMonth() === now.getMonth() && createdAt.getFullYear() === now.getFullYear();
-  }).length;
+  const campaignsThisMonth = campaigns.filter((c) => isSameMonthInTimezone(c.createdAt, userTz)).length;
   const goalProgress = Math.min(100, Math.round((campaignsThisMonth / monthlyGoal) * 100));
 
-  // Get next scheduled campaign
+  // Get next scheduled campaign - Timezone Aware
   const nextCampaign = campaigns
     .filter((c) => c.status === 'scheduled' && c.scheduledAt && new Date(c.scheduledAt) > new Date())
     .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))[0];
 
   const daysUntilNext = nextCampaign
-    ? Math.ceil((new Date(nextCampaign.scheduledAt) - new Date()) / (1000 * 60 * 60 * 24))
+    ? getDaysUntilInTimezone(nextCampaign.scheduledAt, userTz)
     : null;
 
   // Aggregate real performance data based on selected time range
@@ -450,7 +457,7 @@ const Dashboard = () => {
       icon: <Sparkles className="w-5 h-5" />,
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-linear-to-br from-orange-50 to-orange-50',
-      onClick: () => setShowCreateCampaignModal(true),
+      onClick: () => setShowQuickCreateModal(true),
     },
     {
       title: t('dashboard.quick_actions.import_contacts'),
@@ -468,6 +475,14 @@ const Dashboard = () => {
       color: 'from-amber-500 to-amber-600',
       bgColor: 'bg-linear-to-br from-amber-50 to-amber-50',
       onClick: () => setShowSenderModal(true),
+    },
+    {
+      title: t('crm.add_column_modal_title', 'Add CRM Column'),
+      description: 'Create a new stage in your sales funnel',
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-linear-to-br from-orange-50 to-orange-50',
+      onClick: () => setIsAddStageOpen(true),
     },
   ];
 
@@ -534,7 +549,7 @@ const Dashboard = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none ltr:pl-10 ltr:pr-10 rtl:pl-10 ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
+              className="appearance-none ltr:pl-10  ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>
@@ -784,7 +799,7 @@ const Dashboard = () => {
                 <span className="text-orange-600 mx-2">{t('dashboard.quick_actions.span')}</span>
                 <Sparkles className="w-4 h-4 ms-3 text-orange-500 animate-pulse" />
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 relative z-10">
                 {quickActions.map((action, index) => (
                   <motion.div
                     key={index}
@@ -919,13 +934,13 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <Link
                 to="/dashboard/campaigns"
-                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all"
+                className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] font-black  tracking-widest transition-all"
               >
                 {t('dashboard.recent_campaigns.view_all')}
               </Link>
               <Link
                 to="/dashboard/campaigns/create"
-                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-[10px] font-black uppercase tracking-widest transition-all shadow-sm shadow-orange-500/20 active:scale-95 flex items-center gap-2"
+                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-[10px] font-black  tracking-widest transition-all shadow-sm shadow-orange-500/20 active:scale-95 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 {t('dashboard.recent_campaigns.new_campaign')}
@@ -1048,6 +1063,14 @@ const Dashboard = () => {
       <ShowCreateCampaign
         showModal={showCreateCampaignModal}
         setShowModal={setShowCreateCampaignModal}
+      />
+      <QuickCreateCampaignModal
+        isOpen={showQuickCreateModal}
+        onClose={() => setShowQuickCreateModal(false)}
+      />
+      <CreateColumn
+        open={isAddStageOpen}
+        setOpen={setIsAddStageOpen}
       />
     </div>
   );

@@ -17,6 +17,9 @@ import {
   ChevronsUpDown,
 } from 'lucide-react';
 
+import { useCurrentUser } from '../../../../hooks/useAuth';
+import { formatInTimezone } from '../../../../utils/date-utils';
+
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
   if (!isSorted)
@@ -39,6 +42,8 @@ const SortIndicator = ({ column }) => {
 const RecentReplies = ({ replies = [], isLoading }) => {
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const columns = React.useMemo(
     () => [
@@ -59,7 +64,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           const reply = row.original;
           return (
             <div className="flex items-center gap-4 transition-transform duration-300 group-hover/row:translate-x-0.5">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-orange-500/20 group-hover/row:rotate-6 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-orange-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-orange-500/20 group-hover/row:rotate-6 transition-all">
                 {reply.from?.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
@@ -136,10 +141,14 @@ const RecentReplies = ({ replies = [], isLoading }) => {
         cell: ({ row }) => (
           <div className="flex flex-col">
             <p className="text-sm font-bold text-slate-900 tabular-nums">
-              {new Date(row.original.receivedAt).toLocaleDateString()}
+              {formatInTimezone(row.original.receivedAt, userTz, { 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+              })}
             </p>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              {new Date(row.original.receivedAt).toLocaleTimeString([], {
+              {formatInTimezone(row.original.receivedAt, userTz, {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
@@ -168,7 +177,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
         ),
       },
     ],
-    [t],
+    [t, userTz],
   );
 
   const table = useReactTable({
@@ -244,7 +253,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
         </div>
       ) : replies?.length > 0 ? (
         <div className="overflow-x-auto no-scrollbar">
-          <table className="w-full text-start border-collapse border-separate border-spacing-0">
+          <table className="w-full text-start border-collapse border-spacing-0">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="bg-slate-50/80 ">

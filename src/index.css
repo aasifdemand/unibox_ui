@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 
 @theme {
   /* Enforce Strict Apollo/Smartlead Minimalist Aesthetic Globally */
+  --font-sans: 'Open Sans', sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+
   --radius-lg: 6px;
   --radius-xl: 8px;
   --radius-2xl: 10px;
@@ -36,11 +40,7 @@
 }
 
 body {
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: var(--font-sans);
   color: var(--text-main);
   background-color: var(--background);
   -webkit-font-smoothing: antialiased;
@@ -53,7 +53,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   letter-spacing: -0.02em;
   font-weight: 700;
 }
@@ -95,7 +95,7 @@ h6 {
 }
 
 .text-gradient {
-  @apply bg-gradient-to-r from-orange-600 via-orange-600 to-red-600 bg-clip-text text-transparent;
+  @apply bg-linear-to-r from-orange-600 via-orange-600 to-red-600 bg-clip-text text-transparent;
 }
 
 /* Modal styles */

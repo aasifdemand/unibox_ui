@@ -149,10 +149,16 @@ export const getRecordStatusBadgeClass = (status) => {
   }
 };
 
+import { formatInTimezone } from '../../../utils/date-utils';
+
 // Format date
-export const formatDate = (dateString) => {
+export const formatDate = (dateString, timezone = 'UTC') => {
   if (!dateString) return '-';
-  return new Date(dateString).toLocaleDateString();
+  return formatInTimezone(dateString, timezone, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
 };
 
 // Pagination helper

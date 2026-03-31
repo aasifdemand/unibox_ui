@@ -20,6 +20,7 @@ const isAuthRequest = (endpoint) => {
     '/auth/verify-account',
     '/auth/forgot-password',
     '/auth/reset-password',
+    '/auth/logout',
   ];
   return authEndpoints.some((auth) => endpoint.startsWith(auth));
 };

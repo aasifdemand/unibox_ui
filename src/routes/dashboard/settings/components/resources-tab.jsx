@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Users, Globe, Plus, Trash2, Loader2, ExternalLink } from 'lucide-react';
+import { Mail, Users, Globe, Plus, Trash2, Loader2, ExternalLink, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import Pagination from '../../../../components/ui/pagination';
 
@@ -61,22 +60,27 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-      className="flex flex-col h-full"
-    >
-      {/* Sub Tabs */}
-      <div className="px-10 pt-10">
-        <div className="flex items-center gap-1.5 p-1.5 bg-slate-50 border border-slate-100 rounded-4xl w-fit shadow-sm">
+    <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="p-6 border-b border-slate-50">
+        <h3 className="text-lg font-black text-slate-800 tracking-tight flex items-center gap-2">
+          <Database className="w-4 h-4 text-orange-600" />
+          {t('settings.resources.title', 'Workspace Resources')}
+        </h3>
+        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+          {t('settings.resources.subtitle', 'Manage your senders, contact lists, and outreach campaigns.')}
+        </p>
+      </div>
+
+      {/* Sub-Tab Navigation - Elite Minimalist */}
+      <div className="px-8 pt-6">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-50 border border-slate-200 rounded-lg w-fit">
           {resourceTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setSubTab(tab.id)}
-              className={`flex items-center gap-2.5 py-2.5 px-6 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+              className={`flex items-center gap-2.5 h-9 px-4 rounded-md text-[9px] font-black uppercase tracking-widest transition-all duration-200 ${
                 subTab === tab.id
-                  ? 'bg-white text-orange-600 shadow-md shadow-slate-900/5'
+                  ? 'bg-white text-orange-600 shadow-sm border border-slate-200'
                   : 'text-slate-400 hover:text-slate-600 hover:bg-white/50'
               }`}
             >
@@ -86,7 +90,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               <span>{tab.label}</span>
               <span
                 className={`flex items-center justify-center min-w-5 h-5 px-1.5 text-[8px] rounded-full font-black ${
-                  subTab === tab.id ? 'bg-orange-50 text-orange-600' : 'bg-slate-100 text-slate-400'
+                  subTab === tab.id ? 'bg-orange-50 text-orange-600' : 'bg-slate-200 text-slate-500'
                 }`}
               >
                 {tab.count}
@@ -96,22 +100,22 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-10 py-10">
+      <div className="p-8">
         {/* Senders Content */}
         {subTab === 'senders' && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-xl font-black text-slate-900 tracking-tight">
+                <h4 className="text-sm font-black text-slate-800 tracking-tight">
                   {t('settings.resources.senders.title')}
                 </h4>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
                   {t('settings.resources.senders.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/audience?sender=true"
-                className="flex items-center gap-2 px-5 py-2.5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-sm shadow-orange-500/20 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-lg shadow-orange-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.senders.add')}
               </Link>
@@ -126,34 +130,34 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 {getPaginatedData(senders, 'senders').map((sender) => (
                   <div
                     key={sender.id}
-                    className="p-5 border border-slate-100 rounded-lg bg-white/50 hover:bg-white hover:shadow-sm hover:shadow-slate-900/2 transition-all duration-300 group"
+                    className="p-4 border border-slate-100 rounded-lg bg-slate-50/50 hover:bg-white hover:border-orange-200 transition-all duration-300 group"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
-                          <Mail className="w-4.5 h-4.5" />
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-orange-600 shadow-xs">
+                          <Mail className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-black text-slate-900 truncate tracking-tight">
+                          <p className="text-xs font-black text-slate-900 truncate tracking-tight">
                             {sender.email}
                           </p>
-                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">
-                            {t('settings.resources.senders.provider', { type: sender.type })}
+                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5 opacity-70">
+                            {sender.type}
                           </p>
                         </div>
                       </div>
                       <button
                         onClick={() => onDeleteSender(sender.id)}
-                        className="p-2 text-slate-300 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                        className="p-2 text-slate-300 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200">
+              <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   {t('settings.resources.senders.none')}
                 </p>
@@ -164,19 +168,19 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
 
         {/* Lists Content */}
         {subTab === 'lists' && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-xl font-black text-slate-900 tracking-tight">
+                <h4 className="text-sm font-black text-slate-800 tracking-tight">
                   {t('settings.resources.lists.title')}
                 </h4>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
                   {t('settings.resources.lists.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/audience"
-                className="flex items-center gap-2 px-5 py-2.5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-sm shadow-orange-500/20 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-lg shadow-orange-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.lists.add')}
               </Link>
@@ -187,22 +191,22 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 <Loader2 className="w-8 h-8 animate-spin text-orange-600 opacity-20" />
               </div>
             ) : batches.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {getPaginatedData(batches, 'lists').map((batch) => (
                   <div
                     key={batch.id}
-                    className="flex items-center justify-between p-5 rounded-lg border border-slate-100 bg-white/50 hover:border-orange-200 transition-all duration-300"
+                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-orange-200 transition-all duration-300"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-md bg-slate-100 flex items-center justify-center text-slate-400">
-                        <Users className="w-4.5 h-4.5" />
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 shadow-xs">
+                        <Users className="w-4 h-4" />
                       </div>
-                      <span className="text-sm font-black text-slate-700 tracking-tight">
+                      <span className="text-xs font-black text-slate-700 tracking-tight truncate max-w-[200px]">
                         {batch.originalFilename}
                       </span>
                     </div>
                     <span
-                      className={`text-[9px] px-3 py-1 rounded-full font-black uppercase tracking-widest border ${getStatusColor(batch.status)}`}
+                      className={`text-[8px] px-2.5 py-1 rounded-md font-black uppercase tracking-widest border ${getStatusColor(batch.status)}`}
                     >
                       {t(`settings.resources.status.${batch.status}`)}
                     </span>
@@ -210,7 +214,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200">
+              <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   {t('settings.resources.lists.none')}
                 </p>
@@ -221,19 +225,19 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
 
         {/* Campaigns Content */}
         {subTab === 'campaigns' && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-xl font-black text-slate-900 tracking-tight">
+                <h4 className="text-sm font-black text-slate-800 tracking-tight">
                   {t('settings.resources.campaigns.title')}
                 </h4>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
                   {t('settings.resources.campaigns.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/campaigns"
-                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
               >
                 <ExternalLink className="w-3.5 h-3.5" /> {t('settings.resources.campaigns.view')}
               </Link>
@@ -244,22 +248,22 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 <Loader2 className="w-8 h-8 animate-spin text-orange-600 opacity-20" />
               </div>
             ) : campaigns.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {getPaginatedData(campaigns, 'campaigns').map((campaign) => (
                   <div
                     key={campaign.id}
-                    className="flex items-center justify-between p-5 rounded-lg border border-slate-100 bg-white/50 hover:shadow-sm transition-all"
+                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-orange-200 transition-all"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-md bg-orange-50 flex items-center justify-center text-orange-500">
-                        <Globe className="w-4.5 h-4.5" />
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-orange-500 shadow-xs">
+                        <Globe className="w-4 h-4" />
                       </div>
-                      <span className="text-sm font-black text-slate-700 tracking-tight uppercase">
+                      <span className="text-xs font-black text-slate-700 tracking-tight uppercase">
                         {campaign.name}
                       </span>
                     </div>
                     <span
-                      className={`text-[9px] px-3 py-1 rounded-full font-black uppercase tracking-widest border ${getStatusColor(campaign.status)}`}
+                      className={`text-[8px] px-2.5 py-1 rounded-md font-black uppercase tracking-widest border ${getStatusColor(campaign.status)}`}
                     >
                       {t(`settings.resources.status.${campaign.status}`)}
                     </span>
@@ -267,7 +271,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200">
+              <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   {t('settings.resources.campaigns.none')}
                 </p>
@@ -275,36 +279,36 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
             )}
           </div>
         )}
-      </div>
 
-      {/* Dynamic Pagination Component */}
-      <div className="mt-auto px-10 pb-10">
-        {subTab === 'senders' && senders.length > ITEMS_PER_PAGE && (
-          <Pagination
-            currentPage={pages.senders}
-            totalItems={senders.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={(p) => handlePageChange('senders', p)}
-          />
-        )}
-        {subTab === 'lists' && batches.length > ITEMS_PER_PAGE && (
-          <Pagination
-            currentPage={pages.lists}
-            totalItems={batches.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={(p) => handlePageChange('lists', p)}
-          />
-        )}
-        {subTab === 'campaigns' && campaigns.length > ITEMS_PER_PAGE && (
-          <Pagination
-            currentPage={pages.campaigns}
-            totalItems={campaigns.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={(p) => handlePageChange('campaigns', p)}
-          />
-        )}
+        {/* Dynamic Pagination - High Density */}
+        <div className="mt-8 pt-6 border-t border-slate-50 flex justify-center">
+          {subTab === 'senders' && senders.length > ITEMS_PER_PAGE && (
+            <Pagination
+              currentPage={pages.senders}
+              totalItems={senders.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={(p) => handlePageChange('senders', p)}
+            />
+          )}
+          {subTab === 'lists' && batches.length > ITEMS_PER_PAGE && (
+            <Pagination
+              currentPage={pages.lists}
+              totalItems={batches.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={(p) => handlePageChange('lists', p)}
+            />
+          )}
+          {subTab === 'campaigns' && campaigns.length > ITEMS_PER_PAGE && (
+            <Pagination
+              currentPage={pages.campaigns}
+              totalItems={campaigns.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={(p) => handlePageChange('campaigns', p)}
+            />
+          )}
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

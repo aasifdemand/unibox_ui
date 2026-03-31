@@ -114,7 +114,7 @@ const ShowUpload = ({
       maxWidth="max-w-3xl"
       closeOnBackdrop={true}
     >
-      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <FileSpreadsheet className="w-20 h-20 text-orange-400" />
         </div>
@@ -155,7 +155,7 @@ const ShowUpload = ({
 
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative border-2 border-dashed border-slate-100 rounded-[2.5rem] p-12 hover:border-orange-400/50 hover:bg-orange-50/10 cursor-pointer transition-all duration-500"
+                className="group relative border-2 border-dashed border-slate-100 rounded-lg p-12 hover:border-orange-400/50 hover:bg-orange-50/10 cursor-pointer transition-all duration-500"
               >
                 <input
                   ref={fileInputRef}
@@ -166,7 +166,7 @@ const ShowUpload = ({
                 />
 
                 <div className="flex flex-col items-center gap-6">
-                  <div className="w-20 h-20 bg-slate-50 rounded-4xl flex items-center justify-center group-hover:scale-110 group-hover:bg-orange-50 transition-all duration-500">
+                  <div className="w-20 h-20 bg-slate-50 rounded-lg flex items-center justify-center group-hover:scale-110 group-hover:bg-orange-50 transition-all duration-500">
                     <Upload className="w-8 h-8 text-slate-300 group-hover:text-orange-500" />
                   </div>
                   <div className="text-center">

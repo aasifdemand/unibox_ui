@@ -1,27 +1,31 @@
 import {
-  AtSign,
-  CheckCircle,
   Mail,
-  Server,
   RefreshCw,
-  AlertCircle,
   Shield,
   Zap,
   Eye,
   EyeOff,
   Loader2,
+  ArrowLeft,
+  CheckCircle2,
+  Info,
+  Play,
+  RotateCcw,
+  AlertCircle,
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Modal from '../components/shared/modal';
 import { Microsoft } from '../icons/microsoft';
 import { Google } from '../icons/google';
 import { Smtp } from '../icons/smtp';
 import Button from '../components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';
+import BulkSenderUpload from '../components/senders/BulkSenderUpload';
+import { toast } from 'react-hot-toast';
 
 // Import React Query hooks
-import { useTestSmtp, useTestImap } from '../hooks/useSenders';
+import { useTestSmtp, useTestImap, useBulkCreateSenders } from '../hooks/useSenders';
 
 const ShowSender = ({
   setShowSenderModal,
@@ -35,745 +39,401 @@ const ShowSender = ({
   isSubmitting = false,
 }) => {
   const { t } = useTranslation();
+  const [step, setStep] = useState(1); // 1: Main Selection, 2: Specific Form
   const [settingsTab, setSettingsTab] = useState('smtp');
+  const [showPassword, setShowPassword] = useState(false);
   const [smtpTestResult, setSmtpTestResult] = useState(null);
   const [imapTestResult, setImapTestResult] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showImapPassword, setShowImapPassword] = useState(false);
 
   // React Query hooks
   const testSmtp = useTestSmtp();
   const testImap = useTestImap();
+  const bulkCreate = useBulkCreateSenders();
 
-  // Test SMTP connection only
+  const handleBulkUpload = async (senders) => {
+    try {
+      await bulkCreate.mutateAsync(senders);
+      toast.success('All mailboxes added successfully');
+      setShowSenderModal(false);
+    } catch (err) {
+      toast.error(err.message || 'Bulk upload failed');
+    }
+  };
+
   const testSmtpConnection = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     setSmtpTestResult(null);
-
     try {
-      const result = await testSmtp.mutateAsync({
+      await testSmtp.mutateAsync({
         host: smtpData.host,
         port: smtpData.port,
         secure: smtpData.secure,
         username: smtpData.username,
         password: smtpData.password,
       });
-
-      setSmtpTestResult({
-        success: true,
-        message: result.message || t('modals.sender.smtp_success'),
-      });
+      setSmtpTestResult({ success: true, message: 'SMTP connection successful!' });
     } catch (err) {
-      setSmtpTestResult({
-        success: false,
-        message: err.message || t('modals.sender.smtp_fail'),
-      });
+      setSmtpTestResult({ success: false, message: err.message || 'SMTP connection failed.' });
     }
   };
 
-  // Test IMAP connection only
   const testImapConnection = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     setImapTestResult(null);
-
-    // Auto-fill IMAP host if not provided
     const imapHost = smtpData.imapHost || smtpData.host?.replace('smtp', 'imap');
-
     try {
-      const result = await testImap.mutateAsync({
+      await testImap.mutateAsync({
         host: imapHost,
         port: smtpData.imapPort || 993,
         secure: smtpData.imapSecure !== undefined ? smtpData.imapSecure : true,
         user: smtpData.imapUser || smtpData.username,
         password: smtpData.imapPassword || smtpData.password,
       });
-
-      setImapTestResult({
-        success: true,
-        message: result.message || t('modals.sender.imap_success'),
-      });
+      setImapTestResult({ success: true, message: 'IMAP connection successful!' });
     } catch (err) {
-      setImapTestResult({
-        success: false,
-        message: err.message || t('modals.sender.imap_fail'),
-      });
+      setImapTestResult({ success: false, message: err.message || 'IMAP connection failed.' });
     }
   };
 
-  const clearTestResults = () => {
-    setSmtpTestResult(null);
-    setImapTestResult(null);
-  };
-
-  const isSmtpTesting = testSmtp.isPending;
-  const isImapTesting = testImap.isPending;
+  const isTesting = testSmtp.isPending || testImap.isPending;
 
   return (
     <Modal
       isOpen={true}
-      onClose={() => {
-        setShowSenderModal(false);
-        clearTestResults();
-      }}
+      onClose={() => setShowSenderModal(false)}
       maxWidth="max-w-4xl"
       closeOnBackdrop={true}
     >
-      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
-        <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-          <Mail className="w-20 h-20 text-orange-400" />
+      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group rounded-t-lg border-b border-orange-500/20">
+        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+          <Mail className="w-24 h-24 text-white" />
         </div>
-        <div className="relative flex items-center gap-4">
-          <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30">
-            <Mail className="w-6 h-6 text-orange-400" />
-          </div>
-          <div>
-            <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
-              {t('modals.sender.title.new')}
-            </h3>
-            <p className="text-[10px] font-bold text-orange-100/60 uppercase tracking-widest mt-0.5">
-              {t('modals.sender.subtitle')}
-            </p>
+        <div className="relative flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+              <Mail className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
+                {t('mailboxes.add_mailbox')}
+              </h3>
+              <p className="text-[10px] font-bold text-orange-100/60 uppercase tracking-widest mt-0.5">
+                Connect your email account in minutes
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="p-8">
-        {/* Sender Type Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {[
-            {
-              type: 'gmail',
-              label: t('modals.sender.types.gmail'),
-              icon: Google,
-              color: 'rose',
-              bg: 'bg-orange-50',
-              text: 'text-orange-600',
-              desc: 'OAuth 2.0',
-            },
-            {
-              type: 'outlook',
-              label: t('modals.sender.types.outlook'),
-              icon: Microsoft,
-              color: 'blue',
-              bg: 'bg-orange-50',
-              text: 'text-orange-600',
-              desc: 'Microsoft Graph',
-            },
-            {
-              type: 'smtp',
-              label: t('modals.sender.types.smtp'),
-              icon: Smtp,
-              color: 'slate',
-              bg: 'bg-slate-100',
-              text: 'text-slate-600',
-              desc: t('modals.sender.types.smtp_desc'),
-            },
-          ].map((item, index) => (
-            <motion.button
-              key={item.type}
-              initial={{ opacity: 0, y: 20 }}
+      <div className="p-6">
+        {/* Stepper Outside Header - Focused on White Background */}
+        <div className="flex items-center gap-8 justify-center mb-10 bg-slate-50/50 border border-slate-200/60 py-4 px-8 rounded-2xl pointer-events-none shadow-xs">
+            <div className="flex items-center gap-3">
+                <div className={`w-7 h-7 rounded-full ${step === 1 ? 'bg-orange-600 text-white shadow-md shadow-orange-600/20' : 'bg-slate-200 text-slate-500'} flex items-center justify-center text-[11px] font-black transition-all duration-500`}>1</div>
+                <span className={`text-[11px] font-bold uppercase tracking-[0.2em] ${step === 1 ? 'text-slate-900' : 'text-slate-400'}`}>Selection</span>
+            </div>
+            <div className="w-8 h-px bg-slate-200" />
+            <div className="flex items-center gap-3">
+                <div className={`w-7 h-7 rounded-full ${step === 2 ? 'bg-orange-600 text-white shadow-md shadow-orange-600/20' : 'bg-slate-200 text-slate-500'} flex items-center justify-center text-[11px] font-black transition-all duration-500`}>2</div>
+                <span className={`text-[11px] font-bold uppercase tracking-[0.2em] ${step === 2 ? 'text-slate-900' : 'text-slate-400'}`}>Setup</span>
+            </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {/* STEP 1: CONCURRENT VIEW */}
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              onClick={() => {
-                setSenderType(item.type);
-                clearTestResults();
-              }}
-              disabled={isSubmitting}
-              className={`group relative p-4 sm:p-5 rounded-lg border-2 transition-all duration-500 ${
-                senderType === item.type
-                  ? `border-${item.color}-500 bg-${item.color}-50/30 shadow-sm shadow-${item.color}-500/10`
-                  : 'border-slate-50 bg-white hover:border-slate-200'
-              } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              exit={{ opacity: 0, y: -5 }}
+              className="space-y-6"
             >
-              <div className="flex flex-col items-center text-center">
-                <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 ${item.bg} rounded-md sm:rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-500`}
-                >
-                  <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.text}`} />
+              {/* Configuration Box */}
+              <div className="p-6 bg-orange-50/40 border-2 border-orange-100 rounded-lg relative group transition-all duration-300">
+                <div className="absolute top-5 left-5">
+                    <div className="w-5 h-5 rounded-full border-2 border-orange-600 bg-white flex items-center justify-center p-0.5">
+                        <div className="w-full h-full bg-orange-600 rounded-full" />
+                    </div>
                 </div>
-                <span className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-tight">
-                  {item.label}
-                </span>
-                <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                  {item.desc}
-                </p>
+                
+                <div className="flex items-start gap-5 ml-8">
+                    <div className="flex-1">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-lg shadow-orange-600/10">
+                                    <Zap className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase">Unibox Infrastructure</h4>
+                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">High reputation sending channels</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-6">
+                            {[
+                                'Quick Setup', 'Managed infrastructure', 
+                                'Default Permissions', 'Pre-configured settings'
+                            ].map((feature, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                    <div className="w-4 h-4 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <CheckCircle2 className="w-3 text-orange-600" />
+                                    </div>
+                                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">{feature}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Provider Selection */}
+                        <div className="pt-6 border-t border-orange-100/40">
+                            <h5 className="text-[9px] font-black text-slate-800 uppercase tracking-[0.2em] mb-4">Choose your provider:</h5>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {[
+                                   { id: 'gmail', label: 'Google OAuth', icon: Google },
+                                   { id: 'outlook', label: 'Outlook', icon: Microsoft },
+                                   { id: 'smtp', label: 'SMTP', icon: Smtp },
+                                ].map((provider) => (
+                                   <button
+                                     key={provider.id}
+                                     onClick={() => {
+                                         setSenderType(provider.id);
+                                         setStep(2);
+                                     }}
+                                     className="group flex flex-col items-center bg-white border border-slate-100 rounded-lg p-5 transition-all hover:border-orange-600 hover:shadow-md active:scale-95"
+                                   >
+                                        <div className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center mb-3 transition-transform group-hover:scale-110 text-orange-600">
+                                            <provider.icon className="w-6 h-6" />
+                                        </div>
+                                        <span className="text-[11px] font-extrabold text-slate-800 uppercase tracking-tight mb-2">{provider.label}</span>
+                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full text-[8px] font-bold text-slate-400 group-hover:text-orange-600 transition-all uppercase tracking-widest">
+                                            <Play className="w-2.5 h-2.5 fill-current" />
+                                            Tutorial
+                                        </div>
+                                   </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
               </div>
-              {senderType === item.type && (
-                <div className="absolute top-3 ltr:right-3 rtl:left-3 sm:top-4 sm:ltr:right-4 sm:rtl:left-4 animate-in zoom-in">
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-orange-600 rounded-full flex items-center justify-center shadow-sm shadow-orange-500/40">
-                    <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                  </div>
+
+              {/* Bulk Section */}
+              <div className="pt-2 border-t border-slate-50">
+                <BulkSenderUpload onUpload={handleBulkUpload} isSubmitting={bulkCreate.isPending} />
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 2: FORMS */}
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+            >
+              {senderType === 'gmail' || senderType === 'outlook' ? (
+                <div className="p-8 bg-orange-50/20 border border-orange-100 rounded-lg text-center space-y-6 relative overflow-hidden">
+                   <div className="w-16 h-16 bg-white rounded-2xl shadow-md border border-white/50 flex items-center justify-center mx-auto mb-2 text-orange-600">
+                        <Shield className="w-8 h-8" />
+                   </div>
+                   <div>
+                        <h4 className="text-lg font-extrabold text-slate-800 tracking-tight uppercase">Authorize Account</h4>
+                        <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest max-w-xs mx-auto leading-relaxed">
+                            Complete authentication securely via {senderType === 'gmail' ? 'Google' : 'Microsoft'} OAuth.
+                        </p>
+                   </div>
+                   <div className="flex flex-col gap-3 max-w-xs mx-auto">
+                        <button
+                            onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
+                            className={`w-full py-4 rounded-lg text-white font-extrabold uppercase tracking-widest shadow-md shadow-orange-600/10 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 bg-orange-600 hover:bg-orange-700`}
+                        >
+                            {senderType === 'gmail' ? <Google className="w-5 h-5 text-white" /> : <Microsoft className="w-5 h-5 text-white" />}
+                            Connect {senderType === 'gmail' ? 'Google' : 'Outlook'}
+                        </button>
+                        <button 
+                            onClick={() => setStep(1)}
+                            className="flex items-center justify-center gap-2 text-[9px] font-black text-slate-400 hover:text-slate-800 uppercase tracking-widest transition-colors font-mono"
+                        >
+                            <ArrowLeft className="w-3.5 h-3.5 text-orange-600" />
+                            Back to Methods
+                        </button>
+                   </div>
+                </div>
+              ) : (
+                <div className="space-y-4 animate-in fade-in zoom-in duration-300">
+                    <div className="flex items-center justify-between border-b border-slate-50 pb-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-11 h-11 bg-orange-600 rounded-lg flex items-center justify-center shadow-md">
+                                <Smtp className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h4 className="text-[13px] font-black text-slate-800 tracking-tight uppercase">Custom SMTP Setup</h4>
+                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Configure your own server</p>
+                            </div>
+                        </div>
+                        <button 
+                          onClick={() => setStep(1)} 
+                          className="flex items-center gap-2 text-[9px] font-bold text-slate-400 hover:text-slate-800 uppercase tracking-widest transition-all"
+                        >
+                          <RotateCcw className="w-3 h-3 text-orange-600" />
+                          Methods
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6 pb-2">
+                        <div className="space-y-2">
+                           <label className="block text-[13px] font-semibold text-slate-800 ml-1">Display Name</label>
+                           <input
+                             type="text"
+                             value={smtpData.displayName}
+                             onChange={(e) => setSmtpData({ ...smtpData, displayName: e.target.value })}
+                             className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
+                             placeholder="John Doe"
+                           />
+                        </div>
+                        <div className="space-y-2">
+                           <label className="block text-[13px] font-semibold text-slate-800 ml-1">Email Address</label>
+                           <input
+                             type="email"
+                             value={smtpData.email}
+                             onChange={(e) => setSmtpData({ ...smtpData, email: e.target.value })}
+                             className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
+                             placeholder="john@example.com"
+                           />
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-50 p-1.5 rounded-2xl flex gap-1.5 border border-slate-200/60 shadow-inner">
+                        {['smtp', 'imap'].map(t => (
+                            <button
+                             key={t}
+                             onClick={() => setSettingsTab(t)}
+                             className={`flex-1 py-3 px-4 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-300 transform active:scale-[0.98] ${settingsTab === t ? 'bg-white text-orange-600 shadow-md border border-slate-100 ring-4 ring-orange-500/5' : 'text-slate-500 hover:text-slate-800'}`}
+                            >
+                                {t === 'smtp' ? 'Sending (SMTP)' : 'Syncing (IMAP)'}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6 pb-2">
+                        <div className="space-y-2">
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Host Server</label>
+                            <input
+                              type="text"
+                              value={settingsTab === 'smtp' ? smtpData.host : (smtpData.imapHost || '')}
+                              onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'host' : 'imapHost']: e.target.value })}
+                              className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
+                              placeholder={settingsTab === 'smtp' ? 'smtp.host.com' : 'imap.host.com'}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Access Port</label>
+                            <input
+                              type="number"
+                              value={settingsTab === 'smtp' ? smtpData.port : (smtpData.imapPort || '')}
+                              onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'port' : 'imapPort']: e.target.value })}
+                              className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
+                              placeholder={settingsTab === 'smtp' ? '587' : '993'}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Username / ID</label>
+                            <input
+                              type="text"
+                              value={settingsTab === 'smtp' ? smtpData.username : (smtpData.imapUser || '')}
+                              onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'username' : 'imapUser']: e.target.value })}
+                              className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
+                              placeholder={settingsTab === 'smtp' ? 'Sender Username' : 'IMAP Username'}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Account Secret</label>
+                            <div className="relative group/pass">
+                                <input
+                                  type={showPassword ? 'text' : 'password'}
+                                  value={settingsTab === 'smtp' ? smtpData.password : (smtpData.imapPassword || '')}
+                                  onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'password' : 'imapPassword']: e.target.value })}
+                                  className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none pr-12 transition-all shadow-sm hover:border-slate-300"
+                                  placeholder="••••••••••••"
+                                />
+                                <button onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-600 transition-all p-1 hover:bg-orange-50 rounded-lg">
+                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                           <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  checked={settingsTab === 'smtp' ? smtpData.secure : (smtpData.imapSecure || true)}
+                                  onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'secure' : 'imapSecure']: e.target.checked })}
+                                  className="sr-only peer"
+                                />
+                                <div className="w-10 h-6 bg-slate-200 peer-checked:bg-orange-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-4" />
+                           </div>
+                           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">SSL/TLS Security</span>
+                        </label>
+                        <div className="flex gap-3">
+                             <button
+                               onClick={settingsTab === 'smtp' ? testSmtpConnection : testImapConnection}
+                               disabled={isTesting}
+                               className="px-6 py-2.5 border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest text-slate-600 hover:text-orange-600 transition-all bg-white"
+                             >
+                               {isTesting ? <RefreshCw className="w-3 h-3 animate-spin" /> : 'Test'}
+                             </button>
+                             <Button 
+                               onClick={handleSmtpSubmit}
+                               disabled={isSubmitting || !smtpData.host || !smtpData.password}
+                               className="px-8 py-2.5 rounded-lg text-[9px] font-black tracking-widest"
+                             >
+                                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm & Save'}
+                             </Button>
+                        </div>
+                    </div>
+
+                    {/* Results Container */}
+                    <AnimatePresence>
+                        {(smtpTestResult || imapTestResult) && (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className={`p-3 rounded-lg flex items-center gap-3 ${((settingsTab === 'smtp' ? smtpTestResult : imapTestResult)?.success) ? 'bg-orange-50 border border-orange-100' : 'bg-rose-50 border border-rose-100'}`}
+                            >
+                                <div className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${((settingsTab === 'smtp' ? smtpTestResult : imapTestResult)?.success) ? 'bg-orange-600' : 'bg-rose-600'}`}>
+                                    {((settingsTab === 'smtp' ? smtpTestResult : imapTestResult)?.success) ? <CheckCircle2 className="w-3 h-3 text-white" /> : <AlertCircle className="w-3 h-3 text-white" />}
+                                </div>
+                                <p className={`text-[10px] font-black uppercase tracking-widest ${((settingsTab === 'smtp' ? smtpTestResult : imapTestResult)?.success) ? 'text-orange-800' : 'text-rose-800'}`}>
+                                    {(settingsTab === 'smtp' ? smtpTestResult : imapTestResult)?.message}
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
               )}
-            </motion.button>
-          ))}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-        <div className="space-y-6">
-          <AnimatePresence mode="wait">
-            {senderType === 'gmail' || senderType === 'outlook' ? (
-              <motion.div
-                key="oauth"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div
-                  className={`p-6 rounded-lg border-2 ${senderType === 'gmail' ? 'bg-orange-50/20 border-orange-100' : 'bg-orange-50/20 border-orange-100'} relative overflow-hidden`}
-                >
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/50">
-                      <Shield
-                        className={`w-8 h-8 ${senderType === 'gmail' ? 'text-orange-600' : 'text-orange-500'}`}
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-extrabold text-slate-800 uppercase tracking-tighter">
-                        {t('modals.sender.secure_title')}
-                      </h4>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        {t('modals.sender.secure_desc')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[
-                      {
-                        icon: Zap,
-                        label: t('modals.sender.benefits.no_passwords.title'),
-                        desc: t('modals.sender.benefits.no_passwords.desc'),
-                      },
-                      {
-                        icon: CheckCircle,
-                        label: t('modals.sender.benefits.deliverability.title'),
-                        desc: t('modals.sender.benefits.deliverability.desc'),
-                      },
-                      {
-                        icon: AtSign,
-                        label: t('modals.sender.benefits.tracking.title'),
-                        desc: t('modals.sender.benefits.tracking.desc'),
-                      },
-                      {
-                        icon: Shield,
-                        label: t('modals.sender.benefits.encryption.title'),
-                        desc: t('modals.sender.benefits.encryption.desc'),
-                      },
-                    ].map((benefit, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-4 p-4 bg-white/40  rounded-lg border border-white/60"
-                      >
-                        <benefit.icon
-                          className={`w-5 h-5 mt-0.5 ${senderType === 'gmail' ? 'text-orange-400' : 'text-orange-400'}`}
-                        />
-                        <div>
-                          <p className="text-[11px] font-extrabold text-slate-800 uppercase tracking-tight">
-                            {benefit.label}
-                          </p>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight mt-1">
-                            {benefit.desc}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 flex justify-center">
-                    <button
-                      onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
-                      className={`px-12 py-4 rounded-lg text-[11px] font-extrabold uppercase tracking-widest text-white shadow-sm transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-4 ${
-                        senderType === 'gmail'
-                          ? 'bg-orange-600 shadow-orange-600/30'
-                          : 'bg-orange-600 shadow-orange-600/30'
-                      }`}
-                    >
-                      {senderType === 'gmail' ? (
-                        <Google className="w-5 h-5" />
-                      ) : (
-                        <Microsoft className="w-5 h-5" />
-                      )}
-                      {senderType === 'gmail'
-                        ? t('modals.sender.btn_connect_gmail')
-                        : t('modals.sender.btn_connect_outlook')}
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ) : senderType === 'smtp' ? (
-              <motion.div
-                key="smtp"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between px-2">
-                    <div>
-                      <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
-                        {t('modals.sender.info_title')}
-                      </h4>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        {t('modals.sender.info_subtitle')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="group space-y-2">
-                      <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                        {t('modals.sender.fields.from_name')}
-                      </p>
-                      <input
-                        type="text"
-                        value={smtpData.displayName}
-                        onChange={(e) =>
-                          setSmtpData({
-                            ...smtpData,
-                            displayName: e.target.value,
-                          })
-                        }
-                        required
-                        disabled={isSubmitting}
-                        className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
-                        placeholder="e.g. John Smith"
-                      />
-                    </div>
-                    <div className="group space-y-2">
-                      <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                        {t('modals.sender.fields.email')}
-                      </p>
-                      <input
-                        type="email"
-                        value={smtpData.email}
-                        onChange={(e) => setSmtpData({ ...smtpData, email: e.target.value })}
-                        required
-                        disabled={isSubmitting}
-                        className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 focus:bg-white transition-all outline-none"
-                        placeholder="sender@example.com"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-slate-50/50 p-2 rounded-lg border-2 border-slate-100 flex gap-2">
-                  {[
-                    { id: 'smtp', label: t('modals.sender.tabs.smtp'), icon: Smtp },
-                    {
-                      id: 'imap',
-                      label: t('modals.sender.tabs.imap'),
-                      icon: Mail,
-                      tag: t('common.optional'),
-                    },
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      onClick={() => setSettingsTab(tab.id)}
-                      disabled={isSubmitting}
-                      className={`flex-1 py-4 rounded-lg flex items-center justify-center gap-3 transition-all ${
-                        settingsTab === tab.id
-                          ? 'bg-white text-orange-600 shadow-sm shadow-slate-200/50 border border-slate-100'
-                          : 'text-slate-400 hover:text-slate-600'
-                      }`}
-                    >
-                      <tab.icon className="w-4 h-4" />
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest">
-                        {tab.label}
-                      </span>
-                      {tab.tag && (
-                        <span className="text-[8px] font-bold text-slate-400 lowercase italic">
-                          ({tab.tag})
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                {settingsTab === 'smtp' ? (
-                  <div className="animate-in fade-in duration-500 space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.host')}
-                        </label>
-                        <div className="relative group/field">
-                          <div className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-orange-500 transition-colors">
-                            <Server className="w-4 h-4" />
-                          </div>
-                          <input
-                            type="text"
-                            value={smtpData.host}
-                            onChange={(e) => setSmtpData({ ...smtpData, host: e.target.value })}
-                            className="w-full h-12 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-6 rtl:pl-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                            placeholder={t('modals.sender.fields.placeholder_host_smtp')}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.port')}
-                        </label>
-                        <div className="relative group/field">
-                          <div className="absolute ltr:left-4 ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-orange-500 transition-colors">
-                            <Zap className="w-4 h-4" />
-                          </div>
-                          <input
-                            type="text"
-                            value={smtpData.port}
-                            onChange={(e) => setSmtpData({ ...smtpData, port: e.target.value })}
-                            className="w-full h-12 ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                            placeholder={t('modals.sender.fields.placeholder_port_smtp')}
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.username')}
-                        </p>
-                        <input
-                          type="text"
-                          value={smtpData.username}
-                          onChange={(e) =>
-                            setSmtpData({
-                              ...smtpData,
-                              username: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                          placeholder={t('modals.sender.fields.placeholder_email')}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.password')}
-                        </p>
-                        <div className="relative">
-                          <input
-                            type={showPassword ? 'text' : 'password'}
-                            value={smtpData.password}
-                            onChange={(e) =>
-                              setSmtpData({
-                                ...smtpData,
-                                password: e.target.value,
-                              })
-                            }
-                            required
-                            className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none ltr:pr-14 rtl:pl-14"
-                            placeholder={t('modals.sender.fields.placeholder_pass')}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                          >
-                            {showPassword ? (
-                              <EyeOff className="w-5 h-5" />
-                            ) : (
-                              <Eye className="w-5 h-5" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between px-2">
-                      <label className="flex items-center gap-4 cursor-pointer group">
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            checked={smtpData.secure}
-                            onChange={(e) =>
-                              setSmtpData({
-                                ...smtpData,
-                                secure: e.target.checked,
-                              })
-                            }
-                            className="sr-only peer"
-                          />
-                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-orange-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
-                        </div>
-                        <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">
-                          {t('modals.sender.fields.secure')}
-                        </span>
-                      </label>
-
-                      <button
-                        type="button"
-                        onClick={testSmtpConnection}
-                        disabled={isSmtpTesting || !smtpData.host || !smtpData.password}
-                        className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all active:scale-95 disabled:opacity-50"
-                      >
-                        <RefreshCw className={`w-4 h-4 ${isSmtpTesting ? 'animate-spin' : ''}`} />
-                        {isSmtpTesting
-                          ? t('modals.sender.btn.connecting')
-                          : t('modals.sender.btn.test')}
-                      </button>
-                    </div>
-
-                    {smtpTestResult && (
-                      <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                          smtpTestResult.success
-                            ? 'bg-orange-50/50 border-orange-100'
-                            : 'bg-orange-50/50 border-orange-100'
-                        }`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div
-                            className={`w-8 h-8 rounded-md flex items-center justify-center ${smtpTestResult.success ? 'bg-orange-500' : 'bg-orange-500'}`}
-                          >
-                            {smtpTestResult.success ? (
-                              <CheckCircle className="w-5 h-5 text-white" />
-                            ) : (
-                              <AlertCircle className="w-5 h-5 text-white" />
-                            )}
-                          </div>
-                          <div>
-                            <p
-                              className={`text-[10px] font-extrabold uppercase tracking-widest ${smtpTestResult.success ? 'text-orange-600' : 'text-orange-600'}`}
-                            >
-                              {smtpTestResult.success ? t('common.success') : t('common.failed')}
-                            </p>
-                            <p
-                              className={`text-xs font-bold mt-1 ${smtpTestResult.success ? 'text-orange-700' : 'text-orange-700'}`}
-                            >
-                              {smtpTestResult.message}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="animate-in fade-in duration-500 space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.host')}
-                        </p>
-                        <input
-                          type="text"
-                          value={smtpData.imapHost || ''}
-                          onChange={(e) =>
-                            setSmtpData({
-                              ...smtpData,
-                              imapHost: e.target.value,
-                            })
-                          }
-                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                          placeholder={t('modals.sender.fields.placeholder_host_imap')}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.port')}
-                        </p>
-                        <input
-                          type="number"
-                          value={smtpData.imapPort || ''}
-                          onChange={(e) =>
-                            setSmtpData({
-                              ...smtpData,
-                              imapPort: e.target.value,
-                            })
-                          }
-                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                          placeholder={t('modals.sender.fields.placeholder_port_imap')}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.username')}
-                        </p>
-                        <input
-                          type="text"
-                          value={smtpData.imapUser || ''}
-                          onChange={(e) =>
-                            setSmtpData({
-                              ...smtpData,
-                              imapUser: e.target.value,
-                            })
-                          }
-                          className="w-full h-12 px-6 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                          placeholder={t('modals.sender.fields.placeholder_email')}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-1">
-                          {t('modals.sender.fields.password')}
-                        </p>
-                        <div className="relative">
-                          <input
-                            type={showImapPassword ? 'text' : 'password'}
-                            value={smtpData.imapPassword || ''}
-                            onChange={(e) =>
-                              setSmtpData({
-                                ...smtpData,
-                                imapPassword: e.target.value,
-                              })
-                            }
-                            className="w-full h-12 ltr:pl-6 ltr:pr-6 rtl:pl-6 ltr:pr-12 rtl:pl-12 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-500 transition-all outline-none"
-                            placeholder={t('modals.sender.fields.placeholder_pass')}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowImapPassword(!showImapPassword)}
-                            className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                          >
-                            {showImapPassword ? (
-                              <EyeOff className="w-5 h-5" />
-                            ) : (
-                              <Eye className="w-5 h-5" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between px-2">
-                      <label className="flex items-center gap-4 cursor-pointer group">
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            checked={smtpData.imapSecure || false}
-                            onChange={(e) =>
-                              setSmtpData({
-                                ...smtpData,
-                                imapSecure: e.target.checked,
-                              })
-                            }
-                            className="sr-only peer"
-                          />
-                          <div className="w-12 h-7 bg-slate-200 peer-checked:bg-orange-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-1 after:ltr:left-1 ltr:right-1 rtl:left-1 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-5 shadow-sm"></div>
-                        </div>
-                        <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">
-                          {t('modals.sender.fields.secure')}
-                        </span>
-                      </label>
-
-                      <button
-                        type="button"
-                        onClick={testImapConnection}
-                        className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all active:scale-95 disabled:opacity-50"
-                      >
-                        <RefreshCw className={`w-4 h-4 ${isImapTesting ? 'animate-spin' : ''}`} />
-                        {isImapTesting
-                          ? t('modals.sender.btn.connecting')
-                          : t('modals.sender.btn.test')}
-                      </button>
-                    </div>
-
-                    {imapTestResult && (
-                      <div
-                        className={`p-6 rounded-4xl border-2 animate-in slide-in-from-top-4 duration-500 ${
-                          imapTestResult.success
-                            ? 'bg-orange-50/50 border-orange-100'
-                            : 'bg-orange-50/50 border-orange-100'
-                        }`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div
-                            className={`w-8 h-8 rounded-md flex items-center justify-center ${imapTestResult.success ? 'bg-orange-500' : 'bg-orange-500'}`}
-                          >
-                            {imapTestResult.success ? (
-                              <CheckCircle className="w-5 h-5 text-white" />
-                            ) : (
-                              <AlertCircle className="w-5 h-5 text-white" />
-                            )}
-                          </div>
-                          <div>
-                            <p
-                              className={`text-[10px] font-extrabold uppercase tracking-widest ${imapTestResult.success ? 'text-orange-600' : 'text-orange-600'}`}
-                            >
-                              {imapTestResult.success ? t('common.success') : t('common.failed')}
-                            </p>
-                            <p
-                              className={`text-xs font-bold mt-1 ${imapTestResult.success ? 'text-orange-700' : 'text-orange-700'}`}
-                            >
-                              {imapTestResult.message}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="bg-orange-50/50 p-6 rounded-lg border border-orange-100">
-                      <div className="flex gap-4">
-                        <Zap className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
-                        <p className="text-[11px] font-bold text-orange-700 leading-relaxed uppercase tracking-tight">
-                          If you leave these empty, we&apos;ll try to use your sending settings
-                          automatically.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-20 bg-slate-50/50 rounded-[2.5rem] border-2 border-dashed border-slate-100 group"
-              >
-                <div className="w-20 h-20 bg-white rounded-4xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm border border-slate-50">
-                  <Mail className="w-10 h-10 text-slate-200" />
-                </div>
-                <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest mb-2">
-                  {t('modals.sender.empty_provider')}
-                </h4>
-                <p className="text-xs text-slate-400 font-medium italic">
-                  {t('modals.sender.empty_desc')}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Shield className="w-4 h-4 text-orange-500" />
-            <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
-              {t('modals.sender.encrypted_note')}
-            </span>
+      {/* Branded Footer */}
+      <div className="px-8 pb-8 flex items-center gap-8 border-t border-slate-200/60 pt-6 bg-slate-50/30">
+          <div className="flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-md bg-orange-50 flex items-center justify-center border border-orange-100">
+                <Shield className="w-3.5 h-3.5 text-orange-600" />
+            </div>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-80">256-bit AES Encryption</span>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => setShowSenderModal(false)}
-              className="px-8 py-3 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
-            >
-              {t('common.cancel')}
-            </button>
-            {senderType === 'smtp' && (
-              <Button
-                type="button"
-                onClick={handleSmtpSubmit}
-                disabled={isSubmitting || !smtpData.host || !smtpData.password}
-                variant="primary"
-                className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
-                ) : (
-                  <Zap className="w-4 h-4" />
-                )}
-                {t('modals.sender.btn.add')}
-              </Button>
-            )}
+          <div className="flex items-center gap-2.5 border-l border-slate-200 pl-8">
+            <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center border border-slate-200">
+                <Info className="w-3.5 h-3.5 text-slate-500" />
+            </div>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-80">SOC2 Type II Certified</span>
           </div>
-        </div>
       </div>
     </Modal>
   );

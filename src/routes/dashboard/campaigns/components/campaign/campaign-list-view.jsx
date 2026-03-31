@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -30,7 +31,7 @@ import {
   formatDate,
   formatDateTime,
 } from '../../campaign-utils';
-import { Link } from 'react-router-dom';
+
 
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
@@ -89,7 +90,7 @@ const CampaignListView = ({
           return (
             <div className="flex items-center gap-4">
               {/* Circular Progress */}
-              <div className="relative w-12 h-12 flex-shrink-0 flex items-center justify-center">
+              <div className="relative w-12 h-12 shrink-0 flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                   <path
                     className="text-slate-100"
@@ -339,25 +340,20 @@ const CampaignListView = ({
 
   if (campaigns.length === 0) {
     return (
-      <div className="premium-card bg-white border-none p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm shadow-orange-900/2">
+      <div className=" p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm shadow-orange-900/2">
         <div className="absolute top-0 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 w-125 h-75 bg-orange-500/5 rounded-full blur-[100px] -mt-40"></div>
         <div className="relative mb-10">
-          <div className="w-20 h-20 bg-gradient-to-br from-orange-600 to-orange-700 rounded-[28px] flex items-center justify-center rotate-3 shadow-sm shadow-orange-500/20">
+          <div className="w-20 h-20 bg-linear-to-br from-orange-600 to-orange-600 rounded-[28px] flex items-center justify-center rotate-3 shadow-sm shadow-orange-500/20">
             <Zap className="w-8 h-8 text-white" />
           </div>
         </div>
         <h3 className="text-2xl font-extrabold text-slate-800 tracking-tighter mb-4">
           {t('campaigns.empty_log_title')}
         </h3>
-        <p className="text-sm font-medium text-slate-400 max-w-sm mb-10 leading-relaxed tracking-widest text-[10px]">
+        <p className="text-sm font-medium text-slate-400 max-w-sm mb-10 leading-relaxed tracking-widest ">
           {t('campaigns.empty_log_subtitle')}
         </p>
-        <Link
-          to={'/dashboard/campaigns/create'}
-          className="btn-primary py-3 px-8 text-white font-extrabold uppercase tracking-widest text-[10px]"
-        >
-          {t('campaigns.create_first_campaign')}
-        </Link>
+        
       </div>
     );
   }

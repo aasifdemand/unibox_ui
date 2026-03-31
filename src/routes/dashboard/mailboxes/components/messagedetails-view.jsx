@@ -2,12 +2,11 @@ import { useTranslation } from 'react-i18next';
 import { File, Paperclip } from 'lucide-react';
 import {
   getSenderInfo as getSenderInfoUtil,
-  getSubject as getSubjectUtil,
   formatFileSize,
 } from '../utils/utils';
 import { format } from 'date-fns';
-import { useState, useRef, useEffect } from 'react';
-import { getMessageId } from '../utils/getmessage-id';
+import { useState, useRef } from 'react';
+
 
 const SafeHtmlRenderer = ({ htmlContent }) => {
   const iframeRef = useRef(null);
@@ -102,14 +101,19 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
           }
         }, 100);
       } catch (err) {
+        console.log(err);
+        
         setHeight('800px');
       }
     }
   };
 
-  useEffect(() => {
+  // Adjust state during render if htmlContent changes (recommended alternative to useEffect)
+  const [prevHtmlContent, setPrevHtmlContent] = useState(htmlContent);
+  if (htmlContent !== prevHtmlContent) {
     setHeight('400px');
-  }, [htmlContent]);
+    setPrevHtmlContent(htmlContent);
+  }
 
   return (
     <iframe
@@ -128,20 +132,12 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
 const MessageDetailView = ({
   message,
   mailbox,
-  onBack,
-  onDelete,
-  onReply,
-  onForward,
-  onMarkRead,
-  onMarkUnread,
-  onStar,
-  onPrint,
   onDownload,
   isIntegrated = false,
 }) => {
   const { t } = useTranslation();
-  const [showActions, setShowActions] = useState(false);
-  const realMessageId = getMessageId(message, mailbox?.type);
+  
+  
 
   const getSenderInfo = (msg) => getSenderInfoUtil(msg);
 
@@ -179,7 +175,7 @@ const MessageDetailView = ({
     return [];
   };
 
-  const getSubject = (msg) => getSubjectUtil(msg);
+  
 
   const getDate = (msg) => {
     if (msg?.date) return new Date(msg.date);
@@ -312,13 +308,13 @@ const MessageDetailView = ({
     flush();
 
     return (
-      <div className="text-slate-700 font-sans break-words whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none space-y-9 select-text">
+      <div className="text-slate-700 font-sans wrap-break-word whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none space-y-9 select-text">
         {blocks.map((block, bIdx) => {
           if (block.type === 'quote') {
             return (
               <blockquote
                 key={bIdx}
-                className="border-l-4 border-slate-200 pl-8 my-8 text-slate-500 italic bg-gradient-to-r from-slate-50/80 to-transparent py-5 rounded-r-[2.5rem]"
+                className="border-l-4 border-slate-200 pl-8 my-8 text-slate-500 italic bg-linear-to-r from-slate-50/80 to-transparent py-5 rounded-r-[2.5rem]"
               >
                 {block.lines.map((l, lIdx) => (
                   <div key={lIdx} className="leading-relaxed">

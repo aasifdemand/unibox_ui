@@ -112,7 +112,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
       maxWidth="max-w-6xl"
       closeOnBackdrop={true}
     >
-      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Users className="w-20 h-20 text-orange-400" />
         </div>
@@ -236,7 +236,7 @@ const ShowBatchDetails = ({ selectedBatch, closeBatchModal, batchStatus, isLoadi
                       placeholder={t('modals.details.filters.search_placeholder')}
                       value={searchTerm}
                       onChange={handleSearchChange}
-                      className="w-full ltr:pl-12 ltr:pr-12 rtl:pl-12 ltr:pr-4 rtl:pl-4 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500 outline-none transition-all"
+                      className="w-full ltr:pl-12   ltr:pr-4 rtl:pl-4 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500 outline-none transition-all"
                     />
                   </div>
                 </div>

@@ -20,7 +20,13 @@ const SessionExpiredModal = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
-    const handleExpired = () => setIsOpen(true);
+    const handleExpired = () => {
+      // Don't show the modal if the user is already on an auth page
+      if (window.location.pathname.startsWith('/auth/')) {
+        return;
+      }
+      setIsOpen(true);
+    };
     window.addEventListener(SESSION_EXPIRED_EVENT, handleExpired);
     return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleExpired);
   }, []);
@@ -38,16 +44,19 @@ const SessionExpiredModal = () => {
         // Token refreshed — reload to restore app state cleanly
         window.location.reload();
       } else {
-        // Still failing — send to login
-        window.location.href = '/auth/login';
+        // Refresh failed (e.g. 401 No refresh token) — force logout
+        handleLogout();
       }
-    } catch {
-      window.location.href = '/auth/login';
+    } catch (err) {
+      console.error('[SessionExpiredModal] Refresh failed:', err);
+      handleLogout();
     }
   };
 
   const handleLogout = () => {
-    window.location.href = '/auth/login';
+    setIsOpen(false);
+    // Force a full clean redirect to the login page
+    window.location.replace('/auth/login');
   };
 
   return ReactDOM.createPortal(

@@ -2,7 +2,7 @@ const Logo = () => {
   return (
     <div className="flex items-center gap-3">
       {/* Logo icon */}
-      <div className="flex items-center justify-center w-12 h-12 rounded-md bg-gradient-to-br from-orange-600 to-orange-700 shadow-sm shadow-orange-500/20">
+      <div className="flex items-center justify-center w-12 h-12 rounded-md bg-linear-to-br from-orange-600 to-orange-700 shadow-sm shadow-orange-500/20">
         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -15,7 +15,7 @@ const Logo = () => {
 
       {/* Brand name and tagline */}
       <div className="flex flex-col">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-bold bg-linear-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent">
           Unibox
         </h1>
 

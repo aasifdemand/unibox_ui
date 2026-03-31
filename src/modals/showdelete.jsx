@@ -18,7 +18,7 @@ const ShowDelete = ({
       maxWidth="max-w-md"
       closeOnBackdrop={true}
     >
-      <div className="bg-gradient-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Trash2 className="w-16 h-16 text-white" />
         </div>

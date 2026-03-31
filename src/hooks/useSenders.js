@@ -247,3 +247,25 @@ export const useBulkDeleteSenders = () => {
     },
   });
 };
+
+// =========================
+// BULK CREATE SENDERS
+// =========================
+const bulkCreateSenders = async (senders) => {
+  const res = await api.post('/senders/bulk-create', { senders });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Bulk creation failed');
+  return data;
+};
+
+export const useBulkCreateSenders = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: bulkCreateSenders,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: senderKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
+    },
+  });
+};

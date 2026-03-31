@@ -51,7 +51,7 @@ const MailboxList = ({
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
 
-  const isSelected = (id) => selectedSenderIds.some((item) => item.id === id);
+  
 
   const columns = React.useMemo(
     () => [
@@ -275,6 +275,7 @@ const MailboxList = ({
       selectedSenderIds,
       onSync,
       isSyncingMailboxId,
+      
     ],
   );
 
@@ -314,7 +315,7 @@ const MailboxList = ({
     <div className="h-full overflow-y-auto  animate-in fade-in duration-500 mt-4 md:mt-6">
       <div className="bg-white rounded-xl border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
         <div className="overflow-x-auto no-scrollbar">
-          <table className="w-full text-start border-collapse border-separate border-spacing-0">
+          <table className="w-full text-start border-collapse border-spacing-0">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="bg-slate-50/80 ">

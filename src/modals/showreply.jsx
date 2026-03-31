@@ -25,7 +25,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
         elements.push(
           <blockquote
             key={`bq-${elements.length}`}
-            className="border-l-4 border-orange-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-2xl"
+            className="border-l-4 border-orange-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-lg"
           >
             {currentBlockquote.map((line, i) => (
               <div key={i}>{line || '\u00A0'}</div>
@@ -107,7 +107,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
       closeOnBackdrop={true}
     >
       {/* Header */}
-      <div className="bg-gradient-to-br from-orange-600 to-orange-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Reply className="w-16 h-16 text-white" />
         </div>
@@ -156,7 +156,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               className="space-y-6"
             >
               {/* Sender Info */}
-              <div className="bg-gradient-to-br from-orange-50 to-orange-50 rounded-4xl p-6 border border-orange-100">
+              <div className="bg-linear-to-br from-orange-50 to-orange-50 rounded-4xl p-6 border border-orange-100">
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-lg bg-white shadow-sm shadow-orange-500/10 flex items-center justify-center border border-orange-200">
                     <AtSign className="w-7 h-7 text-orange-600" />
@@ -206,7 +206,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               </div>
 
               {/* Message */}
-              <div className="bg-slate-50 rounded-4xl p-6 border border-slate-100">
+              <div className="bg-slate-50 rounded-lg p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center">
                     <MessageCircle className="w-4 h-4 text-orange-600" />

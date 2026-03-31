@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Loader2, Zap, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import CampaignStepper from './components/create-campaign/campaign-stepper';
@@ -72,6 +72,7 @@ const getCampaignSchema = (t) =>
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSender, setSelectedSender] = useState(null);
@@ -106,7 +107,7 @@ const CreateCampaign = () => {
   } = useForm({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
-      name: 'Untitled Campaign',
+      name: location.state?.campaignName || 'Untitled Campaign',
       scheduleType: 'now',
       throttlePerMinute: 10,
       trackOpens: true,
@@ -162,7 +163,12 @@ const CreateCampaign = () => {
   useEffect(() => {
     refetchSenders();
     refetchBatches();
-  }, [refetchSenders, refetchBatches]);
+    
+    // If name was passed from quick create modal, set it
+    if (location.state?.campaignName) {
+      setValue('name', location.state.campaignName);
+    }
+  }, [refetchSenders, refetchBatches, location.state, setValue]);
 
   const verifiedBatches = React.useMemo(() => {
     if (!Array.isArray(batches)) return [];

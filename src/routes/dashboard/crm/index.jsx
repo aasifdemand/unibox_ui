@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-imports */
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -6,15 +7,11 @@ import {
   Plus,
   LayoutDashboard,
   RefreshCw,
-  X,
-  Palette,
   Globe,
   Zap,
-  ChevronDown,
   Target,
   Trash2,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import {
   DndContext,
   DragOverlay,
@@ -25,18 +22,20 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { motion, AnimatePresence } from 'motion/react';
+import { toast } from 'react-hot-toast';
 
 import LeadCard from './components/lead-card';
 import LeadDetailSidebar from './components/lead-detail-sidebar';
 import Dialog from '../../../components/ui/dialog';
+
 import {
   useCrmPipeline,
   useMoveLead,
-  useAddCrmStage,
   useReplyCategories,
   useDeleteCrmStage,
 } from '../../../hooks/useCrm';
-import { toast } from 'react-hot-toast';
+import CreateColumn from '../../../modals/CreateColumn';
 
 // ─── Sortable Lead Card wrapper ───────────────────────────────────────────────
 const SortableLeadCard = ({ lead, onOpen }) => {
@@ -144,9 +143,6 @@ const CRMIntegration = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddStageOpen, setIsAddStageOpen] = useState(false);
-  const [newStageName, setNewStageName] = useState('');
-  const [newStageColor, setNewStageColor] = useState('#e11d48');
-  const [newReplyCategory, setNewReplyCategory] = useState('');
   const [selectedLead, setSelectedLead] = useState(null);
   const [stageToDelete, setStageToDelete] = useState(null);
   const [activeId, setActiveId] = useState(null);
@@ -155,7 +151,6 @@ const CRMIntegration = () => {
   const { data: pipeline = [], isLoading, refetch, isRefetching } = useCrmPipeline();
   const { data: categories = [] } = useReplyCategories();
   const moveLeadMutation = useMoveLead();
-  const addStageMutation = useAddCrmStage();
   const deleteStageMutation = useDeleteCrmStage();
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
@@ -173,7 +168,6 @@ const CRMIntegration = () => {
     [pipeline, searchQuery],
   );
 
-  // Build a flat map: leadId → stageId for quick DnD lookup
   const leadStageMap = useMemo(() => {
     const map = {};
     pipeline.forEach((stage) =>
@@ -197,8 +191,6 @@ const CRMIntegration = () => {
     if (!over || active.id === over.id) return;
 
     const fromStageId = leadStageMap[active.id];
-
-    // "over" can be a lead id or a stage id
     let toStageId =
       over.data?.current?.type === 'stage' ? over.id : leadStageMap[over.id] || over.id;
 
@@ -220,24 +212,6 @@ const CRMIntegration = () => {
       toast.error(err.message);
     } finally {
       setStageToDelete(null);
-    }
-  };
-
-  const handleAddStage = async (e) => {
-    e.preventDefault();
-    if (!newStageName.trim()) return toast.error('Please enter a column name');
-    try {
-      await addStageMutation.mutateAsync({
-        name: newStageName,
-        color: newStageColor,
-        replyCategory: newReplyCategory || null,
-      });
-      setIsAddStageOpen(false);
-      setNewStageName('');
-      setNewReplyCategory('');
-      toast.success('Column added to your funnel');
-    } catch (error) {
-      toast.error(error.message);
     }
   };
 
@@ -305,12 +279,7 @@ const CRMIntegration = () => {
           >
             <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
           </button>
-          <Link
-            to="/dashboard/integrations"
-            className="h-11 px-5 flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 rounded-md text-[11px] font-extrabold tracking-widest shadow-sm hover:border-orange-200 hover:text-orange-600 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
-          >
-            <Globe className="w-4 h-4" /> {t('crm.connect_crm', 'Connect CRM')}
-          </Link>
+          
           <button
             onClick={() => setIsAddStageOpen(true)}
             className="h-11 px-5 flex items-center justify-center gap-2 bg-orange-600 text-white rounded-md text-[11px] font-extrabold tracking-widest shadow-sm shadow-orange-500/20 hover:bg-orange-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
@@ -368,7 +337,6 @@ const CRMIntegration = () => {
                   onDeleteStage={setStageToDelete}
                   onOpenLead={setSelectedLead}
                   categories={categories}
-                  activeId={activeId}
                 />
               ))}
 
@@ -430,11 +398,11 @@ const CRMIntegration = () => {
 
       {/* Footer */}
       <div className="flex items-center gap-4 px-2">
-        <div className="flex items-center gap-3 bg-white/60  px-5 py-3 rounded-lg border border-slate-200/60 shadow-sm">
+        <div className="flex items-center gap-3 bg-white/60 px-5 py-3 rounded-lg border border-slate-200/60 shadow-sm">
           <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center shadow-inner">
             <Target className="w-4 h-4 text-orange-600" />
           </div>
-          <span className="text-[10px] font-black text-slate-500 tracking-widest leading-relaxed max-w-xs">
+          <span className="text-[10px] font-black text-slate-500 tracking-widest leading-relaxed max-w-xs uppercase">
             {t('crm.footer_msg1', 'Leads automatically progress when')}{' '}
             <span className="text-orange-600">{t('crm.footer_msg2', 'Reply Intents')}</span>{' '}
             {t('crm.footer_msg3', 'are detected')}
@@ -443,150 +411,11 @@ const CRMIntegration = () => {
       </div>
 
       {/* Add Column Modal */}
-      <AnimatePresence>
-        {isAddStageOpen && (
-          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsAddStageOpen(false)}
-              className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 40 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 40 }}
-              className="relative w-full max-w-lg bg-white rounded-[32px] overflow-hidden shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] border border-slate-100"
-            >
-              {/* Header Decorative Element */}
-              <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-orange-500 via-amber-500 to-orange-600" />
-              
-              <div className="p-10">
-                <div className="flex items-center justify-between mb-10">
-                  <div className="space-y-1">
-                    <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none">
-                      {t('crm.add_column_modal_title', 'Add New Column')}
-                    </h2>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-                      Pipeline Configuration
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setIsAddStageOpen(false)}
-                    className="w-10 h-10 rounded-2xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center transition-all group active:scale-90"
-                  >
-                    <X className="w-5 h-5 text-slate-400 group-hover:text-slate-600" />
-                  </button>
-                </div>
-
-                <form onSubmit={handleAddStage} className="space-y-10">
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">
-                        {t('crm.column_name_label', 'Column Name')}
-                      </label>
-                      <div className="flex gap-4">
-                        <div className="flex-1 relative group">
-                          <input
-                            type="text"
-                            value={newStageName}
-                            onChange={(e) => setNewStageName(e.target.value)}
-                            placeholder={t('crm.column_name_placeholder', 'e.g., Qualified Leads')}
-                            className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:border-orange-500/50 focus:bg-white focus:ring-8 focus:ring-orange-500/5 transition-all outline-none"
-                            autoFocus
-                          />
-                        </div>
-                        <div className="relative group/picker">
-                          <button
-                            type="button"
-                            className="w-14 h-14 rounded-2xl border-2 border-slate-100 flex items-center justify-center shadow-sm overflow-hidden transition-all hover:scale-105 active:scale-95 hover:border-orange-200"
-                            style={{ backgroundColor: newStageColor }}
-                          >
-                            <Palette
-                              className={`w-6 h-6 ${
-                                ['#ffffff', '#f8fafc', '#f1f5f9'].includes(newStageColor.toLowerCase()) 
-                                  ? 'text-slate-400' 
-                                  : 'text-white drop-shadow-md'
-                              }`}
-                            />
-                          </button>
-                          <div className="absolute top-full right-0 mt-4 p-4 bg-white border border-slate-100 rounded-2xl shadow-2xl hidden group-hover/picker:grid grid-cols-4 gap-3 z-110 animate-in fade-in zoom-in-95 duration-200">
-                            {[
-                              '#f97316', // unibox orange
-                              '#f59e0b', // amber
-                              '#ef4444', // red
-                              '#8b5cf6', // violet
-                              '#3b82f6', // blue
-                              '#10b981', // emerald
-                              '#06b6d4', // cyan
-                              '#64748b', // slate
-                            ].map((c) => (
-                              <button
-                                key={c}
-                                type="button"
-                                onClick={() => setNewStageColor(c)}
-                                className={`w-8 h-8 rounded-xl shadow-inner transition-transform hover:scale-110 active:scale-90 ring-2 ring-white ${newStageColor === c ? 'ring-offset-2 ring-orange-500 scale-110' : ''}`}
-                                style={{ backgroundColor: c }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between px-1">
-                      <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
-                        {t('crm.link_intent_label', 'Link to AI Intent')}
-                      </label>
-                      <span className="text-[10px] font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md uppercase">
-                        Optional
-                      </span>
-                    </div>
-                    <p className="text-[11px] font-bold text-slate-400 mb-2 leading-relaxed">
-                      {t('crm.link_intent_desc', 'Leads with this intent will move here automatically.')}
-                    </p>
-                    <div className="relative group/select">
-                      <select
-                        value={newReplyCategory}
-                        onChange={(e) => setNewReplyCategory(e.target.value)}
-                        className="w-full h-14 pl-6 pr-12 bg-slate-50 border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 outline-none focus:ring-8 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white transition-all appearance-none cursor-pointer"
-                      >
-                        <option value="">{t('crm.select_intent_placeholder', 'Select an automated intent...')}</option>
-                        {categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none group-focus-within/select:text-orange-500 transition-colors" />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => setIsAddStageOpen(false)}
-                      className="flex-1 h-14 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all active:scale-95"
-                    >
-                      {t('crm.cancel_btn', 'Cancel')}
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={addStageMutation.isPending || !newStageName.trim()}
-                      className="flex-2 h-14 bg-orange-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-orange-600/20 hover:bg-orange-700 hover:translate-y-[-2px] transition-all active:scale-95 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100"
-                    >
-                      {addStageMutation.isPending ? 'Creating Stage...' : t('crm.add_column_btn', 'Add Column')}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <CreateColumn 
+        open={isAddStageOpen} 
+        setOpen={setIsAddStageOpen} 
+        onCreated={() => refetch()} 
+      />
 
       {/* Lead Detail Sidebar */}
       <LeadDetailSidebar lead={selectedLead} onClose={() => setSelectedLead(null)} />

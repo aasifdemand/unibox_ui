@@ -2,12 +2,15 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { format } from 'date-fns';
+import { useCurrentUser } from '../../../../hooks/useAuth';
+import { formatInTimezone } from '../../../../utils/date-utils';
 import CustomTooltip from './custom-tooltip';
 
 const ActivityTimeline = ({ data, hasValidData }) => {
   const { t } = useTranslation();
   const [timelineFilter, setTimelineFilter] = useState('7');
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const filteredData = useMemo(() => {
     if (!data || data.length === 0) return [];
@@ -94,16 +97,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(value) => {
-                  try {
-                    // Try parsing the date assuming it's ISO or a standard string
-                    const dateObj = new Date(value);
-                    if (isNaN(dateObj.getTime())) return value;
-                    return format(dateObj, 'MMM d');
-                  } catch (e) {
-                    return value;
-                  }
-                }}
+                tickFormatter={(value) => formatInTimezone(value, userTz, { month: 'short', day: 'numeric' })}
                 tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 700 }}
                 dy={10}
                 minTickGap={30}
