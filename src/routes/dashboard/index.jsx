@@ -38,7 +38,7 @@ import { toast } from 'react-hot-toast';
 import ShowUpload from '../../modals/showupload';
 import ShowSender from '../../modals/showsender';
 import QuickCreateCampaignModal from '../../modals/QuickCreateCampaignModal';
-import CreateColumn from '../../modals/CreateColumn';
+import CreateColumn from '../../modals/createcolumn';
 import { useAudienceData } from './audience/hooks/use-audience-data';
 import ShowCreateCampaign from '../../modals/showcreatecampaign';
 import RecentCampaignsTable from './components/recent-campaigns-table';
