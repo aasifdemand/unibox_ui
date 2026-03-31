@@ -35,7 +35,7 @@ import {
   useReplyCategories,
   useDeleteCrmStage,
 } from '../../../hooks/useCrm';
-import CreateColumn from '../../../modals/CreateColumn';
+import CreateColumn from '../../../modals/createcolumn';
 
 // ─── Sortable Lead Card wrapper ───────────────────────────────────────────────
 const SortableLeadCard = ({ lead, onOpen }) => {
