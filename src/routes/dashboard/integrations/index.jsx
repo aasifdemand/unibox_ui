@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/immutability */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { toast } from 'react-hot-toast';
-import { CheckCircle2, RefreshCw, X, Layout, Layers, Search } from 'lucide-react';
+import { CheckCircle2, RefreshCw, Layers, Search } from 'lucide-react';
 import {
   useIntegrations,
   useConnectIntegration,
   useDisconnectIntegration,
   useSyncIntegration,
 } from '../../../hooks/useIntegrations';
-import Dialog from '../../../components/ui/dialog';
 import { SkeletonLoader } from '../../../components/ui/loading-spinner';
+import ConnectIntegration from '../../../modals/connect-integration';
+import DisconnectIntegration from '../../../modals/disconnect-integration';
 
 const Logo = ({ src, alt, className, wrapperClassName }) => {
   const [error, setError] = useState(false);
@@ -381,138 +382,27 @@ const Integrations = () => {
         </div>
       )}
 
-      {/* API Key Modal - Refined Style */}
-      <AnimatePresence>
-        {selectedIntegration && (
-          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedIntegration(null)}
-              className="absolute inset-0 bg-slate-900/40 "
-            />
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-lg overflow-hidden shadow-sm border border-slate-100"
-            >
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-4">
-                    <Logo
-                      src={selectedIntegration.logo}
-                      alt={selectedIntegration.name}
-                      wrapperClassName="w-14 h-14 rounded-lg flex items-center justify-center bg-white border border-slate-100 p-2 shadow-md"
-                      className="w-full h-full object-contain"
-                    />
-                    <div>
-                      <h2 className="text-xl font-black text-slate-800 tracking-tight leading-none">
-                        {t('integrations.connect_btn')} {selectedIntegration.name}
-                      </h2>
-                      <p className="text-[10px] font-black text-orange-600 uppercase tracking-[0.2em] mt-2 flex items-center gap-2">
-                        <Layout className="w-3 h-3" /> {t('integrations.secure', 'Secure')}{' '}
-                        {selectedIntegration.authType.replace('_', ' ')}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedIntegration(null)}
-                    className="w-8 h-8 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-all"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (isVerifyingOAuth) handleOAuthVerify();
-                    else handleApiKeySubmit(e);
-                  }}
-                  className="space-y-8"
-                >
-                  <div className="space-y-6">
-                    {isVerifyingOAuth ? (
-                      <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-                        <p className="text-sm font-bold text-slate-800 mb-2">
-                          {t('integrations.complete_auth', 'Complete {{name}} Authorization', { name: selectedIntegration.name })}
-                        </p>
-                        <p className="text-xs text-slate-500 font-medium leading-relaxed">
-                          {t('integrations.verify_oauth_desc', { name: selectedIntegration.name })}
-                        </p>
-                      </div>
-                    ) : (
-                      <div>
-                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
-                          {t('integrations.api_key_label')}
-                        </label>
-                        <input
-                          type="password"
-                          value={apiKey}
-                          onChange={(e) => setApiKey(e.target.value)}
-                          placeholder={t('integrations.api_key_placeholder', {
-                            name: selectedIntegration.name,
-                          })}
-                          className="w-full h-14 px-5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all"
-                        />
-                      </div>
-                    )}
-
-                    {!isVerifyingOAuth && (
-                      <div className="p-4 bg-orange-50/50 rounded-lg border border-orange-100/50">
-                        <p className="text-xs text-orange-600/80 font-medium leading-relaxed">
-                          {t('integrations.api_key_desc', { name: selectedIntegration.name })}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isConnecting || (!isVerifyingOAuth && !apiKey.trim())}
-                    className="w-full h-14 bg-orange-600 text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:bg-orange-700 transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50"
-                  >
-                    {isConnecting ? (
-                      <>
-                        <RefreshCw className="w-4 h-4 animate-spin" />
-                        {t('integrations.verifying_btn')}
-                      </>
-                    ) : (
-                      <>
-                        <CheckCircle2 className="w-4 h-4" />
-                        {isVerifyingOAuth
-                          ? t('integrations.complete_connection')
-                          : t('integrations.verify_btn')}
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* API Key Modal */}
+      <ConnectIntegration
+        isOpen={!!selectedIntegration}
+        onClose={() => setSelectedIntegration(null)}
+        integration={selectedIntegration}
+        apiKey={apiKey}
+        setApiKey={setApiKey}
+        isConnecting={isConnecting}
+        isVerifyingOAuth={isVerifyingOAuth}
+        handleApiKeySubmit={handleApiKeySubmit}
+        handleOAuthVerify={handleOAuthVerify}
+      />
 
       {/* Disconnect Modal */}
-      {integrationToDisconnect && (
-        <Dialog
-          open={!!integrationToDisconnect}
-          setOpen={(isOpen) => !isOpen && setIntegrationToDisconnect(null)}
-          title={t('integrations.confirm_disconnect_title', 'Confirm Disconnection')}
-          description={
-            <>
-              {t('integrations.confirm_disconnect_desc1', 'Are you sure you want to disconnect ')}<strong>{integrationToDisconnect.name}</strong>{t('integrations.confirm_disconnect_desc2', '? Unibox will no longer be able to sync leads or data with this service.')}
-            </>
-          }
-          confirmText={t('integrations.disconnect_btn')}
-          cancelText={t('common.cancel')}
-          confirmVariant="danger"
-          isLoading={isDisconnecting === integrationToDisconnect.id}
-          onConfirm={confirmDisconnect}
-          onCancel={() => setIntegrationToDisconnect(null)}
-        />
-      )}
+      <DisconnectIntegration
+        isOpen={!!integrationToDisconnect}
+        setIsOpen={(isOpen) => !isOpen && setIntegrationToDisconnect(null)}
+        integration={integrationToDisconnect}
+        handleDisconnect={confirmDisconnect}
+        isDisconnecting={isDisconnecting === integrationToDisconnect?.id}
+      />
 
       <div className="pt-10 border-t border-slate-100 text-center pb-12">
         <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-6">
