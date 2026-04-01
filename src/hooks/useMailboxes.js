@@ -17,7 +17,7 @@ const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' 
     type,
   });
 
-  const res = await api.get(`/mailboxes?${queryParams}`);
+  const res = await api.get(`/senders?${queryParams}`);
 
   if (!res.ok) {
     throw new Error('Failed to fetch mailboxes');
@@ -28,20 +28,9 @@ const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' 
 
 // Transform sender to mailbox format
 const transformSenderToMailbox = (sender) => {
-  // Determine the correct type based on the sender's properties
-  let type = sender.type;
-
-  if (sender.microsoftId) {
-    type = 'outlook';
-  } else if (sender.googleId) {
-    type = 'gmail';
-  } else if (sender.smtpHost) {
-    type = 'smtp';
-  }
-
   return {
     id: sender.id,
-    type: type,
+    type: sender.type,
     email: sender.email,
     displayName: sender.displayName,
     domain: sender.domain,
@@ -49,10 +38,21 @@ const transformSenderToMailbox = (sender) => {
     isActive: sender.isActive !== undefined ? sender.isActive : true,
     createdAt: sender.createdAt,
     updatedAt: sender.updatedAt,
-    lastSyncAt: sender.lastSyncAt || sender.lastInboxSyncAt || sender.lastUsedAt || null,
+    lastSyncAt: sender.lastUsedAt || sender.lastInboxSyncAt || null,
     expiresAt: sender.expiresAt,
+    /* Configuration Fields */
+    minTimeGap: sender.minTimeGap || 1,
+    signature: sender.signature || '',
+    bccEmail: sender.bccEmail || '',
+    replyToAddress: sender.replyToAddress || '',
+    useCustomTrackingDomain: sender.useCustomTrackingDomain || false,
+    customTrackingDomain: sender.customTrackingDomain || '',
+    /* Dynamic Stats Header */
+    campaignCount: sender.campaignCount || 0,
+    leadCount: sender.leadCount || 0,
     stats: {
       dailySent: sender.dailySentCount || 0,
+      dailyLimit: sender.dailyLimit || 500,
       reputationScore: sender.stats?.reputationScore || 0,
       healthStatus: sender.stats?.healthStatus || 'unknown',
       warmupEnabled: sender.warmupEnabled || false,
@@ -76,13 +76,13 @@ export const useMailboxes = ({
     queryKey: mailboxKeys.lists({ search, page, limit, type }),
     queryFn: async () => {
       const response = await fetchMailboxes({ search, page, limit, type });
-      const { data, meta } = response;
+      const { data, pagination } = response;
 
       const transformedData = (data || []).map(transformSenderToMailbox);
 
       return {
         mailboxes: transformedData,
-        meta: meta || {
+        meta: pagination || {
           total: transformedData.length,
           page,
           limit,
@@ -103,7 +103,7 @@ export const useMailbox = (mailboxId) => {
   return useQuery({
     queryKey: mailboxKeys.detail(mailboxId),
     queryFn: async () => {
-      const res = await api.get(`/mailboxes/${mailboxId}`);
+      const res = await api.get(`/senders/${mailboxId}`);
 
       if (!res.ok) {
         throw new Error('Mailbox not found');
@@ -119,17 +119,38 @@ export const useMailbox = (mailboxId) => {
   });
 };
 
-// Optional: Add a mutation for refreshing mailboxes
+// Invalidating queries
 export const useRefreshMailboxes = () => {
   const queryClient = useQueryClient();
 
   return {
     refresh: () => {
-      queryClient.invalidateQueries({ queryKey: mailboxKeys.lists() });
       queryClient.invalidateQueries({ queryKey: mailboxKeys.all });
     },
   };
 };
+
+export const useUpdateMailbox = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, ...data }) => {
+      const res = await api.put(`/senders/${id}`, data);
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to update mailbox');
+      }
+
+      return await res.json();
+    },
+    onSuccess: (response, variables) => {
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.lists() });
+    },
+  });
+};
+
 export const useUpdateWarmupSettings = () => {
   const queryClient = useQueryClient();
 

@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
 import LoadingSpinner from './components/ui/loading-spinner';
 
 import AuthLayout from './layouts/auth.layout';
@@ -17,6 +16,7 @@ const VerifyAccount = lazy(() => import('./routes/auth/verify-account'));
 
 const Dashboard = lazy(() => import('./routes/dashboard'));
 const Mailboxes = lazy(() => import('./routes/dashboard/mailboxes'));
+const ViewMailbox = lazy(() => import('./routes/dashboard/mailboxes/view-mailbox'));
 const Campaigns = lazy(() => import('./routes/dashboard/campaigns'));
 const CreateCampaign = lazy(() => import('./routes/dashboard/campaigns/create-campaign'));
 const ViewCampaign = lazy(() => import('./routes/dashboard/campaigns/view-campaign'));
@@ -55,6 +55,7 @@ const AppRoutes = () => {
           <Route element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="mailboxes" element={<Mailboxes />} />
+            <Route path="mailboxes/:id" element={<ViewMailbox />} />
             <Route path="campaigns" element={<Campaigns />} />
 
             <Route path="campaigns/:id" element={<ViewCampaign />} />
