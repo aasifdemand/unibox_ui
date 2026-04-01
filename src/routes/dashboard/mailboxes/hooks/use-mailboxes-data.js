@@ -156,13 +156,18 @@ export const useMailboxesData = () => {
   // =========================
 
   const messages = useMemo(() => {
-    if (!selectedMailbox || !provider || !selectedFolder) return [];
+    if (!selectedMailbox || !provider) return [];
 
+    // When a search query is active, bypass the folder requirement —
+    // search results come from the provider's search query, not a folder query.
     if (debouncedSearchQuery) {
       const searchData = provider.queries.search?.data;
       if (selectedMailbox.type === 'smtp') return searchData?.messages || [];
       return searchData?.pages?.flatMap((p) => p.messages) || [];
     }
+
+    // Without a search query, we need a folder selected to know which messages to show.
+    if (!selectedFolder) return [];
 
     const q = provider.queries;
     const pageIndex = currentPage - 1;
