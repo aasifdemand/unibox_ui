@@ -28,13 +28,13 @@ const Step3Finalize = ({
   return (
     <div className="max-w-5xl mx-auto space-y-10 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Launch Readiness Header */}
-      <div className="bg-orange-600 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-sm shadow-orange-600/20 group">
+      <div className="bg-orange-600 rounded-lg p-12 text-white relative overflow-hidden shadow-sm shadow-orange-600/20 group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:scale-110 transition-transform duration-700" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl group-hover:scale-125 transition-transform duration-1000" />
 
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6 text-center md:text-left flex-col md:flex-row">
-            <div className="w-20 h-20 bg-white/20  rounded-[2rem] flex items-center justify-center border border-white/20 shadow-sm group-hover:rotate-12 transition-transform duration-500">
+            <div className="w-20 h-20 bg-white/20  rounded-lg flex items-center justify-center border border-white/20 shadow-sm group-hover:rotate-12 transition-transform duration-500">
               <Sparkles className="w-10 h-10 text-white fill-white/20" />
             </div>
             <div>
@@ -70,7 +70,7 @@ const Step3Finalize = ({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Core Details */}
         <div className="lg:col-span-2 space-y-8">
-          <div className="bg-white border-2 border-slate-100 rounded-[3rem] p-10 shadow-sm space-y-8">
+          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-8">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
                 <Activity className="w-5 h-5" />
@@ -81,7 +81,7 @@ const Step3Finalize = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 hover:border-orange-100 transition-colors">
+              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-orange-100 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-orange-600">
                     <Mail className="w-4 h-4" />
@@ -116,7 +116,7 @@ const Step3Finalize = ({
                 </div>
               </div>
 
-              <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 hover:border-orange-100 transition-colors">
+              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-orange-100 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50 text-orange-600">
                     <Database className="w-4 h-4" />
@@ -135,7 +135,7 @@ const Step3Finalize = ({
               </div>
             </div>
 
-            <div className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100">
+            <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-amber-600">
                   <Mail className="w-4 h-4" />
@@ -150,7 +150,7 @@ const Step3Finalize = ({
             </div>
           </div>
 
-          <div className="bg-white border-2 border-slate-100 rounded-[3rem] p-10 shadow-sm space-y-8">
+          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-8">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
                 <Clock className="w-5 h-5" />
@@ -184,7 +184,7 @@ const Step3Finalize = ({
 
         {/* Tracking & Engagement */}
         <div className="space-y-8">
-          <div className="bg-white rounded-[3rem] p-10 border-2 border-slate-100 shadow-sm space-y-8 h-full">
+          <div className="bg-white rounded-lg p-10 border-2 border-slate-100 shadow-sm space-y-8 h-full">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100/50">
                 <BarChart3 className="w-5 h-5 text-orange-600" />
@@ -220,7 +220,7 @@ const Step3Finalize = ({
               ].map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-[2rem] border border-slate-100 group hover:border-orange-100 transition-all"
+                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-orange-100 transition-all"
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -242,7 +242,7 @@ const Step3Finalize = ({
               ))}
             </div>
 
-            <div className="p-6 bg-orange-50/50 rounded-[2rem] border border-orange-100">
+            <div className="p-6 bg-orange-50/50 rounded-lg border border-orange-100">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50">
                   <Gauge className="w-4 h-4 text-orange-500" />

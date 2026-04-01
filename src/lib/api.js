@@ -37,7 +37,7 @@ export const apiClient = async (endpoint, options = {}) => {
   const defaultOptions = {
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      ...(rest.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
       ...headers,
     },
     ...rest,

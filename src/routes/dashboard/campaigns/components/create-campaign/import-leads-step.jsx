@@ -106,7 +106,7 @@ const ImportLeadsStep = ({
 
           <div
             onClick={() => setShowUploadModal(true)}
-            className="group relative border-2 border-dashed border-slate-200 hover:border-orange-400 bg-white hover:bg-slate-50/50 rounded-[2.5rem] p-16 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-sm hover:shadow-sm hover:shadow-orange-600/5 hover:-translate-y-1"
+            className="group relative border-2 border-dashed border-slate-200 hover:border-orange-400 bg-white hover:bg-slate-50/50 rounded-lg p-16 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-sm hover:shadow-sm hover:shadow-orange-600/5 hover:-translate-y-1"
           >
             <div className="w-20 h-20 bg-orange-50 rounded-lg flex items-center justify-center text-orange-600 group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-500 shadow-inner mb-6">
               <FileSpreadsheet className="w-9 h-9" />
@@ -153,13 +153,13 @@ const ImportLeadsStep = ({
             </button>
           </div>
 
-          <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-10 shadow-sm space-y-10 hover:border-orange-100 transition-colors">
+          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-10 hover:border-orange-100 transition-colors">
             <div className="relative group">
               <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
                 <Search className="w-5 h-5 text-slate-400 group-focus-within:text-orange-600 transition-colors" />
               </div>
               <select
-                className="w-full pl-14 pr-12 h-16 bg-slate-50/50 border-2 border-slate-100 hover:border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-600 focus:ring-4 focus:ring-orange-600/5 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                className="w-full pl-14 pr-12 h-12 bg-slate-50/50 border-2 border-slate-100 hover:border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-600 focus:ring-4 focus:ring-orange-600/5 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
                 value={watchListBatchId || ''}
                 onChange={(e) => handleBatchSelect(e.target.value)}
               >
@@ -184,7 +184,7 @@ const ImportLeadsStep = ({
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-3">
+                <p className="text-xs font-black text-slate-600  uppercase tracking-widest px-3">
                   Recent Audiences
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
@@ -192,7 +192,7 @@ const ImportLeadsStep = ({
                     <div
                       key={batch.id}
                       onClick={() => handleBatchSelect(batch.id)}
-                      className={`group flex items-center justify-between p-5 rounded-[1.75rem] border-2 transition-all cursor-pointer relative overflow-hidden ${watchListBatchId === batch.id ? 'bg-orange-600 border-orange-600 shadow-sm shadow-orange-600/20' : 'bg-white border-slate-100 hover:border-orange-200 shadow-sm hover:shadow-md'}`}
+                      className={`group flex items-center justify-between p-2 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${watchListBatchId === batch.id ? 'bg-orange-600 border-orange-600 shadow-sm shadow-orange-600/20' : 'bg-white border-slate-100 hover:border-orange-200 shadow-sm hover:shadow-md'}`}
                     >
                       <div className="flex items-center gap-4 min-w-0">
                         <div

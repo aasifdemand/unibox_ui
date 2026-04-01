@@ -69,7 +69,7 @@ const Dialog = ({
     <Modal isOpen={open} onClose={() => setOpen(false)} maxWidth="max-w-md" closeOnBackdrop={true}>
       <div className="bg-inherit rounded-lg overflow-hidden shadow-sm">
         {/* Premium Header - Dynamic based on variant */}
-        <div className={`bg-gradient-to-br ${styles.gradient} p-8 relative overflow-hidden group`}>
+        <div className={`bg-linear-to-br ${styles.gradient} p-8 relative overflow-hidden group`}>
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}

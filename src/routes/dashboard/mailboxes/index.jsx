@@ -165,6 +165,7 @@ const Mailboxes = () => {
                     onCheckSender={handleCheckSender}
                     onCheckAllSenders={handleCheckAllSenders}
                     onSync={handlers.handleMailboxSync}
+                    onUpdateWarmup={handlers.handleUpdateWarmup}
                   />
                 </div>
                 {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (

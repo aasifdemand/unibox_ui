@@ -32,21 +32,21 @@ const CampaignMetrics = ({ campaign, stats }) => {
     },
     {
       label: t('campaigns.metrics.total_opens', 'Total Opens'),
-      value: stats.totalOpened,
+      value: stats.totalOpens,
       icon: <Mail className="w-5 h-5" />,
       theme: 'purple',
       description: stats.uniqueContacted
-        ? t('campaigns.metrics.open_rate_percent', { percent: Math.round((stats.totalOpened / stats.uniqueContacted) * 100) })
+        ? t('campaigns.metrics.open_rate_percent', { percent: Math.round((stats.totalOpens / stats.uniqueContacted) * 100) })
         : t('campaigns.metrics.open_rate_percent', { percent: 0 }),
       subLabel: t('campaigns.metrics.engagement', 'Engagement'),
     },
     {
       label: t('campaigns.metrics.total_clicks', 'Total Clicks'),
-      value: stats.totalClicked,
+      value: stats.totalClicks,
       icon: <MousePointer2 className="w-5 h-5" />,
       theme: 'blue',
       description: stats.uniqueContacted
-        ? t('campaigns.metrics.click_rate_percent', { percent: Math.round((stats.totalClicked / stats.uniqueContacted) * 100) })
+        ? t('campaigns.metrics.click_rate_percent', { percent: Math.round((stats.totalClicks / stats.uniqueContacted) * 100) })
         : t('campaigns.metrics.click_rate_percent', { percent: 0 }),
       subLabel: t('campaigns.metrics.link_clicks', 'Link Clicks'),
     },
@@ -142,7 +142,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
       {metrics.map((metric, index) => (
         <div
           key={index}
-          className={`premium-card p-8 border-none bg-gradient-to-br ${themes[metric.theme]} transition-all duration-500 hover:shadow-sm hover:-translate-y-1 group`}
+          className={`premium-card p-8 border-none bg-linear-to-br ${themes[metric.theme]} transition-all duration-500 hover:shadow-sm hover:-translate-y-1 group`}
         >
           <div className="flex items-start justify-between mb-4">
             <div>

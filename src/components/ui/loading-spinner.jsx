@@ -7,12 +7,7 @@ export const LoadingSpinner = ({
   fullPage = false,
   className = '',
 }) => {
-  const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-16 h-16',
-    lg: 'w-24 h-24',
-    xl: 'w-32 h-32',
-  };
+ 
 
   const textSizeClasses = {
     sm: 'text-[10px]',
@@ -21,7 +16,7 @@ export const LoadingSpinner = ({
     xl: 'text-base',
   };
 
-  const spinnerSize = sizeClasses[size] || sizeClasses.md;
+  
   const textSize = textSizeClasses[size] || textSizeClasses.md;
 
   const content = (
@@ -42,7 +37,7 @@ export const LoadingSpinner = ({
 
   if (fullPage) {
     return (
-      <div className="fixed inset-0 bg-[#FAFAFA]/90 backdrop-blur-sm z-[9999] flex items-center justify-center">
+      <div className="fixed inset-0 bg-[#FAFAFA]/90 backdrop-blur-sm z-9999 flex items-center justify-center">
         {content}
       </div>
     );
@@ -65,7 +60,7 @@ export const InlineSpinner = ({ size = 'sm', className = '' }) => {
 // Page loader with optional progress bar
 export const PageLoader = ({ progress, text = 'Loading...' }) => {
   return (
-    <div className="fixed inset-0 bg-[#FAFAFA] z-[9999] flex flex-col items-center justify-center">
+    <div className="fixed inset-0 bg-[#FAFAFA] z-9999 flex flex-col items-center justify-center">
       <div className="flex flex-col items-center">
         <LoadingSpinner size="lg" text={text} />
 

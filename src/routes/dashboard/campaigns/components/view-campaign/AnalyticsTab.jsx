@@ -13,10 +13,10 @@ import {
 const AnalyticsTab = ({ campaign, stats }) => {
   const { t } = useTranslation();
   const openRate = stats.uniqueContacted
-    ? Math.round((stats.totalOpened / stats.uniqueContacted) * 100)
+    ? Math.round((stats.totalOpens / stats.uniqueContacted) * 100)
     : 0;
   const clickRate = stats.uniqueContacted
-    ? Math.round((stats.totalClicked / stats.uniqueContacted) * 100)
+    ? Math.round((stats.totalClicks / stats.uniqueContacted) * 100)
     : 0;
   const replyRate = stats.uniqueContacted
     ? Math.round((stats.totalReplied / stats.uniqueContacted) * 100)

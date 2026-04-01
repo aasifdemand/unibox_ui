@@ -1,27 +1,96 @@
 import React from 'react';
 import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
+import { DateTime } from 'luxon';
 
-// Format date
-export const formatDate = (dateString) => {
-  if (!dateString) return '-';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+// Intelligently extracts a valid IANA timezone name from strings that might
+// be descriptive labels like "(UTC+05:30) Asia/Kolkata" or "(UTC+05:30) Mumbai, Kolkata, New Delhi"
+export const getIanaTimezone = (tz) => {
+  if (!tz) return 'UTC';
+  
+  // Directly valid IANA name?
+  if (DateTime.now().setZone(tz).isValid) return tz;
+
+  // Pattern to extract name like Asia/Kolkata or Mumbai, Kolkata from the end of a label
+  // (UTC+05:30) Asia/Kolkata → Asia/Kolkata
+  const match = tz.match(/\)\s*(.+)$/);
+  if (match && match[1]) {
+    const candidate = match[1].trim();
+    if (DateTime.now().setZone(candidate).isValid) return candidate;
+    
+    // Hard-coded known mapping for the "(UTC+05:30) Mumbai..." case
+    if (candidate.toLowerCase().includes('mumbai') || candidate.toLowerCase().includes('kolkata')) {
+      return 'Asia/Kolkata';
+    }
+  }
+
+  return 'UTC'; // Fallback
 };
 
-export const formatDateTime = (dateString) => {
-  if (!dateString) return '-';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+// Generates a comprehensive but curated list of popular world timezones
+export const getAllTimezones = () => {
+  const popularTzs = [
+    'UTC',
+    'America/New_York',
+    'America/Chicago',
+    'America/Denver',
+    'America/Los_Angeles',
+    'America/Phoenix',
+    'Europe/London',
+    'Europe/Paris',
+    'Asia/Dubai',
+    'Asia/Kolkata',
+    'Asia/Singapore',
+    'Asia/Tokyo',
+    'Australia/Sydney',
+    'Pacific/Auckland',
+  ];
+
+  const now = DateTime.now();
+
+  return popularTzs
+    .map((tz) => {
+      const dt = now.setZone(tz);
+      if (!dt.isValid) return null;
+      const offset = dt.toFormat('ZZ');
+      return {
+        value: tz,
+        label: `(UTC${offset}) ${tz.replace(/_/g, ' ')}`,
+        offset: dt.offset,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.offset - b.offset || a.value.localeCompare(b.value));
+};
+
+// Robust date parser for both ISO and SQL-style strings
+const parseDate = (dateString) => {
+  if (!dateString) return null;
+  // Try ISO first (2026-04-01T16:54:00Z)
+  let dt = DateTime.fromISO(dateString, { zone: 'utc' });
+  // Fallback to SQL (2026-04-01 16:54:00)
+  if (!dt.isValid) {
+    dt = DateTime.fromSQL(dateString, { zone: 'utc' });
+  }
+  return dt.isValid ? dt : null;
+};
+
+// Format date (date only) — always display in target timezone
+export const formatDate = (dateString, timezone) => {
+  const dt = parseDate(dateString);
+  if (!dt) return '-';
+  
+  const iana = getIanaTimezone(timezone);
+  return dt.setZone(iana).toFormat('LLLL d, yyyy');
+};
+
+// Format date + time — pass user.timezone to show time correctly in their profile timezone
+export const formatDateTime = (dateString, timezone) => {
+  const dt = parseDate(dateString);
+  if (!dt) return '-';
+
+  const iana = getIanaTimezone(timezone);
+  // Full descriptive format for overview tabs
+  return dt.setZone(iana).toFormat('LLLL d, yyyy \'at\' hh:mm a');
 };
 
 // Get status color and icon

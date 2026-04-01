@@ -15,7 +15,7 @@ import {
   timeAgo,
 } from '../utils/utils';
 
-import { useMailboxes } from '../../../../hooks/useMailboxes';
+import { useMailboxes, useUpdateWarmupSettings } from '../../../../hooks/useMailboxes';
 import { useBulkDeleteSenders } from '../../../../hooks/useSenders';
 import { useSocketEvents } from '../../../../hooks/useSocketEvents';
 import { useGmailData } from './use-gmail-data';
@@ -109,6 +109,7 @@ export const useMailboxesData = () => {
   });
 
   const bulkDeleteSenders = useBulkDeleteSenders();
+  const updateWarmupMutation = useUpdateWarmupSettings();
 
   const mailboxes = mailboxResponse.mailboxes;
   const mailboxMeta = mailboxResponse.meta;
@@ -720,6 +721,25 @@ export const useMailboxesData = () => {
     [gmail.mutations, outlook.mutations, smtp.mutations, refetchMailboxes],
   );
 
+  const handleUpdateWarmup = useCallback(
+    async (senderId, settings) => {
+      try {
+        await updateWarmupMutation.mutateAsync({ senderId, ...settings });
+        toast.success(
+          settings.enabled !== undefined
+            ? settings.enabled
+              ? 'Warmup enabled'
+              : 'Warmup disabled'
+            : 'Warmup settings updated',
+        );
+      } catch (e) {
+        toast.error('Failed to update warmup settings');
+      }
+    },
+    [updateWarmupMutation],
+  );
+
+
   const handleRefreshToken = useCallback(async () => {
     if (!selectedMailbox || !provider || selectedMailbox.type === 'smtp') return;
     try {
@@ -1057,6 +1077,7 @@ export const useMailboxesData = () => {
 
       handleMailboxTypeChange,
       handleMailboxSync,
+      handleUpdateWarmup,
     },
     utils: {
       formatMessageDate,

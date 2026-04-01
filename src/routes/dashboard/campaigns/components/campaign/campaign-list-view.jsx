@@ -65,6 +65,7 @@ const CampaignListView = ({
   handleViewCampaign,
   handleDeleteClick,
   isLoadingAction,
+  userTz,
 }) => {
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
@@ -140,10 +141,10 @@ const CampaignListView = ({
                   <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                   <span>
                     {campaign.startedAt
-                      ? `Started at: ${formatDateTime(campaign.startedAt)}`
+                      ? `Started at: ${formatDateTime(campaign.startedAt, userTz)}`
                       : campaign.scheduledAt
-                        ? `Scheduled at: ${formatDateTime(campaign.scheduledAt)}`
-                        : formatDateTime(campaign.createdAt) || formatDate(campaign.createdAt)}
+                        ? `Scheduled at: ${formatDateTime(campaign.scheduledAt, userTz)}`
+                        : formatDateTime(campaign.createdAt, userTz) || formatDate(campaign.createdAt, userTz)}
                   </span>
                 </div>
               </div>
@@ -320,6 +321,7 @@ const CampaignListView = ({
       handleEditCampaign,
       handleViewCampaign,
       handleDeleteClick,
+      userTz,
     ],
   );
 

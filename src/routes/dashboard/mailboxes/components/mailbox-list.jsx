@@ -14,10 +14,10 @@ import {
   ChevronDown,
   ChevronsUpDown,
   ShieldCheck,
-  ShieldAlert,
-  Shield,
   RefreshCw,
+  Settings2,
 } from 'lucide-react';
+import WarmupSettingsModal from './warmup-settings-modal';
 
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
@@ -47,9 +47,17 @@ const MailboxList = ({
   onCheckSender,
   onSync,
   isSyncingMailboxId,
+  onUpdateWarmup,
 }) => {
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
+  const [isWarmupModalOpen, setIsWarmupModalOpen] = React.useState(false);
+  const [activeMailboxForSettings, setActiveMailboxForSettings] = React.useState(null);
+
+  const handleOpenWarmupSettings = (mailbox) => {
+    setActiveMailboxForSettings(mailbox);
+    setIsWarmupModalOpen(true);
+  };
 
   
 
@@ -139,37 +147,120 @@ const MailboxList = ({
         ),
       },
       {
-        accessorKey: 'reputation',
+        accessorKey: 'stats.warmupEnabled',
         header: ({ column }) => (
           <button
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
             <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-              Reputation
+              Warmup Enabled
             </span>
             <SortIndicator column={column} />
           </button>
         ),
         cell: ({ row }) => {
-          const score = row.original.reputation ?? row.original.stats?.reputationScore ?? 100;
-          let colorClass = 'bg-orange-50 text-orange-600 border-orange-100';
-          let Icon = ShieldCheck;
-
-          if (score < 50) {
-            colorClass = 'bg-orange-50 text-orange-600 border-orange-100';
-            Icon = ShieldAlert;
-          } else if (score < 80) {
-            colorClass = 'bg-amber-50 text-amber-600 border-amber-100';
-            Icon = Shield;
-          }
+          const mailbox = row.original;
+          const isEnabled = mailbox.stats?.warmupEnabled;
 
           return (
-            <div
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border shadow-xs ${colorClass}`}
-            >
-              <Icon className="w-3 h-3" />
-              <span className="text-[10px] font-black tabular-nums">{score}%</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onUpdateWarmup(mailbox.id, { enabled: !isEnabled });
+                }}
+                className={`relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                  isEnabled ? 'bg-orange-600' : 'bg-slate-200'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    isEnabled ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenWarmupSettings(mailbox);
+                }}
+                className="w-7 h-7 flex items-center justify-center rounded-md bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition-all"
+                title="Warmup Settings"
+              >
+                <Settings2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'stats.warmupReputation',
+        header: ({ column }) => (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="flex items-center group/header"
+          >
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              Health Score
+            </span>
+            <SortIndicator column={column} />
+          </button>
+        ),
+        cell: ({ row }) => {
+          const score = row.original.stats?.reputationScore ?? 100;
+          return (
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck
+                  className={`w-3.5 h-3.5 ${score >= 80 ? 'text-orange-600' : score >= 50 ? 'text-amber-500' : 'text-orange-600'}`}
+                />
+                <span className="text-sm font-extrabold text-slate-800 tabular-nums">
+                  {score}%
+                </span>
+              </div>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
+                Reputation
+              </span>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'stats.warmupDailyLimit',
+        header: ({ column }) => (
+          <button
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            className="flex items-center group/header"
+          >
+            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+              Daily Progress
+            </span>
+            <SortIndicator column={column} />
+          </button>
+        ),
+        cell: ({ row }) => {
+          const stats = row.original.stats;
+          const current = stats?.warmupCurrentSent || 0;
+          const limit = stats?.warmupDailyLimit || 20;
+          const percentage = Math.min(Math.round((current / limit) * 100), 100);
+
+          return (
+            <div className="flex flex-col gap-1.5 min-w-[100px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black text-slate-700 tabular-nums">
+                  {current} / {limit}
+                </span>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">
+                  {percentage}%
+                </span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                <div
+                  className="h-full bg-linear-to-r from-orange-500 to-orange-600 transition-all duration-1000 ease-out"
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
             </div>
           );
         },
@@ -182,7 +273,7 @@ const MailboxList = ({
             className="flex items-center group/header"
           >
             <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
-              {t('mailboxes.table_volume')}
+              Campaign Vol
             </span>
             <SortIndicator column={column} />
           </button>
@@ -192,8 +283,8 @@ const MailboxList = ({
             <span className="text-sm font-extrabold text-slate-800 tabular-nums">
               {row.original.stats?.dailySent || 0}
             </span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              {t('mailboxes.volume_today')}
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 leading-none">
+              Today
             </span>
           </div>
         ),
@@ -275,7 +366,7 @@ const MailboxList = ({
       selectedSenderIds,
       onSync,
       isSyncingMailboxId,
-      
+      onUpdateWarmup,
     ],
   );
 
@@ -349,6 +440,12 @@ const MailboxList = ({
           </table>
         </div>
       </div>
+      <WarmupSettingsModal
+        isOpen={isWarmupModalOpen}
+        onClose={() => setIsWarmupModalOpen(false)}
+        mailbox={activeMailboxForSettings}
+        onSave={onUpdateWarmup}
+      />
     </div>
   );
 };

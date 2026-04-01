@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import Modal from '../../../../../components/shared/modal';
@@ -7,23 +7,28 @@ import { useUpdateCampaign } from '../../../../../hooks/useCampaign';
 
 const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [subject, setSubject] = useState('');
+  const [name, setName] = useState(campaign?.name || '');
+  const [subject, setSubject] = useState(campaign?.subject || '');
+  const [trackOpens, setTrackOpens] = useState(campaign?.trackOpens !== undefined ? campaign.trackOpens : true);
+  const [trackClicks, setTrackClicks] = useState(campaign?.trackClicks !== undefined ? campaign.trackClicks : true);
+  const [unsubscribeLink, setUnsubscribeLink] = useState(campaign?.unsubscribeLink !== undefined ? campaign.unsubscribeLink : true);
   const updateCampaignMutation = useUpdateCampaign();
 
-  useEffect(() => {
-    if (campaign && isOpen) {
-      setName(campaign.name || '');
-      setSubject(campaign.subject || '');
-    }
-  }, [campaign, isOpen]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !subject) return;
 
     updateCampaignMutation.mutate(
-      { campaignId: campaign.id, name, subject },
+      { 
+        campaignId: campaign.id, 
+        name, 
+        subject,
+        trackOpens,
+        trackClicks,
+        unsubscribeLink
+      },
       {
         onSuccess: () => {
           toast.success('Campaign updated successfully');
@@ -56,7 +61,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
         <div className="p-6 space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-              Campaign Name
+              {t('campaigns.edit.name', 'Campaign Name')}
             </label>
             <input
               type="text"
@@ -68,7 +73,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
           </div>
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-              Subject
+              {t('campaigns.edit.subject', 'Subject')}
             </label>
             <input
               type="text"
@@ -77,6 +82,45 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               className="w-full h-12 px-4 rounded-md border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
               required
             />
+          </div>
+
+          <div className="pt-4 space-y-4 border-t border-slate-100">
+            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">
+              {t('campaigns.edit.tracking_title', 'Tracking & Compliance')}
+            </h4>
+            
+            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <span className="text-xs font-bold text-slate-600">{t('campaigns.edit.track_opens', 'Open Tracking')}</span>
+              <button
+                type="button"
+                onClick={() => setTrackOpens(!trackOpens)}
+                className={`w-10 h-5 rounded-full relative transition-colors ${trackOpens ? 'bg-orange-600' : 'bg-slate-300'}`}
+              >
+                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${trackOpens ? 'left-[22px]' : 'left-1'}`} />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <span className="text-xs font-bold text-slate-600">{t('campaigns.edit.track_clicks', 'Click Tracking')}</span>
+              <button
+                type="button"
+                onClick={() => setTrackClicks(!trackClicks)}
+                className={`w-10 h-5 rounded-full relative transition-colors ${trackClicks ? 'bg-orange-600' : 'bg-slate-300'}`}
+              >
+                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${trackClicks ? 'left-[22px]' : 'left-1'}`} />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <span className="text-xs font-bold text-slate-600">{t('campaigns.edit.unsub_link', 'Unsubscribe Footer')}</span>
+              <button
+                type="button"
+                onClick={() => setUnsubscribeLink(!unsubscribeLink)}
+                className={`w-10 h-5 rounded-full relative transition-colors ${unsubscribeLink ? 'bg-orange-600' : 'bg-slate-300'}`}
+              >
+                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${unsubscribeLink ? 'left-[22px]' : 'left-1'}`} />
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-end gap-3 mt-8">

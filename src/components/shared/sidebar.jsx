@@ -1,10 +1,11 @@
-import { LogOut, Mail, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUser, useLogout } from '../../hooks/useAuth';
 import Dialog from '../../components/ui/dialog';
+import Logo from './logo';
+import { LogOut, X } from 'lucide-react';
 
 const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
   const location = useLocation();
@@ -54,20 +55,10 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
             initial={{ opacity: 0, x: isRTL ? 10 : -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex items-center gap-2 cursor-pointer w-full"
+            className="flex items-center gap-3 cursor-pointer w-full group"
             onClick={() => navigate('/dashboard')}
           >
-            <div className="w-6 h-6 rounded bg-orange-600 flex items-center justify-center shrink-0">
-              <Mail className="w-3.5 h-3.5 text-white" />
-            </div>
-            
-            {!sidebarCollapsed && (
-              <div className="flex flex-col min-w-0 flex-1">
-                <span className="text-[15px] font-bold text-zinc-900 tracking-tight leading-none truncate">
-                  Unibox<span className="text-orange-600">.</span>
-                </span>
-              </div>
-            )}
+            <Logo isCollapsed={sidebarCollapsed} showTagline={true} />
           </motion.div>
 
           {/* Mobile Close Button */}

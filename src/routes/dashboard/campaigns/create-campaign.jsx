@@ -8,16 +8,77 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Loader2, Zap, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import CampaignStepper from './components/create-campaign/campaign-stepper';
+import Input from '../../../components/ui/input';
 import Step1Design from './components/create-campaign/design-step';
 import ImportLeadsStep from './components/create-campaign/import-leads-step';
 import SetupStep from './components/create-campaign/setup-step';
 import Step3Finalize from './components/create-campaign/finalize-step';
+import { DateTime } from 'luxon';
 
 // Import React Query hooks
 import { useCreateCampaign, useUpdateCampaign, useCampaign } from '../../../hooks/useCampaign';
+import { useCurrentUser } from '../../../hooks/useAuth';
 import { useSenders } from '../../../hooks/useSenders';
 import { useBatches } from '../../../hooks/useBatches';
 import { unescapeHtml } from '../../../utils/html-utils';
+
+// Get the current date-string and time-string in a given IANA timezone
+const getNowInTimezone = (tz) => {
+  const dt = DateTime.now().setZone(tz);
+  return {
+    dateStr: dt.toFormat('yyyy-MM-dd'),
+    timeStr: dt.toFormat('HH:mm'),
+  };
+};
+
+// Compute smart start/end times IN the campaign's selected timezone.
+// Caps at 23:55 — backend uses simple HH:mm string comparison so true
+// overnight spans (e.g. 10 PM to 2 AM) are not supported yet.
+const getSmartDefaults = (tz) => {
+  const { dateStr, timeStr } = getNowInTimezone(tz);
+
+  const [h, m] = timeStr.split(':').map(Number);
+  let startMins = h * 60 + m + 5; // Start in 5 mins
+  let dateFinal = dateStr;
+
+  // If we cross midnight, push to tomorrow 09:00
+  if (startMins >= 1440) {
+    startMins = 540; // 09:00
+    dateFinal = DateTime.now().setZone(tz).plus({ days: 1 }).toFormat('yyyy-MM-dd');
+  }
+
+  const endMins = Math.min(startMins + 90, 1435); // End in 90 mins, capped at 23:55
+  const fmtTime = (total) => {
+    const hh = String(Math.floor(total / 60)).padStart(2, '0');
+    const mm = String(total % 60).padStart(2, '0');
+    return `${hh}:${mm}`;
+  };
+
+  return {
+    dateStr: dateFinal,
+    startTime: fmtTime(startMins),
+    endTime: fmtTime(endMins),
+  };
+};
+
+// Convert a wall-clock date+time in a named timezone → UTC ISO string
+// e.g. convertLocalToUTC('2026-04-01', '21:15', 'Asia/Kolkata') → '2026-04-01T15:45:00.000Z'
+const convertLocalToUTC = (dateStr, timeStr, tz) => {
+  try {
+    const dt = DateTime.fromFormat(`${dateStr} ${timeStr}`, 'yyyy-MM-dd HH:mm', { zone: tz });
+    return dt.toUTC().toISO();
+  } catch (err) {
+    console.error('UTC conversion failed:', err);
+    return new Date(`${dateStr}T${timeStr}:00`).toISOString();
+  }
+};
+
+// detectedTZ is static per browser session — safe to compute at module level
+const detectedTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+// NOTE: smartDefaults is intentionally NOT computed here.
+// It is computed inline inside useForm defaultValues so it runs fresh on every mount.
+
+
 
 const getCampaignSchema = (t) =>
   z
@@ -73,6 +134,7 @@ const getCampaignSchema = (t) =>
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id: editId } = useParams(); // moved up — needed before useEffect below
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [selectedSender, setSelectedSender] = useState(null);
@@ -89,7 +151,7 @@ const CreateCampaign = () => {
     refetch: refetchSenders,
   } = useSenders({ limit: 1000 });
 
-  const senders = senderResponse.data || [];
+  const senders = React.useMemo(() => senderResponse?.data || [], [senderResponse]);
 
   const {
     data: batches = [],
@@ -97,33 +159,62 @@ const CreateCampaign = () => {
     refetch: refetchBatches,
   } = useBatches(1, 20);
 
+  const { data: currentUser } = useCurrentUser();
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
+    getValues,
     formState: { errors },
     trigger,
   } = useForm({
     resolver: zodResolver(campaignSchema),
-    defaultValues: {
-      name: location.state?.campaignName || 'Untitled Campaign',
-      scheduleType: 'now',
-      throttlePerMinute: 10,
-      trackOpens: true,
-      trackClicks: true,
-      unsubscribeLink: true,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      sendingDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-      startTime: '09:00',
-      endTime: '18:00',
-      sendingInterval: 20,
-      maxLeadsPerDay: 100,
-      htmlBody: '',
-      textBody: '',
-      steps: [],
-    },
+    defaultValues: (() => {
+      // Compute fresh on every mount — avoids stale time from module load
+      const d = getSmartDefaults(detectedTZ);
+      return {
+        name: location.state?.campaignName || 'Untitled Campaign',
+        scheduleType: 'now',
+        throttlePerMinute: 10,
+        trackOpens: true,
+        trackClicks: true,
+        unsubscribeLink: true,
+        timezone: detectedTZ,
+        sendingDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+        startTime: d.startTime,
+        endTime: d.endTime,
+        startDate: d.dateStr,
+        sendingInterval: 20,
+        maxLeadsPerDay: 100,
+        htmlBody: '',
+        textBody: '',
+        steps: [],
+      };
+    })(),
   });
+
+  // Once the user profile loads, re-apply scheduling defaults using their saved timezone.
+  // Uses keepValues so fields the user has already touched are not overwritten.
+  useEffect(() => {
+    if (!currentUser?.timezone || editId) return; // skip for edit mode — we load from DB
+    const userTZ = currentUser.timezone;
+    const d = getSmartDefaults(userTZ);
+    // RHF reset() requires a plain values object — not a callback function.
+    // Use getValues() to spread existing values and only override scheduling fields.
+    reset(
+      {
+        ...getValues(),
+        timezone: userTZ,
+        startTime: d.startTime,
+        endTime: d.endTime,
+        startDate: d.dateStr,
+      },
+      { keepDirtyValues: true }, // don't overwrite fields the user has already changed
+    );
+  }, [currentUser?.timezone, editId, reset, getValues]);
 
   const nextStep = async () => {
     const fieldsToValidate = {
@@ -153,7 +244,6 @@ const CreateCampaign = () => {
   };
 
   const watchScheduleType = watch('scheduleType');
-  const watchHtmlBody = watch('htmlBody');
 
   const watchListBatchId = watch('listBatchId');
   const watchSenderId = watch('senderId');
@@ -194,7 +284,6 @@ const CreateCampaign = () => {
   };
 
   // Fetch campaign data if editing
-  const { id: editId } = useParams();
   const { data: campaignToEdit, isLoading: isLoadingEditing } = useCampaign(editId);
 
   useEffect(() => {
@@ -279,9 +368,10 @@ const CreateCampaign = () => {
         data.htmlBody = unescapeHtml(data.htmlBody);
       }
 
-      let scheduledAt = data.startDate || null;
-      if (scheduledAt && data.startTime) {
-        scheduledAt = `${scheduledAt}T${data.startTime}:00`;
+      let scheduledAt = null;
+      if (data.startDate && data.startTime) {
+        // Convert the wall-clock time in the campaign timezone → proper UTC ISO string
+        scheduledAt = convertLocalToUTC(data.startDate, data.startTime, data.timezone || 'UTC');
       }
 
       const campaignData = {
@@ -394,10 +484,10 @@ const CreateCampaign = () => {
           <div className="h-8 w-px bg-slate-200" />
 
           <div className="flex flex-col">
-            <input
+            <Input
               type="text"
               {...register('name')}
-              className="bg-transparent border-none p-0 text-lg font-bold text-slate-800 focus:ring-0 placeholder:text-slate-300 w-[240px]"
+              className="h-10 border-slate-200 bg-white rounded-xl text-base font-extrabold text-slate-800 focus:border-orange-500 w-[280px]"
               placeholder="Campaign Name"
             />
           </div>

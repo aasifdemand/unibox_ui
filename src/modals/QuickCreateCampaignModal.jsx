@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Send } from 'lucide-react';
 import Modal from '../components/shared/modal';
+import Input from '../components/ui/input';
 
 const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
@@ -59,12 +60,12 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
             </div>
             
             <div className="relative group">
-              <input
+              <Input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Give your campaign a name"
-                className="w-full h-11 px-5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 placeholder:text-slate-300 focus:border-orange-500/50 focus:bg-white transition-all outline-none"
+                className="h-12 rounded-xl border-slate-200 bg-white text-sm font-extrabold focus:border-orange-500"
                 autoFocus
               />
             </div>

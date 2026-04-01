@@ -34,7 +34,7 @@ const Select = ({
           name={name}
           disabled={disabled}
           className={`
-            w-full px-4 py-3 border rounded-lg focus:ring-2 focus:outline-none transition appearance-none ltr:pr-10 rtl:pl-10
+            w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none transition appearance-none ltr:pr-10 rtl:pl-10
             ${
               error
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500'

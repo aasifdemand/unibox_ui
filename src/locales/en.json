@@ -742,6 +742,7 @@
         }
     },
     "audience": {
+        "delete_batch_confirm": "Are you sure you want to delete this batch?",
         "title": "Contacts",
         "subtitle": "Leads",
         "import_batches": "Import Batches",

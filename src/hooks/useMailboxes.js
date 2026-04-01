@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
 
 // Query keys
@@ -55,6 +55,11 @@ const transformSenderToMailbox = (sender) => {
       dailySent: sender.dailySentCount || 0,
       reputationScore: sender.stats?.reputationScore || 0,
       healthStatus: sender.stats?.healthStatus || 'unknown',
+      warmupEnabled: sender.warmupEnabled || false,
+      warmupStatus: sender.warmupStatus || 'disabled',
+      warmupDailyLimit: sender.warmupDailyLimit || 20,
+      warmupCurrentSent: sender.warmupCurrentSent || 0,
+      warmupReplyRate: sender.warmupReplyRate || 0.3,
     },
   };
 };
@@ -124,4 +129,22 @@ export const useRefreshMailboxes = () => {
       queryClient.invalidateQueries({ queryKey: mailboxKeys.all });
     },
   };
+};
+export const useUpdateWarmupSettings = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ senderId, ...settings }) => {
+      const res = await api.put(`/senders/${senderId}/warmup`, settings);
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to update warmup settings');
+      }
+      return await res.json();
+    },
+    onSuccess: (_, { senderId }) => {
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.detail(senderId) });
+    },
+  });
 };

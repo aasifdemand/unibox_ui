@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { Loader2, Globe, Edit3, Shield } from 'lucide-react';
+import { Loader2, Globe, Edit3, Shield, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '../../../../components/ui/input';
 import { useUpdateProfile } from '../../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { useState, useMemo, useEffect } from 'react';
+import { DateTime } from 'luxon';
+import { getIanaTimezone, getAllTimezones } from '../../campaigns/campaign-utils';
 
 const ProfileTab = ({ user }) => {
   const { t } = useTranslation();
@@ -15,6 +17,21 @@ const ProfileTab = ({ user }) => {
     designation: user?.designation || '',
     timezone: user?.timezone || 'UTC',
   });
+
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live Clock Effect: Updates every second based on selected timezone
+  useEffect(() => {
+    const updateTime = () => {
+      const iana = getIanaTimezone(formData.timezone);
+      const time = DateTime.now().setZone(iana).toFormat('hh:mm:ss a');
+      setCurrentTime(time);
+    };
+
+    updateTime(); // Initial call
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, [formData.timezone]);
 
   // Keep formData in sync with user resource when NOT editing
   useEffect(() => {
@@ -27,14 +44,7 @@ const ProfileTab = ({ user }) => {
     }
   }, [user, isEditing]);
 
-  const timezones = useMemo(() => [
-    { value: 'UTC', label: '(UTC+00:00) Coordinated Universal Time' },
-    { value: 'America/New_York', label: '(UTC-05:00) Eastern Time (US & Canada)' },
-    { value: 'America/Los_Angeles', label: '(UTC-08:00) Pacific Time (US & Canada)' },
-    { value: 'Europe/London', label: '(UTC+00:00) London' },
-    { value: 'Asia/Dubai', label: '(UTC+04:00) Dubai' },
-    { value: 'Asia/Kolkata', label: '(UTC+05:30) Mumbai, Kolkata, New Delhi' },
-  ], []);
+  const timezones = useMemo(() => getAllTimezones(), []);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -197,6 +207,33 @@ const ProfileTab = ({ user }) => {
              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
                 {t('settings.profile.timezone', 'SYSTEM TIMEZONE')} <span className="text-red-500">*</span>
              </label>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-slate-50/50 rounded-xl border border-slate-100 mb-8 group hover:border-orange-100 transition-all">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-orange-600 shadow-sm group-hover:scale-110 transition-transform">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                    {t('settings.profile.current_time', 'Current Target Time')}
+                  </p>
+                  <p className="text-2xl font-black text-slate-800 tracking-tighter tabular-nums font-mono">
+                    {currentTime || '--:--:-- --'}
+                  </p>
+                </div>
+              </div>
+              <div className="ltr:md:text-right rtl:md:text-left">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                  {t('settings.profile.status', 'Clock Status')}
+                </p>
+                <div className="flex items-center gap-2 md:justify-end">
+                  <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                  <span className="text-[11px] font-bold text-orange-600 uppercase tracking-wider">
+                    {t('settings.profile.live_sync', 'Live Synchronized')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <div className="relative group">
               <select
                 value={formData.timezone}

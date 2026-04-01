@@ -8,10 +8,13 @@ import {
   useCampaignReplies,
   useRecipientReply,
 } from '../../../../hooks/useCampaign';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
 import { unescapeHtml } from '../../../../utils/html-utils';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { formatDateTime } from '../../campaign-utils';
+
 
 // Helper function to extract all placeholders from text
 export const extractPlaceholders = (text) => {
@@ -78,16 +81,11 @@ export const useCampaignAnalytics = (id) => {
   const [selectedRecipientForPreview, setSelectedRecipientForPreview] = useState(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState(null);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+  const { data: currentUser } = useCurrentUser();
+  const userTz = currentUser?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  // Use the shared, robust formatter from campaign-utils.jsx
+  const formatDate = (dateString) => formatDateTime(dateString, userTz);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -179,12 +177,12 @@ export const useCampaignAnalytics = (id) => {
         ? campaign.totalReplied
         : recipients.filter((r) => r.status === 'replied').length;
 
-    const totalOpened =
+    const totalOpens =
       campaign.totalOpens !== undefined
         ? campaign.totalOpens
         : recipients.filter((r) => r.openedAt).length;
 
-    const totalClicked =
+    const totalClicks =
       campaign.totalClicks !== undefined
         ? campaign.totalClicks
         : recipients.filter((r) => r.clickedAt).length;
@@ -211,8 +209,8 @@ export const useCampaignAnalytics = (id) => {
       totalRecipients,
       totalSent,
       totalReplied,
-      totalOpened,
-      totalClicked,
+      totalOpens,
+      totalClicks,
       totalBounced,
       totalUnsubscribed,
       uniqueContacted,

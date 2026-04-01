@@ -3,6 +3,7 @@ import CampaignListView from './components/campaign/campaign-list-view';
 import EditCampaignModal from './components/campaign/edit-campaign-modal';
 // Hooks
 import { useCampaignsData } from './hooks/use-campaigns-data';
+import { useCurrentUser } from '../../../hooks/useAuth';
 import ShowDelete from '../../../modals/showdelete';
 import Pagination from '../mailboxes/components/pagination';
 import { SkeletonLoader } from '../../../components/ui/loading-spinner';
@@ -53,6 +54,9 @@ const Campaigns = () => {
       handleViewCampaign,
     },
   } = useCampaignsData();
+
+  const { data: currentUser } = useCurrentUser();
+  const userTz = currentUser?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
   
 
   return (
@@ -108,6 +112,7 @@ const Campaigns = () => {
                 handleDeleteClick={handleDeleteClick}
                 isLoadingAction={isLoadingAction}
                 searchTerm={searchTerm}
+                userTz={userTz}
               />
               {/* New Numeric Pagination */}
               {totalProcessed > ITEMS_PER_PAGE && (

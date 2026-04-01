@@ -1,25 +1,24 @@
-const Logo = () => {
+const Logo = ({ isCollapsed = false, showTagline = true, className = "" }) => {
   return (
-    <div className="flex items-center gap-3">
+    <div className={`flex items-center gap-3 ${className}`}>
       {/* Logo icon */}
-      <div className="flex items-center justify-center w-12 h-12 rounded-md bg-linear-to-br from-orange-600 to-orange-700 shadow-sm shadow-orange-500/20">
-        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
+      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white shadow-lg shadow-orange-500/5 border border-orange-100 p-1 overflow-hidden shrink-0">
+        <img src="/logo.svg" alt="Unibox Logo" className="w-full h-full object-contain" />
       </div>
 
-      {/* Brand name and tagline */}
-      <div className="flex flex-col">
-        <h1 className="text-2xl font-bold bg-linear-to-r from-orange-600 to-orange-700 bg-clip-text text-transparent">
-          Unibox
-        </h1>
-
-      </div>
+      {/* Brand name and tagline - Only show if not collapsed */}
+      {!isCollapsed && (
+        <div className="flex flex-col -space-y-0.5 min-w-0">
+          <h1 className="text-[18px] font-black text-slate-800 tracking-tight leading-none group-hover:text-orange-600 transition-colors">
+            Unibox<span className="text-orange-600">.</span>
+          </h1>
+          {showTagline && (
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
+              AI Outreach
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
