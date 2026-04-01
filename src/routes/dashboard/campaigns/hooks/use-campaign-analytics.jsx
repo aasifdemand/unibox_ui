@@ -13,7 +13,7 @@ import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
 import { unescapeHtml } from '../../../../utils/html-utils';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { formatDateTime } from '../../campaign-utils';
+import { formatDateTime } from '../campaign-utils';
 
 
 // Helper function to extract all placeholders from text
