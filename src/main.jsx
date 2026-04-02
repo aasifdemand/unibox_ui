@@ -51,7 +51,7 @@ createRoot(document.getElementById('root')).render(
           toastOptions={{
             duration: 5000,
             style: {
-              borderRadius: '2rem',
+              borderRadius: '6px',
               background: 'rgba(255, 255, 255, 0.9)',
               backdropFilter: 'blur(10px)',
               color: '#0f172a',

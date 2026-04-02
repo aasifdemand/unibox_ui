@@ -43,11 +43,14 @@ export const useMailboxesData = () => {
         queryClient.invalidateQueries({
           predicate: (query) => {
             const key = query.queryKey;
-            // Matches ['gmail', mailboxId, ...], ['outlook', mailboxId, ...], etc
             return key.includes(data.senderId);
           },
         });
       }
+    },
+    mailbox_synced: (data) => {
+      // Triggered when a background sync finishes
+      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
 

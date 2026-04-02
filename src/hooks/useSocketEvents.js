@@ -6,19 +6,29 @@ import { socket } from '../lib/socket';
  * @param {string} eventName - The name of the event to listen to (e.g., 'notification')
  * @param {function} callback - Fired when the event is received
  */
-export const useSocketEvents = (eventName, callback) => {
+export const useSocketEvents = (events, callback) => {
   useEffect(() => {
     // If not connected, connect
     if (!socket.connected) {
       socket.connect();
     }
 
-    // Attach event listener
-    socket.on(eventName, callback);
+    const eventMap = typeof events === 'string' ? { [events]: callback } : events;
 
-    // Cleanup listener on unmount
+    // Attach all event listeners
+    Object.entries(eventMap).forEach(([eventName, handler]) => {
+      if (typeof handler === 'function') {
+        socket.on(eventName, handler);
+      }
+    });
+
+    // Cleanup listeners on unmount
     return () => {
-      socket.off(eventName, callback);
+      Object.entries(eventMap).forEach(([eventName, handler]) => {
+        if (typeof handler === 'function') {
+          socket.off(eventName, handler);
+        }
+      });
     };
-  }, [eventName, callback]);
+  }, [events, callback]);
 };
