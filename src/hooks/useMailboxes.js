@@ -33,7 +33,11 @@ const transformSenderToMailbox = (sender) => {
     isActive: sender.isActive !== undefined ? sender.isActive : true,
     createdAt: sender.createdAt,
     updatedAt: sender.updatedAt,
-    lastSyncAt: sender.lastUsedAt || sender.lastInboxSyncAt || null,
+    lastSyncAt: (() => {
+      const dates = [sender.lastInboxSyncAt, sender.lastUsedAt].filter(Boolean);
+      if (dates.length === 0) return null;
+      return dates.sort((a, b) => new Date(b) - new Date(a))[0];
+    })(),
     expiresAt: sender.expiresAt,
     /* Configuration Fields */
     minTimeGap: sender.minTimeGap || 1,
