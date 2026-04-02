@@ -110,7 +110,7 @@ const ComposeView = forwardRef(
 
         setQuoteHtml(quote);
       }
-    }, [replyToMessage, forwardMessage]);
+    }, [replyToMessage, forwardMessage,t]);
 
     const handleSend = async () => {
       if (!to) {
@@ -277,7 +277,7 @@ const ComposeView = forwardRef(
                 {t('mailboxes.your_message')}
               </label>
               <div
-                className={`rounded-[2rem] overflow-hidden focus-within:ring-4 focus-within:ring-orange-500/5 focus-within:border-orange-500/50 transition-all ${isIntegrated ? 'bg-slate-50/30 border border-slate-100' : 'bg-white border border-slate-100 shadow-sm'}`}
+                className={`rounded-lg overflow-hidden focus-within:ring-4 focus-within:ring-orange-500/5 focus-within:border-orange-500/50 transition-all ${isIntegrated ? 'bg-slate-50/30 border border-slate-100' : 'bg-white border border-slate-100 shadow-sm'}`}
               >
                 <textarea
                   value={messageText}
@@ -319,8 +319,8 @@ const ComposeView = forwardRef(
                   >
                     {/* Canvas Header */}
                     <div className="flex items-start gap-6 pb-10 border-b border-slate-50 mb-10">
-                      <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-600 to-orange-700 p-0.5 shadow-sm shadow-orange-500/20 flex-shrink-0">
-                        <div className="w-full h-full bg-white/10  rounded-[14px] flex items-center justify-center text-white font-extrabold text-2xl border border-white/20">
+                      <div className="w-16 h-16 rounded-lg bg-linear-to-br from-orange-600 to-orange-700 p-0.5 shadow-sm shadow-orange-500/20 shrink-0">
+                        <div className="w-full h-full bg-white/10  rounded-lg flex items-center justify-center text-white font-extrabold text-2xl border border-white/20">
                           {getInitials(selectedMailbox?.name || 'U')}
                         </div>
                       </div>
@@ -432,7 +432,7 @@ const ComposeView = forwardRef(
                 <ImageIcon className="w-5 h-5" />
               </button>
               <button
-                onClick={() => setShowPreview(!showPreview)}
+                onClick={() => onTogglePreview?.()}
                 className={`p-3 rounded-md transition-all ${
                   showPreview
                     ? 'bg-orange-50 text-orange-600 shadow-inner'

@@ -556,7 +556,23 @@
             "wait_period": "Wait {{count}} days",
             "step_index": "Step {{index}}",
             "preview": "Preview",
-            "variables": "Variables"
+            "variables": "Variables",
+            "main_email": "Main Email",
+            "followup_number": "Follow-up #{{number}} Content",
+            "content_label": "Content",
+            "preview_desc": "Preview of the {{type}} email content",
+            "subject_line": "Subject Line",
+            "wait_time": "Wait Time",
+            "condition": "Condition",
+            "if_no_reply": "If No Reply",
+            "always_send": "Always Send",
+            "html_preview": "HTML Preview",
+            "live_preview": "Live Preview",
+            "dynamic_vars": "Dynamic Variables",
+            "placeholders_desc": "Placeholders used in this step",
+            "sample_value": "Sample Value",
+            "none": "None",
+            "recipient_label": "Recipient"
         },
         "recipients": {
             "title": "Recipients",
@@ -635,7 +651,9 @@
             "unknown": "Unknown",
             "no_email": "No Email",
             "no_subject": "No Subject",
-            "na": "N/A"
+            "na": "N/A",
+            "initial": "initial",
+            "followup": "follow-up"
         }
     },
     "dashboard": {

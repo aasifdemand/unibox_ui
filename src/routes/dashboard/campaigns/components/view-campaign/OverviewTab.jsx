@@ -213,7 +213,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
 
 const DetailItem = ({ label, value, subValue, uppercase }) => (
   <div>
-    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-1.5">
+    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1.5">
       {label}
     </p>
     <p
@@ -247,7 +247,7 @@ const SettingItem = ({ icon, label, status, desc, t }) => (
           {status ? t('campaigns.overview.active', 'Active') : t('campaigns.overview.disabled', 'Disabled')}
         </span>
       </div>
-      <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 transition-colors">
+      <p className="text-[10px] font-medium text-slate-500 group-hover:text-slate-600 transition-colors">
         {desc}
       </p>
     </div>

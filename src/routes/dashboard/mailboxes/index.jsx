@@ -257,6 +257,7 @@ const Mailboxes = () => {
                     }}
                     onNextPage={handlers.handleNextPage}
                     onPrevPage={handlers.handlePreviousPage}
+                    onPageChange={handlers.handlePageChange}
                     startMessageCount={data.startMessageCount}
                     endMessageCount={data.endMessageCount}
                     totalMessages={state.totalMessages}

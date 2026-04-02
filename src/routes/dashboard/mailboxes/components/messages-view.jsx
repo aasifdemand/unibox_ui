@@ -44,6 +44,7 @@ const MessagesView = forwardRef(
       pagination,
       onNextPage,
       onPrevPage,
+      onPageChange,
       startMessageCount,
       endMessageCount,
       totalMessages,
@@ -288,10 +289,7 @@ const MessagesView = forwardRef(
                             isLoadingMessages={isLoadingMessages}
                             onNextPage={onNextPage}
                             onPrevPage={onPrevPage}
-                            onPageChange={(page) => {
-                              if (page > pagination.currentPage) onNextPage();
-                              else if (page < pagination.currentPage) onPrevPage();
-                            }}
+                            onPageChange={onPageChange}
                             startMessageCount={startMessageCount}
                             endMessageCount={endMessageCount}
                             totalMessages={totalMessages}

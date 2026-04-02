@@ -124,7 +124,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
     blue: 'text-orange-400',
     amber: 'text-amber-400',
     rose: 'text-orange-400',
-    slate: 'text-slate-400',
+    slate: 'text-slate-500',
   };
 
   const labelColors = {
@@ -134,7 +134,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
     blue: 'text-orange-500',
     amber: 'text-amber-500',
     rose: 'text-orange-500',
-    slate: 'text-slate-400',
+    slate: 'text-slate-500',
   };
 
   return (
@@ -146,7 +146,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
         >
           <div className="flex items-start justify-between mb-4">
             <div>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.15em] mb-0.5 block group-hover:text-slate-900 transition-colors">
+              <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.15em] mb-0.5 block group-hover:text-slate-900 transition-colors">
                 {metric.label}
               </span>
               <span
@@ -170,7 +170,7 @@ const CampaignMetrics = ({ campaign, stats }) => {
             </h4>
             <div className="flex items-center gap-1.5 pt-1.5">
               <Zap className={`w-3 h-3 ${zapColors[metric.theme]}`} />
-              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest leading-none">
                 {metric.description}
               </span>
             </div>

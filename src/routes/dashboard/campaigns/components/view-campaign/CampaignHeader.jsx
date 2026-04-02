@@ -13,7 +13,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           className="group relative w-12 h-12 flex items-center justify-center bg-white border border-slate-200 rounded-lg hover:border-orange-500 hover:shadow-sm hover:shadow-orange-500/10 transition-all duration-300 active:scale-95"
           title={t('campaigns.header.back_to_campaigns', 'Back to Campaigns')}
         >
-          <ArrowLeft className="w-5 h-5 text-slate-400 group-hover:text-orange-600 transition-colors" />
+          <ArrowLeft className="w-5 h-5 text-slate-500 group-hover:text-orange-600 transition-colors" />
         </Link>
         <div>
           <div className="flex items-center gap-4 mb-2">
@@ -23,7 +23,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             <div className="scale-110 origin-left">{getStatusBadge(campaign.status)}</div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
               {t('campaigns.header.subject_label', 'Subject')}:
             </span>
             <p className="text-sm font-bold text-slate-500 tracking-tight">{previews.subject}</p>
@@ -91,7 +91,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
         <button
           onClick={() => setShowDeleteModal(true)}
           disabled={actions.delete.isPending}
-          className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all"
+          className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-500 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all"
         >
           {actions.delete.isPending ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -116,7 +116,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
             document.body.removeChild(link);
           }}
           title={t('campaigns.header.export_stats', 'Export Stats to CSV')}
-          className="w-12 h-12 flex items-center justify-center bg-white border border-slate-200 text-slate-400 hover:text-slate-900 rounded-lg transition-all shadow-sm"
+          className="w-12 h-12 flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-slate-900 rounded-lg transition-all shadow-sm"
         >
           <Download className="w-5 h-5" />
         </button>

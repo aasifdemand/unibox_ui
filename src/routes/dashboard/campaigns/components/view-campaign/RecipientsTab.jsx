@@ -53,7 +53,7 @@ const RecipientsTab = ({
             </div>
             <div>
               <h3 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.recipients.title', 'Recipients')}</h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">
                 {t('campaigns.recipients.desc', 'Manage campaign recipients')}
               </p>
             </div>
@@ -64,7 +64,7 @@ const RecipientsTab = ({
               <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest leading-none">
                 {t('campaigns.recipients.total_count', { count: stats.totalRecipients })}
               </span>
-              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">
                 {t('campaigns.recipients.count_label', 'RECIPIENT COUNT')}
               </span>
             </div>
@@ -84,28 +84,28 @@ const RecipientsTab = ({
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <th className="py-5 px-6 text-left">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     {t('campaigns.recipients.info_header', 'Recipient Info')}
                   </span>
                 </th>
-                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <th className="py-5 px-6 text-left">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     {t('campaigns.recipients.status_header', 'Status')}
                   </span>
                 </th>
-                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <th className="py-5 px-6 text-left">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     {t('campaigns.recipients.last_sent_header', 'Last Sent')}
                   </span>
                 </th>
-                <th className="py-5 px-6 ltr:text-left ltr:text-right rtl:text-left">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <th className="py-5 px-6 text-left">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     {t('campaigns.recipients.replied_at_header', 'Replied At')}
                   </span>
                 </th>
                 <th className="py-5 px-6 ltr:text-right rtl:text-left">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     {t('campaigns.recipients.actions_header', 'Actions')}
                   </span>
                 </th>
@@ -119,7 +119,7 @@ const RecipientsTab = ({
                       <span className="text-sm font-bold text-slate-900 tracking-tight group-hover:text-orange-600 transition-colors">
                         {recipient.email}
                       </span>
-                      <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+                      <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
                         {recipient.name || t('campaigns.common.na', 'N/A')}
                       </span>
                     </div>
@@ -177,7 +177,7 @@ const RecipientsTab = ({
               </div>
             </div>
             <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.recipients.empty_title', 'No Recipients')}</h4>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
+            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
               {t('campaigns.recipients.empty_desc', 'Recipients will appear here once the campaign starts sending.')}
             </p>
           </div>

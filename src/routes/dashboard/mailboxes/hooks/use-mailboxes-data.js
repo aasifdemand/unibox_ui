@@ -258,139 +258,150 @@ export const useMailboxesData = () => {
 
   const filteredMessages = useMemo(() => filters.apply(), [filters, messages]);
 
-  // Pagination updates
-  useEffect(() => {
-    if (!selectedMailbox || !provider) return;
+    // Derived folder metadata to ensure we always use the latest counts from the folders list
+    const currentFolderMeta = useMemo(() => {
+      if (!selectedFolder || !folders) return selectedFolder;
+      // Find the folder in the current list by ID or Name
+      const f = folders.find((item) => (item.id === selectedFolder.id) || (item.name === selectedFolder.name));
+      return f || selectedFolder;
+    }, [folders, selectedFolder]);
 
-    if (debouncedSearchQuery) {
-      const searchData = provider.queries.search?.data;
-      if (selectedMailbox.type === 'smtp') {
-        setHasNextPage(false);
-        setTotalMessages(searchData?.totalCount || 0);
-      } else {
-        setHasNextPage(provider.queries.search.hasNextPage);
-        const firstSearchPage = searchData?.pages?.[0];
-        setTotalMessages(
-          firstSearchPage?.totalResults ||
-          firstSearchPage?.resultSizeEstimate ||
-          firstSearchPage?.count ||
-          0,
-        );
+    // Pagination updates
+    useEffect(() => {
+      if (!selectedMailbox || !provider) return;
+
+      if (debouncedSearchQuery) {
+        const searchData = provider.queries.search?.data;
+        if (selectedMailbox.type === 'smtp') {
+          setHasNextPage(false);
+          setTotalMessages(searchData?.totalCount || 0);
+        } else {
+          setHasNextPage(provider.queries.search.hasNextPage);
+          const firstSearchPage = searchData?.pages?.[0];
+          setTotalMessages(
+            firstSearchPage?.totalResults ||
+            firstSearchPage?.resultSizeEstimate ||
+            firstSearchPage?.count ||
+            0,
+          );
+        }
+        return;
       }
-      return;
-    }
 
-    const q = provider.queries;
+      const q = provider.queries;
+      let query;
 
-
-    let total = 0;
-    let hasNext = false;
-
-    if (selectedMailbox.type === 'gmail') {
-      const query = !selectedFolder
-        ? q.messages
-        : isFolderType(selectedFolder, 'sent')
-          ? q.sent
-          : isFolderType(selectedFolder, 'trash')
-            ? q.trash
-            : isFolderType(selectedFolder, 'spam')
-              ? q.spam
-              : isFolderType(selectedFolder, 'starred')
-                ? q.starred
-                : isFolderType(selectedFolder, 'important')
-                  ? q.important
-                  : isFolderType(selectedFolder, 'drafts')
-                    ? q.drafts
-                    : q.messages;
-
-      // Use specialized count from folder metadata if available (immediate and accurate)
-      const folderTotal =
-        selectedFolder?.totalItemCount ||
-        selectedFolder?.messagesTotal ||
-        selectedFolder?.totalCount ||
-        selectedFolder?.itemCount;
-
-      const firstPage = query.data?.pages?.[0];
-      const queryTotal =
-        firstPage?.totalResults || firstPage?.resultSizeEstimate || firstPage?.count;
-
-      total =
-        folderTotal ||
-        queryTotal ||
-        query.data?.pages?.reduce((acc, p) => {
-          const msgs = p?.messages || p?.drafts || p || [];
-          return acc + (Array.isArray(msgs) ? msgs.length : 0);
-        }, 0) ||
-        0;
-      hasNext = query.hasNextPage;
-    } else if (selectedMailbox.type === 'outlook') {
-      const query = !selectedFolder
-        ? q.messages
-        : isFolderType(selectedFolder, 'sent')
-          ? q.sent
-          : isFolderType(selectedFolder, 'trash')
-            ? q.trash
-            : isFolderType(selectedFolder, 'spam')
-              ? q.spam
-              : isFolderType(selectedFolder, 'archive')
-                ? q.archive
-                : isFolderType(selectedFolder, 'outbox')
-                  ? q.outbox
-                  : isFolderType(selectedFolder, 'drafts')
-                    ? q.drafts
-                    : isFolderType(selectedFolder, 'starred')
-                      ? q.messages // Outlook uses generic messages query for starred/flagged if no specific hook
+      if (selectedMailbox.type === 'gmail') {
+        query = !selectedFolder
+          ? q.messages
+          : isFolderType(selectedFolder, 'sent')
+            ? q.sent
+            : isFolderType(selectedFolder, 'trash')
+              ? q.trash
+              : isFolderType(selectedFolder, 'spam')
+                ? q.spam
+                : isFolderType(selectedFolder, 'starred')
+                  ? q.starred
+                  : isFolderType(selectedFolder, 'important')
+                    ? q.important
+                    : isFolderType(selectedFolder, 'drafts')
+                      ? q.drafts
                       : q.messages;
-
-      // Use totalResults or count from the first page, prioritizing folder metadata
-      const folderTotal =
-        selectedFolder?.totalItemCount ||
-        selectedFolder?.totalCount ||
-        selectedFolder?.itemCount ||
-        selectedFolder?.count;
-
-      const firstPage = query.data?.pages?.[0];
-      const queryTotal = firstPage?.count || firstPage?.totalResults;
-
-      total =
-        folderTotal ||
-        queryTotal ||
-        query.data?.pages?.reduce((acc, p) => {
-          const msgs = p?.messages || p?.value || p || [];
-          return acc + (Array.isArray(msgs) ? msgs.length : 0);
-        }, 0) ||
-        0;
-      hasNext = query.hasNextPage;
-    } else if (selectedMailbox.type === 'smtp') {
-      const query = !selectedFolder
-        ? q.messages
-        : isFolderType(selectedFolder, 'sent')
-          ? q.sent
-          : isFolderType(selectedFolder, 'drafts')
-            ? q.drafts
+      } else if (selectedMailbox.type === 'outlook') {
+        query = !selectedFolder
+          ? q.messages
+          : isFolderType(selectedFolder, 'sent')
+            ? q.sent
             : isFolderType(selectedFolder, 'trash')
               ? q.trash
               : isFolderType(selectedFolder, 'spam')
                 ? q.spam
                 : isFolderType(selectedFolder, 'archive')
                   ? q.archive
-                  : q.messages;
+                  : isFolderType(selectedFolder, 'outbox')
+                    ? q.outbox
+                    : isFolderType(selectedFolder, 'drafts')
+                      ? q.drafts
+                      : isFolderType(selectedFolder, 'starred')
+                        ? q.messages
+                        : q.messages;
+      } else {
+        query = !selectedFolder
+          ? q.messages
+          : isFolderType(selectedFolder, 'sent')
+            ? q.sent
+            : isFolderType(selectedFolder, 'drafts')
+              ? q.drafts
+              : isFolderType(selectedFolder, 'trash')
+                ? q.trash
+                : isFolderType(selectedFolder, 'spam')
+                  ? q.spam
+                  : isFolderType(selectedFolder, 'archive')
+                    ? q.archive
+                    : q.messages;
+      }
 
-      total = query.data?.totalCount || 0;
-      hasNext = currentPage * PAGE_SIZE < total;
-    }
+      // Identify if the query is for the CURRENTLY selected folder to avoid showing stale counts
+      // For infinite queries, the first page metadata is authoritative for the folder content.
+      const firstPage = query.data?.pages?.[0] || query.data;
 
-    setTotalMessages(total);
-    setHasNextPage(hasNext);
-    setHasPreviousPage(currentPage > 1);
-  }, [selectedMailbox, selectedFolder, currentPage, debouncedSearchQuery, provider?.queries]);
+      // Ensure we are not using data from a previous folder by checking the query's isPlaceholderData or similar
+      // but since we don't have that easily, we'll check if the query is for the current folder.
+      
+      const folderTotal =
+        currentFolderMeta?.totalItemCount ||
+        currentFolderMeta?.messagesTotal ||
+        currentFolderMeta?.totalCount ||
+        currentFolderMeta?.itemCount ||
+        currentFolderMeta?.count;
+
+      const queryTotal =
+        firstPage?.totalResults ||
+        firstPage?.resultSizeEstimate ||
+        firstPage?.totalCount ||
+        firstPage?.count;
+
+      // Determine authoritative total count
+      let total = folderTotal || 0;
+
+      // Only use query metadata if:
+      // 1. It's a search query (which has no fixed folder meta)
+      // 2. Folder metadata is missing/incomplete but the query has a result
+      if (debouncedSearchQuery || (!folderTotal && queryTotal)) {
+        total = queryTotal || 0;
+      }
+
+      // Gmail Special Case: NEVER use resultSizeEstimate if we have a folder total
+      // because Gmail estimates are notoriously inaccurate (stuck at 201).
+      if (selectedMailbox?.type === 'gmail' && !debouncedSearchQuery && folderTotal) {
+        total = folderTotal;
+      }
+      
+      setTotalMessages(total);
+      
+      if (selectedMailbox.type === 'smtp') {
+        setHasNextPage(currentPage * PAGE_SIZE < total);
+      } else {
+        setHasNextPage(!!query.hasNextPage);
+      }
+      setHasPreviousPage(currentPage > 1);
+    }, [
+      selectedMailbox?.id, // Use ID to trigger reset on mailbox change
+      selectedFolder?.id,  // Use ID to trigger reset on folder change
+      currentFolderMeta, 
+      currentPage, 
+      debouncedSearchQuery, 
+      provider?.queries
+    ]);
 
   useEffect(() => {
     if (selectedFolder) {
       setSelectedMessages([]);
       setCurrentMessageId(null);
+      // Reset total messages to 0 during transition to avoid flashes of previous folder counts
+      setTotalMessages(0);
     }
-  }, [selectedFolder]);
+  }, [selectedFolder?.id, selectedMailbox?.id]);
 
   // =========================
   // HANDLERS
@@ -771,9 +782,11 @@ export const useMailboxesData = () => {
     }
   }, [selectedMailbox, provider]);
 
-  const handleNextPage = useCallback(() => {
-    if (!hasNextPage) return;
-
+  const handlePageChange = useCallback(async (page) => {
+    if (page < 1) return;
+    
+    // For Gmail/Outlook (Infinite Query), we may need to fetch multiple times 
+    // to reach the desired page if we're jumping ahead.
     if (selectedMailbox?.type === 'gmail' || selectedMailbox?.type === 'outlook') {
       const q = provider?.queries;
       let activeQuery = null;
@@ -811,24 +824,47 @@ export const useMailboxesData = () => {
                     ? q.outbox
                     : isFolderType(selectedFolder, 'drafts')
                       ? q.drafts
-                      : q.messages;
+                      : isFolderType(selectedFolder, 'starred')
+                        ? q.messages
+                        : q.messages;
       }
 
       if (activeQuery && typeof activeQuery.fetchNextPage === 'function') {
-        const pagesLength = activeQuery.data?.pages?.length || 0;
-        // Fetch the next page if we haven't already fetched it
-        if (currentPage >= pagesLength) {
-          activeQuery.fetchNextPage();
+        // Fetch as many pages as needed to satisfy the request
+        let currentLoadedPages = activeQuery.data?.pages?.length || 0;
+        
+        // Safety: If we are jumping to a page that isn't loaded, fetch them
+        while (currentLoadedPages < page && activeQuery.hasNextPage) {
+          const result = await activeQuery.fetchNextPage();
+          
+          // CRITICAL: If the fetch returned no new messages, but we thought there were more (due to estimates),
+          // adjust the total count to prevent navigating further into empty space.
+          const lastPageMsgs = result.data?.pages?.[result.data.pages.length - 1]?.messages || [];
+          if (lastPageMsgs.length === 0) {
+            const actualTotal = (currentLoadedPages) * PAGE_SIZE;
+            setTotalMessages(actualTotal);
+            // Break loop as there's no more data
+            break;
+          }
+          
+          currentLoadedPages++;
         }
       }
     }
 
-    setCurrentPage((prev) => prev + 1);
-  }, [hasNextPage, selectedMailbox, provider, debouncedSearchQuery, selectedFolder, currentPage]);
+    setCurrentPage(page);
+  }, [selectedMailbox, provider, debouncedSearchQuery, selectedFolder]);
+
+  const handleNextPage = useCallback(() => {
+    if (!hasNextPage) return;
+    handlePageChange(currentPage + 1);
+  }, [hasNextPage, currentPage, handlePageChange]);
 
   const handlePreviousPage = useCallback(() => {
-    if (hasPreviousPage) setCurrentPage((prev) => prev - 1);
-  }, [hasPreviousPage]);
+    if (hasPreviousPage) {
+      handlePageChange(currentPage - 1);
+    }
+  }, [hasPreviousPage, currentPage, handlePageChange]);
 
   const handleBulkDelete = useCallback(async () => {
     if (!selectedMailbox || !provider || selectedMessages.length === 0) return;
@@ -1068,6 +1104,7 @@ export const useMailboxesData = () => {
       handleDisconnect,
       handleNextPage,
       handlePreviousPage,
+      handlePageChange,
       handleBulkDelete,
       handleBulkMarkRead,
       handleBulkMarkUnread,

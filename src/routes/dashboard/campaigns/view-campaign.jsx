@@ -155,7 +155,7 @@ const ViewCampaign = () => {
                 className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-md ${
                   activeTab === tab.id
                     ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/20'
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-white'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-white'
                 }`}
               >
                 {tab.label}

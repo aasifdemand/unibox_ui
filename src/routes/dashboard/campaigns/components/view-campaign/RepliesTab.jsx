@@ -16,7 +16,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               <Reply className="w-5 h-5 text-orange-600" />
               {t('campaigns.replies.title', 'Campaign Replies')}
             </h3>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
               {t('campaigns.replies.desc', 'Manage replies from this campaign')}
             </p>
           </div>
@@ -24,7 +24,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
             <span className="text-3xl font-black text-slate-900 tabular-nums">
               {repliesList.length}
             </span>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
               {t('campaigns.replies.total_label', 'Total Replies')}
             </p>
           </div>
@@ -63,7 +63,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                           <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-tight">
                             {recipient?.name || reply.replyFrom?.split('@')[0] || t('campaigns.common.unknown', 'Unknown')}
                           </h4>
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                             {reply.replyFrom || t('campaigns.common.no_email', 'No Email')}
                           </span>
                         </div>
@@ -90,7 +90,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                             {recipient?.status || 'Replied'}
                           </span>
                         </div>
-                        <span className="text-[11px] font-black text-slate-300 tabular-nums uppercase">
+                        <span className="text-[11px] font-black text-slate-500 tabular-nums uppercase">
                           {t('campaigns.replies.received_label', 'Received')}: {formatDate(reply.receivedAt)}
                         </span>
                         {reply.email?.subject && (
@@ -125,7 +125,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               </div>
             </div>
             <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.replies.empty_title', 'No replies yet')}</h4>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
+            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
               {t('campaigns.replies.empty_desc', 'When you receive replies from this campaign, they will appear here.')}
             </p>
           </div>

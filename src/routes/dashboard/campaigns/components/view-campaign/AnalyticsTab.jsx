@@ -135,7 +135,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
               <p className="text-3xl font-black text-slate-900 tracking-tighter tabular-nums">
                 {calculateAvgResponseTime(campaign.CampaignRecipients)}
               </p>
-              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">
+              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-2">
                 {t('campaigns.analytics.time_analysis', 'Time Analysis')}
               </p>
             </div>
@@ -152,7 +152,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
               <p className="text-3xl font-black text-slate-900 tracking-tighter tabular-nums">
                 {stats.totalReplied.toLocaleString()}
               </p>
-              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">
+              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-2">
                 {t('campaigns.analytics.verified_replies', 'Verified Replies')}
               </p>
             </div>
@@ -172,7 +172,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
 
 const StatMini = ({ label, value, theme, trend }) => (
   <div className="p-6 rounded-4xl bg-slate-50/50 border border-slate-100 hover:shadow-sm hover:shadow-slate-900/3 transition-all duration-500 group">
-    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 group-hover:text-slate-600 transition-colors">
+    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 group-hover:text-slate-600 transition-colors">
       {label}
     </p>
     <p
@@ -219,7 +219,7 @@ const ProgressBar = ({ label, value, theme, icon }) => {
           >
             {icon}
           </div>
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-900 transition-colors">
+          <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest group-hover:text-slate-900 transition-colors">
             {label}
           </span>
         </div>
