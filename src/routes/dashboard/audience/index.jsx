@@ -59,13 +59,24 @@ const Audience = () => {
     new Set(['job_title', 'company', 'city', 'phone'])
   );
 
-  const toggleCol = (c) => {
+  const toggleCol = (ids) => {
+    const idArray = Array.isArray(ids) ? ids : [ids];
     setVisibleCols((prev) => {
       const n = new Set(prev);
-      if (n.has(c)) n.delete(c);
-      else n.add(c);
+      idArray.forEach((id) => {
+        if (n.has(id)) n.delete(id);
+        else n.add(id);
+      });
       return n;
     });
+  };
+
+  const setAllCols = (allIds) => {
+    setVisibleCols(new Set(allIds));
+  };
+
+  const setNoCols = () => {
+    setVisibleCols(new Set());
   };
 
   const triggerDeleteBatch = (batchId) => {
@@ -110,6 +121,8 @@ const Audience = () => {
           setFilterStatus={setFilterStatus}
           visibleCols={visibleCols}
           toggleCol={toggleCol}
+          setAllCols={setAllCols}
+          setNoCols={setNoCols}
         />
       </motion.div>
 

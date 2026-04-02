@@ -13,6 +13,8 @@ const AudienceHeader = ({
   setFilterStatus,
   visibleCols,
   toggleCol,
+  setAllCols,
+  setNoCols,
 }) => {
   const { t } = useTranslation();
 
@@ -159,7 +161,12 @@ const AudienceHeader = ({
           </FilterDropdown>
 
           {activeTab === 'contacts' && (
-            <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
+            <ColumnSelector
+              visibleCols={visibleCols}
+              onToggle={toggleCol}
+              onSetAll={setAllCols}
+              onSetNone={setNoCols}
+            />
           )}
 
           <button

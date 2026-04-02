@@ -160,7 +160,8 @@ const SortIndicator = ({ column }) => {
 };
 
 // ─── Column Selector Dropdown ─────────────────────────────────────────────────
-export const ColumnSelector = ({ visibleCols, onToggle }) => {
+export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) => {
+  const allIds = ALL_META_FIELDS.map(f => f.id);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -199,14 +200,14 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
               </p>
               <div className="flex gap-2">
                 <button
-                   onClick={() => ALL_META_FIELDS.forEach(f => !visibleCols.has(f.id) && onToggle(f.id))}
+                   onClick={() => onSetAll(allIds)}
                    className="text-[9px] font-black text-orange-500 hover:text-orange-700 uppercase tracking-wider"
                 >
                   All
                 </button>
                 <span className="text-slate-200">|</span>
                 <button
-                   onClick={() => ALL_META_FIELDS.forEach(f => visibleCols.has(f.id) && onToggle(f.id))}
+                   onClick={() => onSetNone()}
                    className="text-[9px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-wider"
                 >
                   None
@@ -240,7 +241,7 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
 };
 
 // ─── Main Component ───────────────────────────────────────────────────────────
-const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols, toggleCol }) => {
+const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols }) => {
   const { t } = useTranslation();
   const { data: user } = useCurrentUser();
   const userTz = user?.timezone || 'UTC';
@@ -521,12 +522,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
 
   return (
     <div className="space-y-4 min-h-[450px]">
-      {/* Toolbar: column selector */}
-      <div className="flex items-center justify-end px-1 relative z-50 h-0">
-        <div className="flex items-center gap-2 -translate-y-12">
-            <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
-        </div>
-      </div>
+      {/* Table Container */}
 
       <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm shadow-slate-200/20">
         <div className="overflow-x-auto custom-scrollbar scroll-smooth">
