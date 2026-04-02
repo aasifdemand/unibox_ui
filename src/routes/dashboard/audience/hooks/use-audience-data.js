@@ -158,6 +158,7 @@ export const useAudienceData = () => {
 
       const formData = new FormData();
       formData.append('file', fileToUpload);
+      formData.append('mapping', JSON.stringify(mapping));
 
       await uploadBatch.mutateAsync(formData);
 

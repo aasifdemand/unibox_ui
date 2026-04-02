@@ -9,7 +9,7 @@ export const mailboxKeys = {
 };
 
 // Fetch mailboxes with pagination and search
-const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' } = {}) => {
+const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all', signal } = {}) => {
   const queryParams = new URLSearchParams({
     search,
     page: page.toString(),
@@ -17,12 +17,7 @@ const fetchMailboxes = async ({ search = '', page = 1, limit = 10, type = 'all' 
     type,
   });
 
-  const res = await api.get(`/senders?${queryParams}`);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch mailboxes');
-  }
-
+  const res = await api.get(`/senders?${queryParams}`, { signal });
   return await res.json();
 };
 
@@ -74,8 +69,8 @@ export const useMailboxes = ({
 } = {}) => {
   return useQuery({
     queryKey: mailboxKeys.lists({ search, page, limit, type }),
-    queryFn: async () => {
-      const response = await fetchMailboxes({ search, page, limit, type });
+    queryFn: async ({ signal }) => {
+      const response = await fetchMailboxes({ search, page, limit, type, signal });
       const { data, pagination } = response;
 
       const transformedData = (data || []).map(transformSenderToMailbox);
@@ -102,13 +97,8 @@ export const useMailboxes = ({
 export const useMailbox = (mailboxId) => {
   return useQuery({
     queryKey: mailboxKeys.detail(mailboxId),
-    queryFn: async () => {
-      const res = await api.get(`/senders/${mailboxId}`);
-
-      if (!res.ok) {
-        throw new Error('Mailbox not found');
-      }
-
+    queryFn: async ({ signal }) => {
+      const res = await api.get(`/senders/${mailboxId}`, { signal });
       const response = await res.json();
       return transformSenderToMailbox(response.data);
     },
@@ -136,12 +126,6 @@ export const useUpdateMailbox = () => {
   return useMutation({
     mutationFn: async ({ id, ...data }) => {
       const res = await api.put(`/senders/${id}`, data);
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || 'Failed to update mailbox');
-      }
-
       return await res.json();
     },
     onSuccess: (response, variables) => {
@@ -157,10 +141,6 @@ export const useUpdateWarmupSettings = () => {
   return useMutation({
     mutationFn: async ({ senderId, ...settings }) => {
       const res = await api.put(`/senders/${senderId}/warmup`, settings);
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || 'Failed to update warmup settings');
-      }
       return await res.json();
     },
     onSuccess: (_, { senderId }) => {

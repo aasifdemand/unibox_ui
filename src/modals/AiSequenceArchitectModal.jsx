@@ -13,7 +13,7 @@ const AiSequenceArchitectModal = ({
   stepsCount,
   setStepsCount,
   handleAiGenerate,
-  isStreaming,
+  isGenerating,
 }) => {
   const { t } = useTranslation();
 
@@ -152,11 +152,11 @@ const AiSequenceArchitectModal = ({
           <div className="space-y-3">
             <button
               onClick={handleAiGenerate}
-              disabled={isStreaming || !aiGoal.trim()}
+              disabled={isGenerating || !aiGoal.trim()}
               className="w-full h-12 bg-orange-600 text-white rounded-lg text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-orange-600/20 hover:bg-orange-700 hover:-translate-y-px active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
             >
               <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              {isStreaming ? (
+              {isGenerating ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin text-white" />
                   <span className="animate-pulse">{t('campaigns.design.generating', 'Architecting Sequence...')}</span>

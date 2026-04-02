@@ -10,19 +10,16 @@ export const authKeys = {
 // =========================
 // CHECK AUTH QUERY
 // =========================
-const fetchCurrentUser = async () => {
-  const res = await apiClient('/users/me');
-
-  if (!res.ok) {
-    if (res.status === 401) {
-      return null;
-    }
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message || 'Failed to fetch user');
+const fetchCurrentUser = async ({ signal }) => {
+  try {
+    const res = await apiClient('/users/me', { signal });
+    const response = await res.json();
+    return response.data ?? null;
+  } catch (err) {
+    // If 401, user is just not logged in - return null
+    if (err.status === 401) return null;
+    throw err;
   }
-
-  const response = await res.json();
-  return response.data ?? null;
 };
 
 export const useCurrentUser = () => {
@@ -44,13 +41,7 @@ const loginUser = async ({ email, password, rememberMe }) => {
     body: JSON.stringify({ email, password, rememberMe }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || 'Login failed');
-  }
-
-  return data;
+  return await res.json();
 };
 
 export const useLogin = () => {
@@ -73,13 +64,7 @@ const signupUser = async ({ name, email, password }) => {
     body: JSON.stringify({ name, email, password }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || 'Signup failed');
-  }
-
-  return data;
+  return await res.json();
 };
 
 export const useSignup = () => {
@@ -97,13 +82,7 @@ const verifyAccount = async ({ email, otp }) => {
     body: JSON.stringify({ email, otp }),
   });
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || 'Verification failed');
-  }
-
-  return data;
+  return await res.json();
 };
 
 export const useVerifyAccount = () => {

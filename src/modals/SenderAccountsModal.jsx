@@ -12,6 +12,8 @@ const SenderAccountsModal = ({
   senders = [],
   watchSenderIds = [],
   toggleSender,
+  onSendTest, // Callback to trigger test send
+  mode = 'select', // 'select' or 'test'
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -189,18 +191,33 @@ const SenderAccountsModal = ({
                         </span>
                       </td>
 
-                      {/* View Details */}
+                      {/* Actions */}
                       <td className="py-4 px-6 border-b border-slate-100 text-right">
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/dashboard/mailboxes/${sender.id}`);
-                          }}
-                          className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-orange-600 transition-colors ml-auto group/btn"
-                        >
-                          <Activity className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
-                          View Details
-                        </button>
+                        <div className="flex items-center justify-end gap-3">
+                          {onSendTest && (
+                           <button
+                             onClick={(e) => {
+                               e.stopPropagation();
+                               onSendTest(sender);
+                             }}
+                             className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all group/test"
+                           >
+                              <Activity className="w-3.5 h-3.5 group-hover/test:scale-110 transition-transform" />
+                              {mode === 'test' ? 'Send Test' : 'Test Account'}
+                           </button>
+                          )}
+                          
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/dashboard/mailboxes/${sender.id}`);
+                            }}
+                            className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-orange-600 transition-colors group/btn"
+                          >
+                            <Activity className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform text-slate-300" />
+                            View
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

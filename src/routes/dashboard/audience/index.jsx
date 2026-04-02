@@ -24,7 +24,6 @@ const Audience = () => {
     showUploadModal,
 
     // Data
-    metrics,
     isLoading,
     filteredBatches,
 
@@ -57,7 +56,7 @@ const Audience = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [batchToDelete, setBatchToDelete] = useState(null);
   const [visibleCols, setVisibleCols] = useState(
-    new Set(['jobTitle', 'company', 'location', 'phone', 'emails'])
+    new Set(['job_title', 'company', 'city', 'phone'])
   );
 
   const toggleCol = (c) => {
@@ -85,7 +84,7 @@ const Audience = () => {
       setDeleteDialogOpen(false);
       setBatchToDelete(null);
     } catch (err) {
-      // Error is handled in useAudienceData toast
+      console.error('Delete batch error:', err);
     }
   };
 

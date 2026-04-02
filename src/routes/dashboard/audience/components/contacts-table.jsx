@@ -39,6 +39,7 @@ import { useAllContacts } from '../hooks/use-all-contacts';
 import { useCurrentUser } from '../../../../hooks/useAuth';
 import { useDebounce } from '../../../../hooks/useDebounce';
 import { toast } from 'react-hot-toast';
+import { api } from '../../../../lib/api';
 
 const RECORDS_PER_PAGE = 10;
 
@@ -172,7 +173,7 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
   }, []);
 
   return (
-    <div className="relative z-5100 " ref={ref}>
+    <div className="relative z-50 " ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2 px-3.5 py-3 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm"
@@ -198,19 +199,15 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
               </p>
               <div className="flex gap-2">
                 <button
-                  onClick={() =>
-                    ALL_META_FIELDS.forEach((f) => !visibleCols.has(f.id) && onToggle(f.id))
-                  }
-                  className="text-[9px] font-black text-orange-500 hover:text-orange-700 uppercase tracking-wider"
+                   onClick={() => ALL_META_FIELDS.forEach(f => !visibleCols.has(f.id) && onToggle(f.id))}
+                   className="text-[9px] font-black text-orange-500 hover:text-orange-700 uppercase tracking-wider"
                 >
                   All
                 </button>
                 <span className="text-slate-200">|</span>
                 <button
-                  onClick={() =>
-                    ALL_META_FIELDS.forEach((f) => visibleCols.has(f.id) && onToggle(f.id))
-                  }
-                  className="text-[9px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-wider"
+                   onClick={() => ALL_META_FIELDS.forEach(f => visibleCols.has(f.id) && onToggle(f.id))}
+                   className="text-[9px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-wider"
                 >
                   None
                 </button>
@@ -243,8 +240,7 @@ export const ColumnSelector = ({ visibleCols, onToggle }) => {
 };
 
 // ─── Main Component ───────────────────────────────────────────────────────────
-import { api } from '../../../../lib/api';
-const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols }) => {
+const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols, toggleCol }) => {
   const { t } = useTranslation();
   const { data: user } = useCurrentUser();
   const userTz = user?.timezone || 'UTC';
@@ -455,16 +451,19 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
           const wasEnriched = !!row.original.metadata?._enrichedAt;
           return (
             <button
-              onClick={() => handleEnrich(row.original)}
+              onClick={(e) => {
+                 e.stopPropagation();
+                 handleEnrich(row.original);
+              }}
               disabled={isEnriching}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${isEnriching
+              className={`group/enrich flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${isEnriching
                 ? 'bg-orange-100 text-orange-500 animate-pulse cursor-wait'
                 : wasEnriched
                   ? 'bg-slate-50 text-slate-400 border border-slate-100 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-100'
-                  : 'bg-orange-50 text-orange-600 border border-orange-100 hover:bg-orange-100'
+                  : 'bg-orange-50 text-orange-600 border border-orange-100 hover:bg-orange-100 shadow-sm shadow-orange-500/5'
                 }`}
             >
-              <Sparkles className="w-3 h-3 shrink-0" />
+              <Sparkles className={`w-3 h-3 shrink-0 ${isEnriching ? 'animate-spin' : ''}`} />
               {isEnriching ? 'Enriching...' : wasEnriched ? 'Re-enrich' : 'Enrich'}
             </button>
           );
@@ -523,7 +522,11 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
   return (
     <div className="space-y-4 min-h-[450px]">
       {/* Toolbar: column selector */}
-      <div className="flex items-center justify-end px-1 relative z-50 h-px" />
+      <div className="flex items-center justify-end px-1 relative z-50 h-0">
+        <div className="flex items-center gap-2 -translate-y-12">
+            <ColumnSelector visibleCols={visibleCols} onToggle={toggleCol} />
+        </div>
+      </div>
 
       <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm shadow-slate-200/20">
         <div className="overflow-x-auto custom-scrollbar scroll-smooth">

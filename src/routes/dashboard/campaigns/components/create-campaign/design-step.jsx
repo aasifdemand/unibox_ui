@@ -5,11 +5,12 @@ import { Tag, Plus, Clock, MessageSquare, Trash2, Mail, Sparkles, AlertCircle, Z
 import HtmlEmailEditor from '../../../../../components/shared/html-editor';
 import HighlightedInput from '../../../../../components/shared/highlighted-input';
 import AiSequenceArchitectModal from '../../../../../modals/AiSequenceArchitectModal';
-import { useStreamSequence } from '../../../../../hooks/useAi';
+import { useGenerateSequence } from '../../../../../hooks/useAi';
 import { toast } from 'react-hot-toast';
 import Input from '../../../../../components/ui/input';
 import Button from '../../../../../components/ui/button';
-import { apiClient } from '../../../../../lib/api';
+import { api } from '../../../../../lib/api';
+import SenderAccountsModal from '../../../../../modals/SenderAccountsModal';
 
 
 const getPlaceholders = (t) => [
@@ -153,7 +154,7 @@ const getPlaceholders = (t) => [
   },
 ];
 
-const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
+const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }) => {
   const { t } = useTranslation();
   const [activeStepIndex, setActiveStepIndex] = useState(0); // 0 = Main, 1+ = Follow-ups
   const [manualPlaceholders, setManualPlaceholders] = useState([]);
@@ -165,8 +166,9 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [aiGoal, setAiGoal] = useState('');
   const [aiTone, setAiTone] = useState('professional');
-  const [isStreaming, setIsStreaming] = useState(false);
-  const streamAi = useStreamSequence();
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isSenderModalOpen, setIsSenderModalOpen] = useState(false);
+  const generateAi = useGenerateSequence();
 
   // Watchers
   const mainSubject = watch('subject') || '';
@@ -233,27 +235,22 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
     setValue('steps', newSteps);
   };
 
-  const onSendTest = async () => {
-    const testEmail = window.prompt("Enter recipient email for test:", "");
+  const onSendTest = () => {
+    setIsSenderModalOpen(true);
+  };
+
+  const handleModalSendTest = async (sender) => {
+    const testEmail = window.prompt(`Send test email from ${sender.email} to:`, "");
     if (!testEmail) return;
 
-    const sId = selectedSender?.id || watch('senderId');
-    const sType = selectedSender?.type || watch('senderType');
-
-    if (!sId) {
-      toast.error("Please select a sender in the Setup step first.");
-      return;
-    }
-
     try {
-      
       toast.promise(
-        apiClient.post('/campaigns/test-send-stateless', {
+        api.post('/campaigns/test-send-stateless', {
           testEmail,
           subject: currentSubject,
           htmlBody: currentHtmlBody,
-          senderId: sId,
-          senderType: sType
+          senderId: sender.id,
+          senderType: sender.type || sender.senderType
         }),
         {
           loading: 'Sending test...',
@@ -370,135 +367,105 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
       return;
     }
 
-    setIsStreaming(true);
-    setIsAiModalOpen(false); // Close modal immediately to show the editor
-    setActiveStepIndex(0); // Ensure we are looking at the first step
+    setIsGenerating(true);
+    setIsAiModalOpen(false); 
+    setActiveStepIndex(0); 
 
     try {
       const variables = allPlaceholders.map((p) => p.key);
-      let finalContent = '';
+      let sequence = await generateAi.mutateAsync({ 
+        goal: aiGoal, 
+        tone: aiTone, 
+        stepsCount, 
+        variables 
+      });
 
-      // Multi-stage JSON and email object extraction
-      const extractJsonRobust = (text) => {
-        if (!text) return null;
-        try {
-          return JSON.parse(text);
-        } catch {
-          // Try to find JSON block in markdown
-          const markdownMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-          if (markdownMatch) {
-            try { 
-              return JSON.parse(markdownMatch[1]); 
-            } catch (err) {
-              console.debug("Failed parsing nested markdown JSON:", err.message);
-            }
+      // Resilience: Handle multiple variations of JSON structures
+      if (sequence && !Array.isArray(sequence)) {
+        // Option 1: Standard wrapped keys
+        if (sequence.emails || sequence.steps || sequence.sequence) {
+          sequence = sequence.emails || sequence.steps || sequence.sequence;
+        } 
+        // Option 2: Object-of-steps (e.g., "step1": { subject, body })
+        else {
+          const values = Object.values(sequence);
+          const hasStepObjects = values.some(v => 
+            v && typeof v === 'object' && 
+            Object.keys(v).some(k => ['subject', 'body', 'title', 'content'].includes(k.toLowerCase()))
+          );
+          
+          if (hasStepObjects) {
+            sequence = values;
+          } else {
+            // Option 3: Single-step object not wrapped
+            sequence = [sequence];
           }
-          // Try to find anything between [ ] or { }
-          const bracketMatch = text.match(/\[[\s\S]*\]/) || text.match(/\{[\s\S]*\}/);
-          if (bracketMatch) {
-            try { 
-              return JSON.parse(bracketMatch[0]); 
-            } catch (err) {
-              console.debug("Failed parsing bracketed JSON content:", err.message);
-            }
-          }
-          return null;
         }
-      };
+      }
 
-      const extractEmails = (text) => {
-        const emails = [];
-        // More resilient regex for subject/body objects
-        const emailMatches = text.matchAll(/\{\s*["']subject["']\s*:\s*["']([^"']*)["']?(?:,\s*["']body["']\s*:\s*["']([^"']*)["']?)?/gi);
+      if (Array.isArray(sequence) && sequence.length > 0) {
+        // ULTRA-ROBUST normalization
+        const normalized = sequence.map(s => {
+          if (typeof s !== 'object' || s === null) return { subject: 'Email Step', body: String(s) };
+          
+          const keys = Object.keys(s);
+          const findKey = (candidates) => {
+            const found = keys.find(k => candidates.includes(k.toLowerCase()));
+            return found ? s[found] : null;
+          };
+
+          // Step 1: Try case-insensitive specific candidates
+          let subject = findKey(['subject', 'title', 'subject_line', 'headline', 'name']);
+          let body = findKey(['body', 'content', 'text', 'message', 'email_body', 'html_body']);
+
+          // Step 2: If still missing, just take the first string property for subject
+          // and the largest string property for body (highly resilient)
+          if (!subject || !body) {
+            const stringEntries = Object.entries(s)
+              .filter(([_, v]) => typeof v === 'string')
+              .sort((a, b) => b[1].length - a[1].length); // Longest strings first
+            
+            if (stringEntries.length > 0) {
+              if (!body) body = stringEntries[0][1]; // Longest is likely the body
+              if (!subject && stringEntries.length > 1) subject = stringEntries[1][1]; // Second longest or remaining
+              if (!subject && !body) subject = stringEntries[0][1];
+            }
+          }
+
+          return {
+            subject: subject || `Email Step`,
+            body: body || ""
+          };
+        });
+
+        // Update the main step
+        setValue('subject', normalized[0].subject, { shouldValidate: true });
+        // Ensure newlines are preserved as HTML breaks
+        const mainBody = (normalized[0].body || '').replace(/\n/g, '<br />');
+        setValue('htmlBody', mainBody, { shouldValidate: true });
+
+        // Update follow-up steps
+        if (normalized.length > 1) {
+          const followUps = normalized.slice(1).map((s, i) => ({
+            stepOrder: i + 1,
+            subject: s.subject || `Follow-up ${i + 1}`,
+            htmlBody: (s.body || '').replace(/\n/g, '<br />'),
+            textBody: '',
+            delayMinutes: 4320 * (i + 1),
+            condition: 'no_reply',
+          }));
+          setValue('steps', followUps, { shouldValidate: true });
+        }
         
-        for (const match of emailMatches) {
-          const subject = (match[1] || '').replace(/\\n/g, ' ');
-          let body = (match[2] || '');
-          body = body.replace(/\\n/g, '<br />').replace(/\\"/g, '"');
-          emails.push({ subject, body });
-        }
-        return emails;
-      };
-
-      await streamAi(
-        { goal: aiGoal, tone: aiTone, stepsCount, variables },
-        (chunk) => {
-          finalContent = chunk;
-
-          // Update main editor and steps in real-time
-          const discoveredEmails = extractEmails(chunk);
-          if (discoveredEmails.length > 0) {
-            // Update the first email directly
-            if (discoveredEmails[0].subject) {
-              setValue('subject', discoveredEmails[0].subject, { shouldValidate: true });
-            }
-            if (discoveredEmails[0].body) {
-              setValue('htmlBody', discoveredEmails[0].body, { shouldValidate: true });
-            }
-
-            // Update follow-up steps if any discovered
-            if (discoveredEmails.length > 1) {
-              const followUps = discoveredEmails.slice(1).map((em, i) => ({
-                stepOrder: i + 1,
-                subject: em.subject || `Follow-up ${i + 1}`,
-                htmlBody: em.body || '',
-                textBody: '',
-                delayMinutes: 4320 * (i + 1),
-                condition: 'no_reply',
-              }));
-              setValue('steps', followUps, { shouldValidate: true });
-            }
-          }
-        },
-        () => {
-          // On End - finalize everything precisely
-          try {
-            let sequence = extractJsonRobust(finalContent);
-            
-            if (!sequence || sequence.length === 0) {
-               console.warn("Standard JSON extraction failed, falling back to discovered emails");
-               sequence = extractEmails(finalContent);
-            }
-            
-            if (sequence && !Array.isArray(sequence)) {
-               sequence = sequence.steps || sequence.emails || sequence.sequence || [sequence];
-            }
-
-            if (sequence.length > 0) {
-              setValue('subject', sequence[0].subject, { shouldValidate: true });
-              setValue('htmlBody', (sequence[0].body || '').replace(/\n/g, '<br />'), { shouldValidate: true });
-
-              const followUps = sequence.slice(1).map((s, i) => ({
-                stepOrder: i + 1,
-                subject: s.subject || `Follow-up ${i + 1}`,
-                htmlBody: (s.body || '').replace(/\n/g, '<br />'),
-                textBody: '',
-                delayMinutes: 4320 * (i + 1),
-                condition: 'no_reply',
-              }));
-
-              setValue('steps', followUps, { shouldValidate: true });
-              toast.success('Campaign sequence architected successfully!');
-            } else {
-              throw new Error("No emails found in sequence.");
-            }
-          } catch (e) {
-            console.error('Failed to parse final AI output:', e);
-            toast.error('Generation complete, but could not parse the format.');
-          } finally {
-            setIsStreaming(false);
-          }
-        },
-        (err) => {
-          console.error('AI Stream Failed:', err);
-          toast.error('Failed to generate sequence. Please try again.');
-          setIsStreaming(false);
-        }
-      );
+        toast.success('Campaign sequence generated successfully!');
+      } else {
+        throw new Error("No emails found in the generated sequence.");
+      }
     } catch (error) {
       console.error('AI Generation Failed:', error);
-      toast.error('Failed to generate sequence. Please try again.');
-      setIsStreaming(false);
+      toast.error(error.message || 'Failed to generate sequence. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -653,7 +620,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
           {/* Header row */}
           <div className="px-6 py-4 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
             <h2 className="text-sm font-bold text-slate-700">Stage {activeStepIndex + 1}: Email</h2>
-            {isStreaming && (
+            {isGenerating && (
               <div className="flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-100 rounded-full animate-pulse shadow-sm">
                 <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
                 <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest">AI Architecting...</span>
@@ -852,7 +819,15 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender }) => {
         stepsCount={stepsCount}
         setStepsCount={setStepsCount}
         handleAiGenerate={handleAiGenerate}
-        isStreaming={isStreaming}
+        isGenerating={isGenerating}
+      />
+      {/* SENDER SELECTION FOR TESTING */}
+      <SenderAccountsModal
+        isOpen={isSenderModalOpen}
+        onClose={() => setIsSenderModalOpen(false)}
+        senders={senders}
+        onSendTest={handleModalSendTest}
+        mode="test"
       />
     </div>
   );

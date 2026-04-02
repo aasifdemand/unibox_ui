@@ -21,10 +21,9 @@ export const campaignKeys = {
 // =========================
 // FETCH ALL CAMPAIGNS
 // =========================
-const fetchCampaigns = async () => {
-  const res = await api.get('/campaigns');
+const fetchCampaigns = async ({ signal }) => {
+  const res = await api.get('/campaigns', { signal });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Failed to fetch campaigns');
   return data.data || [];
 };
 
@@ -41,17 +40,16 @@ export const useCampaigns = () => {
 // =========================
 // FETCH SINGLE CAMPAIGN
 // =========================
-const fetchCampaign = async (campaignId) => {
-  const res = await api.get(`/campaigns/${campaignId}`);
+const fetchCampaign = async (campaignId, signal) => {
+  const res = await api.get(`/campaigns/${campaignId}`, { signal });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Failed to fetch campaign');
   return data.data;
 };
 
 export const useCampaign = (campaignId) => {
   return useQuery({
     queryKey: campaignKeys.detail(campaignId),
-    queryFn: () => fetchCampaign(campaignId),
+    queryFn: ({ signal }) => fetchCampaign(campaignId, signal),
     enabled: !!campaignId,
     staleTime: 2 * 60 * 1000,
   });
@@ -60,25 +58,25 @@ export const useCampaign = (campaignId) => {
 // =========================
 // FETCH CAMPAIGN REPLIES
 // =========================
-const fetchCampaignReplies = async (campaignId) => {
-  const res = await api.get(`/campaigns/${campaignId}/replies`);
+const fetchCampaignReplies = async (campaignId, signal) => {
+  const res = await api.get(`/campaigns/${campaignId}/replies`, { signal });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Failed to fetch replies');
   return data.data || [];
 };
 
 export const useCampaignReplies = (campaignId) => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: campaignKeys.replies(campaignId),
-    queryFn: () => fetchCampaignReplies(campaignId),
+    queryFn: ({ signal }) => fetchCampaignReplies(campaignId, signal),
     enabled: !!campaignId,
     staleTime: 30 * 1000, // 30 seconds
     refetchInterval: () => {
-      // Refetch if there are pending replies or campaign is running
-
+      // Access the detail query data directly from the cache to decide polling
       const campaign = queryClient.getQueryData(campaignKeys.detail(campaignId));
-      if (campaign?.status === 'running' || campaign?.status === 'sending') {
-        return 10000; // 10 seconds
+      const status = campaign?.status;
+      if (status === 'running' || status === 'sending' || status === 'scheduled') {
+        return 10000; // Poll every 10 seconds if active
       }
       return false;
     },
@@ -110,7 +108,6 @@ export const useRecipientReply = (campaignId, recipientId) => {
 const createCampaign = async (campaignData) => {
   const res = await api.post('/campaigns/create', campaignData);
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Failed to create campaign');
   return data.data;
 };
 
