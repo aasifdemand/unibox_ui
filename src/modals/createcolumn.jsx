@@ -50,7 +50,7 @@ const CreateColumn = ({ open, setOpen, onCreated }) => {
         ref={colorInputRef}
         value={color}
         onChange={(e) => setColor(e.target.value)}
-        className="hidden shadow-none border-none p-0 w-0 h-0 invisible absolute"
+        className="sr-only"
       />
       
       {/* BRANDED ORANGE HEADER - COMPACT PREMIUM */}
@@ -58,7 +58,7 @@ const CreateColumn = ({ open, setOpen, onCreated }) => {
         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <LayoutDashboard className="w-20 h-20 text-white" />
         </div>
-        <div className="relative flex items-center gap-4">
+        <div className="relative flex items-center gap-4 pr-16">
           <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
             <Plus className="w-5 h-5 text-white" />
           </div>
@@ -87,7 +87,7 @@ const CreateColumn = ({ open, setOpen, onCreated }) => {
                 </p>
               </div>
               
-              <div className="relative flex items-center group">
+              <div className="relative flex items-center group z-30">
                 <input
                   type="text"
                   value={name}
@@ -113,8 +113,8 @@ const CreateColumn = ({ open, setOpen, onCreated }) => {
                     />
                   </button>
                   
-                  {/* Floating Selection - Appears ABOVE */}
-                  <div className="absolute bottom-full right-0 mb-4 p-4 bg-white border border-slate-100 rounded-xl shadow-2xl hidden group-hover/picker:flex flex-col gap-3 z-110 animate-in fade-in slide-in-from-bottom-2 duration-200 min-w-[140px]">
+                  {/* Floating Selection - Appears BELOW to avoid close button conflict */}
+                  <div className="absolute top-full right-0 mt-4 p-4 bg-white border border-slate-100 rounded-xl shadow-2xl hidden group-hover/picker:flex flex-col gap-3 z-110 animate-in fade-in slide-in-from-top-2 duration-200 min-w-[140px]">
                     <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest text-center whitespace-nowrap">
                        Custom Color
                     </p>
