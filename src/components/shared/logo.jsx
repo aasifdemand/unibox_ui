@@ -1,9 +1,9 @@
-﻿const Logo = ({ isCollapsed = false, showTagline = true, className = "" }) => {
+const Logo = ({ isCollapsed = false, showTagline = true, className = "" }) => {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {/* Logo icon */}
       <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white shadow-lg shadow-purple-500/5 border border-purple-100 p-1 overflow-hidden shrink-0">
-        <img src="/logo.svg" alt="Unibox Logo" className="w-full h-full object-contain" />
+        <img src="/logo.svg?v=purple1" alt="Unibox Logo" className="w-full h-full object-contain" />
       </div>
 
       {/* Brand name and tagline - Only show if not collapsed */}
