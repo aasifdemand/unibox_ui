@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -67,7 +67,7 @@ const ViewMailbox = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-10 h-10 text-orange-600 animate-spin mb-4" />
+        <Loader2 className="w-10 h-10 text-purple-600 animate-spin mb-4" />
         <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Fetching Mailbox Data...</p>
       </div>
     );
@@ -105,7 +105,7 @@ const ViewMailbox = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/dashboard/mailboxes')}
-            className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:border-orange-200 transition-all shadow-sm"
+            className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all shadow-sm"
           >
             <ArrowLeft className="w-6 h-6" />
           </motion.button>
@@ -115,9 +115,9 @@ const ViewMailbox = () => {
               <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-none lowercase">
                 {mailbox.email}
               </h1>
-              <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100/50">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest whitespace-nowrap">
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-50 border border-purple-100/50">
+                <CheckCircle2 className="w-3.5 h-3.5 text-purple-500" />
+                <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest whitespace-nowrap">
                   {mailbox.isVerified ? 'Synchronized' : 'Verification Required'}
                 </span>
               </div>
@@ -125,7 +125,7 @@ const ViewMailbox = () => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Provider:</span>
-                <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest bg-orange-50 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest bg-purple-50 px-2 py-0.5 rounded">
                   {mailbox.type}
                 </span>
               </div>
@@ -150,7 +150,7 @@ const ViewMailbox = () => {
           <Button 
             onClick={handleSave}
             isLoading={updateMailbox.isPending}
-            className="h-11 px-8 font-black uppercase tracking-widest text-[11px] gap-2 bg-orange-600 hover:bg-orange-700 shadow-lg shadow-orange-200"
+            className="h-11 px-8 font-black uppercase tracking-widest text-[11px] gap-2 bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200"
           >
             <Save className="w-4 h-4" />
             Save Changes
@@ -174,7 +174,7 @@ const ViewMailbox = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${
                 activeTab === tab.id 
-                  ? 'text-orange-600' 
+                  ? 'text-purple-600' 
                   : 'text-slate-400 hover:text-slate-600'
               }`}
             >
@@ -185,7 +185,7 @@ const ViewMailbox = () => {
               {activeTab === tab.id && (
                 <motion.div 
                   layoutId="activeTabUnderline"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-600"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600"
                 />
               )}
             </button>
@@ -286,7 +286,7 @@ const ViewMailbox = () => {
                           </div>
                           <div 
                             onClick={() => setFormData({ ...formData, useCustomTrackingDomain: !formData.useCustomTrackingDomain })}
-                            className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all duration-300 ${formData?.useCustomTrackingDomain ? 'bg-orange-600' : 'bg-slate-200'}`}
+                            className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all duration-300 ${formData?.useCustomTrackingDomain ? 'bg-purple-600' : 'bg-slate-200'}`}
                           >
                             <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${formData?.useCustomTrackingDomain ? 'translate-x-6' : 'translate-x-0'}`} />
                           </div>
@@ -347,15 +347,15 @@ const ViewMailbox = () => {
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
                         <div className="flex items-baseline gap-2 mt-1">
                           <span className="text-2xl font-black text-slate-900 tracking-tighter">{stat.value}</span>
-                          <span className={`text-[10px] font-black ${stat.change.startsWith('+') ? 'text-emerald-500' : 'text-rose-500'}`}>
+                          <span className={`text-[10px] font-black ${stat.change.startsWith('+') ? 'text-purple-500' : 'text-rose-500'}`}>
                             {stat.change}
                           </span>
                         </div>
                         <div className="mt-4 h-1 w-full bg-slate-200/50 rounded-full overflow-hidden">
                           <div className={`h-full w-2/3 rounded-full transition-all duration-1000 ${
-                            stat.color === 'emerald' ? 'bg-emerald-500' : 
-                            stat.color === 'orange' ? 'bg-orange-500' : 
-                            stat.color === 'rose' ? 'bg-rose-500' : 'bg-indigo-500'
+                            stat.color === 'emerald' ? 'bg-purple-500' : 
+                            stat.color === 'orange' ? 'bg-purple-500' : 
+                            stat.color === 'rose' ? 'bg-rose-500' : 'bg-violet-500'
                           }`} />
                         </div>
                       </motion.div>
@@ -375,8 +375,8 @@ const ViewMailbox = () => {
               {(activeTab === 'warmup' || activeTab === 'health' || activeTab === 'history') && (
                 <div className="p-12 flex flex-col items-center justify-center min-h-[600px] text-center">
                   <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 group hover:scale-110 transition-transform">
-                    {activeTab === 'warmup' && <Zap className="w-10 h-10 text-orange-500" />}
-                    {activeTab === 'health' && <ShieldCheck className="w-10 h-10 text-emerald-500" />}
+                    {activeTab === 'warmup' && <Zap className="w-10 h-10 text-purple-500" />}
+                    {activeTab === 'health' && <ShieldCheck className="w-10 h-10 text-purple-500" />}
                     {activeTab === 'history' && <History className="w-10 h-10 text-slate-400" />}
                   </div>
                   <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">
@@ -397,31 +397,31 @@ const ViewMailbox = () => {
           {/* Contextual Sidebar - Premium Minimalist */}
           <div className="lg:col-span-4 space-y-6">
             <div className="premium-card p-8 bg-white overflow-hidden relative group">
-              <div className="absolute -top-12 -right-12 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
               
               <div className="flex flex-col items-center text-center p-2 relative z-10">
-                <div className="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mb-6 border border-orange-100/50">
-                  <ShieldCheck className="w-10 h-10 text-orange-600" />
+                <div className="w-20 h-20 rounded-2xl bg-purple-50 flex items-center justify-center mb-6 border border-purple-100/50">
+                  <ShieldCheck className="w-10 h-10 text-purple-600" />
                 </div>
                 
                 <span className="text-metadata mb-2">Health Ecosystem</span>
                 <h3 className="text-4xl font-black text-slate-800 tracking-tighter mb-1">98.4</h3>
-                <div className="px-3 py-1 bg-emerald-50 border border-emerald-100/50 rounded-lg mb-6">
-                  <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Optimal Condition</span>
+                <div className="px-3 py-1 bg-purple-50 border border-purple-100/50 rounded-lg mb-6">
+                  <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">Optimal Condition</span>
                 </div>
 
                 <div className="w-full space-y-4 pt-6 border-t border-slate-100">
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">Reputation</span>
-                    <span className="text-[11px] font-black text-emerald-600 tracking-tight">Excellent</span>
+                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Excellent</span>
                   </div>
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">DNS Config</span>
-                    <span className="text-[11px] font-black text-emerald-600 tracking-tight">Correct</span>
+                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Correct</span>
                   </div>
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">SPF/DKIM</span>
-                    <span className="text-[11px] font-black text-emerald-600 tracking-tight">Active</span>
+                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Active</span>
                   </div>
                 </div>
               </div>

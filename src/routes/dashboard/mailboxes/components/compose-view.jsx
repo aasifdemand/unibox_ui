@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+﻿import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Send, Paperclip, Image as ImageIcon, ChevronLeft, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -242,7 +242,7 @@ const ComposeView = forwardRef(
           <div className="p-8 space-y-6">
             <div className="space-y-4">
               <div className="group relative">
-                <div className="flex items-center border-b border-slate-100 py-3 group-focus-within:border-orange-500 transition-colors">
+                <div className="flex items-center border-b border-slate-100 py-3 group-focus-within:border-purple-500 transition-colors">
                   <span className="text-sm font-semibold text-slate-400 w-20">
                     {t('mailboxes.to_label')}
                   </span>
@@ -257,7 +257,7 @@ const ComposeView = forwardRef(
               </div>
 
               <div className="group relative">
-                <div className="flex items-center border-b border-slate-100 py-3 group-focus-within:border-orange-500 transition-colors">
+                <div className="flex items-center border-b border-slate-100 py-3 group-focus-within:border-purple-500 transition-colors">
                   <span className="text-sm font-semibold text-slate-400 w-20">
                     {t('mailboxes.subject_label')}
                   </span>
@@ -277,7 +277,7 @@ const ComposeView = forwardRef(
                 {t('mailboxes.your_message')}
               </label>
               <div
-                className={`rounded-lg overflow-hidden focus-within:ring-4 focus-within:ring-orange-500/5 focus-within:border-orange-500/50 transition-all ${isIntegrated ? 'bg-slate-50/30 border border-slate-100' : 'bg-white border border-slate-100 shadow-sm'}`}
+                className={`rounded-lg overflow-hidden focus-within:ring-4 focus-within:ring-purple-500/5 focus-within:border-purple-500/50 transition-all ${isIntegrated ? 'bg-slate-50/30 border border-slate-100' : 'bg-white border border-slate-100 shadow-sm'}`}
               >
                 <textarea
                   value={messageText}
@@ -304,9 +304,9 @@ const ComposeView = forwardRef(
                   {!isIntegrated && (
                     <div className="bg-slate-50 border-b border-slate-100 px-8 py-3 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                        <div className="w-2 h-2 rounded-full bg-purple-400"></div>
                         <div className="w-2 h-2 rounded-full bg-amber-400"></div>
-                        <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                        <div className="w-2 h-2 rounded-full bg-purple-400"></div>
                       </div>
                       <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
                         {t('mailboxes.email_content_canvas')}
@@ -319,7 +319,7 @@ const ComposeView = forwardRef(
                   >
                     {/* Canvas Header */}
                     <div className="flex items-start gap-6 pb-10 border-b border-slate-50 mb-10">
-                      <div className="w-16 h-16 rounded-lg bg-linear-to-br from-orange-600 to-orange-700 p-0.5 shadow-sm shadow-orange-500/20 shrink-0">
+                      <div className="w-16 h-16 rounded-lg bg-linear-to-br from-purple-600 to-purple-700 p-0.5 shadow-sm shadow-purple-500/20 shrink-0">
                         <div className="w-full h-full bg-white/10  rounded-lg flex items-center justify-center text-white font-extrabold text-2xl border border-white/20">
                           {getInitials(selectedMailbox?.name || 'U')}
                         </div>
@@ -359,7 +359,7 @@ const ComposeView = forwardRef(
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                           {t('mailboxes.preview_style')}
                         </p>
-                        <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest">
+                        <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
                           {t('mailboxes.high_fidelity')}
                         </p>
                       </div>
@@ -375,16 +375,16 @@ const ComposeView = forwardRef(
                     {attachments.length > 0 && (
                       <div className="mt-12 pt-8 border-t border-slate-50">
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                          <Paperclip className="w-4 h-4 text-orange-500" />
+                          <Paperclip className="w-4 h-4 text-purple-500" />
                           {t('mailboxes.attachments_count', { count: attachments.length })}
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {attachments.map((file, index) => (
                             <div
                               key={index}
-                              className="flex items-center gap-3 bg-slate-50/50 border border-slate-100 rounded-lg p-3 group/item transition-all hover:bg-white hover:shadow-sm hover:shadow-slate-200/40 hover:border-orange-200"
+                              className="flex items-center gap-3 bg-slate-50/50 border border-slate-100 rounded-lg p-3 group/item transition-all hover:bg-white hover:shadow-sm hover:shadow-slate-200/40 hover:border-purple-200"
                             >
-                              <div className="w-10 h-10 rounded-md bg-white shadow-sm flex items-center justify-center text-slate-400 group-hover/item:text-orange-500 transition-colors">
+                              <div className="w-10 h-10 rounded-md bg-white shadow-sm flex items-center justify-center text-slate-400 group-hover/item:text-purple-500 transition-colors">
                                 <Paperclip className="w-5 h-5" />
                               </div>
                               <div className="flex-1 min-w-0">
@@ -397,7 +397,7 @@ const ComposeView = forwardRef(
                               </div>
                               <button
                                 onClick={() => removeAttachment(index)}
-                                className="p-2 hover:bg-orange-50 rounded-md text-slate-400 hover:text-orange-500 transition-colors"
+                                className="p-2 hover:bg-purple-50 rounded-md text-slate-400 hover:text-purple-500 transition-colors"
                               >
                                 <X className="w-4 h-4" />
                               </button>
@@ -419,14 +419,14 @@ const ComposeView = forwardRef(
             <div className="flex items-center gap-1">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="p-3 text-slate-500 hover:bg-slate-50 hover:text-orange-600 rounded-md transition-all"
+                className="p-3 text-slate-500 hover:bg-slate-50 hover:text-purple-600 rounded-md transition-all"
                 title={t('mailboxes.attach_file')}
               >
                 <Paperclip className="w-5 h-5" />
               </button>
               <button
                 onClick={() => imageInputRef.current?.click()}
-                className="p-3 text-slate-500 hover:bg-slate-50 hover:text-orange-600 rounded-md transition-all"
+                className="p-3 text-slate-500 hover:bg-slate-50 hover:text-purple-600 rounded-md transition-all"
                 title={t('mailboxes.attach_image')}
               >
                 <ImageIcon className="w-5 h-5" />
@@ -435,8 +435,8 @@ const ComposeView = forwardRef(
                 onClick={() => onTogglePreview?.()}
                 className={`p-3 rounded-md transition-all ${
                   showPreview
-                    ? 'bg-orange-50 text-orange-600 shadow-inner'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-orange-600'
+                    ? 'bg-purple-50 text-purple-600 shadow-inner'
+                    : 'text-slate-500 hover:bg-slate-50 hover:text-purple-600'
                 }`}
                 title={showPreview ? t('mailboxes.hide_preview') : t('mailboxes.show_preview')}
               >
@@ -463,8 +463,8 @@ const ComposeView = forwardRef(
                 disabled={isSending}
                 className={`flex items-center gap-2 px-8 py-2.5 rounded-md text-sm font-bold transition-all shadow-sm active:scale-95 ${
                   isSending
-                    ? 'bg-orange-400 cursor-not-allowed text-white/50'
-                    : 'bg-orange-600 hover:bg-orange-700 text-white shadow-orange-500/20'
+                    ? 'bg-purple-400 cursor-not-allowed text-white/50'
+                    : 'bg-purple-600 hover:bg-purple-700 text-white shadow-purple-500/20'
                 }`}
               >
                 {isSending ? (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -101,14 +101,14 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                     onMouseLeave={() => setActiveHover(null)}
                     className={`group flex items-center rounded-md px-3 py-2 transition-colors duration-150 ${
                       isActive
-                        ? 'bg-orange-50 text-orange-700 font-semibold'
+                        ? 'bg-purple-50 text-purple-700 font-semibold'
                         : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 font-medium'
                     }`}
                   >
                     <div className="flex items-center justify-center shrink-0">
                       <Icon
                         className={`w-4 h-4 transition-colors ${
-                          isActive ? 'text-orange-600' : 'text-zinc-500 group-hover:text-zinc-900'
+                          isActive ? 'text-purple-600' : 'text-zinc-500 group-hover:text-zinc-900'
                         }`}
                       />
                     </div>
@@ -121,7 +121,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                         {item.badge && (
                           <span
                             className={`px-1.5 py-0.5 text-[10px] rounded font-semibold ${
-                              isActive ? 'bg-orange-100 text-orange-700' : 'bg-zinc-100 text-zinc-500'
+                              isActive ? 'bg-purple-100 text-purple-700' : 'bg-zinc-100 text-zinc-500'
                             }`}
                           >
                             {item.badge}
@@ -156,7 +156,7 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                 {user?.name?.charAt(0) || t('common.u', 'U')}
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-white rounded-full flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
               </div>
             </div>
 

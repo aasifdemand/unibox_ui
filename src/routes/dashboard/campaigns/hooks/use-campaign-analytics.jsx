@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import {
   useCampaign,
   useDeleteCampaign,
@@ -113,7 +113,7 @@ export const useCampaignAnalytics = (id) => {
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800 border border-orange-200">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 border border-purple-200">
             <CheckCircle className="w-4 h-4 ltr:mr-1.5 rtl:ml-1.5" />
             Completed
           </span>

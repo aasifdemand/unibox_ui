@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Mail,
@@ -33,7 +33,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 /* ─────────────────────────── tiny helpers ─────────────────────────── */
 const GradientText = ({ children, className = '' }) => (
   <span
-    className={`bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 bg-clip-text text-transparent ${className}`}
+    className={`bg-linear-to-r from-purple-500 via-purple-500 to-purple-600 bg-clip-text text-transparent ${className}`}
   >
     {children}
   </span>
@@ -50,14 +50,14 @@ const Pill = ({ children, className = '' }) => (
 /* ─────────────────────────── floating orbs bg ─────────────────────── */
 const MeshBackground = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-orange-100/60 blur-[120px]" />
-    <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] rounded-full bg-orange-100/50 blur-[100px]" />
-    <div className="absolute -bottom-20 right-1/3 w-[400px] h-[400px] rounded-full bg-orange-100/40 blur-[90px]" />
+    <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-purple-100/60 blur-[120px]" />
+    <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] rounded-full bg-purple-100/50 blur-[100px]" />
+    <div className="absolute -bottom-20 right-1/3 w-[400px] h-[400px] rounded-full bg-purple-100/40 blur-[90px]" />
     {/* grid overlay */}
     <div
       className="absolute inset-0 opacity-[0.08]"
       style={{
-        backgroundImage: `linear-gradient(#f97316 1px,transparent 1px),linear-gradient(90deg,#f97316 1px,transparent 1px)`,
+        backgroundImage: `linear-gradient(#818cf8 1px,transparent 1px),linear-gradient(90deg,#818cf8 1px,transparent 1px)`,
         backgroundSize: '60px 60px',
       }}
     />
@@ -145,17 +145,17 @@ const Landing = () => {
       bg: 'bg-red-50',
       text: 'text-red-500',
       border: 'border-red-100',
-      accent: 'from-red-400 to-orange-500',
+      accent: 'from-red-400 to-purple-500',
       stats: ['99.9 % uptime', 'Real-time sync', 'Label management'],
     },
     {
       icon: <Inbox className="w-5 h-5" />,
       title: 'Microsoft Outlook & 365',
       desc: 'Enterprise-grade integration with Azure AD, Graph API, and Exchange Online support.',
-      bg: 'bg-orange-50',
-      text: 'text-orange-500',
-      border: 'border-orange-100',
-      accent: 'from-orange-400 to-orange-500',
+      bg: 'bg-purple-50',
+      text: 'text-purple-500',
+      border: 'border-purple-100',
+      accent: 'from-purple-400 to-purple-500',
       stats: ['Azure AD SSO', 'Calendar sync', 'Folder management'],
     },
     {
@@ -165,7 +165,7 @@ const Landing = () => {
       bg: 'bg-amber-50',
       text: 'text-amber-500',
       border: 'border-amber-100',
-      accent: 'from-amber-400 to-orange-500',
+      accent: 'from-amber-400 to-purple-500',
       stats: ['SSL / TLS support', 'Connection pooling', 'Rate limiting'],
     },
   ];
@@ -175,28 +175,28 @@ const Landing = () => {
       icon: <Workflow className="w-5 h-5" />,
       title: 'Visual Sequence Builder',
       desc: 'Drag-and-drop workflow editor with conditional branching and A/B testing.',
-      accent: 'from-orange-500 to-orange-600',
+      accent: 'from-purple-500 to-purple-600',
       details: ['Time delays', 'Conditional logic', 'Split testing'],
     },
     {
       icon: <Repeat className="w-5 h-5" />,
       title: 'Smart Rotations',
       desc: 'Intelligent mailbox rotation with deliverability optimisation and cooldown periods.',
-      accent: 'from-orange-500 to-orange-600',
+      accent: 'from-purple-500 to-purple-600',
       details: ['Auto failover', 'Warm-up sequences', 'Health scoring'],
     },
     {
       icon: <LineChart className="w-5 h-5" />,
       title: 'Real-time Analytics',
       desc: 'Comprehensive tracking with campaign performance dashboards and custom reports.',
-      accent: 'from-orange-500 to-orange-600',
+      accent: 'from-purple-500 to-purple-600',
       details: ['Open / click tracking', 'Reply detection', 'Revenue attribution'],
     },
     {
       icon: <Bot className="w-5 h-5" />,
       title: 'AI-Powered Optimisation',
       desc: 'Machine learning algorithms that optimise send times and content performance.',
-      accent: 'from-orange-500 to-orange-600',
+      accent: 'from-purple-500 to-purple-600',
       details: ['Send time optimisation', 'Content scoring', 'Spam prediction'],
     },
   ];
@@ -220,7 +220,7 @@ const Landing = () => {
       content:
         "Unibox transformed our outreach. We're seeing 3× reply rates with their smart rotation system.",
       avatar: 'SC',
-      color: 'from-orange-500 to-orange-600',
+      color: 'from-purple-500 to-purple-600',
     },
     {
       name: 'Marcus Rodriguez',
@@ -228,7 +228,7 @@ const Landing = () => {
       content:
         'The unified inbox feature is a game-changer. Managing 50+ mailboxes has never been easier.',
       avatar: 'MR',
-      color: 'from-orange-500 to-orange-600',
+      color: 'from-purple-500 to-purple-600',
     },
     {
       name: 'Emily Watson',
@@ -236,7 +236,7 @@ const Landing = () => {
       content:
         "Best deliverability tool we've used. Our emails finally land in the inbox, not spam.",
       avatar: 'EW',
-      color: 'from-orange-500 to-pink-500',
+      color: 'from-purple-500 to-pink-500',
     },
   ];
 
@@ -290,20 +290,20 @@ const Landing = () => {
   ];
 
   const integrations = [
-    { name: 'Gmail', logo: 'G', color: 'bg-linear-to-br from-red-400 to-orange-500' },
-    { name: 'Outlook', logo: 'O', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
-    { name: 'Yahoo', logo: 'Y', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
+    { name: 'Gmail', logo: 'G', color: 'bg-linear-to-br from-red-400 to-purple-500' },
+    { name: 'Outlook', logo: 'O', color: 'bg-linear-to-br from-purple-400 to-purple-500' },
+    { name: 'Yahoo', logo: 'Y', color: 'bg-linear-to-br from-purple-400 to-purple-500' },
     { name: 'iCloud', logo: 'I', color: 'bg-linear-to-br from-slate-400 to-slate-500' },
-    { name: 'Zoho', logo: 'Z', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
-    { name: 'Proton', logo: 'P', color: 'bg-linear-to-br from-orange-400 to-orange-500' },
+    { name: 'Zoho', logo: 'Z', color: 'bg-linear-to-br from-purple-400 to-purple-500' },
+    { name: 'Proton', logo: 'P', color: 'bg-linear-to-br from-purple-400 to-purple-500' },
   ];
 
   /* ═══════════════════ RENDER ═══════════════════ */
   return (
-    <div className="min-h-screen bg-[#fafafa] text-slate-900 font-sans selection:bg-orange-100 selection:text-orange-900">
+    <div className="min-h-screen bg-[#fafafa] text-slate-900 font-sans selection:bg-purple-100 selection:text-purple-900">
       {/* ── NAV ── */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-orange-200/50 py-3' : 'bg-transparent border-b border-transparent py-5'}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-purple-200/50 py-3' : 'bg-transparent border-b border-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <motion.div
@@ -312,8 +312,8 @@ const Landing = () => {
             className="flex items-center gap-2.5 cursor-pointer select-none"
           >
             <div className="relative w-9 h-9">
-              <div className="absolute inset-0 bg-orange-600 rounded-md blur-md opacity-50" />
-              <div className="relative w-full h-full bg-linear-to-br from-orange-500 to-orange-700 rounded-md flex items-center justify-center shadow-sm">
+              <div className="absolute inset-0 bg-purple-600 rounded-md blur-md opacity-50" />
+              <div className="relative w-full h-full bg-linear-to-br from-purple-500 to-purple-700 rounded-md flex items-center justify-center shadow-sm">
                 <Mail className="text-white w-4 h-4" />
               </div>
             </div>
@@ -344,7 +344,7 @@ const Landing = () => {
             </Link>
             <Link
               to="/auth/signup"
-              className="ml-1 px-5 py-2.5 rounded-md bg-orange-600 text-white text-sm font-bold hover:bg-orange-700 transition-all shadow-sm shadow-orange-200 hover:shadow-orange-300 active:scale-95"
+              className="ml-1 px-5 py-2.5 rounded-md bg-purple-600 text-white text-sm font-bold hover:bg-purple-700 transition-all shadow-sm shadow-purple-200 hover:shadow-purple-300 active:scale-95"
             >
               Get started →
             </Link>
@@ -370,7 +370,7 @@ const Landing = () => {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="block py-2 text-slate-700 font-medium hover:text-orange-600 transition-colors"
+                  className="block py-2 text-slate-700 font-medium hover:text-purple-600 transition-colors"
                 >
                   {item}
                 </a>
@@ -381,7 +381,7 @@ const Landing = () => {
                 </Link>
                 <Link
                   to="/auth/signup"
-                  className="block w-full py-3 bg-orange-600 text-white font-bold rounded-md text-center hover:bg-orange-700"
+                  className="block w-full py-3 bg-purple-600 text-white font-bold rounded-md text-center hover:bg-purple-700"
                 >
                   Get started
                 </Link>
@@ -406,7 +406,7 @@ const Landing = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Pill className="border-orange-200 bg-orange-50/80 text-orange-700 mb-8">
+                <Pill className="border-purple-200 bg-purple-50/80 text-purple-700 mb-8">
                   <Sparkles className="w-3 h-3" /> Unified Email Outreach Platform
                 </Pill>
               </motion.div>
@@ -441,15 +441,15 @@ const Landing = () => {
               >
                 <button
                   onClick={() => navigate('/auth/signup')}
-                  className="group relative overflow-hidden px-8 py-4 bg-orange-600 text-white rounded-lg font-bold text-sm hover:bg-orange-700 transition-all shadow-sm shadow-orange-200 hover:shadow-orange-300 flex items-center justify-center gap-2"
+                  className="group relative overflow-hidden px-8 py-4 bg-purple-600 text-white rounded-lg font-bold text-sm hover:bg-purple-700 transition-all shadow-sm shadow-purple-200 hover:shadow-purple-300 flex items-center justify-center gap-2"
                 >
                   <span className="relative z-10">Start Free Trial</span>
                   <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-                  <div className="absolute inset-0 bg-linear-to-r from-orange-600 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-linear-to-r from-purple-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
                 <button className="px-8 py-4 bg-white/80  border border-slate-200 text-slate-700 rounded-lg font-bold text-sm hover:bg-white hover:shadow-sm transition-all flex items-center justify-center gap-2">
-                  <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Play className="w-3 h-3 text-orange-600 ml-0.5" />
+                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Play className="w-3 h-3 text-purple-600 ml-0.5" />
                   </div>
                   Watch Demo
                 </button>
@@ -478,7 +478,7 @@ const Landing = () => {
               className="relative"
             >
               {/* glow halo */}
-              <div className="absolute inset-8 bg-linear-to-br from-orange-400/30 to-orange-400/20 rounded-lg blur-2xl" />
+              <div className="absolute inset-8 bg-linear-to-br from-purple-400/30 to-purple-400/20 rounded-lg blur-2xl" />
 
               <GlassCard hover={false} className="rounded-lg overflow-hidden p-1 bg-white/90">
                 {/* fake browser chrome */}
@@ -507,7 +507,7 @@ const Landing = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <div className="px-3 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg">
+                      <div className="px-3 py-1.5 bg-purple-50 text-purple-600 text-xs font-bold rounded-lg">
                         Active
                       </div>
                       <div className="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-lg">
@@ -552,7 +552,7 @@ const Landing = () => {
                           animate={{ scaleY: 1 }}
                           transition={{ delay: 0.6 + i * 0.07, duration: 0.4 }}
                           style={{ height: `${h}%`, transformOrigin: 'bottom' }}
-                          className={`flex-1 rounded-t-sm ${i === 5 ? 'bg-orange-500' : 'bg-orange-200'}`}
+                          className={`flex-1 rounded-t-sm ${i === 5 ? 'bg-purple-500' : 'bg-purple-200'}`}
                         />
                       ))}
                     </div>
@@ -580,7 +580,7 @@ const Landing = () => {
                               initial={{ width: 0 }}
                               animate={{ width: `${seq.pct}%` }}
                               transition={{ delay: 0.8, duration: 0.8 }}
-                              className="h-full bg-linear-to-r from-orange-500 to-orange-500 rounded-full"
+                              className="h-full bg-linear-to-r from-purple-500 to-purple-500 rounded-full"
                             />
                           </div>
                         </div>
@@ -598,9 +598,9 @@ const Landing = () => {
                 initial={{ opacity: 0, x: 20, y: 10 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ delay: 0.9 }}
-                className="absolute -right-4 top-1/3 bg-white rounded-lg shadow-sm shadow-orange-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
+                className="absolute -right-4 top-1/3 bg-white rounded-lg shadow-sm shadow-purple-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-linear-to-br from-green-400 to-orange-500 rounded-md flex items-center justify-center">
+                <div className="w-9 h-9 bg-linear-to-br from-green-400 to-purple-500 rounded-md flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -618,9 +618,9 @@ const Landing = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.0 }}
-                className="absolute -left-4 bottom-16 bg-white rounded-lg shadow-sm shadow-orange-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
+                className="absolute -left-4 bottom-16 bg-white rounded-lg shadow-sm shadow-purple-100 border border-slate-100 p-3 pr-5 flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-linear-to-br from-orange-500 to-orange-600 rounded-md flex items-center justify-center">
+                <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-purple-600 rounded-md flex items-center justify-center">
                   <Mail className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -668,11 +668,11 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className="relative bg-white rounded-lg border border-slate-100 p-6 text-center shadow-sm overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all"
+                className="relative bg-white rounded-lg border border-slate-100 p-6 text-center shadow-sm overflow-hidden group hover:border-purple-200 hover:shadow-md transition-all"
               >
-                <div className="absolute inset-0 bg-linear-to-br from-orange-50/0 to-orange-50/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-br from-purple-50/0 to-purple-50/60 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
-                  <div className="inline-flex items-center justify-center w-10 h-10 bg-orange-50 rounded-md mb-4 text-orange-500 group-hover:bg-orange-100 transition-colors">
+                  <div className="inline-flex items-center justify-center w-10 h-10 bg-purple-50 rounded-md mb-4 text-purple-500 group-hover:bg-purple-100 transition-colors">
                     {s.icon}
                   </div>
                   <div
@@ -691,12 +691,12 @@ const Landing = () => {
 
       {/* ── MAILBOX INTEGRATIONS ── */}
       <section id="features" className="py-28 px-6 bg-slate-50 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-100/30 rounded-full -translate-y-1/2 translate-x-1/3 blur-[80px]" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-100/30 rounded-full -translate-y-1/2 translate-x-1/3 blur-[80px]" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="max-w-2xl mb-16">
             <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}>
-              <Pill className="border-orange-200 bg-orange-50 text-orange-700 mb-5">
+              <Pill className="border-purple-200 bg-purple-50 text-purple-700 mb-5">
                 <Globe className="w-3 h-3" /> Integrations
               </Pill>
               <h2
@@ -721,7 +721,7 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="relative bg-white rounded-lg border border-slate-200 p-7 hover:border-orange-200 hover:shadow-sm hover:shadow-orange-50 transition-all duration-300 group cursor-default overflow-hidden"
+                className="relative bg-white rounded-lg border border-slate-200 p-7 hover:border-purple-200 hover:shadow-sm hover:shadow-purple-50 transition-all duration-300 group cursor-default overflow-hidden"
               >
                 {/* gradient line top */}
                 <div
@@ -763,7 +763,7 @@ const Landing = () => {
             className="mt-8 bg-white border border-slate-200 rounded-lg px-8 py-5 flex flex-wrap items-center justify-between gap-5"
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 bg-purple-600 rounded-md flex items-center justify-center shrink-0">
                 <Globe className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -790,12 +790,12 @@ const Landing = () => {
 
       {/* ── CAMPAIGN FEATURES ── */}
       <section className="py-28 px-6 bg-white relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-100/30 rounded-full translate-y-1/2 -translate-x-1/4 blur-[80px]" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/30 rounded-full translate-y-1/2 -translate-x-1/4 blur-[80px]" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}>
-              <Pill className="border-orange-200 bg-orange-50 text-orange-700 mb-5">
+              <Pill className="border-purple-200 bg-purple-50 text-purple-700 mb-5">
                 <Zap className="w-3 h-3" /> Campaign Tools
               </Pill>
               <h2
@@ -819,7 +819,7 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.09 }}
-                className="group bg-slate-50 rounded-lg border border-slate-200 p-6 hover:border-orange-200 hover:bg-white hover:shadow-sm hover:shadow-orange-50 transition-all duration-300 cursor-default"
+                className="group bg-slate-50 rounded-lg border border-slate-200 p-6 hover:border-purple-200 hover:bg-white hover:shadow-sm hover:shadow-purple-50 transition-all duration-300 cursor-default"
               >
                 <div
                   className={`w-11 h-11 rounded-md bg-linear-to-br ${f.accent} flex items-center justify-center text-white mb-5 shadow-md`}
@@ -836,7 +836,7 @@ const Landing = () => {
                 <ul className="space-y-1.5">
                   {f.details.map((d, j) => (
                     <li key={j} className="text-xs text-slate-500 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-orange-300 shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-300 shrink-0" />
                       {d}
                     </li>
                   ))}
@@ -860,7 +860,7 @@ const Landing = () => {
               </h3>
               <button
                 onClick={() => setDemoPlaying(!demoPlaying)}
-                className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-md text-sm font-bold hover:bg-orange-700 transition-all shadow-sm shadow-orange-200"
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md text-sm font-bold hover:bg-purple-700 transition-all shadow-sm shadow-purple-200"
               >
                 {demoPlaying ? (
                   <>
@@ -881,10 +881,10 @@ const Landing = () => {
                   (step, i) => (
                     <div
                       key={step}
-                      className={`flex items-center gap-4 px-4 py-3.5 rounded-md transition-all ${demoPlaying ? 'bg-orange-50 border border-orange-100' : 'hover:bg-white hover:border hover:border-slate-200'}`}
+                      className={`flex items-center gap-4 px-4 py-3.5 rounded-md transition-all ${demoPlaying ? 'bg-purple-50 border border-purple-100' : 'hover:bg-white hover:border hover:border-slate-200'}`}
                     >
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-all ${demoPlaying  ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-500'}`}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-all ${demoPlaying  ? 'bg-purple-600 text-white' : 'bg-slate-200 text-slate-500'}`}
                         style={{ fontFamily: 'Outfit, sans-serif' }}
                       >
                         {demoPlaying  ? (
@@ -894,7 +894,7 @@ const Landing = () => {
                         )}
                       </div>
                       <span
-                        className={`text-sm font-semibold ${demoPlaying  ? 'text-orange-700' : 'text-slate-600'}`}
+                        className={`text-sm font-semibold ${demoPlaying  ? 'text-purple-700' : 'text-slate-600'}`}
                       >
                         Step {i + 1}: {step}
                       </span>
@@ -924,7 +924,7 @@ const Landing = () => {
                         <motion.div
                           animate={{ width: ['0%', '100%'] }}
                           transition={{ duration: 5, repeat: Infinity }}
-                          className="h-full bg-linear-to-r from-orange-500 to-orange-500 rounded-full"
+                          className="h-full bg-linear-to-r from-purple-500 to-purple-500 rounded-full"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
@@ -957,8 +957,8 @@ const Landing = () => {
                       exit={{ opacity: 0 }}
                       className="h-full flex flex-col items-center justify-center text-center py-10"
                     >
-                      <div className="w-16 h-16 bg-orange-50 rounded-lg flex items-center justify-center mb-4">
-                        <Play className="w-7 h-7 text-orange-300 ml-1" />
+                      <div className="w-16 h-16 bg-purple-50 rounded-lg flex items-center justify-center mb-4">
+                        <Play className="w-7 h-7 text-purple-300 ml-1" />
                       </div>
                       <p className="text-slate-400 text-sm">Click Play to see a live simulation</p>
                     </motion.div>
@@ -975,7 +975,7 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}>
-              <Pill className="border-orange-200 bg-orange-50 text-orange-700 mb-5">
+              <Pill className="border-purple-200 bg-purple-50 text-purple-700 mb-5">
                 <Star className="w-3 h-3" /> Testimonials
               </Pill>
               <h2
@@ -994,9 +994,9 @@ const Landing = () => {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-lg border border-slate-200 p-7 hover:border-orange-200 hover:shadow-sm hover:shadow-orange-50 transition-all duration-300 group relative overflow-hidden"
+                className="bg-white rounded-lg border border-slate-200 p-7 hover:border-purple-200 hover:shadow-sm hover:shadow-purple-50 transition-all duration-300 group relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50/50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-100/60 transition-colors" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50/50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-purple-100/60 transition-colors" />
 
                 <div className="flex gap-1 mb-5">
                   {[...Array(5)].map((_, j) => (
@@ -1026,12 +1026,12 @@ const Landing = () => {
 
       {/* ── PRICING ── */}
       <section id="pricing" className="py-28 px-6 bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 w-[800px] h-[400px] bg-orange-50/60 rounded-full -translate-x-1/2 -translate-y-1/2 blur-[100px]" />
+        <div className="absolute top-0 left-1/2 w-[800px] h-[400px] bg-purple-50/60 rounded-full -translate-x-1/2 -translate-y-1/2 blur-[100px]" />
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}>
-              <Pill className="border-orange-200 bg-orange-50 text-orange-700 mb-5">
+              <Pill className="border-purple-200 bg-purple-50 text-purple-700 mb-5">
                 <Gauge className="w-3 h-3" /> Pricing
               </Pill>
               <h2
@@ -1055,14 +1055,14 @@ const Landing = () => {
                 transition={{ delay: i * 0.1 }}
                 className={`relative rounded-lg border p-8 transition-all duration-300 ${
                   plan.popular
-                    ? 'bg-linear-to-b from-orange-600 to-orange-700 border-transparent shadow-sm shadow-orange-200 scale-105 text-white'
-                    : 'bg-white border-slate-200 hover:border-orange-200 hover:shadow-sm hover:shadow-orange-50'
+                    ? 'bg-linear-to-b from-purple-600 to-purple-700 border-transparent shadow-sm shadow-purple-200 scale-105 text-white'
+                    : 'bg-white border-slate-200 hover:border-purple-200 hover:shadow-sm hover:shadow-purple-50'
                 }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                     <div
-                      className="bg-linear-to-r from-amber-400 to-orange-400 text-white text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full shadow-sm"
+                      className="bg-linear-to-r from-amber-400 to-purple-400 text-white text-xs font-black tracking-widest uppercase px-4 py-1.5 rounded-full shadow-sm"
                       style={{ fontFamily: 'Outfit, sans-serif' }}
                     >
                       Most Popular
@@ -1071,7 +1071,7 @@ const Landing = () => {
                 )}
 
                 <div
-                  className={`text-sm font-bold mb-1 ${plan.popular ? 'text-orange-200' : 'text-slate-500'}`}
+                  className={`text-sm font-bold mb-1 ${plan.popular ? 'text-purple-200' : 'text-slate-500'}`}
                 >
                   {plan.name}
                 </div>
@@ -1083,13 +1083,13 @@ const Landing = () => {
                     {plan.price}
                   </span>
                   <span
-                    className={`text-sm mb-2 ${plan.popular ? 'text-orange-200' : 'text-slate-400'}`}
+                    className={`text-sm mb-2 ${plan.popular ? 'text-purple-200' : 'text-slate-400'}`}
                   >
                     {plan.period}
                   </span>
                 </div>
                 <p
-                  className={`text-sm mb-7 ${plan.popular ? 'text-orange-200' : 'text-slate-500'}`}
+                  className={`text-sm mb-7 ${plan.popular ? 'text-purple-200' : 'text-slate-500'}`}
                 >
                   {plan.desc}
                 </p>
@@ -1098,13 +1098,13 @@ const Landing = () => {
                   {plan.features.map((f, j) => (
                     <li key={j} className="flex items-center gap-3 text-sm">
                       <div
-                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.popular ? 'bg-white/20' : 'bg-orange-50'}`}
+                        className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${plan.popular ? 'bg-white/20' : 'bg-purple-50'}`}
                       >
                         <Check
-                          className={`w-3 h-3 ${plan.popular ? 'text-white' : 'text-orange-600'}`}
+                          className={`w-3 h-3 ${plan.popular ? 'text-white' : 'text-purple-600'}`}
                         />
                       </div>
-                      <span className={plan.popular ? 'text-orange-100' : 'text-slate-600'}>
+                      <span className={plan.popular ? 'text-purple-100' : 'text-slate-600'}>
                         {f}
                       </span>
                     </li>
@@ -1117,7 +1117,7 @@ const Landing = () => {
                   }
                   className={`w-full py-3.5 rounded-md font-bold text-sm transition-all ${
                     plan.popular
-                      ? 'bg-white text-orange-600 hover:bg-orange-50 shadow-sm'
+                      ? 'bg-white text-purple-600 hover:bg-purple-50 shadow-sm'
                       : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-sm'
                   }`}
                 >
@@ -1135,7 +1135,7 @@ const Landing = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="relative bg-linear-to-br from-orange-600 via-orange-700 to-orange-700 rounded-lg p-16 text-white overflow-hidden text-center"
+            className="relative bg-linear-to-br from-purple-600 via-purple-700 to-purple-700 rounded-lg p-16 text-white overflow-hidden text-center"
           >
             {/* grid texture */}
             <div
@@ -1147,7 +1147,7 @@ const Landing = () => {
               }}
             />
             <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-2xl" />
-            <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-orange-400/20 rounded-full blur-2xl" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-purple-400/20 rounded-full blur-2xl" />
 
             <div className="relative z-10">
               <Pill className="border-white/20 bg-white/10 text-white mb-7 ">
@@ -1161,24 +1161,24 @@ const Landing = () => {
                 <br />
                 to new heights
               </h2>
-              <p className="text-lg text-orange-200 mb-10 max-w-xl mx-auto">
+              <p className="text-lg text-purple-200 mb-10 max-w-xl mx-auto">
                 Join thousands of teams using Unibox to automate and optimise their email campaigns.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={() => navigate('/auth/signup')}
-                  className="px-8 py-4 bg-white text-orange-700 rounded-lg font-bold hover:bg-orange-50 transition-all shadow-sm flex items-center justify-center gap-2"
+                  className="px-8 py-4 bg-white text-purple-700 rounded-lg font-bold hover:bg-purple-50 transition-all shadow-sm flex items-center justify-center gap-2"
                 >
                   Start Free Trial <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => navigate('/contact')}
-                  className="px-8 py-4 bg-orange-500/60  border border-white/20 text-white rounded-lg font-bold hover:bg-orange-500/80 transition-all"
+                  className="px-8 py-4 bg-purple-500/60  border border-white/20 text-white rounded-lg font-bold hover:bg-purple-500/80 transition-all"
                 >
                   Contact Sales
                 </button>
               </div>
-              <p className="text-sm text-orange-300 mt-7">
+              <p className="text-sm text-purple-300 mt-7">
                 No credit card required · 14-day free trial · Cancel anytime
               </p>
             </div>
@@ -1192,7 +1192,7 @@ const Landing = () => {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2.5 mb-5">
-                <div className="w-9 h-9 bg-orange-600 rounded-md flex items-center justify-center">
+                <div className="w-9 h-9 bg-purple-600 rounded-md flex items-center justify-center">
                   <Mail className="text-white w-4 h-4" />
                 </div>
                 <span
@@ -1210,7 +1210,7 @@ const Landing = () => {
                   <a
                     key={i}
                     href="#"
-                    className="w-8 h-8 bg-slate-100 hover:bg-orange-100 hover:text-orange-600 text-slate-500 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-8 h-8 bg-slate-100 hover:bg-purple-100 hover:text-purple-600 text-slate-500 rounded-lg flex items-center justify-center transition-colors"
                   >
                     <Icon className="w-4 h-4" />
                   </a>
@@ -1229,7 +1229,7 @@ const Landing = () => {
                 <ul className="space-y-3">
                   {col.links.map((link) => (
                     <li key={link}>
-                      <a href="#" className="text-sm hover:text-orange-600 transition-colors">
+                      <a href="#" className="text-sm hover:text-purple-600 transition-colors">
                         {link}
                       </a>
                     </li>
@@ -1243,7 +1243,7 @@ const Landing = () => {
             <div>© 2024 Unibox. All rights reserved.</div>
             <div className="flex gap-6">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((l) => (
-                <a key={l} href="#" className="hover:text-orange-600 transition-colors">
+                <a key={l} href="#" className="hover:text-purple-600 transition-colors">
                   {l}
                 </a>
               ))}

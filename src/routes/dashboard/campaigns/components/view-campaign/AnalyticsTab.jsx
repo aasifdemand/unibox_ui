@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { calculateAvgResponseTime } from '../../hooks/use-campaign-analytics';
 import {
   BarChart3,
@@ -35,16 +35,16 @@ const AnalyticsTab = ({ campaign, stats }) => {
         <div className="flex items-center justify-between mb-10">
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-orange-600" />
+              <BarChart3 className="w-5 h-5 text-purple-600" />
               {t('campaigns.analytics.performance_overview', 'Performance Overview')}
             </h3>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
               {t('campaigns.analytics.performance_desc', 'Key performance metrics')}
             </p>
           </div>
-          <div className="px-4 py-2 bg-orange-50 rounded-md border border-orange-100 flex items-center gap-2">
-            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-            <span className="text-[10px] font-black text-orange-700 uppercase tracking-widest">
+          <div className="px-4 py-2 bg-purple-50 rounded-md border border-purple-100 flex items-center gap-2">
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+            <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">
               {t('campaigns.analytics.live_data', 'Live Data')}
             </span>
           </div>
@@ -77,7 +77,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
         {/* Engagement */}
         <div className="premium-card bg-white border-slate-200/60 p-10 shadow-sm shadow-slate-900/2">
           <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mb-10">
-            <TrendingUp className="w-5 h-5 text-orange-600" />
+            <TrendingUp className="w-5 h-5 text-purple-600" />
             {t('campaigns.analytics.engagement_rates', 'Engagement Rates')}
           </h3>
 
@@ -118,14 +118,14 @@ const AnalyticsTab = ({ campaign, stats }) => {
         {/* Additional Stats */}
         <div className="premium-card bg-white border-slate-200/60 p-10 shadow-sm shadow-slate-900/2">
           <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mb-10">
-            <Zap className="w-5 h-5 text-orange-600" />
+            <Zap className="w-5 h-5 text-purple-600" />
             {t('campaigns.analytics.response_stats', 'Response Statistics')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-orange-200 transition-all duration-300">
+            <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-purple-200 transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-md bg-orange-600 flex items-center justify-center text-white shadow-sm">
+                <div className="w-8 h-8 rounded-md bg-purple-600 flex items-center justify-center text-white shadow-sm">
                   <Clock className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -140,9 +140,9 @@ const AnalyticsTab = ({ campaign, stats }) => {
               </p>
             </div>
 
-            <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-orange-200 transition-all duration-300">
+            <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-purple-200 transition-all duration-300">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-md bg-orange-600 flex items-center justify-center text-white shadow-sm">
+                <div className="w-8 h-8 rounded-md bg-purple-600 flex items-center justify-center text-white shadow-sm">
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -158,9 +158,9 @@ const AnalyticsTab = ({ campaign, stats }) => {
             </div>
           </div>
 
-          <div className="mt-8 p-4 bg-orange-50/40 rounded-lg border border-orange-100 flex items-center gap-4">
-            <ShieldCheck className="w-5 h-5 text-orange-600 shrink-0" />
-            <p className="text-[11px] font-medium text-orange-700 leading-tight">
+          <div className="mt-8 p-4 bg-purple-50/40 rounded-lg border border-purple-100 flex items-center gap-4">
+            <ShieldCheck className="w-5 h-5 text-purple-600 shrink-0" />
+            <p className="text-[11px] font-medium text-purple-700 leading-tight">
               {t('campaigns.analytics.data_note', 'These metrics are calculated based on campaign data for accuracy.')}
             </p>
           </div>
@@ -176,14 +176,14 @@ const StatMini = ({ label, value, theme, trend }) => (
       {label}
     </p>
     <p
-      className={`text-3xl font-black tracking-tighter tabular-nums ${theme === 'indigo' ? 'text-orange-600' : theme === 'purple' ? 'text-orange-600' : theme === 'emerald' ? 'text-orange-600' : 'text-slate-900'}`}
+      className={`text-3xl font-black tracking-tighter tabular-nums ${theme === 'indigo' ? 'text-purple-600' : theme === 'purple' ? 'text-purple-600' : theme === 'emerald' ? 'text-purple-600' : 'text-slate-900'}`}
     >
       {value}
     </p>
     {trend && (
       <div className="flex items-center gap-1.5 mt-2">
         <div
-          className={`w-1.5 h-1.5 rounded-full ${theme === 'indigo' || theme === 'emerald' ? 'bg-orange-500' : 'bg-slate-300'}`}
+          className={`w-1.5 h-1.5 rounded-full ${theme === 'indigo' || theme === 'emerald' ? 'bg-purple-500' : 'bg-slate-300'}`}
         ></div>
         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
           {trend}
@@ -195,18 +195,18 @@ const StatMini = ({ label, value, theme, trend }) => (
 
 const ProgressBar = ({ label, value, theme, icon }) => {
   const iconColors = {
-    indigo: 'bg-orange-50 text-orange-600',
-    purple: 'bg-orange-50 text-orange-600',
-    emerald: 'bg-orange-50 text-orange-600',
-    rose: 'bg-orange-50 text-orange-600',
+    indigo: 'bg-purple-50 text-purple-600',
+    purple: 'bg-purple-50 text-purple-600',
+    emerald: 'bg-purple-50 text-purple-600',
+    rose: 'bg-purple-50 text-purple-600',
     slate: 'bg-slate-50 text-slate-600',
   };
 
   const barColors = {
-    indigo: 'bg-orange-600 shadow-orange-200',
-    purple: 'bg-orange-600 shadow-orange-200',
-    emerald: 'bg-orange-600 shadow-orange-200',
-    rose: 'bg-orange-600 shadow-orange-200',
+    indigo: 'bg-purple-600 shadow-purple-200',
+    purple: 'bg-purple-600 shadow-purple-200',
+    emerald: 'bg-purple-600 shadow-purple-200',
+    rose: 'bg-purple-600 shadow-purple-200',
     slate: 'bg-slate-600 shadow-slate-200',
   };
 

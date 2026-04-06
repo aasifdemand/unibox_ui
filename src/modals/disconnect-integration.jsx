@@ -1,4 +1,4 @@
-import { AlertTriangle, Loader2, Unplug, Shield } from 'lucide-react';
+﻿import { AlertTriangle, Loader2, Unplug, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Modal from '../components/shared/modal';
@@ -18,7 +18,7 @@ const DisconnectIntegration = ({
       maxWidth="max-w-md"
       closeOnBackdrop={true}
     >
-      <div className="bg-linear-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-purple-600 to-red-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Unplug className="w-16 h-16 text-white" />
         </div>
@@ -36,7 +36,7 @@ const DisconnectIntegration = ({
               <h3 className="text-xl font-extrabold text-white tracking-tighter">
                 Disconnect {integration?.name}
               </h3>
-              <p className="text-[10px] font-bold text-orange-100/70 uppercase tracking-widest mt-0.5">
+              <p className="text-[10px] font-bold text-purple-100/70 uppercase tracking-widest mt-0.5">
                 Remove Integration
               </p>
             </div>
@@ -46,8 +46,8 @@ const DisconnectIntegration = ({
 
       <div className="p-6">
         <div className="flex items-start gap-4 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center shrink-0 border border-orange-100">
-            <AlertTriangle className="w-6 h-6 text-orange-500" />
+          <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center shrink-0 border border-purple-100">
+            <AlertTriangle className="w-6 h-6 text-purple-500" />
           </div>
           <div>
             <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight mb-2">
@@ -82,7 +82,7 @@ const DisconnectIntegration = ({
           <button
             onClick={handleDisconnect}
             disabled={isDisconnecting}
-            className="group relative px-8 py-3 bg-orange-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 overflow-hidden"
+            className="group relative px-8 py-3 bg-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 overflow-hidden"
           >
             <motion.div layout className="flex items-center gap-3">
               {isDisconnecting ? (

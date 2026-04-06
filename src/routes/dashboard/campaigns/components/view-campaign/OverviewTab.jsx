@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { Clock, Database, ExternalLink, Send, Settings2, ShieldCheck, Target, Activity } from 'lucide-react';
 
 const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, steps }) => {
@@ -12,7 +12,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                <Activity className="w-5 h-5 text-orange-600" />
+                <Activity className="w-5 h-5 text-purple-600" />
                 {t('campaigns.overview.progress', 'Campaign Progress')}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -20,10 +20,10 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
               </p>
             </div>
             <div className="ltr:text-right rtl:text-left">
-              <span className="text-3xl font-black text-orange-600 tabular-nums">
+              <span className="text-3xl font-black text-purple-600 tabular-nums">
                 {stats.progress}%
               </span>
-              <p className="text-[10px] font-black text-orange-300 uppercase tracking-widest leading-none">
+              <p className="text-[10px] font-black text-purple-300 uppercase tracking-widest leading-none">
                 {t('campaigns.overview.complete', 'Complete')}
               </p>
             </div>
@@ -32,7 +32,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
           <div className="space-y-6">
             <div className="relative h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40 p-0.5">
               <div
-                className="h-full bg-linear-to-r from-orange-500 via-orange-600 to-orange-700 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/20"
+                className="h-full bg-linear-to-r from-purple-500 via-purple-600 to-purple-700 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-purple-500/20"
                 style={{ width: `${stats.progress}%` }}
               >
                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-size-[40px_40px] animate-[shimmer_2s_infinite_linear]"></div>
@@ -52,7 +52,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
                   {t('campaigns.overview.total_sent', 'Total Sent')}
                 </span>
-                <span className="text-2xl font-black text-orange-600 tracking-tighter tabular-nums">
+                <span className="text-2xl font-black text-purple-600 tracking-tighter tabular-nums">
                   {stats.totalSent.toLocaleString()}
                 </span>
               </div>
@@ -64,7 +64,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
         {steps && steps.length > 1 && (
           <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-              <Activity className="w-5 h-5 text-orange-600" />
+              <Activity className="w-5 h-5 text-purple-600" />
               {t('campaigns.overview.sequence', 'Campaign Sequence')}
             </h3>
 
@@ -78,7 +78,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
                     <div
                       className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 shadow-sm relative z-10 ${
                         idx === 0
-                          ? 'bg-orange-600 text-white shadow-orange-200'
+                          ? 'bg-purple-600 text-white shadow-purple-200'
                           : 'bg-white border border-slate-200 text-slate-400'
                       }`}
                     >
@@ -121,7 +121,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
         {/* Campaign Details */}
         <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-            <Database className="w-5 h-5 text-orange-600" />
+            <Database className="w-5 h-5 text-purple-600" />
             {t('campaigns.overview.details', 'Campaign Details')}
           </h3>
 
@@ -162,7 +162,7 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
       <div className="space-y-8">
         <div className="premium-card bg-white border-slate-200/60 p-8 shadow-sm shadow-slate-900/2 h-full">
           <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mb-8">
-            <Settings2 className="w-5 h-5 text-orange-600" />
+            <Settings2 className="w-5 h-5 text-purple-600" />
             {t('campaigns.overview.settings', 'Campaign Settings')}
           </h3>
 
@@ -190,15 +190,15 @@ const OverviewTab = ({ campaign, stats, previews, placeholders, formatDate, step
             />
 
             <div className="pt-8 mt-8 border-t border-slate-100">
-              <div className="p-4 bg-orange-50/50 rounded-lg border border-orange-100 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-md bg-orange-600 flex items-center justify-center shrink-0 shadow-sm shadow-orange-200">
+              <div className="p-4 bg-purple-50/50 rounded-lg border border-purple-100 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-md bg-purple-600 flex items-center justify-center shrink-0 shadow-sm shadow-purple-200">
                   <ShieldCheck className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-orange-900 uppercase tracking-widest mb-1">
+                  <p className="text-[10px] font-black text-purple-900 uppercase tracking-widest mb-1">
                     Campaign Status
                   </p>
-                  <p className="text-[11px] font-medium text-orange-700 leading-tight">
+                  <p className="text-[11px] font-medium text-purple-700 leading-tight">
                     All settings verified. Campaign is optimized and ready.
                   </p>
                 </div>
@@ -222,7 +222,7 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
       {value}
     </p>
     {subValue && (
-      <p className="text-[9px] font-bold text-orange-400 uppercase tracking-widest mt-1">
+      <p className="text-[9px] font-bold text-purple-400 uppercase tracking-widest mt-1">
         {subValue}
       </p>
     )}
@@ -232,17 +232,17 @@ const DetailItem = ({ label, value, subValue, uppercase }) => (
 const SettingItem = ({ icon, label, status, desc, t }) => (
   <div className="flex items-start gap-4 group">
     <div
-      className={`p-3 rounded-md transition-all duration-300 ${status ? 'bg-orange-50 text-orange-600 scale-110 shadow-sm shadow-orange-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
+      className={`p-3 rounded-md transition-all duration-300 ${status ? 'bg-purple-50 text-purple-600 scale-110 shadow-sm shadow-purple-100' : 'bg-slate-50 text-slate-400 opacity-50'}`}
     >
       {icon}
     </div>
     <div className="flex-1">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-black text-slate-900 tracking-tight group-hover:text-orange-600 transition-colors">
+        <p className="text-sm font-black text-slate-900 tracking-tight group-hover:text-purple-600 transition-colors">
           {label}
         </p>
         <span
-          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-orange-100 text-orange-700' : 'bg-slate-100 text-slate-400'}`}
+          className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${status ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-400'}`}
         >
           {status ? t('campaigns.overview.active', 'Active') : t('campaigns.overview.disabled', 'Disabled')}
         </span>

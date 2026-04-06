@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { forwardRef } from 'react';
 import { ChevronRight, Paperclip, Search, Star, Plus, RefreshCw, ShieldCheck, X } from 'lucide-react';
 import Pagination from './pagination';
@@ -91,7 +91,7 @@ const MessagesView = forwardRef(
                   {onBack && (
                     <button
                       onClick={onBack}
-                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-90"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-90"
                     >
                       <ChevronRight className="w-4 h-4 rotate-180" />
                     </button>
@@ -112,7 +112,7 @@ const MessagesView = forwardRef(
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={onCompose}
-                    className="h-9 px-4 bg-orange-600 hover:bg-orange-700 text-white rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-500/20 transition-all active:scale-95"
+                    className="h-9 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-500/20 transition-all active:scale-95"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Compose</span>
@@ -122,22 +122,22 @@ const MessagesView = forwardRef(
                     onClick={onSync}
                     disabled={isSyncing}
                     className={`w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white transition-all active:scale-90 group ${
-                      isSyncing ? 'bg-slate-50' : 'hover:border-orange-200'
+                      isSyncing ? 'bg-slate-50' : 'hover:border-purple-200'
                     }`}
                   >
-                    <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-orange-500' : 'text-slate-400 group-hover:text-orange-600'}`} />
+                    <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-purple-500' : 'text-slate-400 group-hover:text-purple-600'}`} />
                   </button>
 
                   <button
                     onClick={onFilterUnread}
                     className={`h-9 px-3 rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest border transition-all ${
                       filterUnreadActive
-                        ? 'bg-orange-50 border-orange-200 text-orange-600'
+                        ? 'bg-purple-50 border-purple-200 text-purple-600'
                         : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
                     }`}
                     title="Toggle Unread Focus"
                   >
-                    <Star className={`w-3.5 h-3.5 ${filterUnreadActive ? 'fill-orange-600' : ''}`} />
+                    <Star className={`w-3.5 h-3.5 ${filterUnreadActive ? 'fill-purple-600' : ''}`} />
                     <span className="hidden lg:inline">{filterUnreadActive ? 'Unread Focus' : 'Unread'}</span>
                   </button>
                   <button
@@ -156,13 +156,13 @@ const MessagesView = forwardRef(
 
                 {/* 3. Search Bar */}
                 <div className="flex-1 relative group min-w-[200px]">
-                  <Search className="absolute ltr:left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
+                  <Search className="absolute ltr:left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-purple-500 transition-colors" />
                   <input
                     type="text"
                     placeholder={t('mailboxes.messages_search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full ltr:pl-10 rtl:pr-10 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/40 transition-all outline-none"
+                    className="w-full ltr:pl-10 rtl:pr-10 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500/40 transition-all outline-none"
                   />
                   {searchQuery && (
                     <button
@@ -180,7 +180,7 @@ const MessagesView = forwardRef(
                     <select
                       value={dateRange}
                       onChange={(e) => onDateRangeChange(e.target.value)}
-                      className="appearance-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-semibold uppercase text-slate-500 pr-8 focus:border-orange-500/40 outline-none cursor-pointer"
+                      className="appearance-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-semibold uppercase text-slate-500 pr-8 focus:border-purple-500/40 outline-none cursor-pointer"
                     >
                       <option value="all">All Time</option>
                       <option value="today">Today</option>
@@ -193,8 +193,8 @@ const MessagesView = forwardRef(
                     onClick={onFilterAttachments}
                     className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all ${
                       filterAttachments
-                        ? 'bg-orange-600 border-orange-600 text-white shadow-sm'
-                        : 'bg-white border-slate-200 text-slate-400 hover:text-orange-600'
+                        ? 'bg-purple-600 border-purple-600 text-white shadow-sm'
+                        : 'bg-white border-slate-200 text-slate-400 hover:text-purple-600'
                     }`}
                     title="Files"
                   >
@@ -202,7 +202,7 @@ const MessagesView = forwardRef(
                   </button>
 
                   <button
-                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-emerald-50/30 text-emerald-600 hover:bg-emerald-50 transition-all active:scale-95 shadow-xs"
+                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-purple-50/30 text-purple-600 hover:bg-purple-50 transition-all active:scale-95 shadow-xs"
                     title="Connection Secure"
                   >
                     <ShieldCheck className="w-3.5 h-3.5" />
@@ -248,8 +248,8 @@ const MessagesView = forwardRef(
                     />
                   ) : (
                     <div className="flex-1 flex flex-col items-center justify-center p-20 bg-white/50  animate-pulse">
-                      <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
-                        <div className="w-8 h-8 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
                       </div>
                       <h3 className="text-lg font-bold text-slate-800">
                         {t('mailboxes.loading_conversation')}
@@ -280,9 +280,9 @@ const MessagesView = forwardRef(
                   {isLoadingMessages && filteredMessages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center flex-1 px-6 bg-white/20 ">
                       <div className="relative">
-                        <div className="w-16 h-16 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin"></div>
+                        <div className="w-16 h-16 border-4 border-purple-100 border-t-purple-500 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-4 h-4 bg-orange-500 rounded-full animate-pulse shadow-orange-500/50"></div>
+                          <div className="w-4 h-4 bg-purple-500 rounded-full animate-pulse shadow-purple-500/50"></div>
                         </div>
                       </div>
                       <div className="flex flex-col items-center gap-2 mt-8">
@@ -306,7 +306,7 @@ const MessagesView = forwardRef(
                           <div className="flex flex-col items-center gap-4 p-8 bg-white/80 rounded-2xl shadow-sm border border-white">
                             <div className="relative">
                               <div className="w-12 h-12 border-4 border-slate-100 rounded-full"></div>
-                              <div className="absolute top-0 w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+                              <div className="absolute top-0 w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
                             </div>
                           </div>
                         </div>

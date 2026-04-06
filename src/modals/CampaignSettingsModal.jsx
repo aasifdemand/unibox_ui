@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Settings, CheckCircle2, AlertCircle, Check } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -23,7 +23,7 @@ const CampaignSettingsModal = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-xl" showCloseButton={true}>
       <div className="overflow-hidden">
         {/* Premium Header */}
-        <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+        <div className="bg-linear-to-br from-purple-600 to-purple-700 p-8 relative overflow-hidden group">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -67,10 +67,10 @@ const CampaignSettingsModal = ({
               {trackingOptions.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-orange-100 transition-all group"
+                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-purple-100 transition-all group"
                 >
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold text-slate-700 group-hover:text-orange-900 transition-colors">
+                    <span className="text-sm font-bold text-slate-700 group-hover:text-purple-900 transition-colors">
                       {item.label}
                     </span>
                     <span className="text-[10px] text-slate-400 font-medium mt-0.5">
@@ -79,12 +79,12 @@ const CampaignSettingsModal = ({
                   </div>
                   <div
                     onClick={() => setValue(item.id, !watch(item.id))}
-                    className={`w-12 h-7 rounded-full relative cursor-pointer transition-all duration-300 shadow-inner ${watch(item.id) ? 'bg-orange-600' : 'bg-slate-200'}`}
+                    className={`w-12 h-7 rounded-full relative cursor-pointer transition-all duration-300 shadow-inner ${watch(item.id) ? 'bg-purple-600' : 'bg-slate-200'}`}
                   >
                     <div
                       className={`absolute top-[4.5px] w-4.5 h-4.5 bg-white rounded-full shadow-md transition-all duration-300 flex items-center justify-center ${watch(item.id) ? 'left-[24px]' : 'left-[5px]'}`}
                     >
-                      {watch(item.id) && <div className="w-1 h-1 bg-orange-600 rounded-full" />}
+                      {watch(item.id) && <div className="w-1 h-1 bg-purple-600 rounded-full" />}
                     </div>
                   </div>
                 </div>
@@ -95,11 +95,11 @@ const CampaignSettingsModal = ({
               <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                 <AlertCircle className="w-4 h-4" /> {t('campaigns.smart_delivery', 'Smart Delivery')}
               </h3>
-              <div className="flex items-center gap-5 p-6 bg-orange-50/50 rounded-lg border border-orange-100 group">
-                <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
+              <div className="flex items-center gap-5 p-6 bg-purple-50/50 rounded-lg border border-purple-100 group">
+                <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <p className="text-xs text-orange-700 font-bold leading-relaxed flex-1">
+                <p className="text-xs text-purple-700 font-bold leading-relaxed flex-1">
                   {t('campaigns.ai_optimization_desc', 'AI Optimization is active. We automatically space out emails and use warmed pools for peak inbox rates.')}
                 </p>
               </div>
@@ -109,7 +109,7 @@ const CampaignSettingsModal = ({
           <div className="flex justify-end pt-6">
             <Button
               onClick={onClose}
-              className="w-full py-4 bg-orange-600 text-white rounded-lg text-[11px] font-bold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:bg-orange-700 transition-all hover:-translate-y-0.5"
+              className="w-full py-4 bg-purple-600 text-white rounded-lg text-[11px] font-bold uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all hover:-translate-y-0.5"
             >
               {t('campaigns.apply_optimization', 'Apply Optimization')}
             </Button>

@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import {
   ChevronRight,
   Plus,
@@ -148,7 +148,7 @@ const Header = ({
           {view !== 'list' && (
             <button
               onClick={onBack}
-              className="p-2 hover:bg-slate-100 rounded-md transition-all text-slate-400 hover:text-orange-600 active:scale-90"
+              className="p-2 hover:bg-slate-100 rounded-md transition-all text-slate-400 hover:text-purple-600 active:scale-90"
               aria-label="Go back"
             >
               <ChevronRight className="w-6 h-6 rotate-180" />
@@ -186,7 +186,7 @@ const Header = ({
 
               {view === 'messages' && selectedMailbox && (
                 <div className="hidden sm:flex items-center gap-2">
-                  <AtSign className="w-3.5 h-3.5 text-orange-500" />
+                  <AtSign className="w-3.5 h-3.5 text-purple-500" />
                   <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-xs">
                     {selectedMailbox.email}
                   </span>
@@ -197,7 +197,7 @@ const Header = ({
             <div className="flex items-center gap-3 mt-2 font-sans">
               {view === 'list' && (
                 <div className="flex items-center gap-2">
-                  <Inbox className="w-3.5 h-3.5 text-orange-500" />
+                  <Inbox className="w-3.5 h-3.5 text-purple-500" />
                   <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">
                     {t('mailboxes.connected_accounts', { count: mailboxesCount })}
                   </p>
@@ -208,17 +208,17 @@ const Header = ({
                 <div className="flex items-center flex-wrap gap-2">
                   <div className="flex items-center gap-1.5">
                     {selectedFolder && (
-                      <span className="px-3 py-1 bg-orange-50/50 text-orange-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-orange-100 shadow-xs">
+                      <span className="px-3 py-1 bg-purple-50/50 text-purple-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-purple-100 shadow-xs">
                         {selectedFolder.name}
                       </span>
                     )}
                     {getFolderUnreadCount() > 0 && !filterUnread && (
-                      <span className="px-3 py-1 bg-orange-50/50 text-orange-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-orange-100 shadow-xs animate-pulse">
+                      <span className="px-3 py-1 bg-purple-50/50 text-purple-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-purple-100 shadow-xs animate-pulse">
                         {getFolderUnreadCount()} {t('mailboxes.priority')}
                       </span>
                     )}
                     {filterUnread && (
-                      <span className="px-3 py-1 bg-orange-50/50 text-orange-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-orange-100 shadow-xs">
+                      <span className="px-3 py-1 bg-purple-50/50 text-purple-600 rounded-lg text-[9px] font-extrabold uppercase tracking-widest border border-purple-100 shadow-xs">
                         {t('mailboxes.unread_focus')}
                       </span>
                     )}
@@ -241,7 +241,7 @@ const Header = ({
 
               {view === 'message' && currentMessage && (
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-orange-500/50"></div>
+                  <div className="w-1 h-1 rounded-full bg-purple-500/50"></div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     {t('mailboxes.viewing_conversation')}
                   </p>
@@ -250,7 +250,7 @@ const Header = ({
 
               {view === 'compose' && (
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-orange-500/50"></div>
+                  <div className="w-1 h-1 rounded-full bg-purple-500/50"></div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     {selectedMailbox?.email}
                   </p>
@@ -266,8 +266,8 @@ const Header = ({
               <FilterDropdown
                 badgeCount={(mailboxSearch ? 1 : 0) + (mailboxTypeFilter !== 'all' ? 1 : 0)}
               >
-                <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 w-full focus-within:ring-2 focus-within:ring-orange-500/10 focus-within:border-orange-500/40 focus-within:bg-white transition-all">
-                  <Search className="w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-colors shrink-0" />
+                <div className="relative group flex items-center bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 w-full focus-within:ring-2 focus-within:ring-purple-500/10 focus-within:border-purple-500/40 focus-within:bg-white transition-all">
+                  <Search className="w-4 h-4 text-slate-400 group-focus-within:text-purple-500 transition-colors shrink-0" />
                   <input
                     type="text"
                     placeholder={t('mailboxes.search_mailboxes')}
@@ -298,7 +298,7 @@ const Header = ({
                             (!mailboxTypeFilter || mailboxTypeFilter.length === 0)) ||
                           (Array.isArray(mailboxTypeFilter) &&
                             mailboxTypeFilter.includes(option.value))
-                            ? 'bg-orange-50 text-orange-700'
+                            ? 'bg-purple-50 text-purple-700'
                             : 'hover:bg-slate-100 text-slate-600'
                         }`}
                       >
@@ -308,8 +308,8 @@ const Header = ({
                               (!mailboxTypeFilter || mailboxTypeFilter.length === 0)) ||
                             (Array.isArray(mailboxTypeFilter) &&
                               mailboxTypeFilter.includes(option.value))
-                              ? 'bg-orange-500 border-orange-500 text-white'
-                              : 'border-slate-300 bg-white group-hover:border-orange-300 text-transparent'
+                              ? 'bg-purple-500 border-purple-500 text-white'
+                              : 'border-slate-300 bg-white group-hover:border-purple-300 text-transparent'
                           }`}
                         >
                           <CheckCircle className="w-2.5 h-2.5" />
@@ -326,20 +326,20 @@ const Header = ({
               <button
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shadow-sm group"
+                className="w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shadow-sm group"
                 title="Refresh Mailboxes"
               >
                 <RefreshCw
                   className={`w-4 h-4 ${
                     isLoading
-                      ? 'animate-spin text-orange-500'
-                      : 'text-slate-500 group-hover:text-orange-600'
+                      ? 'animate-spin text-purple-500'
+                      : 'text-slate-500 group-hover:text-purple-600'
                   }`}
                 />
               </button>
 
               {selectedSenderIds?.length > 0 ? (
-                <div className="flex items-center gap-1.5 bg-orange-600 px-3 py-1.5 rounded-md shadow-sm shadow-orange-500/20 animate-in zoom-in duration-300">
+                <div className="flex items-center gap-1.5 bg-purple-600 px-3 py-1.5 rounded-md shadow-sm shadow-purple-500/20 animate-in zoom-in duration-300">
                   <div className="flex items-center justify-center bg-white/20 px-2.5 py-1 rounded-lg">
                     <span className="text-[10px] font-black text-white">
                       {selectedSenderIds.length}
@@ -365,7 +365,7 @@ const Header = ({
               ) : (
                 <button
                   onClick={() => setShowSenderModal(true)}
-                  className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-extrabold  tracking-widest text-[11px] rounded-md"
+                  className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-extrabold  tracking-widest text-[11px] rounded-md"
                 >
                   <Plus className="w-4 h-4 text-white" />
                   {t('mailboxes.add_mailbox')}
@@ -439,14 +439,14 @@ const Header = ({
               <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-lg border border-slate-200 mr-2">
                 <button
                   onClick={onAttach}
-                  className="p-2 text-slate-500 hover:bg-white hover:text-orange-600 rounded-md transition-all hover:shadow-sm"
+                  className="p-2 text-slate-500 hover:bg-white hover:text-purple-600 rounded-md transition-all hover:shadow-sm"
                   title={t('mailboxes.attach_file')}
                 >
                   <Paperclip className="w-4 h-4" />
                 </button>
                 <button
                   onClick={onAttachImage}
-                  className="p-2 text-slate-500 hover:bg-white hover:text-orange-600 rounded-md transition-all hover:shadow-sm"
+                  className="p-2 text-slate-500 hover:bg-white hover:text-purple-600 rounded-md transition-all hover:shadow-sm"
                   title={t('mailboxes.attach_image')}
                 >
                   <ImageIcon className="w-4 h-4" />
@@ -456,7 +456,7 @@ const Header = ({
                   onClick={onTogglePreview}
                   className={`p-2 rounded-md transition-all ${
                     showPreview
-                      ? 'bg-white text-orange-600 shadow-sm ring-1 ring-slate-200'
+                      ? 'bg-white text-purple-600 shadow-sm ring-1 ring-slate-200'
                       : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200/50'
                   }`}
                   title={showPreview ? t('mailboxes.hide_preview') : t('mailboxes.show_preview')}
@@ -476,8 +476,8 @@ const Header = ({
                 disabled={isSending}
                 className={`flex items-center gap-2 px-8 py-2.5 rounded-md text-sm font-black uppercase tracking-widest transition-all shadow-sm active:scale-95 ${
                   isSending
-                    ? 'bg-orange-400 cursor-not-allowed text-white/50'
-                    : 'bg-orange-600 hover:bg-orange-700 text-white shadow-orange-500/20 shadow-sm'
+                    ? 'bg-purple-400 cursor-not-allowed text-white/50'
+                    : 'bg-purple-600 hover:bg-purple-700 text-white shadow-purple-500/20 shadow-sm'
                 }`}
               >
                 {isSending ? (

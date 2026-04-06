@@ -1,4 +1,4 @@
-import { AlertCircle, Loader2, Trash2, Shield } from 'lucide-react';
+﻿import { AlertCircle, Loader2, Trash2, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import Modal from '../components/shared/modal';
@@ -18,7 +18,7 @@ const ShowDelete = ({
       maxWidth="max-w-md"
       closeOnBackdrop={true}
     >
-      <div className="bg-linear-to-br from-orange-600 to-red-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-purple-600 to-red-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Trash2 className="w-16 h-16 text-white" />
         </div>
@@ -36,7 +36,7 @@ const ShowDelete = ({
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
                 {t('settings.delete.campaign_title')}
               </h3>
-              <p className="text-[10px] font-bold text-orange-100/70 uppercase tracking-widest mt-0.5">
+              <p className="text-[10px] font-bold text-purple-100/70 uppercase tracking-widest mt-0.5">
                 {t('settings.delete.footer_note')}
               </p>
             </div>
@@ -46,8 +46,8 @@ const ShowDelete = ({
 
       <div className="p-6">
         <div className="flex items-start gap-4 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center shrink-0 border border-orange-100">
-            <AlertCircle className="w-6 h-6 text-orange-500" />
+          <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center shrink-0 border border-purple-100">
+            <AlertCircle className="w-6 h-6 text-purple-500" />
           </div>
           <div>
             <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight mb-2">
@@ -80,7 +80,7 @@ const ShowDelete = ({
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="group relative px-8 py-3 bg-orange-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 overflow-hidden"
+            className="group relative px-8 py-3 bg-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3 overflow-hidden"
           >
             <motion.div layout className="flex items-center gap-3">
               {isDeleting ? (

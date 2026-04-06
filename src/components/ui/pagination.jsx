@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, className = '' }) => {
@@ -59,7 +59,7 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange, class
           onClick={() => onPageChange(page)}
           className={`w-10 h-10 rounded-md text-sm font-bold transition-all duration-200 ${
             currentPage === page
-              ? 'bg-orange-600 text-white shadow-sm shadow-orange-200'
+              ? 'bg-purple-600 text-white shadow-sm shadow-purple-200'
               : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
           }`}
         >

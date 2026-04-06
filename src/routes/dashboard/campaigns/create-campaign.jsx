@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
@@ -345,7 +345,7 @@ const CreateCampaign = () => {
   if (isLoadingEditing && editId) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
+        <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
       </div>
     );
   }
@@ -487,7 +487,7 @@ const CreateCampaign = () => {
             <Input
               type="text"
               {...register('name')}
-              className="h-10 border-slate-200 bg-white rounded-xl text-base font-extrabold text-slate-800 focus:border-orange-500 w-[280px]"
+              className="h-10 border-slate-200 bg-white rounded-xl text-base font-extrabold text-slate-800 focus:border-purple-500 w-[280px]"
               placeholder="Campaign Name"
             />
           </div>
@@ -512,7 +512,7 @@ const CreateCampaign = () => {
           {currentStep < steps.length ? (
             <button
               onClick={nextStep}
-              className="px-8 py-3 bg-orange-600 rounded-md text-[11px] font-bold text-white shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all"
+              className="px-8 py-3 bg-purple-600 rounded-md text-[11px] font-bold text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all"
             >
               Save & Next
             </button>
@@ -520,7 +520,7 @@ const CreateCampaign = () => {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={createCampaign.isPending}
-              className="px-10 py-3 bg-orange-600 rounded-md text-[11px] font-bold text-white shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all flex items-center gap-2"
+              className="px-10 py-3 bg-purple-600 rounded-md text-[11px] font-bold text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
               {createCampaign.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

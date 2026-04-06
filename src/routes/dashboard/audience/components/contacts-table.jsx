@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+﻿import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -47,9 +47,9 @@ const RECORDS_PER_PAGE = 10;
 const getVerificationIcon = (status) => {
   switch (status) {
     case 'valid':
-      return <CheckCircle className="w-3.5 h-3.5 text-orange-500" />;
+      return <CheckCircle className="w-3.5 h-3.5 text-purple-500" />;
     case 'invalid':
-      return <XCircle className="w-3.5 h-3.5 text-orange-500" />;
+      return <XCircle className="w-3.5 h-3.5 text-purple-500" />;
     case 'risky':
       return <AlertCircle className="w-3.5 h-3.5 text-amber-500" />;
     default:
@@ -59,9 +59,9 @@ const getVerificationIcon = (status) => {
 const getVerificationBadgeClass = (status) => {
   switch (status) {
     case 'valid':
-      return 'bg-orange-50 text-orange-600 border border-orange-100';
+      return 'bg-purple-50 text-purple-600 border border-purple-100';
     case 'invalid':
-      return 'bg-orange-50 text-orange-600 border border-orange-100';
+      return 'bg-purple-50 text-purple-600 border border-purple-100';
     case 'risky':
       return 'bg-amber-50 text-amber-600 border border-amber-100';
     default:
@@ -149,11 +149,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -177,11 +177,11 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
     <div className="relative z-50 " ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 px-3.5 py-3 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm"
+        className="flex items-center gap-2 px-3.5 py-3 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-purple-200 hover:text-purple-600 transition-all shadow-sm"
       >
         <Columns3 className="w-3.5 h-3.5" />
         Columns
-        <span className="bg-orange-100 text-orange-600 rounded px-1.5 py-0.5 text-[9px] font-black">
+        <span className="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 text-[9px] font-black">
           {visibleCols.size}
         </span>
       </button>
@@ -201,7 +201,7 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
               <div className="flex gap-2">
                 <button
                    onClick={() => onSetAll(allIds)}
-                   className="text-[9px] font-black text-orange-500 hover:text-orange-700 uppercase tracking-wider"
+                   className="text-[9px] font-black text-purple-500 hover:text-purple-700 uppercase tracking-wider"
                 >
                   All
                 </button>
@@ -222,7 +222,7 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-slate-50 transition-colors group"
                 >
                   <div
-                    className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${visibleCols.has(field.id) ? 'bg-orange-600 border-orange-600' : 'border-slate-200 bg-white'}`}
+                    className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${visibleCols.has(field.id) ? 'bg-purple-600 border-purple-600' : 'border-slate-200 bg-white'}`}
                   >
                     {visibleCols.has(field.id) && (
                       <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
@@ -368,7 +368,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
         cell: (info) => (
             <CopyableCell text={info.getValue()} className="min-w-[120px]">
               {info.getValue() ? (
-                <div className="w-7 h-7 rounded-full bg-linear-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
+                <div className="w-7 h-7 rounded-full bg-linear-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
                   {info
                     .getValue()
                     .split(' ')
@@ -442,7 +442,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
               href={val}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-orange-500 hover:text-orange-700 font-medium text-[12px] truncate max-w-[160px]"
+              className="flex items-center gap-1 text-purple-500 hover:text-purple-700 font-medium text-[12px] truncate max-w-[160px]"
               onClick={(e) => e.stopPropagation()}
             >
               <Link className="w-3 h-3 shrink-0" />
@@ -506,7 +506,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
       {
         id: 'enrich',
         header: () => (
-          <div className="flex items-center gap-1 text-orange-400">
+          <div className="flex items-center gap-1 text-purple-400">
             <Sparkles className="w-3 h-3" />
             <span>Enrich</span>
           </div>
@@ -522,10 +522,10 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
               }}
               disabled={isEnriching}
               className={`group/enrich flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${isEnriching
-                ? 'bg-orange-100 text-orange-500 animate-pulse cursor-wait'
+                ? 'bg-purple-100 text-purple-500 animate-pulse cursor-wait'
                 : wasEnriched
-                  ? 'bg-slate-50 text-slate-400 border border-slate-100 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-100'
-                  : 'bg-orange-50 text-orange-600 border border-orange-100 hover:bg-orange-100 shadow-sm shadow-orange-500/5'
+                  ? 'bg-slate-50 text-slate-400 border border-slate-100 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-100'
+                  : 'bg-purple-50 text-purple-600 border border-purple-100 hover:bg-purple-100 shadow-sm shadow-purple-500/5'
                 }`}
             >
               <Sparkles className={`w-3 h-3 shrink-0 ${isEnriching ? 'animate-spin' : ''}`} />
@@ -576,7 +576,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
         </div>
         <button
           onClick={() => setShowUploadModal(true)}
-          className="btn-primary h-11 px-6 flex items-center gap-3 rounded-md text-[11px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-500/20"
+          className="btn-primary h-11 px-6 flex items-center gap-3 rounded-md text-[11px] font-extrabold uppercase tracking-widest shadow-sm shadow-purple-500/20"
         >
           <Upload className="w-4 h-4" />
           {t('audience.add_contacts')}
@@ -619,14 +619,14 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.012, duration: 0.25, ease: 'easeOut' }}
-                  className="group hover:bg-orange-50/20 transition-colors duration-150"
+                  className="group hover:bg-purple-50/20 transition-colors duration-150"
                 >
                   {row.getVisibleCells().map((cell) => {
                     const isSticky = cell.column.columnDef.meta?.sticky;
                     return (
                       <td
                         key={cell.id}
-                        className={`px-8 py-4 ${isSticky ? 'sticky right-0 bg-white group-hover:bg-orange-50/20 border-l border-slate-100 z-10' : ''}`}
+                        className={`px-8 py-4 ${isSticky ? 'sticky right-0 bg-white group-hover:bg-purple-50/20 border-l border-slate-100 z-10' : ''}`}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -659,7 +659,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
       {/* Pagination */}
       <div className="flex flex-col sm:flex-row items-center justify-between px-2 gap-4 sm:gap-0 py-1">
         <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
+          <div className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
           <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
             {totalRecords.toLocaleString()} {t('audience.total_contacts')}
           </p>
@@ -669,12 +669,12 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
             <button
               onClick={() => setCurrentPage((p) => p - 1)}
               disabled={currentPage === 1}
-              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-purple-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <div className="px-4 flex items-center gap-2">
-              <span className="text-xs font-black text-orange-600 bg-orange-50 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-black text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg">
                 {currentPage}
               </span>
               <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
@@ -683,7 +683,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
             <button
               onClick={() => setCurrentPage((p) => p + 1)}
               disabled={currentPage === totalPages}
-              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-purple-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

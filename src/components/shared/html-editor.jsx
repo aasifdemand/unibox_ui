@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -203,7 +203,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
         autolink: true,
         linkOnPaste: true,
         HTMLAttributes: {
-          class: 'text-orange-600 underline cursor-pointer',
+          class: 'text-purple-600 underline cursor-pointer',
         },
       }),
       Image.configure({
@@ -358,7 +358,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
       editor
         .chain()
         .focus()
-        .insertContent(`<a href="${url}" class="text-orange-600 underline cursor-pointer">${url}</a>`)
+        .insertContent(`<a href="${url}" class="text-purple-600 underline cursor-pointer">${url}</a>`)
         .run();
     } else {
       editor.chain().focus().setLink({ href: url }).run();
@@ -419,7 +419,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
     return (
       <div className="min-h-100 flex items-center justify-center text-gray-500">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p>Loading editor…</p>
         </div>
       </div>
@@ -460,7 +460,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'style' ? null : 'style')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[110px] ${openDropdown === 'style' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[110px] ${openDropdown === 'style' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <span className="flex-1 text-left">
                 {editor.isActive('paragraph') ? (
@@ -483,7 +483,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().setParagraph().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full text-left px-4 py-2 text-[11px] font-bold border-b border-slate-50 transition-colors ${editor.isActive('paragraph') ? 'bg-orange-50 text-orange-600' : 'hover:bg-slate-50 text-slate-600'}`}
+                  className={`w-full text-left px-4 py-2 text-[11px] font-bold border-b border-slate-50 transition-colors ${editor.isActive('paragraph') ? 'bg-purple-50 text-purple-600' : 'hover:bg-slate-50 text-slate-600'}`}
                 >
                   Paragraph
                 </button>
@@ -495,7 +495,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                       editor.chain().focus().toggleHeading({ level }).run();
                       setOpenDropdown(null);
                     }}
-                    className={`w-full text-left px-4 py-2 text-[13px] font-black uppercase border-b border-slate-50 last:border-0 transition-colors ${editor.isActive('heading', { level }) ? 'bg-orange-50 text-orange-600' : 'hover:bg-slate-50 text-slate-900'}`}
+                    className={`w-full text-left px-4 py-2 text-[13px] font-black uppercase border-b border-slate-50 last:border-0 transition-colors ${editor.isActive('heading', { level }) ? 'bg-purple-50 text-purple-600' : 'hover:bg-slate-50 text-slate-900'}`}
                   >
                     h{level}
                   </button>
@@ -509,7 +509,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'font' ? null : 'font')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[100px] ${openDropdown === 'font' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[100px] ${openDropdown === 'font' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <TypeOutline className="w-3.5 h-3.5 flex-none" />
               <span className="flex-1 text-left truncate max-w-[70px]">
@@ -528,7 +528,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                         editor.chain().focus().setFontFamily(font).run();
                         setOpenDropdown(null);
                       }}
-                      className={`w-full text-left px-3 py-2 text-xs transition-colors ${editor.getAttributes('textStyle').fontFamily === font ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                      className={`w-full text-left px-3 py-2 text-xs transition-colors ${editor.getAttributes('textStyle').fontFamily === font ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                       style={{ fontFamily: font }}
                     >
                       {font}
@@ -544,7 +544,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'size' ? null : 'size')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[60px] ${openDropdown === 'size' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all min-w-[60px] ${openDropdown === 'size' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <Hash className="w-3.5 h-3.5 flex-none" />
               <span>{editor.getAttributes('textStyle').fontSize?.replace('px', '') || '16'}</span>
@@ -561,7 +561,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                         editor.chain().focus().setFontSize(`${size}px`).run();
                         setOpenDropdown(null);
                       }}
-                      className={`w-full text-center px-2 py-1.5 text-xs transition-colors ${editor.getAttributes('textStyle').fontSize === `${size}px` ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                      className={`w-full text-center px-2 py-1.5 text-xs transition-colors ${editor.getAttributes('textStyle').fontSize === `${size}px` ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                     >
                       {size}
                     </button>
@@ -578,7 +578,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'format' ? null : 'format')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'format' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'format' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <Bold className="w-3.5 h-3.5" />
               <span>Format</span>
@@ -592,7 +592,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleBold().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bold') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bold') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <Bold className="w-3.5 h-3.5" />
                   <span>Bold</span>
@@ -603,7 +603,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleItalic().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('italic') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('italic') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <Italic className="w-3.5 h-3.5" />
                   <span>Italic</span>
@@ -614,7 +614,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleUnderline().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('underline') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('underline') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <UnderlineIcon className="w-3.5 h-3.5" />
                   <span>Underline</span>
@@ -625,7 +625,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleStrike().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('strike') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('strike') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <Strikethrough className="w-3.5 h-3.5" />
                   <span>Strikethrough</span>
@@ -636,7 +636,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleHighlight().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('highlight') ? 'bg-orange-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('highlight') ? 'bg-purple-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <Highlighter className="w-3.5 h-3.5" />
                   <span>Highlight</span>
@@ -662,7 +662,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'align' ? null : 'align')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'align' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'align' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <AlignLeft className="w-3.5 h-3.5" />
               <span>Align</span>
@@ -676,7 +676,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().setTextAlign('left').run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'left' }) ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'left' }) ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <AlignLeft className="w-3.5 h-3.5" />
                   <span>Align Left</span>
@@ -687,7 +687,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().setTextAlign('center').run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'center' }) ? 'bg-orange-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'center' }) ? 'bg-purple-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <AlignCenter className="w-3.5 h-3.5" />
                   <span>Align Center</span>
@@ -698,7 +698,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().setTextAlign('right').run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'right' }) ? 'bg-orange-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'right' }) ? 'bg-purple-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <AlignRight className="w-3.5 h-3.5" />
                   <span>Align Right</span>
@@ -709,7 +709,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().setTextAlign('justify').run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'justify' }) ? 'bg-orange-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive({ textAlign: 'justify' }) ? 'bg-purple-600 text-white font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <AlignJustify className="w-3.5 h-3.5" />
                   <span>Justify</span>
@@ -723,7 +723,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'lists' ? null : 'lists')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'lists' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'lists' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <List className="w-3.5 h-3.5" />
               <span>Lists</span>
@@ -737,7 +737,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleBulletList().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bulletList') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('bulletList') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <List className="w-3.5 h-3.5" />
                   <span>Bullet List</span>
@@ -748,7 +748,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleOrderedList().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('orderedList') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('orderedList') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <ListOrdered className="w-3.5 h-3.5" />
                   <span>Numbered List</span>
@@ -764,7 +764,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'insert' ? null : 'insert')}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'insert' ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${openDropdown === 'insert' ? 'bg-purple-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
             >
               <LinkIcon className="w-3.5 h-3.5" />
               <span>Insert</span>
@@ -778,7 +778,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     setShowLinkModal(true);
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('link') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('link') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <LinkIcon className="w-3.5 h-3.5" />
                   <span>Hyperlink</span>
@@ -813,7 +813,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     editor.chain().focus().toggleBlockquote().run();
                     setOpenDropdown(null);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('blockquote') ? 'bg-orange-50 text-orange-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors ${editor.isActive('blockquote') ? 'bg-purple-50 text-purple-600 font-bold' : 'hover:bg-slate-50 text-slate-700'}`}
                 >
                   <Quote className="w-3.5 h-3.5" />
                   <span>Blockquote</span>
@@ -840,7 +840,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={() => setPreviewMode(!previewMode)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${previewMode ? 'bg-orange-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${previewMode ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'}`}
               title={previewMode ? 'Editor' : 'Preview'}
             >
               {previewMode ? <FileText className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -850,7 +850,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <button
               type="button"
               onClick={clearContent}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:bg-orange-50 hover:text-orange-600 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-400 hover:bg-purple-50 hover:text-purple-600 transition-all"
               title="Clear"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -866,9 +866,9 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <div className="max-w-4xl mx-auto premium-card bg-white min-h-125 overflow-hidden flex flex-col rounded-lg border border-slate-100 shadow-sm">
               <div className="bg-slate-50/50  border-b border-slate-100 flex-none px-6 py-3.5 flex items-center justify-between rounded-t-3xl">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-orange-400 border border-slate-200 shadow-inner"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400 border border-slate-200 shadow-inner"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-400 border border-slate-200 shadow-inner"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-orange-400 border border-slate-200 shadow-inner"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400 border border-slate-200 shadow-inner"></div>
                 </div>
                 <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
                   Email Content Canvas
@@ -894,19 +894,19 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
             <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-white/80  text-[10px] font-bold text-slate-500 uppercase tracking-widest select-none">
               <div className="flex items-center gap-6">
                 <span className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>{' '}
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>{' '}
                   {editor.getText().length} Characters
                 </span>
                 <span className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>{' '}
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>{' '}
                   {editor.getText().split(/\s+/).filter(Boolean).length} Words
                 </span>
                 <span className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>{' '}
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>{' '}
                   {((value || '').match(/\{\{([^}]+)\}\}/g) || []).length} Variables
                 </span>
               </div>
-              <div className="hidden md:flex items-center gap-2 text-orange-500/60 lowercase italic font-medium tracking-normal text-xs">
+              <div className="hidden md:flex items-center gap-2 text-purple-500/60 lowercase italic font-medium tracking-normal text-xs">
                 use internal tokens via {'{{'} trigger
               </div>
             </div>
@@ -918,9 +918,9 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10  animate-in fade-in duration-200">
             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
                   {' '}
-                  <LinkIcon className="w-5 h-5 text-orange-600" />{' '}
+                  <LinkIcon className="w-5 h-5 text-purple-600" />{' '}
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
                   Insert Link
@@ -931,7 +931,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                 value={linkUrl}
                 onChange={(e) => setLinkUrl(e.target.value)}
                 placeholder="https://hyperlink.io"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-lg mb-6 text-sm outline-none focus:ring-4 focus:ring-orange-500/10 transition-all"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-lg mb-6 text-sm outline-none focus:ring-4 focus:ring-purple-500/10 transition-all"
                 autoFocus
               />
               <div className="flex gap-3">
@@ -943,7 +943,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                 </button>
                 <button
                   onClick={setLink}
-                  className="flex-1 py-4 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-500/20 active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-500/20 active:scale-95 transition-all"
                 >
                   Inject
                 </button>
@@ -956,8 +956,8 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10  animate-in fade-in duration-200">
             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                  <ImageIcon className="w-5 h-5 text-orange-600" />
+                <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
+                  <ImageIcon className="w-5 h-5 text-purple-600" />
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
                   Insert Image
@@ -970,7 +970,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                   onClick={() => setImageUploadTab('url')}
                   className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
                     imageUploadTab === 'url'
-                      ? 'bg-white text-orange-600 shadow-sm'
+                      ? 'bg-white text-purple-600 shadow-sm'
                       : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
@@ -981,7 +981,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                   onClick={() => setImageUploadTab('file')}
                   className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
                     imageUploadTab === 'file'
-                      ? 'bg-white text-orange-600 shadow-sm'
+                      ? 'bg-white text-purple-600 shadow-sm'
                       : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
@@ -995,7 +995,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                     placeholder="https://example.com/image.jpg"
-                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-lg mb-6 text-sm outline-none focus:ring-4 focus:ring-orange-500/10 transition-all"
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-lg mb-6 text-sm outline-none focus:ring-4 focus:ring-purple-500/10 transition-all"
                     autoFocus
                   />
                   <div className="flex gap-3">
@@ -1007,7 +1007,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                     </button>
                     <button
                       onClick={() => addImage(imageUrl)}
-                      className="flex-1 py-4 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-500/20 active:scale-95 transition-all"
+                      className="flex-1 py-4 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-500/20 active:scale-95 transition-all"
                     >
                       Insert
                     </button>
@@ -1015,9 +1015,9 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                 </>
               ) : (
                 <>
-                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-orange-200 rounded-lg cursor-pointer bg-orange-50/30 hover:bg-orange-50 transition-all mb-6">
-                    <ImageIcon className="w-8 h-8 text-orange-400 mb-2" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-orange-400">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-purple-200 rounded-lg cursor-pointer bg-purple-50/30 hover:bg-purple-50 transition-all mb-6">
+                    <ImageIcon className="w-8 h-8 text-purple-400 mb-2" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
                       Click to choose file
                     </span>
                     <input
@@ -1043,9 +1043,9 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
           <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10  animate-in fade-in duration-200">
             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 w-full max-w-sm animate-in zoom-in-95 duration-300">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
                   {' '}
-                  <TableIcon className="w-5 h-5 text-orange-600" />{' '}
+                  <TableIcon className="w-5 h-5 text-purple-600" />{' '}
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">
                   Insert Table
@@ -1084,7 +1084,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
                 </button>
                 <button
                   onClick={insertTable}
-                  className="flex-1 py-4 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-500/20 active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-500/20 active:scale-95 transition-all"
                 >
                   Build
                 </button>

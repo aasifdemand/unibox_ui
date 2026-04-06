@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/ui/input';
 import Checkbox from '../../components/ui/checkbox';
@@ -87,9 +87,9 @@ const Signup = () => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="w-12 h-12 bg-orange-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-orange-100"
+          className="w-12 h-12 bg-purple-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-purple-100"
         >
-          <User className="w-6 h-6 text-orange-600" />
+          <User className="w-6 h-6 text-purple-600" />
         </motion.div>
         <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
           {t('auth.signup.title')}{' '}
@@ -151,11 +151,11 @@ const Signup = () => {
             label={
               <span className="text-[13px] font-semibold text-slate-700 leading-relaxed">
                 {t('auth.signup.terms_agree')}{' '}
-                <Link to="/terms" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">
+                <Link to="/terms" className="text-purple-600 hover:text-purple-700 font-bold transition-colors">
                   {t('auth.signup.terms_link')}
                 </Link>{' '}
                 {t('auth.signup.and')}{' '}
-                <Link to="/privacy" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">
+                <Link to="/privacy" className="text-purple-600 hover:text-purple-700 font-bold transition-colors">
                   {t('auth.signup.privacy_link')}
                 </Link>
               </span>
@@ -173,7 +173,7 @@ const Signup = () => {
         <div className="space-y-3 pt-2">
           <button
             type="submit"
-            className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
+            className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-purple-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
             disabled={isLoading || !turnstileToken}
           >
             {isLoading ? (
@@ -193,7 +193,7 @@ const Signup = () => {
           {t('auth.signup.already_account')}{' '}
           <Link
             to="/auth/login"
-            className="text-orange-600 hover:text-orange-700 font-bold transition-colors ltr:ml-1 rtl:mr-1"
+            className="text-purple-600 hover:text-purple-700 font-bold transition-colors ltr:ml-1 rtl:mr-1"
           >
             {t('auth.signup.sign_in_link')}
           </Link>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
 import { DateTime } from 'luxon';
 
@@ -117,7 +117,7 @@ export const getStatusInfo = (status) => {
       };
     case 'completed':
       return {
-        color: 'bg-orange-100 text-orange-800 border-orange-200',
+        color: 'bg-purple-100 text-purple-800 border-purple-200',
         icon: <CheckCircle className="w-4 h-4" />,
         label: 'Completed',
       };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import {
@@ -92,7 +92,7 @@ const ImportLeadsStep = ({
         <div className="space-y-6">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center shadow-sm">
+              <div className="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shadow-sm">
                 <Upload className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
@@ -106,15 +106,15 @@ const ImportLeadsStep = ({
 
           <div
             onClick={() => setShowUploadModal(true)}
-            className="group relative border-2 border-dashed border-slate-200 hover:border-orange-400 bg-white hover:bg-slate-50/50 rounded-lg p-16 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-sm hover:shadow-sm hover:shadow-orange-600/5 hover:-translate-y-1"
+            className="group relative border-2 border-dashed border-slate-200 hover:border-purple-400 bg-white hover:bg-slate-50/50 rounded-lg p-16 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-sm hover:shadow-sm hover:shadow-purple-600/5 hover:-translate-y-1"
           >
-            <div className="w-20 h-20 bg-orange-50 rounded-lg flex items-center justify-center text-orange-600 group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-500 shadow-inner mb-6">
+            <div className="w-20 h-20 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-500 shadow-inner mb-6">
               <FileSpreadsheet className="w-9 h-9" />
             </div>
             <div className="text-center space-y-2">
               <p className="text-xl font-bold text-slate-800">
                 Click to{' '}
-                <span className="text-orange-600 group-hover:underline underline-offset-4">
+                <span className="text-purple-600 group-hover:underline underline-offset-4">
                   browse
                 </span>{' '}
                 or drag and drop
@@ -123,7 +123,7 @@ const ImportLeadsStep = ({
                 Import a new spreadsheet and we&apos;ll automatically map the fields for you.
               </p>
             </div>
-            <div className="absolute bottom-6 right-8 flex items-center gap-2 text-orange-600 font-bold text-xs opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+            <div className="absolute bottom-6 right-8 flex items-center gap-2 text-purple-600 font-bold text-xs opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
               Start Upload <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
@@ -148,18 +148,18 @@ const ImportLeadsStep = ({
                 Saved Audiences
               </h3>
             </div>
-            <button className="text-[10px] font-black text-orange-600 uppercase tracking-widest hover:underline underline-offset-4">
+            <button className="text-[10px] font-black text-purple-600 uppercase tracking-widest hover:underline underline-offset-4">
               Manage Lists
             </button>
           </div>
 
-          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-10 hover:border-orange-100 transition-colors">
+          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-10 hover:border-purple-100 transition-colors">
             <div className="relative group">
               <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-                <Search className="w-5 h-5 text-slate-400 group-focus-within:text-orange-600 transition-colors" />
+                <Search className="w-5 h-5 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
               </div>
               <select
-                className="w-full pl-14 pr-12 h-12 bg-slate-50/50 border-2 border-slate-100 hover:border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:border-orange-600 focus:ring-4 focus:ring-orange-600/5 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
+                className="w-full pl-14 pr-12 h-12 bg-slate-50/50 border-2 border-slate-100 hover:border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:border-purple-600 focus:ring-4 focus:ring-purple-600/5 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
                 value={watchListBatchId || ''}
                 onChange={(e) => handleBatchSelect(e.target.value)}
               >
@@ -173,14 +173,14 @@ const ImportLeadsStep = ({
                   </option>
                 ))}
               </select>
-              <div className="absolute inset-y-0 right-6 flex items-center pointer-events-none text-slate-300 group-focus-within:text-orange-600 transition-colors">
+              <div className="absolute inset-y-0 right-6 flex items-center pointer-events-none text-slate-300 group-focus-within:text-purple-600 transition-colors">
                 <ChevronRight className="w-5 h-5 rotate-90" />
               </div>
             </div>
 
             {isLoadingBatches ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
+                <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
               </div>
             ) : (
               <div className="space-y-4">
@@ -192,11 +192,11 @@ const ImportLeadsStep = ({
                     <div
                       key={batch.id}
                       onClick={() => handleBatchSelect(batch.id)}
-                      className={`group flex items-center justify-between p-2 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${watchListBatchId === batch.id ? 'bg-orange-600 border-orange-600 shadow-sm shadow-orange-600/20' : 'bg-white border-slate-100 hover:border-orange-200 shadow-sm hover:shadow-md'}`}
+                      className={`group flex items-center justify-between p-2 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${watchListBatchId === batch.id ? 'bg-purple-600 border-purple-600 shadow-sm shadow-purple-600/20' : 'bg-white border-slate-100 hover:border-purple-200 shadow-sm hover:shadow-md'}`}
                     >
                       <div className="flex items-center gap-4 min-w-0">
                         <div
-                          className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all ${watchListBatchId === batch.id ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-400 group-hover:bg-orange-50 group-hover:text-orange-600'}`}
+                          className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all ${watchListBatchId === batch.id ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-400 group-hover:bg-purple-50 group-hover:text-purple-600'}`}
                         >
                           <Users className="w-6 h-6" />
                         </div>
@@ -215,7 +215,7 @@ const ImportLeadsStep = ({
                       </div>
 
                       {watchListBatchId === batch.id && (
-                        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-orange-600 animate-in zoom-in duration-300">
+                        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-purple-600 animate-in zoom-in duration-300">
                           <Check className="w-4 h-4" />
                         </div>
                       )}

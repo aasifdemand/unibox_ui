@@ -1,34 +1,38 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+﻿<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Premium Gradients -->
-    <linearGradient id="body_gradient" x1="20" y1="14" x2="20" y2="34" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FB923C" /> <!-- Orange 400 -->
-      <stop offset="1" stop-color="#EA580C" /> <!-- Orange 600 -->
+    <!-- Forest Depth Gradients -->
+    <linearGradient id="body_gradient" x1="4" y1="14" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4c1d95" /> <!-- Forest dark -->
+      <stop offset="1" stop-color="#7c3aed" /> <!-- Emerald -->
     </linearGradient>
-    <linearGradient id="flap_gradient" x1="20" y1="14" x2="20" y2="28" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FDBA74" /> <!-- Orange 300 -->
-      <stop offset="1" stop-color="#F97316" /> <!-- Orange 500 -->
+    <linearGradient id="flap_gradient" x1="4" y1="14" x2="36" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5b21b6" /> <!-- Forest mid -->
+      <stop offset="1" stop-color="#6d28d9" /> <!-- Emerald dark -->
+    </linearGradient>
+    <linearGradient id="icon_gradient" x1="16" y1="10" x2="24" y2="18" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4c1d95" />
+      <stop offset="1" stop-color="#7c3aed" />
     </linearGradient>
   </defs>
 
-  <!-- Paper Sticking Out (Taller & Cleaner) -->
+  <!-- Paper Sticking Out -->
   <rect x="8" y="4" width="24" height="18" rx="2.5" fill="white" />
   
-  <!-- Clear @ Symbol (Bold Primary) -->
+  <!-- @ Symbol -->
   <path d="M20 18C17.7909 18 16 16.2091 16 14C16 11.7909 17.7909 10 20 10C22.2091 10 24 11.7909 24 14V15C24 15.8284 23.3284 16.5 22.5 16.5C21.6716 16.5 21 15.8284 21 15V14C21 13.4477 20.5523 13 20 13C19.4477 13 19 13.4477 19 14C19 14.5523 19.4477 15 20 15V18" 
-    stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-  <circle cx="20" cy="14" r="4" stroke="#EA580C" stroke-width="2.5" />
+    stroke="url(#icon_gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="20" cy="14" r="4" stroke="url(#icon_gradient)" stroke-width="2.5" />
 
-  <!-- Envelope Main Body (Modern Rounded Shape) -->
+  <!-- Envelope Main Body -->
   <rect x="4" y="14" width="32" height="22" rx="4" fill="url(#body_gradient)" />
   
-  <!-- Flat Shadow Under Flap -->
-  <path d="M4 14L20 28L36 14H4Z" fill="#9A3412" opacity="0.15" />
+  <!-- Shadow Under Flap -->
+  <path d="M4 14L20 28L36 14H4Z" fill="#2e1065" opacity="0.15" />
 
   <!-- High-Contrast Front Flap -->
   <path d="M4 14L20 28L36 14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
   
-  <!-- Corner Definition Lines -->
+  <!-- Corner Lines -->
   <path d="M4 36L14 26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
   <path d="M36 36L26 26" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" />
 </svg>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { AlertCircle, CheckCircle, Info, AlertTriangle, X } from 'lucide-react';
 
 export const ErrorAlert = ({
@@ -37,12 +37,12 @@ export const ErrorAlert = ({
       buttonBg: 'hover:bg-green-100',
     },
     info: {
-      bg: 'bg-orange-50',
-      border: 'border-orange-200',
-      text: 'text-orange-700',
-      icon: <Info className="w-5 h-5 text-orange-600" />,
-      buttonHover: 'hover:text-orange-800',
-      buttonBg: 'hover:bg-orange-100',
+      bg: 'bg-purple-50',
+      border: 'border-purple-200',
+      text: 'text-purple-700',
+      icon: <Info className="w-5 h-5 text-purple-600" />,
+      buttonHover: 'hover:text-purple-800',
+      buttonBg: 'hover:bg-purple-100',
     },
   };
 
@@ -143,7 +143,7 @@ export const BannerAlert = ({ error, onClear, variant = 'error', title, classNam
       icon: <CheckCircle className="w-5 h-5 text-white" />,
     },
     info: {
-      bg: 'bg-orange-600',
+      bg: 'bg-purple-600',
       text: 'text-white',
       icon: <Info className="w-5 h-5 text-white" />,
     },

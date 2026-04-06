@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Users,
@@ -84,26 +84,26 @@ const CampaignMetrics = ({ campaign, stats }) => {
 
   const themes = {
     indigo:
-      'from-orange-500/10 via-orange-500/5 to-transparent border-orange-200/50 hover:bg-orange-50/50',
+      'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
     emerald:
-      'from-orange-500/10 via-orange-500/5 to-transparent border-orange-200/50 hover:bg-orange-50/50',
+      'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
     purple:
-      'from-orange-500/10 via-orange-500/5 to-transparent border-orange-200/50 hover:bg-orange-50/50',
-    blue: 'from-orange-500/10 via-orange-500/5 to-transparent border-orange-200/50 hover:bg-orange-50/50',
+      'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
+    blue: 'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
     amber:
       'from-amber-500/10 via-amber-500/5 to-transparent border-amber-200/50 hover:bg-amber-50/50',
-    rose: 'from-orange-500/10 via-orange-500/5 to-transparent border-orange-200/50 hover:bg-orange-50/50',
+    rose: 'from-purple-500/10 via-purple-500/5 to-transparent border-purple-200/50 hover:bg-purple-50/50',
     slate:
       'from-slate-500/10 via-slate-500/5 to-transparent border-slate-200/50 hover:bg-slate-50/50',
   };
 
   const iconColors = {
-    indigo: 'bg-orange-600 shadow-orange-200',
-    emerald: 'bg-orange-600 shadow-orange-200',
-    purple: 'bg-orange-600 shadow-orange-200',
-    blue: 'bg-orange-600 shadow-orange-200',
+    indigo: 'bg-purple-600 shadow-purple-200',
+    emerald: 'bg-purple-600 shadow-purple-200',
+    purple: 'bg-purple-600 shadow-purple-200',
+    blue: 'bg-purple-600 shadow-purple-200',
     amber: 'bg-amber-600 shadow-amber-200',
-    rose: 'bg-orange-500 shadow-orange-200',
+    rose: 'bg-purple-500 shadow-purple-200',
     slate: 'bg-slate-500 shadow-slate-200',
   };
 
@@ -113,27 +113,27 @@ const CampaignMetrics = ({ campaign, stats }) => {
     purple: 'text-slate-900',
     blue: 'text-slate-900',
     amber: 'text-slate-900',
-    rose: 'text-orange-600',
+    rose: 'text-purple-600',
     slate: 'text-slate-500',
   };
 
   const zapColors = {
-    indigo: 'text-orange-400',
-    emerald: 'text-orange-400',
-    purple: 'text-orange-400',
-    blue: 'text-orange-400',
+    indigo: 'text-purple-400',
+    emerald: 'text-purple-400',
+    purple: 'text-purple-400',
+    blue: 'text-purple-400',
     amber: 'text-amber-400',
-    rose: 'text-orange-400',
+    rose: 'text-purple-400',
     slate: 'text-slate-500',
   };
 
   const labelColors = {
-    indigo: 'text-orange-500',
-    emerald: 'text-orange-500',
-    purple: 'text-orange-500',
-    blue: 'text-orange-500',
+    indigo: 'text-purple-500',
+    emerald: 'text-purple-500',
+    purple: 'text-purple-500',
+    blue: 'text-purple-500',
     amber: 'text-amber-500',
-    rose: 'text-orange-500',
+    rose: 'text-purple-500',
     slate: 'text-slate-500',
   };
 

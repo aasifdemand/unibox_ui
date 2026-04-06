@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import Modal from '../../../../../components/shared/modal';
@@ -44,7 +44,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-md" closeOnBackdrop={true}>
       <form onSubmit={handleSubmit}>
-        <div className="bg-orange-600 p-6 relative overflow-hidden group">
+        <div className="bg-purple-600 p-6 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-6 opacity-10">
             <Edit2 className="w-16 h-16 text-white" />
           </div>
@@ -67,7 +67,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-12 px-4 rounded-md border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+              className="w-full h-12 px-4 rounded-md border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
               required
             />
           </div>
@@ -79,7 +79,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full h-12 px-4 rounded-md border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+              className="w-full h-12 px-4 rounded-md border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
               required
             />
           </div>
@@ -94,7 +94,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               <button
                 type="button"
                 onClick={() => setTrackOpens(!trackOpens)}
-                className={`w-10 h-5 rounded-full relative transition-colors ${trackOpens ? 'bg-orange-600' : 'bg-slate-300'}`}
+                className={`w-10 h-5 rounded-full relative transition-colors ${trackOpens ? 'bg-purple-600' : 'bg-slate-300'}`}
               >
                 <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${trackOpens ? 'left-[22px]' : 'left-1'}`} />
               </button>
@@ -105,7 +105,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               <button
                 type="button"
                 onClick={() => setTrackClicks(!trackClicks)}
-                className={`w-10 h-5 rounded-full relative transition-colors ${trackClicks ? 'bg-orange-600' : 'bg-slate-300'}`}
+                className={`w-10 h-5 rounded-full relative transition-colors ${trackClicks ? 'bg-purple-600' : 'bg-slate-300'}`}
               >
                 <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${trackClicks ? 'left-[22px]' : 'left-1'}`} />
               </button>
@@ -116,7 +116,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
               <button
                 type="button"
                 onClick={() => setUnsubscribeLink(!unsubscribeLink)}
-                className={`w-10 h-5 rounded-full relative transition-colors ${unsubscribeLink ? 'bg-orange-600' : 'bg-slate-300'}`}
+                className={`w-10 h-5 rounded-full relative transition-colors ${unsubscribeLink ? 'bg-purple-600' : 'bg-slate-300'}`}
               >
                 <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${unsubscribeLink ? 'left-[22px]' : 'left-1'}`} />
               </button>
@@ -134,7 +134,7 @@ const EditCampaignModal = ({ isOpen, onClose, campaign }) => {
             <button
               type="submit"
               disabled={updateCampaignMutation.isPending}
-              className="px-8 py-3 bg-orange-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 transition-all flex items-center gap-2"
+              className="px-8 py-3 bg-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 transition-all flex items-center gap-2"
             >
               {updateCampaignMutation.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

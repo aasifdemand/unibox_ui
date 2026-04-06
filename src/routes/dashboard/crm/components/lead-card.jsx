@@ -1,4 +1,4 @@
-import { Mail, Clock, ExternalLink, MessageSquare, MoreHorizontal } from 'lucide-react';
+﻿import { Mail, Clock, ExternalLink, MessageSquare, MoreHorizontal } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const LeadCard = ({ lead, onClick }) => {
@@ -35,14 +35,14 @@ const LeadCard = ({ lead, onClick }) => {
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -2, transition: { duration: 0.15 } }}
       onClick={onClick}
-      className="bg-white rounded-lg border border-slate-200/60 p-5 shadow-sm hover:shadow-sm hover:shadow-orange-500/5 hover:border-orange-100 transition-all cursor-pointer group overflow-hidden relative focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
+      className="bg-white rounded-lg border border-slate-200/60 p-5 shadow-sm hover:shadow-sm hover:shadow-purple-500/5 hover:border-purple-100 transition-all cursor-pointer group overflow-hidden relative focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
     >
       {/* Subtle background glow on hover */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50/50 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50/50 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
       <div className="flex items-start justify-between relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center text-xs font-black text-slate-400 group-hover:bg-orange-600 group-hover:text-white group-hover:border-orange-500 transition-all duration-300">
+          <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center text-xs font-black text-slate-400 group-hover:bg-purple-600 group-hover:text-white group-hover:border-purple-500 transition-all duration-300">
             {initials}
           </div>
           <div className="flex flex-col">
@@ -59,9 +59,9 @@ const LeadCard = ({ lead, onClick }) => {
             <MoreHorizontal className="w-4 h-4" />
           </button>
           {lead.metadata?.lastIntent && (
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-orange-50 border border-orange-100/50 rounded-full shadow-sm">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
-              <span className="text-[9px] font-black text-orange-600 tracking-tighter">
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-purple-50 border border-purple-100/50 rounded-full shadow-sm">
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
+              <span className="text-[9px] font-black text-purple-600 tracking-tighter">
                 {lead.metadata.lastIntent.replace('_', ' ')}
               </span>
             </div>
@@ -71,7 +71,7 @@ const LeadCard = ({ lead, onClick }) => {
 
       <div className="mt-5 space-y-3 relative z-10">
         <div className="flex items-center gap-2 text-slate-500">
-          <Mail className="w-3.5 h-3.5 text-slate-300 group-hover:text-orange-400 transition-colors" />
+          <Mail className="w-3.5 h-3.5 text-slate-300 group-hover:text-purple-400 transition-colors" />
           <span className="text-[11px] font-medium truncate">{contact?.normalizedEmail}</span>
         </div>
 
@@ -83,14 +83,14 @@ const LeadCard = ({ lead, onClick }) => {
             </span>
           </div>
           <div
-            className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all ${value > 0 ? 'bg-orange-50 text-orange-600 border-orange-100' : 'bg-slate-50 text-slate-400 border-slate-100'}`}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all ${value > 0 ? 'bg-purple-50 text-purple-600 border-purple-100' : 'bg-slate-50 text-slate-400 border-slate-100'}`}
           >
             ${Number(value).toLocaleString()}
           </div>
         </div>
       </div>
 
-      <div className="mt-5 pt-4 border-t border-slate-50 flex items-center justify-between text-slate-400 group-hover:text-orange-600 transition-colors relative z-10">
+      <div className="mt-5 pt-4 border-t border-slate-50 flex items-center justify-between text-slate-400 group-hover:text-purple-600 transition-colors relative z-10">
         <div className="flex items-center gap-3">
           <Mail className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />
           <MessageSquare className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />

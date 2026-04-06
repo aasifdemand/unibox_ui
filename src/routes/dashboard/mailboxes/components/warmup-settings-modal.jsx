@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+﻿/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable unused-imports/no-unused-imports */
 import React, { useState, useEffect } from 'react';
 import { Settings2, Zap, MessageSquare, Gauge, Save, LineChart, Target, ArrowUpRight } from 'lucide-react';
@@ -46,7 +46,7 @@ const WarmupSettingsModal = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-md" showCloseButton={true}>
       <div className="overflow-hidden">
         {/* Header */}
-        <div className="bg-linear-to-br from-orange-600 to-orange-700 p-6 relative overflow-hidden">
+        <div className="bg-linear-to-br from-purple-600 to-purple-700 p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-20">
             <Settings2 className="w-20 h-20 text-white" />
           </div>
@@ -69,7 +69,7 @@ const WarmupSettingsModal = ({
           {/* Section: Warmup Curve (Auto-Step) */}
           <div className="space-y-5">
             <div className="flex items-center gap-2 pb-1 border-b border-slate-50">
-               <LineChart className="w-4 h-4 text-orange-600" />
+               <LineChart className="w-4 h-4 text-purple-600" />
                <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">Warmup Curve</h3>
             </div>
             
@@ -89,7 +89,7 @@ const WarmupSettingsModal = ({
                 max="20"
                 value={initialLimit}
                 onChange={(e) => setInitialLimit(e.target.value)}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-purple-600"
               />
             </div>
 
@@ -99,7 +99,7 @@ const WarmupSettingsModal = ({
                 <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Daily Increase
                 </label>
-                <div className="flex items-center gap-1.5 text-xs font-black text-orange-600 bg-orange-50 px-2 py-1 rounded border border-orange-100">
+                <div className="flex items-center gap-1.5 text-xs font-black text-purple-600 bg-purple-50 px-2 py-1 rounded border border-purple-100">
                   <ArrowUpRight className="w-3 h-3" />
                   <span>+{incrementBy}/day</span>
                 </div>
@@ -110,7 +110,7 @@ const WarmupSettingsModal = ({
                 max="10"
                 value={incrementBy}
                 onChange={(e) => setIncrementBy(e.target.value)}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-purple-600"
               />
             </div>
 
@@ -132,7 +132,7 @@ const WarmupSettingsModal = ({
                 step="5"
                 value={maxLimit}
                 onChange={(e) => setMaxLimit(e.target.value)}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-purple-600"
               />
             </div>
           </div>
@@ -140,7 +140,7 @@ const WarmupSettingsModal = ({
           {/* Section: AI Interaction */}
           <div className="space-y-5">
             <div className="flex items-center gap-2 pb-1 border-b border-slate-50">
-               <MessageSquare className="w-4 h-4 text-orange-600" />
+               <MessageSquare className="w-4 h-4 text-purple-600" />
                <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">AI Interaction</h3>
             </div>
 
@@ -160,7 +160,7 @@ const WarmupSettingsModal = ({
                 step="5"
                 value={replyRate}
                 onChange={(e) => setReplyRate(e.target.value)}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-purple-600"
               />
               <p className="text-[10px] text-slate-400 font-medium italic leading-relaxed">
                 System auto-responds to this % of emails using local AI (phi2) or hardcoded fallbacks if AI is offline.
@@ -179,7 +179,7 @@ const WarmupSettingsModal = ({
             <Button
               onClick={handleSave}
               isLoading={isSaving}
-              className="flex-2 py-3.5 bg-orange-600 text-white rounded-lg text-[11px] font-black uppercase tracking-widest shadow-md shadow-orange-600/20 hover:bg-orange-700 hover:-translate-y-0.5 transition-all"
+              className="flex-2 py-3.5 bg-purple-600 text-white rounded-lg text-[11px] font-black uppercase tracking-widest shadow-md shadow-purple-600/20 hover:bg-purple-700 hover:-translate-y-0.5 transition-all"
             >
               <Save className="w-4 h-4 me-2" />
               Save Settings

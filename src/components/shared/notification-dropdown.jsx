@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { Bell, CheckCircle, Mail, AlertCircle, X, ChevronRight, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
@@ -77,13 +77,13 @@ const NotificationDropdown = () => {
         onClick={() => setIsOpen(!isOpen)}
         className={`w-10 h-10 rounded-md flex items-center justify-center transition-all active:scale-90 relative ${
           isOpen
-            ? 'bg-orange-50 text-orange-600'
+            ? 'bg-purple-50 text-purple-600'
             : 'text-slate-500 hover:bg-slate-100/80 hover:text-slate-800'
         }`}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-in zoom-in duration-300">
+          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-purple-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-in zoom-in duration-300">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -105,7 +105,7 @@ const NotificationDropdown = () => {
                   {t('common.notifications', 'Notifications')}
                 </h3>
                 {unreadCount > 0 && (
-                  <span className="px-2 py-0.5 rounded-full bg-orange-100 text-[10px] font-black tracking-widest text-orange-700">
+                  <span className="px-2 py-0.5 rounded-full bg-purple-100 text-[10px] font-black tracking-widest text-purple-700">
                     {unreadCount} NEW
                   </span>
                 )}
@@ -114,7 +114,7 @@ const NotificationDropdown = () => {
                 <button
                   onClick={markAllAsRead}
                   title="Mark all as read"
-                  className="w-8 h-8 rounded-md flex items-center justify-center text-slate-400 hover:bg-white hover:text-orange-600 hover:shadow-sm transition-all"
+                  className="w-8 h-8 rounded-md flex items-center justify-center text-slate-400 hover:bg-white hover:text-purple-600 hover:shadow-sm transition-all"
                 >
                   <CheckCircle className="w-4 h-4" />
                 </button>
@@ -156,11 +156,11 @@ const NotificationDropdown = () => {
                         key={notification.id}
                         onClick={() => markAsRead(notification.id, notification.read)}
                         className={`group relative p-4 flex gap-4 transition-colors hover:bg-slate-50/50 cursor-pointer ${
-                          !notification.read ? 'bg-orange-50/10' : ''
+                          !notification.read ? 'bg-purple-50/10' : ''
                         }`}
                       >
                         {!notification.read && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-orange-500 rounded-r-lg" />
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-purple-500 rounded-r-lg" />
                         )}
                         <div
                           className={`w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-${color}-50 text-${color}-600`}
@@ -186,7 +186,7 @@ const NotificationDropdown = () => {
                         </div>
                         <button
                           onClick={(e) => removeNotification(e, notification.id)}
-                          className="absolute right-4 top-4 w-6 h-6 flex items-center justify-center rounded-lg text-slate-300 opacity-0 group-hover:opacity-100 hover:bg-orange-50 hover:text-orange-500 transition-all"
+                          className="absolute right-4 top-4 w-6 h-6 flex items-center justify-center rounded-lg text-slate-300 opacity-0 group-hover:opacity-100 hover:bg-purple-50 hover:text-purple-500 transition-all"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -201,7 +201,7 @@ const NotificationDropdown = () => {
             <div className="p-2 border-t border-slate-100 bg-slate-50/50">
               <button
                 onClick={navigateToAll}
-                className="w-full py-3 rounded-md flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-orange-600 hover:bg-white hover:shadow-sm transition-all group"
+                className="w-full py-3 rounded-md flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-purple-600 hover:bg-white hover:shadow-sm transition-all group"
               >
                 {t('common.view_all_notifications', 'View All Notifications')}
                 <ChevronRight

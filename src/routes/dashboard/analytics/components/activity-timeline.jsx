@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -27,8 +27,8 @@ const ActivityTimeline = ({ data, hasValidData }) => {
         <div>
           <h3 className="text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
             {t('analytics.campaign_activity_title')}{' '}
-            <span className="text-orange-500">{t('analytics.activity_span')}</span>
-            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+            <span className="text-purple-500">{t('analytics.activity_span')}</span>
+            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
             {t('analytics.activity_subtitle')}
@@ -37,14 +37,14 @@ const ActivityTimeline = ({ data, hasValidData }) => {
         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
           <div className="flex items-center gap-4 px-4 py-2 bg-white rounded-full border border-slate-100 shadow-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
               <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
                 {t('analytics.emails_sent', 'EMAILS SENT')}
               </span>
             </div>
             <div className="w-px h-4 bg-slate-200 mx-2"></div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
               <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest">
                 {t('analytics.total_replies', 'TOTAL REPLIES')}
               </span>
@@ -55,7 +55,7 @@ const ActivityTimeline = ({ data, hasValidData }) => {
             <select
               value={timelineFilter}
               onChange={(e) => setTimelineFilter(e.target.value)}
-              className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-full text-[10px] uppercase tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 cursor-pointer hover:bg-white transition-colors"
+              className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-full text-[10px] uppercase tracking-widest font-extrabold focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 cursor-pointer hover:bg-white transition-colors"
             >
               <option value="7">LAST 7 DAYS</option>
               <option value="30">LAST 30 DAYS</option>

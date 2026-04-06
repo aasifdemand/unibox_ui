@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Clock, Settings, CheckCircle2 } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
@@ -72,9 +72,9 @@ const SetupStep = ({
   return (
     <div className="max-w-5xl mx-auto space-y-8 py-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* 1. Sender Accounts */}
-      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-orange-100 transition-all shadow-sm">
+      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-purple-100 transition-all shadow-sm">
         <div className="flex items-center gap-8">
-          <div className="w-16 h-16 bg-orange-50/50 rounded-lg flex items-center justify-center text-orange-600 border border-orange-100/50">
+          <div className="w-16 h-16 bg-purple-50/50 rounded-lg flex items-center justify-center text-purple-600 border border-purple-100/50">
             <Mail className="w-8 h-8" />
           </div>
           <div>
@@ -96,16 +96,16 @@ const SetupStep = ({
         </div>
         <Button
           onClick={() => setActiveModal('senders')}
-          className="px-8 py-3 bg-orange-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
+          className="px-8 py-3 bg-purple-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
         >
           {t('campaigns.choose_senders_btn')}
         </Button>
       </div>
 
       {/* 2. Schedule Campaign */}
-      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-orange-100 transition-all shadow-sm">
+      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-purple-100 transition-all shadow-sm">
         <div className="flex items-center gap-8">
-          <div className="w-16 h-16 bg-orange-50/50 rounded-lg flex items-center justify-center text-orange-600 border border-orange-100/50">
+          <div className="w-16 h-16 bg-purple-50/50 rounded-lg flex items-center justify-center text-purple-600 border border-purple-100/50">
             <Clock className="w-8 h-8" />
           </div>
           <div>
@@ -121,16 +121,16 @@ const SetupStep = ({
         </div>
         <Button
           onClick={() => setActiveModal('schedule')}
-          className="px-8 py-3 bg-orange-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
+          className="px-8 py-3 bg-purple-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
         >
           {t('campaigns.configure_schedule_btn')}
         </Button>
       </div>
 
       {/* 3. Campaign Settings */}
-      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-orange-100 transition-all shadow-sm">
+      <div className="bg-white border border-slate-100 rounded-lg p-10 flex items-center justify-between group hover:border-purple-100 transition-all shadow-sm">
         <div className="flex items-center gap-8">
-          <div className="w-16 h-16 bg-orange-50/50 rounded-lg flex items-center justify-center text-orange-600 border border-orange-100/50">
+          <div className="w-16 h-16 bg-purple-50/50 rounded-lg flex items-center justify-center text-purple-600 border border-purple-100/50">
             <Settings className="w-8 h-8" />
           </div>
           <div>
@@ -141,7 +141,7 @@ const SetupStep = ({
               {t('campaigns.tracking_rules')}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-orange-100">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-purple-100">
                 <CheckCircle2 className="w-3.5 h-3.5" /> {t('campaigns.high_inboxing_enabled')}
               </span>
             </div>
@@ -149,7 +149,7 @@ const SetupStep = ({
         </div>
         <Button
           onClick={() => setActiveModal('settings')}
-          className="px-8 py-3 bg-orange-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
+          className="px-8 py-3 bg-purple-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
         >
           {t('campaigns.modify_settings_btn')}
         </Button>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
@@ -18,11 +18,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -64,10 +64,10 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
                   <path
                     className={
                       campaign.progress === 100
-                        ? 'text-orange-500'
+                        ? 'text-purple-500'
                         : campaign.status === 'paused'
                           ? 'text-slate-400'
-                          : 'text-orange-400'
+                          : 'text-purple-400'
                     }
                     strokeDasharray={`${campaign.progress}, 100`}
                     strokeWidth="3"
@@ -85,7 +85,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
               </div>
 
               <div>
-                <p className="text-sm font-bold text-slate-900 mb-0.5 group-hover/row:text-orange-600 transition-colors">
+                <p className="text-sm font-bold text-slate-900 mb-0.5 group-hover/row:text-purple-600 transition-colors">
                   {campaign.name}
                 </p>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
@@ -136,7 +136,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
         ),
         cell: ({ row }) => (
           <div className="flex flex-col">
-            <span className="text-sm font-black text-slate-900 tracking-tight group-hover/row:text-orange-600 transition-colors">
+            <span className="text-sm font-black text-slate-900 tracking-tight group-hover/row:text-purple-600 transition-colors">
               {row.original.recipients}
             </span>
             <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
@@ -155,7 +155,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
         cell: ({ row }) => (
           <div className="flex items-center gap-6">
             <div className="flex flex-col">
-              <span className="text-sm font-black text-orange-600 tracking-tight">
+              <span className="text-sm font-black text-purple-600 tracking-tight">
                 {row.original.openRate}
               </span>
               <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
@@ -164,7 +164,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             </div>
             <div className="w-px h-6 bg-slate-100"></div>
             <div className="flex flex-col">
-              <span className="text-sm font-black text-orange-600 tracking-tight">
+              <span className="text-sm font-black text-purple-600 tracking-tight">
                 {row.original.clickRate}
               </span>
               <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
@@ -173,7 +173,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             </div>
             <div className="w-px h-6 bg-slate-100"></div>
             <div className="flex flex-col">
-              <span className="text-sm font-black text-orange-600 tracking-tight">
+              <span className="text-sm font-black text-purple-600 tracking-tight">
                 {row.original.bounceRate}
               </span>
               <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
@@ -220,7 +220,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
           <div className="flex items-center justify-end">
             <Link
               to={`/dashboard/campaigns/${row.original.id}`}
-              className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-orange-600 hover:bg-white rounded-md transition-all shadow-xs hover:shadow-orange-500/10 border border-transparent hover:border-orange-100"
+              className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-purple-600 hover:bg-white rounded-md transition-all shadow-xs hover:shadow-purple-500/10 border border-transparent hover:border-purple-100"
             >
               <ChevronRight className="w-5 h-5" />
             </Link>
@@ -282,7 +282,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="group/row hover:bg-orange-50/30 transition-all duration-300 cursor-default"
+              className="group/row hover:bg-purple-50/30 transition-all duration-300 cursor-default"
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="px-8 py-4 border-b border-slate-50/50">

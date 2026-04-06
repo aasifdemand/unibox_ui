@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle, Eye, Reply, ShieldCheck } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
@@ -13,7 +13,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
         <div className="flex items-center justify-between mb-10">
           <div>
             <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-              <Reply className="w-5 h-5 text-orange-600" />
+              <Reply className="w-5 h-5 text-purple-600" />
               {t('campaigns.replies.title', 'Campaign Replies')}
             </h3>
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
@@ -33,9 +33,9 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
         {repliesLoading ? (
           <div className="flex flex-col items-center justify-center py-32 space-y-6">
             <div className="relative">
-              <div className="w-16 h-16 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
+              <div className="w-16 h-16 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-2 h-2 bg-orange-600 rounded-full animate-ping"></div>
+                <div className="w-2 h-2 bg-purple-600 rounded-full animate-ping"></div>
               </div>
             </div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
@@ -51,12 +51,12 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               return (
                 <div
                   key={reply.id}
-                  className="group relative p-8 rounded-8 bg-slate-50/50 border border-slate-100 hover:bg-white hover:border-orange-200 hover:shadow-sm hover:shadow-orange-500/10 transition-all duration-500"
+                  className="group relative p-8 rounded-8 bg-slate-50/50 border border-slate-100 hover:bg-white hover:border-purple-200 hover:shadow-sm hover:shadow-purple-500/10 transition-all duration-500"
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div className="flex-1 space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-orange-600 flex items-center justify-center text-white shadow-sm shadow-orange-200 group-hover:scale-110 transition-transform duration-500">
+                        <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center text-white shadow-sm shadow-purple-200 group-hover:scale-110 transition-transform duration-500">
                           <MessageCircle className="w-5 h-5" />
                         </div>
                         <div>
@@ -85,7 +85,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
 
                       <div className="flex items-center gap-4 pt-2">
                         <div className="flex items-center gap-1.5 px-3 py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
-                          <ShieldCheck className="w-3 h-3 text-orange-500" />
+                          <ShieldCheck className="w-3 h-3 text-purple-500" />
                           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
                             {recipient?.status || 'Replied'}
                           </span>
@@ -104,7 +104,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                     <Button
                       onClick={() => viewReply(reply)}
                       variant="primary"
-                      className="h-12 px-6 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-sm shadow-orange-600/20 group-hover:shadow-orange-500/20 active:scale-95 transition-all flex items-center gap-2 shrink-0 self-center"
+                      className="h-12 px-6 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-sm shadow-purple-600/20 group-hover:shadow-purple-500/20 active:scale-95 transition-all flex items-center gap-2 shrink-0 self-center"
                     >
                       <Eye className="w-4 h-4" />
                       {t('campaigns.replies.view_msg', 'View Message')}
@@ -120,8 +120,8 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
               <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center rotate-3 border border-slate-100">
                 <Reply className="w-10 h-10 text-slate-200" />
               </div>
-              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center border border-orange-100 rotate-12">
-                <ShieldCheck className="w-5 h-5 text-orange-200" />
+              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100 rotate-12">
+                <ShieldCheck className="w-5 h-5 text-purple-200" />
               </div>
             </div>
             <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.replies.empty_title', 'No replies yet')}</h4>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -64,7 +64,7 @@ const ViewCampaign = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <div className="relative">
-          <div className="w-20 h-20 border-4 border-gray-200 border-t-orange-600 rounded-full animate-spin"></div>
+          <div className="w-20 h-20 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin"></div>
         </div>
         <p className="mt-4 text-sm text-gray-500">Loading...</p>
       </div>
@@ -154,7 +154,7 @@ const ViewCampaign = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-md ${
                   activeTab === tab.id
-                    ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/20'
+                    ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-white'
                 }`}
               >

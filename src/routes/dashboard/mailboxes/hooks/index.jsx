@@ -1,4 +1,4 @@
-// mailboxes/hooks.js
+﻿// mailboxes/hooks.js
 import { AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -352,7 +352,7 @@ export const useTokenWarning = (selectedMailbox, onRefresh) => {
                   toast.dismiss(t.id);
                   onRefresh();
                 }}
-                className="mt-2 text-sm bg-orange-600 text-white px-3 py-1 rounded-lg hover:bg-orange-700"
+                className="mt-2 text-sm bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700"
               >
                 Refresh now
               </button>

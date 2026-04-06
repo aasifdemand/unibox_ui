@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+﻿import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard,
@@ -13,12 +13,14 @@ import {
   PanelLeftOpen,
   Link2,
   Send,
+  ChevronRight,
+  Home,
 } from 'lucide-react';
 import Sidebar from '../components/shared/sidebar';
 import LanguageSwitcher from '../components/shared/language-switcher';
 import GlobalSearch from '../components/shared/global-search';
 import NotificationDropdown from '../components/shared/notification-dropdown';
-import { useCurrentUser } from '../hooks/useAuth';
+
 import { useCampaigns } from '../hooks/useCampaign';
 import { useMailboxes } from '../hooks/useMailboxes';
 import { useAllContacts } from '../routes/dashboard/audience/hooks/use-all-contacts';
@@ -29,6 +31,7 @@ const DashboardLayout = () => {
   const { t, i18n } = useTranslation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Global Real-Time Event Listener
   useSocketEvents('notification', (payload) => {
@@ -39,7 +42,7 @@ const DashboardLayout = () => {
     else toast(displayText, { icon: '🔔' });
   });
 
-  const { data: user } = useCurrentUser();
+
   const { data: campaigns = [] } = useCampaigns();
   const { data: mailboxResponse = { mailboxes: [], meta: { total: 0 } } } = useMailboxes();
   const { pagination: contactsPagination } = useAllContacts({ limit: 1 });
@@ -73,17 +76,28 @@ const DashboardLayout = () => {
     [t, campaigns.length, mailboxResponse.meta, contactsPagination.total],
   );
 
-  const activeItem = useMemo(
-    () =>
-      navItems.find((item) => {
-        if (item.path === '/dashboard') return location.pathname === '/dashboard';
-        return location.pathname.startsWith(item.path);
-      }) || { label: t('common.system'), icon: LayoutDashboard },
-    [location.pathname, navItems, t],
-  );
+
+  // Build breadcrumb segments from the URL path
+  const breadcrumbs = useMemo(() => {
+    const segments = location.pathname.split('/').filter(Boolean);
+    const crumbs = [{ label: 'Home', path: '/dashboard', icon: Home }];
+    let built = '';
+    segments.forEach((seg) => {
+      built += '/' + seg;
+      // Try to find a nav item that matches
+      const match = navItems.find((n) => n.path === built);
+      const label = match
+        ? match.label
+        : seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, ' ');
+      crumbs.push({ label, path: built });
+    });
+    // Remove duplicate home if already on /dashboard
+    if (crumbs.length > 1 && crumbs[1]?.path === '/dashboard') crumbs.shift();
+    return crumbs;
+  }, [location.pathname, navItems]);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#FAFAFA] text-zinc-900 selection:bg-orange-100 selection:text-orange-900 font-sans">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#FAFAFA] text-zinc-900 selection:bg-purple-100 selection:text-purple-900 font-sans">
       <Sidebar
         sidebarCollapsed={sidebarCollapsed}
         setSidebarCollapsed={setSidebarCollapsed}
@@ -98,11 +112,11 @@ const DashboardLayout = () => {
         {/* Header */}
         <header className="h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0">
 
-          {/* Left — sidebar toggle + breadcrumb */}
+          {/* Left — sidebar toggle + breadcrumbs */}
           <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-zinc-100 text-zinc-500 hover:text-zinc-900 transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-zinc-100 text-zinc-500 hover:text-zinc-900 transition-colors shrink-0"
             >
               {sidebarCollapsed ? (
                 <PanelLeftOpen className={`w-4 h-4 ${i18n.dir() === 'rtl' ? 'scale-x-[-1]' : ''}`} />
@@ -111,24 +125,34 @@ const DashboardLayout = () => {
               )}
             </button>
 
-            <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-8 h-8 rounded-md bg-orange-600 text-white shadow-sm shrink-0">
-                <activeItem.icon className="w-4 h-4" />
-              </div>
-              <div className="hidden sm:flex flex-col min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-widest leading-none">
-                    {t('common.navigation')} /
-                  </span>
-                  <span className="text-[10px] font-bold text-orange-600 uppercase tracking-widest leading-none">
-                    {user?.name || t('common.admin', 'Admin')}
-                  </span>
-                </div>
-                <h1 className="text-[15px] font-bold text-zinc-900 tracking-tight leading-none mt-1 truncate">
-                  {activeItem.label}
-                </h1>
-              </div>
-            </div>
+            {/* Breadcrumbs */}
+            <nav className="hidden sm:flex items-center gap-1 min-w-0" aria-label="breadcrumb">
+              {breadcrumbs.map((crumb, index) => {
+                const isLast = index === breadcrumbs.length - 1;
+                const isFirst = index === 0;
+                return (
+                  <div key={crumb.path} className="flex items-center gap-1 min-w-0">
+                    {index > 0 && (
+                      <ChevronRight className="w-3 h-3 text-zinc-300 shrink-0" />
+                    )}
+                    {isLast ? (
+                      <span className="flex items-center gap-1.5 text-[13px] font-bold text-zinc-900 truncate max-w-[180px]">
+                        {isFirst && <Home className="w-3.5 h-3.5 text-purple-500 shrink-0" />}
+                        {crumb.label}
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => navigate(crumb.path)}
+                        className="flex items-center gap-1.5 text-[12px] font-medium text-zinc-400 hover:text-purple-600 transition-colors truncate max-w-[140px]"
+                      >
+                        {isFirst && <Home className="w-3 h-3 shrink-0" />}
+                        {!isFirst && crumb.label}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
           </div>
 
           {/* Right — global search + actions */}

@@ -1,4 +1,4 @@
-/* eslint-disable unused-imports/no-unused-imports */
+﻿/* eslint-disable unused-imports/no-unused-imports */
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -89,7 +89,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
         <div className="flex items-center gap-1.5">
           {stage.replyCategory && (
             <div className="group relative">
-              <Target className="w-3.5 h-3.5 text-slate-400 hover:text-orange-500 cursor-help transition-colors" />
+              <Target className="w-3.5 h-3.5 text-slate-400 hover:text-purple-500 cursor-help transition-colors" />
               <div className="absolute top-full right-0 mt-2 p-2 bg-white text-slate-900 rounded-lg text-[8px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-sm border border-slate-100 whitespace-nowrap z-50">
                 {categories.find((c) => c.id === stage.replyCategory)?.name || stage.replyCategory}
               </div>
@@ -109,7 +109,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
         <div className="flex gap-1.5">
           <span className="text-slate-700">{stage.leads.length} Leads</span>
           <span>•</span>
-          <span className="text-orange-600">
+          <span className="text-purple-600">
             ${(stage.leads?.reduce((a, l) => a + (Number(l.value) || 0), 0) || 0).toLocaleString()}
           </span>
         </div>
@@ -259,8 +259,8 @@ const CRMIntegration = () => {
           </p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <div className="relative group flex items-center bg-white border border-slate-200 rounded-md px-4 h-11 w-full md:w-72 transition-all focus-within:ring-2 focus-within:ring-orange-500/10 focus-within:border-orange-500/40 shadow-sm">
-            <Search className="w-4 h-4 text-slate-400 group-focus-within:text-orange-500 shrink-0" />
+          <div className="relative group flex items-center bg-white border border-slate-200 rounded-md px-4 h-11 w-full md:w-72 transition-all focus-within:ring-2 focus-within:ring-purple-500/10 focus-within:border-purple-500/40 shadow-sm">
+            <Search className="w-4 h-4 text-slate-400 group-focus-within:text-purple-500 shrink-0" />
             <input
               type="text"
               placeholder={t('crm.search_placeholder', 'Search leads...')}
@@ -275,14 +275,14 @@ const CRMIntegration = () => {
               toast.success('Pipeline updated');
             }}
             disabled={isRefetching}
-            className={`w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shadow-sm outline-none focus:outline-none focus:ring-0 ${isRefetching ? 'opacity-50' : ''}`}
+            className={`w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shadow-sm outline-none focus:outline-none focus:ring-0 ${isRefetching ? 'opacity-50' : ''}`}
           >
             <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
           </button>
           
           <button
             onClick={() => setIsAddStageOpen(true)}
-            className="h-11 px-5 flex items-center justify-center gap-2 bg-orange-600 text-white rounded-md text-[11px] font-extrabold tracking-widest shadow-sm shadow-orange-500/20 hover:bg-orange-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
+            className="h-11 px-5 flex items-center justify-center gap-2 bg-purple-600 text-white rounded-md text-[11px] font-extrabold tracking-widest shadow-sm shadow-purple-500/20 hover:bg-purple-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
           >
             <Plus className="w-4 h-4" /> {t('crm.add_column', 'Add Column')}
           </button>
@@ -294,7 +294,7 @@ const CRMIntegration = () => {
         {/* Board sub-header */}
         <div className="h-12 px-6 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-orange-600 tracking-widest bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-100 outline-none focus:outline-none focus:ring-0">
+            <div className="flex items-center gap-1.5 text-[10px] font-black text-purple-600 tracking-widest bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-100 outline-none focus:outline-none focus:ring-0">
               <Zap className="w-3.5 h-3.5" /> {t('crm.all_campaigns', 'All Campaigns')}
             </div>
           </div>
@@ -308,7 +308,7 @@ const CRMIntegration = () => {
             <span className="w-px h-4 bg-slate-200 block" />
             <span className="text-slate-400">
               {t('crm.value', 'Value')}{' '}
-              <span className="text-orange-600">
+              <span className="text-purple-600">
                 $
                 {(
                   pipeline?.reduce(
@@ -344,11 +344,11 @@ const CRMIntegration = () => {
               {pipeline.length === 0 && (
                 <div className="w-full flex-1 flex flex-col items-center justify-center gap-8 py-20 px-8 text-center">
                   <div className="relative">
-                    <div className="w-24 h-24 bg-orange-50 rounded-[40px] flex items-center justify-center shadow-sm shadow-orange-200/20">
-                      <LayoutDashboard className="w-10 h-10 text-orange-600" />
+                    <div className="w-24 h-24 bg-purple-50 rounded-[40px] flex items-center justify-center shadow-sm shadow-purple-200/20">
+                      <LayoutDashboard className="w-10 h-10 text-purple-600" />
                     </div>
                     <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center animate-bounce">
-                      <Plus className="w-6 h-6 text-orange-500" />
+                      <Plus className="w-6 h-6 text-purple-500" />
                     </div>
                   </div>
                   <div className="max-w-md">
@@ -361,7 +361,7 @@ const CRMIntegration = () => {
                   </div>
                   <button
                     onClick={() => setIsAddStageOpen(true)}
-                    className="bg-orange-600 text-white px-10 py-4 rounded-lg text-xs font-black tracking-widest hover:bg-orange-700 transition-all active:scale-95 shadow-lg shadow-orange-600/20"
+                    className="bg-purple-600 text-white px-10 py-4 rounded-lg text-xs font-black tracking-widest hover:bg-purple-700 transition-all active:scale-95 shadow-lg shadow-purple-600/20"
                   >
                     {t('crm.create_initial', 'Create First Column')}
                   </button>
@@ -372,12 +372,12 @@ const CRMIntegration = () => {
               {pipeline.length > 0 && (
                 <div
                   onClick={() => setIsAddStageOpen(true)}
-                  className="w-[260px] shrink-0 h-full border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-4 hover:bg-white hover:border-orange-300 transition-all cursor-pointer group bg-slate-50/40"
+                  className="w-[260px] shrink-0 h-full border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center gap-4 hover:bg-white hover:border-purple-300 transition-all cursor-pointer group bg-slate-50/40"
                 >
-                  <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-slate-300 group-hover:text-orange-600 shadow-sm transition-all border border-slate-100 group-hover:scale-110">
+                  <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-slate-300 group-hover:text-purple-600 shadow-sm transition-all border border-slate-100 group-hover:scale-110">
                     <Plus className="w-8 h-8" />
                   </div>
-                  <p className="text-[11px] font-black text-slate-400 tracking-[0.2em] group-hover:text-orange-600 transition-colors">
+                  <p className="text-[11px] font-black text-slate-400 tracking-[0.2em] group-hover:text-purple-600 transition-colors">
                     {t('crm.add_column', 'Add Column')}
                   </p>
                 </div>
@@ -388,7 +388,7 @@ const CRMIntegration = () => {
           {/* Drag overlay — ghost card while dragging */}
           <DragOverlay>
             {activeLead ? (
-              <div className="rotate-2 scale-105 pointer-events-none shadow-sm shadow-orange-500/20">
+              <div className="rotate-2 scale-105 pointer-events-none shadow-sm shadow-purple-500/20">
                 <LeadCard lead={activeLead} />
               </div>
             ) : null}
@@ -399,12 +399,12 @@ const CRMIntegration = () => {
       {/* Footer */}
       <div className="flex items-center gap-4 px-2">
         <div className="flex items-center gap-3 bg-white/60 px-5 py-3 rounded-lg border border-slate-200/60 shadow-sm">
-          <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center shadow-inner">
-            <Target className="w-4 h-4 text-orange-600" />
+          <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center shadow-inner">
+            <Target className="w-4 h-4 text-purple-600" />
           </div>
           <span className="text-[10px] font-black text-slate-500 tracking-widest leading-relaxed max-w-xs uppercase">
             {t('crm.footer_msg1', 'Leads automatically progress when')}{' '}
-            <span className="text-orange-600">{t('crm.footer_msg2', 'Reply Intents')}</span>{' '}
+            <span className="text-purple-600">{t('crm.footer_msg2', 'Reply Intents')}</span>{' '}
             {t('crm.footer_msg3', 'are detected')}
           </span>
         </div>

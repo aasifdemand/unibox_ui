@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+﻿/* eslint-disable react-hooks/set-state-in-effect */
 import { Loader2, Globe, Edit3, Shield, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '../../../../components/ui/input';
@@ -77,7 +77,7 @@ const ProfileTab = ({ user }) => {
           </div>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-2 h-9 px-4 bg-orange-50 text-orange-600 hover:bg-orange-100 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all font-display"
+            className="flex items-center gap-2 h-9 px-4 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all font-display"
           >
             {isEditing ? (
               <>
@@ -179,7 +179,7 @@ const ProfileTab = ({ user }) => {
                 <button
                   type="submit"
                   disabled={updateProfile.isPending}
-                  className="h-11 px-10 bg-orange-600 hover:bg-orange-700 text-white rounded-lg shadow-lg shadow-orange-500/20 transition-all font-display text-[11px] font-bold uppercase tracking-widest flex items-center gap-2.5 disabled:opacity-50"
+                  className="h-11 px-10 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg shadow-purple-500/20 transition-all font-display text-[11px] font-bold uppercase tracking-widest flex items-center gap-2.5 disabled:opacity-50"
                 >
                   {updateProfile.isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {t('settings.profile.save_changes', 'SAVE CHANGES')}
@@ -194,7 +194,7 @@ const ProfileTab = ({ user }) => {
       <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
         <div className="p-6 border-b border-slate-50 bg-white">
           <h3 className="text-lg font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-display">
-            <Globe className="w-4 h-4 text-orange-600" />
+            <Globe className="w-4 h-4 text-purple-600" />
             {t('settings.profile.system_settings', 'System Settings')}
           </h3>
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans">
@@ -207,9 +207,9 @@ const ProfileTab = ({ user }) => {
              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
                 {t('settings.profile.timezone', 'SYSTEM TIMEZONE')} <span className="text-red-500">*</span>
              </label>
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-slate-50/50 rounded-xl border border-slate-100 mb-8 group hover:border-orange-100 transition-all">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-slate-50/50 rounded-xl border border-slate-100 mb-8 group hover:border-purple-100 transition-all">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-orange-600 shadow-sm group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-purple-600 shadow-sm group-hover:scale-110 transition-transform">
                   <Clock className="w-6 h-6" />
                 </div>
                 <div>
@@ -226,8 +226,8 @@ const ProfileTab = ({ user }) => {
                   {t('settings.profile.status', 'Clock Status')}
                 </p>
                 <div className="flex items-center gap-2 md:justify-end">
-                  <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
-                  <span className="text-[11px] font-bold text-orange-600 uppercase tracking-wider">
+                  <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+                  <span className="text-[11px] font-bold text-purple-600 uppercase tracking-wider">
                     {t('settings.profile.live_sync', 'Live Synchronized')}
                   </span>
                 </div>
@@ -239,7 +239,7 @@ const ProfileTab = ({ user }) => {
                 value={formData.timezone}
                 onChange={(e) => handleTimezoneChange(e.target.value)}
                 disabled={updateProfile.isPending}
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-lg h-11 px-4 text-xs font-bold font-sans text-slate-900 focus:bg-white focus:border-orange-50 outline-none transition-all appearance-none disabled:opacity-50"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-lg h-11 px-4 text-xs font-bold font-sans text-slate-900 focus:bg-white focus:border-purple-50 outline-none transition-all appearance-none disabled:opacity-50"
               >
                 {timezones.map((tz) => (
                   <option key={tz.value} value={tz.value}>
@@ -247,7 +247,7 @@ const ProfileTab = ({ user }) => {
                   </option>
                 ))}
               </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none group-focus-within:text-orange-500 text-slate-400">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none group-focus-within:text-purple-500 text-slate-400">
                 <Globe className="w-4 h-4" />
               </div>
             </div>
@@ -263,7 +263,7 @@ const ProfileTab = ({ user }) => {
       {/* Security Hub Section Header Style */}
       <div className="pt-4">
          <h3 className="text-lg font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-display ltr:ml-1">
-            <Shield className="w-4 h-4 text-orange-600" />
+            <Shield className="w-4 h-4 text-purple-600" />
             {t('settings.profile.security_settings', 'Security Settings')}
           </h3>
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans ltr:ml-1">

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { Filter as FunnelIcon, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -27,14 +27,14 @@ const FilterDropdown = ({ children, badgeCount = 0 }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`w-11 h-11 flex items-center justify-center rounded-md border transition-all active:scale-95 shadow-sm relative shrink-0 ${
           isOpen
-            ? 'bg-orange-50 border-orange-200 text-orange-600'
-            : 'bg-white border-slate-200 text-slate-700 hover:border-orange-200 hover:text-orange-600'
+            ? 'bg-purple-50 border-purple-200 text-purple-600'
+            : 'bg-white border-slate-200 text-slate-700 hover:border-purple-200 hover:text-purple-600'
         }`}
         title={t('common.filters', 'Filters')}
       >
         <FunnelIcon className="w-4 h-4" />
         {badgeCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white min-w-[16px] h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center ring-2 ring-white">
+          <span className="absolute -top-1.5 -right-1.5 bg-purple-500 text-white min-w-[16px] h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center ring-2 ring-white">
             {badgeCount}
           </span>
         )}

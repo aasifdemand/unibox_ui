@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useReactTable,
@@ -28,11 +28,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -94,7 +94,7 @@ const MailboxList = ({
                 {getProviderIcon(mailbox.type, 'w-7 h-7')}
               </div>
               <div>
-                <p className="text-[13px] font-semibold text-slate-800 group-hover/row:text-orange-600 transition-colors">
+                <p className="text-[13px] font-semibold text-slate-800 group-hover/row:text-purple-600 transition-colors">
                   {mailbox.displayName}
                 </p>
               </div>
@@ -135,7 +135,7 @@ const MailboxList = ({
         cell: ({ row }) => (
           <span
             className={`text-[10px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block ${row.original.isVerified
-                ? 'bg-orange-50 text-orange-600 border-orange-100'
+                ? 'bg-purple-50 text-purple-600 border-purple-100'
                 : 'bg-amber-50 text-amber-600 border-amber-100'
               }`}
           >
@@ -168,7 +168,7 @@ const MailboxList = ({
                   onUpdateWarmup(mailbox.id, { enabled: !isEnabled });
                 }}
                 className={`relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                  isEnabled ? 'bg-orange-600' : 'bg-slate-200'
+                  isEnabled ? 'bg-purple-600' : 'bg-slate-200'
                 }`}
               >
                 <span
@@ -182,7 +182,7 @@ const MailboxList = ({
                   e.stopPropagation();
                   handleOpenWarmupSettings(mailbox);
                 }}
-                className="w-7 h-7 flex items-center justify-center rounded-md bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition-all"
+                className="w-7 h-7 flex items-center justify-center rounded-md bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50 transition-all"
                 title="Warmup Settings"
               >
                 <Settings2 className="w-3.5 h-3.5" />
@@ -210,7 +210,7 @@ const MailboxList = ({
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <ShieldCheck
-                  className={`w-3.5 h-3.5 ${score >= 80 ? 'text-orange-600' : score >= 50 ? 'text-amber-500' : 'text-orange-600'}`}
+                  className={`w-3.5 h-3.5 ${score >= 80 ? 'text-purple-600' : score >= 50 ? 'text-amber-500' : 'text-purple-600'}`}
                 />
                 <span className="text-sm font-extrabold text-slate-800 tabular-nums">
                   {score}%
@@ -254,7 +254,7 @@ const MailboxList = ({
               </div>
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
                 <div
-                  className="h-full bg-linear-to-r from-orange-500 to-orange-600 transition-all duration-1000 ease-out"
+                  className="h-full bg-linear-to-r from-purple-500 to-purple-600 transition-all duration-1000 ease-out"
                   style={{ width: `${percentage}%` }}
                 />
               </div>
@@ -310,7 +310,7 @@ const MailboxList = ({
                   e.stopPropagation();
                   onSync(row.original.id, row.original.type);
                 }}
-                className="text-orange-600 hover:text-orange-700 hover:underline flex items-center gap-1 transition-all"
+                className="text-purple-600 hover:text-purple-700 hover:underline flex items-center gap-1 transition-all"
               >
                 {t('mailboxes.sync_idle')}
                 <RefreshCw className="w-2.5 h-2.5" />
@@ -336,7 +336,7 @@ const MailboxList = ({
                 onSync(row.original.id, row.original.type);
               }}
               disabled={isSyncingMailboxId === row.original.id}
-              className="inline-flex w-8 h-8 rounded-full bg-slate-50 items-center justify-center hover:bg-orange-50 text-slate-400 hover:text-orange-600 transition-all border border-transparent hover:border-orange-100 shadow-xs active:scale-90"
+              className="inline-flex w-8 h-8 rounded-full bg-slate-50 items-center justify-center hover:bg-purple-50 text-slate-400 hover:text-purple-600 transition-all border border-transparent hover:border-purple-100 shadow-xs active:scale-90"
               title="Sync Now"
             >
               <RefreshCw
@@ -345,7 +345,7 @@ const MailboxList = ({
             </button>
             <button
               onClick={() => onSelect(row.original)}
-              className="inline-flex w-8 h-8 rounded-full bg-orange-600 items-center justify-center hover:bg-slate-800 transition-all shadow-md shadow-orange-500/20 active:scale-90"
+              className="inline-flex w-8 h-8 rounded-full bg-purple-600 items-center justify-center hover:bg-slate-800 transition-all shadow-md shadow-purple-500/20 active:scale-90"
               title="View Mailbox"
             >
               <ChevronRight className="w-4 h-4 text-white" />
@@ -385,7 +385,7 @@ const MailboxList = ({
   if (mailboxes.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] px-6 text-center animate-in fade-in duration-700 slide-in-from-bottom-4">
-        <div className="w-24 h-24 bg-linear-to-br from-orange-500 to-orange-600 rounded-4xl flex items-center justify-center mb-8 shadow-sm shadow-orange-500/20">
+        <div className="w-24 h-24 bg-linear-to-br from-purple-500 to-purple-600 rounded-4xl flex items-center justify-center mb-8 shadow-sm shadow-purple-500/20">
           <Mail className="w-10 h-10 text-white" />
         </div>
         <h3 className="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">
@@ -424,7 +424,7 @@ const MailboxList = ({
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className={`group/row hover:bg-slate-50/50 transition-colors cursor-pointer ${row.getIsSelected() ? 'bg-orange-50/30' : ''}`}
+                  className={`group/row hover:bg-slate-50/50 transition-colors cursor-pointer ${row.getIsSelected() ? 'bg-purple-50/30' : ''}`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="px-6 py-4 border-b border-slate-50/50">

@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+﻿import { Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export const LoadingSpinner = ({
@@ -26,7 +26,7 @@ export const LoadingSpinner = ({
 
       {/* Text Below */}
       {text && (
-        <div className="relative z-10 flex items-center justify-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-orange-500/10 shadow-sm">
+        <div className="relative z-10 flex items-center justify-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-purple-500/10 shadow-sm">
           <p className={`${textSize} text-zinc-900 font-bold uppercase tracking-[0.2em] text-center animate-pulse`}>
             {text}
           </p>
@@ -74,7 +74,7 @@ export const PageLoader = ({ progress, text = 'Loading...' }) => {
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                className="h-full bg-orange-600 rounded-full"
+                className="h-full bg-purple-600 rounded-full"
                 transition={{ duration: 0.5, ease: "easeOut" }}
               />
             </div>

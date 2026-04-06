@@ -1,4 +1,4 @@
-import Modal from '../components/shared/modal';
+﻿import Modal from '../components/shared/modal';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Calendar, MessageCircle, Reply, AtSign } from 'lucide-react';
@@ -25,7 +25,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
         elements.push(
           <blockquote
             key={`bq-${elements.length}`}
-            className="border-l-4 border-orange-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-lg"
+            className="border-l-4 border-purple-200 pl-4 my-4 text-slate-500 italic bg-slate-50/50 py-3 rounded-r-lg"
           >
             {currentBlockquote.map((line, i) => (
               <div key={i}>{line || '\u00A0'}</div>
@@ -107,20 +107,20 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
       closeOnBackdrop={true}
     >
       {/* Header */}
-      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-purple-600 to-purple-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Reply className="w-16 h-16 text-white" />
         </div>
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30 ">
+            <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center border border-purple-500/30 ">
               <Reply className="w-6 h-6 text-white" />
             </div>
             <div>
               <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
                 {t('modals.reply.title')}
               </h3>
-              <p className="text-[10px] font-bold text-orange-100/70 uppercase tracking-widest mt-0.5">
+              <p className="text-[10px] font-bold text-purple-100/70 uppercase tracking-widest mt-0.5">
                 {t('modals.reply.subtitle')}
               </p>
             </div>
@@ -139,8 +139,8 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               className="flex flex-col items-center justify-center py-16"
             >
               <div className="relative">
-                <div className="w-16 h-16 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
-                <div className="absolute inset-0 bg-orange-500/10 blur-2xl rounded-full"></div>
+                <div className="w-16 h-16 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin"></div>
+                <div className="absolute inset-0 bg-purple-500/10 blur-2xl rounded-full"></div>
               </div>
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mt-6">
                 {t('modals.reply.loading')}
@@ -156,21 +156,21 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               className="space-y-6"
             >
               {/* Sender Info */}
-              <div className="bg-linear-to-br from-orange-50 to-orange-50 rounded-4xl p-6 border border-orange-100">
+              <div className="bg-linear-to-br from-purple-50 to-purple-50 rounded-4xl p-6 border border-purple-100">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-lg bg-white shadow-sm shadow-orange-500/10 flex items-center justify-center border border-orange-200">
-                    <AtSign className="w-7 h-7 text-orange-600" />
+                  <div className="w-14 h-14 rounded-lg bg-white shadow-sm shadow-purple-500/10 flex items-center justify-center border border-purple-200">
+                    <AtSign className="w-7 h-7 text-purple-600" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="px-3 py-1 bg-white rounded-md text-[9px] font-extrabold text-orange-600 uppercase tracking-widest border border-orange-200">
+                      <span className="px-3 py-1 bg-white rounded-md text-[9px] font-extrabold text-purple-600 uppercase tracking-widest border border-purple-200">
                         {t('modals.reply.from')}
                       </span>
                     </div>
                     <p className="text-lg font-extrabold text-slate-800">{reply.replyFrom}</p>
                     {reply.replyTo && (
                       <p className="text-xs font-bold text-slate-500 mt-1 flex items-center gap-2">
-                        <span className="w-1 h-1 rounded-full bg-orange-400"></span>
+                        <span className="w-1 h-1 rounded-full bg-purple-400"></span>
                         {t('modals.reply.to')}: {reply.replyTo}
                       </p>
                     )}
@@ -182,8 +182,8 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-slate-50 rounded-lg p-5 border border-slate-100 h-full">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center">
-                      <Mail className="w-4 h-4 text-orange-600" />
+                    <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center">
+                      <Mail className="w-4 h-4 text-purple-600" />
                     </div>
                     <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
                       {t('modals.reply.subject')}
@@ -208,8 +208,8 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               {/* Message */}
               <div className="bg-slate-50 rounded-lg p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center">
-                    <MessageCircle className="w-4 h-4 text-orange-600" />
+                  <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center">
+                    <MessageCircle className="w-4 h-4 text-purple-600" />
                   </div>
                   <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">
                     {t('modals.reply.message')}
@@ -264,7 +264,7 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
               setSelectedRecipientId?.(null);
             }}
             variant="primary"
-            className="px-8 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all active:scale-95"
+            className="px-8 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-1 transition-all active:scale-95"
           >
             {t('common.close')}
           </Button>

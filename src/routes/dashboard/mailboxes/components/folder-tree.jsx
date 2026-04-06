@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Archive,
@@ -77,13 +77,13 @@ const FolderTree = ({
           onClick={() => onSelectFolder(folder)}
           className={`group w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
             isSelected
-              ? 'bg-orange-50 text-orange-600 font-bold'
+              ? 'bg-purple-50 text-purple-600 font-bold'
               : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
           }`}
           style={{ paddingLeft: `${depth * 16 + 16}px` }}
         >
           <span
-            className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-orange-600' : 'text-slate-400 group-hover:text-slate-600'}`}
+            className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'text-purple-600' : 'text-slate-400 group-hover:text-slate-600'}`}
           >
             {getFolderIcon(folder)}
           </span>
@@ -94,7 +94,7 @@ const FolderTree = ({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                 isSelected
-                  ? 'bg-orange-500 text-white'
+                  ? 'bg-purple-500 text-white'
                   : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
               }`}
             >
@@ -110,7 +110,7 @@ const FolderTree = ({
               className={`ltr:ml-2 ltr:mr-2 rtl:ml-2 p-1 rounded-lg transition-colors ${isSelected ? 'hover:bg-slate-100' : 'hover:bg-slate-50'}`}
             >
               <ChevronRight
-                className={`w-4 h-4 transition-transform duration-300 ${isSelected ? 'text-orange-600' : 'text-slate-300'} ${
+                className={`w-4 h-4 transition-transform duration-300 ${isSelected ? 'text-purple-600' : 'text-slate-300'} ${
                   isExpanded ? 'rotate-90' : ''
                 }`}
               />

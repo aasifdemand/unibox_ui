@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+﻿/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tag, Plus, Clock, MessageSquare, Trash2, Mail, Sparkles, AlertCircle, Zap } from 'lucide-react';
@@ -479,10 +479,10 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
           {/* Main Step Node */}
           <div className="relative group">
             <div
-              className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === 0 ? 'border-orange-600 ring-4 ring-orange-50' : 'border-slate-200'}`}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === 0 ? 'border-purple-600 ring-4 ring-purple-50' : 'border-slate-200'}`}
             >
               <Mail
-                className={`w-4 h-4 ${activeStepIndex === 0 ? 'text-orange-600' : 'text-slate-400'}`}
+                className={`w-4 h-4 ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-400'}`}
               />
             </div>
 
@@ -491,7 +491,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
               <button
                 type="button"
                 onClick={() => setActiveStepIndex(0)}
-                className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === 0 ? 'border-orange-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === 0 ? 'border-purple-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
               >
                 <div className="flex flex-col gap-0.5">
                   <span className="text-[10px] font-bold text-slate-400">Email</span>
@@ -500,7 +500,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                   </p>
                 </div>
               </button>
-              <button className="text-[10px] font-bold text-orange-600 hover:text-orange-700 ml-1">
+              <button className="text-[10px] font-bold text-purple-600 hover:text-purple-700 ml-1">
                 + Add Variant
               </button>
             </div>
@@ -510,10 +510,10 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
           {steps.map((step, idx) => (
             <div key={idx} className="relative group">
               <div
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === idx + 1 ? 'border-orange-600 ring-4 ring-orange-50' : 'border-slate-200'}`}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === idx + 1 ? 'border-purple-600 ring-4 ring-purple-50' : 'border-slate-200'}`}
               >
                 <MessageSquare
-                  className={`w-4 h-4 ${activeStepIndex === idx + 1 ? 'text-orange-600' : 'text-slate-400'}`}
+                  className={`w-4 h-4 ${activeStepIndex === idx + 1 ? 'text-purple-600' : 'text-slate-400'}`}
                 />
               </div>
 
@@ -525,7 +525,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                   <button
                     type="button"
                     onClick={() => removeFollowUp(idx)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-orange-400 hover:text-orange-600"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 hover:text-purple-600"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -533,7 +533,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 <button
                   type="button"
                   onClick={() => setActiveStepIndex(idx + 1)}
-                  className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === idx + 1 ? 'border-orange-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                  className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === idx + 1 ? 'border-purple-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
                 >
                   <div className="flex flex-col gap-0.5">
                     <span className="text-[10px] font-bold text-slate-400">
@@ -544,7 +544,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                     </p>
                   </div>
                 </button>
-                <button className="text-[10px] font-bold text-orange-600 hover:text-orange-700 ml-1">
+                <button className="text-[10px] font-bold text-purple-600 hover:text-purple-700 ml-1">
                   + Add Variant
                 </button>
               </div>
@@ -556,14 +556,14 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <button
               type="button"
               onClick={addFollowUp}
-              className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center shadow-sm shadow-orange-600/30 hover:scale-110 transition-all z-10"
+              className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-sm shadow-purple-600/30 hover:scale-110 transition-all z-10"
             >
               <Plus className="w-5 h-5" />
             </button>
             <button
               type="button"
               onClick={addFollowUp}
-              className="ml-14 text-[11px] font-bold text-orange-600 hover:text-orange-700 uppercase tracking-widest"
+              className="ml-14 text-[11px] font-bold text-purple-600 hover:text-purple-700 uppercase tracking-widest"
             >
               Add step
             </button>
@@ -586,9 +586,9 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <button
               type="button"
               onClick={onSendTest}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[10px] font-black text-orange-600 uppercase tracking-widest hover:border-orange-400 hover:bg-orange-50 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[10px] font-black text-purple-600 uppercase tracking-widest hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
             >
-              <Zap className="w-3 h-3 fill-orange-600" />
+              <Zap className="w-3 h-3 fill-purple-600" />
               Send Test
             </button>
           </div>
@@ -610,7 +610,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
               </span>
             </div>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-              <Plus className="w-4 h-4 text-orange-400 rotate-45" />
+              <Plus className="w-4 h-4 text-purple-400 rotate-45" />
             </div>
           </div>
         </div>
@@ -621,18 +621,18 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
           <div className="px-6 py-4 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
             <h2 className="text-sm font-bold text-slate-700">Stage {activeStepIndex + 1}: Email</h2>
             {isGenerating && (
-              <div className="flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-100 rounded-full animate-pulse shadow-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
-                <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest">AI Architecting...</span>
+              <div className="flex items-center gap-2 px-3 py-1 bg-purple-50 border border-purple-100 rounded-full animate-pulse shadow-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping" />
+                <span className="text-[9px] font-black text-purple-600 uppercase tracking-widest">AI Architecting...</span>
               </div>
             )}
           </div>
 
           {/* Follow-up Settings Bar */}
           {activeStepIndex > 0 && (
-            <div className="px-6 py-4 border-b border-[#eaecf0] bg-orange-50/30 flex items-center gap-6 animate-in slide-in-from-top-2 duration-300">
+            <div className="px-6 py-4 border-b border-[#eaecf0] bg-purple-50/30 flex items-center gap-6 animate-in slide-in-from-top-2 duration-300">
               <div className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-orange-500" />
+                <Clock className="w-4 h-4 text-purple-500" />
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
                   Wait
                 </span>
@@ -645,7 +645,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                     onChange={(e) =>
                       updateDelay(activeStepIndex - 1, parseInt(e.target.value) * 1440)
                     }
-                    className="w-16 h-10 bg-white border border-slate-200 rounded-xl text-center text-[11px] font-black text-orange-600 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all outline-none"
+                    className="w-16 h-10 bg-white border border-slate-200 rounded-xl text-center text-[11px] font-black text-purple-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/5 transition-all outline-none"
                   />
                   <span className="ml-2 text-[11px] font-black text-slate-400 uppercase tracking-widest">
                     Days
@@ -653,7 +653,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 </div>
               </div>
 
-              <div className="h-4 w-px bg-orange-100" />
+              <div className="h-4 w-px bg-purple-100" />
 
               <div className="flex items-center gap-3">
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
@@ -662,7 +662,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 <select
                   value={steps[activeStepIndex - 1]?.condition || 'no_reply'}
                   onChange={(e) => updateCondition(activeStepIndex - 1, e.target.value)}
-                  className="h-10 bg-white border border-slate-200 rounded-xl px-4 text-[10px] font-black text-orange-600 uppercase tracking-widest focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all outline-none cursor-pointer appearance-none pr-8"
+                  className="h-10 bg-white border border-slate-200 rounded-xl px-4 text-[10px] font-black text-purple-600 uppercase tracking-widest focus:border-purple-500 focus:ring-4 focus:ring-purple-500/5 transition-all outline-none cursor-pointer appearance-none pr-8"
                 >
                   <option value="no_reply">No Reply</option>
                   <option value="on_open">Open Recorded</option>
@@ -692,7 +692,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <button
               type="button"
               onClick={triggerTokenDropdown}
-              className="flex items-center gap-1.5 text-orange-600 hover:text-orange-700 transition-all font-bold"
+              className="flex items-center gap-1.5 text-purple-600 hover:text-purple-700 transition-all font-bold"
             >
               <span className="text-sm">{'{ }'}</span>
               <span className="text-[11px] tracking-tight uppercase">Variables</span>
@@ -750,12 +750,12 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 <button
                   type="button"
                   onClick={() => setIsAiModalOpen(true)}
-                  className="flex items-center gap-2.5 px-3 py-2 border-2 border-orange-100 bg-orange-50/50 rounded-md hover:bg-orange-100 transition-all group"
+                  className="flex items-center gap-2.5 px-3 py-2 border-2 border-purple-100 bg-purple-50/50 rounded-md hover:bg-purple-100 transition-all group"
                 >
-                  <div className="w-5 h-5 rounded-full bg-orange-600 flex items-center justify-center group-hover:bg-orange-700 transition-colors shadow-sm shadow-orange-600/20">
+                  <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center group-hover:bg-purple-700 transition-colors shadow-sm shadow-purple-600/20">
                     <Sparkles className="w-3 h-3 text-white" />
                   </div>
-                  <span className="text-[11px] font-bold text-orange-700">Compose with AI</span>
+                  <span className="text-[11px] font-bold text-purple-700">Compose with AI</span>
                 </button>
               </div>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Check } from 'lucide-react';
 
 const CampaignStepper = ({ steps, currentStep }) => {
@@ -17,9 +17,9 @@ const CampaignStepper = ({ steps, currentStep }) => {
                   w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
                   ${
                     isCompleted
-                      ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/20'
+                      ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20'
                       : isActive
-                        ? 'bg-orange-600 text-white shadow-sm shadow-orange-600/40 scale-110'
+                        ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/40 scale-110'
                         : 'border-2 border-slate-200 text-slate-400 bg-white'
                   }
                 `}
@@ -35,7 +35,7 @@ const CampaignStepper = ({ steps, currentStep }) => {
                 <span
                   className={`
                     text-[10px] font-black uppercase tracking-[0.2em] transition-colors duration-300
-                    ${isActive ? 'text-orange-600' : isCompleted ? 'text-slate-800' : 'text-slate-400'}
+                    ${isActive ? 'text-purple-600' : isCompleted ? 'text-slate-800' : 'text-slate-400'}
                     `}
                 >
                   Step {step.number}
@@ -55,7 +55,7 @@ const CampaignStepper = ({ steps, currentStep }) => {
             {index < steps.length - 1 && (
               <div className="flex-1 h-[2px] mx-4 bg-slate-100 overflow-hidden">
                 <div
-                  className={`h-full bg-orange-600 transition-all duration-700 ease-in-out ${isCompleted ? 'w-full' : 'w-0'}`}
+                  className={`h-full bg-purple-600 transition-all duration-700 ease-in-out ${isCompleted ? 'w-full' : 'w-0'}`}
                 />
               </div>
             )}

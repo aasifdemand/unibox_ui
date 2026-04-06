@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+﻿import { Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const Button = ({
@@ -18,9 +18,9 @@ const Button = ({
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-orange-600 to-orange-700 text-white hover:from-orange-700 hover:to-orange-800 focus:ring-orange-500 shadow-sm shadow-orange-500/20',
+      'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 focus:ring-purple-500 shadow-sm shadow-purple-500/20',
     secondary: 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-500',
-    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-orange-500',
+    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-purple-500',
     ghost: 'text-slate-700 hover:bg-slate-100 focus:ring-slate-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
   };

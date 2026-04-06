@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
@@ -377,7 +377,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         <div className="px-8 py-6 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-linear-to-br from-orange-600 to-orange-600 rounded-lg flex items-center justify-center shadow-sm shadow-orange-500/20">
+              <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm shadow-purple-500/20">
                 <Send className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -385,7 +385,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                   {watch('name') || t('campaigns.create_campaign')}
                 </h3>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
                     {t('campaigns.step_indicator', { current: currentStep, total: steps.length })}
                   </p>
@@ -406,9 +406,9 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                     onClick={() => isCompleted && setCurrentStep(step.number)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
                       isActive
-                        ? 'bg-white text-orange-600 shadow-sm ring-1 ring-slate-200'
+                        ? 'bg-white text-purple-600 shadow-sm ring-1 ring-slate-200'
                         : isCompleted
-                          ? 'text-orange-600 hover:bg-orange-50'
+                          ? 'text-purple-600 hover:bg-purple-50'
                           : 'text-slate-300 opacity-50 cursor-not-allowed'
                     }`}
                   >
@@ -433,16 +433,16 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
         <div className="flex-1 overflow-y-auto no-scrollbar px-8 py-8 md:px-12 md:py-10">
           <div className="max-w-5xl mx-auto space-y-8">
             {createCampaign.error && (
-              <div className="p-6 bg-orange-50 border border-orange-100 rounded-lg animate-in fade-in slide-in-from-top-4 duration-500">
+              <div className="p-6 bg-purple-50 border border-purple-100 rounded-lg animate-in fade-in slide-in-from-top-4 duration-500">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-orange-500 rounded-md flex items-center justify-center shadow-sm shadow-orange-500/20">
+                  <div className="w-10 h-10 bg-purple-500 rounded-md flex items-center justify-center shadow-sm shadow-purple-500/20">
                     <AlertCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest">
+                    <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
                       {t('common.error')}
                     </p>
-                    <p className="text-sm font-bold text-orange-700">
+                    <p className="text-sm font-bold text-purple-700">
                       {createCampaign.error.message}
                     </p>
                   </div>
@@ -494,7 +494,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
                 onClick={nextStep}
                 disabled={createCampaign.isPending}
                 variant="primary"
-                className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/30 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
+                className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:shadow-purple-600/30 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
               >
                 {t('common.continue')}
                 <ChevronRight className="w-4 h-4" />
@@ -503,7 +503,7 @@ const ShowCreateCampaign = ({ showModal, setShowModal }) => {
               <button
                 onClick={handleSubmit(onSubmit)}
                 disabled={createCampaign.isPending}
-                className="px-12 py-3 bg-orange-600 rounded-lg text-[11px] font-black uppercase tracking-widest text-white shadow-sm shadow-orange-600/30 hover:shadow-orange-600/50 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+                className="px-12 py-3 bg-purple-600 rounded-lg text-[11px] font-black uppercase tracking-widest text-white shadow-sm shadow-purple-600/30 hover:shadow-purple-600/50 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
               >
                 {createCampaign.isPending ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

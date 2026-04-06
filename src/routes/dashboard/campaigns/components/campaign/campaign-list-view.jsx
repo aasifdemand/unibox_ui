@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+﻿/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -42,11 +42,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -103,10 +103,10 @@ const CampaignListView = ({
                   <path
                     className={
                       progress === 100
-                        ? 'text-orange-500 text-opacity-100'
+                        ? 'text-purple-500 text-opacity-100'
                         : campaign.status === 'paused'
                           ? 'text-slate-400'
-                          : 'text-orange-400 text-opacity-80'
+                          : 'text-purple-400 text-opacity-80'
                     }
                     strokeDasharray={`${progress}, 100`}
                     strokeWidth="3"
@@ -126,12 +126,12 @@ const CampaignListView = ({
               {/* Details */}
               <div className="flex flex-col">
                 <div className="flex items-center gap-2 mb-1">
-                  <p className="text-sm font-bold text-slate-800 hover:text-orange-600 cursor-pointer transition-colors max-w-[200px] truncate">
+                  <p className="text-sm font-bold text-slate-800 hover:text-purple-600 cursor-pointer transition-colors max-w-[200px] truncate">
                     {campaign.name}
                   </p>
                   <a
                     href={`/dashboard/campaigns/${campaign.id}`}
-                    className="text-slate-400 hover:text-orange-600"
+                    className="text-slate-400 hover:text-purple-600"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
@@ -173,9 +173,9 @@ const CampaignListView = ({
           return (
             <div className="flex items-center gap-6 text-[12px] whitespace-nowrap overflow-x-auto min-w-max pb-3 pt-3">
               <div className="flex flex-col w-24">
-                <span className="font-bold text-orange-600 text-base mb-1">{sent}</span>
+                <span className="font-bold text-purple-600 text-base mb-1">{sent}</span>
                 <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
-                  <Send className="w-3.5 h-3.5 text-orange-600" /> Sent
+                  <Send className="w-3.5 h-3.5 text-purple-600" /> Sent
                 </span>
               </div>
               <div className="flex flex-col w-28">
@@ -191,26 +191,26 @@ const CampaignListView = ({
               </div>
               <div className="flex flex-col w-32">
                 <div className="flex items-baseline gap-1 mb-1">
-                  <span className="font-bold text-orange-500 text-base">{replied}</span>
-                  <span className="text-[10px] font-semibold text-orange-500/50">
+                  <span className="font-bold text-purple-500 text-base">{replied}</span>
+                  <span className="text-[10px] font-semibold text-purple-500/50">
                     {replyRate !== '-' ? replyRate : ''}
                   </span>
                 </div>
                 <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-orange-500" /> Replied
+                  <MessageSquare className="w-3.5 h-3.5 text-purple-500" /> Replied
                 </span>
               </div>
               <div className="flex flex-col w-24">
                 <div className="flex items-baseline gap-1 mb-1">
-                  <span className="font-bold text-orange-500 text-base">{bounced}</span>
-                  <span className="text-[10px] font-semibold text-orange-500/50">
+                  <span className="font-bold text-purple-500 text-base">{bounced}</span>
+                  <span className="text-[10px] font-semibold text-purple-500/50">
                     {calculateBounceRate(campaign) !== '-'
                       ? `(${calculateBounceRate(campaign)})`
                       : ''}
                   </span>
                 </div>
                 <span className="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5">
-                  <AlertCircle className="w-3.5 h-3.5 text-orange-500" /> Bounced
+                  <AlertCircle className="w-3.5 h-3.5 text-purple-500" /> Bounced
                 </span>
               </div>
               <div className="flex flex-col w-32">
@@ -266,7 +266,7 @@ const CampaignListView = ({
                   }
                   title={campaign.status === 'paused' ? 'Resume Campaign' : 'Start Campaign'}
                   disabled={isLoadingAction.activate || isLoadingAction.resume}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all border border-slate-200 shadow-sm"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all border border-slate-200 shadow-sm"
                 >
                   <Play className="w-3.5 h-3.5 ml-0.5" />
                 </button>
@@ -291,7 +291,7 @@ const CampaignListView = ({
                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all border border-slate-200 shadow-sm ${
                   !['draft', 'paused'].includes(campaign.status)
                     ? 'text-slate-200 cursor-not-allowed bg-slate-50'
-                    : 'text-slate-400 hover:text-orange-600 hover:bg-orange-50 hover:border-orange-200'
+                    : 'text-slate-400 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200'
                 }`}
               >
                 <Edit2 className="w-3.5 h-3.5" />
@@ -299,7 +299,7 @@ const CampaignListView = ({
 
               <button
                 onClick={() => handleDeleteClick(campaign)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all border border-slate-200 shadow-sm"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all border border-slate-200 shadow-sm"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -342,10 +342,10 @@ const CampaignListView = ({
 
   if (campaigns.length === 0) {
     return (
-      <div className=" p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm shadow-orange-900/2">
-        <div className="absolute top-0 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 w-125 h-75 bg-orange-500/5 rounded-full blur-[100px] -mt-40"></div>
+      <div className=" p-20 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm shadow-purple-900/2">
+        <div className="absolute top-0 ltr:left-1/2 ltr:right-1/2 rtl:left-1/2 -translate-x-1/2 w-125 h-75 bg-purple-500/5 rounded-full blur-[100px] -mt-40"></div>
         <div className="relative mb-10">
-          <div className="w-20 h-20 bg-linear-to-br from-orange-600 to-orange-600 rounded-[28px] flex items-center justify-center rotate-3 shadow-sm shadow-orange-500/20">
+          <div className="w-20 h-20 bg-linear-to-br from-purple-600 to-purple-600 rounded-[28px] flex items-center justify-center rotate-3 shadow-sm shadow-purple-500/20">
             <Zap className="w-8 h-8 text-white" />
           </div>
         </div>
@@ -384,7 +384,7 @@ const CampaignListView = ({
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className={`group/row hover:bg-slate-50/80 transition-all duration-300 cursor-default even:bg-slate-50 ${row.getIsSelected() ? 'bg-orange-50/40' : ''}`}
+                className={`group/row hover:bg-slate-50/80 transition-all duration-300 cursor-default even:bg-slate-50 ${row.getIsSelected() ? 'bg-purple-50/40' : ''}`}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="py-4 px-6 border-b border-slate-100">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Send } from 'lucide-react';
@@ -28,7 +28,7 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
       maxWidth="max-w-md"
     >
       {/* BRANDED ORANGE HEADER - COMPACT PREMIUM */}
-      <div className="bg-linear-to-br from-orange-600 to-orange-700 p-6 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-purple-600 to-purple-700 p-6 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
           <Send className="w-20 h-20 text-white" />
         </div>
@@ -40,7 +40,7 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
             <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">
               {t('dashboard.quick_actions.create_campaign', 'Create a Campaign')}
             </h3>
-            <p className="text-[9px] font-bold text-orange-100/60 uppercase tracking-widest mt-1.5">
+            <p className="text-[9px] font-bold text-purple-100/60 uppercase tracking-widest mt-1.5">
               Campaign Configuration
             </p>
           </div>
@@ -65,7 +65,7 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Give your campaign a name"
-                className="h-12 rounded-xl border-slate-200 bg-white text-sm font-extrabold focus:border-orange-500"
+                className="h-12 rounded-xl border-slate-200 bg-white text-sm font-extrabold focus:border-purple-500"
                 autoFocus
               />
             </div>
@@ -83,7 +83,7 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
             <button
               type="submit"
               disabled={!name.trim()}
-              className="flex-1 h-11 bg-orange-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/10 hover:bg-orange-500 hover:-translate-y-px transition-all active:scale-95 disabled:opacity-50"
+              className="flex-1 h-11 bg-purple-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-purple-500/10 hover:bg-purple-500 hover:-translate-y-px transition-all active:scale-95 disabled:opacity-50"
             >
               {t('common.continue', 'Continue')}
             </button>

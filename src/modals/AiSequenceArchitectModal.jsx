@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { Sparkles, Shield, ChevronDown, Tag, Loader2, AlertCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import Modal from '../components/shared/modal';
@@ -21,7 +21,7 @@ const AiSequenceArchitectModal = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-2xl">
       <div className="overflow-hidden">
         {/* Premium Header */}
-        <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+        <div className="bg-linear-to-br from-purple-600 to-purple-700 p-8 relative overflow-hidden group">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -66,7 +66,7 @@ const AiSequenceArchitectModal = ({
                   {t('campaigns.design.goal_label', "What's your campaign goal?")}
                 </label>
                 <textarea
-                  className="w-full h-28 bg-slate-50/50 border-2 border-slate-100 rounded-xl p-4 text-sm font-bold text-slate-700 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-medium leading-relaxed shadow-inner"
+                  className="w-full h-28 bg-slate-50/50 border-2 border-slate-100 rounded-xl p-4 text-sm font-bold text-slate-700 focus:ring-12 focus:ring-purple-500/5 focus:border-purple-500/50 focus:bg-white outline-none transition-all resize-none placeholder:text-slate-300 placeholder:font-medium leading-relaxed shadow-inner"
                   placeholder={t('campaigns.design.goal_placeholder', "e.g. Promote our new SEO tool to marketing agencies in the UK. Target audience: SaaS Founders. Value Prop: We find 20% more broken links than competitors.")}
                   value={aiGoal}
                   onChange={(e) => setAiGoal(e.target.value)}
@@ -81,7 +81,7 @@ const AiSequenceArchitectModal = ({
                   </label>
                   <div className="relative group/select">
                     <select
-                      className="w-full h-10 pl-4 pr-10 bg-slate-50/50 border-2 border-slate-100 rounded-lg text-[13px] font-bold text-slate-700 hover:border-orange-200 focus:ring-12 focus:ring-orange-500/5 focus:border-orange-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
+                      className="w-full h-10 pl-4 pr-10 bg-slate-50/50 border-2 border-slate-100 rounded-lg text-[13px] font-bold text-slate-700 hover:border-purple-200 focus:ring-12 focus:ring-purple-500/5 focus:border-purple-500/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
                       value={aiTone}
                       onChange={(e) => setAiTone(e.target.value)}
                     >
@@ -89,7 +89,7 @@ const AiSequenceArchitectModal = ({
                       <option value="casual">{t('campaigns.design.tone_casual', 'Casual & Friendly')}</option>
                       <option value="urgent">{t('campaigns.design.tone_urgent', 'Urgent & Direct')}</option>
                     </select>
-                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none group-focus-within/select:text-orange-500 transition-colors" />
+                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none group-focus-within/select:text-purple-500 transition-colors" />
                   </div>
                 </div>
 
@@ -106,8 +106,8 @@ const AiSequenceArchitectModal = ({
                         onClick={() => setStepsCount(num)}
                         className={`h-10 rounded-lg text-xs font-black transition-all flex flex-col items-center justify-center border-2 group relative overflow-hidden ${
                           stepsCount === num
-                            ? 'bg-orange-600 border-orange-600 text-white shadow-md shadow-orange-600/30 scale-105 z-10'
-                            : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-orange-200 hover:bg-white'
+                            ? 'bg-purple-600 border-purple-600 text-white shadow-md shadow-purple-600/30 scale-105 z-10'
+                            : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-purple-200 hover:bg-white'
                         }`}
                       >
                         <span className="relative z-10">{num}</span>
@@ -115,7 +115,7 @@ const AiSequenceArchitectModal = ({
                           {num === 1 ? 'Step' : 'Steps'}
                         </span>
                         {num === 3 && stepsCount !== num && (
-                          <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-orange-500" />
+                          <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-purple-500" />
                         )}
                       </button>
                     ))}
@@ -128,8 +128,8 @@ const AiSequenceArchitectModal = ({
           {/* SMART TIPS SECTION */}
           <div className="p-4 bg-slate-50/50 border-2 border-slate-100 rounded-xl space-y-3">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-orange-100 rounded-md">
-                <Tag className="w-3 h-3 text-orange-600" />
+              <div className="p-1.5 bg-purple-100 rounded-md">
+                <Tag className="w-3 h-3 text-purple-600" />
               </div>
               <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                 {t('campaigns.design.tips', 'Smart Personalization Tips')}
@@ -153,7 +153,7 @@ const AiSequenceArchitectModal = ({
             <button
               onClick={handleAiGenerate}
               disabled={isGenerating || !aiGoal.trim()}
-              className="w-full h-12 bg-orange-600 text-white rounded-lg text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-orange-600/20 hover:bg-orange-700 hover:-translate-y-px active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
+              className="w-full h-12 bg-purple-600 text-white rounded-lg text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-purple-600/20 hover:bg-purple-700 hover:-translate-y-px active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:translate-y-0 disabled:active:scale-100 group overflow-hidden relative"
             >
               <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               {isGenerating ? (
@@ -170,7 +170,7 @@ const AiSequenceArchitectModal = ({
             </button>
 
             <div className="flex items-center gap-2 justify-center text-[9px] font-bold text-slate-400 tracking-widest bg-slate-50/50 py-2 rounded-lg border border-slate-100 uppercase">
-              <AlertCircle className="w-3 h-3 text-orange-500" />
+              <AlertCircle className="w-3 h-3 text-purple-500" />
               <span>{t('campaigns.design.warning_replace', 'Warning: This will replace your current sequence draft')}</span>
             </div>
           </div>

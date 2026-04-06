@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Clock, RefreshCw, LogOut, ShieldAlert } from 'lucide-react';
@@ -81,7 +81,7 @@ const SessionExpiredModal = () => {
             className="relative w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-[0_20px_60px_-12px_rgba(0,0,0,0.25)]"
           >
             {/* Header gradient strip */}
-            <div className="relative overflow-hidden bg-linear-to-br from-orange-500 via-orange-600 to-red-600 px-6 py-5">
+            <div className="relative overflow-hidden bg-linear-to-br from-purple-500 via-purple-600 to-red-600 px-6 py-5">
               {/* Decorative blobs */}
               <div className="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
               <div className="pointer-events-none absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-white/10 blur-xl" />
@@ -100,7 +100,7 @@ const SessionExpiredModal = () => {
                   <h2 className="font-outfit text-xl font-extrabold uppercase tracking-tight text-white">
                     Session Expired
                   </h2>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-orange-100/70">
+                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-purple-100/70">
                     Authentication required
                   </p>
                 </div>
@@ -111,8 +111,8 @@ const SessionExpiredModal = () => {
             <div className="px-7 py-6">
               {/* Icon + message */}
               <div className="mb-5 flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-orange-100 bg-orange-50">
-                  <ShieldAlert className="h-5 w-5 text-orange-500" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-purple-100 bg-purple-50">
+                  <ShieldAlert className="h-5 w-5 text-purple-500" />
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-800">Your session has expired</p>
@@ -132,7 +132,7 @@ const SessionExpiredModal = () => {
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshing}
-                  className="group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-md bg-linear-to-r from-orange-500 to-orange-600 px-6 py-2.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-orange-500/20 transition-all hover:shadow-md hover:shadow-orange-500/30 active:scale-[0.98] disabled:opacity-60"
+                  className="group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-md bg-linear-to-r from-purple-500 to-purple-600 px-6 py-2.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-500/20 transition-all hover:shadow-md hover:shadow-purple-500/30 active:scale-[0.98] disabled:opacity-60"
                 >
                   {/* shimmer on hover */}
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, MessageCircle, AlertCircle, CheckCircle2, TrendingUp } from 'lucide-react';
 
@@ -58,7 +58,7 @@ const MetricPulse = ({ metrics, overview }) => {
             {t('analytics.metric_pulse_subtitle')}
           </p>
         </div>
-        <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-orange-600 border border-slate-100 shadow-xs">
+        <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-purple-600 border border-slate-100 shadow-xs">
           <TrendingUp className="w-5 h-5" />
         </div>
       </div>
@@ -96,12 +96,12 @@ const MetricPulse = ({ metrics, overview }) => {
 
       <div className="mt-10 pt-6 border-t border-slate-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
             {t('analytics.live_system_pulse')}
           </span>
         </div>
-        <CheckCircle2 className="w-4 h-4 text-orange-500" />
+        <CheckCircle2 className="w-4 h-4 text-purple-500" />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 const Smtp = (props) => (
   <svg {...props} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@ const Smtp = (props) => (
     {/* The Signature Orange Top Flap - Scaled up */}
     <path
       d="M20 100L256 260L492 100H20Z"
-      fill="#ea580c"
+      fill="#6366f1"
       stroke="#1A252F"
       strokeWidth="28"
       strokeLinejoin="round"
@@ -36,7 +36,7 @@ const Smtp = (props) => (
     />
 
     {/* Subtle Glow - Tighter and more focused */}
-    <circle cx="256" cy="256" r="220" fill="#ea580c" fillOpacity="0.03" />
+    <circle cx="256" cy="256" r="220" fill="#6366f1" fillOpacity="0.03" />
   </svg>
 );
 

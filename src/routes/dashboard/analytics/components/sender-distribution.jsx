@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import CustomTooltip from './custom-tooltip';
@@ -12,7 +12,7 @@ const SenderDistribution = ({ data, COLORS }) => {
       <div className="mb-8">
         <h3 className="text-xl font-black text-slate-900 tracking-tight">
           {t('analytics.sender_distribution_title')}{' '}
-          <span className="text-orange-500">{t('analytics.distribution_span')}</span>
+          <span className="text-purple-500">{t('analytics.distribution_span')}</span>
         </h3>
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
           {t('analytics.distribution_subtitle')}

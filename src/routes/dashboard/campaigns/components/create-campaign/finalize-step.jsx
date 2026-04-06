@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Clock,
@@ -28,7 +28,7 @@ const Step3Finalize = ({
   return (
     <div className="max-w-5xl mx-auto space-y-10 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Launch Readiness Header */}
-      <div className="bg-orange-600 rounded-lg p-12 text-white relative overflow-hidden shadow-sm shadow-orange-600/20 group">
+      <div className="bg-purple-600 rounded-lg p-12 text-white relative overflow-hidden shadow-sm shadow-purple-600/20 group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:scale-110 transition-transform duration-700" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl group-hover:scale-125 transition-transform duration-1000" />
 
@@ -41,7 +41,7 @@ const Step3Finalize = ({
               <h2 className="text-3xl font-black tracking-tight">
                 {campaignName || 'Untitled Campaign'}
               </h2>
-              <p className="text-orange-100 font-medium mt-1 flex items-center gap-2 justify-center md:justify-start">
+              <p className="text-purple-100 font-medium mt-1 flex items-center gap-2 justify-center md:justify-start">
                 <CheckCircle2 className="w-4 h-4 text-white" /> {t('campaigns.ready_to_send')}
               </p>
             </div>
@@ -49,7 +49,7 @@ const Step3Finalize = ({
 
           <div className="flex bg-white/10  rounded-lg p-6 border border-white/10 items-center gap-6">
             <div className="text-center">
-              <p className="text-[10px] font-black uppercase tracking-widest text-orange-200">
+              <p className="text-[10px] font-black uppercase tracking-widest text-purple-200">
                 Total Leads
               </p>
               <p className="text-2xl font-black mt-1">
@@ -58,7 +58,7 @@ const Step3Finalize = ({
             </div>
             <div className="w-px h-10 bg-white/10" />
             <div className="text-center">
-              <p className="text-[10px] font-black uppercase tracking-widest text-orange-200">
+              <p className="text-[10px] font-black uppercase tracking-widest text-purple-200">
                 Avg. Delay
               </p>
               <p className="text-2xl font-black mt-1">{watch('sendingInterval')}m</p>
@@ -81,9 +81,9 @@ const Step3Finalize = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-orange-100 transition-colors">
+              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-purple-100 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-orange-600">
+                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-purple-600">
                     <Mail className="w-4 h-4" />
                   </div>
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -99,7 +99,7 @@ const Step3Finalize = ({
                         key={s.id}
                         className="text-[11px] font-bold text-slate-800 truncate flex items-center gap-2"
                       >
-                        <div className="w-1 h-1 rounded-full bg-orange-400" />
+                        <div className="w-1 h-1 rounded-full bg-purple-400" />
                         {s.email}
                       </p>
                     ))}
@@ -116,9 +116,9 @@ const Step3Finalize = ({
                 </div>
               </div>
 
-              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-orange-100 transition-colors">
+              <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-purple-100 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50 text-orange-600">
+                  <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-purple-50 text-purple-600">
                     <Database className="w-4 h-4" />
                   </div>
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -186,8 +186,8 @@ const Step3Finalize = ({
         <div className="space-y-8">
           <div className="bg-white rounded-lg p-10 border-2 border-slate-100 shadow-sm space-y-8 h-full">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100/50">
-                <BarChart3 className="w-5 h-5 text-orange-600" />
+              <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center border border-purple-100/50">
+                <BarChart3 className="w-5 h-5 text-purple-600" />
               </div>
               <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
                 Engagement Tracking
@@ -200,27 +200,27 @@ const Step3Finalize = ({
                   id: 'trackOpens',
                   label: 'Open Tracking',
                   icon: BarChart3,
-                  color: 'text-orange-600',
-                  bgColor: 'bg-orange-50',
+                  color: 'text-purple-600',
+                  bgColor: 'bg-purple-50',
                 },
                 {
                   id: 'trackClicks',
                   label: 'Click Tracking',
                   icon: MousePointer2,
-                  color: 'text-orange-600',
-                  bgColor: 'bg-orange-50',
+                  color: 'text-purple-600',
+                  bgColor: 'bg-purple-50',
                 },
                 {
                   id: 'unsubscribeLink',
                   label: 'Unsubscribe Link',
                   icon: Trash2,
-                  color: 'text-orange-600',
-                  bgColor: 'bg-orange-50',
+                  color: 'text-purple-600',
+                  bgColor: 'bg-purple-50',
                 },
               ].map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-orange-100 transition-all"
+                  className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 group hover:border-purple-100 transition-all"
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -232,7 +232,7 @@ const Step3Finalize = ({
                   </div>
                   <div
                     onClick={() => setValue(item.id, !watch(item.id))}
-                    className={`w-12 h-7 rounded-full relative cursor-pointer transition-all duration-300 shadow-inner ${watch(item.id) ? 'bg-orange-600' : 'bg-slate-200'}`}
+                    className={`w-12 h-7 rounded-full relative cursor-pointer transition-all duration-300 shadow-inner ${watch(item.id) ? 'bg-purple-600' : 'bg-slate-200'}`}
                   >
                     <div
                       className={`absolute top-[4.5px] w-4.5 h-4.5 bg-white rounded-full shadow-md transition-all duration-300 ${watch(item.id) ? 'left-[24px]' : 'left-[5px]'}`}
@@ -242,23 +242,23 @@ const Step3Finalize = ({
               ))}
             </div>
 
-            <div className="p-6 bg-orange-50/50 rounded-lg border border-orange-100">
+            <div className="p-6 bg-purple-50/50 rounded-lg border border-purple-100">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-orange-50">
-                  <Gauge className="w-4 h-4 text-orange-500" />
+                <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-purple-50">
+                  <Gauge className="w-4 h-4 text-purple-500" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-orange-600/60">
+                <span className="text-[10px] font-black uppercase tracking-widest text-purple-600/60">
                   Deliverability Health
                 </span>
               </div>
-              <div className="h-2.5 bg-orange-100/50 rounded-full overflow-hidden p-0.5">
-                <div className="h-full bg-orange-500 rounded-full w-[95%] shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
+              <div className="h-2.5 bg-purple-100/50 rounded-full overflow-hidden p-0.5">
+                <div className="h-full bg-purple-500 rounded-full w-[95%] shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
               </div>
               <div className="flex justify-between mt-3">
-                <span className="text-[9px] font-black text-orange-600/60 uppercase tracking-widest">
+                <span className="text-[9px] font-black text-purple-600/60 uppercase tracking-widest">
                   Optimal
                 </span>
-                <span className="text-[10px] font-bold text-orange-700">95% Health</span>
+                <span className="text-[10px] font-bold text-purple-700">95% Health</span>
               </div>
             </div>
 

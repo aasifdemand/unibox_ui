@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Input from '../../components/ui/input';
 import { Mail } from 'lucide-react';
@@ -112,9 +112,9 @@ const Login = () => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="w-12 h-12 bg-orange-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-orange-100"
+          className="w-12 h-12 bg-purple-50/50  rounded-lg flex items-center justify-center mx-auto mb-6 shadow-sm border border-purple-100"
         >
-          <Mail className="w-6 h-6 text-orange-600" />
+          <Mail className="w-6 h-6 text-purple-600" />
         </motion.div>
         <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
           {t('auth.login.title')}{' '}
@@ -159,7 +159,7 @@ const Login = () => {
           <div className="flex justify-end px-1 pt-0.5">
             <button
               onClick={handleForgotPassword}
-              className="text-[13px] font-semibold text-orange-600 hover:text-orange-700 transition-colors"
+              className="text-[13px] font-semibold text-purple-600 hover:text-purple-700 transition-colors"
               type="button"
               disabled={isLoading}
             >
@@ -175,7 +175,7 @@ const Login = () => {
         <div className="space-y-3 pt-2">
           <button
             type="submit"
-            className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
+            className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-purple-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
             disabled={isLoading || !turnstileToken}
           >
             {isLoading ? (
@@ -193,7 +193,7 @@ const Login = () => {
           {t('auth.login.no_account')}{' '}
           <Link
             to="/auth/signup"
-            className="text-orange-600 hover:text-orange-700 font-bold transition-colors ltr:ml-1 rtl:mr-1"
+            className="text-purple-600 hover:text-purple-700 font-bold transition-colors ltr:ml-1 rtl:mr-1"
           >
             {t('auth.login.sign_up_link')}
           </Link>

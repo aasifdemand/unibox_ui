@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { CheckCircle2, RefreshCw, Layout, Shield } from 'lucide-react';
@@ -22,7 +22,7 @@ const ConnectIntegration = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-md" closeOnBackdrop={true}>
       {/* Premium Header */}
-      <div className="bg-linear-to-br from-orange-600 to-red-700 p-8 relative overflow-hidden group">
+      <div className="bg-linear-to-br from-purple-600 to-red-700 p-8 relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Layout className="w-20 h-20 text-white" />
         </div>
@@ -81,15 +81,15 @@ const ConnectIntegration = ({
                   placeholder={t('integrations.api_key_placeholder', {
                     name: integration.name,
                   })}
-                  className="w-full h-14 px-5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all"
+                  className="w-full h-14 px-5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all"
                   autoFocus
                 />
               </div>
             )}
 
             {!isVerifyingOAuth && (
-              <div className="p-4 bg-orange-50/50 rounded-lg border border-orange-100/50">
-                <p className="text-xs text-orange-600/80 font-medium leading-relaxed">
+              <div className="p-4 bg-purple-50/50 rounded-lg border border-purple-100/50">
+                <p className="text-xs text-purple-600/80 font-medium leading-relaxed">
                   {t('integrations.api_key_desc', { name: integration.name })}
                 </p>
               </div>
@@ -99,7 +99,7 @@ const ConnectIntegration = ({
           <button
             type="submit"
             disabled={isConnecting || (!isVerifyingOAuth && !apiKey.trim())}
-            className="w-full h-14 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:bg-orange-700 transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50"
+            className="w-full h-14 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50"
           >
             {isConnecting ? (
               <>

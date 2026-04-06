@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+﻿import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -147,7 +147,7 @@ const GlobalSearch = () => {
   return (
     <div className="hidden lg:flex relative group" ref={containerRef}>
       {/* Input */}
-      <Search className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 group-focus-within:text-orange-500 transition-colors pointer-events-none" />
+      <Search className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 group-focus-within:text-purple-500 transition-colors pointer-events-none" />
       <input
         ref={inputRef}
         type="text"
@@ -169,7 +169,7 @@ const GlobalSearch = () => {
           {/* Spinner */}
           {esLoading && (
             <div className="px-4 py-6 flex flex-col items-center gap-2">
-              <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
               <span className="text-[11px] text-zinc-400">Searching everything...</span>
             </div>
           )}
@@ -181,11 +181,11 @@ const GlobalSearch = () => {
                 <ResultRow
                   key={msg.id}
                   icon={<Mail className="w-3.5 h-3.5" />}
-                  iconBg="bg-orange-50 border-orange-100 text-orange-600"
+                  iconBg="bg-purple-50 border-purple-100 text-purple-600"
                   title={
                     msg._highlights?.subject?.[0]
                       ? <span dangerouslySetInnerHTML={{ __html: msg._highlights.subject[0]
-                          .replace(/<em>/g,  '<mark class="bg-orange-100 text-orange-800 not-italic">')
+                          .replace(/<em>/g,  '<mark class="bg-purple-100 text-purple-800 not-italic">')
                           .replace(/<\/em>/g, '</mark>') }} />
                       : (msg.subject || '(no subject)')
                   }
@@ -232,7 +232,7 @@ const GlobalSearch = () => {
                   badge={c.status}
                   badgeColor={
                     c.status === 'running' || c.status === 'sending' ? 'text-green-600' :
-                    c.status === 'completed' ? 'text-zinc-400' : 'text-orange-500'
+                    c.status === 'completed' ? 'text-zinc-400' : 'text-purple-500'
                   }
                   onClick={() => go(`/dashboard/campaigns/${c.id}`)}
                 />
@@ -247,7 +247,7 @@ const GlobalSearch = () => {
                 <ResultRow
                   key={c.id}
                   icon={<UserRound className="w-3.5 h-3.5" />}
-                  iconBg="bg-teal-50 border-teal-100 text-teal-600"
+                  iconBg="bg-violet-50 border-violet-100 text-violet-600"
                   title={c.name || c.normalizedEmail}
                   sub={c.normalizedEmail + (c.company ? ` · ${c.company}` : '')}
                   badge={c.domain}

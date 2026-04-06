@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { isFolderType } from '../utils/folder-utils';
 
 const EmptyMessages = ({
@@ -88,7 +88,7 @@ const EmptyMessages = ({
         </div>
 
         {/* Soft Background Glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[250px] bg-orange-50/20 rounded-full blur-3xl z-0"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[250px] bg-purple-50/20 rounded-full blur-3xl z-0"></div>
       </div>
 
       {/* Primary Message Copy */}

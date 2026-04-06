@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { User, Mail, Calendar, Tag, Building, Phone, MapPin, Globe, X } from 'lucide-react';
 
 const PersonalizationTokens = ({
@@ -152,16 +152,16 @@ const PersonalizationTokens = ({
                     onClick={() => handleTokenClick(token)}
                     className={`flex items-center p-2 ltr:text-left ltr:text-right rtl:text-left rounded-md border transition-all duration-200 group ${
                       token.isCustom
-                        ? 'bg-orange-50/10 border-orange-100/50 hover:border-orange-300 hover:bg-orange-50'
-                        : 'bg-slate-50/30 border-slate-100/50 hover:border-orange-300 hover:bg-orange-50'
+                        ? 'bg-purple-50/10 border-purple-100/50 hover:border-purple-300 hover:bg-purple-50'
+                        : 'bg-slate-50/30 border-slate-100/50 hover:border-purple-300 hover:bg-purple-50'
                     }`}
                   >
                     <div
                       className={`w-6 h-6 rounded-lg flex items-center justify-center ltr:mr-2.5 rtl:ml-2.5 shrink-0 transition-transform group-hover:scale-110 ${
-                        token.isCustom ? 'bg-orange-100/50' : 'bg-orange-100/50'
+                        token.isCustom ? 'bg-purple-100/50' : 'bg-purple-100/50'
                       }`}
                     >
-                      <div className={`${token.isCustom ? 'text-orange-600' : 'text-orange-600'}`}>
+                      <div className={`${token.isCustom ? 'text-purple-600' : 'text-purple-600'}`}>
                         {React.cloneElement(token.icon, { className: 'w-3 h-3' })}
                       </div>
                     </div>
@@ -171,7 +171,7 @@ const PersonalizationTokens = ({
                           {token.label}
                         </span>
                       </div>
-                      <code className="text-[7px] bg-white/50 border border-slate-100/80 px-1.5 py-0.5 rounded-md font-mono text-orange-500/80 font-medium ml-2 shrink-0">
+                      <code className="text-[7px] bg-white/50 border border-slate-100/80 px-1.5 py-0.5 rounded-md font-mono text-purple-500/80 font-medium ml-2 shrink-0">
                         {token.token.replace(/[{}]/g, '')}
                       </code>
                     </div>

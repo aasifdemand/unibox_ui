@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Shield, Plus, Check, Activity } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -22,7 +22,7 @@ const SenderAccountsModal = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-6xl" showCloseButton={true}>
       <div className="overflow-hidden">
         {/* Premium Header */}
-        <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+        <div className="bg-linear-to-br from-purple-600 to-purple-700 p-8 relative overflow-hidden group">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -100,11 +100,11 @@ const SenderAccountsModal = ({
                     <tr
                       key={sender.id}
                       onClick={() => toggleSender(sender)}
-                      className={`group hover:bg-slate-50/50 transition-all duration-300 cursor-pointer ${isSelected ? 'bg-orange-50/30' : ''}`}
+                      className={`group hover:bg-slate-50/50 transition-all duration-300 cursor-pointer ${isSelected ? 'bg-purple-50/30' : ''}`}
                     >
                       {/* Checkbox */}
                       <td className="py-4 px-6 border-b border-slate-100">
-                        <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-orange-600 border-orange-600' : 'border-slate-300 bg-white group-hover:border-orange-400'}`}>
+                        <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-purple-600 border-purple-600' : 'border-slate-300 bg-white group-hover:border-purple-400'}`}>
                           {isSelected && <Check className="w-3 h-3 text-white stroke-[4px]" />}
                         </div>
                       </td>
@@ -112,7 +112,7 @@ const SenderAccountsModal = ({
                       {/* Account Info */}
                       <td className="py-4 px-6 border-b border-slate-100">
                         <div className="flex flex-col">
-                          <span className="text-sm font-black text-slate-800 tracking-tight group-hover:text-orange-600 transition-colors">
+                          <span className="text-sm font-black text-slate-800 tracking-tight group-hover:text-purple-600 transition-colors">
                             {sender.displayName || sender.email.split('@')[0]}
                           </span>
                           <span className="text-xs font-bold text-slate-400">
@@ -123,9 +123,9 @@ const SenderAccountsModal = ({
 
                       {/* Status */}
                       <td className="py-4 px-6 border-b border-slate-100">
-                        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100/50 w-fit">
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">
+                        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-50 border border-purple-100/50 w-fit">
+                          <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                          <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">
                             {sender.isVerified ? 'Active' : 'Unverified'}
                           </span>
                         </div>
@@ -144,7 +144,7 @@ const SenderAccountsModal = ({
                           </div>
                           <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/40">
                             <div
-                              className="h-full bg-orange-600 rounded-full transition-all duration-1000"
+                              className="h-full bg-purple-600 rounded-full transition-all duration-1000"
                               style={{ width: `${usagePercent}%` }}
                             />
                           </div>
@@ -155,7 +155,7 @@ const SenderAccountsModal = ({
                       <td className="py-4 px-6 border-b border-slate-100">
                         {warmupEnabled ? (
                           <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                             <span className="text-[11px] font-black text-slate-600 tabular-nums">
                               {sender.stats?.warmupStatus === 'completed' ? 'Healthy' : 'Warming'}
                             </span>
@@ -175,10 +175,10 @@ const SenderAccountsModal = ({
                       {/* Shared Status */}
                       <td className="py-4 px-6 border-b border-slate-100">
                         <div className="flex items-center gap-1 w-fit">
-                          <div className="w-2.5 h-2.5 rounded-full bg-orange-500 flex items-center justify-center">
+                          <div className="w-2.5 h-2.5 rounded-full bg-purple-500 flex items-center justify-center">
                             <Plus className="w-1.5 h-1.5 text-white" />
                           </div>
-                          <span className="text-[11px] font-black text-orange-600">
+                          <span className="text-[11px] font-black text-purple-600">
                             {sender.campaignCount || 0} Campaigns
                           </span>
                         </div>
@@ -200,7 +200,7 @@ const SenderAccountsModal = ({
                                e.stopPropagation();
                                onSendTest(sender);
                              }}
-                             className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all group/test"
+                             className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-purple-600 hover:text-white transition-all group/test"
                            >
                               <Activity className="w-3.5 h-3.5 group-hover/test:scale-110 transition-transform" />
                               {mode === 'test' ? 'Send Test' : 'Test Account'}
@@ -212,7 +212,7 @@ const SenderAccountsModal = ({
                               e.stopPropagation();
                               navigate(`/dashboard/mailboxes/${sender.id}`);
                             }}
-                            className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-orange-600 transition-colors group/btn"
+                            className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-purple-600 transition-colors group/btn"
                           >
                             <Activity className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform text-slate-300" />
                             View
@@ -226,11 +226,11 @@ const SenderAccountsModal = ({
                 {/* Add New Row */}
                 <tr className="bg-slate-50/30">
                   <td colSpan={9} className="py-8 px-6 text-center border-b border-slate-100">
-                    <button className="inline-flex items-center gap-3 px-6 py-3 border-2 border-dashed border-slate-200 rounded-xl hover:border-orange-400 hover:bg-orange-50/20 transition-all group">
-                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-slate-400 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                    <button className="inline-flex items-center gap-3 px-6 py-3 border-2 border-dashed border-slate-200 rounded-xl hover:border-purple-400 hover:bg-purple-50/20 transition-all group">
+                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-slate-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-sm">
                         <Plus className="w-4 h-4" />
                       </div>
-                      <span className="text-[11px] font-black text-slate-400 group-hover:text-orange-600 transition-all uppercase tracking-widest">
+                      <span className="text-[11px] font-black text-slate-400 group-hover:text-purple-600 transition-all uppercase tracking-widest">
                         {t('campaigns.add_new_sender', 'Add New Sender')}
                       </span>
                     </button>
@@ -243,7 +243,7 @@ const SenderAccountsModal = ({
           <div className="p-8 border-t border-slate-100 bg-slate-50/20">
             <Button
               onClick={onClose}
-              className="w-full py-4.5 bg-orange-600 text-white rounded-lg text-[11px] font-black uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:bg-orange-700 hover:-translate-y-0.5 transition-all"
+              className="w-full py-4.5 bg-purple-600 text-white rounded-lg text-[11px] font-black uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:bg-purple-700 hover:-translate-y-0.5 transition-all"
             >
               {t('campaigns.confirm_selection', 'Confirm Selection')}
             </Button>

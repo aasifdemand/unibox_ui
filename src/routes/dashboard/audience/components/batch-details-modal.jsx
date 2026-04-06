@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '../../../../hooks/useAuth';
 import { motion, AnimatePresence } from 'motion/react';
@@ -39,9 +39,9 @@ const BatchDetailsModal = ({
   const getVerificationIcon = (status) => {
     switch (status) {
       case 'valid':
-        return <CheckCircle className="w-3.5 h-3.5 text-orange-500" />;
+        return <CheckCircle className="w-3.5 h-3.5 text-purple-500" />;
       case 'invalid':
-        return <XCircle className="w-3.5 h-3.5 text-orange-500" />;
+        return <XCircle className="w-3.5 h-3.5 text-purple-500" />;
       case 'risky':
         return <AlertCircle className="w-3.5 h-3.5 text-amber-500" />;
       default:
@@ -52,9 +52,9 @@ const BatchDetailsModal = ({
   const getVerificationBadgeClass = (status) => {
     switch (status) {
       case 'valid':
-        return 'bg-orange-50 text-orange-600 border border-orange-100';
+        return 'bg-purple-50 text-purple-600 border border-purple-100';
       case 'invalid':
-        return 'bg-orange-50 text-orange-600 border border-orange-100';
+        return 'bg-purple-50 text-purple-600 border border-purple-100';
       case 'risky':
         return 'bg-amber-50 text-amber-600 border border-amber-100';
       default:
@@ -82,8 +82,8 @@ const BatchDetailsModal = ({
           {/* Header */}
           <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100">
-                <FileText className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center border border-purple-100">
+                <FileText className="w-6 h-6 text-purple-600" />
               </div>
               <div>
                 <h3 className="text-xl font-extrabold text-slate-800 tracking-tight">
@@ -106,7 +106,7 @@ const BatchDetailsModal = ({
           <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-4">
-                <div className="w-12 h-12 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin" />
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   Loading batch contacts...
                 </p>
@@ -236,7 +236,7 @@ const BatchDetailsModal = ({
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <div className="px-4 flex items-center gap-2">
-                  <span className="text-xs font-black text-orange-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200/60">
+                  <span className="text-xs font-black text-purple-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200/60">
                     {recordsPage}
                   </span>
                   <span className="text-[10px] font-black text-slate-300 uppercase">of</span>

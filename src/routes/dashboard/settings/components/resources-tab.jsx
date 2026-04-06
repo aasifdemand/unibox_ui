@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Mail, Users, Globe, Plus, Trash2, Loader2, ExternalLink, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -29,13 +29,13 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
       case 'verified':
       case 'completed':
       case 'sent':
-        return 'bg-orange-50 text-orange-600 border-orange-100/50';
+        return 'bg-purple-50 text-purple-600 border-purple-100/50';
       case 'pending':
       case 'scheduled':
         return 'bg-amber-50 text-amber-600 border-amber-100/50';
       case 'failed':
       case 'bounced':
-        return 'bg-orange-50 text-orange-600 border-orange-100/50';
+        return 'bg-purple-50 text-purple-600 border-purple-100/50';
       case 'draft':
         return 'bg-slate-50 text-slate-500 border-slate-100/50';
       default:
@@ -63,7 +63,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
     <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="p-6 border-b border-slate-50">
         <h3 className="text-lg font-black text-slate-800 tracking-tight flex items-center gap-2">
-          <Database className="w-4 h-4 text-orange-600" />
+          <Database className="w-4 h-4 text-purple-600" />
           {t('settings.resources.title', 'Workspace Resources')}
         </h3>
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -80,17 +80,17 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               onClick={() => setSubTab(tab.id)}
               className={`flex items-center gap-2.5 h-9 px-4 rounded-md text-[9px] font-black uppercase tracking-widest transition-all duration-200 ${
                 subTab === tab.id
-                  ? 'bg-white text-orange-600 shadow-sm border border-slate-200'
+                  ? 'bg-white text-purple-600 shadow-sm border border-slate-200'
                   : 'text-slate-400 hover:text-slate-600 hover:bg-white/50'
               }`}
             >
               <tab.icon
-                className={`w-3.5 h-3.5 ${subTab === tab.id ? 'text-orange-600' : 'text-slate-400'}`}
+                className={`w-3.5 h-3.5 ${subTab === tab.id ? 'text-purple-600' : 'text-slate-400'}`}
               />
               <span>{tab.label}</span>
               <span
                 className={`flex items-center justify-center min-w-5 h-5 px-1.5 text-[8px] rounded-full font-black ${
-                  subTab === tab.id ? 'bg-orange-50 text-orange-600' : 'bg-slate-200 text-slate-500'
+                  subTab === tab.id ? 'bg-purple-50 text-purple-600' : 'bg-slate-200 text-slate-500'
                 }`}
               >
                 {tab.count}
@@ -115,7 +115,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               </div>
               <Link
                 to="/dashboard/audience?sender=true"
-                className="flex items-center gap-2 h-10 px-5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-lg shadow-orange-500/10 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.senders.add')}
               </Link>
@@ -123,18 +123,18 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
 
             {loading.senders ? (
               <div className="flex justify-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-orange-600 opacity-20" />
+                <Loader2 className="w-8 h-8 animate-spin text-purple-600 opacity-20" />
               </div>
             ) : senders.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {getPaginatedData(senders, 'senders').map((sender) => (
                   <div
                     key={sender.id}
-                    className="p-4 border border-slate-100 rounded-lg bg-slate-50/50 hover:bg-white hover:border-orange-200 transition-all duration-300 group"
+                    className="p-4 border border-slate-100 rounded-lg bg-slate-50/50 hover:bg-white hover:border-purple-200 transition-all duration-300 group"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-orange-600 shadow-xs">
+                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-purple-600 shadow-xs">
                           <Mail className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -148,7 +148,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                       </div>
                       <button
                         onClick={() => onDeleteSender(sender.id)}
-                        className="p-2 text-slate-300 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                        className="p-2 text-slate-300 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -180,7 +180,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               </div>
               <Link
                 to="/dashboard/audience"
-                className="flex items-center gap-2 h-10 px-5 bg-orange-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-lg shadow-orange-500/10 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.lists.add')}
               </Link>
@@ -188,14 +188,14 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
 
             {loading.batches ? (
               <div className="flex justify-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-orange-600 opacity-20" />
+                <Loader2 className="w-8 h-8 animate-spin text-purple-600 opacity-20" />
               </div>
             ) : batches.length > 0 ? (
               <div className="space-y-2">
                 {getPaginatedData(batches, 'lists').map((batch) => (
                   <div
                     key={batch.id}
-                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-orange-200 transition-all duration-300"
+                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-purple-200 transition-all duration-300"
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 shadow-xs">
@@ -245,17 +245,17 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
 
             {loading.campaigns ? (
               <div className="flex justify-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-orange-600 opacity-20" />
+                <Loader2 className="w-8 h-8 animate-spin text-purple-600 opacity-20" />
               </div>
             ) : campaigns.length > 0 ? (
               <div className="space-y-2">
                 {getPaginatedData(campaigns, 'campaigns').map((campaign) => (
                   <div
                     key={campaign.id}
-                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-orange-200 transition-all"
+                    className="flex items-center justify-between p-4 rounded-lg border border-slate-100 bg-slate-50/30 hover:border-purple-200 transition-all"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-orange-500 shadow-xs">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-purple-500 shadow-xs">
                         <Globe className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-black text-slate-700 tracking-tight uppercase">

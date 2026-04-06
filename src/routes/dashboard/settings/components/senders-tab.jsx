@@ -1,4 +1,4 @@
-import { Mail, Plus, Edit, Trash2, Loader2 } from 'lucide-react';
+﻿import { Mail, Plus, Edit, Trash2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -42,7 +42,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
           </div>
           <Link
             to="/dashboard/audience?sender=true"
-            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition flex items-center text-sm"
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center text-sm"
           >
             <Plus className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             {t('settings.resources.senders.add')}
@@ -52,7 +52,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
 
       {loading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="w-6 h-6 animate-spin text-orange-600" />
+          <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
         </div>
       ) : senders.length > 0 ? (
         <div className="divide-y divide-gray-200">
@@ -65,7 +65,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
                       sender.type === 'gmail'
                         ? 'bg-red-100'
                         : sender.type === 'outlook'
-                          ? 'bg-orange-100'
+                          ? 'bg-purple-100'
                           : 'bg-green-100'
                     }`}
                   >
@@ -74,7 +74,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
                         sender.type === 'gmail'
                           ? 'text-red-600'
                           : sender.type === 'outlook'
-                            ? 'text-orange-600'
+                            ? 'text-purple-600'
                             : 'text-green-600'
                       }`}
                     />
@@ -97,7 +97,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition">
+                  <button className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition">
                     <Edit className="w-4 h-4" />
                   </button>
                   <button
@@ -120,7 +120,7 @@ const SendersTab = ({ senders, loading, onDelete, isDeleting }) => {
           </h3>
           <Link
             to="/dashboard/audience?sender=true"
-            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition inline-flex items-center"
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition inline-flex items-center"
           >
             <Plus className="w-4 h-4 ltr:mr-2 rtl:ml-2" />
             {t('settings.resources.senders.add')}

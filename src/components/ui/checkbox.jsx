@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+﻿import React, { useId } from 'react';
 import { Check } from 'lucide-react';
 
 const Checkbox = ({
@@ -41,12 +41,12 @@ const Checkbox = ({
                 ${
                   error
                     ? 'border-red-300 checked:border-red-600 checked:bg-red-600'
-                    : 'border-gray-300 checked:border-orange-600 checked:bg-orange-600'
+                    : 'border-gray-300 checked:border-purple-600 checked:bg-purple-600'
                 }
                 ${
                   disabled
                     ? 'cursor-not-allowed opacity-50'
-                    : 'cursor-pointer hover:border-orange-400 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
+                    : 'cursor-pointer hover:border-purple-400 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
                 }
                 focus:outline-none
               `}

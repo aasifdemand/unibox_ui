@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal, Users, Download } from 'lucide-react';
 import FilterDropdown from '../../../../components/ui/filter-dropdown';
 import { ColumnSelector } from './contacts-table';
@@ -56,7 +56,7 @@ const AudienceHeader = ({
             )}
           </h1>
           <p className="text-slate-500 text-sm mt-1 flex items-center gap-2">
-            <Users className="w-4 h-4 text-orange-500" />
+            <Users className="w-4 h-4 text-purple-500" />
             {t('audience.header_description')}
           </p>
         </div>
@@ -83,12 +83,12 @@ const AudienceHeader = ({
                     <div
                       className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all shrink-0 ${
                         activeTab === tab.id
-                          ? 'border-orange-500'
-                          : 'border-slate-300 group-hover:border-orange-300'
+                          ? 'border-purple-500'
+                          : 'border-slate-300 group-hover:border-purple-300'
                       }`}
                     >
                       {activeTab === tab.id && (
-                        <div className="w-2 h-2 rounded-full bg-orange-500" />
+                        <div className="w-2 h-2 rounded-full bg-purple-500" />
                       )}
                     </div>
                     <span
@@ -109,8 +109,8 @@ const AudienceHeader = ({
             {activeTab === 'contacts' && (
               <>
                 {/* Search */}
-                <div className="relative group flex items-center bg-white border border-slate-200 rounded-md px-4 h-11 w-full transition-all focus-within:ring-2 focus-within:ring-orange-500/10 focus-within:border-orange-500/40 shadow-sm mt-2">
-                  <Search className="w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-colors shrink-0" />
+                <div className="relative group flex items-center bg-white border border-slate-200 rounded-md px-4 h-11 w-full transition-all focus-within:ring-2 focus-within:ring-purple-500/10 focus-within:border-purple-500/40 shadow-sm mt-2">
+                  <Search className="w-4 h-4 text-slate-400 group-focus-within:text-purple-500 transition-colors shrink-0" />
                   <input
                     type="text"
                     placeholder={
@@ -154,7 +154,7 @@ const AudienceHeader = ({
                           (option.value === 'all' &&
                             (!filterStatus || filterStatus.length === 0)) ||
                           (Array.isArray(filterStatus) && filterStatus.includes(option.value))
-                            ? 'bg-orange-50 text-orange-700'
+                            ? 'bg-purple-50 text-purple-700'
                             : 'hover:bg-slate-100 text-slate-600'
                         }`}
                       >
@@ -163,8 +163,8 @@ const AudienceHeader = ({
                             (option.value === 'all' &&
                               (!filterStatus || filterStatus.length === 0)) ||
                             (Array.isArray(filterStatus) && filterStatus.includes(option.value))
-                              ? 'bg-orange-500 border-orange-500 text-white'
-                              : 'border-slate-300 bg-white group-hover:border-orange-300 text-transparent'
+                              ? 'bg-purple-500 border-purple-500 text-white'
+                              : 'border-slate-300 bg-white group-hover:border-purple-300 text-transparent'
                           }`}
                         >
                           <CheckCircle className="w-2.5 h-2.5" />
@@ -191,7 +191,7 @@ const AudienceHeader = ({
 
           <button
             onClick={() => window.location.reload()}
-            className="w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shadow-sm shrink-0"
+            className="w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shadow-sm shrink-0"
             title={t('audience.refresh')}
           >
             <RefreshCcw className="w-4 h-4" />
@@ -200,7 +200,7 @@ const AudienceHeader = ({
           {activeTab === 'contacts' && (
             <button
               onClick={() => setShowExportConfirm(true)}
-              className="flex items-center gap-2 px-4 h-11 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm shrink-0"
+              className="flex items-center gap-2 px-4 h-11 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-purple-200 hover:text-purple-600 transition-all shadow-sm shrink-0"
               title="Export filtered contacts to CSV"
             >
               <Download className="w-3.5 h-3.5" />
@@ -221,7 +221,7 @@ const AudienceHeader = ({
           />
           <button
             onClick={() => setShowUploadModal(true)}
-            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-black  tracking-widest text-[11px] rounded-md shrink-0"
+            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-black  tracking-widest text-[11px] rounded-md shrink-0"
           >
             <Upload className="w-4 h-4" />
             <span className="text-[11px] font-semibold  tracking-widest text-white">

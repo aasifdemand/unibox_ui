@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -56,7 +56,7 @@ const CustomTooltip = ({ active, payload, label }) => {
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
                 {t('analytics.reply_rate')}
               </span>
-              <span className="text-[11px] font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100/50">
+              <span className="text-[11px] font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-100/50">
                 {replyRate}%
               </span>
             </div>

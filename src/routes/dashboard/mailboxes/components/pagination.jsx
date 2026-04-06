@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 const Pagination = ({
@@ -53,7 +53,7 @@ const Pagination = ({
           onClick={() => onPageChange?.(page)}
           className={`w-8 h-8 rounded-lg text-metadata flex items-center justify-center transition-all ${
             currentPage === page
-              ? 'bg-orange-600 text-white shadow-sm shadow-orange-200'
+              ? 'bg-purple-600 text-white shadow-sm shadow-purple-200'
               : 'text-slate-500 hover:bg-slate-100'
           }`}
         >

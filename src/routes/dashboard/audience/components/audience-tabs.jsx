@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   Download,
   Eye,
@@ -29,11 +29,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -72,7 +72,7 @@ const AudienceTabs = ({
           const batch = row.original;
           return (
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600">
+              <div className="w-8 h-8 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600">
                 <FileSpreadsheet className="w-4 h-4" />
               </div>
               <div>
@@ -102,10 +102,10 @@ const AudienceTabs = ({
               <div
                 className={`w-1.5 h-1.5 rounded-full ${
                   ['completed', 'verified'].includes(status)
-                    ? 'bg-orange-500'
+                    ? 'bg-purple-500'
                     : status === 'processing'
                       ? 'bg-amber-500 animate-pulse'
-                      : 'bg-orange-500'
+                      : 'bg-purple-500'
                 }`}
               ></div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
@@ -123,7 +123,7 @@ const AudienceTabs = ({
           </span>
         ),
         cell: ({ row }) => (
-          <span className="text-sm font-extrabold text-orange-600 tabular-nums">
+          <span className="text-sm font-extrabold text-purple-600 tabular-nums">
             {row.original.verification?.valid ?? 0}
           </span>
         ),
@@ -149,7 +149,7 @@ const AudienceTabs = ({
           </span>
         ),
         cell: ({ row }) => (
-          <span className="text-sm font-extrabold text-orange-600 tabular-nums">
+          <span className="text-sm font-extrabold text-purple-600 tabular-nums">
             {row.original.verification?.invalid ?? 0}
           </span>
         ),
@@ -199,21 +199,21 @@ const AudienceTabs = ({
           <div className="flex items-center justify-end gap-2 px-6">
             <button
               onClick={() => openBatchDetails(row.original)}
-              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all"
               title={t('audience.view_details')}
             >
               <Eye className="w-4 h-4" />
             </button>
             <button
               onClick={() => exportBatch.mutate({ batchId: row.original.id })}
-              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all"
               title={t('audience.export')}
             >
               <Download className="w-4 h-4" />
             </button>
             <button
               onClick={() => handleDeleteBatch(row.original.id)}
-              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+              className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all"
               title={t('audience.delete')}
             >
               <Trash2 className="w-4 h-4" />
@@ -240,7 +240,7 @@ const AudienceTabs = ({
     <div className="w-full">
       {isLoadingBatches ? (
         <div className="flex flex-col items-center justify-center p-20 gap-4">
-          <div className="w-12 h-12 border-4 border-slate-100 border-t-orange-600 rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin"></div>
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
             {t('audience.loading_contacts')}
           </p>
@@ -306,7 +306,7 @@ const AudienceTabs = ({
       {!isLoadingBatches && pagination && pagination.pages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 mt-8 gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
+            <div className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
             <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
               {pagination.total?.toLocaleString()} {t('audience.total_batches') || 'Total Batches'}
             </p>
@@ -316,13 +316,13 @@ const AudienceTabs = ({
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-purple-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
 
             <div className="px-4 flex items-center gap-2">
-              <span className="text-xs font-black text-orange-600 bg-orange-50 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-black text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg">
                 {currentPage}
               </span>
               <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
@@ -332,7 +332,7 @@ const AudienceTabs = ({
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === pagination.pages}
-              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-orange-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-md flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-purple-600 transition-all disabled:opacity-20 disabled:pointer-events-none"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

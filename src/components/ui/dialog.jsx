@@ -1,4 +1,4 @@
-import { AlertCircle, Shield, CheckCircle, Info } from 'lucide-react';
+﻿import { AlertCircle, Shield, CheckCircle, Info } from 'lucide-react';
 import Modal from '../shared/modal';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -22,11 +22,11 @@ const Dialog = ({
     switch (confirmVariant) {
       case 'danger':
         return {
-          icon: <AlertCircle className="w-6 h-6 text-orange-500" />,
-          bg: 'bg-orange-50',
-          border: 'border-orange-100',
-          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
-          gradient: 'from-orange-600 to-red-700',
+          icon: <AlertCircle className="w-6 h-6 text-purple-500" />,
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          button: 'bg-purple-600 hover:bg-purple-700 shadow-purple-600/20',
+          gradient: 'from-purple-600 to-red-700',
         };
       case 'warning':
         return {
@@ -34,31 +34,31 @@ const Dialog = ({
           bg: 'bg-amber-50',
           border: 'border-amber-100',
           button: 'bg-amber-600 hover:bg-amber-700 shadow-amber-600/20',
-          gradient: 'from-amber-600 to-orange-600',
+          gradient: 'from-amber-600 to-purple-600',
         };
       case 'success':
         return {
-          icon: <CheckCircle className="w-6 h-6 text-orange-500" />,
-          bg: 'bg-orange-50',
-          border: 'border-orange-100',
-          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
-          gradient: 'from-orange-600 to-green-700',
+          icon: <CheckCircle className="w-6 h-6 text-purple-500" />,
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          button: 'bg-purple-600 hover:bg-purple-700 shadow-purple-600/20',
+          gradient: 'from-purple-600 to-green-700',
         };
       case 'info':
         return {
-          icon: <Info className="w-6 h-6 text-orange-500" />,
-          bg: 'bg-orange-50',
-          border: 'border-orange-100',
-          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
-          gradient: 'from-orange-600 to-orange-700',
+          icon: <Info className="w-6 h-6 text-purple-500" />,
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          button: 'bg-purple-600 hover:bg-purple-700 shadow-purple-600/20',
+          gradient: 'from-purple-600 to-purple-700',
         };
       default:
         return {
-          icon: <AlertCircle className="w-6 h-6 text-orange-500" />,
-          bg: 'bg-orange-50',
-          border: 'border-orange-100',
-          button: 'bg-orange-600 hover:bg-orange-700 shadow-orange-600/20',
-          gradient: 'from-orange-600 to-red-700',
+          icon: <AlertCircle className="w-6 h-6 text-purple-500" />,
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          button: 'bg-purple-600 hover:bg-purple-700 shadow-purple-600/20',
+          gradient: 'from-purple-600 to-red-700',
         };
     }
   };

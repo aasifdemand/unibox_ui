@@ -1,4 +1,4 @@
-import Logo from '../components/shared/logo';
+﻿import Logo from '../components/shared/logo';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -96,7 +96,7 @@ const AuthLayout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-            className="w-full max-w-[420px] bg-white/90 backdrop-blur-sm border border-orange-100/60 p-8 md:p-10 rounded-2xl shadow-[0_20px_50px_rgba(249,115,22,0.08)]"
+            className="w-full max-w-[420px] bg-white/90 backdrop-blur-sm border border-purple-100/60 p-8 md:p-10 rounded-2xl shadow-[0_20px_50px_rgba(99,102,241,0.08)]"
           >
             <Outlet />
           </motion.div>
@@ -110,30 +110,30 @@ const AuthLayout = () => {
         </div>
       </div>
 
-      {/* ── RIGHT — Branded cover panel (orange primary) ── */}
+      {/* ── RIGHT — Branded cover panel (violet slate) ── */}
       <div className="hidden lg:flex lg:w-1/2 h-full relative overflow-hidden flex-col items-center justify-center p-16">
 
-        {/* Orange gradient background */}
+        {/* Violet slate gradient background */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #ede9fe 100%)' }}
         />
 
-        {/* Orange bloom — top right */}
-        <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full opacity-30 blur-[120px] pointer-events-none"
-          style={{ background: '#f97316' }} />
+        {/* Violet bloom — top right */}
+        <div className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full opacity-40 blur-[120px] pointer-events-none"
+          style={{ background: '#7c3aed' }} />
 
-        {/* Subtle amber bloom — bottom left */}
-        <div className="absolute bottom-0 -left-20 w-[350px] h-[350px] rounded-full opacity-20 blur-[100px] pointer-events-none"
-          style={{ background: '#fb923c' }} />
+        {/* Indigo bloom — bottom left */}
+        <div className="absolute bottom-0 -left-20 w-[350px] h-[350px] rounded-full opacity-25 blur-[100px] pointer-events-none"
+          style={{ background: '#c026d3' }} />
 
         {/* Mesh Lines Overlay */}
         <div
-          className="absolute inset-0 opacity-[0.08]"
+          className="absolute inset-0 opacity-[0.12]"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(234, 88, 12, 0.1) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(234, 88, 12, 0.1) 1px, transparent 1px)
+              linear-gradient(to right, rgba(99, 102, 241, 0.12) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(99, 102, 241, 0.12) 1px, transparent 1px)
             `,
             backgroundSize: '80px 80px',
             maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
@@ -142,11 +142,11 @@ const AuthLayout = () => {
 
         {/* Diagonal Mesh Grid */}
         <div
-          className="absolute inset-0 opacity-[0.05] rotate-12 scale-150"
+          className="absolute inset-0 opacity-[0.06] rotate-12 scale-150"
           style={{
             backgroundImage: `
-              linear-gradient(45deg, rgba(234, 88, 12, 0.15) 1px, transparent 1px),
-              linear-gradient(-45deg, rgba(234, 88, 12, 0.15) 1px, transparent 1px)
+              linear-gradient(45deg, rgba(99, 102, 241, 0.15) 1px, transparent 1px),
+              linear-gradient(-45deg, rgba(99, 102, 241, 0.15) 1px, transparent 1px)
             `,
             backgroundSize: '120px 120px'
           }}
@@ -167,10 +167,10 @@ const AuthLayout = () => {
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.25, duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-200/50 rounded-full px-4 py-2 mb-8"
+            className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-200/50 rounded-full px-4 py-2 mb-8"
           >
-            <PageIcon className="w-3 h-3 text-orange-600" />
-            <span className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+            <PageIcon className="w-3 h-3 text-purple-600" />
+            <span className="text-[11px] font-black text-purple-700 uppercase tracking-widest">
               {pageConfig.badgeText}
             </span>
           </motion.div>
@@ -183,7 +183,7 @@ const AuthLayout = () => {
           >
             {pageConfig.title}
             {location.pathname === '/auth' && (
-              <span className="block text-orange-600 mt-1">{t('auth.layout.title_span')}</span>
+              <span className="block text-purple-600 mt-1">{t('auth.layout.title_span')}</span>
             )}
           </motion.h2>
 
@@ -204,9 +204,9 @@ const AuthLayout = () => {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[500px] h-[500px] border border-orange-200/50 rounded-full"
+                className="absolute w-[500px] h-[500px] border border-purple-200/50 rounded-full"
                 style={{
-                  background: 'conic-gradient(from 0deg, transparent, rgba(249,115,22,0.1), transparent)',
+                  background: 'conic-gradient(from 0deg, transparent, rgba(99,102,241,0.15), transparent)',
                 }}
               />
 
@@ -217,7 +217,7 @@ const AuthLayout = () => {
                   opacity: [0.2, 0.4, 0.2]
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute w-[350px] h-[350px] bg-orange-400 blur-[80px] rounded-full"
+                className="absolute w-[350px] h-[350px] bg-purple-400 blur-[80px] rounded-full"
               />
 
               {/* The Sphere Container */}
@@ -225,13 +225,13 @@ const AuthLayout = () => {
                 initial={{ opacity: 0, scale: 0.7 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 w-72 h-72 lg:w-80 lg:h-80 rounded-full bg-white/40 backdrop-blur-sm border border-orange-200/30 shadow-[inset_0_0_80px_rgba(249,115,22,0.05),0_30px_60px_rgba(0,0,0,0.1)] overflow-hidden flex items-center justify-center"
+                className="relative z-10 w-72 h-72 lg:w-80 lg:h-80 rounded-full bg-white/40 backdrop-blur-sm border border-purple-200/30 shadow-[inset_0_0_80px_rgba(99,102,241,0.08),0_30px_60px_rgba(99,102,241,0.15)] overflow-hidden flex items-center justify-center"
               >
                 {/* Internal Refraction Effect */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-[-50%] bg-linear-to-tr from-transparent via-orange-500/10 to-transparent blur-2xl opacity-40"
+                  className="absolute inset-[-50%] bg-linear-to-tr from-transparent via-purple-500/10 to-transparent blur-2xl opacity-40"
                 />
 
                 <motion.img
@@ -268,10 +268,10 @@ const AuthLayout = () => {
                     delay: p.delay,
                     ease: "easeInOut"
                   }}
-                  className="absolute z-20 bg-white/80 backdrop-blur-sm border border-orange-200 rounded-md flex items-center justify-center shadow-sm"
+                  className="absolute z-20 bg-white/80 backdrop-blur-sm border border-purple-200 rounded-md flex items-center justify-center shadow-sm"
                   style={{ width: p.size, height: p.size }}
                 >
-                  <p.icon className="w-1/2 h-1/2 text-orange-600" />
+                  <p.icon className="w-1/2 h-1/2 text-purple-600" />
                 </motion.div>
               ))}
             </div>
@@ -283,7 +283,7 @@ const AuthLayout = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="mt-8 p-6 bg-orange-50/80 backdrop-blur-sm rounded-2xl border border-orange-100"
+              className="mt-8 p-6 bg-purple-50/80 backdrop-blur-sm rounded-2xl border border-purple-100"
             >
               <p className="text-slate-700 text-sm leading-relaxed">
                 {location.pathname.includes('verify-account') && t('auth.layout.verify_help')}
@@ -303,7 +303,7 @@ const AuthLayout = () => {
             className="relative z-10 mt-16 flex items-center gap-5"
           >
             <div className="flex -space-x-2">
-              {['#ea580c', '#f97316', '#fb923c', '#fdba74'].map((c, i) => (
+              {['#7c3aed', '#a78bfa', '#ddd6fe', '#ede9fe'].map((c, i) => (
                 <div
                   key={i}
                   className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-white text-[10px] font-black"
@@ -313,9 +313,9 @@ const AuthLayout = () => {
                 </div>
               ))}
             </div>
-            <p className="text-[11px] text-orange-700 font-medium">
+            <p className="text-[11px] text-purple-700 font-medium">
               {t('auth.layout.trusted_by')}{' '}
-              <span className="text-orange-900 font-bold">2,400+</span> {t('auth.layout.teams')}
+              <span className="text-purple-900 font-bold">2,400+</span> {t('auth.layout.teams')}
             </p>
           </motion.div>
         )}

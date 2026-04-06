@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -54,9 +54,9 @@ const LanguageSwitcher = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 px-3 py-2 rounded-md bg-slate-100/50 border border-slate-200/60 hover:bg-white hover:border-orange-500/50 hover:shadow-sm hover:shadow-orange-500/5 transition-all duration-300 active:scale-95 group"
+        className="flex items-center gap-2.5 px-3 py-2 rounded-md bg-slate-100/50 border border-slate-200/60 hover:bg-white hover:border-purple-500/50 hover:shadow-sm hover:shadow-purple-500/5 transition-all duration-300 active:scale-95 group"
       >
-        <div className="w-6 h-6 rounded-lg bg-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20 group-hover:rotate-12 transition-transform duration-500">
+        <div className="w-6 h-6 rounded-lg bg-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-500/20 group-hover:rotate-12 transition-transform duration-500">
           <Globe className="w-3.5 h-3.5" />
         </div>
         <span className="text-[10px] font-extrabold text-slate-700 uppercase tracking-widest">
@@ -87,7 +87,7 @@ const LanguageSwitcher = () => {
                 onClick={() => changeLanguage(lang.code)}
                 className={`w-full flex items-center justify-between p-2.5 rounded-md transition-all duration-300 group ${
                   i18n.language === lang.code
-                    ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20'
+                    ? 'bg-purple-600 text-white shadow-sm shadow-purple-500/20'
                     : 'hover:bg-slate-50 text-slate-600 hover:text-slate-900'
                 }`}
               >

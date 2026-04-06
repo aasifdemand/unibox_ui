@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/preserve-manual-memoization */
+﻿/* eslint-disable react-hooks/preserve-manual-memoization */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -72,7 +72,7 @@ const QuickActionContent = ({ action }) => (
         </div>
       </div>
     </div>
-    <h4 className="text-[11px] font-bold text-slate-800 mt-4 group-hover:text-orange-600 transition-colors">
+    <h4 className="text-[11px] font-bold text-slate-800 mt-4 group-hover:text-purple-600 transition-colors">
       {action.title}
     </h4>
   </>
@@ -244,7 +244,7 @@ const Dashboard = () => {
           statusLabel = t('dashboard.status.active');
           break;
         case 'completed':
-          statusColor = 'bg-orange-100 text-orange-800';
+          statusColor = 'bg-purple-100 text-purple-800';
           statusIcon = <CheckCircle className="w-4 h-4" />;
           statusLabel = t('dashboard.status.completed');
           break;
@@ -346,10 +346,10 @@ const Dashboard = () => {
       title: t('dashboard.stats.total_campaigns'),
       value: totalCampaigns.toString(),
       change: t('dashboard.stats.this_month', { count: campaignsThisMonth }),
-      icon: <Target className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Target className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('dashboard.stats.campaigns_desc', {
         active: activeCampaigns,
         scheduled: scheduledCampaigns,
@@ -368,10 +368,10 @@ const Dashboard = () => {
           return sum;
         }, 0)
         .toLocaleString()} ${t('dashboard.stats.this_month_short', 'this month')}`,
-      icon: <Send className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Send className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       trend: 'up',
       sparkline: [10, 25, 45, 30, 60, 50, 80],
     },
@@ -379,10 +379,10 @@ const Dashboard = () => {
       title: t('dashboard.stats.open_rate'),
       value: `${avgOpenRate}%`,
       change: t('dashboard.stats.total_opens', { count: totalOpens }),
-      icon: <MailOpen className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <MailOpen className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('dashboard.stats.sent_desc', { count: totalSent || 0 }),
       trend: 'up',
       sparkline: [30, 40, 35, 50, 45, 60, 55],
@@ -391,10 +391,10 @@ const Dashboard = () => {
       title: t('dashboard.stats.reply_rate'),
       value: `${avgReplyRate}%`,
       change: t('dashboard.stats.total_replies', { count: totalReplied }),
-      icon: <TrendingUp className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <TrendingUp className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('dashboard.stats.engagement_desc'),
       trend: 'up',
       sparkline: [15, 20, 18, 25, 22, 30, 28],
@@ -403,10 +403,10 @@ const Dashboard = () => {
       title: 'Click Rate',
       value: `${avgClickRate}%`,
       change: `${totalClicks} total clicks`,
-      icon: <Sparkles className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Sparkles className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: 'Link interaction performance',
       trend: 'up',
       sparkline: [30, 45, 35, 60, 50, 70, 65],
@@ -415,10 +415,10 @@ const Dashboard = () => {
       title: 'Bounce Rate',
       value: `${avgBounceRate}%`,
       change: `${totalBounced} total bounces`,
-      icon: <AlertCircle className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <AlertCircle className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: 'Deliverability health check',
       trend: parseFloat(avgBounceRate) > 5 ? 'down' : 'up',
       sparkline: [20, 15, 25, 20, 30, 25, 20],
@@ -428,7 +428,7 @@ const Dashboard = () => {
       value: totalContacts.toLocaleString(),
       change: t('dashboard.stats.verified_count', { count: verificationTotals.verified }),
       icon: <Users className="w-5 h-5 text-amber-600" />,
-      color: 'from-amber-500/30 to-orange-500/30',
+      color: 'from-amber-500/30 to-purple-500/30',
       iconColor: 'text-amber-600',
       bgColor: 'bg-amber-50',
       description: 'Total prospective leads',
@@ -455,16 +455,16 @@ const Dashboard = () => {
       title: t('dashboard.quick_actions.create_campaign'),
       description: t('dashboard.quick_actions.create_campaign_desc'),
       icon: <Sparkles className="w-5 h-5" />,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-linear-to-br from-orange-50 to-orange-50',
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-linear-to-br from-purple-50 to-purple-50',
       onClick: () => setShowQuickCreateModal(true),
     },
     {
       title: t('dashboard.quick_actions.import_contacts'),
       description: t('dashboard.quick_actions.import_contacts_desc'),
       icon: <Users className="w-5 h-5" />,
-      color: 'from-green-500 to-orange-600',
-      bgColor: 'bg-linear-to-br from-green-50 to-orange-50',
+      color: 'from-green-500 to-purple-600',
+      bgColor: 'bg-linear-to-br from-green-50 to-purple-50',
       onClick: () => audienceData.setShowUploadModal(true),
     },
 
@@ -480,8 +480,8 @@ const Dashboard = () => {
       title: t('crm.add_column_modal_title', 'Add CRM Column'),
       description: 'Create a new stage in your sales funnel',
       icon: <LayoutDashboard className="w-5 h-5" />,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-linear-to-br from-orange-50 to-orange-50',
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-linear-to-br from-purple-50 to-purple-50',
       onClick: () => setIsAddStageOpen(true),
     },
   ];
@@ -499,7 +499,7 @@ const Dashboard = () => {
               status: c.status.toLowerCase(),
             }),
       time: new Date(c.updatedAt || c.createdAt).toLocaleString(),
-      icon: c.status === 'completed' ? 'bg-green-500' : 'bg-orange-500',
+      icon: c.status === 'completed' ? 'bg-green-500' : 'bg-purple-500',
     })),
     ...batches.slice(0, 2).map((b) => ({
       id: `batch-${b.id}`,
@@ -509,7 +509,7 @@ const Dashboard = () => {
         status: b.status.toLowerCase(),
       }),
       time: new Date(b.createdAt).toLocaleString(),
-      icon: 'bg-orange-500',
+      icon: 'bg-purple-500',
     })),
   ]
     .sort((a, b) => new Date(b.time) - new Date(a.time))
@@ -549,7 +549,7 @@ const Dashboard = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none ltr:pl-10  ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
+              className="appearance-none ltr:pl-10  ltr:pr-10 rtl:pl-10 py-3 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>
@@ -571,8 +571,8 @@ const Dashboard = () => {
 
       <div className="relative overflow-hidden">
         {/* Abstract Background Blobs */}
-        <div className="absolute -top-40 -inset-inline-start-40 w-80 h-80 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute -bottom-40 -inset-inline-end-40 w-80 h-80 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute -top-40 -inset-inline-start-40 w-80 h-80 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute -bottom-40 -inset-inline-end-40 w-80 h-80 bg-purple-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
         {/* Hero Stats Section - Ultra-Premium Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
@@ -582,7 +582,7 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="premium-card p-6 overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-sm hover:shadow-slate-200/50 transition-all duration-500 border-b-4 border-slate-200/60 hover:border-orange-500/50"
+              className="premium-card p-6 overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-sm hover:shadow-slate-200/50 transition-all duration-500 border-b-4 border-slate-200/60 hover:border-purple-500/50"
             >
               {/* Dynamic Gradient Background - Always visible but subtle */}
               <div
@@ -596,9 +596,9 @@ const Dashboard = () => {
                   {stat.icon}
                 </div>
                 <div className="flex flex-col items-end">
-                  <div className="px-2 py-1 bg-white border border-slate-100/50 rounded-lg flex items-center gap-1.5 transition-colors group-hover:border-orange-100 mb-2 shadow-sm">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
-                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
+                  <div className="px-2 py-1 bg-white border border-slate-100/50 rounded-lg flex items-center gap-1.5 transition-colors group-hover:border-purple-100 mb-2 shadow-sm">
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
+                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-purple-600 transition-colors">
                       {t('dashboard.performance.realtime')}
                     </span>
                   </div>
@@ -630,7 +630,7 @@ const Dashboard = () => {
                     {stat.value}
                   </h3>
                   <div
-                    className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${stat.trend === 'up' ? 'text-orange-600 bg-orange-50' : 'text-slate-400 bg-slate-50'} group-hover:bg-white transition-colors shadow-xs`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${stat.trend === 'up' ? 'text-purple-600 bg-purple-50' : 'text-slate-400 bg-slate-50'} group-hover:bg-white transition-colors shadow-xs`}
                   >
                     {stat.trend === 'up' ? '↑' : '↓'} {stat.change.split(' ')[0]}
                   </div>
@@ -640,7 +640,7 @@ const Dashboard = () => {
                   <p className="text-[11px] text-slate-500 font-bold opacity-80 group-hover:opacity-100 transition-opacity">
                     {stat.description}
                   </p>
-                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 group-hover:text-orange-500 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 group-hover:text-purple-500 transition-all" />
                 </div>
               </div>
             </motion.div>
@@ -664,7 +664,7 @@ const Dashboard = () => {
                 <select
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
-                  className="appearance-none bg-slate-50 border-2 border-slate-100 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-md text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent cursor-pointer hover:bg-white transition-colors"
+                  className="appearance-none bg-slate-50 border-2 border-slate-100 text-slate-700 py-2 ltr:pl-4 ltr:pr-10 rtl:pr-4 rtl:pl-10 rounded-md text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent cursor-pointer hover:bg-white transition-colors"
                 >
                   <option value="7">Last 7 Days</option>
                   <option value="30">Last 30 Days</option>
@@ -760,22 +760,22 @@ const Dashboard = () => {
                 {
                   label: t('dashboard.performance.avg_sent') || 'Avg Daily Sent',
                   value: Math.round(totalSent / (parseInt(timeRange) || 30)).toLocaleString(),
-                  color: 'text-orange-600',
+                  color: 'text-purple-600',
                 },
                 {
                   label: t('dashboard.performance.avg_open') || 'Avg Open Rate',
                   value: `${avgOpenRate}%`,
-                  color: 'text-orange-600',
+                  color: 'text-purple-600',
                 },
                 {
                   label: t('dashboard.performance.avg_reply') || 'Avg Reply Rate',
                   value: `${avgReplyRate}%`,
-                  color: 'text-orange-600',
+                  color: 'text-purple-600',
                 },
                 {
                   label: 'Success Rate',
                   value: `${(100 - parseFloat(avgBounceRate)).toFixed(1)}%`,
-                  color: 'text-orange-600',
+                  color: 'text-purple-600',
                 }
               ].map((stat, i) => (
                 <div key={i} className="text-center md:text-start">
@@ -793,11 +793,11 @@ const Dashboard = () => {
           {/* Quick Actions & Recent Activity */}
           <div className="flex flex-col space-y-8">
             <div className="premium-card bg-white/40  border-slate-200/50 p-8 shadow-sm shadow-slate-900/5 relative overflow-hidden group">
-              <div className="absolute -top-24 inset-inline-end-24 w-48 h-48 bg-orange-500/5 rounded-full blur-3xl"></div>
+              <div className="absolute -top-24 inset-inline-end-24 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl"></div>
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center relative z-10">
                 {t('dashboard.quick_actions.title')}{' '}
-                <span className="text-orange-600 mx-2">{t('dashboard.quick_actions.span')}</span>
-                <Sparkles className="w-4 h-4 ms-3 text-orange-500 animate-pulse" />
+                <span className="text-purple-600 mx-2">{t('dashboard.quick_actions.span')}</span>
+                <Sparkles className="w-4 h-4 ms-3 text-purple-500 animate-pulse" />
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 relative z-10">
                 {quickActions.map((action, index) => (
@@ -810,14 +810,14 @@ const Dashboard = () => {
                     {action.link ? (
                       <Link
                         to={action.link}
-                        className="group bg-white/50 hover:bg-white border border-slate-100 hover:border-orange-100 p-5 rounded-lg transition-all duration-500 shadow-sm hover:shadow-sm hover:shadow-orange-500/10 flex flex-col items-center text-center w-full"
+                        className="group bg-white/50 hover:bg-white border border-slate-100 hover:border-purple-100 p-5 rounded-lg transition-all duration-500 shadow-sm hover:shadow-sm hover:shadow-purple-500/10 flex flex-col items-center text-center w-full"
                       >
                         <QuickActionContent action={action} />
                       </Link>
                     ) : (
                       <button
                         onClick={action.onClick}
-                        className="group bg-white/50 hover:bg-white border border-slate-100 hover:border-orange-100 p-5 rounded-lg transition-all duration-500 shadow-sm hover:shadow-sm hover:shadow-orange-500/10 flex flex-col items-center text-center w-full cursor-pointer"
+                        className="group bg-white/50 hover:bg-white border border-slate-100 hover:border-purple-100 p-5 rounded-lg transition-all duration-500 shadow-sm hover:shadow-sm hover:shadow-purple-500/10 flex flex-col items-center text-center w-full cursor-pointer"
                       >
                         <QuickActionContent action={action} />
                       </button>
@@ -853,10 +853,10 @@ const Dashboard = () => {
 
                       {/* Content Area */}
                       <div className={idx !== recentActivity.length - 1 ? 'pb-8' : ''}>
-                        <p className="text-xs font-black text-slate-700 leading-snug mb-2 uppercase tracking-tight group-hover:text-orange-600 transition-colors">
+                        <p className="text-xs font-black text-slate-700 leading-snug mb-2 uppercase tracking-tight group-hover:text-purple-600 transition-colors">
                           {activity.title}
                         </p>
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg w-max border border-slate-100 group-hover:bg-orange-50/50 group-hover:border-orange-100 transition-all duration-300">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg w-max border border-slate-100 group-hover:bg-purple-50/50 group-hover:border-purple-100 transition-all duration-300">
                           <Clock className="w-3 h-3 text-slate-400" />
                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">
                             {activity.time}
@@ -887,13 +887,13 @@ const Dashboard = () => {
                   </div>
                   <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-slate-100">
                     <div
-                      className="h-full bg-orange-500"
+                      className="h-full bg-purple-500"
                       style={{
                         width: `${(senders.filter((s) => s.isActive).length / (totalSenders || 1)) * 100}%`,
                       }}
                     ></div>
                     <div
-                      className="h-full bg-orange-500"
+                      className="h-full bg-purple-500"
                       style={{
                         width: `${(senders.filter((s) => !s.isActive).length / (totalSenders || 1)) * 100}%`,
                       }}
@@ -901,13 +901,13 @@ const Dashboard = () => {
                   </div>
                   <div className="flex items-center justify-between text-[10px] font-bold">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
                       <span className="text-slate-500">
                         {senders.filter((s) => s.isActive).length} Healthy
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
                       <span className="text-slate-500">
                         {senders.filter((s) => !s.isActive).length} Issue
                       </span>
@@ -920,12 +920,12 @@ const Dashboard = () => {
         </div>
 
         {/* Campaigns Table - Premium List View */}
-        <div className="premium-card overflow-hidden shadow-orange-500/5 mt-10">
+        <div className="premium-card overflow-hidden shadow-purple-500/5 mt-10">
           <div className="p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100/50 bg-white/40 ">
             <div>
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2">
                 {t('dashboard.recent_campaigns.title')}{' '}
-                <span className="text-orange-600">{t('dashboard.recent_campaigns.span')}</span>
+                <span className="text-purple-600">{t('dashboard.recent_campaigns.span')}</span>
               </h3>
               <p className="text-2xl font-extrabold text-slate-800 tracking-tight">
                 {t('dashboard.recent_campaigns.subtitle')}
@@ -940,7 +940,7 @@ const Dashboard = () => {
               </Link>
               <Link
                 to="/dashboard/campaigns/create"
-                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-[10px] font-black  tracking-widest transition-all shadow-sm shadow-orange-500/20 active:scale-95 flex items-center gap-2"
+                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[10px] font-black  tracking-widest transition-all shadow-sm shadow-purple-500/20 active:scale-95 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 {t('dashboard.recent_campaigns.new_campaign')}
@@ -955,11 +955,11 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
           <div className="premium-card p-8 group">
             <div className="flex items-start justify-between mb-8">
-              <div className="p-3 bg-orange-50 rounded-lg transition-transform group-hover:rotate-12">
-                <Target className="w-6 h-6 text-orange-600" />
+              <div className="p-3 bg-purple-50 rounded-lg transition-transform group-hover:rotate-12">
+                <Target className="w-6 h-6 text-purple-600" />
               </div>
               <div className="text-end">
-                <span className="px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
+                <span className="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
                   {t('dashboard.goal.title')}
                 </span>
               </div>
@@ -975,7 +975,7 @@ const Dashboard = () => {
 
             <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-orange-500 rounded-full transition-all duration-1000"
+                className="h-full bg-purple-500 rounded-full transition-all duration-1000"
                 style={{ width: `${goalProgress}%` }}
               ></div>
             </div>
@@ -983,11 +983,11 @@ const Dashboard = () => {
 
           <div className="premium-card p-8 group">
             <div className="flex items-start justify-between mb-8">
-              <div className="p-3 bg-orange-50 rounded-lg transition-transform group-hover:rotate-12">
-                <Clock className="w-6 h-6 text-orange-600" />
+              <div className="p-3 bg-purple-50 rounded-lg transition-transform group-hover:rotate-12">
+                <Clock className="w-6 h-6 text-purple-600" />
               </div>
               <div className="text-end">
-                <span className="px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
+                <span className="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
                   {t('dashboard.upcoming.title')}
                 </span>
               </div>
@@ -1023,7 +1023,7 @@ const Dashboard = () => {
                 </p>
                 <Link
                   to="/dashboard/campaigns/create"
-                  className="text-orange-600 font-bold text-sm hover:underline"
+                  className="text-purple-600 font-bold text-sm hover:underline"
                 >
                   {t('dashboard.upcoming.plan_now')}
                 </Link>

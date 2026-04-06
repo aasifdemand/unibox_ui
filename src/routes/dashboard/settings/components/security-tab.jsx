@@ -1,4 +1,4 @@
-import { Lock, ShieldCheck, Save, Loader2, CheckCircle, XCircle, Chrome } from 'lucide-react';
+﻿import { Lock, ShieldCheck, Save, Loader2, CheckCircle, XCircle, Chrome } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '../../../../components/ui/input';
 import { useChangePassword } from '../../../../hooks/useAuth';
@@ -31,7 +31,7 @@ const SecurityTab = ({ user }) => {
   const getStrengthColor = () => {
     if (passwordStrength <= 2) return 'bg-red-500';
     if (passwordStrength <= 3) return 'bg-yellow-500';
-    if (passwordStrength <= 4) return 'bg-orange-500';
+    if (passwordStrength <= 4) return 'bg-purple-500';
     return 'bg-green-500';
   };
 
@@ -75,7 +75,7 @@ const SecurityTab = ({ user }) => {
     <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="p-6 border-b border-slate-50 bg-white">
         <h3 className="text-lg font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-display">
-          <Lock className="w-4 h-4 text-orange-600" />
+          <Lock className="w-4 h-4 text-purple-600" />
           {t('settings.security.title', 'Security Settings')}
         </h3>
         <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans">
@@ -87,9 +87,9 @@ const SecurityTab = ({ user }) => {
         <div className="max-w-4xl">
           {/* Google Auth Banner - High Density */}
           {isGoogleUser && (
-            <div className="mb-10 flex items-start gap-4 p-5 rounded-lg bg-orange-50 border border-orange-100/50 border-dashed">
-              <div className="w-10 h-10 rounded-lg bg-white border border-orange-200 flex items-center justify-center shrink-0 shadow-sm">
-                <Chrome className="w-5 h-5 text-orange-500" />
+            <div className="mb-10 flex items-start gap-4 p-5 rounded-lg bg-purple-50 border border-purple-100/50 border-dashed">
+              <div className="w-10 h-10 rounded-lg bg-white border border-purple-200 flex items-center justify-center shrink-0 shadow-sm">
+                <Chrome className="w-5 h-5 text-purple-500" />
               </div>
               <div>
                 <p className="text-[11px] font-bold text-slate-800 uppercase tracking-widest font-display">
@@ -165,7 +165,7 @@ const SecurityTab = ({ user }) => {
                           ].map((check) => (
                              <div key={check.key} className="flex items-center gap-3">
                                {passwordChecks[check.key] ? (
-                                 <CheckCircle className="w-4 h-4 text-orange-600" />
+                                 <CheckCircle className="w-4 h-4 text-purple-600" />
                                ) : (
                                  <div className="w-4 h-4 rounded-full border-2 border-slate-200" />
                                )}
@@ -195,11 +195,11 @@ const SecurityTab = ({ user }) => {
 
                     {/* Password Match Indicator - Compact */}
                     {formData.confirmPassword && (
-                      <div className="mt-4 flex items-center gap-3 px-4 py-3 rounded-lg bg-orange-50/50 border border-orange-100">
+                      <div className="mt-4 flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-50/50 border border-purple-100">
                         {formData.newPassword === formData.confirmPassword ? (
                           <>
-                            <CheckCircle className="w-4 h-4 text-orange-600" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-orange-600 font-display">
+                            <CheckCircle className="w-4 h-4 text-purple-600" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 font-display">
                               {t('settings.security.match', 'PASSWORDS MATCH')}
                             </span>
                           </>
@@ -220,7 +220,7 @@ const SecurityTab = ({ user }) => {
                   <button
                     type="submit"
                     disabled={changePassword.isPending || isGoogleUser}
-                    className="h-11 px-10 bg-orange-600 hover:bg-orange-700 text-white rounded-lg shadow-lg shadow-orange-500/20 transition-all active:scale-[0.98] text-[11px] font-bold uppercase tracking-widest flex items-center gap-3 disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed font-display"
+                    className="h-11 px-10 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98] text-[11px] font-bold uppercase tracking-widest flex items-center gap-3 disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed font-display"
                   >
                     {changePassword.isPending ? (
                       <>

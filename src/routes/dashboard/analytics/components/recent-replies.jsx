@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
@@ -29,11 +29,11 @@ const SortIndicator = ({ column }) => {
       </div>
     );
   return (
-    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-orange-50/50 border border-orange-100/50 ml-1">
+    <div className="w-4 h-4 flex items-center justify-center rounded-md bg-purple-50/50 border border-purple-100/50 ml-1">
       {isSorted === 'desc' ? (
-        <ChevronDown className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronDown className="w-2.5 h-2.5 text-purple-600" />
       ) : (
-        <ChevronUp className="w-2.5 h-2.5 text-orange-600" />
+        <ChevronUp className="w-2.5 h-2.5 text-purple-600" />
       )}
     </div>
   );
@@ -64,11 +64,11 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           const reply = row.original;
           return (
             <div className="flex items-center gap-4 transition-transform duration-300 group-hover/row:translate-x-0.5">
-              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-orange-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-orange-500/20 group-hover/row:rotate-6 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-purple-500/20 group-hover/row:rotate-6 transition-all">
                 {reply.from?.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="font-bold text-slate-900 group-hover/row:text-orange-600 transition-colors whitespace-nowrap">
+                <p className="font-bold text-slate-900 group-hover/row:text-purple-600 transition-colors whitespace-nowrap">
                   {reply.from}
                 </p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
@@ -116,7 +116,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           return reply.campaignName ? (
             <Link
               to={`/dashboard/campaigns/${reply.campaignId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-orange-100/50 hover:bg-orange-600 hover:text-white transition-all shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-purple-100/50 hover:bg-purple-600 hover:text-white transition-all shadow-xs"
             >
               {reply.campaignName}
             </Link>
@@ -169,7 +169,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           <div className="flex items-center justify-end">
             <Link
               to={`/dashboard/campaigns/${row.original.campaignId}`}
-              className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-all shadow-xs hover:shadow-orange-100"
+              className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-all shadow-xs hover:shadow-purple-100"
             >
               <Eye className="w-5 h-5" />
             </Link>
@@ -227,7 +227,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
         <div>
           <h3 className="text-xl font-extrabold text-slate-800 tracking-tight">
             {t('analytics.recent_replies_title')}{' '}
-            <span className="text-orange-500">{t('analytics.replies_span')}</span>
+            <span className="text-purple-500">{t('analytics.replies_span')}</span>
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
             {t('analytics.replies_subtitle')}
@@ -246,7 +246,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
 
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-24">
-          <Loader2 className="w-10 h-10 animate-spin text-orange-500 mb-4" />
+          <Loader2 className="w-10 h-10 animate-spin text-purple-500 mb-4" />
           <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
             {t('analytics.loading_replies')}
           </p>
@@ -274,7 +274,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="group/row hover:bg-orange-50/30 transition-all duration-300 cursor-default"
+                  className="group/row hover:bg-purple-50/30 transition-all duration-300 cursor-default"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="py-4 px-8 border-b border-slate-50/50">

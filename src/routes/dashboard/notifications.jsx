@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, CheckCircle, Mail, AlertCircle, Search, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -65,7 +65,7 @@ const NotificationsPage = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-4 py-1.5 rounded-lg text-metadata bg-orange-50 text-orange-600 border border-orange-100/50">
+          <span className="px-4 py-1.5 rounded-lg text-metadata bg-purple-50 text-purple-600 border border-purple-100/50">
             Realtime Active
           </span>
         </div>
@@ -78,13 +78,13 @@ const NotificationsPage = () => {
             {/* Search */}
             <div className="mb-3 mt-1 px-2">
               <div className="relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-purple-500 transition-colors" />
                 <input
                   type="text"
                   placeholder="Search notifications..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-9 pl-9 pr-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-normal placeholder:text-slate-400 focus:bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-500/10 outline-none transition-all"
+                  className="w-full h-9 pl-9 pr-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-normal placeholder:text-slate-400 focus:bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-500/10 outline-none transition-all"
                 />
               </div>
             </div>
@@ -110,8 +110,8 @@ const NotificationsPage = () => {
                 <div
                   className={`p-2 rounded-lg ltr:mr-3 rtl:ml-3 transition-all duration-200 ${
                     activeTab === tab.id
-                      ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20'
-                      : 'bg-slate-100 text-slate-400 group-hover:bg-white group-hover:text-orange-500 group-hover:border-orange-100 border border-transparent'
+                      ? 'bg-purple-600 text-white shadow-sm shadow-purple-500/20'
+                      : 'bg-slate-100 text-slate-400 group-hover:bg-white group-hover:text-purple-500 group-hover:border-purple-100 border border-transparent'
                   }`}
                 >
                   <tab.icon className="w-4 h-4" />
@@ -122,7 +122,7 @@ const NotificationsPage = () => {
                   </p>
                 </div>
                 {tab.badge > 0 && (
-                  <span className={`text-metadata px-2 py-0.5 rounded-lg ${activeTab === tab.id ? 'bg-orange-100 text-orange-600' : 'bg-slate-100 text-slate-400'}`}>
+                  <span className={`text-metadata px-2 py-0.5 rounded-lg ${activeTab === tab.id ? 'bg-purple-100 text-purple-600' : 'bg-slate-100 text-slate-400'}`}>
                     {tab.badge}
                   </span>
                 )}
@@ -151,7 +151,7 @@ const NotificationsPage = () => {
                 }`}
               >
                 <div
-                  className={`w-2 h-2 rounded-full transition-colors ${filterCategory === cat.id ? 'bg-orange-500' : 'bg-slate-300 group-hover:bg-slate-400'}`}
+                  className={`w-2 h-2 rounded-full transition-colors ${filterCategory === cat.id ? 'bg-purple-500' : 'bg-slate-300 group-hover:bg-slate-400'}`}
                 />
                 <span className={`text-sender ${filterCategory === cat.id ? 'font-semibold text-slate-900' : 'font-medium text-slate-500'}`}>
                   {cat.label}
@@ -164,7 +164,7 @@ const NotificationsPage = () => {
           <button
             onClick={handleMarkAllRead}
             disabled={unreadCount === 0 || markAllReadMutation.isPending}
-            className="w-full flex items-center justify-center gap-2 p-3.5 rounded-xl border border-slate-200 bg-white text-metadata text-slate-500 hover:text-orange-600 hover:border-orange-400 transition-all disabled:opacity-40 shadow-sm"
+            className="w-full flex items-center justify-center gap-2 p-3.5 rounded-xl border border-slate-200 bg-white text-metadata text-slate-500 hover:text-purple-600 hover:border-purple-400 transition-all disabled:opacity-40 shadow-sm"
           >
             <CheckCircle className="w-4 h-4" />
             Mark all as read
@@ -205,7 +205,7 @@ const NotificationsPage = () => {
                       setFilterCategory('all');
                       setSearchQuery('');
                     }}
-                    className="mt-6 px-5 py-2.5 bg-white border border-slate-200 text-orange-600 rounded-lg text-sm font-semibold hover:border-orange-300 hover:bg-orange-50 transition-colors shadow-sm"
+                    className="mt-6 px-5 py-2.5 bg-white border border-slate-200 text-purple-600 rounded-lg text-sm font-semibold hover:border-purple-300 hover:bg-purple-50 transition-colors shadow-sm"
                   >
                     Clear Filters
                   </button>
@@ -286,7 +286,7 @@ const NotificationsPage = () => {
                             <button
                               onClick={() => handleMarkRead(notification.id)}
                               disabled={markReadMutation.isPending}
-                              className="px-4 py-2 sm:w-28 bg-white border border-slate-200 rounded-lg text-metadata text-slate-600 hover:border-orange-400 hover:text-orange-600 hover:bg-orange-50 transition-all"
+                              className="px-4 py-2 sm:w-28 bg-white border border-slate-200 rounded-lg text-metadata text-slate-600 hover:border-purple-400 hover:text-purple-600 hover:bg-purple-50 transition-all"
                             >
                               Mark Read
                             </button>

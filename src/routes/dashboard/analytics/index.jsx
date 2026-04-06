@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Loader2,
@@ -107,10 +107,10 @@ const Analytics = () => {
       title: t('analytics.total_campaigns'),
       value: overview?.totalCampaigns?.toString() || '0',
       change: t('analytics.active_count', { count: overview?.activeCampaigns || 0 }),
-      icon: <Mail className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Mail className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('analytics.completed_count', { count: overview?.completedCampaigns || 0 }),
       trend: 'up',
       sparkline: [20, 35, 25, 45, 30, 55, 40],
@@ -119,10 +119,10 @@ const Analytics = () => {
       title: t('analytics.emails_sent'),
       value: overview?.totalEmailsSent?.toLocaleString() || '0',
       change: t('analytics.open_rate_value', { percentage: overview?.avgOpenRate || 0 }),
-      icon: <Send className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Send className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('analytics.opens_count', {
         count: overview?.totalOpens?.toLocaleString() || 0,
       }),
@@ -133,10 +133,10 @@ const Analytics = () => {
       title: t('analytics.total_replies'),
       value: overview?.totalReplies?.toString() || '0',
       change: t('analytics.reply_rate_value', { percentage: metrics.replyRate }),
-      icon: <MessageCircle className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <MessageCircle className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description: t('analytics.unique_replies_count', { count: overview?.totalReplied || 0 }),
       trend: 'up',
       sparkline: [15, 20, 18, 25, 22, 30, 28],
@@ -145,10 +145,10 @@ const Analytics = () => {
       title: t('analytics.bounce_rate'),
       value: `${metrics.bounceRate}%`,
       change: t('analytics.bounces_count', { count: overview?.totalBounces || 0 }),
-      icon: <Inbox className="w-5 h-5 text-orange-600" />,
-      color: 'from-orange-500/30 to-orange-500/30',
-      iconColor: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      icon: <Inbox className="w-5 h-5 text-purple-600" />,
+      color: 'from-purple-500/30 to-purple-500/30',
+      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-50',
       description:
         metrics.bounceRate > 5 ? t('analytics.needs_attention') : t('analytics.good_status'),
       trend: 'down',
@@ -178,7 +178,7 @@ const Analytics = () => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none w-full sm:w-auto ltr:pl-10 ltr:pr-10   rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none"
+              className="appearance-none w-full sm:w-auto ltr:pl-10 ltr:pr-10   rtl:pl-10 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 shadow-sm focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all outline-none"
             >
               <option value="7">{t('analytics.last_7_days')}</option>
               <option value="30">{t('analytics.last_30_days')}</option>

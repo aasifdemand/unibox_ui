@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { File, Paperclip, ChevronRight, Reply, Forward, Trash2, Mail } from 'lucide-react';
 import {
   getSenderInfo as getSenderInfoUtil,
@@ -227,7 +227,7 @@ const MessageDetailView = ({
               href={part}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-600 hover:underline font-semibold decoration-orange-600/30 underline-offset-4"
+              className="text-purple-600 hover:underline font-semibold decoration-purple-600/30 underline-offset-4"
             >
               {part}
             </a>
@@ -238,7 +238,7 @@ const MessageDetailView = ({
             <a
               key={i}
               href={`mailto:${part}`}
-              className="text-orange-600 hover:underline font-semibold decoration-orange-600/30 underline-offset-4"
+              className="text-purple-600 hover:underline font-semibold decoration-purple-600/30 underline-offset-4"
             >
               {part}
             </a>
@@ -339,7 +339,7 @@ const MessageDetailView = ({
               >
                 {block.items.map((item, iIdx) => (
                   <li key={iIdx} className="flex items-start group">
-                    <span className="shrink-0 ltr:mr-4 rtl:ml-4 w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover:bg-orange-500 mt-2.5 transition-colors" />
+                    <span className="shrink-0 ltr:mr-4 rtl:ml-4 w-1.5 h-1.5 rounded-full bg-purple-500/30 group-hover:bg-purple-500 mt-2.5 transition-colors" />
                     <span className="text-base font-medium leading-relaxed tracking-tight text-slate-600">
                       {linkify(item)}
                     </span>
@@ -515,7 +515,7 @@ const MessageDetailView = ({
           <div className="flex items-center justify-between">
             <button
               onClick={onBack}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shrink-0"
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shrink-0"
               title={t('common.back')}
             >
               <ChevronRight className="w-4 h-4 rotate-180" />
@@ -524,14 +524,14 @@ const MessageDetailView = ({
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={onReply}
-                className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
                 title={t('mailboxes.reply')}
               >
                 <Reply className="w-4 h-4" />
               </button>
               <button
                 onClick={onForward}
-                className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
                 title={t('mailboxes.forward')}
               >
                 <Forward className="w-4 h-4" />
@@ -562,7 +562,7 @@ const MessageDetailView = ({
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">
                 {t('mailboxes.from', 'From')}:
               </span>
-              <span className="text-[10px] font-bold text-orange-600 uppercase tracking-widest truncate">
+              <span className="text-[10px] font-bold text-purple-600 uppercase tracking-widest truncate">
                 {sender.name || sender.email}
               </span>
             </div>
@@ -583,7 +583,7 @@ const MessageDetailView = ({
           >
             {/* Background Decorative Element */}
             {!isIntegrated && (
-              <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-linear-to-bl from-orange-500/5 to-transparent rounded-full -ltr:mr-20 rtl:ml-20 -mt-20 blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
+              <div className="absolute top-0 ltr:right-0 rtl:left-0 w-64 h-64 bg-linear-to-bl from-purple-500/5 to-transparent rounded-full -ltr:mr-20 rtl:ml-20 -mt-20 blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
             )}
 
             <div className="flex flex-col gap-2 relative z-10">
@@ -638,7 +638,7 @@ const MessageDetailView = ({
           {attachments.length > 0 && (
             <div className={`space-y-4 ${isIntegrated ? 'px-6 md:px-8' : ''}`}>
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center">
-                <Paperclip className="w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 text-orange-500" />
+                <Paperclip className="w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 text-purple-500" />
                 {t('mailboxes.attached_media_assets', { count: attachments.length })}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -648,14 +648,14 @@ const MessageDetailView = ({
                     onClick={() =>
                       onDownload?.(att.id || att.attachmentId || att.partId, att.filename)
                     }
-                    className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-sm hover:shadow-orange-500/5 hover:border-orange-200 cursor-pointer transition-all group/att"
+                    className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-sm hover:shadow-purple-500/5 hover:border-purple-200 cursor-pointer transition-all group/att"
                   >
                     <div className="flex items-center mb-4">
-                      <div className="p-3 bg-slate-50 group-hover/att:bg-orange-50 rounded-md transition-colors">
-                        <File className="w-6 h-6 text-slate-400 group-hover/att:text-orange-500 transition-colors" />
+                      <div className="p-3 bg-slate-50 group-hover/att:bg-purple-50 rounded-md transition-colors">
+                        <File className="w-6 h-6 text-slate-400 group-hover/att:text-purple-500 transition-colors" />
                       </div>
                     </div>
-                    <p className="text-sm font-bold text-slate-800 truncate group-hover/att:text-orange-600 transition-colors">
+                    <p className="text-sm font-bold text-slate-800 truncate group-hover/att:text-purple-600 transition-colors">
                       {att.filename}
                     </p>
                     <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">

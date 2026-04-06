@@ -20,10 +20,11 @@
 }
 
 :root {
-  --primary: #ea580c;
-  --primary-glow: rgba(234, 88, 12, 0.3);
-  --secondary: #f97316;
-  --accent: #f43f5e;
+  --primary: #7c3aed;
+  --primary-dark: #4c1d95;
+  --primary-glow: rgba(124, 58, 237, 0.25);
+  --secondary: #a78bfa;
+  --accent: #c026d3;
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
@@ -68,7 +69,7 @@ h6 {
 
 .premium-card:hover {
   box-shadow: var(--shadow-md);
-  border-color: rgba(234, 88, 12, 0.2);
+  border-color: rgba(124, 58, 237, 0.2);
 }
 
 .glass-card {
@@ -79,7 +80,14 @@ h6 {
 }
 
 .btn-primary {
-  @apply bg-orange-600 text-white px-5 py-2.5 rounded-md text-[13px] font-semibold shadow-sm hover:bg-orange-700 transition-all duration-200;
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+  @apply text-white px-5 py-2.5 rounded-md text-[13px] font-semibold transition-all duration-200;
+  box-shadow: 0 2px 8px rgba(76, 29, 149, 0.25);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5b21b6 0%, #6d28d9 100%);
+  box-shadow: 0 4px 14px rgba(76, 29, 149, 0.35);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -87,7 +95,7 @@ h6 {
 }
 
 .input-premium {
-  @apply w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-md text-[13px] focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all duration-200 outline-none shadow-sm;
+  @apply w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-md text-[13px] focus:bg-white focus:ring-4 focus:ring-purple-500/10 focus:border-purple-600 transition-all duration-200 outline-none shadow-sm;
 }
 
 .floating-sidebar {
@@ -95,7 +103,7 @@ h6 {
 }
 
 .text-gradient {
-  @apply bg-linear-to-r from-orange-600 via-orange-600 to-red-600 bg-clip-text text-transparent;
+  @apply bg-linear-to-r from-purple-900 via-purple-600 to-violet-500 bg-clip-text text-transparent;
 }
 
 /* Modal styles */

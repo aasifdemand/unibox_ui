@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
+﻿import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -126,7 +126,7 @@ const HighlightedInput = React.forwardRef(
       editorProps: {
         attributes: {
           class:
-            'focus:outline-none px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-medium focus:border-orange-500 transition-all min-h-[58px] flex items-center',
+            'focus:outline-none px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-lg text-sm font-medium focus:border-purple-500 transition-all min-h-[58px] flex items-center',
         },
       },
       immediatelyRender: false,

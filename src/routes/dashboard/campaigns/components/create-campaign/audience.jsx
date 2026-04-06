@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+﻿import React, { useState, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import {
@@ -238,7 +238,7 @@ const Step2Audience = ({
       <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm">
         <div className="px-8 py-6 bg-slate-50/30 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-linear-to-br from-orange-600 to-orange-600 rounded-lg flex items-center justify-center shadow-sm shadow-orange-500/20">
+            <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm shadow-purple-500/20">
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -253,13 +253,13 @@ const Step2Audience = ({
           <div className="hidden md:flex gap-4">
             <button
               onClick={() => setShowUploadModal(true)}
-              className="px-6 py-2.5 bg-white border-2 border-slate-100 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-orange-400 hover:text-orange-600 transition-all shadow-sm"
+              className="px-6 py-2.5 bg-white border-2 border-slate-100 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-purple-400 hover:text-purple-600 transition-all shadow-sm"
             >
               {t('campaigns.add_contacts')}
             </button>
             <button
               onClick={() => setShowSenderModal(true)}
-              className="px-6 py-2.5 bg-orange-600 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-orange-500/20 hover:shadow-orange-500/40 transition-all"
+              className="px-6 py-2.5 bg-purple-600 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-500/20 hover:shadow-purple-500/40 transition-all"
             >
               {t('campaigns.add_sender')}
             </button>
@@ -271,8 +271,8 @@ const Step2Audience = ({
       <div className="space-y-6">
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-orange-50 flex items-center justify-center">
-              <FileSpreadsheet className="w-4 h-4 text-orange-600" />
+            <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center">
+              <FileSpreadsheet className="w-4 h-4 text-purple-600" />
             </div>
             <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
               {t('campaigns.selected_audience')}
@@ -287,7 +287,7 @@ const Step2Audience = ({
 
         {isLoadingBatches ? (
           <div className="flex flex-col items-center justify-center py-16 bg-slate-50/30 rounded-[2.5rem] border-2 border-dashed border-slate-200">
-            <Loader2 className="w-8 h-8 text-orange-500/20 animate-spin" />
+            <Loader2 className="w-8 h-8 text-purple-500/20 animate-spin" />
             <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest mt-4">
               {t('campaigns.loading')}
             </p>
@@ -313,26 +313,26 @@ const Step2Audience = ({
                 onClick={() => handleBatchSelect(batch.id)}
                 className={`group relative p-6 rounded-4xl border-2 transition-all duration-300 cursor-pointer ${
                   watchListBatchId === batch.id
-                    ? 'border-orange-500 bg-white shadow-sm ring-4 ring-orange-500/5 rotate-0'
-                    : 'border-slate-100 bg-white hover:border-orange-200 hover:-translate-y-1'
+                    ? 'border-purple-500 bg-white shadow-sm ring-4 ring-purple-500/5 rotate-0'
+                    : 'border-slate-100 bg-white hover:border-purple-200 hover:-translate-y-1'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
-                    className={`w-10 h-10 rounded-md flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? 'bg-orange-600' : 'bg-slate-50'}`}
+                    className={`w-10 h-10 rounded-md flex items-center justify-center transition-colors ${watchListBatchId === batch.id ? 'bg-purple-600' : 'bg-slate-50'}`}
                   >
                     <FileSpreadsheet
-                      className={`w-5 h-5 ${watchListBatchId === batch.id ? 'text-white' : 'text-orange-500'}`}
+                      className={`w-5 h-5 ${watchListBatchId === batch.id ? 'text-white' : 'text-purple-500'}`}
                     />
                   </div>
                   {watchListBatchId === batch.id && (
-                    <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center shadow-sm shadow-orange-500/30">
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center shadow-sm shadow-purple-500/30">
                       <Check className="w-3.5 h-3.5 text-white" />
                     </div>
                   )}
                 </div>
                 <h4
-                  className={`font-extrabold truncate text-[11px] uppercase tracking-tight mb-1 ${watchListBatchId === batch.id ? 'text-orange-900' : 'text-slate-800'}`}
+                  className={`font-extrabold truncate text-[11px] uppercase tracking-tight mb-1 ${watchListBatchId === batch.id ? 'text-purple-900' : 'text-slate-800'}`}
                 >
                   {batch.originalFilename}
                 </h4>
@@ -354,8 +354,8 @@ const Step2Audience = ({
       <div className="pt-10 border-t border-slate-100 space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
-              <Mail className="w-5 h-5 text-orange-600" />
+            <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+              <Mail className="w-5 h-5 text-purple-600" />
             </div>
             <div>
               <h4 className="text-sm font-black text-slate-800 uppercase tracking-widest">
@@ -372,12 +372,12 @@ const Step2Audience = ({
               <button
                 disabled={sendersPage === 1}
                 onClick={() => setSendersPage((p) => p - 1)}
-                className="w-10 h-10 rounded-md flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
+                className="w-10 h-10 rounded-md flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
               >
                 <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
               </button>
               <div className="flex items-center gap-1.5 px-3">
-                <span className="text-[10px] font-black text-orange-600 bg-orange-50 w-6 h-6 rounded-lg flex items-center justify-center">
+                <span className="text-[10px] font-black text-purple-600 bg-purple-50 w-6 h-6 rounded-lg flex items-center justify-center">
                   {sendersPage}
                 </span>
                 <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">
@@ -390,7 +390,7 @@ const Step2Audience = ({
               <button
                 disabled={sendersPage === totalSendersPages}
                 onClick={() => setSendersPage((p) => p + 1)}
-                className="w-10 h-10 rounded-md flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
+                className="w-10 h-10 rounded-md flex items-center justify-center transition-all bg-white border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm"
               >
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
               </button>
@@ -400,7 +400,7 @@ const Step2Audience = ({
 
         {isLoadingSenders ? (
           <div className="py-20 bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200 flex flex-col items-center">
-            <Loader2 className="w-10 h-10 text-orange-500/20 animate-spin" />
+            <Loader2 className="w-10 h-10 text-purple-500/20 animate-spin" />
             <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-6 animate-pulse">
               {t('campaigns.syncing_accounts')}
             </p>
@@ -430,19 +430,19 @@ const Step2Audience = ({
                   onClick={() => handleSenderSelect(sender.id, sType)}
                   className={`group relative p-6 rounded-[2.5rem] border-2 transition-all duration-300 cursor-pointer flex items-center gap-5 ${
                     isSelected
-                      ? 'border-orange-500 bg-white shadow-sm ring-8 ring-orange-500/5 -translate-y-1'
-                      : 'border-slate-100 bg-white hover:border-orange-200 hover:-translate-y-0.5 hover:shadow-md'
+                      ? 'border-purple-500 bg-white shadow-sm ring-8 ring-purple-500/5 -translate-y-1'
+                      : 'border-slate-100 bg-white hover:border-purple-200 hover:-translate-y-0.5 hover:shadow-md'
                   }`}
                 >
                   <div
                     className={`w-14 h-14 rounded-lg flex items-center justify-center transition-all shadow-sm ${
                       isSelected
-                        ? 'bg-orange-600 text-white shadow-orange-500/40'
+                        ? 'bg-purple-600 text-white shadow-purple-500/40'
                         : sType === 'gmail'
-                          ? 'bg-orange-50'
+                          ? 'bg-purple-50'
                           : sType === 'outlook'
-                            ? 'bg-orange-50'
-                            : 'bg-slate-50 text-slate-400 group-hover:bg-orange-50 group-hover:text-orange-500'
+                            ? 'bg-purple-50'
+                            : 'bg-slate-50 text-slate-400 group-hover:bg-purple-50 group-hover:text-purple-500'
                     }`}
                   >
                     {sType === 'gmail' ? (
@@ -455,7 +455,7 @@ const Step2Audience = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? 'text-orange-900' : 'text-slate-800'}`}
+                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? 'text-purple-900' : 'text-slate-800'}`}
                     >
                       {sender.displayName}
                     </p>
@@ -464,7 +464,7 @@ const Step2Audience = ({
                     </p>
                   </div>
                   {isSelected && (
-                    <div className="w-7 h-7 bg-orange-600 rounded-full flex items-center justify-center shadow-sm shadow-orange-500/30 ring-4 ring-white">
+                    <div className="w-7 h-7 bg-purple-600 rounded-full flex items-center justify-center shadow-sm shadow-purple-500/30 ring-4 ring-white">
                       <Check className="w-4 h-4 text-white" />
                     </div>
                   )}

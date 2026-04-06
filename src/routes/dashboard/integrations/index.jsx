@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/immutability */
+﻿/* eslint-disable react-hooks/immutability */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
@@ -261,13 +261,13 @@ const Integrations = () => {
 
         <div className="flex items-center gap-3">
           <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-purple-500 transition-colors" />
             <input
               type="text"
               placeholder={t('integrations.search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-12 w-full md:w-80 pl-11 pr-4 bg-white border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all shadow-sm group-hover:border-slate-300"
+              className="h-12 w-full md:w-80 pl-11 pr-4 bg-white border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 transition-all shadow-sm group-hover:border-slate-300"
             />
           </div>
         </div>

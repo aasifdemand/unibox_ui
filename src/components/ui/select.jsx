@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const Select = ({
@@ -38,7 +38,7 @@ const Select = ({
             ${
               error
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                : 'border-gray-300 focus:border-orange-500 focus:ring-orange-500'
+                : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500'
             }
             ${disabled ? 'bg-gray-100 cursor-not-allowed opacity-70' : 'bg-white'}
             ${className}

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Mail,
@@ -45,9 +45,9 @@ const ShowSenderDetails = ({
         label: t('settings.resources.senders.verified'),
         color: 'emerald',
         icon: <CheckCircle className="w-4 h-4" />,
-        bg: 'bg-orange-50',
-        text: 'text-orange-600',
-        border: 'border-orange-100',
+        bg: 'bg-purple-50',
+        text: 'text-purple-600',
+        border: 'border-purple-100',
       };
     }
     return {
@@ -81,7 +81,7 @@ const ShowSenderDetails = ({
     <Modal isOpen={!!sender} onClose={onClose} maxWidth="max-w-3xl" closeOnBackdrop={true}>
       {/* Header Banner */}
       <div
-        className={`bg-gradient-to-br ${sender.type === 'gmail' ? 'from-orange-600 to-red-700' : sender.type === 'outlook' ? 'from-orange-600 to-orange-700' : 'from-orange-600 to-orange-700'} p-8 relative overflow-hidden group`}
+        className={`bg-gradient-to-br ${sender.type === 'gmail' ? 'from-purple-600 to-red-700' : sender.type === 'outlook' ? 'from-purple-600 to-purple-700' : 'from-purple-600 to-purple-700'} p-8 relative overflow-hidden group`}
       >
         <div className="absolute top-0 ltr:right-0 rtl:left-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
           <Mail className="w-24 h-24 text-white" />
@@ -139,7 +139,7 @@ const ShowSenderDetails = ({
           {/* API ID Card */}
           <div className="p-5 rounded-lg border-2 bg-slate-50 border-slate-100 flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-lg bg-white border border-slate-100 flex items-center justify-center mb-4 text-slate-800">
-              <ShieldCheck className="w-4 h-4 text-orange-600" />
+              <ShieldCheck className="w-4 h-4 text-purple-600" />
             </div>
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
               {t('modals.details.sender_info.sender_id')}
@@ -191,7 +191,7 @@ const ShowSenderDetails = ({
                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">
                     {t('modals.details.sender_info.auth_method')}
                   </p>
-                  <p className="text-sm font-bold text-orange-600 uppercase tracking-tight">
+                  <p className="text-sm font-bold text-purple-600 uppercase tracking-tight">
                     {t('modals.details.sender_info.oauth_token')}
                   </p>
                 </div>
@@ -202,7 +202,7 @@ const ShowSenderDetails = ({
           {(sender.type === 'smtp' || sender.imapHost) && (
             <div>
               <h4 className="text-sm font-black text-slate-800 uppercase tracking-tight mb-4 flex items-center gap-2">
-                <Link2 className="w-4 h-4 text-orange-500" />
+                <Link2 className="w-4 h-4 text-purple-500" />
                 {t('modals.details.sender_info.incoming')}
               </h4>
               <div className="premium-card p-6 bg-slate-50 border-none shadow-none grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
@@ -247,7 +247,7 @@ const ShowSenderDetails = ({
           <Button
             onClick={() => handleDeleteSender(sender)}
             variant="ghost"
-            className="px-6 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition-all flex items-center gap-2"
+            className="px-6 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all flex items-center gap-2"
             disabled={isDeletingSender}
           >
             <Trash2 className="w-4 h-4" />
@@ -264,7 +264,7 @@ const ShowSenderDetails = ({
             <Button
               onClick={() => handleTestSender(sender.id)}
               variant="primary"
-              className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-orange-600/20 hover:shadow-orange-600/40 hover:-translate-y-1 transition-all flex items-center gap-3"
+              className="px-10 py-3 rounded-lg text-[10px] font-extrabold uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-1 transition-all flex items-center gap-3"
               disabled={isTestingSender}
             >
               {isTestingSender ? (

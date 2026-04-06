@@ -1,4 +1,4 @@
-import { Sparkles, ShieldCheck, Zap, AlertCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
+﻿import { Sparkles, ShieldCheck, Zap, AlertCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -61,11 +61,11 @@ const SmartInsights = ({ metrics, overview }) => {
   const getStatusStyles = (status) => {
     switch (status) {
       case 'success':
-        return 'bg-orange-50 text-orange-700 border-orange-100 ring-orange-500/20';
+        return 'bg-purple-50 text-purple-700 border-purple-100 ring-purple-500/20';
       case 'warning':
         return 'bg-amber-50 text-amber-700 border-amber-100 ring-amber-500/20';
       case 'danger':
-        return 'bg-orange-50 text-orange-700 border-orange-100 ring-orange-500/20';
+        return 'bg-purple-50 text-purple-700 border-purple-100 ring-purple-500/20';
       default:
         return 'bg-slate-50 text-slate-700 border-slate-100 ring-slate-500/20';
     }
@@ -74,21 +74,21 @@ const SmartInsights = ({ metrics, overview }) => {
   return (
     <div className="premium-card p-8 h-full flex flex-col relative overflow-hidden group">
       {/* Decorative background blur */}
-      <div className="absolute -top-24 -inset-inline-end-24 w-64 h-64 bg-orange-500/5 rounded-full blur-[100px] group-hover:bg-orange-500/10 transition-colors duration-700"></div>
+      <div className="absolute -top-24 -inset-inline-end-24 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] group-hover:bg-purple-500/10 transition-colors duration-700"></div>
 
       <div className="flex items-center justify-between mb-8 relative z-10">
         <div>
           <h3 className="text-xl font-black text-slate-900 tracking-tighter flex items-center gap-2">
             {t('analytics.smart_insights_title')}{' '}
-            <span className="text-orange-600">{t('analytics.smart_insights_span')}</span>
-            <Sparkles className="w-4 h-4 text-orange-500 animate-pulse" />
+            <span className="text-purple-600">{t('analytics.smart_insights_span')}</span>
+            <Sparkles className="w-4 h-4 text-purple-500 animate-pulse" />
           </h3>
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
             {t('analytics.smart_insights_subtitle')}
           </p>
         </div>
-        <div className="px-3 py-1 bg-orange-50 rounded-full border border-orange-100 shadow-xs">
-          <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">
+        <div className="px-3 py-1 bg-purple-50 rounded-full border border-purple-100 shadow-xs">
+          <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
             {t('analytics.active_analysis')}
           </span>
         </div>
@@ -127,7 +127,7 @@ const SmartInsights = ({ metrics, overview }) => {
       </div>
 
       <div className="mt-8 flex items-center justify-center relative z-10">
-        <button className="text-[10px] font-black text-orange-600 uppercase tracking-[0.2em] px-6 py-2 rounded-md hover:bg-slate-50 transition-colors border border-dashed border-orange-200">
+        <button className="text-[10px] font-black text-purple-600 uppercase tracking-[0.2em] px-6 py-2 rounded-md hover:bg-slate-50 transition-colors border border-dashed border-purple-200">
           {t('analytics.unlock_report')}
         </button>
       </div>

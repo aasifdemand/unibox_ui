@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { EyeOff, MailCheck, MailQuestion, RefreshCw, Send, Trash2, XCircle } from 'lucide-react';
 
 const MessageActionsHeader = ({
@@ -19,7 +19,7 @@ const MessageActionsHeader = ({
   return (
     <div className="flex items-center gap-3">
       {selectedMessages?.length > 0 ? (
-        <div className="flex items-center gap-1.5 bg-orange-600 px-3 py-2 rounded-lg shadow-sm shadow-orange-500/20 animate-in zoom-in duration-300">
+        <div className="flex items-center gap-1.5 bg-purple-600 px-3 py-2 rounded-lg shadow-sm shadow-purple-500/20 animate-in zoom-in duration-300">
           <div className="flex items-center justify-center bg-white/20 px-2.5 py-1 rounded-md">
             <span className="text-xs font-black text-white">{selectedMessages.length}</span>
           </div>
@@ -33,7 +33,7 @@ const MessageActionsHeader = ({
           </button>
           <button
             onClick={onBulkDelete}
-            className="p-2 text-white/90 hover:text-orange-200 hover:bg-orange-500/20 rounded-md transition-all"
+            className="p-2 text-white/90 hover:text-purple-200 hover:bg-purple-500/20 rounded-md transition-all"
             title={t('mailboxes.delete_selected')}
           >
             <Trash2 className="w-4 h-4" />
@@ -64,7 +64,7 @@ const MessageActionsHeader = ({
           disabled={isSyncing}
           className={`flex items-center gap-2 px-4 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${
             isSyncing
-              ? 'bg-white text-orange-600 shadow-sm border border-slate-200'
+              ? 'bg-white text-purple-600 shadow-sm border border-slate-200'
               : 'text-slate-500 hover:text-slate-900'
           }`}
         >
@@ -76,7 +76,7 @@ const MessageActionsHeader = ({
           onClick={onFilterUnread}
           className={`flex items-center gap-2 px-4 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${
             filterUnreadActive
-              ? 'bg-orange-600 text-white shadow-sm shadow-orange-500/20'
+              ? 'bg-purple-600 text-white shadow-sm shadow-purple-500/20'
               : 'text-slate-500 hover:text-slate-900'
           }`}
         >
@@ -99,7 +99,7 @@ const MessageActionsHeader = ({
 
       <button
         onClick={onDisconnect}
-        className="group flex items-center gap-2 px-4 py-2.5 rounded-lg text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] hover:text-orange-600 hover:bg-orange-50 transition-all border border-transparent hover:border-orange-100"
+        className="group flex items-center gap-2 px-4 py-2.5 rounded-lg text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] hover:text-purple-600 hover:bg-purple-50 transition-all border border-transparent hover:border-purple-100"
         title={t('mailboxes.disconnect_account')}
       >
         <EyeOff className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />

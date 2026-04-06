@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+﻿import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -15,7 +15,7 @@ export default defineConfig({
         name: "Unibox - Growth Platform",
         short_name: "Unibox",
         description: "Manage all your outreach campaigns",
-        theme_color: "#ea580c",
+        theme_color: "#7c3aed",
         background_color: "#ffffff",
         display: "standalone",
         start_url: "/",

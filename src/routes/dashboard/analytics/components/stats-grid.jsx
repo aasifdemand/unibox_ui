@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 
 const StatsGrid = ({ stats }) => {
@@ -11,7 +11,7 @@ const StatsGrid = ({ stats }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="premium-card p-6 overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-sm hover:shadow-slate-200/50 transition-all duration-500 border-b-4 border-slate-200/60 hover:border-orange-500/50"
+          className="premium-card p-6 overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-sm hover:shadow-slate-200/50 transition-all duration-500 border-b-4 border-slate-200/60 hover:border-purple-500/50"
         >
           {/* Dynamic Gradient Background - Always visible but subtle */}
           <div
@@ -25,9 +25,9 @@ const StatsGrid = ({ stats }) => {
               {stat.icon}
             </div>
             <div className="flex flex-col items-end">
-              <div className="px-2 py-1 bg-white border border-slate-100/50 rounded-lg flex items-center gap-1.5 transition-colors group-hover:border-orange-100 mb-2 shadow-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
-                <span className="text-[10px] font-bold text-slate-400 group-hover:text-orange-600 transition-colors">
+              <div className="px-2 py-1 bg-white border border-slate-100/50 rounded-lg flex items-center gap-1.5 transition-colors group-hover:border-purple-100 mb-2 shadow-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(59,130,246,0.6)] animate-pulse"></div>
+                <span className="text-[10px] font-bold text-slate-400 group-hover:text-purple-600 transition-colors">
                   {t('analytics.stats')}
                 </span>
               </div>
@@ -61,7 +61,7 @@ const StatsGrid = ({ stats }) => {
                 {stat.value}
               </h3>
               <div
-                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${stat.trend === 'up' ? 'text-orange-600 bg-orange-50' : 'text-slate-400 bg-slate-50'} group-hover:bg-white transition-colors shadow-xs`}
+                className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${stat.trend === 'up' ? 'text-purple-600 bg-purple-50' : 'text-slate-400 bg-slate-50'} group-hover:bg-white transition-colors shadow-xs`}
               >
                 {stat.trend === 'up' ? '↑' : '↓'} {stat.change.split(' ')[0]}
               </div>

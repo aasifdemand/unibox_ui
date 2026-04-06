@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Eye, EyeOff, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -34,7 +34,7 @@ const Input = ({
     ? 'border-red-300 focus:border-red-500 ring-red-500/10'
     : success
       ? 'border-green-300 focus:border-green-500 ring-green-500/10'
-      : 'border-gray-200 focus:border-orange-500 ring-orange-500/5';
+      : 'border-gray-200 focus:border-purple-500 ring-purple-500/5';
   const disabledStyles = disabled
     ? 'bg-gray-50 cursor-not-allowed opacity-70'
     : 'bg-white/50 ';
@@ -88,7 +88,7 @@ const Input = ({
         {Icon && (
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
             <Icon
-              className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-orange-600' : 'text-slate-500'}`}
+              className={`h-5 w-5 transition-colors duration-300 ${isFocused ? 'text-purple-600' : 'text-slate-500'}`}
             />
           </div>
         )}

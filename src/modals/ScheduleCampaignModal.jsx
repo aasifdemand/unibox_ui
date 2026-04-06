@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Clock, Calendar, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -102,7 +102,7 @@ const ScheduleCampaignModal = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-2xl" showCloseButton={true}>
       <div className="overflow-hidden">
         {/* Premium Header */}
-        <div className="bg-linear-to-br from-orange-600 to-orange-700 p-8 relative overflow-hidden group">
+        <div className="bg-linear-to-br from-purple-600 to-purple-700 p-8 relative overflow-hidden group">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.1 }}
@@ -170,7 +170,7 @@ const ScheduleCampaignModal = ({
                     onClick={() => toggleDay(day.id)}
                     className={`min-w-[70px] py-3.5 rounded-lg text-xs font-bold transition-all border-2 ${
                       sendingDays.includes(day.id)
-                        ? 'bg-orange-600 border-orange-600 text-white shadow-md'
+                        ? 'bg-purple-600 border-purple-600 text-white shadow-md'
                         : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-slate-300'
                     }`}
                   >
@@ -213,7 +213,7 @@ const ScheduleCampaignModal = ({
                 <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                   Sending Interval
                 </label>
-                <span className="text-sm font-bold text-orange-600 bg-orange-50/50 px-3 py-1 rounded-lg border border-orange-100/50">
+                <span className="text-sm font-bold text-purple-600 bg-purple-50/50 px-3 py-1 rounded-lg border border-purple-100/50">
                   Wait {sendingInterval} mins between emails
                 </span>
               </div>
@@ -227,10 +227,10 @@ const ScheduleCampaignModal = ({
                     className="absolute inset-0 w-full opacity-0 cursor-pointer z-10"
                   />
                   <div
-                    className="h-full bg-orange-600 rounded-full transition-all relative"
+                    className="h-full bg-purple-600 rounded-full transition-all relative"
                     style={{ width: `${(sendingInterval / 60) * 100}%` }}
                   >
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-4 border-orange-600 rounded-full shadow-sm group-hover:scale-125 transition-transform" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-4 border-purple-600 rounded-full shadow-sm group-hover:scale-125 transition-transform" />
                   </div>
                 </div>
               </div>
@@ -266,7 +266,7 @@ const ScheduleCampaignModal = ({
           <div className="flex justify-end pt-6">
             <Button
               onClick={handleSave}
-              className="w-full py-4 bg-orange-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-orange-600/20 hover:bg-orange-700 transition-all uppercase tracking-widest"
+              className="w-full py-4 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all uppercase tracking-widest"
             >
               Save Settings
             </Button>

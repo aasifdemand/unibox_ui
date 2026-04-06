@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Download, MessageCircle, Eye, Users, Mail, ShieldCheck } from 'lucide-react';
 
@@ -48,7 +48,7 @@ const RecipientsTab = ({
       <div className="premium-card bg-slate-100/40  border-none p-6 shadow-sm shadow-slate-900/2">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-orange-600 flex items-center justify-center text-white shadow-sm shadow-orange-500/20">
+            <div className="w-12 h-12 rounded-lg bg-purple-600 flex items-center justify-center text-white shadow-sm shadow-purple-500/20">
               <Users className="w-6 h-6" />
             </div>
             <div>
@@ -61,7 +61,7 @@ const RecipientsTab = ({
 
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-end ltr:mr-4 rtl:ml-4">
-              <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest leading-none">
+              <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest leading-none">
                 {t('campaigns.recipients.total_count', { count: stats.totalRecipients })}
               </span>
               <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">
@@ -70,7 +70,7 @@ const RecipientsTab = ({
             </div>
             <button
               onClick={handleExportCsv}
-              className="h-11 px-6 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-2"
+              className="h-11 px-6 bg-white border border-slate-200 text-slate-600 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-2"
             >
               <Download className="w-4 h-4" />
               {t('campaigns.recipients.export_csv', 'Export CSV')}
@@ -116,7 +116,7 @@ const RecipientsTab = ({
                 <tr key={recipient.id} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="py-5 px-6">
                     <div className="flex flex-col">
-                      <span className="text-sm font-bold text-slate-900 tracking-tight group-hover:text-orange-600 transition-colors">
+                      <span className="text-sm font-bold text-slate-900 tracking-tight group-hover:text-purple-600 transition-colors">
                         {recipient.email}
                       </span>
                       <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
@@ -142,7 +142,7 @@ const RecipientsTab = ({
                       {recipient.status === 'replied' ? (
                         <button
                           onClick={() => viewReply(recipient.id)}
-                          className="h-8 px-4 bg-orange-50 text-orange-700 hover:bg-orange-100 rounded-md font-black uppercase tracking-widest text-[9px] transition-all flex items-center gap-1.5"
+                          className="h-8 px-4 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-md font-black uppercase tracking-widest text-[9px] transition-all flex items-center gap-1.5"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           {t('campaigns.recipients.view_reply', 'View Reply')}
@@ -154,7 +154,7 @@ const RecipientsTab = ({
                       )}
                       <button
                         onClick={() => setSelectedRecipientForPreview(recipient)}
-                        className="w-8 h-8 flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-orange-50 hover:text-orange-600 rounded-md transition-all"
+                        className="w-8 h-8 flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-purple-50 hover:text-purple-600 rounded-md transition-all"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -172,8 +172,8 @@ const RecipientsTab = ({
               <div className="w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center rotate-3 border border-slate-100">
                 <Users className="w-10 h-10 text-slate-200" />
               </div>
-              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center border border-orange-100 rotate-12">
-                <ShieldCheck className="w-5 h-5 text-orange-200" />
+              <div className="absolute -bottom-2 -ltr:right-2 rtl:left-2 w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100 rotate-12">
+                <ShieldCheck className="w-5 h-5 text-purple-200" />
               </div>
             </div>
             <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.recipients.empty_title', 'No Recipients')}</h4>
@@ -190,17 +190,17 @@ const RecipientsTab = ({
 const RecipientStatusBadge = ({ status, t }) => {
   const configs = {
     replied: {
-      bg: 'bg-orange-50 text-orange-700 border-orange-100',
+      bg: 'bg-purple-50 text-purple-700 border-purple-100',
       icon: <MessageCircle className="w-3 h-3" />,
       label: t('campaigns.recipients.status_replied', 'Replied'),
     },
     sent: {
-      bg: 'bg-orange-50 text-orange-700 border-orange-100',
+      bg: 'bg-purple-50 text-purple-700 border-purple-100',
       icon: <Mail className="w-3 h-3" />,
       label: t('campaigns.recipients.status_sent', 'Sent'),
     },
     bounced: {
-      bg: 'bg-orange-50 text-orange-700 border-orange-100',
+      bg: 'bg-purple-50 text-purple-700 border-purple-100',
       icon: <ShieldCheck className="w-3 h-3" />,
       label: t('campaigns.recipients.status_bounced', 'Bounced'),
     },

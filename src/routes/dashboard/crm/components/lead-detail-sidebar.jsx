@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -65,7 +65,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-sm font-black">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-sm font-black">
                   {contact?.name
                     ? contact.name
                         .split(' ')
@@ -118,7 +118,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                     href={meta.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-orange-500 hover:text-orange-700 font-medium"
+                    className="flex items-center gap-2 text-sm text-purple-500 hover:text-purple-700 font-medium"
                   >
                     <Globe className="w-3.5 h-3.5 shrink-0" />
                     LinkedIn Profile
@@ -154,7 +154,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-bold text-slate-700 focus:border-orange-400 focus:ring-4 focus:ring-orange-500/5 outline-none transition-all"
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-bold text-slate-700 focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -169,17 +169,17 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={5}
                   placeholder="Add notes about this lead..."
-                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-medium text-slate-700 placeholder:text-slate-300 focus:border-orange-400 focus:ring-4 focus:ring-orange-500/5 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-medium text-slate-700 placeholder:text-slate-300 focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 outline-none transition-all resize-none"
                 />
               </div>
 
               {/* Enrichment metadata */}
               {meta._enrichedAt && (
-                <div className="px-3 py-3 bg-orange-50 rounded-md border border-orange-100">
-                  <p className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1">
+                <div className="px-3 py-3 bg-purple-50 rounded-md border border-purple-100">
+                  <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest mb-1">
                     ✨ Enriched
                   </p>
-                  <p className="text-[11px] text-orange-400 font-medium">
+                  <p className="text-[11px] text-purple-400 font-medium">
                     via{' '}
                     {Array.isArray(meta._enrichedBy)
                       ? meta._enrichedBy.join(', ')
@@ -195,7 +195,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
               <button
                 onClick={handleSave}
                 disabled={updateLead.isPending}
-                className="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white rounded-md font-black text-[11px] uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 disabled:opacity-60"
+                className="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-black text-[11px] uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-sm shadow-purple-500/20 disabled:opacity-60"
               >
                 {updateLead.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+﻿import * as XLSX from 'xlsx';
 import { toast } from 'react-hot-toast';
 
 // File upload handlers
@@ -129,7 +129,7 @@ export const getStatusBadgeClass = (status) => {
     case 'failed':
       return 'bg-red-100 text-red-800';
     case 'uploaded':
-      return 'bg-orange-100 text-orange-800';
+      return 'bg-purple-100 text-purple-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }
