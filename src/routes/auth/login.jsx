@@ -9,6 +9,7 @@ import { mapZodErrors } from '../../utils/map-zod';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import SocialAuth from '../../components/auth/SocialAuth';
+import TurnstileWidget from '../../components/auth/TurnstileWidget';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Login = () => {
     rememberMe: false,
   });
 
+  const [turnstileToken, setTurnstileToken] = useState(null);
   const [errors, setErrors] = useState({});
 
   const login = useLogin();
@@ -74,18 +76,25 @@ const Login = () => {
       return;
     }
 
+    if (!turnstileToken) {
+      toast.error('Please complete the security check.');
+      return;
+    }
+
     const toastId = toast.loading(t('auth.login.signing_in'));
     try {
       await login.mutateAsync({
         email: formData.email,
         password: formData.password,
         rememberMe: formData.rememberMe,
+        turnstileToken,
       });
       toast.dismiss(toastId);
       toast.success(t('auth.login.welcome_back_toast'));
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || t('auth.login.error_invalid'));
+      setTurnstileToken(null);
     }
   };
 
@@ -159,13 +168,15 @@ const Login = () => {
           </div>
         </div>
 
-
+        <div className="flex justify-center -mt-2">
+          <TurnstileWidget onSuccess={(token) => setTurnstileToken(token)} />
+        </div>
 
         <div className="space-y-3 pt-2">
           <button
             type="submit"
             className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-            disabled={isLoading}
+            disabled={isLoading || !turnstileToken}
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

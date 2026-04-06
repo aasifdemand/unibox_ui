@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal, Users } from 'lucide-react';
+import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal, Users, Download } from 'lucide-react';
 import FilterDropdown from '../../../../components/ui/filter-dropdown';
 import { ColumnSelector } from './contacts-table';
+import Dialog from '../../../../components/ui/dialog';
+import { useState } from 'react';
 
 const AudienceHeader = ({
   activeTab,
@@ -17,6 +19,24 @@ const AudienceHeader = ({
   setNoCols,
 }) => {
   const { t } = useTranslation();
+  const [showExportConfirm, setShowExportConfirm] = useState(false);
+
+  const handleExportCSV = () => {
+    const filters = Array.isArray(filterStatus) && filterStatus.length > 0 
+      ? filterStatus.join(',') 
+      : 'all';
+    
+    const baseUrl = import.meta.env.VITE_API_URL;
+    const query = new URLSearchParams({
+      searchTerm: searchTerm || '',
+      filterStatus: filters,
+      format: 'csv'
+    });
+
+    const exportUrl = `${baseUrl}/lists/contacts/export?${query.toString()}`;
+    window.open(exportUrl, '_blank');
+    setShowExportConfirm(false);
+  };
 
   const tabs = [
     { id: 'contacts', label: t('audience.title', 'Contacts') },
@@ -176,6 +196,29 @@ const AudienceHeader = ({
           >
             <RefreshCcw className="w-4 h-4" />
           </button>
+
+          {activeTab === 'contacts' && (
+            <button
+              onClick={() => setShowExportConfirm(true)}
+              className="flex items-center gap-2 px-4 h-11 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-orange-200 hover:text-orange-600 transition-all shadow-sm shrink-0"
+              title="Export filtered contacts to CSV"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export</span>
+            </button>
+          )}
+
+          <Dialog
+            open={showExportConfirm}
+            setOpen={setShowExportConfirm}
+            title={t('audience.confirm_export_title', 'Confirm Full Export')}
+            description={t('audience.confirm_export_description', 'Are you sure you want to export all contacts matching your current search and filters? This will generate a CSV file with all visible columns and metadata fields.')}
+            confirmText={t('common.export', 'Yes, Export')}
+            cancelText={t('common.cancel', 'No, Cancel')}
+            confirmVariant="info"
+            onConfirm={handleExportCSV}
+            onCancel={() => setShowExportConfirm(false)}
+          />
           <button
             onClick={() => setShowUploadModal(true)}
             className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-orange-500/20 active:scale-95 transition-all text-white font-black  tracking-widest text-[11px] rounded-md shrink-0"

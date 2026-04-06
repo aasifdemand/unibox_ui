@@ -7,6 +7,8 @@ import { Mail } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 import { useVerifyAccount, useResendVerification, useCurrentUser } from '../../hooks/useAuth';
 import { motion } from "motion/react"
+import TurnstileWidget from '../../components/auth/TurnstileWidget';
+
 const VerifyAccount = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,6 +19,7 @@ const VerifyAccount = () => {
   const [otp, setOtp] = useState('');
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState(null);
 
   const verifyAccount = useVerifyAccount();
   const resendVerification = useResendVerification();
@@ -75,17 +78,24 @@ const VerifyAccount = () => {
   const handleResend = async () => {
     if (!canResend) return;
 
+    if (!turnstileToken) {
+      toast.error('Please complete the security check to resend the code.');
+      return;
+    }
+
     const toastId = toast.loading('Sending new code...');
 
     try {
-      await resendVerification.mutateAsync(email);
+      await resendVerification.mutateAsync({ email, turnstileToken });
       toast.dismiss(toastId);
       toast.success('New verification code sent!');
       setCanResend(false);
       setResendTimer(60);
+      setTurnstileToken(null); // Reset after successful resend
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || 'Failed to resend code');
+      setTurnstileToken(null); // Reset on failure too
     }
   };
 
@@ -141,6 +151,10 @@ const VerifyAccount = () => {
             >
               {canResend ? 'Resend code' : `Resend in ${formatTime(resendTimer)}`}
             </button>
+          </div>
+
+          <div className="flex justify-center -mt-2">
+            <TurnstileWidget onSuccess={(token) => setTurnstileToken(token)} />
           </div>
 
           <OTPInput

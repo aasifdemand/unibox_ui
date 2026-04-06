@@ -94,11 +94,8 @@ const MailboxList = ({
                 {getProviderIcon(mailbox.type, 'w-7 h-7')}
               </div>
               <div>
-                <p className="font-bold text-slate-800 group-hover/row:text-orange-600 transition-colors">
+                <p className="text-[13px] font-semibold text-slate-800 group-hover/row:text-orange-600 transition-colors">
                   {mailbox.displayName}
-                </p>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
-                  {mailbox.type}
                 </p>
               </div>
             </div>

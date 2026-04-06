@@ -35,10 +35,10 @@ export const useCurrentUser = () => {
 // =========================
 // LOGIN MUTATION
 // =========================
-const loginUser = async ({ email, password, rememberMe }) => {
+const loginUser = async ({ email, password, rememberMe, turnstileToken }) => {
   const res = await apiClient('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ email, password, rememberMe }),
+    body: JSON.stringify({ email, password, rememberMe, 'cf-turnstile-response': turnstileToken }),
   });
 
   return await res.json();
@@ -58,10 +58,10 @@ export const useLogin = () => {
 // =========================
 // SIGNUP MUTATION
 // =========================
-const signupUser = async ({ name, email, password }) => {
+const signupUser = async ({ name, email, password, turnstileToken }) => {
   const res = await apiClient('/auth/signup', {
     method: 'POST',
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ name, email, password, 'cf-turnstile-response': turnstileToken }),
   });
 
   return await res.json();
@@ -99,10 +99,10 @@ export const useVerifyAccount = () => {
 // =========================
 // RESEND VERIFICATION MUTATION
 // =========================
-const resendVerification = async (email) => {
+const resendVerification = async ({ email, turnstileToken }) => {
   const res = await apiClient('/auth/resend-verification', {
     method: 'POST',
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, 'cf-turnstile-response': turnstileToken }),
   });
 
   const data = await res.json();
@@ -155,10 +155,10 @@ export const useLogout = () => {
 // =========================
 // FORGOT PASSWORD MUTATION
 // =========================
-const forgotPassword = async (email) => {
+const forgotPassword = async ({ email, turnstileToken }) => {
   const res = await apiClient('/auth/forgot-password', {
     method: 'POST',
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, 'cf-turnstile-response': turnstileToken }),
   });
 
   const data = await res.json();
@@ -179,10 +179,10 @@ export const useForgotPassword = () => {
 // =========================
 // RESET PASSWORD MUTATION
 // =========================
-const resetPassword = async ({ token, newPassword }) => {
+const resetPassword = async ({ token, newPassword, turnstileToken }) => {
   const res = await apiClient('/auth/reset-password', {
     method: 'POST',
-    body: JSON.stringify({ token, newPassword }),
+    body: JSON.stringify({ token, newPassword, 'cf-turnstile-response': turnstileToken }),
   });
 
   const data = await res.json();

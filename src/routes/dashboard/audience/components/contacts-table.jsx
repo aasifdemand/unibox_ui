@@ -240,6 +240,69 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
   );
 };
 
+const CopyableCell = ({ text, children, className = '' }) => {
+  const [copied, setCopied] = useState(false);
+  const hoverTimerRef = useRef(null);
+  const resetTimerRef = useRef(null);
+
+  const handleCopy = () => {
+    if (!text) return;
+    try {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  const onHover = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(handleCopy, 400); 
+  };
+
+  const onLeave = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      className={`group/copy relative flex items-center gap-2 cursor-pointer transition-all duration-300 hover:translate-x-1 ${className}`}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+    >
+      <div className={`flex items-center gap-2 transition-opacity duration-300 ${copied ? 'opacity-20' : 'opacity-100'}`}>
+        {children}
+      </div>
+      
+      <AnimatePresence>
+        {copied && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 5 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500 text-white shadow-lg shadow-green-200">
+               <Check className="w-3 h-3" strokeWidth={3} />
+               <span className="text-[9px] font-black tracking-tighter uppercase">Copied</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCols }) => {
   const { t } = useTranslation();
@@ -291,29 +354,6 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
   const columns = useMemo(() => {
     const base = [
       {
-        id: 'email',
-        accessorKey: 'email',
-        header: ({ column }) => (
-          <div
-            className="flex items-center cursor-pointer select-none group/header"
-            onClick={column.getToggleSortingHandler()}
-          >
-            <span>Email</span>
-            <SortIndicator column={column} />
-          </div>
-        ),
-        cell: (info) => (
-          <div className="flex items-center gap-2.5 min-w-[200px]">
-            <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
-              <Mail className="w-3.5 h-3.5 text-slate-500" />
-            </div>
-            <span className="font-semibold text-slate-700 truncate max-w-[200px] text-[13px]">
-              {info.getValue() || '—'}
-            </span>
-          </div>
-        ),
-      },
-      {
         id: 'name',
         accessorKey: 'name',
         header: ({ column }) => (
@@ -326,27 +366,51 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
           </div>
         ),
         cell: (info) => (
-          <div className="flex items-center gap-2 min-w-[120px]">
-            {info.getValue() ? (
-              <div className="w-7 h-7 rounded-full bg-linear-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
-                {info
-                  .getValue()
-                  .split(' ')
-                  .map((w) => w[0])
-                  .slice(0, 2)
-                  .join('')}
-              </div>
-            ) : (
-              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                <span className="text-slate-300 text-[10px] font-black">?</span>
-              </div>
-            )}
-            <span className="font-semibold text-slate-700 text-[13px]">
-              {info.getValue() || <span className="text-slate-300">—</span>}
-            </span>
-          </div>
+            <CopyableCell text={info.getValue()} className="min-w-[120px]">
+              {info.getValue() ? (
+                <div className="w-7 h-7 rounded-full bg-linear-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
+                  {info
+                    .getValue()
+                    .split(' ')
+                    .map((w) => w[0])
+                    .slice(0, 2)
+                    .join('')}
+                </div>
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                  <span className="text-slate-300 text-[10px] font-black">?</span>
+                </div>
+              )}
+              <span className="font-semibold text-slate-700 text-[13px] whitespace-nowrap">
+                {info.getValue() || <span className="text-slate-300">—</span>}
+              </span>
+            </CopyableCell>
         ),
       },
+      {
+        id: 'email',
+        accessorKey: 'email',
+        header: ({ column }) => (
+          <div
+            className="flex items-center cursor-pointer select-none group/header"
+            onClick={column.getToggleSortingHandler()}
+          >
+            <span>Email</span>
+            <SortIndicator column={column} />
+          </div>
+        ),
+        cell: (info) => (
+          <CopyableCell text={info.getValue()} className="min-w-[200px]">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+              <Mail className="w-3.5 h-3.5 text-slate-500" />
+            </div>
+            <span className="font-semibold text-slate-700 text-[13px] whitespace-nowrap">
+              {info.getValue() || '—'}
+            </span>
+          </CopyableCell>
+        ),
+      },
+      
       {
         id: 'sourceBatch',
         accessorKey: 'sourceBatch',
@@ -386,10 +450,10 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
             </a>
           );
         return (
-          <span className="flex items-center gap-1.5 text-slate-600 font-medium text-[13px] whitespace-nowrap">
+          <CopyableCell text={val} className="whitespace-nowrap">
             <span className="text-slate-300">{field.icon}</span>
-            <span className="truncate max-w-[160px]">{val}</span>
-          </span>
+            <span className="whitespace-nowrap text-slate-600 font-medium text-[13px]">{val}</span>
+          </CopyableCell>
         );
       },
     }));
@@ -526,7 +590,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
 
       <div className="overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm shadow-slate-200/20">
         <div className="overflow-x-auto custom-scrollbar scroll-smooth">
-          <table className="w-full text-sm border-separate border-spacing-0">
+          <table className="min-w-full text-sm border-separate border-spacing-0">
             <thead>
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id} className="bg-slate-50/80 ">
@@ -535,7 +599,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                     return (
                       <th
                         key={header.id}
-                        className={`px-5 py-3.5 ltr:text-left rtl:text-right border-b border-slate-200/60 whitespace-nowrap ${isSticky ? 'sticky right-0 bg-slate-50/90  border-l border-slate-200/60 z-10' : ''}`}
+                        className={`px-8 py-4 ltr:text-left rtl:text-right border-b border-slate-200/60 whitespace-nowrap ${isSticky ? 'sticky right-0 bg-slate-50/90  border-l border-slate-200/60 z-10' : ''}`}
                       >
                         {header.isPlaceholder ? null : (
                           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] select-none">
@@ -562,7 +626,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                     return (
                       <td
                         key={cell.id}
-                        className={`px-5 py-3.5 ${isSticky ? 'sticky right-0 bg-white group-hover:bg-orange-50/20 border-l border-slate-100 z-10' : ''}`}
+                        className={`px-8 py-4 ${isSticky ? 'sticky right-0 bg-white group-hover:bg-orange-50/20 border-l border-slate-100 z-10' : ''}`}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>

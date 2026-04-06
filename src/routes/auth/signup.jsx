@@ -10,6 +10,7 @@ import { mapZodErrors } from '../../utils/map-zod';
 import { useTranslation } from 'react-i18next';
 import { motion } from "motion/react"
 import SocialAuth from '../../components/auth/SocialAuth';
+import TurnstileWidget from '../../components/auth/TurnstileWidget';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Signup = () => {
     marketingEmails: true,
   });
 
+  const [turnstileToken, setTurnstileToken] = useState(null);
   const [errors, setErrors] = useState({});
 
   const signup = useSignup();
@@ -55,10 +57,16 @@ const Signup = () => {
 
     const toastId = toast.loading(t('auth.signup.creating_account'));
     try {
+      if (!turnstileToken) {
+        toast.error('Please complete the security check.');
+        return;
+      }
+
       await signup.mutateAsync({
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        turnstileToken,
       });
       toast.dismiss(toastId);
       toast.success(t('auth.signup.account_created_toast'));
@@ -66,6 +74,7 @@ const Signup = () => {
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || t('auth.signup.error_signup_failed'));
+      setTurnstileToken(null);
     }
   };
 
@@ -157,11 +166,15 @@ const Signup = () => {
           />
         </div>
 
+        <div className="flex justify-center">
+            <TurnstileWidget onSuccess={(token) => setTurnstileToken(token)} />
+        </div>
+
         <div className="space-y-3 pt-2">
           <button
             type="submit"
             className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-            disabled={isLoading}
+            disabled={isLoading || !turnstileToken}
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
