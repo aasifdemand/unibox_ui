@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { forwardRef } from 'react';
-import { ChevronRight, Paperclip, Search, Star, X } from 'lucide-react';
+import { ChevronRight, Paperclip, Search, Star, Plus, RefreshCw, ShieldCheck, X } from 'lucide-react';
 import Pagination from './pagination';
 import MessageListItem from './messagelist-item';
 import EmptyMessages from './empty-messages';
@@ -69,77 +69,143 @@ const MessagesView = forwardRef(
       forwardMessage,
       showPreview,
       onTogglePreview,
+      // Action Props
+      onCompose,
+      onSync,
+      isSyncing,
+      onFilterUnread,
+      filterUnreadActive,
     },
     ref,
   ) => {
     const { t } = useTranslation();
     return (
-      <div className="px-4 md:px-8 pb-4 h-[calc(100vh-160px)] min-h-0 flex flex-col">
-        <div className="bg-white border-2 border-slate-100 rounded-2xl shadow-sm shadow-slate-200/40 flex-1 flex flex-col overflow-hidden">
+      <div className="px-1 md:px-2 pb-0 h-[calc(100vh-80px)] min-h-0 flex flex-col">
+        <div className="bg-white border border-slate-200/60 rounded-xl shadow-sm flex-1 flex flex-col overflow-hidden">
           {/* Search and Filters - Integrated in Card Top - Hidden in Detail View */}
           {view !== 'message' && (
-            <div className="px-6 py-4 border-b border-slate-100 bg-white/50 ">
-              <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full">
-                <div className="flex-1 relative group">
-                  <Search className="absolute ltr:left-4 rtl:right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-orange-500 transition-all duration-300" />
+            <div className="py-3 border-b border-slate-100 bg-white select-none">
+              <div className="flex flex-col xl:flex-row xl:items-center gap-4 w-full">
+                {/* 1. Context & Internal Navigation */}
+                <div className="w-64 border-r border-slate-100 flex items-center gap-3 shrink-0 px-4">
+                  {onBack && (
+                    <button
+                      onClick={onBack}
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-90"
+                    >
+                      <ChevronRight className="w-4 h-4 rotate-180" />
+                    </button>
+                  )}
+                  <div className="flex flex-col min-w-0">
+                    <h2 className="text-[13px] font-black text-slate-900 uppercase tracking-tight truncate leading-none mb-1">
+                      {selectedFolder?.name || 'Inbox'}
+                    </h2>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">
+                      {selectedMailbox?.email}
+                    </span>
+                  </div>
+                </div>
+
+
+
+                {/* 2. Global Actions */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={onCompose}
+                    className="h-9 px-4 bg-orange-600 hover:bg-orange-700 text-white rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-orange-500/20 transition-all active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Compose</span>
+                  </button>
+
+                  <button
+                    onClick={onSync}
+                    disabled={isSyncing}
+                    className={`w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-white transition-all active:scale-90 group ${
+                      isSyncing ? 'bg-slate-50' : 'hover:border-orange-200'
+                    }`}
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-orange-500' : 'text-slate-400 group-hover:text-orange-600'}`} />
+                  </button>
+
+                  <button
+                    onClick={onFilterUnread}
+                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest border transition-all ${
+                      filterUnreadActive
+                        ? 'bg-orange-50 border-orange-200 text-orange-600'
+                        : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
+                    }`}
+                    title="Toggle Unread Focus"
+                  >
+                    <Star className={`w-3.5 h-3.5 ${filterUnreadActive ? 'fill-orange-600' : ''}`} />
+                    <span className="hidden lg:inline">{filterUnreadActive ? 'Unread Focus' : 'Unread'}</span>
+                  </button>
+                  <button
+                    onClick={onFilterStarred}
+                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest border transition-all ${
+                      filterStarred
+                        ? 'bg-amber-500 border-amber-600 text-white shadow-sm shadow-amber-500/20'
+                        : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
+                    }`}
+                    title="Starred"
+                  >
+                    <Star className={`w-3.5 h-3.5 ${filterStarred ? 'fill-white' : ''}`} />
+                    <span className="hidden lg:inline">Starred</span>
+                  </button>
+                </div>
+
+                {/* 3. Search Bar */}
+                <div className="flex-1 relative group min-w-[200px]">
+                  <Search className="absolute ltr:left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
                   <input
                     type="text"
                     placeholder={t('mailboxes.messages_search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full ltr:pl-11 rtl:pr-11 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-sm font-medium placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none shadow-xs"
+                    className="w-full ltr:pl-10 rtl:pr-10 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/40 transition-all outline-none"
                   />
                   {searchQuery && (
                     <button
                       onClick={onSearchClear}
-                      className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 p-2 hover:bg-slate-100 rounded-md text-slate-400 hover:text-slate-600 transition-all"
+                      className="absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white rounded-md text-slate-400 hover:text-slate-600 transition-all"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3 h-3" />
                     </button>
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+                {/* 4. Filters */}
+                <div className="flex items-center gap-2 shrink-0">
                   <div className="relative shrink-0">
                     <select
                       value={dateRange}
                       onChange={(e) => onDateRangeChange(e.target.value)}
-                      className="appearance-none px-4 py-3 bg-slate-50/50 border border-slate-200/80 rounded-lg text-metadata text-slate-700 shadow-xs focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/50 transition-all outline-none cursor-pointer"
+                      className="appearance-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-semibold uppercase text-slate-500 pr-8 focus:border-orange-500/40 outline-none cursor-pointer"
                     >
-                      <option value="all">{t('mailboxes.temporal_all')}</option>
-                      <option value="today">{t('mailboxes.temporal_today')}</option>
-                      <option value="week">{t('mailboxes.temporal_week')}</option>
-                      <option value="month">{t('mailboxes.temporal_month')}</option>
+                      <option value="all">All Time</option>
+                      <option value="today">Today</option>
+                      <option value="week">This Week</option>
                     </select>
-                    <ChevronRight className="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 rotate-90 pointer-events-none" />
+                    <ChevronRight className="absolute ltr:right-2.5 rtl:left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 rotate-90 pointer-events-none" />
                   </div>
 
                   <button
-                    onClick={onFilterStarred}
-                    className={`px-5 py-3 rounded-lg flex items-center text-metadata transition-all border shadow-xs active:scale-95 ${
-                      filterStarred
-                        ? 'bg-amber-500 text-white border-amber-600 shadow-sm shadow-amber-500/20'
-                        : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                    onClick={onFilterAttachments}
+                    className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-all ${
+                      filterAttachments
+                        ? 'bg-orange-600 border-orange-600 text-white shadow-sm'
+                        : 'bg-white border-slate-200 text-slate-400 hover:text-orange-600'
                     }`}
+                    title="Files"
                   >
-                    <Star
-                      className={`w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 ${filterStarred ? 'fill-white' : 'text-slate-400'}`}
-                    />
-                    {t('mailboxes.starred_filter')}
+                    <Paperclip className="w-3.5 h-3.5" />
                   </button>
 
                   <button
-                    onClick={onFilterAttachments}
-                    className={`px-5 py-3 rounded-lg flex items-center text-metadata transition-all border shadow-xs active:scale-95 ${
-                      filterAttachments
-                        ? 'bg-orange-600 text-white border-orange-700 shadow-sm shadow-orange-500/20'
-                        : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                    }`}
+                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-emerald-50/30 text-emerald-600 hover:bg-emerald-50 transition-all active:scale-95 shadow-xs"
+                    title="Connection Secure"
                   >
-                    <Paperclip
-                      className={`w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 ${filterAttachments ? 'text-white' : 'text-slate-400'}`}
-                    />
-                    {t('mailboxes.files_filter')}
+                    <ShieldCheck className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -149,7 +215,7 @@ const MessagesView = forwardRef(
           {/* Main Content Area */}
           <div className="flex-1 flex min-h-0 overflow-hidden bg-slate-50/20">
             {/* Folders Sidebar - Always Visible */}
-            <div className="w-72 border-r border-slate-100 overflow-y-auto shrink-0 hidden lg:block bg-slate-50/10">
+            <div className="w-64 border-r border-slate-200/60 overflow-y-auto shrink-0 hidden lg:block bg-white shadow-sm">
               <FolderTree
                 folders={folders}
                 selectedFolder={selectedFolder}

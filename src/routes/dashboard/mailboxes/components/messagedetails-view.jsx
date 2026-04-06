@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { File, Paperclip } from 'lucide-react';
+import { File, Paperclip, ChevronRight, Reply, Forward, Trash2, Mail } from 'lucide-react';
 import {
   getSenderInfo as getSenderInfoUtil,
   formatFileSize,
+  getSubject,
 } from '../utils/utils';
 import { format } from 'date-fns';
 import { useState, useRef } from 'react';
@@ -30,7 +31,7 @@ const SafeHtmlRenderer = ({ htmlContent }) => {
     font-size: 15px;
     line-height: 1.6;
     color: #334155; /* slate-700 */
-    padding: 32px !important;
+    padding: 0 !important;
   }
   img { 
     max-width: 100% !important; 
@@ -133,6 +134,11 @@ const MessageDetailView = ({
   message,
   mailbox,
   onDownload,
+  onBack,
+  onReply,
+  onForward,
+  onDelete,
+  onMarkUnread,
   isIntegrated = false,
 }) => {
   const { t } = useTranslation();
@@ -308,7 +314,7 @@ const MessageDetailView = ({
     flush();
 
     return (
-      <div className="text-slate-700 font-sans wrap-break-word whitespace-pre-wrap overflow-hidden prose prose-slate max-w-none space-y-9 select-text">
+      <div className="text-slate-700 font-sans wrap-break-word whitespace-pre-wrap overflow-hidden space-y-6 select-text">
         {blocks.map((block, bIdx) => {
           if (block.type === 'quote') {
             return (
@@ -503,17 +509,77 @@ const MessageDetailView = ({
     <div
       className={`flex flex-col animate-in fade-in duration-500 ${isIntegrated ? 'w-full' : 'h-full bg-slate-50 overflow-hidden'}`}
     >
-      {/* Message Content Area */}
+      {/* Navigation Header */}
+      <div className="bg-white border-b border-slate-200/60 px-6 py-4 sticky top-0 z-30 select-none">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={onBack}
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-orange-600 hover:border-orange-200 transition-all active:scale-95 shrink-0"
+              title={t('common.back')}
+            >
+              <ChevronRight className="w-4 h-4 rotate-180" />
+            </button>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={onReply}
+                className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                title={t('mailboxes.reply')}
+              >
+                <Reply className="w-4 h-4" />
+              </button>
+              <button
+                onClick={onForward}
+                className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                title={t('mailboxes.forward')}
+              >
+                <Forward className="w-4 h-4" />
+              </button>
+              <div className="w-px h-4 bg-slate-200 mx-1" />
+              <button
+                onClick={onMarkUnread}
+                className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                title={t('mailboxes.mark_unread')}
+              >
+                <Mail className="w-4 h-4" />
+              </button>
+              <button
+                onClick={onDelete}
+                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                title={t('common.delete')}
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col min-w-0">
+            <h1 className="text-[15px] font-black text-slate-900 uppercase tracking-tight truncate leading-none mb-2">
+              {getSubject(message)}
+            </h1>
+            <div className="flex items-center gap-1.5 overflow-hidden">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">
+                {t('mailboxes.from', 'From')}:
+              </span>
+              <span className="text-[10px] font-bold text-orange-600 uppercase tracking-widest truncate">
+                {sender.name || sender.email}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
-        className={`min-w-0 ${isIntegrated ? 'p-0 w-full' : 'flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8'}`}
+        className={`min-w-0 ${isIntegrated ? 'p-0 w-full' : 'flex-1 overflow-y-auto overflow-x-hidden p-0'}`}
       >
         <div
           dir="auto"
-          className={`mx-auto space-y-8 min-w-0 w-full ${isIntegrated ? 'max-w-none' : 'max-w-5xl'}`}
+          className="space-y-6 min-w-0 w-full px-6"
         >
           {/* Sender & Context Header */}
           <div
-            className={`${isIntegrated ? 'p-6 md:p-8 bg-transparent' : 'premium-card p-6 md:p-10 bg-white shadow-sm shadow-slate-200/50'} relative overflow-hidden group border-b border-slate-100`}
+            className={`${isIntegrated ? 'px-0 py-6 bg-transparent' : 'premium-card p-4 bg-white shadow-sm shadow-slate-200/50'} relative overflow-hidden group border-b border-slate-100`}
           >
             {/* Background Decorative Element */}
             {!isIntegrated && (
@@ -602,9 +668,9 @@ const MessageDetailView = ({
           )}
 
           {/* Main Message Body */}
-          <div className={`${isIntegrated ? '' : 'premium-card bg-white'} min-h-100 min-w-0`}>
+          <div className="min-h-100 min-w-0">
             <div
-              className={`p-8 md:p-12 prose max-w-none text-slate-800 overflow-x-auto ${isIntegrated ? '' : ''}`}
+              className={`px-0 py-6 max-w-none text-slate-800 overflow-x-auto ${isIntegrated ? '' : ''}`}
             >
               {renderMessageBody()}
             </div>
