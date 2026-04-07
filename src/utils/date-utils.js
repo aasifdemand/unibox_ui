@@ -1,28 +1,43 @@
+import { DateTime } from 'luxon';
+
 /**
  * Centralized Date Utilities for Timezone-Aware Rendering
- * Uses native Intl.DateTimeFormat to avoid heavy library overhead.
+ * Standardized on Luxon for reliable IANA timezone support.
  */
 
 /**
  * Formats a date string/object according to a specific timezone.
  * @param {Date|string|number} date - The date to format
  * @param {string} timezone - The target IANA timezone string (e.g., 'America/New_York')
- * @param {Object} options - Intl.DateTimeFormat options
+ * @param {Object} options - Intl.DateTimeFormat options (now mapped to Luxon format or used as is)
  * @returns {string} - Formatted date string
  */
 export const formatInTimezone = (date, timezone = 'UTC', options = {}) => {
   if (!date) return '-';
   
   try {
-    const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+    const dt = typeof date === 'string' || typeof date === 'number' 
+      ? DateTime.fromISO(new Date(date).toISOString()).setZone(timezone) 
+      : DateTime.fromJSDate(new Date(date)).setZone(timezone);
     
-    // Check if date is valid
-    if (isNaN(d.getTime())) return '-';
+    if (!dt.isValid) return '-';
     
-    return new Intl.DateTimeFormat('en-US', {
-      ...options,
-      timeZone: timezone,
-    }).format(d);
+    // Convert Intl options to Luxon where possible, 
+    // or use a smart default if options for specific names are passed
+    if (options.weekday || options.month || options.day || options.year) {
+      // Simple mapping for common dashboard patterns
+      if (options.month === 'short' && options.day === 'numeric' && options.year === 'numeric') {
+        return dt.toFormat('LLL d, yyyy');
+      }
+      if (options.month === 'short' && options.day === 'numeric') {
+        return dt.toFormat('LLL d');
+      }
+      if (options.weekday === 'short') {
+        return dt.toFormat('ccc');
+      }
+    }
+
+    return dt.toLocaleString({ ...DateTime.DATETIME_MED, ...options });
   } catch (error) {
     console.error('Error formatting date in timezone:', error);
     return '-';
@@ -31,53 +46,44 @@ export const formatInTimezone = (date, timezone = 'UTC', options = {}) => {
 
 /**
  * Gets the current parts of a date in a specific timezone
- * Useful for checking if two dates are in the same month/year in that TZ.
  */
 export const getZonedParts = (date, timezone = 'UTC') => {
-  const d = new Date(date);
-  if (isNaN(d.getTime())) return null;
+  const dt = DateTime.fromISO(new Date(date).toISOString()).setZone(timezone);
+  if (!dt.isValid) return null;
 
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: timezone,
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: false,
-  }).formatToParts(d);
-
-  return parts.reduce((acc, part) => {
-    acc[part.type] = part.value;
-    return acc;
-  }, {});
+  return {
+    year: dt.year.toString(),
+    month: dt.month.toString(),
+    day: dt.day.toString(),
+    hour: dt.hour.toString(),
+    minute: dt.minute.toString(),
+    second: dt.second.toString(),
+  };
 };
 
 /**
  * Checks if a date falls within the "current" month in the target timezone.
  */
 export const isSameMonthInTimezone = (date, timezone = 'UTC') => {
-  const nowParts = getZonedParts(new Date(), timezone);
-  const dateParts = getZonedParts(date, timezone);
+  const now = DateTime.now().setZone(timezone);
+  const dt = DateTime.fromISO(new Date(date).toISOString()).setZone(timezone);
   
-  if (!nowParts || !dateParts) return false;
+  if (!dt.isValid) return false;
   
-  return nowParts.year === dateParts.year && nowParts.month === dateParts.month;
+  return now.year === dt.year && now.month === dt.month;
 };
 
 /**
  * Calculates days between now and a future date in the target timezone.
  */
-export const getDaysUntilInTimezone = (futureDate) => {
+export const getDaysUntilInTimezone = (futureDate, timezone = 'UTC') => {
   if (!futureDate) return null;
   
-  // We calculate difference in UTC but we need to know what "today" means in the TZ
-  const now = new Date();
-  const target = new Date(futureDate);
+  const now = DateTime.now().setZone(timezone).startOf('day');
+  const target = DateTime.fromISO(new Date(futureDate).toISOString()).setZone(timezone).startOf('day');
   
-  const diffTime = target.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (!target.isValid) return null;
   
-  return diffDays > 0 ? diffDays : 0;
+  const diff = target.diff(now, 'days').days;
+  return diff > 0 ? Math.ceil(diff) : 0;
 };

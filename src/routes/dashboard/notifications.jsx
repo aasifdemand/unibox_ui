@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bell, CheckCircle, Mail, AlertCircle, Search, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -8,6 +8,8 @@ import {
   useMarkAllNotificationsRead,
   useDeleteNotification,
 } from '../../hooks/useNotifications';
+import { useCurrentUser } from '../../hooks/useAuth';
+import { formatInTimezone } from '../../utils/date-utils';
 
 const ICONS = {
   success: CheckCircle,
@@ -30,6 +32,9 @@ const NotificationsPage = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const { data: notificationData, isLoading } = useNotifications({
     category: filterCategory,
@@ -217,13 +222,12 @@ const NotificationsPage = () => {
                   {notifications.map((notification) => {
                     const Icon = ICONS[notification.type] || Bell;
                     const color = COLORS[notification.type] || 'indigo';
-                    const date = new Date(notification.createdAt);
-                    const formattedDate = date.toLocaleDateString(undefined, {
+                    const formattedDate = formatInTimezone(notification.createdAt, userTz, {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
                     });
-                    const formattedTime = date.toLocaleTimeString(undefined, {
+                    const formattedTime = formatInTimezone(notification.createdAt, userTz, {
                       hour: '2-digit',
                       minute: '2-digit',
                     });

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -20,6 +20,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useMailbox, useUpdateMailbox } from '../../../hooks/useMailboxes';
 import Button from '../../../components/ui/button';
 import { useToast } from '../../../hooks/useToast';
+import { useCurrentUser } from '../../../hooks/useAuth';
+import { formatInTimezone } from '../../../utils/date-utils';
 
 
 const ViewMailbox = () => {
@@ -28,6 +30,8 @@ const ViewMailbox = () => {
   const { toast } = useToast();
   const { data: mailbox, isLoading, isError } = useMailbox(id);
   const updateMailbox = useUpdateMailbox();
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const [activeTab, setActiveTab] = useState('configuration');
   const [formData, setFormData] = useState(null);
@@ -132,7 +136,7 @@ const ViewMailbox = () => {
               <div className="flex items-center gap-1.5 border-l border-slate-200 pl-4">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Created:</span>
                 <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
-                  {new Date(mailbox.createdAt).toLocaleDateString()}
+                  {formatInTimezone(mailbox.createdAt, userTz, { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
             </div>

@@ -1,4 +1,4 @@
-﻿/* eslint-disable react-hooks/immutability */
+/* eslint-disable react-hooks/immutability */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
@@ -10,6 +10,8 @@ import {
   useDisconnectIntegration,
   useSyncIntegration,
 } from '../../../hooks/useIntegrations';
+import { useCurrentUser } from '../../../hooks/useAuth';
+import { formatInTimezone } from '../../../utils/date-utils';
 import { SkeletonLoader } from '../../../components/ui/loading-spinner';
 import ConnectIntegration from '../../../modals/connect-integration';
 import DisconnectIntegration from '../../../modals/disconnect-integration';
@@ -113,6 +115,8 @@ const Integrations = () => {
   const connectMutation = useConnectIntegration();
   const disconnectMutation = useDisconnectIntegration();
   const syncMutation = useSyncIntegration();
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const filteredIntegrations = INTEGRATIONS.map((item) => {
     const connectedInt = connectedIntegrations.find((ci) => ci.service === item.id);
@@ -319,7 +323,7 @@ const Integrations = () => {
                     className={`w-3.5 h-3.5 ${isSyncing === item.id ? 'animate-spin text-[#e11d48]' : ''}`}
                   />
                   {item.lastSyncAt
-                    ? new Date(item.lastSyncAt).toLocaleDateString()
+                    ? formatInTimezone(item.lastSyncAt, userTz)
                     : t('integrations.never_synced', 'Never Synced')}
                 </div>
               ) : (

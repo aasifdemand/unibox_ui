@@ -1,11 +1,12 @@
-﻿import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { File, Paperclip, ChevronRight, Reply, Forward, Trash2, Mail } from 'lucide-react';
 import {
   getSenderInfo as getSenderInfoUtil,
   formatFileSize,
   getSubject,
 } from '../utils/utils';
-import { format } from 'date-fns';
+import { useCurrentUser } from '../../../../hooks/useAuth';
+import { formatInTimezone } from '../../../../utils/date-utils';
 import { useState, useRef } from 'react';
 
 
@@ -142,8 +143,8 @@ const MessageDetailView = ({
   isIntegrated = false,
 }) => {
   const { t } = useTranslation();
-  
-  
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const getSenderInfo = (msg) => getSenderInfoUtil(msg);
 
@@ -187,7 +188,7 @@ const MessageDetailView = ({
     if (msg?.date) return new Date(msg.date);
     if (msg?.receivedDateTime) return new Date(msg.receivedDateTime);
     if (msg?.internalDate) return new Date(parseInt(msg.internalDate, 10));
-    return new Date();
+    return null;
   };
 
   const getAttachments = (msg) => msg?.attachments || [];
@@ -596,7 +597,13 @@ const MessageDetailView = ({
                     <p className="text-xs font-bold text-slate-400">&lt;{sender.email}&gt;</p>
                   </div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
-                    {format(date, t('common.date_time_format'))}
+                    {formatInTimezone(date, userTz, { 
+                      month: 'short', 
+                      day: 'numeric', 
+                      year: 'numeric', 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
                   </p>
                 </div>
 

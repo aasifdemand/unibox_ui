@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
@@ -19,6 +19,8 @@ import {
 
 import { useCurrentUser } from '../../../../hooks/useAuth';
 import { formatInTimezone } from '../../../../utils/date-utils';
+
+import { DateTime } from 'luxon';
 
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
@@ -200,7 +202,9 @@ const RecentReplies = ({ replies = [], isLoading }) => {
       reply.recipientEmail || '',
       reply.subject || '',
       reply.campaignName || '',
-      reply.receivedAt ? new Date(reply.receivedAt).toISOString() : '',
+      reply.receivedAt 
+        ? DateTime.fromISO(new Date(reply.receivedAt).toISOString()).setZone(userTz).toFormat('yyyy-MM-dd HH:mm:ss')
+        : '',
     ]);
 
     const csvContent = [headers, ...rows]
@@ -215,7 +219,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `recent-replies-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `recent-replies-${DateTime.now().setZone(userTz).toFormat('yyyy-MM-dd')}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

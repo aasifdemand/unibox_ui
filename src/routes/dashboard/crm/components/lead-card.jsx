@@ -1,8 +1,13 @@
-﻿import { Mail, Clock, ExternalLink, MessageSquare, MoreHorizontal } from 'lucide-react';
+import { Mail, Clock, ExternalLink, MessageSquare, MoreHorizontal } from 'lucide-react';
 import { motion } from 'motion/react';
+import { DateTime } from 'luxon';
+
+import { useCurrentUser } from '../../../../hooks/useAuth';
 
 const LeadCard = ({ lead, onClick }) => {
   const { contact, value, lastActivity } = lead;
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const initials = contact?.name
     ? contact.name
@@ -15,16 +20,17 @@ const LeadCard = ({ lead, onClick }) => {
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '—';
-    const date = new Date(dateStr);
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMin = Math.floor(diffMs / 60000);
-    const diffHr = Math.floor(diffMin / 60);
-    const diffDay = Math.floor(diffHr / 24);
-    if (diffMin < 1) return 'Just now';
-    if (diffMin < 60) return `${diffMin}m ago`;
-    if (diffHr < 24) return `${diffHr}h ago`;
-    return `${diffDay}d ago`;
+    const dt = DateTime.fromISO(new Date(dateStr).toISOString()).setZone(userTz);
+    const now = DateTime.now().setZone(userTz);
+    
+    if (!dt.isValid) return '—';
+
+    const diff = now.diff(dt, ['days', 'hours', 'minutes']).toObject();
+
+    if (diff.days >= 1) return `${Math.floor(diff.days)}d ago`;
+    if (diff.hours >= 1) return `${Math.floor(diff.hours)}h ago`;
+    if (diff.minutes >= 1) return `${Math.floor(diff.minutes)}m ago`;
+    return 'Just now';
   };
 
   return (

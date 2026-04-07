@@ -1,34 +1,55 @@
 // mailboxes/utils.js
-import { format, isToday, isYesterday, isThisWeek } from 'date-fns';
+import { DateTime } from 'luxon';
 import i18n from '../../../../i18n';
 import { Gmail } from '../../../../icons/gmail';
 import { MicrosoftOutlook } from '../../../../icons/outlook';
 import { Smtp } from '../../../../icons/smtp';
 import { Mail } from 'lucide-react';
 
-export const formatMessageDate = (message) => {
-  const date = parseMessageDate(message);
-  if (!date) return '';
+export const formatMessageDate = (message, userTz = 'UTC') => {
+  const dt = parseMessageDate(message, userTz);
+  if (!dt) return '';
 
   try {
-    if (isToday(date)) return format(date, 'h:mm a');
-    if (isYesterday(date)) return 'Yesterday';
-    if (isThisWeek(date)) return format(date, 'EEEE');
-    return format(date, 'MMM d');
+    const now = DateTime.now().setZone(userTz);
+    
+    if (dt.hasSame(now, 'day')) return dt.toFormat('h:mm a');
+    if (dt.hasSame(now.minus({ days: 1 }), 'day')) return 'Yesterday';
+    if (dt.hasSame(now, 'week')) return dt.toFormat('EEEE');
+    
+    return dt.toFormat('MMM d');
   } catch {
     return '';
   }
 };
 
-export const parseMessageDate = (message) => {
+export const parseMessageDate = (message, userTz = 'UTC') => {
   try {
-    if (message?.internalDate) return new Date(parseInt(message.internalDate, 10));
-    if (message?.receivedDateTime) return new Date(message.receivedDateTime);
-    if (message?.date) return new Date(message.date);
+    if (message?.internalDate) return DateTime.fromMillis(parseInt(message.internalDate, 10)).setZone(userTz);
+    if (message?.receivedDateTime) return DateTime.fromISO(message.receivedDateTime).setZone(userTz);
+    if (message?.date) return DateTime.fromISO(new Date(message.date).toISOString()).setZone(userTz);
     return null;
   } catch {
     return null;
   }
+};
+
+export const timeAgo = (date, userTz = 'UTC') => {
+  const dt = DateTime.fromISO(new Date(date).toISOString()).setZone(userTz);
+  const now = DateTime.now().setZone(userTz);
+  
+  if (!dt.isValid) return 'just now';
+
+  const diff = now.diff(dt, ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']).toObject();
+
+  if (diff.years >= 1) return `${Math.floor(diff.years)} year${Math.floor(diff.years) === 1 ? '' : 's'} ago`;
+  if (diff.months >= 1) return `${Math.floor(diff.months)} month${Math.floor(diff.months) === 1 ? '' : 's'} ago`;
+  if (diff.weeks >= 1) return `${Math.floor(diff.weeks)} week${Math.floor(diff.weeks) === 1 ? '' : 's'} ago`;
+  if (diff.days >= 1) return `${Math.floor(diff.days)} day${Math.floor(diff.days) === 1 ? '' : 's'} ago`;
+  if (diff.hours >= 1) return `${Math.floor(diff.hours)} hour${Math.floor(diff.hours) === 1 ? '' : 's'} ago`;
+  if (diff.minutes >= 1) return `${Math.floor(diff.minutes)} minute${Math.floor(diff.minutes) === 1 ? '' : 's'} ago`;
+  
+  return 'just now';
 };
 
 export const getSenderInfo = (message, isSent = false) => {
@@ -254,24 +275,6 @@ export const getProviderIcon = (type, className = 'w-6 h-6') => {
     default:
       return <Mail className={`${className} text-gray-500`} />;
   }
-};
-
-export const timeAgo = (date) => {
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-  const intervals = {
-    year: 31536000,
-    month: 2592000,
-    week: 604800,
-    day: 86400,
-    hour: 3600,
-    minute: 60,
-  };
-
-  for (const [unit, secondsInUnit] of Object.entries(intervals)) {
-    const interval = Math.floor(seconds / secondsInUnit);
-    if (interval >= 1) return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`;
-  }
-  return 'just now';
 };
 
 export const formatFileSize = (bytes) => {

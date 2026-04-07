@@ -23,11 +23,14 @@ import { useOutlookData } from './use-outlook-data';
 import { useSmtpData } from './use-smtp-data';
 import { getProviderMessageId } from '../utils/getmessage-id';
 import { isFolderType } from '../utils/folder-utils';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 
 const PAGE_SIZE = 10;
 
 export const useMailboxesData = () => {
   const queryClient = useQueryClient();
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   // =========================
   // SOCKET EVENTS (REAL-TIME UPDATES)
@@ -1125,7 +1128,7 @@ export const useMailboxesData = () => {
       handleUpdateWarmup,
     },
     utils: {
-      formatMessageDate,
+      formatMessageDate: (msg) => formatMessageDate(msg, userTz),
       getSenderInfo,
       getSubject,
       getPreview,

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Send, Paperclip, Image as ImageIcon, ChevronLeft, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -10,6 +10,8 @@ import {
   formatFileSize,
   getInitials,
 } from '../utils/utils';
+import { useCurrentUser } from '../../../../hooks/useAuth';
+import { formatInTimezone } from '../../../../utils/date-utils';
 
 const ComposeView = forwardRef(
   (
@@ -27,6 +29,9 @@ const ComposeView = forwardRef(
     ref,
   ) => {
     const { t } = useTranslation();
+    const { data: user } = useCurrentUser();
+    const userTz = user?.timezone || 'UTC';
+    
     const [to, setTo] = useState('');
     const [subject, setSubject] = useState('');
     const [messageText, setMessageText] = useState(''); // The new message content
@@ -49,7 +54,7 @@ const ComposeView = forwardRef(
         const sender = getSenderInfo(replyToMessage);
         const date = parseMessageDate(replyToMessage);
         const formattedDate = date
-          ? date.toLocaleString()
+          ? formatInTimezone(date, userTz, { dateStyle: 'medium', timeStyle: 'short' })
           : i18n.t('mailboxes.unknown_date', 'Unknown Date');
 
         setTo(sender.email);
@@ -87,7 +92,7 @@ const ComposeView = forwardRef(
         const sender = getSenderInfo(forwardMessage);
         const date = parseMessageDate(forwardMessage);
         const formattedDate = date
-          ? date.toLocaleString()
+          ? formatInTimezone(date, userTz, { dateStyle: 'medium', timeStyle: 'short' })
           : i18n.t('mailboxes.unknown_date', 'Unknown Date');
 
         const rawBody = getFullMessageBody(forwardMessage);
@@ -110,7 +115,7 @@ const ComposeView = forwardRef(
 
         setQuoteHtml(quote);
       }
-    }, [replyToMessage, forwardMessage,t]);
+    }, [replyToMessage, forwardMessage, t, userTz]);
 
     const handleSend = async () => {
       if (!to) {

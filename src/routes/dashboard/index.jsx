@@ -1,4 +1,4 @@
-﻿/* eslint-disable react-hooks/preserve-manual-memoization */
+/* eslint-disable react-hooks/preserve-manual-memoization */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -30,6 +30,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { DateTime } from 'luxon';
 
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
@@ -291,7 +292,7 @@ const Dashboard = () => {
 
   // Get next scheduled campaign - Timezone Aware
   const nextCampaign = campaigns
-    .filter((c) => c.status === 'scheduled' && c.scheduledAt && new Date(c.scheduledAt) > new Date())
+    .filter((c) => c.status === 'scheduled' && c.scheduledAt && DateTime.fromISO(new Date(c.scheduledAt).toISOString()) > DateTime.now())
     .sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt))[0];
 
   const daysUntilNext = nextCampaign
@@ -300,19 +301,21 @@ const Dashboard = () => {
 
   // Aggregate real performance data based on selected time range
   const performanceData = React.useMemo(() => {
-    const now = new Date();
     const result = [];
     const range = parseInt(timeRange) || 30;
+    const now = DateTime.now().setZone(userTz);
 
     for (let i = range - 1; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(now.getDate() - i);
-      const dateString = date.toISOString().split('T')[0];
+      const d = now.minus({ days: i });
+      const dateString = d.toFormat('yyyy-MM-dd');
 
       const dailyStats = campaigns
         .filter((c) => {
-          const cDate = new Date(c.createdAt || c.updatedAt).toISOString().split('T')[0];
-          return cDate === dateString;
+          // Group by user's local date using Luxon for consistent comparison
+          const campaignDate = DateTime.fromISO(new Date(c.createdAt || c.updatedAt).toISOString())
+            .setZone(userTz)
+            .toFormat('yyyy-MM-dd');
+          return campaignDate === dateString;
         })
         .reduce(
           (acc, c) => ({
@@ -325,9 +328,9 @@ const Dashboard = () => {
 
       let label = '';
       if (range <= 7) {
-        label = date.toLocaleDateString(undefined, { weekday: 'short' });
+        label = d.toFormat('ccc');
       } else {
-        label = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        label = d.toFormat('LLL d');
       }
 
       result.push({
@@ -338,7 +341,7 @@ const Dashboard = () => {
       });
     }
     return result;
-  }, [campaigns, timeRange]);
+  }, [campaigns, timeRange, userTz]);
 
   // Stats cards data
   const stats = [
@@ -362,9 +365,7 @@ const Dashboard = () => {
       value: totalSent.toLocaleString(),
       change: `+${campaigns
         .reduce((sum, c) => {
-          const createdAt = new Date(c.createdAt);
-          const now = new Date();
-          if (createdAt.getMonth() === now.getMonth()) return sum + (c.totalSent || 0);
+          if (isSameMonthInTimezone(c.createdAt, userTz)) return sum + (c.totalSent || 0);
           return sum;
         }, 0)
         .toLocaleString()} ${t('dashboard.stats.this_month_short', 'this month')}`,
@@ -498,7 +499,8 @@ const Dashboard = () => {
               name: c.name,
               status: c.status.toLowerCase(),
             }),
-      time: new Date(c.updatedAt || c.createdAt).toLocaleString(),
+      rawTime: DateTime.fromISO(new Date(c.updatedAt || c.createdAt).toISOString()).toMillis(),
+      time: formatInTimezone(c.updatedAt || c.createdAt, userTz, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
       icon: c.status === 'completed' ? 'bg-green-500' : 'bg-purple-500',
     })),
     ...batches.slice(0, 2).map((b) => ({
@@ -508,11 +510,12 @@ const Dashboard = () => {
         name: b.originalFilename || 'Upload',
         status: b.status.toLowerCase(),
       }),
-      time: new Date(b.createdAt).toLocaleString(),
+      rawTime: DateTime.fromISO(new Date(b.createdAt).toISOString()).toMillis(),
+      time: formatInTimezone(b.createdAt, userTz, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
       icon: 'bg-purple-500',
     })),
   ]
-    .sort((a, b) => new Date(b.time) - new Date(a.time))
+    .sort((a, b) => b.rawTime - a.rawTime)
     .slice(0, 3);
 
   const isLoading = campaignsLoading || sendersLoading || batchesLoading;

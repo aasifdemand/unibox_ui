@@ -1,9 +1,10 @@
-﻿// mailboxes/hooks.js
+// mailboxes/hooks.js
 import { AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { DateTime } from 'luxon';
 import i18n from '../../../../i18n';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 
 // ============================================================================
 // PAGINATION HOOK
@@ -65,24 +66,26 @@ export const useMessageFilters = ({
   searchQuery,
   dateRange,
 }) => {
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
+
   const parseMessageDate = (message) => {
     try {
-      if (message?.internalDate) return new Date(parseInt(message.internalDate, 10));
-      if (message?.receivedDateTime) return new Date(message.receivedDateTime);
-      if (message?.date) return new Date(message.date);
+      if (message?.internalDate)
+        return DateTime.fromMillis(parseInt(message.internalDate, 10)).setZone(userTz);
+      if (message?.receivedDateTime) return DateTime.fromISO(message.receivedDateTime).setZone(userTz);
+      if (message?.date)
+        return DateTime.fromISO(new Date(message.date).toISOString()).setZone(userTz);
       return null;
     } catch {
       return null;
     }
   };
 
-  const isToday = (date) => {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
+  const isToday = (dt) => {
+    if (!dt) return false;
+    const now = DateTime.now().setZone(userTz);
+    return dt.hasSame(now, 'day');
   };
 
   const getSenderInfo = (message) => {
@@ -163,20 +166,17 @@ export const useMessageFilters = ({
     }
 
     if (dateRange !== 'all') {
-      const now = new Date();
-      const weekAgo = new Date(now);
-      weekAgo.setDate(weekAgo.getDate() - 7);
-
-      const monthAgo = new Date(now);
-      monthAgo.setMonth(monthAgo.getMonth() - 1);
+      const now = DateTime.now().setZone(userTz).startOf('day');
+      const weekAgo = now.minus({ days: 7 });
+      const monthAgo = now.minus({ months: 1 });
 
       filtered = filtered.filter((m) => {
-        const date = parseMessageDate(m);
-        if (!date) return false;
+        const dt = parseMessageDate(m);
+        if (!dt || !dt.isValid) return false;
 
-        if (dateRange === 'today') return isToday(date);
-        if (dateRange === 'week') return date >= weekAgo;
-        if (dateRange === 'month') return date >= monthAgo;
+        if (dateRange === 'today') return isToday(dt);
+        if (dateRange === 'week') return dt >= weekAgo;
+        if (dateRange === 'month') return dt >= monthAgo;
 
         return true;
       });
@@ -330,12 +330,16 @@ export const useMailboxActions = (store, deleteSender) => {
 // TOKEN WARNING HOOK
 // ============================================================================
 export const useTokenWarning = (selectedMailbox, onRefresh) => {
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
+
   useEffect(() => {
     if (!selectedMailbox?.expiresAt || selectedMailbox.type === 'smtp') return;
 
-    const expiryDate = new Date(selectedMailbox.expiresAt);
-    const now = new Date();
-    const daysUntilExpiry = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+    const expiryDate = DateTime.fromISO(new Date(selectedMailbox.expiresAt).toISOString()).setZone(userTz);
+    const now = DateTime.now().setZone(userTz);
+    const diff = expiryDate.diff(now, 'days').days;
+    const daysUntilExpiry = Math.ceil(diff);
 
     if (daysUntilExpiry <= 3 && daysUntilExpiry > 0) {
       toast(
@@ -362,5 +366,5 @@ export const useTokenWarning = (selectedMailbox, onRefresh) => {
         { duration: 10000 },
       );
     }
-  }, [selectedMailbox, onRefresh]);
+  }, [selectedMailbox, onRefresh,userTz]);
 };

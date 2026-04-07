@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   Download,
   Eye,
@@ -19,6 +19,8 @@ import {
   getSortedRowModel,
   flexRender,
 } from '@tanstack/react-table';
+import { formatInTimezone } from '../../../../utils/date-utils';
+import { useCurrentUser } from '../../../../hooks/useAuth';
 
 const SortIndicator = ({ column }) => {
   const isSorted = column.getIsSorted();
@@ -52,6 +54,8 @@ const AudienceTabs = ({
   const { t } = useTranslation();
   const exportBatch = useExportBatch();
   const [sorting, setSorting] = React.useState([]);
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
 
   const columns = React.useMemo(
     () => [
@@ -182,7 +186,7 @@ const AudienceTabs = ({
         ),
         cell: ({ row }) => (
           <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
-            {new Date(row.original.createdAt).toLocaleDateString()}
+            {formatInTimezone(row.original.createdAt, userTz, { month: 'short', day: 'numeric', year: 'numeric' })}
           </span>
         ),
       },
@@ -222,7 +226,7 @@ const AudienceTabs = ({
         ),
       },
     ],
-    [t, exportBatch, openBatchDetails, handleDeleteBatch],
+    [t, exportBatch, openBatchDetails, handleDeleteBatch, userTz],
   );
 
   const table = useReactTable({

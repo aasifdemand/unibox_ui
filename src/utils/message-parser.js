@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import i18n from '../i18n';
 
 export const getSenderInfo = (message) => {
@@ -75,22 +76,20 @@ export const getDate = (message) => {
   return null;
 };
 
-export const formatDate = (dateString) => {
+export const formatDate = (dateString, timezone = 'UTC') => {
   if (!dateString) return i18n.t('mailboxes.unknown_date', 'Unknown');
   try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
+    const dt = DateTime.fromISO(new Date(dateString).toISOString()).setZone(timezone);
+    const now = DateTime.now().setZone(timezone);
+    
+    if (!dt.isValid) return 'Invalid date';
 
-    if (diff < 24 * 60 * 60 * 1000) {
-      return date.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } else if (diff < 7 * 24 * 60 * 60 * 1000) {
-      return date.toLocaleDateString([], { weekday: 'short' });
+    if (dt.hasSame(now, 'day')) {
+      return dt.toFormat('hh:mm a');
+    } else if (dt > now.minus({ days: 7 })) {
+      return dt.toFormat('ccc');
     } else {
-      return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+      return dt.toFormat('LLL d');
     }
   } catch {
     return 'Invalid date';

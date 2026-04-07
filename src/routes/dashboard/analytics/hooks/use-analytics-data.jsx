@@ -8,8 +8,12 @@ import {
   useSenderStats,
   useHourlyStats,
 } from '../../../../hooks/useAnalytics';
+import { useCurrentUser } from '../../../../hooks/useAuth';
+import { formatInTimezone } from '../../../../utils/date-utils';
 
 export const useAnalyticsData = () => {
+  const { data: user } = useCurrentUser();
+  const userTz = user?.timezone || 'UTC';
   const [timeRange, setTimeRange] = useState('30');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -93,17 +97,14 @@ export const useAnalyticsData = () => {
 
       return {
         date: item.date
-          ? new Date(item.date).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-            })
+          ? formatInTimezone(item.date, userTz, { month: 'short', day: 'numeric' })
           : 'Unknown',
         sent,
         opens,
         replies,
       };
     });
-  }, [timeline]);
+  }, [timeline, userTz]);
 
   const hasValidData = useMemo(() => {
     if (!timelineData || timelineData.length === 0) return false;
