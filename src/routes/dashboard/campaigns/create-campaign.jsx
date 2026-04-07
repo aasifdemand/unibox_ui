@@ -1,19 +1,13 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Loader2, Zap, ChevronLeft } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import CampaignStepper from './components/create-campaign/campaign-stepper';
 import Input from '../../../components/ui/input';
-import Step1Design from './components/create-campaign/design-step';
-import ImportLeadsStep from './components/create-campaign/import-leads-step';
-import SetupStep from './components/create-campaign/setup-step';
-import Step3Finalize from './components/create-campaign/finalize-step';
-import { DateTime } from 'luxon';
 
 // Import React Query hooks
 import { useCreateCampaign, useUpdateCampaign, useCampaign } from '../../../hooks/useCampaign';
@@ -21,123 +15,15 @@ import { useCurrentUser } from '../../../hooks/useAuth';
 import { useSenders } from '../../../hooks/useSenders';
 import { useBatches } from '../../../hooks/useBatches';
 import { unescapeHtml } from '../../../utils/html-utils';
-
-// Get the current date-string and time-string in a given IANA timezone
-const getNowInTimezone = (tz) => {
-  const dt = DateTime.now().setZone(tz);
-  return {
-    dateStr: dt.toFormat('yyyy-MM-dd'),
-    timeStr: dt.toFormat('HH:mm'),
-  };
-};
-
-// Compute smart start/end times IN the campaign's selected timezone.
-// Caps at 23:55 — backend uses simple HH:mm string comparison so true
-// overnight spans (e.g. 10 PM to 2 AM) are not supported yet.
-const getSmartDefaults = (tz) => {
-  const { dateStr, timeStr } = getNowInTimezone(tz);
-
-  const [h, m] = timeStr.split(':').map(Number);
-  let startMins = h * 60 + m + 5; // Start in 5 mins
-  let dateFinal = dateStr;
-
-  // If we cross midnight, push to tomorrow 09:00
-  if (startMins >= 1440) {
-    startMins = 540; // 09:00
-    dateFinal = DateTime.now().setZone(tz).plus({ days: 1 }).toFormat('yyyy-MM-dd');
-  }
-
-  const endMins = Math.min(startMins + 90, 1435); // End in 90 mins, capped at 23:55
-  const fmtTime = (total) => {
-    const hh = String(Math.floor(total / 60)).padStart(2, '0');
-    const mm = String(total % 60).padStart(2, '0');
-    return `${hh}:${mm}`;
-  };
-
-  return {
-    dateStr: dateFinal,
-    startTime: fmtTime(startMins),
-    endTime: fmtTime(endMins),
-  };
-};
-
-// Convert a wall-clock date+time in a named timezone → UTC ISO string
-// e.g. convertLocalToUTC('2026-04-01', '21:15', 'Asia/Kolkata') → '2026-04-01T15:45:00.000Z'
-const convertLocalToUTC = (dateStr, timeStr, tz) => {
-  try {
-    const dt = DateTime.fromFormat(`${dateStr} ${timeStr}`, 'yyyy-MM-dd HH:mm', { zone: tz });
-    return dt.toUTC().toISO();
-  } catch (err) {
-    console.error('UTC conversion failed:', err);
-    return new Date(`${dateStr}T${timeStr}:00`).toISOString();
-  }
-};
-
-// detectedTZ is static per browser session — safe to compute at module level
-const detectedTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
-// NOTE: smartDefaults is intentionally NOT computed here.
-// It is computed inline inside useForm defaultValues so it runs fresh on every mount.
-
-
-
-const getCampaignSchema = (t) =>
-  z
-    .object({
-      name: z.string().min(3, t('campaigns.err_name_min')).max(100),
-      subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
-      previewText: z.string().max(200, t('campaigns.err_preview_too_long')).optional(),
-      htmlBody: z.string().optional(),
-      textBody: z.string().optional(),
-      senderId: z.string().optional(),
-      senderIds: z.array(z.string()).min(1, t('campaigns.no_sender_selected')),
-      senderType: z.enum(['gmail', 'outlook', 'smtp']),
-      listBatchId: z.string().min(1, t('campaigns.no_list_selected')),
-      scheduleType: z.enum(['now', 'later']),
-      scheduledAt: z.string().optional(),
-      timezone: z.string().default('UTC'),
-      throttlePerMinute: z.number().min(1).max(100).default(10),
-      trackOpens: z.boolean().default(true),
-      trackClicks: z.boolean().default(true),
-      unsubscribeLink: z.boolean().default(true),
-      sendingDays: z
-        .array(z.string())
-        .default(['monday', 'tuesday', 'wednesday', 'thursday', 'friday']),
-      startTime: z.string().default('09:00'),
-      endTime: z.string().default('18:00'),
-      sendingInterval: z.number().min(1).default(20),
-      maxLeadsPerDay: z.number().min(1).default(100),
-      startDate: z.string().optional().nullable(),
-      steps: z
-        .array(
-          z.object({
-            stepOrder: z.number(),
-            subject: z.string().min(5, t('campaigns.err_subject_min')).max(150),
-            htmlBody: z.string().min(1, t('campaigns.err_content_req')),
-            textBody: z.string().optional(),
-            delayMinutes: z.number().min(1),
-            condition: z.enum(['always', 'no_reply']),
-          }),
-        )
-        .optional(),
-    })
-    .refine(
-      (data) => {
-        // Custom validation: Either htmlBody or textBody must be provided
-        return data.htmlBody?.trim().length > 0 || data.textBody?.trim().length > 0;
-      },
-      {
-        message: t('campaigns.err_content_req'),
-        path: ['htmlBody'],
-      },
-    );
+import { convertLocalToUTC, detectedTZ, getSmartDefaults, steps } from './utils';
+import RenderStep from './components/create-campaign/render-step';
+import { getCampaignSchema } from './schemas/campaign.schema';
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: editId } = useParams(); // moved up — needed before useEffect below
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedBatch, setSelectedBatch] = useState(null);
-  const [selectedSender, setSelectedSender] = useState(null);
 
   const { t } = useTranslation();
   const campaignSchema = React.useMemo(() => getCampaignSchema(t), [t]);
@@ -168,6 +54,7 @@ const CreateCampaign = () => {
     setValue,
     reset,
     getValues,
+    control,
     formState: { errors },
     trigger,
   } = useForm({
@@ -243,17 +130,16 @@ const CreateCampaign = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const watchScheduleType = watch('scheduleType');
-
-  const watchListBatchId = watch('listBatchId');
-  const watchSenderId = watch('senderId');
-  const watchSenderIds = watch('senderIds') || [];
+  const watchScheduleType = useWatch({ control, name: 'scheduleType' });
+  const watchListBatchId = useWatch({ control, name: 'listBatchId' });
+  const watchSenderId = useWatch({ control, name: 'senderId' });
+  const watchSenderIds = useWatch({ control, name: 'senderIds' }) || [];
 
   // Fetch data on mount
   useEffect(() => {
     refetchSenders();
     refetchBatches();
-    
+
     // If name was passed from quick create modal, set it
     if (location.state?.campaignName) {
       setValue('name', location.state.campaignName);
@@ -270,15 +156,21 @@ const CreateCampaign = () => {
     );
   }, [batches]);
 
+  const selectedBatch = React.useMemo(() => {
+    const batchId = watchListBatchId;
+    return verifiedBatches.find((b) => b.id === batchId) || null;
+  }, [watchListBatchId, verifiedBatches]);
+
+  const selectedSender = React.useMemo(() => {
+    const senderId = watchSenderId;
+    return senders.find((s) => s.id === senderId) || null;
+  }, [watchSenderId, senders]);
+
   const handleBatchSelect = (batchId) => {
-    const batch = verifiedBatches.find((b) => b.id === batchId);
-    setSelectedBatch(batch);
     setValue('listBatchId', batchId, { shouldValidate: true });
   };
 
   const handleSenderSelect = (senderId, senderType) => {
-    const sender = senders.find((s) => s.id === senderId);
-    setSelectedSender(sender);
     setValue('senderId', senderId, { shouldValidate: true });
     setValue('senderType', senderType, { shouldValidate: true });
   };
@@ -322,25 +214,8 @@ const CreateCampaign = () => {
         }));
         setValue('steps', followUps);
       }
-
-      // Also set selected state for UI
-      if (verifiedBatches.length > 0) {
-        const batch = verifiedBatches.find((b) => b.id === campaignToEdit.listBatchId);
-        if (batch) setSelectedBatch(batch);
-      }
-      if (senders.length > 0) {
-        const sender = senders.find((s) => s.id === campaignToEdit.senderId);
-        if (sender) setSelectedSender(sender);
-      }
     }
-  }, [campaignToEdit, editId, setValue, verifiedBatches, senders]);
-
-  const steps = [
-    { number: 1, title: 'Import Leads', description: 'Who are you reaching out to?' },
-    { number: 2, title: 'Sequences', description: 'Write your emails' },
-    { number: 3, title: 'Setup', description: 'Configure sending' },
-    { number: 4, title: 'Final Review', description: 'Confirm and launch' },
-  ];
+  }, [campaignToEdit, editId, setValue]);
 
   if (isLoadingEditing && editId) {
     return (
@@ -397,76 +272,25 @@ const CreateCampaign = () => {
     }
   };
 
-  const renderStepContent = () => {
-    const stepProps = {
-      register,
-      errors,
-      watch,
-      setValue,
-      selectedBatch,
-      selectedSender,
-      verifiedBatches,
-      senders,
-      isLoadingBatches,
-      isLoadingSenders,
-      navigate,
-      handleBatchSelect,
-      handleSenderSelect,
-      watchScheduleType,
-      watchListBatchId,
-      watchSenderId,
-      watchSenderIds,
-      isEdit: !!editId,
-    };
-
-    switch (currentStep) {
-      case 1:
-        return (
-          <motion.div
-            key="step1"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <ImportLeadsStep {...stepProps} />
-          </motion.div>
-        );
-      case 2:
-        return (
-          <motion.div
-            key="step2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <Step1Design {...stepProps} />
-          </motion.div>
-        );
-      case 3:
-        return (
-          <motion.div
-            key="step3"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <SetupStep {...stepProps} />
-          </motion.div>
-        );
-      case 4:
-        return (
-          <motion.div
-            key="step4"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <Step3Finalize {...stepProps} />
-          </motion.div>
-        );
-      default:
-        return null;
-    }
+  const stepProps = {
+    register,
+    errors,
+    watch,
+    setValue,
+    selectedBatch,
+    selectedSender,
+    verifiedBatches,
+    senders,
+    isLoadingBatches,
+    isLoadingSenders,
+    navigate,
+    handleBatchSelect,
+    handleSenderSelect,
+    watchScheduleType,
+    watchListBatchId,
+    watchSenderId,
+    watchSenderIds,
+    isEdit: !!editId,
   };
 
   return (
@@ -538,7 +362,9 @@ const CreateCampaign = () => {
         className={`flex-1 overflow-y-auto bg-slate-50/10 flex flex-col ${currentStep === 2 ? '' : 'items-center'}`}
       >
         <div className={`w-full ${currentStep === 2 ? 'max-w-none' : 'max-w-[1500px] px-8 py-12'}`}>
-          <AnimatePresence mode="wait">{renderStepContent()}</AnimatePresence>
+          <AnimatePresence mode="wait">
+            <RenderStep stepProps={stepProps} currentStep={currentStep} />
+          </AnimatePresence>
         </div>
       </main>
     </div>

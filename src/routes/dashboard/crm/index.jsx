@@ -1,16 +1,10 @@
-﻿/* eslint-disable unused-imports/no-unused-imports */
-import React, { useState, useMemo } from 'react';
+import  { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import {
-  Search,
   Plus,
   LayoutDashboard,
-  RefreshCw,
-  Globe,
   Zap,
   Target,
-  Trash2,
 } from 'lucide-react';
 import {
   DndContext,
@@ -20,9 +14,7 @@ import {
   useSensors,
   closestCenter,
 } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { motion, AnimatePresence } from 'motion/react';
+
 import { toast } from 'react-hot-toast';
 
 import LeadCard from './components/lead-card';
@@ -36,107 +28,12 @@ import {
   useDeleteCrmStage,
 } from '../../../hooks/useCrm';
 import CreateColumn from '../../../modals/createcolumn';
+import KanbanColumn from './components/kanban-column';
+import Loader from './components/loader';
+import Header from './components/header';
 
-// ─── Sortable Lead Card wrapper ───────────────────────────────────────────────
-const SortableLeadCard = ({ lead, onOpen }) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: lead.id,
-    data: { type: 'lead', lead },
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.35 : 1,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0">
-      <LeadCard
-        lead={lead}
-        onClick={() => {
-          if (!isDragging) onOpen(lead);
-        }}
-      />
-    </div>
-  );
-};
 
 // ─── Droppable Column ─────────────────────────────────────────────────────────
-const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
-  const leadIds = stage.leads.map((l) => l.id);
-  const { t } = useTranslation()
-
-  return (
-    <div tabIndex={-1} className="w-[300px] shrink-0 flex flex-col h-full bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden outline-none focus:outline-none focus:ring-0">
-      {/* Stage Header */}
-      <div
-        className="p-4 flex items-center justify-between bg-slate-50 border-b border-slate-200"
-        style={{ borderTop: `3px solid ${stage.color || '#e11d48'}` }}
-      >
-        <div className="flex items-center gap-2.5">
-          <div
-            className="w-2 h-2 rounded-full shadow-sm"
-            style={{ backgroundColor: stage.color || '#e11d48' }}
-          />
-          <h3 className="text-[11px] font-black text-slate-800 tracking-widest uppercase">
-            {t(`crm.stages.${stage.name.toLowerCase().replace(/ /g, '_')}`, stage.name)}
-          </h3>
-          <span className="bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg text-[10px] font-black shadow-sm">
-            {stage.leads.length}
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          {stage.replyCategory && (
-            <div className="group relative">
-              <Target className="w-3.5 h-3.5 text-slate-400 hover:text-purple-500 cursor-help transition-colors" />
-              <div className="absolute top-full right-0 mt-2 p-2 bg-white text-slate-900 rounded-lg text-[8px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-sm border border-slate-100 whitespace-nowrap z-50">
-                {categories.find((c) => c.id === stage.replyCategory)?.name || stage.replyCategory}
-              </div>
-            </div>
-          )}
-          <button
-            onClick={() => onDeleteStage(stage)}
-            className="w-5 h-5 rounded flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all"
-          >
-            <Trash2 className="w-3 h-3" />
-          </button>
-        </div>
-      </div>
-
-      {/* Sub-header */}
-      <div className="px-4 py-2.5 flex items-center justify-between text-[10px] font-black text-slate-400 tracking-widest bg-white border-b border-slate-50">
-        <div className="flex gap-1.5">
-          <span className="text-slate-700">{stage.leads.length} Leads</span>
-          <span>•</span>
-          <span className="text-purple-600">
-            ${(stage.leads?.reduce((a, l) => a + (Number(l.value) || 0), 0) || 0).toLocaleString()}
-          </span>
-        </div>
-      </div>
-
-      {/* Lead Cards — sortable drop zone */}
-      <SortableContext items={leadIds} strategy={verticalListSortingStrategy}>
-        <div className="flex-1 overflow-y-auto space-y-3 p-3 bg-slate-50/30 custom-scrollbar min-h-[80px]">
-          <AnimatePresence mode="popLayout">
-            {stage.leads.map((lead) => (
-              <SortableLeadCard key={lead.id} lead={lead} onOpen={onOpenLead} />
-            ))}
-          </AnimatePresence>
-
-          {stage.leads.length === 0 && (
-            <div className="h-28 border-2 border-dashed border-slate-100 rounded-lg flex flex-col items-center justify-center gap-2 bg-white/50">
-              <Target className="w-6 h-6 text-slate-200" />
-              <p className="text-[10px] font-black text-slate-300 tracking-widest">
-                Drop leads here
-              </p>
-            </div>
-          )}
-        </div>
-      </SortableContext>
-    </div>
-  );
-};
 
 // ─── Main CRM Page ────────────────────────────────────────────────────────────
 const CRMIntegration = () => {
@@ -145,7 +42,6 @@ const CRMIntegration = () => {
   const [isAddStageOpen, setIsAddStageOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [stageToDelete, setStageToDelete] = useState(null);
-  const [activeId, setActiveId] = useState(null);
   const [activeLead, setActiveLead] = useState(null);
 
   const { data: pipeline = [], isLoading, refetch, isRefetching } = useCrmPipeline();
@@ -179,14 +75,12 @@ const CRMIntegration = () => {
   }, [pipeline]);
 
   const handleDragStart = ({ active }) => {
-    setActiveId(active.id);
     const stageId = leadStageMap[active.id];
     const stage = pipeline.find((s) => s.id === stageId);
     setActiveLead(stage?.leads.find((l) => l.id === active.id) || null);
   };
 
   const handleDragEnd = async ({ active, over }) => {
-    setActiveId(null);
     setActiveLead(null);
     if (!over || active.id === over.id) return;
 
@@ -217,77 +111,14 @@ const CRMIntegration = () => {
 
   if (isLoading && !pipeline.length) {
     return (
-      <div className="p-8 space-y-8 h-[calc(100vh-140px)]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="h-8 w-64 bg-slate-200 animate-pulse rounded-lg" />
-            <div className="h-4 w-96 bg-slate-100 animate-pulse rounded-lg" />
-          </div>
-          <div className="flex gap-3">
-            <div className="h-11 w-48 bg-slate-100 animate-pulse rounded-lg" />
-            <div className="h-11 w-32 bg-slate-100 animate-pulse rounded-lg" />
-          </div>
-        </div>
-        <div className="h-full border border-slate-200 rounded-lg bg-white p-6 overflow-hidden">
-          <div className="flex gap-5 h-full">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-[300px] shrink-0 flex flex-col h-full border border-slate-100 rounded-lg overflow-hidden">
-                <div className="h-14 bg-slate-50 border-b border-slate-100 p-4 shrink-0" />
-                <div className="p-4 space-y-4 flex-1 bg-slate-50/20">
-                  {[1, 2, 3].map((j) => (
-                    <div key={j} className="h-24 bg-white border border-slate-100 rounded-xl animate-pulse" />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+     <Loader/>
     );
   }
 
   return (
     <div tabIndex={-1} className="crm-module w-full mx-auto p-4 space-y-8 outline-none focus:outline-none focus:ring-0">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center">
-            {t('crm.title', 'Smart')} {t('crm.subtitle', 'Funnel')} <span className="ml-2">{t('crm.pipeline', 'Pipeline')}</span>
-          </h1>
-          <p className="text-slate-500 text-sm mt-1">
-            {t('crm.drag_desc', 'Drag leads between stages. Click any card to view details and set deal value.')}
-          </p>
-        </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="relative group flex items-center bg-white border border-slate-200 rounded-md px-4 h-11 w-full md:w-72 transition-all focus-within:ring-2 focus-within:ring-purple-500/10 focus-within:border-purple-500/40 shadow-sm">
-            <Search className="w-4 h-4 text-slate-400 group-focus-within:text-purple-500 shrink-0" />
-            <input
-              type="text"
-              placeholder={t('crm.search_placeholder', 'Search leads...')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 h-full bg-transparent text-sm font-semibold placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-0 text-slate-700 outline-none"
-            />
-          </div>
-          <button
-            onClick={async () => {
-              await refetch();
-              toast.success('Pipeline updated');
-            }}
-            disabled={isRefetching}
-            className={`w-11 h-11 flex justify-center items-center rounded-md border border-slate-200 bg-white text-slate-500 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shadow-sm outline-none focus:outline-none focus:ring-0 ${isRefetching ? 'opacity-50' : ''}`}
-          >
-            <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
-          </button>
-          
-          <button
-            onClick={() => setIsAddStageOpen(true)}
-            className="h-11 px-5 flex items-center justify-center gap-2 bg-purple-600 text-white rounded-md text-[11px] font-extrabold tracking-widest shadow-sm shadow-purple-500/20 hover:bg-purple-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
-          >
-            <Plus className="w-4 h-4" /> {t('crm.add_column', 'Add Column')}
-          </button>
-        </div>
-      </div>
+     <Header isRefetching={isRefetching} refetch={refetch} searchQuery={searchQuery} setIsAddStageOpen={setIsAddStageOpen} setSearchQuery={setSearchQuery}/>
 
       {/* Kanban Board */}
       <div tabIndex={-1} className="h-[calc(100vh-280px)] flex flex-col border border-slate-200 rounded-lg bg-white shadow-sm overflow-hidden outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0">

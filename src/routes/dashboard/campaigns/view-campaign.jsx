@@ -14,6 +14,8 @@ import AnalyticsTab from './components/view-campaign/AnalyticsTab';
 import RecipientsTab from './components/view-campaign/RecipientsTab';
 import RepliesTab from './components/view-campaign/RepliesTab';
 import ContentTab from './components/view-campaign/ContentTab';
+import EmptyCampaign from './components/view-campaign/EmptyCampaign';
+import CampaignLoader from './components/view-campaign/CampaignLoader';
 
 const ViewCampaign = () => {
   const { id } = useParams();
@@ -62,36 +64,17 @@ const ViewCampaign = () => {
 
   if (isLoading && !campaign) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="relative">
-          <div className="w-20 h-20 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin"></div>
-        </div>
-        <p className="mt-4 text-sm text-gray-500">Loading...</p>
-      </div>
+      <CampaignLoader/>
     );
   }
 
   if (error || !campaign) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-100 rounded-lg p-12 text-center">
-          <h3 className="text-xl font-semibold text-red-800 mb-2">Campaign Not Found</h3>
-          <p className="text-sm text-red-600 mb-6">
-            We couldn&apos;t find the campaign you&apos;re looking for.
-          </p>
-
-          <button
-            onClick={() => navigate('/dashboard/campaigns')}
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
-            Back to Campaigns
-          </button>
-        </div>
-      </div>
+      <EmptyCampaign/>
     );
   }
   return (
-    <div className="max-w-400 mx-auto p-4  space-y-2 animate-in fade-in duration-700">
+    <div className="max-w-full mx-auto p-4  space-y-2 animate-in fade-in duration-700">
       {showDeleteModal && (
         <ShowDelete
           handleDelete={async () => {
