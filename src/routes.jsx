@@ -52,13 +52,14 @@ const AppRoutes = () => {
         {/* Protected app routes (ONLY for logged-in users) */}
         <Route path="dashboard" element={<ProtectedRoute />}>
           <Route path="campaigns/create" element={<CreateCampaign />} />
+           <Route path="campaigns/:id" element={<ViewCampaign />} />
           <Route element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="mailboxes" element={<Mailboxes />} />
             <Route path="mailboxes/:id" element={<ViewMailbox />} />
             <Route path="campaigns" element={<Campaigns />} />
 
-            <Route path="campaigns/:id" element={<ViewCampaign />} />
+           
             <Route path="audience" element={<Audience />} />
             <Route path="crm" element={<CRM />} />
             <Route path="integrations" element={<Integrations />} />
