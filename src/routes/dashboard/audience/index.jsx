@@ -55,9 +55,7 @@ const Audience = () => {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [batchToDelete, setBatchToDelete] = useState(null);
-  const [visibleCols, setVisibleCols] = useState(
-    new Set(['job_title', 'company', 'city', 'phone'])
-  );
+  const [visibleCols, setVisibleCols] = useState(new Set());
 
   const toggleCol = (ids) => {
     const idArray = Array.isArray(ids) ? ids : [ids];
