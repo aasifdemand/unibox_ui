@@ -8,10 +8,10 @@ import {
   Activity
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import ShowSender from '../../../../modals/showsender';
+import ShowSender from '../../../modals/showsender';
 import { 
   useCreateSmtpSender,
-} from '../../../../hooks/useSenders';
+} from '../../../hooks/useSenders';
 
 const AdminPanel = () => {
   const createSmtpSender = useCreateSmtpSender();
