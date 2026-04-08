@@ -26,6 +26,7 @@ const Settings = lazy(() => import('./routes/dashboard/settings'));
 const CRM = lazy(() => import('./routes/dashboard/crm'));
 const Integrations = lazy(() => import('./routes/dashboard/integrations'));
 const Notifications = lazy(() => import('./routes/dashboard/notifications'));
+const AdminPanel = lazy(() => import('./routes/dashboard/admin/admin-panel'));
 import Landing from './routes/landing';
 
 const LoadingFallback = () => (
@@ -67,6 +68,7 @@ const AppRoutes = () => {
 
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />
+            <Route path="admin" element={<AdminPanel />} />
           </Route>
         </Route>
       </Routes>

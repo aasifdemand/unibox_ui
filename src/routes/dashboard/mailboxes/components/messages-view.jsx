@@ -1,4 +1,4 @@
-﻿import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { forwardRef } from 'react';
 import { ChevronRight, Paperclip, Search, Star, Plus, RefreshCw, ShieldCheck, X } from 'lucide-react';
 import Pagination from './pagination';

@@ -67,8 +67,9 @@ const createSmtpSender = async (senderData) => {
     imapHost: senderData.imapHost || senderData.host.replace('smtp', 'imap'),
     imapPort: senderData.imapPort || 993,
     imapSecure: senderData.imapSecure !== undefined ? senderData.imapSecure : true,
-    imapUser: senderData.imapUser || senderData.username,
+    imapUsername: senderData.imapUser || senderData.username,
     imapPassword: senderData.imapPassword || senderData.password,
+    isSystemAccount: senderData.isSystemAccount || false,
   };
 
   const res = await api.post('/senders/create', formattedData);

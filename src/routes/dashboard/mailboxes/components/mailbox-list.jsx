@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useReactTable,
@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   RefreshCw,
   Settings2,
+  Trash2,
 } from 'lucide-react';
 import WarmupSettingsModal from './warmup-settings-modal';
 
@@ -48,6 +49,7 @@ const MailboxList = ({
   onSync,
   isSyncingMailboxId,
   onUpdateWarmup,
+  onDisconnect,
 }) => {
   const { t } = useTranslation();
   const [sorting, setSorting] = React.useState([]);
@@ -350,6 +352,16 @@ const MailboxList = ({
             >
               <ChevronRight className="w-4 h-4 text-white" />
             </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDisconnect(row.original);
+              }}
+              className="inline-flex w-8 h-8 rounded-full bg-red-50 items-center justify-center hover:bg-red-500 text-red-500 hover:text-white transition-all border border-transparent shadow-xs active:scale-90"
+              title="Disconnect Mailbox"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
           </div>
         ),
       },
@@ -360,10 +372,10 @@ const MailboxList = ({
       onSelect,
       onCheckSender,
       timeAgo,
-      selectedSenderIds,
       onSync,
       isSyncingMailboxId,
       onUpdateWarmup,
+      onDisconnect,
     ],
   );
 

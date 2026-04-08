@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useMailbox, useUpdateMailbox } from '../../../hooks/useMailboxes';
+import { useDeleteSender } from '../../../hooks/useSenders';
 import Button from '../../../components/ui/button';
 import { useToast } from '../../../hooks/useToast';
 import { useCurrentUser } from '../../../hooks/useAuth';
@@ -30,6 +31,7 @@ const ViewMailbox = () => {
   const { toast } = useToast();
   const { data: mailbox, isLoading, isError } = useMailbox(id);
   const updateMailbox = useUpdateMailbox();
+  const deleteSender = useDeleteSender();
   const { data: user } = useCurrentUser();
   const userTz = user?.timezone || 'UTC';
 
@@ -63,6 +65,28 @@ const ViewMailbox = () => {
       toast({
         title: 'Error',
         description: err.message || 'Failed to update mailbox',
+        variant: 'destructive',
+      });
+    }
+  };
+  
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to disconnect this mailbox? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      await deleteSender.mutateAsync({ senderId: id, senderType: mailbox.type });
+      toast({
+        title: 'Disconnected',
+        description: 'Mailbox has been removed successfully',
+        variant: 'success',
+      });
+      navigate('/dashboard/mailboxes');
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: err.message || 'Failed to disconnect mailbox',
         variant: 'destructive',
       });
     }
@@ -162,9 +186,15 @@ const ViewMailbox = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-11 h-11 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm shadow-red-100"
+            onClick={handleDelete}
+            disabled={deleteSender.isPending}
+            className="w-11 h-11 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm shadow-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Trash2 className="w-5 h-5" />
+            {deleteSender.isPending ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Trash2 className="w-5 h-5" />
+            )}
           </motion.button>
         </div>
       </div>

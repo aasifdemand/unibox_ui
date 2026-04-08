@@ -29,8 +29,8 @@ const Mailboxes = () => {
     handleCheckAllSenders,
   } = handlers;
 
-  const handleRequestDisconnect = () => {
-    setDeleteContext({ type: 'disconnect' });
+  const handleRequestDisconnect = (mailbox = null) => {
+    setDeleteContext({ type: 'disconnect', mailbox });
     setDeleteDialogOpen(true);
   };
 
@@ -55,7 +55,7 @@ const Mailboxes = () => {
   const handleConfirmDelete = async () => {
     if (!deleteContext) return;
     if (deleteContext.type === 'disconnect') {
-      await disconnectAction();
+      await disconnectAction(deleteContext.mailbox?.id);
     } else if (deleteContext.type === 'bulkDelete') {
       await bulkDeleteAction();
     } else if (deleteContext.type === 'bulkSenderDelete') {
@@ -168,6 +168,7 @@ const Mailboxes = () => {
                     onCheckAllSenders={handleCheckAllSenders}
                     onSync={handlers.handleMailboxSync}
                     onUpdateWarmup={handlers.handleUpdateWarmup}
+                    onDisconnect={handleRequestDisconnect}
                   />
                 </div>
                 {data.mailboxMeta && data.mailboxMeta.totalPages > 1 && (

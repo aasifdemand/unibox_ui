@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
@@ -15,12 +15,14 @@ import {
   Send,
   ChevronRight,
   Home,
+  ShieldCheck,
 } from 'lucide-react';
 import Sidebar from '../components/shared/sidebar';
 import LanguageSwitcher from '../components/shared/language-switcher';
 import GlobalSearch from '../components/shared/global-search';
 import NotificationDropdown from '../components/shared/notification-dropdown';
 
+import { useCurrentUser } from '../hooks/useAuth';
 import { useCampaigns } from '../hooks/useCampaign';
 import { useMailboxes } from '../hooks/useMailboxes';
 import { useAllContacts } from '../routes/dashboard/audience/hooks/use-all-contacts';
@@ -43,37 +45,46 @@ const DashboardLayout = () => {
   });
 
 
+  const { data: user } = useCurrentUser();
   const { data: campaigns = [] } = useCampaigns();
   const { data: mailboxResponse = { mailboxes: [], meta: { total: 0 } } } = useMailboxes();
   const { pagination: contactsPagination } = useAllContacts({ limit: 1 });
 
   const navItems = useMemo(
-    () => [
-      { icon: LayoutDashboard, label: t('common.dashboard', 'Dashboard'),        path: '/dashboard' },
-      {
-        icon: Send,
-        label: t('common.email_campaigns', 'Email Campaigns'),
-        path: '/dashboard/campaigns',
-        badge: campaigns.length > 0 ? campaigns.length.toString() : null,
-      },
-      {
-        icon: Mailbox,
-        label: t('common.email_accounts', 'Email Accounts'),
-        path: '/dashboard/mailboxes',
-        badge: mailboxResponse.meta?.total > 0 ? mailboxResponse.meta.total.toString() : null,
-      },
-      {
-        icon: Users,
-        label: t('common.contacts', 'Contacts'),
-        path: '/dashboard/audience',
-        badge: contactsPagination.total > 0 ? contactsPagination.total.toString() : null,
-      },
-      { icon: Zap,       label: t('common.crm', 'CRM'),               path: '/dashboard/crm' },
-      { icon: BarChart3, label: t('common.global_analytics', 'Analytics'), path: '/dashboard/analytics' },
-      { icon: Link2,     label: t('common.integrations', 'Integrations'), path: '/dashboard/integrations' },
-      { icon: Settings,  label: t('common.settings', 'Settings'),     path: '/dashboard/settings' },
-    ],
-    [t, campaigns.length, mailboxResponse.meta, contactsPagination.total],
+    () => {
+      const items = [
+        { icon: LayoutDashboard, label: t('common.dashboard', 'Dashboard'),        path: '/dashboard' },
+        {
+          icon: Send,
+          label: t('common.email_campaigns', 'Email Campaigns'),
+          path: '/dashboard/campaigns',
+          badge: campaigns.length > 0 ? campaigns.length.toString() : null,
+        },
+        {
+          icon: Mailbox,
+          label: t('common.email_accounts', 'Email Accounts'),
+          path: '/dashboard/mailboxes',
+          badge: mailboxResponse.meta?.total > 0 ? mailboxResponse.meta.total.toString() : null,
+        },
+        {
+          icon: Users,
+          label: t('common.contacts', 'Contacts'),
+          path: '/dashboard/audience',
+          badge: contactsPagination.total > 0 ? contactsPagination.total.toString() : null,
+        },
+        { icon: Zap,       label: t('common.crm', 'CRM'),               path: '/dashboard/crm' },
+        { icon: BarChart3, label: t('common.global_analytics', 'Analytics'), path: '/dashboard/analytics' },
+        { icon: Link2,     label: t('common.integrations', 'Integrations'), path: '/dashboard/integrations' },
+        { icon: Settings,  label: t('common.settings', 'Settings'),     path: '/dashboard/settings' },
+      ];
+
+      if (user?.role === 'admin') {
+        items.push({ icon: ShieldCheck, label: t('common.admin_panel', 'Admin Panel'), path: '/dashboard/admin' });
+      }
+
+      return items;
+    },
+    [t, campaigns.length, mailboxResponse.meta, contactsPagination.total, user?.role],
   );
 
 
