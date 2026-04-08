@@ -672,14 +672,14 @@ export const useDisconnectGmailMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await api.post(`/mailboxes/gmail/${mailboxId}/disconnect`);
+      const res = await api.delete(`/mailboxes/${mailboxId}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
+      if (!res.ok) throw new Error(data.message || "Failed to disconnect");
       return data;
     },
     onSuccess: (_, { mailboxId }) => {
-      queryClient.removeQueries({ queryKey: ['gmail', mailboxId] });
-      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
+      queryClient.removeQueries({ queryKey: ["gmail", mailboxId] });
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
     },
   });
 };

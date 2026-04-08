@@ -741,14 +741,14 @@ export const useDisconnectOutlookMailboxMutation = () => {
 
   return useMutation({
     mutationFn: async ({ mailboxId }) => {
-      const res = await api.post(`/mailboxes/outlook/${mailboxId}/disconnect`);
+      const res = await api.delete(`/mailboxes/${mailboxId}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
+      if (!res.ok) throw new Error(data.message || "Failed to disconnect");
       return data;
     },
     onSuccess: (_, { mailboxId }) => {
-      queryClient.removeQueries({ queryKey: ['outlook', mailboxId] });
-      queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
+      queryClient.removeQueries({ queryKey: ["outlook", mailboxId] });
+      queryClient.invalidateQueries({ queryKey: ["mailboxes"] });
     },
   });
 };
