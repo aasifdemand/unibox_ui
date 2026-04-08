@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { useMessageFilters } from './index';
 import { useDebounce } from '../../../../hooks/useDebounce';
 import {
@@ -28,6 +29,7 @@ import { useCurrentUser } from '../../../../hooks/useAuth';
 const PAGE_SIZE = 10;
 
 export const useMailboxesData = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: user } = useCurrentUser();
   const userTz = user?.timezone || 'UTC';
@@ -56,6 +58,29 @@ export const useMailboxesData = () => {
       queryClient.invalidateQueries({ queryKey: ['mailboxes'] });
     },
   });
+
+  // =========================
+  // HANDLE OAUTH REDIRECT TOASTS
+  // =========================
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('success');
+    const error = params.get('error');
+    const message = params.get('message');
+
+    if (success) {
+      toast.success(t('mailboxes.auth_success', 'Account connected successfully!'));
+      // Clean up URL
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    } else if (error) {
+      const errorMsg = message || t('mailboxes.auth_failed', 'Authentication failed');
+      toast.error(errorMsg, { duration: 6000 });
+      // Clean up URL
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [t]);
 
   // =========================
   // LOCAL STATE
