@@ -153,3 +153,19 @@ export const useUpdateWarmupSettings = () => {
     },
   });
 };
+
+export const useDisconnectMailbox = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (mailboxId) => {
+      const res = await api.delete(`/mailboxes/${mailboxId}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to disconnect');
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.all });
+    },
+  });
+};

@@ -16,7 +16,7 @@ import {
   timeAgo,
 } from '../utils/utils';
 
-import { useMailboxes, useUpdateWarmupSettings } from '../../../../hooks/useMailboxes';
+import { useMailboxes, useUpdateWarmupSettings, useDisconnectMailbox } from '../../../../hooks/useMailboxes';
 import { useBulkDeleteSenders } from '../../../../hooks/useSenders';
 import { useSocketEvents } from '../../../../hooks/useSocketEvents';
 import { useGmailData } from './use-gmail-data';
@@ -141,6 +141,7 @@ export const useMailboxesData = () => {
 
   const bulkDeleteSenders = useBulkDeleteSenders();
   const updateWarmupMutation = useUpdateWarmupSettings();
+  const disconnectMutation = useDisconnectMailbox();
 
   const mailboxes = mailboxResponse.mailboxes;
   const mailboxMeta = mailboxResponse.meta;
@@ -799,19 +800,24 @@ export const useMailboxesData = () => {
     }
   }, [selectedMailbox, provider]);
 
-  const handleDisconnect = useCallback(async () => {
-    if (!selectedMailbox || !provider) return;
-    try {
-      await provider.mutations.disconnect.mutateAsync({
-        mailboxId: selectedMailbox.id,
-      });
-      toast.success('Mailbox disconnected');
-      handleBackToMailboxes();
-      refetchMailboxes();
-    } catch (e) {
-      toast.error('Failed to disconnect');
-    }
-  }, [selectedMailbox, provider]);
+  const handleDisconnect = useCallback(
+    async (mailboxId) => {
+      const targetId = mailboxId || selectedMailbox?.id;
+      if (!targetId) return;
+
+      try {
+        await disconnectMutation.mutateAsync(targetId);
+        toast.success('Mailbox disconnected');
+        if (targetId === selectedMailbox?.id) {
+          handleBackToMailboxes();
+        }
+        refetchMailboxes();
+      } catch (e) {
+        toast.error('Failed to disconnect');
+      }
+    },
+    [selectedMailbox, disconnectMutation, handleBackToMailboxes, refetchMailboxes],
+  );
 
   const handlePageChange = useCallback(async (page) => {
     if (page < 1) return;
