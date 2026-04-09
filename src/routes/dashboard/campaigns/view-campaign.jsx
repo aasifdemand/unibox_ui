@@ -74,7 +74,7 @@ const ViewCampaign = () => {
     );
   }
   return (
-    <div className="max-w-full mx-auto p-4  space-y-2 animate-in fade-in duration-700">
+    <div className="max-w-full mx-auto p-4 space-y-2 animate-in fade-in duration-700 min-h-screen flex flex-col">
       {showDeleteModal && (
         <ShowDelete
           handleDelete={async () => {

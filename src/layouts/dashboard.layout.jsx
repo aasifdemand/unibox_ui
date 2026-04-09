@@ -121,7 +121,7 @@ const DashboardLayout = () => {
         }`}
       >
         {/* Header */}
-        <header className="relative z-[60] h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0">
+        <header className="relative z-60 h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0">
 
           {/* Left — sidebar toggle + breadcrumbs */}
           <div className="flex items-center gap-3 min-w-0">
