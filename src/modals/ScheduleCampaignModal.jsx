@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Clock, Calendar, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -125,14 +125,14 @@ const ScheduleCampaignModal = ({
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className="text-2xl font-black uppercase tracking-tighter leading-none">
+                <h2 className="text-2xl font-bold uppercase tracking-tight leading-none">
                   {t('campaigns.schedule_settings_title', 'Schedule Settings')}
                 </h2>
                 <div className="flex items-center gap-3 mt-1 underline decoration-white/20 decoration-2 underline-offset-2">
-                  <p className="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em]">
+                  <p className="text-xs font-bold text-white/70">
                     {t('campaigns.target_clock', 'Target Clock')}:
                   </p>
-                  <p className="text-[11px] font-black tracking-widest text-white animate-pulse">
+                  <p className="text-xs font-bold text-white animate-pulse">
                     {currentTime} <span className="opacity-50 font-medium">({selectedTimezone})</span>
                   </p>
                 </div>
@@ -159,7 +159,7 @@ const ScheduleCampaignModal = ({
 
             {/* Sending Days */}
             <div className="space-y-3">
-              <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+              <label className="text-xs font-bold text-slate-400">
                 Active Sending Days
               </label>
               <div className="flex flex-wrap gap-2.5">
@@ -191,7 +191,7 @@ const ScheduleCampaignModal = ({
                   error={validationError && watch('startDate') === todayStr ? validationError : ''}
                   className="h-14 font-bold text-sm"
                   containerClassName="space-y-3"
-                  labelClassName="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+                  labelClassName="text-xs font-bold text-slate-400"
                 />
               </div>
               <div className="space-y-3">
@@ -202,7 +202,7 @@ const ScheduleCampaignModal = ({
                   value={watch('endTime')}
                   className="h-14 font-bold text-sm"
                   containerClassName="space-y-3"
-                  labelClassName="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+                  labelClassName="text-xs font-bold text-slate-400"
                 />
               </div>
             </div>
@@ -210,7 +210,7 @@ const ScheduleCampaignModal = ({
             {/* Interval */}
             <div className="space-y-4 pt-4 border-t border-slate-50">
               <div className="flex items-center justify-between">
-                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                <label className="text-xs font-bold text-slate-400">
                   Sending Interval
                 </label>
                 <span className="text-sm font-bold text-purple-600 bg-purple-50/50 px-3 py-1 rounded-lg border border-purple-100/50">
@@ -247,7 +247,7 @@ const ScheduleCampaignModal = ({
                   value={watch('startDate')}
                   className="h-14 font-bold text-sm"
                   containerClassName="space-y-3"
-                  labelClassName="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2"
+                  labelClassName="text-xs font-bold text-slate-400 flex items-center gap-2"
                 />
               </div>
               <div className="space-y-3">
@@ -257,7 +257,7 @@ const ScheduleCampaignModal = ({
                   {...register('maxLeadsPerDay', { valueAsNumber: true })}
                   className="h-14 font-bold text-sm"
                   containerClassName="space-y-3"
-                  labelClassName="text-[11px] font-bold text-slate-400 uppercase tracking-widest"
+                  labelClassName="text-xs font-bold text-slate-400"
                 />
               </div>
             </div>
@@ -266,7 +266,7 @@ const ScheduleCampaignModal = ({
           <div className="flex justify-end pt-6">
             <Button
               onClick={handleSave}
-              className="w-full py-4 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all uppercase tracking-widest"
+              className="w-full py-4 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all"
             >
               Save Settings
             </Button>

@@ -66,7 +66,7 @@ const AudienceTabs = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-bold text-slate-900 select-none">
               {t('audience.batch_name', 'Batch Name')}
             </span>
             <SortIndicator column={column} />
@@ -112,7 +112,7 @@ const AudienceTabs = ({
                       : 'bg-purple-500'
                 }`}
               ></div>
-              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
+              <span className="text-xs font-bold text-slate-500">
                 {t(`audience.${status}`)}
               </span>
             </div>
@@ -122,7 +122,7 @@ const AudienceTabs = ({
       {
         id: 'valid',
         header: () => (
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+          <span className="text-xs font-bold text-slate-900 select-none">
             {t('audience.valid', 'Valid')}
           </span>
         ),
@@ -135,7 +135,7 @@ const AudienceTabs = ({
       {
         id: 'risky',
         header: () => (
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+          <span className="text-xs font-bold text-slate-900 select-none">
             {t('audience.risky', 'Risky')}
           </span>
         ),
@@ -148,7 +148,7 @@ const AudienceTabs = ({
       {
         id: 'invalid',
         header: () => (
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+          <span className="text-xs font-bold text-slate-900 select-none">
             {t('audience.invalid', 'Invalid')}
           </span>
         ),
@@ -161,7 +161,7 @@ const AudienceTabs = ({
       {
         id: 'unverified',
         header: () => (
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+          <span className="text-xs font-bold text-slate-900 select-none">
             {t('audience.unverified', 'Unverified')}
           </span>
         ),
@@ -178,14 +178,14 @@ const AudienceTabs = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-bold text-slate-900 select-none">
               {t('audience.uploaded_on', 'Uploaded On')}
             </span>
             <SortIndicator column={column} />
           </button>
         ),
         cell: ({ row }) => (
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-tight">
+          <span className="text-xs font-semibold text-slate-500">
             {formatInTimezone(row.original.createdAt, userTz, { month: 'short', day: 'numeric', year: 'numeric' })}
           </span>
         ),
@@ -194,7 +194,7 @@ const AudienceTabs = ({
         id: 'actions',
         header: () => (
           <div className="text-right px-6">
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-bold text-slate-900 select-none">
               {t('audience.actions', 'Actions')}
             </span>
           </div>
@@ -245,7 +245,7 @@ const AudienceTabs = ({
       {isLoadingBatches ? (
         <div className="flex flex-col items-center justify-center p-20 gap-4">
           <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin"></div>
-          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+          <p className="text-xs font-semibold text-slate-400">
             {t('audience.loading_contacts')}
           </p>
         </div>
@@ -265,7 +265,7 @@ const AudienceTabs = ({
             className="btn-primary py-3 px-8 flex items-center gap-3"
           >
             <Upload className="w-4 h-4 text-white" />
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-white">
+            <span className="text-xs font-bold text-white">
               {t('audience.upload_contacts_btn')}
             </span>
           </button>
@@ -311,7 +311,7 @@ const AudienceTabs = ({
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 mt-8 gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
             <div className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
-            <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+            <p className="text-xs font-bold text-slate-400">
               {pagination.total?.toLocaleString()} {t('audience.total_batches') || 'Total Batches'}
             </p>
           </div>
@@ -329,7 +329,7 @@ const AudienceTabs = ({
               <span className="text-xs font-black text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg">
                 {currentPage}
               </span>
-              <span className="text-[10px] font-black text-slate-300 uppercase">of</span>
+              <span className="text-xs font-bold text-slate-300">of</span>
               <span className="text-xs font-black text-slate-600">{pagination.pages}</span>
             </div>
 

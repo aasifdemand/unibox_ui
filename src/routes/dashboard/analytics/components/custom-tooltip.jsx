@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -28,7 +28,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
     return (
       <div className="bg-white/95  p-5 rounded-lg shadow-sm border border-white ring-1 ring-slate-900/5 min-w-50 animate-in fade-in zoom-in duration-200">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 border-b border-slate-100/80 pb-3">
+        <p className="text-xs font-bold text-slate-400 mb-4 border-b border-slate-100/80 pb-3">
           {label}
         </p>
         <div className="space-y-4">
@@ -39,11 +39,11 @@ const CustomTooltip = ({ active, payload, label }) => {
                   className="w-2.5 h-2.5 rounded-full shadow-sm"
                   style={{ backgroundColor: entry.color || entry.fill || '#000' }}
                 />
-                <span className="text-[11px] font-black text-slate-700 uppercase tracking-tight">
+                <span className="text-xs font-bold text-slate-700">
                   {entry.name}
                 </span>
               </div>
-              <span className="text-sm font-black text-slate-900 tabular-nums">
+              <span className="text-sm font-bold text-slate-900 tabular-nums">
                 {entry.value.toLocaleString()}
               </span>
             </div>
@@ -53,10 +53,10 @@ const CustomTooltip = ({ active, payload, label }) => {
         {sentValue > 0 && repliedValue > 0 && (
           <div className="mt-5 pt-4 border-t border-slate-100/80 space-y-2">
             <div className="flex items-center justify-between gap-4">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-slate-400">
                 {t('analytics.reply_rate')}
               </span>
-              <span className="text-[11px] font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-100/50">
+              <span className="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-100/50">
                 {replyRate}%
               </span>
             </div>

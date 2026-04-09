@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Users,
@@ -146,11 +146,11 @@ const CampaignMetrics = ({ campaign, stats }) => {
         >
           <div className="flex items-start justify-between mb-4">
             <div>
-              <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.15em] mb-0.5 block group-hover:text-slate-900 transition-colors">
+              <span className="text-xs font-semibold text-slate-500 mb-0.5 block group-hover:text-slate-900 transition-colors">
                 {metric.label}
               </span>
               <span
-                className={`text-[8px] font-bold uppercase tracking-widest ${labelColors[metric.theme]}`}
+                className={`text-[11px] font-bold capitalize ${labelColors[metric.theme]}`}
               >
                 {metric.subLabel}
               </span>
@@ -164,13 +164,13 @@ const CampaignMetrics = ({ campaign, stats }) => {
 
           <div className="space-y-1">
             <h4
-              className={`text-3xl font-black tracking-tighter tabular-nums leading-none ${valueColors[metric.theme]}`}
+              className={`text-3xl font-bold tracking-tight tabular-nums leading-none ${valueColors[metric.theme]}`}
             >
               {metric.value.toLocaleString()}
             </h4>
             <div className="flex items-center gap-1.5 pt-1.5">
               <Zap className={`w-3 h-3 ${zapColors[metric.theme]}`} />
-              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest leading-none">
+              <span className="text-xs font-semibold text-slate-400 leading-none">
                 {metric.description}
               </span>
             </div>

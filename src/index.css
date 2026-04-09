@@ -40,6 +40,11 @@
   --shadow-xl: 0 10px 15px rgba(0, 0, 0, 0.04);
 }
 
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--text-main);
@@ -376,7 +381,14 @@ body.modal-open {
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #e2e8f0 transparent;
+  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+}
+
+.main-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.5) transparent;
+  overflow-y: auto;
+  overflow-y: overlay;
 }
 
 @keyframes shimmer {

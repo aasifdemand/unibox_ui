@@ -38,7 +38,7 @@ const Header = ({searchQuery,setSearchQuery,refetch,isRefetching,setIsAddStageOp
           
           <button
             onClick={() => setIsAddStageOpen(true)}
-            className="h-11 px-5 flex items-center justify-center gap-2 bg-purple-600 text-white rounded-md text-[11px] font-extrabold tracking-widest shadow-sm shadow-purple-500/20 hover:bg-purple-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
+            className="h-11 px-5 flex items-center justify-center gap-2 bg-purple-600 text-white rounded-md text-xs font-bold shadow-sm shadow-purple-500/20 hover:bg-purple-700 transition-all active:scale-95 outline-none focus:outline-none focus:ring-0"
           >
             <Plus className="w-4 h-4" /> {t('crm.add_column', 'Add Column')}
           </button>

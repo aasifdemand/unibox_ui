@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Clock,
@@ -38,7 +38,7 @@ const Step3Finalize = ({
               <Sparkles className="w-10 h-10 text-white fill-white/20" />
             </div>
             <div>
-              <h2 className="text-3xl font-black tracking-tight">
+              <h2 className="text-3xl font-bold tracking-tight">
                 {campaignName || 'Untitled Campaign'}
               </h2>
               <p className="text-purple-100 font-medium mt-1 flex items-center gap-2 justify-center md:justify-start">
@@ -49,16 +49,16 @@ const Step3Finalize = ({
 
           <div className="flex bg-white/10  rounded-lg p-6 border border-white/10 items-center gap-6">
             <div className="text-center">
-              <p className="text-[10px] font-black uppercase tracking-widest text-purple-200">
+              <p className="text-xs font-bold text-purple-200">
                 Total Leads
               </p>
-              <p className="text-2xl font-black mt-1">
+              <p className="text-2xl font-bold mt-1">
                 {(selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0}
               </p>
             </div>
             <div className="w-px h-10 bg-white/10" />
             <div className="text-center">
-              <p className="text-[10px] font-black uppercase tracking-widest text-purple-200">
+              <p className="text-xs font-bold text-purple-200">
                 Avg. Delay
               </p>
               <p className="text-2xl font-black mt-1">{watch('sendingInterval')}m</p>
@@ -75,7 +75,7 @@ const Step3Finalize = ({
               <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
                 <Activity className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h3 className="text-sm font-bold text-slate-800">
                 Campaign Infrastructure
               </h3>
             </div>
@@ -86,7 +86,7 @@ const Step3Finalize = ({
                   <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-purple-600">
                     <Mail className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <span className="text-xs font-semibold text-slate-400">
                     {t('campaigns.sender_rotation_count', { count: watchSenderIds.length })}
                   </span>
                 </div>
@@ -121,14 +121,14 @@ const Step3Finalize = ({
                   <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-purple-50 text-purple-600">
                     <Database className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <span className="text-xs font-semibold text-slate-400">
                     Lead Database
                   </span>
                 </div>
                 <p className="text-sm font-bold text-slate-800 truncate">
                   {selectedBatch?.originalFilename || 'No list selected'}
                 </p>
-                <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-1">
+                <p className="text-xs font-bold text-slate-400 mt-1">
                   {(selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0} Ready
                   Prospects
                 </p>
@@ -140,7 +140,7 @@ const Step3Finalize = ({
                 <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-slate-50 text-amber-600">
                   <Mail className="w-4 h-4" />
                 </div>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <span className="text-xs font-semibold text-slate-400">
                   Primary Email Subject
                 </span>
               </div>
@@ -155,7 +155,7 @@ const Step3Finalize = ({
               <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
                 <Clock className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h3 className="text-sm font-bold text-slate-800">
                 Protocol & Timing
               </h3>
             </div>
@@ -171,10 +171,10 @@ const Step3Finalize = ({
                   key={idx}
                   className="p-5 bg-slate-50/50 rounded-lg border border-slate-100 flex flex-col items-center text-center"
                 >
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                  <p className="text-[10px] font-bold text-slate-400">
                     {item.label}
                   </p>
-                  <p className="text-lg font-black text-slate-800 mt-1">{item.val}</p>
+                  <p className="text-lg font-bold text-slate-800 mt-1">{item.val}</p>
                   <p className="text-[10px] text-slate-400 font-medium">{item.desc}</p>
                 </div>
               ))}
@@ -189,7 +189,7 @@ const Step3Finalize = ({
               <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center border border-purple-100/50">
                 <BarChart3 className="w-5 h-5 text-purple-600" />
               </div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h3 className="text-sm font-bold text-slate-800">
                 Engagement Tracking
               </h3>
             </div>
@@ -247,7 +247,7 @@ const Step3Finalize = ({
                 <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center shadow-sm border border-purple-50">
                   <Gauge className="w-4 h-4 text-purple-500" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-purple-600/60">
+                <span className="text-xs font-bold text-purple-600/60">
                   Deliverability Health
                 </span>
               </div>
@@ -255,7 +255,7 @@ const Step3Finalize = ({
                 <div className="h-full bg-purple-500 rounded-full w-[95%] shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
               </div>
               <div className="flex justify-between mt-3">
-                <span className="text-[9px] font-black text-purple-600/60 uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-purple-600/60">
                   Optimal
                 </span>
                 <span className="text-[10px] font-bold text-purple-700">95% Health</span>

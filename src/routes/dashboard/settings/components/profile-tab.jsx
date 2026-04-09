@@ -1,4 +1,4 @@
-﻿/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/set-state-in-effect */
 import { Loader2, Globe, Edit3, Shield, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Input from '../../../../components/ui/input';
@@ -68,16 +68,16 @@ const ProfileTab = ({ user }) => {
       <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
         <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-white">
           <div>
-            <h3 className="text-lg font-extrabold text-slate-800 tracking-tight font-display">
+            <h3 className="text-lg font-bold text-slate-800 tracking-tight font-display">
               {t('settings.profile.personal_info', 'Personal Information')}
             </h3>
-            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans">
-              {t('settings.profile.personal_subtitle', 'UPDATE YOUR PERSONAL DETAILS AND HOW OTHERS SEE YOU ON THE PLATFORM.')}
+            <p className="text-xs font-semibold text-slate-500 mt-1">
+              {t('settings.profile.personal_subtitle', 'Update your personal details and how others see you on the platform.')}
             </p>
           </div>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-2 h-9 px-4 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all font-display"
+            className="flex items-center gap-2 h-9 px-4 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg text-xs font-bold transition-all"
           >
             {isEditing ? (
               <>
@@ -94,12 +94,12 @@ const ProfileTab = ({ user }) => {
         <div className="p-8">
           <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
             <div className="w-20 h-20 rounded-full bg-slate-100 border-2 border-slate-50 flex items-center justify-center shadow-inner group">
-              <span className="text-2xl font-extrabold text-slate-300 font-display">
+              <span className="text-2xl font-bold text-slate-300 font-display">
                 {user?.name?.split(' ').map((n) => n[0]).join('').toUpperCase() || 'AA'}
               </span>
             </div>
             <div>
-              <h2 className="text-xl font-extrabold text-slate-900 tracking-tight font-display">
+              <h2 className="text-xl font-bold text-slate-900 tracking-tight font-display">
                 {user?.name || 'Aasif Ali'}
               </h2>
               <p className="text-xs font-semibold text-slate-400 font-sans mt-0.5">
@@ -112,8 +112,8 @@ const ProfileTab = ({ user }) => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {/* Full Name */}
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
-                   {t('settings.profile.full_name', 'FULL NAME')}
+                <label className="text-xs font-bold text-slate-500">
+                   {t('settings.profile.full_name', 'Full Name')}
                 </label>
                 {isEditing ? (
                   <Input
@@ -131,8 +131,8 @@ const ProfileTab = ({ user }) => {
 
               {/* Email Address */}
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
-                   {t('settings.profile.email_address', 'EMAIL ADDRESS')}
+                <label className="text-xs font-bold text-slate-500">
+                   {t('settings.profile.email_address', 'Email Address')}
                 </label>
                 <p className="text-sm font-bold text-slate-900 font-sans tracking-tight">
                   {user?.email || 'aasifdemand@gmail.com'}
@@ -141,8 +141,8 @@ const ProfileTab = ({ user }) => {
 
               {/* Designation */}
               <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
-                   {t('settings.profile.designation', 'DESIGNATION')}
+                <label className="text-xs font-bold text-slate-500">
+                   {t('settings.profile.designation', 'Designation')}
                 </label>
                 {isEditing ? (
                   <Input
@@ -172,17 +172,17 @@ const ProfileTab = ({ user }) => {
                     });
                     setIsEditing(false);
                   }}
-                  className="h-11 px-8 bg-white border border-slate-200 text-slate-600 hover:text-slate-800 hover:border-slate-400 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all font-display shadow-sm active:scale-95"
+                  className="h-11 px-8 bg-white border border-slate-200 text-slate-600 hover:text-slate-800 hover:border-slate-400 rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95"
                 >
                   {t('common.cancel', 'Cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={updateProfile.isPending}
-                  className="h-11 px-10 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg shadow-purple-500/20 transition-all font-display text-[11px] font-bold uppercase tracking-widest flex items-center gap-2.5 disabled:opacity-50"
+                  className="h-11 px-10 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg shadow-purple-500/20 transition-all text-xs font-bold flex items-center gap-2.5 disabled:opacity-50"
                 >
                   {updateProfile.isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                  {t('settings.profile.save_changes', 'SAVE CHANGES')}
+                  {t('settings.profile.save_changes', 'Save Changes')}
                 </button>
               </div>
             )}
@@ -193,19 +193,19 @@ const ProfileTab = ({ user }) => {
       {/* System Settings Card */}
       <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
         <div className="p-6 border-b border-slate-50 bg-white">
-          <h3 className="text-lg font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-display">
+          <h3 className="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2.5 font-display">
             <Globe className="w-4 h-4 text-purple-600" />
             {t('settings.profile.system_settings', 'System Settings')}
           </h3>
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans">
-             {t('settings.profile.system_subtitle', 'CONFIGURE YOUR SYSTEM LEVEL PREFERENCES.')}
+          <p className="text-xs font-semibold text-slate-500 mt-1">
+             {t('settings.profile.system_subtitle', 'Configure your system level preferences.')}
           </p>
         </div>
 
         <div className="p-8">
           <div className="max-w-md space-y-4">
-             <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-display">
-                {t('settings.profile.timezone', 'SYSTEM TIMEZONE')} <span className="text-red-500">*</span>
+             <label className="text-xs font-bold text-slate-500">
+                {t('settings.profile.timezone', 'System Timezone')} <span className="text-red-500">*</span>
              </label>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 bg-slate-50/50 rounded-xl border border-slate-100 mb-8 group hover:border-purple-100 transition-all">
               <div className="flex items-center gap-4">
@@ -213,21 +213,21 @@ const ProfileTab = ({ user }) => {
                   <Clock className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                  <p className="text-xs font-bold text-slate-400 mb-1">
                     {t('settings.profile.current_time', 'Current Target Time')}
                   </p>
-                  <p className="text-2xl font-black text-slate-800 tracking-tighter tabular-nums font-mono">
+                  <p className="text-2xl font-bold text-slate-800 tracking-tight tabular-nums">
                     {currentTime || '--:--:-- --'}
                   </p>
                 </div>
               </div>
               <div className="ltr:md:text-right rtl:md:text-left">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                <p className="text-xs font-bold text-slate-400 mb-1">
                   {t('settings.profile.status', 'Clock Status')}
                 </p>
                 <div className="flex items-center gap-2 md:justify-end">
                   <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-                  <span className="text-[11px] font-bold text-purple-600 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-purple-600">
                     {t('settings.profile.live_sync', 'Live Synchronized')}
                   </span>
                 </div>
@@ -251,8 +251,8 @@ const ProfileTab = ({ user }) => {
                 <Globe className="w-4 h-4" />
               </div>
             </div>
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-sans mt-2">
-              {t('settings.profile.timezone_help', 'THIS ENSURES ALL YOUR OUTREACH AND REPORTING IS SYNCHRONIZED WITH YOUR LOCAL TIME.')}
+            <p className="text-xs font-semibold text-slate-400 mt-2">
+              {t('settings.profile.timezone_help', 'This ensures all your outreach and reporting is synchronized with your local time.')}
             </p>
           </div>
         </div>
@@ -262,12 +262,12 @@ const ProfileTab = ({ user }) => {
 
       {/* Security Hub Section Header Style */}
       <div className="pt-4">
-         <h3 className="text-lg font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-display ltr:ml-1">
+         <h3 className="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2.5 font-display ltr:ml-1">
             <Shield className="w-4 h-4 text-purple-600" />
             {t('settings.profile.security_settings', 'Security Settings')}
           </h3>
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mt-1 font-sans ltr:ml-1">
-            {t('settings.profile.security_subtitle', 'ENSURE YOUR ACCOUNT IS SECURE BY USING A STRONG PASSWORD.')}
+          <p className="text-xs font-semibold text-slate-500 mt-1 ltr:ml-1">
+            {t('settings.profile.security_subtitle', 'Ensure your account is secure by using a strong password.')}
           </p>
       </div>
     </div>

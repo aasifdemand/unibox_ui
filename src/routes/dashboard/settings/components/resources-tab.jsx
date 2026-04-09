@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Mail, Users, Globe, Plus, Trash2, Loader2, ExternalLink, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -62,11 +62,11 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
   return (
     <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="p-6 border-b border-slate-50">
-        <h3 className="text-lg font-black text-slate-800 tracking-tight flex items-center gap-2">
+        <h3 className="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
           <Database className="w-4 h-4 text-purple-600" />
           {t('settings.resources.title', 'Workspace Resources')}
         </h3>
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+        <p className="text-xs font-semibold text-slate-500 mt-1">
           {t('settings.resources.subtitle', 'Manage your senders, contact lists, and outreach campaigns.')}
         </p>
       </div>
@@ -78,7 +78,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
             <button
               key={tab.id}
               onClick={() => setSubTab(tab.id)}
-              className={`flex items-center gap-2.5 h-9 px-4 rounded-md text-[9px] font-black uppercase tracking-widest transition-all duration-200 ${
+              className={`flex items-center gap-2.5 h-9 px-4 rounded-md text-xs font-bold transition-all duration-200 ${
                 subTab === tab.id
                   ? 'bg-white text-purple-600 shadow-sm border border-slate-200'
                   : 'text-slate-400 hover:text-slate-600 hover:bg-white/50'
@@ -88,11 +88,11 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                 className={`w-3.5 h-3.5 ${subTab === tab.id ? 'text-purple-600' : 'text-slate-400'}`}
               />
               <span>{tab.label}</span>
-              <span
-                className={`flex items-center justify-center min-w-5 h-5 px-1.5 text-[8px] rounded-full font-black ${
-                  subTab === tab.id ? 'bg-purple-50 text-purple-600' : 'bg-slate-200 text-slate-500'
-                }`}
-              >
+                  <span
+                    className={`flex items-center justify-center min-w-5 h-5 px-1.5 text-[11px] rounded-full font-bold ${
+                      subTab === tab.id ? 'bg-purple-50 text-purple-600' : 'bg-slate-200 text-slate-500'
+                    }`}
+                  >
                 {tab.count}
               </span>
             </button>
@@ -106,16 +106,16 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-sm font-black text-slate-800 tracking-tight">
+                <h4 className="text-sm font-bold text-slate-800 tracking-tight">
                   {t('settings.resources.senders.title')}
                 </h4>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                <p className="text-xs font-semibold text-slate-400 mt-0.5">
                   {t('settings.resources.senders.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/audience?sender=true"
-                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.senders.add')}
               </Link>
@@ -138,10 +138,10 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                           <Mail className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-black text-slate-900 truncate tracking-tight">
+                          <p className="text-xs font-bold text-slate-900 truncate tracking-tight">
                             {sender.email}
                           </p>
-                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5 opacity-70">
+                          <p className="text-[11px] font-bold text-slate-400 capitalize mt-0.5 opacity-70">
                             {sender.type}
                           </p>
                         </div>
@@ -158,7 +158,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               </div>
             ) : (
               <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-semibold text-slate-400">
                   {t('settings.resources.senders.none')}
                 </p>
               </div>
@@ -171,16 +171,16 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-sm font-black text-slate-800 tracking-tight">
+                <h4 className="text-sm font-bold text-slate-800 tracking-tight">
                   {t('settings.resources.lists.title')}
                 </h4>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
+                <p className="text-xs font-semibold text-slate-400 mt-0.5">
                   {t('settings.resources.lists.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/audience"
-                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/10 active:scale-95"
               >
                 <Plus className="w-3.5 h-3.5" /> {t('settings.resources.lists.add')}
               </Link>
@@ -201,12 +201,12 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                       <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 shadow-xs">
                         <Users className="w-4 h-4" />
                       </div>
-                      <span className="text-xs font-black text-slate-700 tracking-tight truncate max-w-[200px]">
+                      <span className="text-xs font-bold text-slate-700 tracking-tight truncate max-w-[200px]">
                         {batch.originalFilename}
                       </span>
                     </div>
                     <span
-                      className={`text-[8px] px-2.5 py-1 rounded-md font-black uppercase tracking-widest border ${getStatusColor(batch.status)}`}
+                      className={`text-[11px] px-2.5 py-1 rounded-md font-bold border capitalize ${getStatusColor(batch.status)}`}
                     >
                       {t(`settings.resources.status.${batch.status}`)}
                     </span>
@@ -215,7 +215,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               </div>
             ) : (
               <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-slate-400">
                   {t('settings.resources.lists.none')}
                 </p>
               </div>
@@ -228,16 +228,16 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-sm font-black text-slate-800 tracking-tight">
+                <h4 className="text-sm font-bold text-slate-800 tracking-tight">
                   {t('settings.resources.campaigns.title')}
                 </h4>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
+                <p className="text-xs font-semibold text-slate-400 mt-0.5">
                   {t('settings.resources.campaigns.subtitle')}
                 </p>
               </div>
               <Link
                 to="/dashboard/campaigns"
-                className="flex items-center gap-2 h-10 px-5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                className="flex items-center gap-2 h-10 px-5 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-50 transition-all active:scale-95"
               >
                 <ExternalLink className="w-3.5 h-3.5" /> {t('settings.resources.campaigns.view')}
               </Link>
@@ -258,12 +258,12 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
                       <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-purple-500 shadow-xs">
                         <Globe className="w-4 h-4" />
                       </div>
-                      <span className="text-xs font-black text-slate-700 tracking-tight uppercase">
+                      <span className="text-xs font-bold text-slate-700 tracking-tight">
                         {campaign.name}
                       </span>
                     </div>
                     <span
-                      className={`text-[8px] px-2.5 py-1 rounded-md font-black uppercase tracking-widest border ${getStatusColor(campaign.status)}`}
+                      className={`text-[11px] px-2.5 py-1 rounded-md font-bold border capitalize ${getStatusColor(campaign.status)}`}
                     >
                       {t(`settings.resources.status.${campaign.status}`)}
                     </span>
@@ -272,7 +272,7 @@ const ResourcesTab = ({ senders, batches, campaigns, loading, onDeleteSender }) 
               </div>
             ) : (
               <div className="text-center py-20 bg-slate-50 rounded-lg border border-dashed border-slate-200">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-slate-400">
                   {t('settings.resources.campaigns.none')}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Clock, Settings, CheckCircle2 } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
@@ -96,7 +96,7 @@ const SetupStep = ({
         </div>
         <Button
           onClick={() => setActiveModal('senders')}
-          className="px-8 py-3 bg-purple-600 text-white rounded-lg text-[11px] font-bold shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all uppercase tracking-widest"
+          className="px-8 py-3 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-0.5 transition-all"
         >
           {t('campaigns.choose_senders_btn')}
         </Button>
@@ -141,7 +141,7 @@ const SetupStep = ({
               {t('campaigns.tracking_rules')}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-purple-100">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-xs font-bold border border-purple-100">
                 <CheckCircle2 className="w-3.5 h-3.5" /> {t('campaigns.high_inboxing_enabled')}
               </span>
             </div>

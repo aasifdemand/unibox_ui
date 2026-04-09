@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Database, Eye } from 'lucide-react';
 
@@ -18,7 +18,7 @@ const ContentTab = ({
       {steps && steps.length > 0 && (
         <div className="lg:w-64 shrink-0 space-y-4">
           <div className="bg-slate-50 border border-slate-200/60 rounded-lg p-4 space-y-2">
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-3 mb-4">
+            <p className="text-xs font-bold text-slate-500 px-3 mb-4">
               {t('campaigns.content.sequence_steps', 'Sequence Steps')}
             </p>
 
@@ -38,7 +38,7 @@ const ContentTab = ({
               </div>
               <div className="flex-1 text-left overflow-hidden">
                 <p
-                  className={`text-[10px] font-black uppercase tracking-tight ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-500'}`}
+                  className={`text-xs font-bold ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-500'}`}
                 >
                   {t('campaigns.content.step_main', 'Step 1: Main')}
                 </p>
@@ -65,7 +65,7 @@ const ContentTab = ({
                   </div>
                   <div className="flex-1 text-left overflow-hidden">
                      <p
-                      className={`text-[10px] font-black uppercase tracking-tight ${activeStepIndex === step.stepOrder ? 'text-purple-600' : 'text-slate-500'}`}
+                      className={`text-xs font-bold ${activeStepIndex === step.stepOrder ? 'text-purple-600' : 'text-slate-500'}`}
                     >
                       {t('campaigns.content.step_followup', { order: step.stepOrder + 1 })}
                     </p>
@@ -86,14 +86,14 @@ const ContentTab = ({
                 <Mail className="w-5 h-5 text-purple-600" />
                 {activeStepIndex === 0 ? t('campaigns.content.main_email', 'Main Email') : t('campaigns.content.followup_number', { number: activeStepIndex })} {t('campaigns.content.content_label', 'Content')}
               </h3>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+              <p className="text-xs font-semibold text-slate-500 mt-1">
                 {t('campaigns.content.preview_desc', { type: activeStepIndex === 0 ? t('campaigns.common.initial', 'initial') : t('campaigns.common.followup', 'follow-up') })}
               </p>
             </div>
             {selectedRecipientForPreview && (
               <div className="px-4 py-2 bg-purple-50 border border-purple-100 rounded-md flex items-center gap-2 animate-in fade-in zoom-in duration-500">
                 <Eye className="w-4 h-4 text-purple-600" />
-                <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">
+                <span className="text-xs font-bold text-purple-700">
                   {t('campaigns.content.recipient_label', 'Recipient')}: {selectedRecipientForPreview.name || selectedRecipientForPreview.email}
                 </span>
               </div>
@@ -103,7 +103,7 @@ const ContentTab = ({
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100">
-                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">
+                <span className="text-xs font-semibold text-slate-500 block mb-2">
                   {t('campaigns.content.subject_line', 'Subject Line')}
                 </span>
                 <p className="text-sm font-bold text-slate-900 tracking-tight">
@@ -112,7 +112,7 @@ const ContentTab = ({
               </div>
               {previews.previewText && activeStepIndex === 0 && (
                 <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100">
-                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">
+                   <span className="text-xs font-semibold text-slate-500 block mb-2">
                     {t('campaigns.content.preview_text', 'Preview Text')}
                   </span>
                   <p className="text-sm font-medium text-slate-600 italic">
@@ -122,7 +122,7 @@ const ContentTab = ({
               )}
               {activeStepIndex > 0 && steps.find((s) => s.stepOrder === activeStepIndex) && (
                 <div className="p-6 bg-slate-50/50 rounded-lg border border-slate-100">
-                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">
+                   <span className="text-xs font-semibold text-slate-500 block mb-1">
                     {t('campaigns.content.wait_time', 'Wait Time')}
                   </span>
                   <p className="text-sm font-bold text-purple-600">
@@ -131,10 +131,10 @@ const ContentTab = ({
                     )}{' '}
                     {t('campaigns.content.days', 'Days')}
                   </p>
-                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mt-2 mb-1">
+                   <span className="text-xs font-semibold text-slate-500 block mt-2 mb-1">
                     {t('campaigns.content.condition', 'Condition')}
                   </span>
-                   <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest">
+                   <p className="text-[10px] font-bold text-purple-500">
                     {steps.find((s) => s.stepOrder === activeStepIndex).condition === 'no_reply'
                       ? t('campaigns.content.if_no_reply', 'If No Reply')
                       : t('campaigns.content.always_send', 'Always Send')}
@@ -145,12 +145,12 @@ const ContentTab = ({
 
             <div className="space-y-4">
                <div className="flex items-center justify-between">
-                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <span className="text-xs font-semibold text-slate-500">
                   {t('campaigns.content.html_preview', 'HTML Preview')}
                 </span>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                  <span className="text-xs font-semibold text-slate-500">
                     {t('campaigns.content.live_preview', 'Live Preview')}
                   </span>
                 </div>
@@ -176,7 +176,7 @@ const ContentTab = ({
                 <Database className="w-5 h-5 text-purple-600" />
                 {t('campaigns.content.dynamic_vars', 'Dynamic Variables')}
               </h3>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+              <p className="text-xs font-semibold text-slate-500 mt-1">
                 {t('campaigns.content.placeholders_desc', 'Placeholders used in this step')}
               </p>
             </div>
@@ -193,11 +193,11 @@ const ContentTab = ({
                   key={placeholder}
                   className="p-6 rounded-lg bg-slate-50/50 border border-slate-100 group hover:border-purple-200 hover:bg-white hover:shadow-sm hover:shadow-purple-500/5 transition-all duration-300"
                 >
-                  <code className="text-[11px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                  <code className="text-xs font-bold text-purple-600 bg-purple-50/50 px-2.5 py-1 rounded-lg border border-purple-100 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                     {placeholder}
                   </code>
                   <div className="mt-4 space-y-1">
-                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest block">
+                    <span className="text-xs font-semibold text-slate-400 block">
                       {t('campaigns.content.sample_value', 'Sample Value')}:
                     </span>
                     <p className="text-[13px] font-bold text-slate-700 tracking-tight truncate">

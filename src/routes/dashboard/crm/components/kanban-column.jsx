@@ -20,10 +20,10 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
             className="w-2 h-2 rounded-full shadow-sm"
             style={{ backgroundColor: stage.color || '#e11d48' }}
           />
-          <h3 className="text-[11px] font-black text-slate-800 tracking-widest uppercase">
+          <h3 className="text-xs font-bold text-slate-800 tracking-tight">
             {t(`crm.stages.${stage.name.toLowerCase().replace(/ /g, '_')}`, stage.name)}
           </h3>
-          <span className="bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg text-[10px] font-black shadow-sm">
+          <span className="bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg text-[10px] font-extrabold shadow-sm">
             {stage.leads.length}
           </span>
         </div>
@@ -31,7 +31,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
           {stage.replyCategory && (
             <div className="group relative">
               <Target className="w-3.5 h-3.5 text-slate-400 hover:text-purple-500 cursor-help transition-colors" />
-              <div className="absolute top-full right-0 mt-2 p-2 bg-white text-slate-900 rounded-lg text-[8px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-sm border border-slate-100 whitespace-nowrap z-50">
+              <div className="absolute top-full right-0 mt-2 p-2 bg-white text-slate-900 rounded-lg text-[10px] font-bold capitalize opacity-0 group-hover:opacity-100 transition-opacity shadow-sm border border-slate-100 whitespace-nowrap z-50">
                 {categories.find((c) => c.id === stage.replyCategory)?.name || stage.replyCategory}
               </div>
             </div>
@@ -46,7 +46,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
       </div>
 
       {/* Sub-header */}
-      <div className="px-4 py-2.5 flex items-center justify-between text-[10px] font-black text-slate-400 tracking-widest bg-white border-b border-slate-50">
+      <div className="px-4 py-2.5 flex items-center justify-between text-xs font-semibold text-slate-400 bg-white border-b border-slate-50">
         <div className="flex gap-1.5">
           <span className="text-slate-700">{stage.leads.length} Leads</span>
           <span>•</span>
@@ -68,7 +68,7 @@ const KanbanColumn = ({ stage, onDeleteStage, onOpenLead, categories }) => {
           {stage.leads.length === 0 && (
             <div className="h-28 border-2 border-dashed border-slate-100 rounded-lg flex flex-col items-center justify-center gap-2 bg-white/50">
               <Target className="w-6 h-6 text-slate-200" />
-              <p className="text-[10px] font-black text-slate-300 tracking-widest">
+              <p className="text-xs font-semibold text-slate-300">
                 Drop leads here
               </p>
             </div>

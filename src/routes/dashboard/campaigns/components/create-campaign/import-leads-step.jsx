@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import {
@@ -81,7 +81,7 @@ const ImportLeadsStep = ({
     <div className="max-w-4xl mx-auto space-y-12 pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Minimal Header */}
       <div className="text-center space-y-3">
-        <h2 className="text-4xl font-black text-slate-900 tracking-tight">Add Leads to Campaign</h2>
+        <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Add Leads to Campaign</h2>
         <p className="text-base font-medium text-slate-400 max-w-md mx-auto">
           Choose how you&apos;d like to import your prospects for this sequence
         </p>
@@ -95,11 +95,11 @@ const ImportLeadsStep = ({
               <div className="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shadow-sm">
                 <Upload className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h3 className="text-sm font-bold text-slate-800">
                 New Audience
               </h3>
             </div>
-            <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1 rounded-full">
               CSV / XLS supported
             </span>
           </div>
@@ -131,7 +131,7 @@ const ImportLeadsStep = ({
 
         <div className="relative flex items-center py-2">
           <div className="grow border-t-2 border-slate-100"></div>
-          <span className="shrink-0 mx-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100/50">
+          <span className="shrink-0 mx-6 text-xs font-bold text-slate-400 bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100/50">
             OR SELECT FROM
           </span>
           <div className="grow border-t-2 border-slate-100"></div>
@@ -144,11 +144,11 @@ const ImportLeadsStep = ({
               <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shadow-sm">
                 <Database className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h3 className="text-sm font-bold text-slate-800">
                 Saved Audiences
               </h3>
             </div>
-            <button className="text-[10px] font-black text-purple-600 uppercase tracking-widest hover:underline underline-offset-4">
+            <button className="text-xs font-bold text-purple-600 hover:underline underline-offset-4">
               Manage Lists
             </button>
           </div>
@@ -184,7 +184,7 @@ const ImportLeadsStep = ({
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-xs font-black text-slate-600  uppercase tracking-widest px-3">
+                <p className="text-xs font-bold text-slate-600 px-3">
                   Recent Audiences
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
@@ -207,7 +207,7 @@ const ImportLeadsStep = ({
                             {batch.originalFilename}
                           </p>
                           <p
-                            className={`text-[10px] font-bold uppercase tracking-wider mt-0.5 ${watchListBatchId === batch.id ? 'text-white/60' : 'text-slate-400'}`}
+                            className={`text-[11px] font-bold mt-0.5 ${watchListBatchId === batch.id ? 'text-white/60' : 'text-slate-400'}`}
                           >
                             {batch.verification?.valid ?? batch.validRecords} PROSPECTS
                           </p>

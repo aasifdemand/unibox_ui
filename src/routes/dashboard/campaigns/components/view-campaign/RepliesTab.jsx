@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle, Eye, Reply, ShieldCheck } from 'lucide-react';
 import Button from '../../../../../components/ui/button';
@@ -12,19 +12,19 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
       <div className="premium-card bg-white border-slate-200/60 p-10 shadow-sm shadow-slate-900/2">
         <div className="flex items-center justify-between mb-10">
           <div>
-            <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <h3 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <Reply className="w-5 h-5 text-purple-600" />
               {t('campaigns.replies.title', 'Campaign Replies')}
             </h3>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+            <p className="text-xs font-semibold text-slate-500 mt-1">
               {t('campaigns.replies.desc', 'Manage replies from this campaign')}
             </p>
           </div>
           <div className="flex flex-col items-end">
-            <span className="text-3xl font-black text-slate-900 tabular-nums">
+            <span className="text-3xl font-bold text-slate-900 tabular-nums">
               {repliesList.length}
             </span>
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+            <p className="text-xs font-bold text-slate-500 leading-none">
               {t('campaigns.replies.total_label', 'Total Replies')}
             </p>
           </div>
@@ -38,7 +38,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                 <div className="w-2 h-2 bg-purple-600 rounded-full animate-ping"></div>
               </div>
             </div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
+            <p className="text-xs font-bold text-slate-400 animate-pulse">
               {t('campaigns.replies.loading', 'Loading replies...')}
             </p>
           </div>
@@ -60,17 +60,17 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                           <MessageCircle className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-tight">
+                          <h4 className="text-sm font-bold text-slate-900 tracking-tight">
                             {recipient?.name || reply.replyFrom?.split('@')[0] || t('campaigns.common.unknown', 'Unknown')}
                           </h4>
-                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                          <span className="text-xs font-semibold text-slate-500">
                             {reply.replyFrom || t('campaigns.common.no_email', 'No Email')}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-sm font-black text-slate-800 tracking-tight">
+                        <p className="text-sm font-bold text-slate-800 tracking-tight">
                           {reply.subject || t('campaigns.common.no_subject', 'No Subject')}
                         </p>
                         <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 italic">
@@ -86,15 +86,15 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                       <div className="flex items-center gap-4 pt-2">
                         <div className="flex items-center gap-1.5 px-3 py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
                           <ShieldCheck className="w-3 h-3 text-purple-500" />
-                          <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                          <span className="text-[10px] font-bold text-slate-500 capitalize">
                             {recipient?.status || 'Replied'}
                           </span>
                         </div>
-                        <span className="text-[11px] font-black text-slate-500 tabular-nums uppercase">
+                        <span className="text-[11px] font-bold text-slate-500 tabular-nums">
                           {t('campaigns.replies.received_label', 'Received')}: {formatDate(reply.receivedAt)}
                         </span>
                         {reply.email?.subject && (
-                          <span className="text-[11px] font-black text-slate-300 tabular-nums uppercase">
+                          <span className="text-xs font-bold text-slate-300 tabular-nums">
                             Re: {reply.email.subject}
                           </span>
                         )}
@@ -104,7 +104,7 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                     <Button
                       onClick={() => viewReply(reply)}
                       variant="primary"
-                      className="h-12 px-6 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-sm shadow-purple-600/20 group-hover:shadow-purple-500/20 active:scale-95 transition-all flex items-center gap-2 shrink-0 self-center"
+                      className="h-12 px-6 rounded-lg font-bold text-xs shadow-sm shadow-purple-600/20 group-hover:shadow-purple-500/20 active:scale-95 transition-all flex items-center gap-2 shrink-0 self-center"
                     >
                       <Eye className="w-4 h-4" />
                       {t('campaigns.replies.view_msg', 'View Message')}
@@ -124,8 +124,8 @@ const RepliesTab = ({ replies, repliesLoading, formatDate, viewReply }) => {
                 <ShieldCheck className="w-5 h-5 text-purple-200" />
               </div>
             </div>
-            <h4 className="text-xl font-black text-slate-900 tracking-tight">{t('campaigns.replies.empty_title', 'No replies yet')}</h4>
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-2 max-w-xs mx-auto leading-relaxed">
+            <h4 className="text-xl font-bold text-slate-900 tracking-tight">{t('campaigns.replies.empty_title', 'No replies yet')}</h4>
+            <p className="text-xs font-semibold text-slate-500 mt-2 max-w-xs mx-auto leading-relaxed">
               {t('campaigns.replies.empty_desc', 'When you receive replies from this campaign, they will appear here.')}
             </p>
           </div>

@@ -48,14 +48,14 @@ const LeadCard = ({ lead, onClick }) => {
 
       <div className="flex items-start justify-between relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center text-xs font-black text-slate-400 group-hover:bg-purple-600 group-hover:text-white group-hover:border-purple-500 transition-all duration-300">
+          <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center text-xs font-bold text-slate-400 group-hover:bg-purple-600 group-hover:text-white group-hover:border-purple-500 transition-all duration-300">
             {initials}
           </div>
           <div className="flex flex-col">
-            <h4 className="text-sm font-black text-slate-800 tracking-tight leading-none truncate max-w-[140px]">
+            <h4 className="text-sm font-bold text-slate-800 tracking-tight leading-none truncate max-w-[140px]">
               {contact?.name || contact?.normalizedEmail?.split('@')[0]}
             </h4>
-            <span className="text-[10px] font-bold text-slate-400 tracking-wider truncate max-w-[100px] mt-1">
+            <span className="text-[11px] font-semibold text-slate-400 truncate max-w-[100px] mt-1">
               {contact?.metadata?.company || 'Personal'}
             </span>
           </div>
@@ -67,7 +67,7 @@ const LeadCard = ({ lead, onClick }) => {
           {lead.metadata?.lastIntent && (
             <div className="flex items-center gap-1.5 px-2 py-1 bg-purple-50 border border-purple-100/50 rounded-full shadow-sm">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
-              <span className="text-[9px] font-black text-purple-600 tracking-tighter">
+              <span className="text-[10px] font-bold text-purple-600 capitalize">
                 {lead.metadata.lastIntent.replace('_', ' ')}
               </span>
             </div>
@@ -84,12 +84,12 @@ const LeadCard = ({ lead, onClick }) => {
         <div className="flex items-center justify-between pt-1">
           <div className="flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 text-slate-300" />
-            <span className="text-[10px] font-bold text-slate-400 tracking-widest">
+            <span className="text-[11px] font-semibold text-slate-400">
               {formatDate(lastActivity)}
             </span>
           </div>
           <div
-            className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all ${value > 0 ? 'bg-purple-50 text-purple-600 border-purple-100' : 'bg-slate-50 text-slate-400 border-slate-100'}`}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all ${value > 0 ? 'bg-purple-50 text-purple-600 border-purple-100' : 'bg-slate-50 text-slate-400 border-slate-100'}`}
           >
             ${Number(value).toLocaleString()}
           </div>
@@ -101,7 +101,7 @@ const LeadCard = ({ lead, onClick }) => {
           <Mail className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />
           <MessageSquare className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100" />
         </div>
-        <button className="flex items-center gap-1.5 text-[9px] font-black tracking-[0.15em] hover:underline decoration-2 underline-offset-4">
+        <button className="flex items-center gap-1.5 text-[10px] font-bold hover:underline decoration-2 underline-offset-4">
           View Profile <ExternalLink className="w-2.5 h-2.5" />
         </button>
       </div>

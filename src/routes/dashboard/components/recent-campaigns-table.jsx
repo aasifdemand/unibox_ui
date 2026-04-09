@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
@@ -41,7 +41,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('dashboard.table.campaign')}
             </span>
             <SortIndicator column={column} />
@@ -78,7 +78,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center bg-white rounded-full m-1 shadow-inner">
-                  <span className="text-[9px] font-black text-slate-600">
+                  <span className="text-[10px] font-bold text-slate-600">
                     {campaign.status === 'paused' ? '||' : `${Math.round(campaign.progress)}%`}
                   </span>
                 </div>
@@ -88,7 +88,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
                 <p className="text-sm font-bold text-slate-900 mb-0.5 group-hover/row:text-purple-600 transition-colors">
                   {campaign.name}
                 </p>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+                <span className="text-[11px] font-semibold text-slate-500 capitalize leading-none">
                   {campaign.status}
                 </span>
               </div>
@@ -103,7 +103,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('dashboard.table.status')}
             </span>
             <SortIndicator column={column} />
@@ -113,7 +113,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
           const campaign = row.original;
           return (
             <span
-              className={`inline-flex items-center px-4 py-1.5 rounded-md text-[9px] font-black uppercase tracking-widest ${campaign.statusColor} border border-white/50 shadow-xs transition-all group-hover/row:scale-105 group-hover/row:shadow-md`}
+              className={`inline-flex items-center px-4 py-1.5 rounded-md text-[10px] font-bold capitalize ${campaign.statusColor} border border-white/50 shadow-xs transition-all group-hover/row:scale-105 group-hover/row:shadow-md`}
             >
               <span className="me-2 opacity-70 scale-90">{campaign.statusIcon}</span>
               {campaign.statusLabel}
@@ -128,7 +128,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('dashboard.table.reach')}
             </span>
             <SortIndicator column={column} />
@@ -136,10 +136,10 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
         ),
         cell: ({ row }) => (
           <div className="flex flex-col">
-            <span className="text-sm font-black text-slate-900 tracking-tight group-hover/row:text-purple-600 transition-colors">
+            <span className="text-sm font-bold text-slate-900 tracking-tight group-hover/row:text-purple-600 transition-colors">
               {row.original.recipients}
             </span>
-            <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
+            <span className="text-[11px] text-slate-500 font-semibold capitalize">
               {t('dashboard.table.recipients')}
             </span>
           </div>
@@ -148,35 +148,35 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
       {
         id: 'engagement',
         header: () => (
-          <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+          <span className="text-xs font-semibold text-slate-500 select-none">
             {t('dashboard.table.engagement')}
           </span>
         ),
         cell: ({ row }) => (
           <div className="flex items-center gap-6">
             <div className="flex flex-col">
-              <span className="text-sm font-black text-purple-600 tracking-tight">
+              <span className="text-sm font-bold text-purple-600 tracking-tight">
                 {row.original.openRate}
               </span>
-              <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
+              <span className="text-[10px] text-slate-400 font-bold">
                 {t('dashboard.table.open')}
               </span>
             </div>
             <div className="w-px h-6 bg-slate-100"></div>
             <div className="flex flex-col">
-              <span className="text-sm font-black text-purple-600 tracking-tight">
+              <span className="text-sm font-bold text-purple-600 tracking-tight">
                 {row.original.clickRate}
               </span>
-              <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
+              <span className="text-[10px] text-slate-400 font-bold">
                 {t('dashboard.table.click')}
               </span>
             </div>
             <div className="w-px h-6 bg-slate-100"></div>
             <div className="flex flex-col">
-              <span className="text-sm font-black text-purple-600 tracking-tight">
+              <span className="text-sm font-bold text-purple-600 tracking-tight">
                 {row.original.bounceRate}
               </span>
-              <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">
+              <span className="text-[11px] text-slate-500 font-semibold capitalize">
                 Bounce
               </span>
             </div>
@@ -190,7 +190,7 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('dashboard.table.launch_date')}
             </span>
             <SortIndicator column={column} />
@@ -198,20 +198,20 @@ const RecentCampaignsTable = ({ recentCampaigns = [] }) => {
         ),
         cell: ({ row }) => (
           <div className="flex flex-col">
-            <span className="text-[10px] font-black text-slate-600 uppercase tracking-tight group-hover/row:text-slate-900 transition-colors">
+            <span className="text-[11px] font-bold text-slate-600 group-hover/row:text-slate-900 transition-colors">
               {row.original.sentDate}
             </span>
-            <span className="text-[8px] text-slate-300 font-bold uppercase tracking-widest">
+            <span className="text-[9px] text-slate-300 font-bold">
               {t('dashboard.table.launched')}
             </span>
-          </div>
+        </div>
         ),
       },
       {
         id: 'actions',
         header: () => (
           <div className="text-right">
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('dashboard.table.actions')}
             </span>
           </div>

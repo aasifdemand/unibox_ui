@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import {
@@ -242,10 +242,10 @@ const Step2Audience = ({
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-slate-800 uppercase tracking-tighter">
+              <h3 className="text-xl font-bold text-slate-800">
                 {t('campaigns.recipients_senders')}
               </h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+              <p className="text-xs font-semibold text-slate-400 mt-0.5">
                 {t('campaigns.setup_audience')}
               </p>
             </div>
@@ -253,17 +253,17 @@ const Step2Audience = ({
           <div className="hidden md:flex gap-4">
             <button
               onClick={() => setShowUploadModal(true)}
-              className="px-6 py-2.5 bg-white border-2 border-slate-100 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-600 hover:border-purple-400 hover:text-purple-600 transition-all shadow-sm"
+              className="px-6 py-2.5 bg-white border-2 border-slate-100 rounded-md text-xs font-bold text-slate-600 hover:border-purple-400 hover:text-purple-600 transition-all shadow-sm"
             >
               {t('campaigns.add_contacts')}
             </button>
             <button
               onClick={() => setShowSenderModal(true)}
-              className="px-6 py-2.5 bg-purple-600 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-500/20 hover:shadow-purple-500/40 transition-all"
+              className="px-6 py-2.5 bg-purple-600 rounded-md text-xs font-bold text-white shadow-sm shadow-purple-500/20 hover:shadow-purple-500/40 transition-all"
             >
               {t('campaigns.add_sender')}
             </button>
-          </div>
+        </div>
         </div>
       </div>
 
@@ -274,34 +274,34 @@ const Step2Audience = ({
             <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center">
               <FileSpreadsheet className="w-4 h-4 text-purple-600" />
             </div>
-            <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest">
+            <h4 className="text-xs font-bold text-slate-800">
               {t('campaigns.selected_audience')}
             </h4>
           </div>
           {verifiedBatches.length > 0 && (
-            <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
+            <span className="text-[10px] font-bold text-slate-400 px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
               {verifiedBatches.length} {t('campaigns.lists_available')}
             </span>
-          )}
+        )}
         </div>
 
         {isLoadingBatches ? (
           <div className="flex flex-col items-center justify-center py-16 bg-slate-50/30 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Loader2 className="w-8 h-8 text-purple-500/20 animate-spin" />
-            <p className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest mt-4">
+            <p className="text-xs font-bold text-slate-300 mt-4">
               {t('campaigns.loading')}
             </p>
-          </div>
+        </div>
         ) : verifiedBatches.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/20 rounded-[2.5rem] border-2 border-dashed border-slate-200">
             <Users className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-            <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-2">
+            <h3 className="text-xs font-bold text-slate-800 mb-2">
               {t('campaigns.contact_library_empty')}
             </h3>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
+            <p className="text-xs font-semibold text-slate-400 mb-8">
               {t('campaigns.upload_hint')}
             </p>
-            <Button onClick={() => setShowUploadModal(true)} className="rounded-lg px-10">
+          <Button onClick={() => setShowUploadModal(true)} className="rounded-lg px-10">
               {t('campaigns.upload_now')}
             </Button>
           </div>
@@ -332,17 +332,17 @@ const Step2Audience = ({
                   )}
                 </div>
                 <h4
-                  className={`font-extrabold truncate text-[11px] uppercase tracking-tight mb-1 ${watchListBatchId === batch.id ? 'text-purple-900' : 'text-slate-800'}`}
+                  className={`font-bold truncate text-[11px] mb-1 ${watchListBatchId === batch.id ? 'text-purple-900' : 'text-slate-800'}`}
                 >
                   {batch.originalFilename}
                 </h4>
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
                     <Users className="w-3 h-3 text-slate-400" />
-                    <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
+                    <span className="text-[11px] font-bold text-slate-500">
                       {batch.validRecords || 0}
                     </span>
-                  </div>
+                </div>
                 </div>
               </div>
             ))}
@@ -358,14 +358,14 @@ const Step2Audience = ({
               <Mail className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <h4 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+              <h4 className="text-sm font-bold text-slate-800">
                 {t('campaigns.sending_accounts')}
               </h4>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+              <p className="text-xs font-semibold text-slate-400 mt-0.5">
                 {t('campaigns.choose_sender')}
               </p>
             </div>
-          </div>
+        </div>
 
           {totalSendersPages > 1 && (
             <div className="flex items-center gap-3 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
@@ -377,16 +377,16 @@ const Step2Audience = ({
                 <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
               </button>
               <div className="flex items-center gap-1.5 px-3">
-                <span className="text-[10px] font-black text-purple-600 bg-purple-50 w-6 h-6 rounded-lg flex items-center justify-center">
+                <span className="text-xs font-bold text-purple-600 bg-purple-50 w-6 h-6 rounded-lg flex items-center justify-center">
                   {sendersPage}
                 </span>
-                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest px-1">
+                <span className="text-xs font-bold text-slate-300 px-1">
                   {t('campaigns.pagination_of')}
                 </span>
-                <span className="text-[10px] font-black text-slate-500 w-6 h-6 rounded-lg flex items-center justify-center">
+                <span className="text-xs font-bold text-slate-500 w-6 h-6 rounded-lg flex items-center justify-center">
                   {totalSendersPages}
                 </span>
-              </div>
+            </div>
               <button
                 disabled={sendersPage === totalSendersPages}
                 onClick={() => setSendersPage((p) => p + 1)}
@@ -401,20 +401,20 @@ const Step2Audience = ({
         {isLoadingSenders ? (
           <div className="py-20 bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200 flex flex-col items-center">
             <Loader2 className="w-10 h-10 text-purple-500/20 animate-spin" />
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mt-6 animate-pulse">
+            <p className="text-xs font-bold text-slate-300 mt-6 animate-pulse">
               {t('campaigns.syncing_accounts')}
             </p>
-          </div>
+        </div>
         ) : senders.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/20 rounded-[3rem] border-2 border-dashed border-slate-200">
             <Mail className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-2">
+            <h3 className="text-xs font-bold text-slate-800 mb-2">
               {t('campaigns.no_senders_found')}
             </h3>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8">
+            <p className="text-xs font-semibold text-slate-400 mb-8">
               {t('campaigns.connect_sender_hint')}
             </p>
-            <Button onClick={() => setShowSenderModal(true)} className="rounded-lg px-10">
+          <Button onClick={() => setShowSenderModal(true)} className="rounded-lg px-10">
               {t('campaigns.connect_account')}
             </Button>
           </div>
@@ -455,14 +455,14 @@ const Step2Audience = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`text-[11px] font-black uppercase tracking-tight truncate mb-0.5 ${isSelected ? 'text-purple-900' : 'text-slate-800'}`}
+                      className={`text-[11px] font-bold truncate mb-0.5 ${isSelected ? 'text-purple-900' : 'text-slate-800'}`}
                     >
                       {sender.displayName}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-bold truncate opacity-80 uppercase tracking-widest">
+                    <p className="text-[11px] font-bold text-slate-400 truncate opacity-80">
                       {sender.email}
                     </p>
-                  </div>
+                </div>
                   {isSelected && (
                     <div className="w-7 h-7 bg-purple-600 rounded-full flex items-center justify-center shadow-sm shadow-purple-500/30 ring-4 ring-white">
                       <Check className="w-4 h-4 text-white" />

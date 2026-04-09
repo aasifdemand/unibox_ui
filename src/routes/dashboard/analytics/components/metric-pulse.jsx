@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, MessageCircle, AlertCircle, CheckCircle2, TrendingUp } from 'lucide-react';
 
@@ -54,7 +54,7 @@ const MetricPulse = ({ metrics, overview }) => {
           <h3 className="text-xl font-bold text-slate-800 tracking-tight">
             {t('analytics.metric_pulse_title')}
           </h3>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs font-semibold text-slate-500 mt-1">
             {t('analytics.metric_pulse_subtitle')}
           </p>
         </div>
@@ -74,9 +74,9 @@ const MetricPulse = ({ metrics, overview }) => {
                 <span className="text-sm font-bold text-slate-700">{item.label}</span>
               </div>
               <div className="text-end">
-                <span className="text-lg font-black text-slate-800">{item.value}%</span>
+                <span className="text-lg font-bold text-slate-800">{item.value}%</span>
                 <p
-                  className={`text-[9px] font-black uppercase tracking-tighter text-${item.color}-600`}
+                  className={`text-[10px] font-bold text-${item.color}-600`}
                 >
                   {item.status}
                 </p>
@@ -97,7 +97,7 @@ const MetricPulse = ({ metrics, overview }) => {
       <div className="mt-10 pt-6 border-t border-slate-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+          <span className="text-xs font-bold text-slate-400">
             {t('analytics.live_system_pulse')}
           </span>
         </div>

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '../../../../hooks/useAuth';
 import { motion, AnimatePresence } from 'motion/react';
@@ -62,6 +62,30 @@ const BatchDetailsModal = ({
     }
   };
 
+  const getStatusBadge = (type, isActive) => {
+    if (!isActive) return null;
+    
+    if (type === 'unsubscribed') {
+      return (
+        <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-orange-50 text-orange-600 border border-orange-100 shadow-xs">
+          <Mail className="w-2.5 h-2.5" />
+          <span className="text-[10px] font-bold">Unsubscribed</span>
+        </div>
+      );
+    }
+    
+    if (type === 'blacklisted') {
+      return (
+        <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 shadow-xs">
+          <XCircle className="w-2.5 h-2.5" />
+          <span className="text-[10px] font-bold">Blacklisted</span>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -107,7 +131,7 @@ const BatchDetailsModal = ({
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-4">
                 <div className="w-12 h-12 border-4 border-slate-100 border-t-purple-600 rounded-full animate-spin" />
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-xs font-bold text-slate-400">
                   Loading batch contacts...
                 </p>
               </div>
@@ -142,11 +166,11 @@ const BatchDetailsModal = ({
                       className={`p-4 rounded-lg bg-${stat.color}-50/50 border border-${stat.color}-100`}
                     >
                       <p
-                        className={`text-[10px] font-black text-${stat.color}-600/60 uppercase tracking-widest mb-1`}
+                        className={`text-xs font-bold text-${stat.color}-600/60 mb-1`}
                       >
                         {stat.label}
                       </p>
-                      <p className={`text-2xl font-black text-${stat.color}-600`}>
+                      <p className={`text-2xl font-bold text-${stat.color}-600`}>
                         {stat.value.toLocaleString()}
                       </p>
                     </div>
@@ -188,13 +212,17 @@ const BatchDetailsModal = ({
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              {getVerificationIcon(contact.verificationStatus)}
-                              <span
-                                className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-lg ${getVerificationBadgeClass(contact.verificationStatus)}`}
-                              >
-                                {contact.verificationStatus || 'unverified'}
-                              </span>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <div className="flex items-center gap-2 mr-1">
+                                {getVerificationIcon(contact.verificationStatus)}
+                                <span
+                                  className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-lg ${getVerificationBadgeClass(contact.verificationStatus)}`}
+                                >
+                                  {contact.verificationStatus || 'unverified'}
+                                </span>
+                              </div>
+                              {getStatusBadge('unsubscribed', contact.unsubscribed)}
+                              {getStatusBadge('blacklisted', contact.blacklisted)}
                             </div>
                           </td>
                           <td className="px-6 py-4">
@@ -224,7 +252,7 @@ const BatchDetailsModal = ({
           {/* Footer / Pagination */}
           {!isLoading && pagination.pages > 1 && (
             <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
-              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+              <p className="text-xs font-bold text-slate-400">
                 Total {pagination.total?.toLocaleString()} Records
               </p>
               <div className="flex items-center gap-2">
@@ -236,7 +264,7 @@ const BatchDetailsModal = ({
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <div className="px-4 flex items-center gap-2">
-                  <span className="text-xs font-black text-purple-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200/60">
+                  <span className="text-xs font-bold text-purple-600 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200/60">
                     {recordsPage}
                   </span>
                   <span className="text-[10px] font-black text-slate-300 uppercase">of</span>

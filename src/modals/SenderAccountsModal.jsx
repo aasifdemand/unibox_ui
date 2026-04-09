@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Shield, Plus, Check, Activity } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -45,10 +45,10 @@ const SenderAccountsModal = ({
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
+                <h2 className="text-2xl font-bold text-white tracking-tight leading-none">
                   {t('campaigns.active_senders', 'Active Accounts')}
                 </h2>
-                <p className="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mt-1">
+                <p className="text-xs font-semibold text-white/70 mt-1">
                   {t('campaigns.select_accounts_desc', 'Connect accounts to this sequence')}
                 </p>
               </motion.div>
@@ -64,25 +64,25 @@ const SenderAccountsModal = ({
                   <th className="py-5 px-6 border-b border-slate-200/60 text-left w-10">
                     <div className="w-4 h-4 rounded border border-slate-300" />
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.account_info', 'Account Info')}
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.status', 'Status')}
                   </th>
                   <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left w-48">
                     {t('campaigns.daily_limit', 'Daily Limit Usage')}
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.warmup_status', 'Warmup Status')}
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.time_gap', 'Min. Time Gap')}
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.shared_status', 'Shared Status')}
                   </th>
-                  <th className="py-5 px-6 border-b border-slate-200/60 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">
+                  <th className="py-5 px-6 border-b border-slate-200/60 text-xs font-semibold text-slate-400 text-left">
                     {t('campaigns.associated_leads', 'Associated Leads')}
                   </th>
                   <th className="py-5 px-6 border-b border-slate-200/60 text-right"></th>
@@ -112,7 +112,7 @@ const SenderAccountsModal = ({
                       {/* Account Info */}
                       <td className="py-4 px-6 border-b border-slate-100">
                         <div className="flex flex-col">
-                          <span className="text-sm font-black text-slate-800 tracking-tight group-hover:text-purple-600 transition-colors">
+                          <span className="text-sm font-bold text-slate-800 tracking-tight group-hover:text-purple-600 transition-colors">
                             {sender.displayName || sender.email.split('@')[0]}
                           </span>
                           <span className="text-xs font-bold text-slate-400">
@@ -125,7 +125,7 @@ const SenderAccountsModal = ({
                       <td className="py-4 px-6 border-b border-slate-100">
                         <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-50 border border-purple-100/50 w-fit">
                           <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
-                          <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">
+                          <span className="text-xs font-bold text-purple-700">
                             {sender.isVerified ? 'Active' : 'Unverified'}
                           </span>
                         </div>
@@ -138,7 +138,7 @@ const SenderAccountsModal = ({
                             <span className="text-[11px] font-black text-slate-700 tabular-nums">
                               {currentUsage}/{usageLimit}
                             </span>
-                            <span className="text-[10px] font-black text-slate-400 tabular-nums">
+                            <span className="text-[10px] font-bold text-slate-400 tabular-nums">
                               {usagePercent}%
                             </span>
                           </div>

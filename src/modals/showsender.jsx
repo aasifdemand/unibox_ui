@@ -1,4 +1,4 @@
-﻿import {
+import {
   Mail,
   RefreshCw,
   Shield,
@@ -114,10 +114,10 @@ const ShowSender = ({
               <Mail className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
+              <h3 className="text-xl font-bold text-white tracking-tight">
                 {t('mailboxes.add_mailbox')}
               </h3>
-              <p className="text-[10px] font-bold text-purple-100/60 uppercase tracking-widest mt-0.5">
+              <p className="text-xs font-semibold text-purple-100/60 mt-0.5">
                 Connect your email account in minutes
               </p>
             </div>
@@ -130,12 +130,12 @@ const ShowSender = ({
         <div className="flex items-center gap-8 justify-center mb-10 bg-slate-50/50 border border-slate-200/60 py-4 px-8 rounded-2xl pointer-events-none shadow-xs">
             <div className="flex items-center gap-3">
                 <div className={`w-7 h-7 rounded-full ${step === 1 ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20' : 'bg-slate-200 text-slate-500'} flex items-center justify-center text-[11px] font-black transition-all duration-500`}>1</div>
-                <span className={`text-[11px] font-bold uppercase tracking-[0.2em] ${step === 1 ? 'text-slate-900' : 'text-slate-400'}`}>Selection</span>
+                <span className={`text-xs font-bold ${step === 1 ? 'text-slate-900' : 'text-slate-400'}`}>Selection</span>
             </div>
             <div className="w-8 h-px bg-slate-200" />
             <div className="flex items-center gap-3">
                 <div className={`w-7 h-7 rounded-full ${step === 2 ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20' : 'bg-slate-200 text-slate-500'} flex items-center justify-center text-[11px] font-black transition-all duration-500`}>2</div>
-                <span className={`text-[11px] font-bold uppercase tracking-[0.2em] ${step === 2 ? 'text-slate-900' : 'text-slate-400'}`}>Setup</span>
+                <span className={`text-xs font-bold ${step === 2 ? 'text-slate-900' : 'text-slate-400'}`}>Setup</span>
             </div>
         </div>
 
@@ -165,8 +165,8 @@ const ShowSender = ({
                                     <Zap className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase">Unibox Infrastructure</h4>
-                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">High reputation sending channels</p>
+                                    <h4 className="text-sm font-bold text-slate-800 tracking-tight">Unibox Infrastructure</h4>
+                                    <p className="text-xs font-semibold text-slate-400 mt-0.5">High reputation sending channels</p>
                                 </div>
                             </div>
                         </div>
@@ -180,14 +180,14 @@ const ShowSender = ({
                                     <div className="w-4 h-4 bg-purple-100 rounded-full flex items-center justify-center">
                                         <CheckCircle2 className="w-3 text-purple-600" />
                                     </div>
-                                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">{feature}</span>
+                                    <span className="text-xs font-bold text-slate-600 tracking-tight">{feature}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Provider Selection */}
                         <div className="pt-6 border-t border-purple-100/40">
-                            <h5 className="text-[9px] font-black text-slate-800 uppercase tracking-[0.2em] mb-4">Choose your provider:</h5>
+                            <h5 className="text-xs font-bold text-slate-800 mb-4">Choose your provider:</h5>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {[
                                    { id: 'gmail', label: 'Google OAuth', icon: Google },
@@ -205,8 +205,8 @@ const ShowSender = ({
                                         <div className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center mb-3 transition-transform group-hover:scale-110 text-purple-600">
                                             <provider.icon className="w-6 h-6" />
                                         </div>
-                                        <span className="text-[11px] font-extrabold text-slate-800 uppercase tracking-tight mb-2">{provider.label}</span>
-                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full text-[8px] font-bold text-slate-400 group-hover:text-purple-600 transition-all uppercase tracking-widest">
+                                        <span className="text-xs font-bold text-slate-800 tracking-tight mb-2">{provider.label}</span>
+                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full text-[10px] font-bold text-slate-400 group-hover:text-purple-600 transition-all">
                                             <Play className="w-2.5 h-2.5 fill-current" />
                                             Tutorial
                                         </div>
@@ -239,22 +239,22 @@ const ShowSender = ({
                         <Shield className="w-8 h-8" />
                    </div>
                    <div>
-                        <h4 className="text-lg font-extrabold text-slate-800 tracking-tight uppercase">Authorize Account</h4>
-                        <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest max-w-xs mx-auto leading-relaxed">
+                        <h4 className="text-lg font-bold text-slate-800 tracking-tight">Authorize Account</h4>
+                        <p className="text-xs font-semibold text-slate-400 mt-2 max-w-xs mx-auto leading-relaxed">
                             Complete authentication securely via {senderType === 'gmail' ? 'Google' : 'Microsoft'} OAuth.
                         </p>
                    </div>
                    <div className="flex flex-col gap-3 max-w-xs mx-auto">
                         <button
                             onClick={senderType === 'gmail' ? handleGmailOAuth : handleOutlookOAuth}
-                            className={`w-full py-4 rounded-lg text-white font-extrabold uppercase tracking-widest shadow-md shadow-purple-600/10 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-700`}
+                            className={`w-full py-4 rounded-lg text-white font-bold text-sm shadow-md shadow-purple-600/10 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-700`}
                         >
                             {senderType === 'gmail' ? <Google className="w-5 h-5 text-white" /> : <Microsoft className="w-5 h-5 text-white" />}
                             Connect {senderType === 'gmail' ? 'Google' : 'Outlook'}
                         </button>
                         <button 
                             onClick={() => setStep(1)}
-                            className="flex items-center justify-center gap-2 text-[9px] font-black text-slate-400 hover:text-slate-800 uppercase tracking-widest transition-colors font-mono"
+                            className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-800 transition-colors"
                         >
                             <ArrowLeft className="w-3.5 h-3.5 text-purple-600" />
                             Back to Methods
@@ -269,8 +269,8 @@ const ShowSender = ({
                                 <Smtp className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h4 className="text-[13px] font-black text-slate-800 tracking-tight uppercase">Custom SMTP Setup</h4>
-                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Configure your own server</p>
+                                <h4 className="text-sm font-bold text-slate-800 tracking-tight">Custom SMTP Setup</h4>
+                                <p className="text-xs font-semibold text-slate-400">Configure your own server</p>
                             </div>
                         </div>
                         <button 
@@ -376,7 +376,7 @@ const ShowSender = ({
                                 />
                                 <div className="w-10 h-6 bg-slate-200 peer-checked:bg-purple-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-4" />
                            </div>
-                           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">SSL/TLS Security</span>
+                           <span className="text-[10px] font-bold text-slate-500 uppercase">SSL/TLS Security</span>
                         </label>
                         <div className="flex gap-3">
                              <button

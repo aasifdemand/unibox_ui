@@ -1,4 +1,4 @@
-﻿import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { EyeOff, MailCheck, MailQuestion, RefreshCw, Send, Trash2, XCircle } from 'lucide-react';
 
 const MessageActionsHeader = ({
@@ -62,7 +62,7 @@ const MessageActionsHeader = ({
         <button
           onClick={onSync}
           disabled={isSyncing}
-          className={`flex items-center gap-2 px-4 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${
+          className={`flex items-center gap-2 px-4 py-3 rounded-md text-xs font-bold transition-all ${
             isSyncing
               ? 'bg-white text-purple-600 shadow-sm border border-slate-200'
               : 'text-slate-500 hover:text-slate-900'
@@ -74,7 +74,7 @@ const MessageActionsHeader = ({
 
         <button
           onClick={onFilterUnread}
-          className={`flex items-center gap-2 px-4 py-3 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${
+          className={`flex items-center gap-2 px-4 py-3 rounded-md text-xs font-bold transition-all ${
             filterUnreadActive
               ? 'bg-purple-600 text-white shadow-sm shadow-purple-500/20'
               : 'text-slate-500 hover:text-slate-900'
@@ -87,7 +87,7 @@ const MessageActionsHeader = ({
         {showRefreshToken && (
           <button
             onClick={onRefreshToken}
-            className="flex items-center gap-2 px-4 py-2 rounded-md text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-slate-900 transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-md text-xs font-bold text-slate-500 hover:text-slate-900 transition-all"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>{t('mailboxes.auth_label')}</span>
@@ -99,7 +99,7 @@ const MessageActionsHeader = ({
 
       <button
         onClick={onDisconnect}
-        className="group flex items-center gap-2 px-4 py-2.5 rounded-lg text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] hover:text-purple-600 hover:bg-purple-50 transition-all border border-transparent hover:border-purple-100"
+        className="group flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-all border border-transparent hover:border-purple-100"
         title={t('mailboxes.disconnect_account')}
       >
         <EyeOff className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />

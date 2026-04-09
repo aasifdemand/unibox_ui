@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Edit, Trash2, Play, Pause, Download, Loader2, Rocket } from 'lucide-react';
@@ -17,13 +17,13 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
         </Link>
         <div>
           <div className="flex items-center gap-4 mb-2">
-            <h1 className="text-4xl font-black text-slate-900 tracking-tighter">
+            <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
               {previews.campaignName}
             </h1>
             <div className="scale-110 origin-left">{getStatusBadge(campaign.status)}</div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <span className="text-xs font-semibold text-slate-500">
               {t('campaigns.header.subject_label', 'Subject')}:
             </span>
             <p className="text-sm font-bold text-slate-500 tracking-tight">{previews.subject}</p>
@@ -37,7 +37,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           <button
             onClick={actions.handleActivate}
             disabled={actions.activate.isPending}
-            className="btn-primary py-3 px-8 flex items-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-black uppercase tracking-widest text-[11px]"
+            className="btn-primary py-3 px-8 flex items-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-bold text-xs"
           >
             {actions?.activate?.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -52,7 +52,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           <button
             onClick={actions.handlePause}
             disabled={actions.pause.isPending}
-            className="py-3 px-8 flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-black uppercase tracking-widest text-[11px] rounded-lg shadow-sm shadow-amber-500/20 active:scale-95 transition-all"
+            className="py-3 px-8 flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-lg shadow-sm shadow-amber-500/20 active:scale-95 transition-all"
           >
             {actions.pause.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -67,7 +67,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
           <button
             onClick={actions.handleResume}
             // disabled={actions?.resume?.isPending}
-            className="btn-primary py-3 px-8 flex items-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-black uppercase tracking-widest text-[11px]"
+            className="btn-primary py-3 px-8 flex items-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-bold text-xs"
           >
             {actions?.resume?.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -81,7 +81,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
         {(campaign.status === 'draft' || campaign.status === 'paused') && (
           <Link
             to={`/dashboard/campaigns/${campaign.id}/edit`}
-            className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-600 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all"
+            className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-600 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50/30 rounded-lg font-bold text-xs transition-all"
           >
             <Edit className="w-4 h-4" />
             {t('campaigns.header.edit', 'Edit')}
@@ -91,7 +91,7 @@ const CampaignHeader = ({ campaign, previews, actions, setShowDeleteModal, getSt
         <button
           onClick={() => setShowDeleteModal(true)}
           disabled={actions.delete.isPending}
-          className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-500 hover:text-purple-600 hover:border-purple-200 hover:bg-purple-50/30 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all"
+          className="h-12 px-6 flex items-center gap-2 bg-white border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50/30 rounded-lg font-bold text-xs transition-all"
         >
           {actions.delete.isPending ? (
             <Loader2 className="w-4 h-4 animate-spin" />

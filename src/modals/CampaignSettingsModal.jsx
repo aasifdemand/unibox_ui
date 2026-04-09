@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Settings, CheckCircle2, AlertCircle, Check } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -46,10 +46,10 @@ const CampaignSettingsModal = ({
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">
+                <h2 className="text-2xl font-bold text-white tracking-tight leading-none">
                   {t('campaigns.campaign_settings_title', 'Campaign Settings')}
                 </h2>
-                <p className="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mt-1">
+                <p className="text-xs font-semibold text-white/70 mt-1">
                   {t('campaigns.campaign_settings_subtitle', 'Configure global delivery rules')}
                 </p>
               </motion.div>

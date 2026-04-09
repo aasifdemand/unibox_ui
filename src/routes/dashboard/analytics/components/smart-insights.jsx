@@ -1,4 +1,4 @@
-﻿import { Sparkles, ShieldCheck, Zap, AlertCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Sparkles, ShieldCheck, Zap, AlertCircle, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -78,17 +78,17 @@ const SmartInsights = ({ metrics, overview }) => {
 
       <div className="flex items-center justify-between mb-8 relative z-10">
         <div>
-          <h3 className="text-xl font-black text-slate-900 tracking-tighter flex items-center gap-2">
+          <h3 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             {t('analytics.smart_insights_title')}{' '}
             <span className="text-purple-600">{t('analytics.smart_insights_span')}</span>
             <Sparkles className="w-4 h-4 text-purple-500 animate-pulse" />
           </h3>
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs font-semibold text-slate-500 mt-1">
             {t('analytics.smart_insights_subtitle')}
           </p>
         </div>
         <div className="px-3 py-1 bg-purple-50 rounded-full border border-purple-100 shadow-xs">
-          <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
+          <span className="text-xs font-bold text-purple-600">
             {t('analytics.active_analysis')}
           </span>
         </div>
@@ -108,11 +108,11 @@ const SmartInsights = ({ metrics, overview }) => {
                   {insight.icon}
                 </div>
                 <div>
-                  <h4 className="text-[12px] font-black uppercase tracking-tight opacity-80">
+                  <h4 className="text-xs font-bold tracking-tight opacity-80">
                     {insight.title}
                   </h4>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-lg font-black tracking-tight">{insight.value}</span>
+                    <span className="text-lg font-bold tracking-tight">{insight.value}</span>
                     {insight.status === 'success' && <CheckCircle2 className="w-4 h-4" />}
                     {insight.status === 'danger' && <AlertCircle className="w-4 h-4" />}
                   </div>
@@ -127,7 +127,7 @@ const SmartInsights = ({ metrics, overview }) => {
       </div>
 
       <div className="mt-8 flex items-center justify-center relative z-10">
-        <button className="text-[10px] font-black text-purple-600 uppercase tracking-[0.2em] px-6 py-2 rounded-md hover:bg-slate-50 transition-colors border border-dashed border-purple-200">
+        <button className="text-xs font-bold text-purple-600 px-6 py-2 rounded-md hover:bg-slate-50 transition-colors border border-dashed border-purple-200">
           {t('analytics.unlock_report')}
         </button>
       </div>

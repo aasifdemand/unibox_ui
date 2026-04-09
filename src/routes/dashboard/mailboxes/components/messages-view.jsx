@@ -97,10 +97,10 @@ const MessagesView = forwardRef(
                     </button>
                   )}
                   <div className="flex flex-col min-w-0">
-                    <h2 className="text-[13px] font-black text-slate-900 uppercase tracking-tight truncate leading-none mb-1">
+                    <h2 className="text-sm font-bold text-slate-900 tracking-tight truncate leading-none mb-1">
                       {selectedFolder?.name || 'Inbox'}
                     </h2>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">
+                    <span className="text-[10px] font-bold text-slate-400 truncate">
                       {selectedMailbox?.email}
                     </span>
                   </div>
@@ -112,7 +112,7 @@ const MessagesView = forwardRef(
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={onCompose}
-                    className="h-9 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-purple-500/20 transition-all active:scale-95"
+                    className="h-9 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center gap-2 text-xs font-bold shadow-sm shadow-purple-500/20 transition-all active:scale-95"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Compose</span>
@@ -130,7 +130,7 @@ const MessagesView = forwardRef(
 
                   <button
                     onClick={onFilterUnread}
-                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest border transition-all ${
+                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-xs font-bold border transition-all ${
                       filterUnreadActive
                         ? 'bg-purple-50 border-purple-200 text-purple-600'
                         : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
@@ -142,7 +142,7 @@ const MessagesView = forwardRef(
                   </button>
                   <button
                     onClick={onFilterStarred}
-                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-[10px] font-black uppercase tracking-widest border transition-all ${
+                    className={`h-9 px-3 rounded-lg flex items-center gap-2 text-xs font-bold border transition-all ${
                       filterStarred
                         ? 'bg-amber-500 border-amber-600 text-white shadow-sm shadow-amber-500/20'
                         : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
@@ -180,7 +180,7 @@ const MessagesView = forwardRef(
                     <select
                       value={dateRange}
                       onChange={(e) => onDateRangeChange(e.target.value)}
-                      className="appearance-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-semibold uppercase text-slate-500 pr-8 focus:border-purple-500/40 outline-none cursor-pointer"
+                      className="appearance-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-500 pr-8 focus:border-purple-500/40 outline-none cursor-pointer"
                     >
                       <option value="all">All Time</option>
                       <option value="today">Today</option>
@@ -286,7 +286,7 @@ const MessagesView = forwardRef(
                         </div>
                       </div>
                       <div className="flex flex-col items-center gap-2 mt-8">
-                        <span className="text-metadata text-slate-800 animate-pulse">
+                        <span className="text-xs font-semibold text-slate-800 animate-pulse">
                           {t('mailboxes.indexing_messages')}
                         </span>
                       </div>

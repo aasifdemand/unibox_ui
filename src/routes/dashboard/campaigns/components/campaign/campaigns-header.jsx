@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, RefreshCcw, Search, Filter, CheckCircle, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,7 @@ const CampaignsHeader = ({
 
             {/* Status Filters Dropdown */}
             <div className="flex flex-col gap-1 w-full bg-slate-50 p-2 rounded-md border border-slate-100">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2 py-1 flex items-center gap-2">
+              <label className="text-xs font-bold text-slate-400 px-2 py-1 flex items-center gap-2">
                 <Filter className="w-3 h-3" />
                 {t('campaigns.status_filter', 'Status')}
               </label>
@@ -82,7 +82,7 @@ const CampaignsHeader = ({
                     >
                       <CheckCircle className="w-2.5 h-2.5" />
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest truncate">
+                    <span className="text-xs font-bold truncate">
                       {option.label}
                     </span>
                   </button>
@@ -100,7 +100,7 @@ const CampaignsHeader = ({
           </button>
           <Link
             to={'/dashboard/campaigns/create'}
-            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-extrabold  tracking-widest text-[11px] rounded-md"
+            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-bold text-xs rounded-lg"
           >
             <Plus className="w-4 h-4 text-white" />
             {t('campaigns.create_campaign')}

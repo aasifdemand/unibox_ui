@@ -96,7 +96,7 @@ const NotificationDropdown = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="absolute top-full ltr:-right-2 rtl:-left-2 mt-2 w-80 sm:w-96 bg-white rounded-[2rem] shadow-sm shadow-slate-800/10 border border-slate-100 z-50 overflow-hidden"
+            className="absolute top-full ltr:-right-2 rtl:-left-2 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-sm shadow-slate-800/10 border border-slate-100 z-50 overflow-hidden"
           >
             {/* Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -135,7 +135,7 @@ const NotificationDropdown = () => {
                   <div className="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mx-auto mb-3">
                     <Bell className="w-6 h-6 text-slate-300" />
                   </div>
-                  <p className="text-sm font-bold text-slate-500">You're all caught up!</p>
+                  <p className="text-sm font-bold text-slate-500">You&apos;re all caught up!</p>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
                     No new notifications
                   </p>
@@ -201,7 +201,7 @@ const NotificationDropdown = () => {
             <div className="p-2 border-t border-slate-100 bg-slate-50/50">
               <button
                 onClick={navigateToAll}
-                className="w-full py-3 rounded-md flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-purple-600 hover:bg-white hover:shadow-sm transition-all group"
+                className="w-full py-3 rounded-md flex items-center justify-center gap-2 text-[10px] font-black  tracking-[0.2em] text-purple-600 hover:bg-white hover:shadow-sm transition-all group"
               >
                 {t('common.view_all_notifications', 'View All Notifications')}
                 <ChevronRight

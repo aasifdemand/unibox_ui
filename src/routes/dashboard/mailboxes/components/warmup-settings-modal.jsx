@@ -1,4 +1,4 @@
-﻿/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable unused-imports/no-unused-imports */
 import React, { useState, useEffect } from 'react';
 import { Settings2, Zap, MessageSquare, Gauge, Save, LineChart, Target, ArrowUpRight } from 'lucide-react';
@@ -55,10 +55,10 @@ const WarmupSettingsModal = ({
               <Zap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-white uppercase tracking-tighter">
+              <h2 className="text-xl font-bold text-white tracking-tight">
                 Warmup Settings
               </h2>
-              <p className="text-[10px] font-bold text-white/80 uppercase tracking-[0.2em] mt-1">
+              <p className="text-xs font-semibold text-white/80 mt-1">
                 {mailbox.email}
               </p>
             </div>
@@ -70,16 +70,16 @@ const WarmupSettingsModal = ({
           <div className="space-y-5">
             <div className="flex items-center gap-2 pb-1 border-b border-slate-50">
                <LineChart className="w-4 h-4 text-purple-600" />
-               <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">Warmup Curve</h3>
+               <h3 className="text-xs font-bold text-slate-900">Warmup Curve</h3>
             </div>
             
             {/* Initial Limit */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                   Starting Limit (Day 1)
                 </label>
-                <span className="text-xs font-black text-slate-900 tabular-nums bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                <span className="text-xs font-bold text-slate-900 tabular-nums bg-slate-50 px-2 py-1 rounded border border-slate-100">
                   {initialLimit}
                 </span>
               </div>
@@ -96,7 +96,7 @@ const WarmupSettingsModal = ({
             {/* Daily Increase */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                   Daily Increase
                 </label>
                 <div className="flex items-center gap-1.5 text-xs font-black text-purple-600 bg-purple-50 px-2 py-1 rounded border border-purple-100">
@@ -117,10 +117,10 @@ const WarmupSettingsModal = ({
             {/* Max Limit */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                   Maximum Limit
                 </label>
-                <div className="flex items-center gap-1.5 text-xs font-black text-slate-900 bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded border border-slate-100">
                    <Target className="w-3 h-3 text-slate-400" />
                    <span>{maxLimit}</span>
                 </div>
@@ -141,15 +141,15 @@ const WarmupSettingsModal = ({
           <div className="space-y-5">
             <div className="flex items-center gap-2 pb-1 border-b border-slate-50">
                <MessageSquare className="w-4 h-4 text-purple-600" />
-               <h3 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">AI Interaction</h3>
+               <h3 className="text-xs font-bold text-slate-900">AI Interaction</h3>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                   AI Reply Rate
                 </label>
-                <span className="text-xs font-black text-slate-900 tabular-nums bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                <span className="text-xs font-bold text-slate-900 tabular-nums bg-slate-50 px-2 py-1 rounded border border-slate-100">
                   {replyRate}%
                 </span>
               </div>
@@ -172,14 +172,14 @@ const WarmupSettingsModal = ({
             <Button
               variant="outline"
               onClick={onClose}
-              className="flex-1 py-3.5 text-[11px] font-black uppercase tracking-widest border-2 hover:bg-slate-50 transition-all"
+              className="flex-1 py-3.5 text-xs font-bold border-2 hover:bg-slate-50 transition-all"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSave}
               isLoading={isSaving}
-              className="flex-2 py-3.5 bg-purple-600 text-white rounded-lg text-[11px] font-black uppercase tracking-widest shadow-md shadow-purple-600/20 hover:bg-purple-700 hover:-translate-y-0.5 transition-all"
+              className="flex-2 py-3.5 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-md shadow-purple-600/20 hover:bg-purple-700 hover:-translate-y-0.5 transition-all"
             >
               <Save className="w-4 h-4 me-2" />
               Save Settings

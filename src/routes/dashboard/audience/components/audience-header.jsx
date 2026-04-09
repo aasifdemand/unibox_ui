@@ -1,4 +1,4 @@
-﻿import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { CheckCircle, RefreshCcw, Upload, Search, SlidersHorizontal, Users, Download } from 'lucide-react';
 import FilterDropdown from '../../../../components/ui/filter-dropdown';
 import { ColumnSelector } from './contacts-table';
@@ -69,7 +69,7 @@ const AudienceHeader = ({
           >
             {/* View/Tab Filter */}
             <div className="flex flex-col gap-2 w-full mb-1 ">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2 flex items-center gap-2">
+              <label className="text-xs font-bold text-slate-400 px-2 flex items-center gap-2">
                 <SlidersHorizontal className="w-3 h-3" />
                 {t('audience.view_type', 'View')}
               </label>
@@ -92,7 +92,7 @@ const AudienceHeader = ({
                       )}
                     </div>
                     <span
-                      className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${
+                      className={`text-xs font-bold transition-colors ${
                         activeTab === tab.id
                           ? 'text-slate-800'
                           : 'text-slate-500 group-hover:text-slate-700'
@@ -124,7 +124,7 @@ const AudienceHeader = ({
 
                 {/* Status Filter */}
                 <div className="flex flex-col gap-1 w-full bg-slate-50 p-2 rounded-md border border-slate-100 mt-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2 py-1 flex items-center gap-2">
+                  <label className="text-xs font-bold text-slate-400 px-2 py-1 flex items-center gap-2">
                     <SlidersHorizontal className="w-3 h-3" />
                     {t('audience.status_filter', 'Status Filter')}
                   </label>
@@ -169,7 +169,7 @@ const AudienceHeader = ({
                         >
                           <CheckCircle className="w-2.5 h-2.5" />
                         </div>
-                        <span className="text-[11px] font-bold uppercase tracking-widest truncate">
+                        <span className="text-xs font-bold truncate">
                           {option.label}
                         </span>
                       </button>
@@ -200,7 +200,7 @@ const AudienceHeader = ({
           {activeTab === 'contacts' && (
             <button
               onClick={() => setShowExportConfirm(true)}
-              className="flex items-center gap-2 px-4 h-11 rounded-md border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:bg-slate-50 hover:border-purple-200 hover:text-purple-600 transition-all shadow-sm shrink-0"
+              className="flex items-center gap-2 px-4 h-11 rounded-md border border-slate-200 bg-white text-xs font-bold text-slate-600 hover:bg-slate-50 hover:border-purple-200 hover:text-purple-600 transition-all shadow-sm shrink-0"
               title="Export filtered contacts to CSV"
             >
               <Download className="w-3.5 h-3.5" />
@@ -221,10 +221,10 @@ const AudienceHeader = ({
           />
           <button
             onClick={() => setShowUploadModal(true)}
-            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-black  tracking-widest text-[11px] rounded-md shrink-0"
+            className="btn-primary h-11 px-6 flex items-center justify-center gap-3 shadow-sm shadow-purple-500/20 active:scale-95 transition-all text-white font-bold text-xs rounded-md shrink-0"
           >
             <Upload className="w-4 h-4" />
-            <span className="text-[11px] font-semibold  tracking-widest text-white">
+            <span className="text-xs font-semibold text-white">
               {t('audience.add_contacts')}
             </span>
           </button>

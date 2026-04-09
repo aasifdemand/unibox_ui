@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -18,16 +18,17 @@ import { toast } from 'react-hot-toast';
 import { formatDate } from '../../../../utils/message-parser';
 
 const LeadDetailSidebar = ({ lead, onClose }) => {
-  const [value, setValue] = useState('');
-  const [notes, setNotes] = useState('');
-  const updateLead = useUpdateLead();
+  const [prevLeadId, setPrevLeadId] = useState(lead?.id);
+  const [value, setValue] = useState(lead?.value != null ? String(lead.value) : '');
+  const [notes, setNotes] = useState(lead?.metadata?.notes || '');
 
-  useEffect(() => {
-    if (lead) {
-      setValue(lead.value != null ? String(lead.value) : '');
-      setNotes(lead.metadata?.notes || '');
-    }
-  }, [lead]);
+  if (lead?.id !== prevLeadId) {
+    setPrevLeadId(lead.id);
+    setValue(lead?.value != null ? String(lead.value) : '');
+    setNotes(lead?.metadata?.notes || '');
+  }
+
+  const updateLead = useUpdateLead();
 
   const handleSave = async () => {
     try {
@@ -65,7 +66,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-sm font-black">
+                <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
                   {contact?.name
                     ? contact.name
                         .split(' ')
@@ -75,10 +76,10 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                     : '?'}
                 </div>
                 <div>
-                  <p className="font-black text-slate-800 text-sm leading-none">
+                  <p className="font-bold text-slate-800 text-sm leading-none">
                     {contact?.name || 'Unknown'}
                   </p>
-                  <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+                  <p className="text-xs text-slate-400 font-semibold mt-0.5">
                     {contact?.normalizedEmail}
                   </p>
                 </div>
@@ -130,17 +131,17 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
               {/* Activity */}
               <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-md">
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <span className="text-xs font-bold text-slate-500">
                   Last activity:
                 </span>
-                <span className="text-[11px] font-bold text-slate-700">
+                <span className="text-xs font-bold text-slate-700">
                   {formatDate(lead.lastActivity)}
                 </span>
               </div>
 
               {/* Deal Value */}
               <div>
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5">
                   <DollarSign className="w-3 h-3" /> Deal Value
                 </label>
                 <div className="relative">
@@ -154,14 +155,14 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-bold text-slate-700 focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 outline-none transition-all"
+                    className="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-md text-sm font-semibold text-slate-700 focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 outline-none transition-all"
                   />
                 </div>
               </div>
 
               {/* Notes */}
               <div>
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <label className="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5">
                   <StickyNote className="w-3 h-3" /> Notes
                 </label>
                 <textarea
@@ -176,10 +177,10 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
               {/* Enrichment metadata */}
               {meta._enrichedAt && (
                 <div className="px-3 py-3 bg-purple-50 rounded-md border border-purple-100">
-                  <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest mb-1">
+                  <p className="text-xs font-bold text-purple-600 mb-1">
                     ✨ Enriched
                   </p>
-                  <p className="text-[11px] text-purple-400 font-medium">
+                  <p className="text-xs text-purple-400 font-semibold">
                     via{' '}
                     {Array.isArray(meta._enrichedBy)
                       ? meta._enrichedBy.join(', ')
@@ -192,18 +193,18 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
 
             {/* Footer Save */}
             <div className="px-6 py-5 border-t border-slate-100">
-              <button
-                onClick={handleSave}
-                disabled={updateLead.isPending}
-                className="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-black text-[11px] uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-sm shadow-purple-500/20 disabled:opacity-60"
-              >
-                {updateLead.isPending ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Save className="w-4 h-4" />
-                )}
-                Save Changes
-              </button>
+                <button
+                  onClick={handleSave}
+                  disabled={updateLead.isPending}
+                  className="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-md font-bold text-xs transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-sm shadow-purple-500/20 disabled:opacity-60"
+                >
+                  {updateLead.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                  Save Changes
+                </button>
             </div>
           </motion.div>
         </>

@@ -125,21 +125,21 @@ const CRMIntegration = () => {
         {/* Board sub-header */}
         <div className="h-12 px-6 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-purple-600 tracking-widest bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-100 outline-none focus:outline-none focus:ring-0">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-100 outline-none focus:outline-none focus:ring-0">
               <Zap className="w-3.5 h-3.5" /> {t('crm.all_campaigns', 'All Campaigns')}
             </div>
           </div>
-          <div className="flex items-center gap-5 text-[10px] font-black tracking-widest text-slate-500">
+          <div className="flex items-center gap-5 text-xs font-semibold text-slate-500">
             <span className="text-slate-400">
               {t('crm.total', 'Total')}{' '}
-              <span className="text-slate-700">
+              <span className="text-slate-700 font-bold">
                 {pipeline.reduce((a, s) => a + (s.leads?.length || 0), 0)}
               </span>
             </span>
             <span className="w-px h-4 bg-slate-200 block" />
             <span className="text-slate-400">
               {t('crm.value', 'Value')}{' '}
-              <span className="text-purple-600">
+              <span className="text-purple-600 font-bold">
                 $
                 {(
                   pipeline?.reduce(
@@ -183,16 +183,16 @@ const CRMIntegration = () => {
                     </div>
                   </div>
                   <div className="max-w-md">
-                    <h3 className="text-3xl font-black text-slate-800 tracking-tight mb-3">
+                    <h3 className="text-3xl font-bold text-slate-800 tracking-tight mb-3">
                       {t('crm.build_funnel', 'Build your funnel')}
                     </h3>
-                    <p className="text-slate-500 font-bold leading-relaxed text-sm">
+                    <p className="text-xs text-slate-500 font-bold leading-relaxed">
                       {t('crm.add_first_col', 'Add your first column to start tracking leads through stages.')}
                     </p>
                   </div>
                   <button
                     onClick={() => setIsAddStageOpen(true)}
-                    className="bg-purple-600 text-white px-10 py-4 rounded-lg text-xs font-black tracking-widest hover:bg-purple-700 transition-all active:scale-95 shadow-lg shadow-purple-600/20"
+                    className="bg-purple-600 text-white px-10 py-4 rounded-lg text-sm font-bold hover:bg-purple-700 transition-all active:scale-95 shadow-lg shadow-purple-600/20"
                   >
                     {t('crm.create_initial', 'Create First Column')}
                   </button>
@@ -208,7 +208,7 @@ const CRMIntegration = () => {
                   <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center text-slate-300 group-hover:text-purple-600 shadow-sm transition-all border border-slate-100 group-hover:scale-110">
                     <Plus className="w-8 h-8" />
                   </div>
-                  <p className="text-[11px] font-black text-slate-400 tracking-[0.2em] group-hover:text-purple-600 transition-colors">
+                  <p className="text-xs font-bold text-slate-400 group-hover:text-purple-600 transition-colors">
                     {t('crm.add_column', 'Add Column')}
                   </p>
                 </div>
@@ -233,9 +233,9 @@ const CRMIntegration = () => {
           <div className="w-8 h-8 rounded-md bg-purple-50 flex items-center justify-center shadow-inner">
             <Target className="w-4 h-4 text-purple-600" />
           </div>
-          <span className="text-[10px] font-black text-slate-500 tracking-widest leading-relaxed max-w-xs uppercase">
+          <span className="text-xs font-bold text-slate-500 leading-relaxed max-w-xs">
             {t('crm.footer_msg1', 'Leads automatically progress when')}{' '}
-            <span className="text-purple-600">{t('crm.footer_msg2', 'Reply Intents')}</span>{' '}
+            <span className="text-purple-600 font-bold">{t('crm.footer_msg2', 'Reply Intents')}</span>{' '}
             {t('crm.footer_msg3', 'are detected')}
           </span>
         </div>

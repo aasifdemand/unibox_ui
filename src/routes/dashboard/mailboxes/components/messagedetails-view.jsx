@@ -500,7 +500,7 @@ const MessageDetailView = ({
     }
 
     return (
-      <p className="text-slate-400 font-bold uppercase tracking-widest text-center py-20 italic">
+      <p className="text-slate-400 font-semibold text-center py-20 italic">
         {t('mailboxes.no_content_available')}
       </p>
     );
@@ -556,14 +556,14 @@ const MessageDetailView = ({
           </div>
 
           <div className="flex flex-col min-w-0">
-            <h1 className="text-[15px] font-black text-slate-900 uppercase tracking-tight truncate leading-none mb-2">
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight truncate leading-none mb-2">
               {getSubject(message)}
             </h1>
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">
+              <span className="text-xs font-semibold text-slate-400 shrink-0">
                 {t('mailboxes.from', 'From')}:
               </span>
-              <span className="text-[10px] font-bold text-purple-600 uppercase tracking-widest truncate">
+              <span className="text-xs font-bold text-purple-600 truncate">
                 {sender.name || sender.email}
               </span>
             </div>
@@ -591,12 +591,12 @@ const MessageDetailView = ({
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-black text-slate-800 tracking-tight">
+                    <p className="text-sm font-bold text-slate-800 tracking-tight">
                       {sender.name}
                     </p>
                     <p className="text-xs font-bold text-slate-400">&lt;{sender.email}&gt;</p>
                   </div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
+                  <p className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
                     {formatInTimezone(date, userTz, { 
                       month: 'short', 
                       day: 'numeric', 
@@ -609,7 +609,7 @@ const MessageDetailView = ({
 
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
                   <div className="flex items-center gap-2 text-xs font-medium">
-                    <span className="text-slate-400 font-black uppercase tracking-widest text-[8px] opacity-70">
+                    <span className="text-xs font-semibold text-slate-400 opacity-80">
                       {t('mailboxes.to_label')}
                     </span>
                     <div className="flex flex-wrap gap-1">
@@ -623,7 +623,7 @@ const MessageDetailView = ({
                   </div>
                   {ccRecipients.length > 0 && (
                     <div className="flex items-center gap-2 text-xs font-medium">
-                      <span className="text-slate-400 font-black uppercase tracking-widest text-[8px] opacity-70">
+                      <span className="text-xs font-semibold text-slate-400 opacity-80">
                         {t('mailboxes.cc_label')}
                       </span>
                       <div className="flex flex-wrap gap-1">
@@ -644,7 +644,7 @@ const MessageDetailView = ({
           {/* Attachments Section */}
           {attachments.length > 0 && (
             <div className={`space-y-4 ${isIntegrated ? 'px-6 md:px-8' : ''}`}>
-              <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center">
+              <h3 className="text-xs font-bold text-slate-400 flex items-center">
                 <Paperclip className="w-3.5 h-3.5 ltr:mr-2 rtl:ml-2 text-purple-500" />
                 {t('mailboxes.attached_media_assets', { count: attachments.length })}
               </h3>
@@ -665,7 +665,7 @@ const MessageDetailView = ({
                     <p className="text-sm font-bold text-slate-800 truncate group-hover/att:text-purple-600 transition-colors">
                       {att.filename}
                     </p>
-                    <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-slate-400 mt-1">
                       {formatFileSize(att.size)}
                     </p>
                   </div>

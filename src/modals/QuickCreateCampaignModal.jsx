@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Send } from 'lucide-react';
@@ -37,10 +37,10 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">
+            <h3 className="text-lg font-bold text-white tracking-tight leading-none">
               {t('dashboard.quick_actions.create_campaign', 'Create a Campaign')}
             </h3>
-            <p className="text-[9px] font-bold text-purple-100/60 uppercase tracking-widest mt-1.5">
+            <p className="text-[10px] font-semibold text-purple-100/60 mt-1.5">
               Campaign Configuration
             </p>
           </div>
@@ -51,7 +51,7 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleContinue} className="space-y-6">
           <div className="space-y-2">
             <div className="px-1">
-              <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+              <label className="text-xs font-bold text-slate-400">
                 {t('campaigns.column_name_label', 'Campaign Name')}
               </label>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mt-0.5">
@@ -76,14 +76,14 @@ const QuickCreateCampaignModal = ({ isOpen, onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 h-11 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 hover:border-slate-300 transition-all active:scale-95"
+              className="flex-1 h-11 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-400 hover:text-slate-600 hover:border-slate-300 transition-all active:scale-95"
             >
               {t('common.cancel', 'Cancel')}
             </button>
             <button
               type="submit"
               disabled={!name.trim()}
-              className="flex-1 h-11 bg-purple-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-purple-500/10 hover:bg-purple-500 hover:-translate-y-px transition-all active:scale-95 disabled:opacity-50"
+              className="flex-1 h-11 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-lg shadow-purple-500/10 hover:bg-purple-500 hover:-translate-y-px transition-all active:scale-95 disabled:opacity-50"
             >
               {t('common.continue', 'Continue')}
             </button>

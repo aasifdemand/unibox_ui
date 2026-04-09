@@ -96,7 +96,7 @@ const ViewMailbox = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
         <Loader2 className="w-10 h-10 text-purple-600 animate-spin mb-4" />
-        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Fetching Mailbox Data...</p>
+        <p className="text-xs font-semibold text-slate-500">Fetching Mailbox Data...</p>
       </div>
     );
   }
@@ -107,7 +107,7 @@ const ViewMailbox = () => {
         <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
           <AlertCircle className="w-8 h-8 text-red-500" />
         </div>
-        <h2 className="text-xl font-black text-slate-800 uppercase">Mailbox Not Found</h2>
+        <h2 className="text-xl font-bold text-slate-800 tracking-tight">Mailbox Not Found</h2>
         <p className="text-slate-500 mt-2 mb-6 max-w-md">The mailbox you are looking for does not exist or you do not have permission to view it.</p>
         <Button onClick={() => navigate('/dashboard/mailboxes')} variant="outline">
           Back to Mailboxes
@@ -140,26 +140,26 @@ const ViewMailbox = () => {
           
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-none lowercase">
+              <h1 className="text-3xl font-bold text-slate-900 tracking-tight leading-none lowercase">
                 {mailbox.email}
               </h1>
               <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-50 border border-purple-100/50">
                 <CheckCircle2 className="w-3.5 h-3.5 text-purple-500" />
-                <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest whitespace-nowrap">
+                <span className="text-xs font-bold text-purple-700 whitespace-nowrap">
                   {mailbox.isVerified ? 'Synchronized' : 'Verification Required'}
                 </span>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Provider:</span>
-                <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest bg-purple-50 px-2 py-0.5 rounded">
+                <span className="text-xs font-semibold text-slate-400">Provider:</span>
+                <span className="text-xs font-bold text-purple-600 capitalize bg-purple-50 px-2 py-0.5 rounded">
                   {mailbox.type}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 border-l border-slate-200 pl-4">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Created:</span>
-                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                <span className="text-xs font-semibold text-slate-400">Created:</span>
+                <span className="text-xs font-bold text-slate-600">
                   {formatInTimezone(mailbox.createdAt, userTz, { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
@@ -170,7 +170,7 @@ const ViewMailbox = () => {
         <div className="flex items-center gap-3">
           <Button 
             variant="outline" 
-            className="h-11 px-6 font-black uppercase tracking-widest text-[11px] gap-2 border-slate-200 shadow-sm"
+            className="h-11 px-6 font-bold text-xs gap-2 border-slate-200 shadow-sm"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Test Connection
@@ -178,7 +178,7 @@ const ViewMailbox = () => {
           <Button 
             onClick={handleSave}
             isLoading={updateMailbox.isPending}
-            className="h-11 px-8 font-black uppercase tracking-widest text-[11px] gap-2 bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200"
+            className="h-11 px-8 font-bold text-xs gap-2 bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-200"
           >
             <Save className="w-4 h-4" />
             Save Changes
@@ -206,7 +206,7 @@ const ViewMailbox = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${
+              className={`px-6 py-4 text-xs font-bold transition-all relative ${
                 activeTab === tab.id 
                   ? 'text-purple-600' 
                   : 'text-slate-400 hover:text-slate-600'
@@ -243,8 +243,8 @@ const ViewMailbox = () => {
                 <div className="p-8 lg:p-12">
                   <div className="flex items-center justify-between border-b border-slate-100/60 pb-8 mb-10">
                     <div>
-                      <h3 className="text-xl font-extrabold text-slate-800 tracking-tight">Technical Configuration</h3>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1.5 opacity-80">Infrastructure & Senders Settings</p>
+                      <h3 className="text-xl font-bold text-slate-800 tracking-tight">Technical Configuration</h3>
+                      <p className="text-xs font-semibold text-slate-500 mt-1.5 opacity-80">Infrastructure & Senders Settings</p>
                     </div>
                   </div>
 
@@ -270,7 +270,7 @@ const ViewMailbox = () => {
                             onChange={(e) => setFormData({ ...formData, minTimeGap: parseInt(e.target.value) })}
                             className="input-premium h-11"
                           />
-                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase tracking-widest pointer-events-none">Min</span>
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400 pointer-events-none">Min</span>
                         </div>
                       </div>
                     </div>
@@ -288,7 +288,7 @@ const ViewMailbox = () => {
 
                     {/* Advanced Routing */}
                     <div className="p-8 bg-slate-50/50 rounded-lg border border-slate-100">
-                      <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-8 opacity-70">Advanced Routing & Tracking</h4>
+                      <h4 className="text-xs font-bold text-slate-900 mb-8 opacity-70">Advanced Routing & Tracking</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-3">
                           <label className="text-metadata ml-1">BCC Email</label>
@@ -315,8 +315,8 @@ const ViewMailbox = () => {
                       <div className="mt-8 pt-8 border-t border-slate-200/60">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex flex-col">
-                            <span className="text-xs font-black text-slate-800 uppercase tracking-tight">Custom Tracking Domain</span>
-                            <span className="text-[10px] font-bold text-slate-400">Increase deliverability by masking tracking links</span>
+                            <span className="text-sm font-bold text-slate-800">Custom Tracking Domain</span>
+                            <span className="text-xs font-semibold text-slate-400">Increase deliverability by masking tracking links</span>
                           </div>
                           <div 
                             onClick={() => setFormData({ ...formData, useCustomTrackingDomain: !formData.useCustomTrackingDomain })}
@@ -354,12 +354,12 @@ const ViewMailbox = () => {
                 <div className="p-8 lg:p-12">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-8 mb-8">
                     <div>
-                      <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Internal Analytics</h3>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Real-time delivery and interaction metrics</p>
+                      <h3 className="text-xl font-bold text-slate-900 tracking-tight">Internal Analytics</h3>
+                      <p className="text-xs font-semibold text-slate-500 mt-1">Real-time delivery and interaction metrics</p>
                     </div>
                     <div className="flex bg-slate-100 p-1 rounded-xl">
-                      <button className="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-white shadow-xs">Last 7 Days</button>
-                      <button className="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900">30 Days</button>
+                      <button className="px-4 py-1.5 rounded-lg text-xs font-bold bg-white shadow-xs">Last 7 Days</button>
+                      <button className="px-4 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900">30 Days</button>
                     </div>
                   </div>
 
@@ -378,10 +378,10 @@ const ViewMailbox = () => {
                         transition={{ delay: i * 0.1 }}
                         className="bg-slate-50 border border-slate-100 rounded-2xl p-6 group hover:border-slate-200 transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100"
                       >
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
+                        <span className="text-xs font-semibold text-slate-500">{stat.label}</span>
                         <div className="flex items-baseline gap-2 mt-1">
-                          <span className="text-2xl font-black text-slate-900 tracking-tighter">{stat.value}</span>
-                          <span className={`text-[10px] font-black ${stat.change.startsWith('+') ? 'text-purple-500' : 'text-rose-500'}`}>
+                          <span className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</span>
+                          <span className={`text-xs font-bold ${stat.change.startsWith('+') ? 'text-purple-500' : 'text-rose-500'}`}>
                             {stat.change}
                           </span>
                         </div>
@@ -399,8 +399,8 @@ const ViewMailbox = () => {
                   {/* Empty State Visual for Charts */}
                   <div className="relative p-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200 flex flex-col items-center justify-center min-h-[300px]">
                     <Activity className="w-12 h-12 text-slate-300 mb-4 animate-pulse" />
-                    <h4 className="text-sm font-black text-slate-900 uppercase tracking-tight">Visualizing Sequence Traffic</h4>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Aggregating historical data points...</p>
+                    <h4 className="text-sm font-bold text-slate-900 tracking-tight">Visualizing Sequence Traffic</h4>
+                    <p className="text-xs font-semibold text-slate-400 mt-1">Aggregating historical data points...</p>
                   </div>
                 </div>
               )}
@@ -413,13 +413,13 @@ const ViewMailbox = () => {
                     {activeTab === 'health' && <ShieldCheck className="w-10 h-10 text-purple-500" />}
                     {activeTab === 'history' && <History className="w-10 h-10 text-slate-400" />}
                   </div>
-                  <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">
+                  <h3 className="text-xl font-bold text-slate-900 tracking-tight mb-2">
                     {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module
                   </h3>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest max-w-sm leading-relaxed">
+                  <p className="text-sm font-medium text-slate-400 max-w-sm leading-relaxed">
                     This advanced module is currently Synchronizing with your backend environment. Real-time data will populate shortly.
                   </p>
-                  <Button variant="outline" className="mt-8 px-8 h-12 text-[10px] font-black uppercase tracking-widest border-slate-200">
+                  <Button variant="outline" className="mt-8 px-8 h-12 text-xs font-bold border-slate-200">
                     Force Metadata Refresh
                   </Button>
                 </div>
@@ -439,23 +439,23 @@ const ViewMailbox = () => {
                 </div>
                 
                 <span className="text-metadata mb-2">Health Ecosystem</span>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tighter mb-1">98.4</h3>
+                <h3 className="text-4xl font-bold text-slate-800 tracking-tight mb-1">98.4</h3>
                 <div className="px-3 py-1 bg-purple-50 border border-purple-100/50 rounded-lg mb-6">
-                  <span className="text-[10px] font-black text-purple-700 uppercase tracking-widest">Optimal Condition</span>
+                  <span className="text-xs font-bold text-purple-700">Optimal Condition</span>
                 </div>
 
                 <div className="w-full space-y-4 pt-6 border-t border-slate-100">
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">Reputation</span>
-                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Excellent</span>
+                    <span className="text-[11px] font-bold text-purple-600 tracking-tight">Excellent</span>
                   </div>
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">DNS Config</span>
-                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Correct</span>
+                    <span className="text-[11px] font-bold text-purple-600 tracking-tight">Correct</span>
                   </div>
                   <div className="flex justify-between items-center px-1">
                     <span className="text-[11px] font-bold text-slate-500">SPF/DKIM</span>
-                    <span className="text-[11px] font-black text-purple-600 tracking-tight">Active</span>
+                    <span className="text-[11px] font-bold text-purple-600 tracking-tight">Active</span>
                   </div>
                 </div>
               </div>
@@ -464,9 +464,9 @@ const ViewMailbox = () => {
             <div className="premium-card p-6 bg-slate-50/50 border-dashed border-slate-300 shadow-none">
               <div className="flex items-center gap-3 mb-4 text-slate-400">
                 <History className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-widest leading-none">Status Overview</span>
+                <span className="text-xs font-semibold text-slate-400 leading-none">Status Overview</span>
               </div>
-              <p className="text-[11px] font-bold text-slate-500 leading-relaxed">
+              <p className="text-xs font-bold text-slate-500 leading-relaxed">
                 This sender is currently within safe delivery limits. No IP throttling detected across main ISP clusters.
               </p>
             </div>

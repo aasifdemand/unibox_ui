@@ -72,7 +72,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('mailboxes.table_mailbox')}
             </span>
             <SortIndicator column={column} />
@@ -111,7 +111,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('mailboxes.table_email')}
             </span>
             <SortIndicator column={column} />
@@ -128,7 +128,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('mailboxes.table_status')}
             </span>
             <SortIndicator column={column} />
@@ -136,7 +136,7 @@ const MailboxList = ({
         ),
         cell: ({ row }) => (
           <span
-            className={`text-[10px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block ${row.original.isVerified
+            className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block capitalize ${row.original.isVerified
                 ? 'bg-purple-50 text-purple-600 border-purple-100'
                 : 'bg-amber-50 text-amber-600 border-amber-100'
               }`}
@@ -152,7 +152,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               Warmup Enabled
             </span>
             <SortIndicator column={column} />
@@ -200,7 +200,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               Health Score
             </span>
             <SortIndicator column={column} />
@@ -218,7 +218,7 @@ const MailboxList = ({
                   {score}%
                 </span>
               </div>
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">
+              <span className="text-[10px] font-bold text-slate-400 mt-1">
                 Reputation
               </span>
             </div>
@@ -232,7 +232,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               Daily Progress
             </span>
             <SortIndicator column={column} />
@@ -271,7 +271,7 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               Campaign Vol
             </span>
             <SortIndicator column={column} />
@@ -282,7 +282,7 @@ const MailboxList = ({
             <span className="text-sm font-extrabold text-slate-800 tabular-nums">
               {row.original.stats?.dailySent || 0}
             </span>
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 leading-none">
+            <span className="text-[10px] font-bold text-slate-400 mt-1">
               Today
             </span>
           </div>
@@ -295,14 +295,14 @@ const MailboxList = ({
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('mailboxes.table_last_sync')}
             </span>
             <SortIndicator column={column} />
           </button>
         ),
         cell: ({ row }) => (
-          <div className="flex items-center text-xs font-bold text-slate-500 uppercase tracking-widest tabular-nums">
+          <div className="flex items-center text-xs font-bold text-slate-500 tabular-nums">
             <Clock className="w-3.5 h-3.5 me-1.5 text-slate-400" />
             {row.original.lastSyncAt ? (
               timeAgo(row.original.lastSyncAt)
@@ -325,7 +325,7 @@ const MailboxList = ({
         id: 'actions',
         header: () => (
           <div className="text-right">
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-semibold text-slate-500 select-none">
               {t('mailboxes.table_actions')}
             </span>
           </div>

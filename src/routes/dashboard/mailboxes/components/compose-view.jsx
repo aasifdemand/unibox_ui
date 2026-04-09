@@ -278,7 +278,7 @@ const ComposeView = forwardRef(
             </div>
 
             <div className="space-y-4">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
+              <label className="text-xs font-bold text-slate-500 px-1 blur-[0.2px]">
                 {t('mailboxes.your_message')}
               </label>
               <div
@@ -295,7 +295,7 @@ const ComposeView = forwardRef(
 
             {showPreview && (
               <div className="pt-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest px-1 mb-4 block">
+                <label className="text-xs font-bold text-slate-500 px-1 mb-4 block">
                   {t('mailboxes.live_content_canvas')}
                 </label>
                 {/* Integrated Preview Canvas */}
@@ -313,7 +313,7 @@ const ComposeView = forwardRef(
                         <div className="w-2 h-2 rounded-full bg-amber-400"></div>
                         <div className="w-2 h-2 rounded-full bg-purple-400"></div>
                       </div>
-                      <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
+                      <div className="text-[10px] font-bold text-slate-400 bg-white px-3 py-1 rounded-full border border-slate-200/60 shadow-xs">
                         {t('mailboxes.email_content_canvas')}
                       </div>
                     </div>
@@ -325,12 +325,12 @@ const ComposeView = forwardRef(
                     {/* Canvas Header */}
                     <div className="flex items-start gap-6 pb-10 border-b border-slate-50 mb-10">
                       <div className="w-16 h-16 rounded-lg bg-linear-to-br from-purple-600 to-purple-700 p-0.5 shadow-sm shadow-purple-500/20 shrink-0">
-                        <div className="w-full h-full bg-white/10  rounded-lg flex items-center justify-center text-white font-extrabold text-2xl border border-white/20">
+                        <div className="w-full h-full bg-white/10  rounded-lg flex items-center justify-center text-white font-bold text-2xl border border-white/20">
                           {getInitials(selectedMailbox?.name || 'U')}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight leading-tight mb-2 truncate">
+                        <h1 className="text-2xl font-bold text-slate-800 tracking-tight leading-tight mb-2 truncate">
                           {subject || t('mailboxes.no_subject')}
                         </h1>
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -344,7 +344,7 @@ const ComposeView = forwardRef(
                         </div>
                         {to && (
                           <div className="flex items-center mt-3 pt-3 border-t border-slate-50">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ltr:mr-3 rtl:ml-3">
+                            <span className="text-xs font-bold text-slate-400 ltr:mr-3 rtl:ml-3">
                               {t('mailboxes.to_label')}
                             </span>
                             <div className="flex flex-wrap gap-2">
@@ -361,10 +361,10 @@ const ComposeView = forwardRef(
                         )}
                       </div>
                       <div className="bg-slate-50/50 px-4 py-2 rounded-md border border-slate-100 ltr:text-right rtl:text-left shrink-0">
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                        <p className="text-[10px] font-bold text-slate-400 mb-1">
                           {t('mailboxes.preview_style')}
                         </p>
-                        <p className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
+                        <p className="text-[10px] font-bold text-purple-600">
                           {t('mailboxes.high_fidelity')}
                         </p>
                       </div>
@@ -379,7 +379,7 @@ const ComposeView = forwardRef(
                     {/* Attachments within Canvas */}
                     {attachments.length > 0 && (
                       <div className="mt-12 pt-8 border-t border-slate-50">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <p className="text-xs font-bold text-slate-400 mb-4 flex items-center gap-2">
                           <Paperclip className="w-4 h-4 text-purple-500" />
                           {t('mailboxes.attachments_count', { count: attachments.length })}
                         </p>
@@ -396,7 +396,7 @@ const ComposeView = forwardRef(
                                 <p className="text-sm font-bold text-slate-800 truncate">
                                   {file.filename}
                                 </p>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <p className="text-[10px] font-bold text-slate-400">
                                   {formatFileSize(file.size)}
                                 </p>
                               </div>

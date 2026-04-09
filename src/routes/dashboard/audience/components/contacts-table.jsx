@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -67,6 +67,30 @@ const getVerificationBadgeClass = (status) => {
     default:
       return 'bg-slate-50 text-slate-400 border border-slate-200';
   }
+};
+
+const getStatusBadge = (type, isActive) => {
+  if (!isActive) return null;
+  
+  if (type === 'unsubscribed') {
+    return (
+      <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-orange-50 text-orange-600 border border-orange-100 shadow-xs">
+        <Mail className="w-3 h-3" />
+        <span className="text-[10px] font-bold">Unsubscribed</span>
+      </div>
+    );
+  }
+  
+  if (type === 'blacklisted') {
+    return (
+      <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 shadow-xs">
+        <XCircle className="w-3 h-3" />
+        <span className="text-[10px] font-bold">Blacklisted</span>
+      </div>
+    );
+  }
+  
+  return null;
 };
 
 // ─── All Apollo-style fields with metadata key aliases ────────────────────────
@@ -181,7 +205,7 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
       >
         <Columns3 className="w-3.5 h-3.5" />
         Columns
-        <span className="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 text-[9px] font-black">
+        <span className="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 text-xs font-bold">
           {visibleCols.size}
         </span>
       </button>
@@ -195,20 +219,20 @@ export const ColumnSelector = ({ visibleCols, onToggle, onSetAll, onSetNone }) =
             className="absolute right-0 top-full mt-2 w-64 bg-white border border-slate-200 rounded-lg shadow-sm shadow-slate-200/80 z-50 overflow-hidden"
           >
             <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+              <p className="text-xs font-bold text-slate-400">
                 Toggle Columns
               </p>
               <div className="flex gap-2">
                 <button
                    onClick={() => onSetAll(allIds)}
-                   className="text-[9px] font-black text-purple-500 hover:text-purple-700 uppercase tracking-wider"
+                   className="text-[10px] font-bold text-purple-500 hover:text-purple-700"
                 >
                   All
                 </button>
                 <span className="text-slate-200">|</span>
                 <button
                    onClick={() => onSetNone()}
-                   className="text-[9px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-wider"
+                   className="text-[10px] font-bold text-slate-400 hover:text-slate-600"
                 >
                   None
                 </button>
@@ -294,7 +318,7 @@ const CopyableCell = ({ text, children, className = '' }) => {
           >
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500 text-white shadow-lg shadow-green-200">
                <Check className="w-3 h-3" strokeWidth={3} />
-               <span className="text-[9px] font-black tracking-tighter uppercase">Copied</span>
+               <span className="text-[10px] font-bold">Copied</span>
             </div>
           </motion.div>
         )}
@@ -368,7 +392,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
         cell: (info) => (
             <CopyableCell text={info.getValue()} className="min-w-[120px]">
               {info.getValue() ? (
-                <div className="w-7 h-7 rounded-full bg-linear-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-[10px] font-black shrink-0">
+                <div className="w-7 h-7 rounded-full bg-linear-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                   {info
                     .getValue()
                     .split(' ')
@@ -416,7 +440,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
         accessorKey: 'sourceBatch',
         header: () => <span>Source</span>,
         cell: (info) => (
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight bg-slate-50 px-2 py-1 rounded-md border border-slate-100 whitespace-nowrap">
+          <span className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-md border border-slate-100 whitespace-nowrap">
             {info.getValue() || '—'}
           </span>
         ),
@@ -473,14 +497,21 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
         ),
         cell: (info) => {
           const status = info.getValue();
+          const { unsubscribed, blacklisted } = info.row.original;
+          
           return (
-            <div className="flex items-center gap-2">
-              {getVerificationIcon(status)}
-              <span
-                className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-1 rounded-lg ${getVerificationBadgeClass(status)}`}
-              >
-                {status ? t(`audience.${status}`) : t('modals.details.table.unverified')}
-              </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 mr-1">
+                {getVerificationIcon(status)}
+                <span
+                  className={`text-xs font-bold px-2 py-1 rounded-lg ${getVerificationBadgeClass(status)}`}
+                >
+                  {status ? t(`audience.${status}`) : t('modals.details.table.unverified')}
+                </span>
+              </div>
+              
+              {getStatusBadge('unsubscribed', unsubscribed)}
+              {getStatusBadge('blacklisted', blacklisted)}
             </div>
           );
         },
@@ -521,7 +552,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                  handleEnrich(row.original);
               }}
               disabled={isEnriching}
-              className={`group/enrich flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${isEnriching
+              className={`group/enrich flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${isEnriching
                 ? 'bg-purple-100 text-purple-500 animate-pulse cursor-wait'
                 : wasEnriched
                   ? 'bg-slate-50 text-slate-400 border border-slate-100 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-100'
@@ -567,16 +598,16 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
           <FileSpreadsheet className="w-10 h-10 text-slate-300" />
         </div>
         <div className="text-center">
-          <p className="text-lg font-black text-slate-700 tracking-tight mb-1">
+          <p className="text-lg font-bold text-slate-700 tracking-tight mb-1">
             {t('audience.no_contacts_yet')}
           </p>
-          <p className="text-sm text-slate-400 font-medium">
+          <p className="text-sm text-slate-400 font-semibold">
             {t('audience.upload_to_get_started')}
           </p>
         </div>
         <button
           onClick={() => setShowUploadModal(true)}
-          className="btn-primary h-11 px-6 flex items-center gap-3 rounded-md text-[11px] font-extrabold uppercase tracking-widest shadow-sm shadow-purple-500/20"
+          className="btn-primary h-11 px-6 flex items-center gap-3 rounded-md text-xs font-bold shadow-sm shadow-purple-500/20"
         >
           <Upload className="w-4 h-4" />
           {t('audience.add_contacts')}
@@ -602,7 +633,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                         className={`px-8 py-4 ltr:text-left rtl:text-right border-b border-slate-200/60 whitespace-nowrap ${isSticky ? 'sticky right-0 bg-slate-50/90  border-l border-slate-200/60 z-10' : ''}`}
                       >
                         {header.isPlaceholder ? null : (
-                          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] select-none">
+                          <div className="text-xs font-bold text-slate-500 select-none">
                             {flexRender(header.column.columnDef.header, header.getContext())}
                           </div>
                         )}
@@ -641,10 +672,10 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
                       <div className="w-20 h-20 rounded-lg bg-slate-50 flex items-center justify-center mb-6 border border-slate-100 shadow-sm">
                         <FileSpreadsheet className="w-10 h-10 text-slate-300" />
                       </div>
-                      <p className="text-xl font-black text-slate-700 tracking-tight">
+                      <p className="text-xl font-bold text-slate-700 tracking-tight">
                         {t('modals.details.table.no_records')}
                       </p>
-                      <p className="text-sm font-bold text-slate-400 mt-2">
+                      <p className="text-sm font-semibold text-slate-400 mt-2">
                         {t('modals.details.table.try_adjusting')}
                       </p>
                     </div>
@@ -660,7 +691,7 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
       <div className="flex flex-col sm:flex-row items-center justify-between px-2 gap-4 sm:gap-0 py-1">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
-          <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">
+          <p className="text-xs font-bold text-slate-400">
             {totalRecords.toLocaleString()} {t('audience.total_contacts')}
           </p>
         </div>

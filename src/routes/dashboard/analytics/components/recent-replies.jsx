@@ -56,7 +56,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="flex items-center group/header"
           >
-            <span className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] select-none">
+            <span className="text-xs font-bold text-slate-900 select-none">
               {t('analytics.table_from')}
             </span>
             <SortIndicator column={column} />
@@ -66,14 +66,14 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           const reply = row.original;
           return (
             <div className="flex items-center gap-4 transition-transform duration-300 group-hover/row:translate-x-0.5">
-              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-purple-500/20 group-hover/row:rotate-6 transition-all">
+              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-purple-500/20 group-hover/row:rotate-6 transition-all">
                 {reply.from?.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
                 <p className="font-bold text-slate-900 group-hover/row:text-purple-600 transition-colors whitespace-nowrap">
                   {reply.from}
                 </p>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
+                <p className="text-[10px] font-bold text-slate-400 capitalize whitespace-nowrap">
                   {reply.recipientEmail}
                 </p>
               </div>
@@ -118,7 +118,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           return reply.campaignName ? (
             <Link
               to={`/dashboard/campaigns/${reply.campaignId}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest border border-purple-100/50 hover:bg-purple-600 hover:text-white transition-all shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-600 rounded-lg text-xs font-bold border border-purple-100/50 hover:bg-purple-600 hover:text-white transition-all shadow-xs"
             >
               {reply.campaignName}
             </Link>
@@ -149,7 +149,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
                 year: 'numeric'
               })}
             </p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <p className="text-[10px] font-bold text-slate-400">
               {formatInTimezone(row.original.receivedAt, userTz, {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -233,7 +233,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
             {t('analytics.recent_replies_title')}{' '}
             <span className="text-purple-500">{t('analytics.replies_span')}</span>
           </h3>
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs font-semibold text-slate-500 mt-1">
             {t('analytics.replies_subtitle')}
           </p>
         </div>
@@ -242,7 +242,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
           className="btn-secondary py-2 px-4 shadow-xs flex items-center gap-2"
         >
           <Download className="w-4 h-4 text-slate-400" />
-          <span className="text-[10px] font-extrabold uppercase tracking-widest">
+          <span className="text-xs font-bold">
             {t('common.export')}
           </span>
         </button>
@@ -251,7 +251,7 @@ const RecentReplies = ({ replies = [], isLoading }) => {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-24">
           <Loader2 className="w-10 h-10 animate-spin text-purple-500 mb-4" />
-          <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+          <p className="text-xs font-semibold text-slate-400">
             {t('analytics.loading_replies')}
           </p>
         </div>

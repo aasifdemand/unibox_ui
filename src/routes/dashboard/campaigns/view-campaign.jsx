@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -135,7 +135,7 @@ const ViewCampaign = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 rounded-md ${
+                className={`px-6 py-2.5 text-xs font-bold transition-all duration-300 rounded-md ${
                   activeTab === tab.id
                     ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-white'

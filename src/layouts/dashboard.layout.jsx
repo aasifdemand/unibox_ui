@@ -108,7 +108,7 @@ const DashboardLayout = () => {
   }, [location.pathname, navItems]);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#FAFAFA] text-zinc-900 selection:bg-purple-100 selection:text-purple-900 font-sans">
+    <div className="h-screen w-full overflow-hidden bg-[#FAFAFA] text-zinc-900 selection:bg-purple-100 selection:text-purple-900 font-sans flex overflow-x-hidden">
       <Sidebar
         sidebarCollapsed={sidebarCollapsed}
         setSidebarCollapsed={setSidebarCollapsed}
@@ -116,7 +116,7 @@ const DashboardLayout = () => {
       />
 
       <div
-        className={`transition-all duration-300 ease-in-out ${
+        className={`transition-all duration-300 ease-in-out flex-1 h-screen flex flex-col min-w-0 ${
           sidebarCollapsed ? 'lg:ltr:pl-[64px] lg:rtl:pr-[64px]' : 'lg:ltr:pl-[240px] lg:rtl:pr-[240px]'
         }`}
       >
@@ -182,7 +182,7 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="w-full flex-1 overflow-y-auto custom-scrollbar"
+          className="w-full flex-1 main-scroller"
         >
           <div className="p-2 w-full max-w-full mx-auto">
             <Outlet />
