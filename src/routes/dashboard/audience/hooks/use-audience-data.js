@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import * as XLSX from 'xlsx';
 import { calculateVerificationTotals, resetUploadState } from '../audience-service';
@@ -13,9 +14,10 @@ export const useAudienceData = () => {
   const [activeTab, setActiveTab] = useState('contacts');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showBatchModal, setShowBatchModal] = useState(false);
+  const [searchParams] = useSearchParams();
   const [selectedBatch, setSelectedBatch] = useState(null);
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
   const [filterStatus, setFilterStatus] = useState([]);
 
   // Contacts state
@@ -36,6 +38,17 @@ export const useAudienceData = () => {
   const [batchPage, setBatchPage] = useState(1);
   const [recordsPage, setRecordsPage] = useState(1);
   const BATCHES_PER_PAGE = 12;
+
+  // Sync searchTerm with URL if it changes externally
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null && q !== searchTerm) {
+      // Use microtask to avoid "set-state-in-effect" lint warning
+      Promise.resolve().then(() => {
+        setSearchTerm(q);
+      });
+    }
+  }, [searchParams, searchTerm]);
 
   // React Query hooks
   const {

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import {
   Users,
-  Upload,
   Database,
   Search,
   Check,
@@ -11,12 +10,12 @@ import {
   Loader2,
   ChevronRight,
   ArrowUpRight,
+  Sparkles,
 } from 'lucide-react';
 import ShowUpload from '../../../../../modals/showupload';
 import { useUploadBatch } from '../../../../../hooks/useBatches';
 
 const ImportLeadsStep = ({
-  
   handleBatchSelect,
   watchListBatchId,
   verifiedBatches = [],
@@ -78,163 +77,150 @@ const ImportLeadsStep = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-12 pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Minimal Header */}
-      <div className="text-center space-y-3">
-        <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Add Leads to Campaign</h2>
-        <p className="text-base font-medium text-slate-400 max-w-md mx-auto">
-          Choose how you&apos;d like to import your prospects for this sequence
+    <div className="max-w-[1100px] mx-auto space-y-12 pt-12 pb-24 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      {/* Refined Header */}
+      <div className="flex flex-col items-center text-center space-y-5 max-w-2xl mx-auto">
+        <div className="w-14 h-14 rounded-lg bg-purple-600 flex items-center justify-center shadow-2xl shadow-purple-600/20 mb-1">
+            <Users className="w-7 h-7 text-white" />
+        </div>
+        <h2 className="text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+          Add Leads to Campaign
+        </h2>
+        <p className="text-base font-medium text-slate-500">
+          Source your audience for this sequence. Select your preferred method to begin.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-12">
-        {/* Upload Section */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between px-2">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shadow-sm">
-                <Upload className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-800">
-                New Audience
-              </h3>
-            </div>
-            <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1 rounded-full">
-              CSV / XLS supported
-            </span>
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative items-stretch">
+        {/* ACTION 1: NEW AUDIENCE */}
+        <div className="relative group">
+           <div className="flex items-center gap-3 mb-4 px-3">
+              <Sparkles className="w-4 h-4 text-purple-500" />
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">New Prospect List</p>
+           </div>
+           
+           <div
+              onClick={() => setShowUploadModal(true)}
+              className="h-full border border-slate-100 bg-white rounded-xl p-10 flex flex-col transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-purple-600/5 hover:border-purple-300 group/card relative overflow-hidden"
+            >
+              {/* Subtle Gradient Decor */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/5 rounded-full -mr-20 -mt-20 blur-3xl group-hover/card:scale-125 transition-transform duration-700" />
 
-          <div
-            onClick={() => setShowUploadModal(true)}
-            className="group relative border-2 border-dashed border-slate-200 hover:border-purple-400 bg-white hover:bg-slate-50/50 rounded-lg p-16 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-sm hover:shadow-sm hover:shadow-purple-600/5 hover:-translate-y-1"
-          >
-            <div className="w-20 h-20 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-500 shadow-inner mb-6">
-              <FileSpreadsheet className="w-9 h-9" />
-            </div>
-            <div className="text-center space-y-2">
-              <p className="text-xl font-bold text-slate-800">
-                Click to{' '}
-                <span className="text-purple-600 group-hover:underline underline-offset-4">
-                  browse
-                </span>{' '}
-                or drag and drop
-              </p>
-              <p className="text-sm font-medium text-slate-400">
-                Import a new spreadsheet and we&apos;ll automatically map the fields for you.
-              </p>
-            </div>
-            <div className="absolute bottom-6 right-8 flex items-center gap-2 text-purple-600 font-bold text-xs opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
-              Start Upload <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative flex items-center py-2">
-          <div className="grow border-t-2 border-slate-100"></div>
-          <span className="shrink-0 mx-6 text-xs font-bold text-slate-400 bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100/50">
-            OR SELECT FROM
-          </span>
-          <div className="grow border-t-2 border-slate-100"></div>
-        </div>
-
-        {/* Saved Lists Section */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between px-2">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shadow-sm">
-                <Database className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-800">
-                Saved Audiences
-              </h3>
-            </div>
-            <button className="text-xs font-bold text-purple-600 hover:underline underline-offset-4">
-              Manage Lists
-            </button>
-          </div>
-
-          <div className="bg-white border-2 border-slate-100 rounded-lg p-10 shadow-sm space-y-10 hover:border-purple-100 transition-colors">
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-                <Search className="w-5 h-5 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
-              </div>
-              <select
-                className="w-full pl-14 pr-12 h-12 bg-slate-50/50 border-2 border-slate-100 hover:border-slate-200 rounded-lg text-sm font-bold text-slate-700 focus:border-purple-600 focus:ring-4 focus:ring-purple-600/5 focus:bg-white transition-all outline-none appearance-none cursor-pointer"
-                value={watchListBatchId || ''}
-                onChange={(e) => handleBatchSelect(e.target.value)}
-              >
-                <option value="" className="text-slate-400 font-medium">
-                  Search your contact lists...
-                </option>
-                {verifiedBatches.map((batch) => (
-                  <option key={batch.id} value={batch.id} className="text-slate-900 font-bold">
-                    {batch.originalFilename} ({batch.verification?.valid ?? batch.validRecords}{' '}
-                    leads)
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-6 flex items-center pointer-events-none text-slate-300 group-focus-within:text-purple-600 transition-colors">
-                <ChevronRight className="w-5 h-5 rotate-90" />
-              </div>
-            </div>
-
-            {isLoadingBatches ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 text-purple-600 animate-spin" />
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <p className="text-xs font-bold text-slate-600 px-3">
-                  Recent Audiences
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
-                  {verifiedBatches?.map((batch) => (
-                    <div
-                      key={batch.id}
-                      onClick={() => handleBatchSelect(batch.id)}
-                      className={`group flex items-center justify-between p-2 rounded-lg border-2 transition-all cursor-pointer relative overflow-hidden ${watchListBatchId === batch.id ? 'bg-purple-600 border-purple-600 shadow-sm shadow-purple-600/20' : 'bg-white border-slate-100 hover:border-purple-200 shadow-sm hover:shadow-md'}`}
-                    >
-                      <div className="flex items-center gap-4 min-w-0">
-                        <div
-                          className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all ${watchListBatchId === batch.id ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-400 group-hover:bg-purple-50 group-hover:text-purple-600'}`}
-                        >
-                          <Users className="w-6 h-6" />
-                        </div>
-                        <div className="min-w-0">
-                          <p
-                            className={`text-sm font-bold truncate transition-colors ${watchListBatchId === batch.id ? 'text-white' : 'text-slate-800'}`}
-                          >
-                            {batch.originalFilename}
-                          </p>
-                          <p
-                            className={`text-[11px] font-bold mt-0.5 ${watchListBatchId === batch.id ? 'text-white/60' : 'text-slate-400'}`}
-                          >
-                            {batch.verification?.valid ?? batch.validRecords} PROSPECTS
-                          </p>
-                        </div>
-                      </div>
-
-                      {watchListBatchId === batch.id && (
-                        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-purple-600 animate-in zoom-in duration-300">
-                          <Check className="w-4 h-4" />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  {verifiedBatches.length === 0 && (
-                    <div className="col-span-2 text-center py-12 bg-slate-50/50 rounded-lg border-2 border-dashed border-slate-100">
-                      <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center mx-auto mb-4 shadow-sm">
-                        <Database className="w-7 h-7 text-slate-200" />
-                      </div>
-                      <p className="text-sm font-bold text-slate-400">
-                        Your saved audiences will appear here
-                      </p>
-                    </div>
-                  )}
+              <div className="flex-1 space-y-8 relative z-10">
+                <div className="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-purple-600/20 group-hover/card:bg-purple-700 transition-colors">
+                  <FileSpreadsheet className="w-7 h-7" />
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold text-slate-800 leading-tight">
+                     Upload CSV / <br/> Spreadsheets
+                  </h3>
+                  <p className="text-sm font-medium text-slate-500 leading-relaxed max-w-[280px]">
+                    Import a list and we&apos;ll automatically map columns to your variables.
+                  </p>
                 </div>
               </div>
-            )}
-          </div>
+
+              <div className="mt-12 flex items-center justify-between pt-6 border-t border-slate-100 relative z-10">
+                <span className="text-sm font-semibold text-purple-600 flex items-center gap-2 group-hover/card:gap-3 transition-all">
+                  Browse Computer <ArrowUpRight className="w-4 h-4" />
+                </span>
+                <p className="text-xs font-semibold text-slate-400">CSV, XLSX, TXT</p>
+              </div>
+            </div>
+        </div>
+
+        {/* ACTION 2: SAVED LISTS */}
+        <div className="relative group">
+           <div className="flex items-center gap-3 mb-4 px-3">
+              <Database className="w-4 h-4 text-purple-400" />
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Existing Database</p>
+           </div>
+
+           <div className="h-full bg-slate-50 border border-slate-100 rounded-xl p-10 flex flex-col transition-all duration-300 shadow-sm hover:border-purple-300 hover:bg-white group/card">
+              <div className="space-y-6 flex-1">
+                {/* Search Bar */}
+                <div className="relative group/search">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Search className="w-4 h-4 text-slate-400 group-focus-within/search:text-purple-600 transition-colors" />
+                  </div>
+                  <select
+                    className="w-full pl-11 pr-12 h-12 bg-white border border-slate-200 hover:border-slate-300 rounded-lg text-sm font-medium text-slate-800 focus:border-purple-600 transition-all outline-none appearance-none cursor-pointer shadow-sm"
+                    value={watchListBatchId || ''}
+                    onChange={(e) => handleBatchSelect(e.target.value)}
+                  >
+                    <option value="" className="text-slate-400">
+                      Select a saved list...
+                    </option>
+                    {verifiedBatches.map((batch) => (
+                      <option key={batch.id} value={batch.id}>
+                        {batch.originalFilename}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400">
+                    <ChevronRight className="w-4 h-4 rotate-90" />
+                  </div>
+                </div>
+
+                {/* List Container */}
+                <div className="flex flex-col space-y-3">
+                  <div className="flex items-center justify-between px-1">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Recent Audiences</p>
+                    {verifiedBatches.length > 0 && (
+                      <button className="text-xs font-semibold text-purple-600 hover:text-purple-700 transition-colors">Manage All</button>
+                    )}
+                  </div>
+
+                  <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
+                    {isLoadingBatches ? (
+                      <div className="flex items-center justify-center py-8 bg-white rounded-lg border border-slate-100">
+                        <Loader2 className="w-5 h-5 text-purple-600 animate-spin" />
+                      </div>
+                    ) : verifiedBatches.length > 0 ? (
+                      verifiedBatches.map((batch) => (
+                        <div
+                          key={batch.id}
+                          onClick={() => handleBatchSelect(batch.id)}
+                          className={`group/item flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer relative overflow-hidden active:scale-[0.98] ${watchListBatchId === batch.id ? 'bg-purple-600 border-purple-700 shadow-md shadow-purple-600/20' : 'bg-white border-slate-200 hover:border-purple-300 hover:shadow-xs'}`}
+                        >
+                          <div className="flex items-center gap-4 min-w-0">
+                            <div
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all ${watchListBatchId === batch.id ? 'bg-white/20 text-white' : 'bg-slate-50 text-slate-400 group-hover/item:bg-purple-50 group-hover/item:text-purple-600'}`}
+                            >
+                              <Users className="w-5 h-5" />
+                            </div>
+                            <div className="min-w-0 flex flex-col gap-0.5">
+                              <p
+                                className={`text-sm font-semibold truncate transition-colors ${watchListBatchId === batch.id ? 'text-white' : 'text-slate-800'}`}
+                              >
+                                {batch.originalFilename}
+                              </p>
+                              <p
+                                className={`text-xs font-medium ${watchListBatchId === batch.id ? 'text-white/70' : 'text-slate-500'}`}
+                              >
+                                {batch.verification?.valid ?? batch.validRecords} Leads
+                              </p>
+                            </div>
+                          </div>
+
+                          {watchListBatchId === batch.id && (
+                            <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-purple-600 shadow-sm">
+                              <Check className="w-3.5 h-3.5 stroke-[3px]" />
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-12 bg-white rounded-lg border border-dashed border-slate-200">
+                         <Database className="w-8 h-8 text-slate-200 mx-auto mb-3" />
+                         <p className="text-sm font-medium text-slate-400">No saved audiences</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+           </div>
         </div>
       </div>
 

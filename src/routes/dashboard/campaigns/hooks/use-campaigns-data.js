@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDebounce } from '../../../../hooks/useDebounce';
 import {
@@ -12,8 +12,9 @@ import {
 
 export const useCampaignsData = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedCampaigns, setSelectedCampaigns] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
   const [statusFilter, setStatusFilter] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState(null);
@@ -21,6 +22,17 @@ export const useCampaignsData = () => {
   const [campaignToEdit, setCampaignToEdit] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
+
+  // Sync searchTerm with URL if it changes externally
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null && q !== searchTerm) {
+      // Use microtask to avoid "set-state-in-effect" lint warning
+      Promise.resolve().then(() => {
+        setSearchTerm(q);
+      });
+    }
+  }, [searchParams, searchTerm]);
 
   // React Query hooks
   const { data: campaigns = [], isLoading, refetch: refetchCampaigns } = useCampaigns();

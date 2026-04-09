@@ -121,7 +121,7 @@ const DashboardLayout = () => {
         }`}
       >
         {/* Header */}
-        <header className="h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0">
+        <header className="relative z-[60] h-14 px-4 flex items-center justify-between bg-white border-b border-zinc-200 shrink-0">
 
           {/* Left — sidebar toggle + breadcrumbs */}
           <div className="flex items-center gap-3 min-w-0">
@@ -182,7 +182,7 @@ const DashboardLayout = () => {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="w-full flex-1 main-scroller"
+          className="w-full flex-1 main-scroller isolate"
         >
           <div className="p-2 w-full max-w-full mx-auto">
             <Outlet />

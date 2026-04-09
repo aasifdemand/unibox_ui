@@ -382,13 +382,14 @@ body.modal-open {
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+  scrollbar-gutter: stable;
 }
 
 .main-scroller {
   scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.5) transparent;
+  scrollbar-color: #cbd5e1 transparent;
   overflow-y: auto;
-  overflow-y: overlay;
+  scrollbar-gutter: stable;
 }
 
 @keyframes shimmer {

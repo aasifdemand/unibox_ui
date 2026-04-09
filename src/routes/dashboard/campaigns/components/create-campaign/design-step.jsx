@@ -168,7 +168,16 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
   const [aiTone, setAiTone] = useState('professional');
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSenderModalOpen, setIsSenderModalOpen] = useState(false);
+  const [selectedTestSenderIds, setSelectedTestSenderIds] = useState([]);
   const generateAi = useGenerateSequence();
+
+  const toggleTestSender = (sender) => {
+    setSelectedTestSenderIds(prev => 
+      prev.includes(sender.id) 
+        ? prev.filter(id => id !== sender.id) 
+        : [...prev, sender.id]
+    );
+  };
 
   // Watchers
   const mainSubject = watch('subject') || '';
@@ -240,27 +249,36 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
   };
 
   const handleModalSendTest = async (sender) => {
+    // 1. Pre-validation: Don't send if both subject and body are empty
+    if (!currentSubject?.trim() && !currentHtmlBody?.slice(0, 50).trim()) {
+      toast.error(t('campaigns.design.err_empty_test', "Please add some content (subject or body) before sending a test."));
+      return;
+    }
+
     const testEmail = window.prompt(`Send test email from ${sender.email} to:`, "");
     if (!testEmail) return;
 
     try {
+      // 2. Harden payload with fallbacks and robust mapping
+      const payload = {
+        testEmail,
+        subject: currentSubject?.trim() || `[Draft] No Subject`,
+        htmlBody: currentHtmlBody?.trim() || `[Draft Content]`,
+        senderId: sender.id,
+        senderType: sender.type || sender.senderType || sender.provider
+      };
+
       toast.promise(
-        api.post('/campaigns/test-send-stateless', {
-          testEmail,
-          subject: currentSubject,
-          htmlBody: currentHtmlBody,
-          senderId: sender.id,
-          senderType: sender.type || sender.senderType
-        }),
+        api.post('/campaigns/test-send-stateless', payload),
         {
-          loading: 'Sending test...',
-          success: 'Test email sent!',
-          error: 'Failed to send test.'
+          loading: 'Executing test dispatch...',
+          success: 'Test email dispatched successfully!',
+          error: (err) => err.message || 'Failed to dispatch test.'
         }
       );
     } catch (err) {
-      console.error("Test send error:", err);
-      toast.error("An error occurred during test send.");
+      console.error("Test dispatch error:", err);
+      toast.error("A technical error occurred during test dispatch.");
     }
   };
 
@@ -380,55 +398,55 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
         variables 
       });
 
-      // Resilience: Handle multiple variations of JSON structures
+      // 🛡️ RECURSIVE ROBUST PARSING
+      // Sometimes AI returns strings that are themselves stringified JSON
+      const deepParse = (input) => {
+        if (!input) return null;
+        if (typeof input !== 'string') return input;
+        try {
+          const parsed = JSON.parse(input);
+          if (parsed && typeof parsed === 'object') return deepParse(parsed);
+          return parsed;
+        } catch {
+          return input;
+        }
+      };
+
+      sequence = deepParse(sequence);
+
+      // Standardize to array
       if (sequence && !Array.isArray(sequence)) {
-        // Option 1: Standard wrapped keys
         if (sequence.emails || sequence.steps || sequence.sequence) {
           sequence = sequence.emails || sequence.steps || sequence.sequence;
-        } 
-        // Option 2: Object-of-steps (e.g., "step1": { subject, body })
-        else {
-          const values = Object.values(sequence);
-          const hasStepObjects = values.some(v => 
-            v && typeof v === 'object' && 
-            Object.keys(v).some(k => ['subject', 'body', 'title', 'content'].includes(k.toLowerCase()))
-          );
-          
-          if (hasStepObjects) {
-            sequence = values;
-          } else {
-            // Option 3: Single-step object not wrapped
-            sequence = [sequence];
-          }
+        } else {
+          sequence = [sequence];
         }
       }
 
       if (Array.isArray(sequence) && sequence.length > 0) {
-        // ULTRA-ROBUST normalization
         const normalized = sequence.map(s => {
-          if (typeof s !== 'object' || s === null) return { subject: 'Email Step', body: String(s) };
+          // If the element inside the array is a string, try to parse it
+          const item = deepParse(s);
+          if (typeof item !== 'object' || item === null) return { subject: 'Email Step', body: String(item) };
           
-          const keys = Object.keys(s);
+          const keys = Object.keys(item);
           const findKey = (candidates) => {
             const found = keys.find(k => candidates.includes(k.toLowerCase()));
-            return found ? s[found] : null;
+            return found ? item[found] : null;
           };
 
-          // Step 1: Try case-insensitive specific candidates
           let subject = findKey(['subject', 'title', 'subject_line', 'headline', 'name']);
           let body = findKey(['body', 'content', 'text', 'message', 'email_body', 'html_body']);
 
-          // Step 2: If still missing, just take the first string property for subject
-          // and the largest string property for body (highly resilient)
+          // Fallback guess
           if (!subject || !body) {
-            const stringEntries = Object.entries(s)
+            const stringEntries = Object.entries(item)
               .filter(([_, v]) => typeof v === 'string')
-              .sort((a, b) => b[1].length - a[1].length); // Longest strings first
+              .sort((a, b) => b[1].length - a[1].length);
             
             if (stringEntries.length > 0) {
-              if (!body) body = stringEntries[0][1]; // Longest is likely the body
-              if (!subject && stringEntries.length > 1) subject = stringEntries[1][1]; // Second longest or remaining
-              if (!subject && !body) subject = stringEntries[0][1];
+              if (!body) body = stringEntries[0][1];
+              if (!subject && stringEntries.length > 1) subject = stringEntries[1][1];
             }
           }
 
@@ -440,8 +458,8 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
 
         // Update the main step
         setValue('subject', normalized[0].subject, { shouldValidate: true });
-        // Ensure newlines are preserved as HTML breaks
-        const mainBody = (normalized[0].body || '').replace(/\n/g, '<br />');
+        // Preserve newlines and prevent raw JSON stringification
+        const mainBody = String(normalized[0].body || '').replace(/\n/g, '<br />');
         setValue('htmlBody', mainBody, { shouldValidate: true });
 
         // Update follow-up steps
@@ -449,7 +467,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
           const followUps = normalized.slice(1).map((s, i) => ({
             stepOrder: i + 1,
             subject: s.subject || `Follow-up ${i + 1}`,
-            htmlBody: (s.body || '').replace(/\n/g, '<br />'),
+            htmlBody: String(s.body || '').replace(/\n/g, '<br />'),
             textBody: '',
             delayMinutes: 4320 * (i + 1),
             condition: 'no_reply',
@@ -459,7 +477,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
         
         toast.success('Campaign sequence generated successfully!');
       } else {
-        throw new Error("No emails found in the generated sequence.");
+        throw new Error("No valid email structure found in the AI response.");
       }
     } catch (error) {
       console.error('AI Generation Failed:', error);
@@ -470,115 +488,125 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
   };
 
   return (
-    <div className="flex gap-0 min-h-screen bg-white animate-in fade-in duration-700">
-      {/* LEFT SIDEBAR: Vertical Timeline with Background */}
-      <div className="w-[320px] shrink-0 bg-[#fbfcfd] border-r border-slate-100 flex flex-col p-10 relative overflow-y-auto">
-        <div className="absolute left-[59px] top-16 bottom-16 w-[1.5px] bg-slate-200" />
+    <div className="flex gap-0 h-full min-h-[600px] bg-white">
+      {/* LEFT SIDEBAR: Clean Vertical Timeline */}
+      <div className="w-[320px] shrink-0 bg-slate-50/50 border-r border-slate-100 flex flex-col p-8 relative overflow-y-auto">
+        {/* Timeline connector */}
+        <div className="absolute left-[51px] top-16 bottom-16 w-px bg-slate-200" />
 
-        <div className="space-y-10 relative">
+        <div className="space-y-8 relative">
           {/* Main Step Node */}
-          <div className="relative group">
-            <div
-              className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === 0 ? 'border-purple-600 ring-4 ring-purple-50' : 'border-slate-200'}`}
-            >
-              <Mail
-                className={`w-4 h-4 ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-400'}`}
-              />
-            </div>
+          <div className="group relative">
+            <div className="ml-14 space-y-2 relative">
+              {/* Timeline marker centered with the card (approx. below title) */}
+              <div
+                className={`absolute -left-14 top-6 w-10 h-10 rounded-full flex items-center justify-center transition-all z-10 ${activeStepIndex === 0 ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20 scale-110' : 'bg-white border-2 border-slate-100 text-slate-400 group-hover:border-slate-200'}`}
+              >
+                <Mail className="w-4 h-4" />
+              </div>
 
-            <div className="ml-14 space-y-2">
-              <p className="text-[11px] font-bold text-slate-800 tracking-tight">Email follow up</p>
+              <div className="flex items-center justify-between px-1">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Initial outreach</p>
+              </div>
+
               <button
                 type="button"
                 onClick={() => setActiveStepIndex(0)}
-                className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === 0 ? 'border-purple-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                className={`w-full text-left p-4 rounded-lg border transition-all group-hover:-translate-y-0.5 ${activeStepIndex === 0 ? 'border-purple-500 bg-white shadow-lg shadow-purple-500/10' : 'border-slate-100 bg-white shadow-sm hover:border-purple-200'}`}
               >
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-xs font-semibold text-slate-400">Email</span>
-                  <p className="text-[11px] font-bold text-slate-600 truncate">
-                    Subject: {mainSubject || '----'}
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-1.5 h-1.5 rounded-full ${activeStepIndex === 0 ? 'bg-purple-500 animate-pulse' : 'bg-slate-300'}`} />
+                    <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-500'}`}>Email Step</span>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-800 truncate pl-3.5">
+                    {mainSubject || '----'}
                   </p>
                 </div>
               </button>
-              <button className="text-xs font-bold text-purple-600 hover:text-purple-700 ml-1">
-                + Add Variant
-              </button>
+              
+              
             </div>
           </div>
 
           {/* Follow-up nodes */}
           {steps.map((step, idx) => (
-            <div key={idx} className="relative group">
-              <div
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border flex items-center justify-center transition-all bg-white z-10 ${activeStepIndex === idx + 1 ? 'border-purple-600 ring-4 ring-purple-50' : 'border-slate-200'}`}
-              >
-                <MessageSquare
-                  className={`w-4 h-4 ${activeStepIndex === idx + 1 ? 'text-purple-600' : 'text-slate-400'}`}
-                />
-              </div>
+            <div key={idx} className="group relative">
+              <div className="ml-14 space-y-2 relative">
+                {/* Timeline marker centered with the card (approx. below title) */}
+                <div
+                  className={`absolute -left-14 top-6 w-10 h-10 rounded-full flex items-center justify-center transition-all z-10 ${activeStepIndex === idx + 1 ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20 scale-110' : 'bg-white border-2 border-slate-100 text-slate-400 group-hover:border-slate-200'}`}
+                >
+                  <MessageSquare className="w-4 h-4" />
+                </div>
 
-              <div className="ml-14 space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-[11px] font-bold text-slate-800 tracking-tight">
+                <div className="flex items-center justify-between px-1">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
                     Follow-up #{idx + 1}
                   </p>
                   <button
                     type="button"
                     onClick={() => removeFollowUp(idx)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-purple-400 hover:text-purple-600"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-300 hover:text-red-500 p-1 bg-white hover:bg-red-50 rounded"
+                    title="Remove Step"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
+                
                 <button
                   type="button"
                   onClick={() => setActiveStepIndex(idx + 1)}
-                  className={`w-full text-left p-3 rounded-md border transition-all ${activeStepIndex === idx + 1 ? 'border-purple-600 border-l-4 bg-white shadow-sm' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                  className={`w-full text-left p-4 rounded-lg border transition-all group-hover:-translate-y-0.5 ${activeStepIndex === idx + 1 ? 'border-purple-500 bg-white shadow-lg shadow-purple-500/10' : 'border-slate-100 bg-white shadow-sm hover:border-purple-200'}`}
                 >
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-xs font-semibold text-slate-400">
-                      Wait {Math.round(step.delayMinutes / 1440)} days
-                    </span>
-                    <p className="text-[11px] font-bold text-slate-600 truncate">
-                      Subject: {step.subject || '----'}
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`w-1.5 h-1.5 rounded-full ${activeStepIndex === idx + 1 ? 'bg-purple-500 animate-pulse' : 'bg-slate-300'}`} />
+                      <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${activeStepIndex === idx + 1 ? 'text-purple-600' : 'text-slate-500'}`}>
+                        Wait {Math.round(step.delayMinutes / 1440)} days
+                      </span>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-800 truncate pl-3.5">
+                      {step.subject || '----'}
                     </p>
                   </div>
                 </button>
-                <button className="text-[10px] font-bold text-purple-600 hover:text-purple-700 ml-1">
-                  + Add Variant
-                </button>
+                
+                
               </div>
             </div>
           ))}
 
           {/* Add Step Node */}
-          <div className="relative pt-4">
-            <button
-              type="button"
-              onClick={addFollowUp}
-              className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-sm shadow-purple-600/30 hover:scale-110 transition-all z-10"
-            >
-              <Plus className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              onClick={addFollowUp}
-              className="ml-14 text-xs font-bold text-purple-600 hover:text-purple-700"
-            >
-              Add step
-            </button>
-        </div>
+          <div className="relative pt-6 group">
+            <div className="ml-14 relative flex items-center">
+              <button
+                type="button"
+                onClick={addFollowUp}
+                className="absolute -left-14 w-10 h-10 rounded-full border-2 border-dashed border-purple-300 text-purple-500 bg-purple-50 flex items-center justify-center group-hover:border-purple-600 group-hover:text-purple-600 group-hover:bg-purple-100 transition-all z-10"
+              >
+                <Plus className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={addFollowUp}
+                className="text-[13px] font-bold text-purple-600 group-hover:text-purple-700 uppercase tracking-widest pl-2"
+              >
+                Add step
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* RIGHT SIDE: Editor Area with light background */}
+      {/* RIGHT SIDE: Editor Area */}
       <div className="flex-1 bg-[#F9FAFB] overflow-y-auto p-10 space-y-6">
         {/* Inbox Preview Bar */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-bold text-slate-800">Inbox Preview</h3>
-              <div className="w-3.5 h-3.5 rounded-full border border-slate-300 flex items-center justify-center text-[8px] text-slate-400 cursor-help font-black">
+              <h3 className="text-sm font-semibold text-slate-800">Inbox Preview</h3>
+              <div className="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-slate-400 cursor-help font-semibold">
                 i
               </div>
             </div>
@@ -586,26 +614,26 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <button
               type="button"
               onClick={onSendTest}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs font-bold text-purple-600 hover:border-purple-400 hover:bg-purple-50 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:border-purple-300 hover:text-purple-700 hover:bg-purple-50 transition-all shadow-sm"
             >
-            <Zap className="w-3 h-3 fill-purple-600" />
+            <Zap className="w-3.5 h-3.5 text-purple-500" />
               Send Test
             </button>
           </div>
 
-          <div className="bg-[#f8f9fc] border border-slate-100 rounded-lg p-4 flex items-center gap-6 group hover:bg-white hover:shadow-sm hover:shadow-slate-200/50 transition-all cursor-default">
+          <div className="bg-[#f8f9fc] border border-slate-100 rounded-lg p-4 flex items-center gap-6 group hover:bg-white hover:shadow-sm hover:border-slate-200 transition-all cursor-default">
             <div className="flex items-center gap-4 min-w-0">
               <div className="w-5 h-5 rounded border border-slate-200 bg-white" />
-              <Tag className="w-4 h-4 text-slate-200 group-hover:text-amber-400 transition-colors" />
-              <span className="text-xs font-bold text-slate-900 shrink-0">
+              <Tag className="w-4 h-4 text-slate-300 group-hover:text-amber-400 transition-colors" />
+              <span className="text-sm font-semibold text-slate-900 shrink-0">
                 Unibox
               </span>
             </div>
             <div className="flex-1 min-w-0 flex items-baseline gap-2">
-              <span className="text-[11px] font-bold text-slate-900 truncate">
+              <span className="text-sm font-semibold text-slate-900 truncate w-fit">
                 {currentSubject || 'Your subject line will display here'}
               </span>
-              <span className="text-[11px] text-slate-400 truncate font-medium">
+              <span className="text-xs text-slate-500 truncate font-medium">
                 {getBodySnippet(currentHtmlBody)}
               </span>
             </div>
@@ -618,12 +646,12 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
         {/* Editor Main Section */}
         <div className="bg-white border-2 border-[#eaecf0] rounded-lg shadow-sm flex flex-col min-h-[500px] overflow-hidden">
           {/* Header row */}
-          <div className="px-6 py-4 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
-            <h2 className="text-sm font-bold text-slate-700">Stage {activeStepIndex + 1}: Email</h2>
+          <div className="px-6 py-5 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
+            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Stage {activeStepIndex + 1}: Email Architecture</h2>
             {isGenerating && (
               <div className="flex items-center gap-2 px-3 py-1 bg-purple-50 border border-purple-100 rounded-full animate-pulse shadow-sm">
                 <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping" />
-                <span className="text-xs font-bold text-purple-600">AI Architecting...</span>
+                <span className="text-xs font-semibold text-purple-700">AI generating...</span>
               </div>
             )}
           </div>
@@ -633,7 +661,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <div className="px-6 py-4 border-b border-[#eaecf0] bg-purple-50/30 flex items-center gap-6 animate-in slide-in-from-top-2 duration-300">
               <div className="flex items-center gap-3">
                 <Clock className="w-4 h-4 text-purple-500" />
-                <span className="text-xs font-bold text-slate-500">
+                <span className="text-sm font-semibold text-slate-600">
                   Wait
                 </span>
                 <div className="flex items-center">
@@ -645,24 +673,24 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                     onChange={(e) =>
                       updateDelay(activeStepIndex - 1, parseInt(e.target.value) * 1440)
                     }
-                    className="w-16 h-10 bg-white border border-slate-200 rounded-xl text-center text-xs font-bold text-purple-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/5 transition-all outline-none"
+                    className="w-16 h-10 bg-white border border-slate-200 rounded-lg text-center text-sm font-semibold text-slate-800 focus:border-purple-500 transition-all outline-none"
                   />
-                  <span className="ml-2 text-xs font-semibold text-slate-400">
+                  <span className="ml-2 text-sm font-medium text-slate-500">
                     Days
                   </span>
                 </div>
               </div>
 
-              <div className="h-4 w-px bg-purple-100" />
+              <div className="h-4 w-px bg-purple-200" />
 
               <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-slate-500">
+                <span className="text-sm font-semibold text-slate-600">
                   Send if
                 </span>
                 <select
                   value={steps[activeStepIndex - 1]?.condition || 'no_reply'}
                   onChange={(e) => updateCondition(activeStepIndex - 1, e.target.value)}
-                  className="h-10 bg-white border border-slate-200 rounded-xl px-4 text-xs font-bold text-purple-600 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/5 transition-all outline-none cursor-pointer appearance-none pr-8"
+                  className="h-10 bg-white border border-slate-200 rounded-lg px-4 text-sm font-semibold text-slate-800 focus:border-purple-500 hover:border-slate-300 transition-all outline-none cursor-pointer appearance-none pr-8"
                 >
                 <option value="no_reply">No Reply</option>
                   <option value="on_open">Open Recorded</option>
@@ -674,15 +702,15 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
           )}
 
           {/* Subject Row */}
-          <div className="px-6 py-3 border-b border-[#eaecf0] flex items-center gap-4">
-            <span className="text-[11px] font-bold text-slate-400 w-16">Subject:</span>
+          <div className="px-6 py-5 border-b border-[#eaecf0] flex items-center gap-4 group transition-colors cursor-text">
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider w-20 shrink-0">Subject</span>
             <div className="flex-1 relative">
               <HighlightedInput
                 ref={highlightedInputRef}
                 value={currentSubject}
                 onChange={setSubject}
                 placeholder="Hi {{first_name}}"
-                className="text-[13px] font-medium border-none bg-transparent! p-0 focus:ring-0 placeholder:text-slate-300 w-full"
+                className="text-sm font-semibold border-none bg-transparent! p-0 focus:ring-0 placeholder:text-slate-300 w-full text-slate-800"
                 userFields={[
                   ...availableFields,
                   { fieldName: 'sender_name', displayName: 'Sender Name' },
@@ -692,10 +720,10 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             <button
               type="button"
               onClick={triggerTokenDropdown}
-              className="flex items-center gap-1.5 text-purple-600 hover:text-purple-700 transition-all font-bold"
+              className="flex items-center gap-1.5 text-purple-600 hover:text-purple-700 transition-all"
             >
-              <span className="text-sm">{'{ }'}</span>
-              <span className="text-[11px] tracking-tight uppercase">Variables</span>
+              <span className="text-sm font-semibold">{'{ }'}</span>
+              <span className="text-xs font-semibold uppercase tracking-wider">Variables</span>
             </button>
 
              {/* Quick Add Custom Variable */}
@@ -704,7 +732,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 <Input
                   id="custom-var-input"
                   placeholder="Add custom field..."
-                  className="h-10 text-xs font-bold text-slate-700 placeholder:text-slate-300"
+                  className="h-10 text-sm font-medium text-slate-800 placeholder:text-slate-400"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && e.currentTarget.value.trim()) {
                       registerPlaceholder(e.currentTarget.value);
@@ -745,23 +773,23 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
               senderName={selectedSender?.name || ''}
             />
 
-            <div className="px-6 py-4 border-t border-[#eaecf0] bg-white rounded-b-2xl">
+            <div className="px-6 py-4 border-t border-[#eaecf0] bg-white rounded-b-lg">
               <div className="flex items-center gap-4 mb-4">
                 <button
                   type="button"
                   onClick={() => setIsAiModalOpen(true)}
-                  className="flex items-center gap-2.5 px-3 py-2 border-2 border-purple-100 bg-purple-50/50 rounded-md hover:bg-purple-100 transition-all group"
+                  className="flex items-center gap-2.5 px-4 py-2 bg-purple-50 border border-purple-100 rounded-lg hover:border-purple-200 transition-all group"
                 >
-                  <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center group-hover:bg-purple-700 transition-colors shadow-sm shadow-purple-600/20">
-                    <Sparkles className="w-3 h-3 text-white" />
+                  <div className="w-5 h-5 rounded-md bg-purple-100 flex items-center justify-center transition-colors">
+                    <Sparkles className="w-3.5 h-3.5 text-purple-600" />
                   </div>
-                  <span className="text-[11px] font-bold text-purple-700">Compose with AI</span>
+                  <span className="text-xs font-semibold text-purple-700">Compose with AI</span>
                 </button>
               </div>
 
-              <p className="text-[10px] text-slate-400 font-medium leading-relaxed">
+              <p className="text-xs text-slate-400 font-medium leading-relaxed">
                 Type{' '}
-                <code className="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100 text-slate-500 font-mono">
+                <code className="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100 text-slate-500 font-mono text-xs">
                   %signature%
                 </code>{' '}
                 to insert your email account&apos;s signature where you want it added or it will be added
@@ -771,32 +799,32 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
 
              {/* Deliverability Alert */}
             {missingVariables.length > 0 && (
-              <div className="p-4 bg-red-50/50 border border-red-100 rounded-2xl flex items-start gap-4 mt-6 mb-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center shrink-0 shadow-sm shadow-red-200/50">
+              <div className="p-4 bg-red-50/50 border border-red-100 rounded-lg flex items-start gap-4 mt-6 mb-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center shrink-0 shadow-sm shadow-red-200/50">
                   <AlertCircle className="w-5 h-5 text-red-600" />
                 </div>
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold text-red-700">
+                    <h4 className="text-sm font-semibold text-red-800">
                       {t('campaigns.design.health_alert_title', 'Deliverability Alert: Missing Data')}
                     </h4>
-                    <span className="text-[10px] font-bold bg-red-100 text-red-700 px-2.5 py-1 rounded-md leading-none">
+                    <span className="text-xs font-semibold bg-red-100 text-red-700 px-2.5 py-1 rounded-md leading-none">
                       {t('campaigns.design.health_alert_action', 'Action Required')}
                     </span>
                   </div>
-                  <p className="text-xs font-bold text-red-600/70 leading-relaxed mb-3">
+                  <p className="text-sm font-medium text-red-700/80 leading-relaxed mb-3">
                     {t('campaigns.design.health_alert_desc', { vars: missingVariables.map(v => `{{${v}}}`).join(', ') })}
                   </p>
                   <div className="flex items-center gap-3 pt-1">
                     <button 
                       type="button"
-                      className="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition-all flex items-center gap-2 shadow-sm shadow-red-600/20 active:scale-95"
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-all flex items-center gap-2 shadow-sm active:scale-95"
                     >
                       <Zap className="w-3.5 h-3.5" /> {t('campaigns.design.enrich_apollo', 'Enrich with Apollo')}
                     </button>
                     <button 
                       type="button"
-                      className="px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg text-xs font-bold hover:bg-red-50 transition-all active:scale-95"
+                      className="px-4 py-2 bg-white border border-red-200 text-red-700 rounded-lg text-xs font-semibold hover:bg-red-50 transition-all active:scale-95"
                     >
                       {t('campaigns.design.update_leads', 'Update Lead List')}
                     </button>
@@ -826,6 +854,8 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
         isOpen={isSenderModalOpen}
         onClose={() => setIsSenderModalOpen(false)}
         senders={senders}
+        watchSenderIds={selectedTestSenderIds}
+        toggleSender={toggleTestSender}
         onSendTest={handleModalSendTest}
         mode="test"
       />

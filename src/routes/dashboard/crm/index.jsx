@@ -1,4 +1,5 @@
-import  { useState, useMemo } from 'react';
+import  { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Plus,
@@ -38,7 +39,16 @@ import Header from './components/header';
 // ─── Main CRM Page ────────────────────────────────────────────────────────────
 const CRMIntegration = () => {
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+
+  // Sync searchQuery with URL if it changes externally
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams,searchQuery]);
   const [isAddStageOpen, setIsAddStageOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [stageToDelete, setStageToDelete] = useState(null);

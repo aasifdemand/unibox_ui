@@ -125,15 +125,15 @@ const ScheduleCampaignModal = ({
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className="text-2xl font-bold uppercase tracking-tight leading-none">
+                <h2 className="text-2xl font-bold leading-none">
                   {t('campaigns.schedule_settings_title', 'Schedule Settings')}
                 </h2>
-                <div className="flex items-center gap-3 mt-1 underline decoration-white/20 decoration-2 underline-offset-2">
-                  <p className="text-xs font-bold text-white/70">
+                <div className="flex items-center gap-3 mt-2">
+                  <p className="text-sm font-semibold text-white/70">
                     {t('campaigns.target_clock', 'Target Clock')}:
                   </p>
-                  <p className="text-xs font-bold text-white animate-pulse">
-                    {currentTime} <span className="opacity-50 font-medium">({selectedTimezone})</span>
+                  <p className="text-sm font-semibold text-white animate-pulse">
+                    {currentTime} <span className="opacity-70 font-medium">({selectedTimezone})</span>
                   </p>
                 </div>
               </motion.div>
@@ -144,34 +144,34 @@ const ScheduleCampaignModal = ({
         <div className="p-10 space-y-8 relative z-10 bg-white">
           <div className="space-y-8">
             {/* Timezone */}
-            <div className="space-y-3">
+            <div className="space-y-2 mb-2">
               <Select
                 label="System Timezone"
                 {...register('timezone')}
                 value={watch('timezone')}
                 options={timezones}
-                className="h-14 font-bold text-sm"
-                containerClassName="space-y-3"
-                labelClassName="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2"
+                className="h-12 font-medium text-sm rounded-lg"
+                containerClassName="space-y-2"
+                labelClassName="text-sm font-semibold text-slate-500 mb-1 flex items-center gap-2"
                 icon={Globe}
               />
             </div>
 
             {/* Sending Days */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-slate-400">
+            <div className="space-y-2 mb-2">
+              <label className="text-sm font-semibold text-slate-500 mb-1 block">
                 Active Sending Days
               </label>
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-2">
                 {days.map((day) => (
                   <button
                     key={day.id}
                     type="button"
                     onClick={() => toggleDay(day.id)}
-                    className={`min-w-[70px] py-3.5 rounded-lg text-xs font-bold transition-all border-2 ${
+                    className={`min-w-[75px] py-2.5 rounded-lg text-sm font-medium transition-all border-2 ${
                       sendingDays.includes(day.id)
-                        ? 'bg-purple-600 border-purple-600 text-white shadow-md'
-                        : 'bg-slate-50/50 border-slate-100 text-slate-400 hover:border-slate-300'
+                        ? 'bg-purple-600 border-purple-600 text-white shadow-sm'
+                        : 'bg-slate-50/50 border-slate-200 text-slate-600 hover:border-slate-300'
                     }`}
                   >
                     {day.label}
@@ -181,39 +181,39 @@ const ScheduleCampaignModal = ({
             </div>
 
             {/* Time Period */}
-            <div className="grid grid-cols-2 gap-8 pt-4 border-t border-slate-50">
-              <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+              <div>
                 <Input
                   type="time"
                   label={t('campaigns.start_time', 'Start Time')}
                   {...register('startTime')}
                   value={watch('startTime')}
                   error={validationError && watch('startDate') === todayStr ? validationError : ''}
-                  className="h-14 font-bold text-sm"
-                  containerClassName="space-y-3"
-                  labelClassName="text-xs font-bold text-slate-400"
+                  className="h-12 font-medium text-sm"
+                  containerClassName="space-y-2"
+                  labelClassName="text-sm font-semibold text-slate-500 mb-1"
                 />
               </div>
-              <div className="space-y-3">
+              <div>
                 <Input
                   type="time"
                   label={t('campaigns.end_time', 'End Time')}
                   {...register('endTime')}
                   value={watch('endTime')}
-                  className="h-14 font-bold text-sm"
-                  containerClassName="space-y-3"
-                  labelClassName="text-xs font-bold text-slate-400"
+                  className="h-12 font-medium text-sm"
+                  containerClassName="space-y-2"
+                  labelClassName="text-sm font-semibold text-slate-500 mb-1"
                 />
               </div>
             </div>
 
             {/* Interval */}
-            <div className="space-y-4 pt-4 border-t border-slate-50">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-400">
+            <div className="space-y-4 pt-6 border-t border-slate-100">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-semibold text-slate-500">
                   Sending Interval
                 </label>
-                <span className="text-sm font-bold text-purple-600 bg-purple-50/50 px-3 py-1 rounded-lg border border-purple-100/50">
+                <span className="text-sm font-semibold text-purple-700 bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-100">
                   Wait {sendingInterval} mins between emails
                 </span>
               </div>
@@ -236,8 +236,8 @@ const ScheduleCampaignModal = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 pt-4 border-t border-slate-50">
-              <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+              <div>
                 <Input
                   type="date"
                   label={t('campaigns.start_date', 'Start Date')}
@@ -245,28 +245,28 @@ const ScheduleCampaignModal = ({
                   min={todayStr}
                   {...register('startDate')}
                   value={watch('startDate')}
-                  className="h-14 font-bold text-sm"
-                  containerClassName="space-y-3"
-                  labelClassName="text-xs font-bold text-slate-400 flex items-center gap-2"
+                  className="h-12 font-medium text-sm"
+                  containerClassName="space-y-2"
+                  labelClassName="text-sm font-semibold text-slate-500 flex items-center gap-2 mb-1"
                 />
               </div>
-              <div className="space-y-3">
+              <div>
                 <Input
                   type="number"
                   label={t('campaigns.leads_per_day', 'Leads Per Day')}
                   {...register('maxLeadsPerDay', { valueAsNumber: true })}
-                  className="h-14 font-bold text-sm"
-                  containerClassName="space-y-3"
-                  labelClassName="text-xs font-bold text-slate-400"
+                  className="h-12 font-medium text-sm"
+                  containerClassName="space-y-2"
+                  labelClassName="text-sm font-semibold text-slate-500 mb-1"
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end pt-6">
+          <div className="flex justify-end pt-8 mt-4 border-t border-slate-100">
             <Button
               onClick={handleSave}
-              className="w-full py-4 bg-purple-600 text-white rounded-lg text-xs font-bold shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all"
+              className="w-full py-3.5 bg-purple-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-purple-700 hover:shadow-md transition-all"
             >
               Save Settings
             </Button>

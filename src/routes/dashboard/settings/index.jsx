@@ -67,7 +67,7 @@ const Settings = () => {
 
   return (
     <div className="w-full p-4  animate-in fade-in duration-500">
-      <div className="max-w-7xl">
+      <div >
         {/* Modular Settings Stack */}
         <div className="space-y-8">
           {/* 1. Core Profile & Identity */}

@@ -60,7 +60,7 @@ const CampaignSettingsModal = ({
         <div className="p-10 space-y-10 relative z-10 bg-white">
           <div className="space-y-8">
             <div className="space-y-5">
-              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-2 mb-2">
                 <Check className="w-4 h-4" /> {t('campaigns.tracking_options', 'Tracking Options')}
               </h3>
 
@@ -70,10 +70,10 @@ const CampaignSettingsModal = ({
                   className="flex items-center justify-between p-5 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-purple-100 transition-all group"
                 >
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold text-slate-700 group-hover:text-purple-900 transition-colors">
+                    <span className="text-sm font-semibold text-slate-800 group-hover:text-purple-900 transition-colors">
                       {item.label}
                     </span>
-                    <span className="text-[10px] text-slate-400 font-medium mt-0.5">
+                    <span className="text-xs text-slate-500 mt-1">
                       {item.desc}
                     </span>
                   </div>
@@ -91,25 +91,25 @@ const CampaignSettingsModal = ({
               ))}
             </div>
 
-            <div className="space-y-5 pt-8 border-t border-slate-50">
-              <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <div className="space-y-4 pt-8 border-t border-slate-100">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-2 mb-2">
                 <AlertCircle className="w-4 h-4" /> {t('campaigns.smart_delivery', 'Smart Delivery')}
               </h3>
-              <div className="flex items-center gap-5 p-6 bg-purple-50/50 rounded-lg border border-purple-100 group">
-                <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+              <div className="flex items-center gap-5 p-6 bg-purple-50 rounded-lg border border-purple-100 group">
+                <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform shadow-sm">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <p className="text-xs text-purple-700 font-bold leading-relaxed flex-1">
+                <p className="text-sm text-purple-700 font-semibold leading-relaxed flex-1">
                   {t('campaigns.ai_optimization_desc', 'AI Optimization is active. We automatically space out emails and use warmed pools for peak inbox rates.')}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end pt-6">
+          <div className="flex justify-end pt-8 mt-4 border-t border-slate-100">
             <Button
               onClick={onClose}
-              className="w-full py-4 bg-purple-600 text-white rounded-lg text-[11px] font-bold uppercase tracking-widest shadow-sm shadow-purple-600/20 hover:bg-purple-700 transition-all hover:-translate-y-0.5"
+              className="w-full py-3.5 bg-purple-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-purple-700 transition-all hover:shadow-md"
             >
               {t('campaigns.apply_optimization', 'Apply Optimization')}
             </Button>

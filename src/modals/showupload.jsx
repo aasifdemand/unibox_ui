@@ -1,4 +1,4 @@
-﻿import {
+import {
   Building,
   FileSpreadsheet,
   Globe,
@@ -124,10 +124,10 @@ const ShowUpload = ({
               <FileSpreadsheet className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-white uppercase tracking-tighter">
+              <h3 className="text-2xl font-bold text-white tracking-tight">
                 {t('modals.upload.title')}
               </h3>
-              <p className="text-[10px] font-bold text-purple-100/60 uppercase tracking-widest mt-0.5">
+              <p className="text-sm font-semibold text-white/70 mt-1">
                 {t('modals.upload.subtitle')}
               </p>
             </div>
@@ -146,11 +146,11 @@ const ShowUpload = ({
               transition={{ duration: 0.3 }}
               className="space-y-8 py-2"
             >
-              <div className="text-center space-y-3">
-                <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-widest">
+              <div className="text-center space-y-2">
+                <h4 className="text-lg font-semibold text-slate-800">
                   {t('modals.upload.select_file')}
                 </h4>
-                <p className="text-xs text-slate-400 font-medium">{t('modals.upload.drop_desc')}</p>
+                <p className="text-sm text-slate-500 font-medium">{t('modals.upload.drop_desc')}</p>
               </div>
 
               <div
@@ -170,18 +170,18 @@ const ShowUpload = ({
                     <Upload className="w-8 h-8 text-slate-300 group-hover:text-purple-500" />
                   </div>
                   <div className="text-center">
-                    <p className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-1">
+                    <p className="text-sm font-semibold text-purple-600 mb-1 pointer-events-none group-hover:underline">
                       {t('modals.upload.btn_click')}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                    <p className="text-xs text-slate-500 font-medium pointer-events-none">
                       {t('modals.upload.drop_title')}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className="px-3 py-1.5 bg-slate-50 rounded-lg text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-100">
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="px-3 py-1 bg-slate-50 rounded-md text-xs font-semibold text-slate-400 border border-slate-100">
                       .xlsx
                     </span>
-                    <span className="px-3 py-1.5 bg-slate-50 rounded-lg text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-100">
+                    <span className="px-3 py-1 bg-slate-50 rounded-md text-xs font-semibold text-slate-400 border border-slate-100">
                       .xls
                     </span>
                   </div>
@@ -199,16 +199,16 @@ const ShowUpload = ({
             >
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">
                 <div>
-                  <h4 className="text-sm font-extrabold text-slate-800 uppercase tracking-tighter">
+                  <h4 className="text-lg font-semibold text-slate-800">
                     {t('modals.upload.mapping')}
                   </h4>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                  <p className="text-xs font-medium text-slate-500 mt-1">
                     {t('modals.upload.mapping_desc')}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-purple-50 rounded-md border border-purple-100">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 rounded-lg border border-purple-100">
                   <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
-                  <span className="text-[10px] font-extrabold text-purple-700 uppercase tracking-wider">
+                  <span className="text-xs font-semibold text-purple-700">
                     {t('common.file_loaded')}
                   </span>
                 </div>
@@ -236,8 +236,8 @@ const ShowUpload = ({
                         {field === 'role' && <Briefcase className="w-4 h-4 text-slate-500" />}
                         {field === 'industry' && <Factory className="w-4 h-4 text-purple-500" />}
                       </div>
-                      <div>
-                        <p className="text-[10px] font-extrabold text-slate-800 uppercase tracking-tight">
+                      <div className="flex flex-col gap-0.5">
+                        <p className="text-sm font-semibold text-slate-800">
                           {field === 'email'
                             ? t('common.email')
                             : t(`modals.details.${field.replace(/([A-Z])/g, '_$1').toLowerCase()}`)}
@@ -245,7 +245,7 @@ const ShowUpload = ({
                             <span className="text-purple-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>
                           )}
                         </p>
-                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                        <p className="text-xs font-medium text-slate-500">
                           {t('modals.upload.select_col')}
                         </p>
                       </div>
@@ -253,7 +253,7 @@ const ShowUpload = ({
                     <select
                       value={mapping[field]}
                       onChange={(e) => setMapping({ ...mapping, [field]: e.target.value })}
-                      className="w-full h-12 px-4 bg-white border-2 border-slate-100 rounded-lg text-[11px] font-bold text-slate-700 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/5 transition-all outline-none appearance-none cursor-pointer"
+                      className="w-full h-12 px-3 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:border-purple-500 transition-all outline-none appearance-none cursor-pointer hover:border-slate-300"
                     >
                       <option value="">{t('modals.upload.select_placeholder')}</option>
                       {fileHeaders.map((header) => (
@@ -266,24 +266,24 @@ const ShowUpload = ({
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-6 mt-8 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-6 mt-6 border-t border-slate-100">
                 <button
                   onClick={() => setUploadStep(1)}
-                  className="px-8 py-4 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-slate-800 hover:border-slate-300 transition-all active:scale-95"
+                  className="px-6 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
                 >
                   {t('common.back')}
                 </button>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={resetUploadState}
-                    className="px-8 py-4 bg-white border-2 border-slate-100 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-purple-500 hover:border-purple-100 transition-all active:scale-95"
+                    className="px-6 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
                   >
                     {t('common.cancel')}
                   </button>
                   <button
                     onClick={handleContactsUpload}
                     disabled={!mapping.email || uploading}
-                    className="px-10 py-4 bg-purple-600 rounded-lg text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm shadow-purple-600/20 hover:shadow-purple-600/40 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+                    className="px-8 py-2.5 bg-purple-600 rounded-lg text-sm font-semibold text-white shadow-sm hover:bg-purple-700 transition-all disabled:opacity-50 flex items-center gap-2"
                   >
                     {uploading ? (
                       <Loader2 className="w-4 h-4 animate-spin text-white" />

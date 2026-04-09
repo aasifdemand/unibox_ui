@@ -412,7 +412,7 @@ const MailboxList = ({
   }
 
   return (
-    <div className="h-full overflow-y-auto  animate-in fade-in duration-500 mt-4 md:mt-6">
+    <div className="h-full main-scroller animate-in fade-in duration-500 mt-4 md:mt-6">
       <div className="bg-white rounded-xl border border-slate-200/60 overflow-hidden shadow-sm shadow-slate-900/5">
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-start border-collapse border-spacing-0">

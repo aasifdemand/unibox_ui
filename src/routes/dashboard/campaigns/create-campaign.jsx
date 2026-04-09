@@ -294,7 +294,7 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-[calc(100vh-4.5rem)] bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm">
       {/* Premium Sticky Top Header */}
       <header className="flex items-center justify-between px-8 h-20 border-b border-slate-100/80 sticky top-0 bg-white/80  z-50">
         <div className="flex items-center gap-6">

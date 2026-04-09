@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -17,33 +17,44 @@ import { useMailboxes } from '../../hooks/useMailboxes';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const SearchSection = ({ label, icon, divider = false, children }) => (
+const SearchSection = ({ label, icon, divider = false, footer, children }) => (
   <div className={divider ? 'border-t border-zinc-100 mt-1 pt-1' : ''}>
     <div className="px-3 py-1.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
       {icon}
       {label}
     </div>
     {children}
+    {footer && <div className="px-3 pb-2 pt-1">{footer}</div>}
   </div>
 );
 
 const ResultRow = ({ icon, iconBg, title, sub, badge, badgeColor = 'text-zinc-400', onClick }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-start gap-3 px-3 py-2.5 hover:bg-zinc-50 transition-colors ltr:text-left rtl:text-right group"
+    className="w-full flex items-start gap-3 px-3 py-2 hover:bg-zinc-50 transition-colors ltr:text-left rtl:text-right group border-b border-zinc-50 last:border-0"
   >
-    <div className={`w-7 h-7 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${iconBg}`}>
+    <div className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${iconBg}`}>
       {icon}
     </div>
-    <div className="flex-1 min-w-0">
-      <p className="text-[13px] font-semibold text-zinc-900 truncate">{title}</p>
-      {sub && <p className="text-[11px] text-zinc-500 truncate mt-0.5">{sub}</p>}
+    <div className="flex-1 min-w-0 py-0.5">
+      <p className="text-[13px] font-semibold text-zinc-900 truncate leading-tight">{title}</p>
+      {sub && <p className="text-[11px] text-zinc-500 truncate mt-0.5 leading-tight">{sub}</p>}
     </div>
     {badge && (
-      <span className={`text-[10px] shrink-0 uppercase tracking-wider mt-1 font-medium ${badgeColor}`}>
+      <span className={`text-[9px] shrink truncate max-w-[80px] uppercase tracking-wider mt-1.5 font-bold ${badgeColor} opacity-70`}>
         {badge}
       </span>
     )}
+  </button>
+);
+
+const SeeAllButton = ({ label, total, onClick }) => (
+  <button
+    onClick={onClick}
+    className="w-full py-2 px-3 text-[11px] font-bold text-purple-600 hover:bg-purple-50 rounded-md transition-all flex items-center justify-center gap-2 border border-purple-100/50 bg-purple-50/30"
+  >
+    See all {total} {label}
+    <TrendingUp className="w-3 h-3" />
   </button>
 );
 
@@ -97,6 +108,11 @@ const GlobalSearch = () => {
     contacts:  esContacts,
     leads:     esLeads,
     campaigns: esCampaigns,
+    messagesTotal,
+    emailsTotal,
+    contactsTotal,
+    leadsTotal,
+    campaignsTotal,
     isLoading: esLoading,
     hasResults: esHasResults,
   } = useGlobalSearch(debouncedSearch);
@@ -155,7 +171,7 @@ const GlobalSearch = () => {
         onChange={(e) => { setSearchQuery(e.target.value); setShowResults(true); }}
         onFocus={() => setShowResults(searchQuery.length > 0)}
         placeholder={`${t('common.search', 'Search')}...`}
-        className="ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 h-10 w-[200px] xl:w-[280px] bg-zinc-100 border border-transparent rounded-md text-[13px] text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:border-zinc-300 focus:outline-none focus:ring-4 focus:ring-zinc-100 shadow-sm transition-all"
+        className="ltr:pl-9 ltr:pr-14 rtl:pr-9 rtl:pl-14 h-10 w-[240px] xl:w-[320px] bg-zinc-100 border border-transparent rounded-md text-[13px] text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:border-zinc-300 focus:outline-none focus:ring-4 focus:ring-zinc-100 shadow-sm transition-all"
       />
       <div className="absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-60 pointer-events-none">
         <span className="px-1 py-0.5 rounded border border-zinc-200 bg-white text-[10px] font-medium text-zinc-500 leading-none">⌘</span>
@@ -164,7 +180,8 @@ const GlobalSearch = () => {
 
       {/* Dropdown */}
       {showDropdown && (
-        <div className="absolute top-full ltr:left-0 rtl:right-0 w-[440px] mt-1 bg-white rounded-lg shadow-xl border border-zinc-200 py-2 z-50 max-h-[520px] overflow-y-auto">
+        <div className="absolute top-full ltr:left-0 rtl:right-0 w-full mt-1 bg-white rounded-lg shadow-xl border border-zinc-200 z-50 overflow-hidden flex flex-col max-h-[580px]">
+          <div className="flex-1 overflow-y-auto py-2 custom-scrollbar">
 
           {/* Spinner */}
           {esLoading && (
@@ -176,8 +193,18 @@ const GlobalSearch = () => {
 
           {/* ── Inbox Messages ── */}
           {!esLoading && esMessages.length > 0 && (
-            <SearchSection label="Inbox Messages" icon={<Mailbox className="w-3 h-3" />}>
-              {esMessages.map((msg) => (
+            <SearchSection 
+              label="Inbox Messages" 
+              icon={<Mailbox className="w-3 h-3" />}
+              footer={messagesTotal > 4 && (
+                <SeeAllButton 
+                  label="Messages" 
+                  total={messagesTotal} 
+                  onClick={() => go(`/dashboard/mailboxes`)} 
+                />
+              )}
+            >
+              {esMessages.slice(0, 4).map((msg) => (
                 <ResultRow
                   key={msg.id}
                   icon={<Mail className="w-3.5 h-3.5" />}
@@ -199,8 +226,19 @@ const GlobalSearch = () => {
 
           {/* ── Campaign Emails ── */}
           {!esLoading && esEmails.length > 0 && (
-            <SearchSection label="Campaign Emails" icon={<Send className="w-3 h-3" />} divider={dividerFor(esMessages)}>
-              {esEmails.map((email) => (
+            <SearchSection 
+              label="Campaign Emails" 
+              icon={<Send className="w-3 h-3" />} 
+              divider={dividerFor(esMessages)}
+              footer={emailsTotal > 4 && (
+                <SeeAllButton 
+                  label="Emails" 
+                  total={emailsTotal} 
+                  onClick={() => go(`/dashboard/campaigns?q=${encodeURIComponent(debouncedSearch)}`)} 
+                />
+              )}
+            >
+              {esEmails.slice(0, 4).map((email) => (
                 <ResultRow
                   key={email.id}
                   icon={<Send className="w-3.5 h-3.5" />}
@@ -221,8 +259,19 @@ const GlobalSearch = () => {
 
           {/* ── Campaigns ── */}
           {!esLoading && esCampaigns.length > 0 && (
-            <SearchSection label="Campaigns" icon={<BarChart3 className="w-3 h-3" />} divider={dividerFor(esMessages, esEmails)}>
-              {esCampaigns.map((c) => (
+            <SearchSection 
+              label="Campaigns" 
+              icon={<BarChart3 className="w-3 h-3" />} 
+              divider={dividerFor(esMessages, esEmails)}
+              footer={campaignsTotal > 4 && (
+                <SeeAllButton 
+                  label="Campaigns" 
+                  total={campaignsTotal} 
+                  onClick={() => go(`/dashboard/campaigns?q=${encodeURIComponent(debouncedSearch)}`)} 
+                />
+              )}
+            >
+              {esCampaigns.slice(0, 4).map((c) => (
                 <ResultRow
                   key={c.id}
                   icon={<BarChart3 className="w-3.5 h-3.5" />}
@@ -242,8 +291,19 @@ const GlobalSearch = () => {
 
           {/* ── Contacts ── */}
           {!esLoading && esContacts.length > 0 && (
-            <SearchSection label="Contacts" icon={<Users className="w-3 h-3" />} divider={dividerFor(esMessages, esEmails, esCampaigns)}>
-              {esContacts.map((c) => (
+            <SearchSection 
+              label="Contacts" 
+              icon={<Users className="w-3 h-3" />} 
+              divider={dividerFor(esMessages, esEmails, esCampaigns)}
+              footer={contactsTotal > 4 && (
+                <SeeAllButton 
+                  label="Contacts" 
+                  total={contactsTotal} 
+                  onClick={() => go(`/dashboard/audience?q=${encodeURIComponent(debouncedSearch)}`)} 
+                />
+              )}
+            >
+              {esContacts.slice(0, 4).map((c) => (
                 <ResultRow
                   key={c.id}
                   icon={<UserRound className="w-3.5 h-3.5" />}
@@ -259,8 +319,19 @@ const GlobalSearch = () => {
 
           {/* ── CRM Leads ── */}
           {!esLoading && esLeads.length > 0 && (
-            <SearchSection label="CRM Leads" icon={<TrendingUp className="w-3 h-3" />} divider={dividerFor(esMessages, esEmails, esCampaigns, esContacts)}>
-              {esLeads.map((l) => (
+            <SearchSection 
+              label="CRM Leads" 
+              icon={<TrendingUp className="w-3 h-3" />} 
+              divider={dividerFor(esMessages, esEmails, esCampaigns, esContacts)}
+              footer={leadsTotal > 4 && (
+                <SeeAllButton 
+                  label="Leads" 
+                  total={leadsTotal} 
+                  onClick={() => go(`/dashboard/crm?q=${encodeURIComponent(debouncedSearch)}`)} 
+                />
+              )}
+            >
+              {esLeads.slice(0, 4).map((l) => (
                 <ResultRow
                   key={l.id}
                   icon={<TrendingUp className="w-3.5 h-3.5" />}
@@ -301,6 +372,7 @@ const GlobalSearch = () => {
               <p className="text-[11px] text-zinc-400 mt-1">Try a different keyword or check spelling</p>
             </div>
           )}
+            </div>
         </div>
       )}
     </div>

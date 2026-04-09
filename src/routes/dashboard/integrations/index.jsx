@@ -129,6 +129,8 @@ const Integrations = () => {
     return {
       ...item,
       status: connectedInt ? 'connected' : 'disconnected',
+      syncStatus: connectedInt?.syncStatus || 'healthy',
+      lastError: connectedInt?.lastError || null,
       lastSyncAt: connectedInt?.lastSyncAt || null,
     };
   }).filter(
@@ -327,11 +329,20 @@ const Integrations = () => {
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <div className={`inline-flex items-center gap-1.5 text-xs font-semibold capitalize ${
-                      item.status === 'connected' ? 'text-purple-600' : 'text-slate-400'
-                    }`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${item.status === 'connected' ? 'bg-purple-600 animate-pulse' : 'bg-slate-300'}`} />
-                      {item.status}
+                    <div className="flex flex-col gap-1">
+                      <div className={`inline-flex items-center gap-1.5 text-xs font-semibold capitalize ${
+                        item.status === 'connected' ? (item.syncStatus === 'error' ? 'text-rose-500' : 'text-purple-600') : 'text-slate-400'
+                      }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${
+                          item.status === 'connected' ? (item.syncStatus === 'error' ? 'bg-rose-500' : 'bg-purple-600 animate-pulse') : 'bg-slate-300'
+                        }`} />
+                        {item.status === 'connected' && item.syncStatus === 'error' ? 'Sync Error' : item.status}
+                      </div>
+                      {item.status === 'connected' && item.syncStatus === 'error' && item.lastError && (
+                        <span className="text-[10px] font-medium text-rose-400 max-w-[150px] truncate" title={item.lastError}>
+                          {item.lastError}
+                        </span>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-5">
