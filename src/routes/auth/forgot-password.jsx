@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/ui/input';
 import { Mail } from 'lucide-react';
@@ -7,7 +7,6 @@ import { forgotPasswordSchema } from '../../validators/forgot-password.schema';
 import { useToast } from '../../hooks/useToast';
 import { mapZodErrors } from '../../utils/map-zod';
 import { motion } from "motion/react"
-import TurnstileWidget from '../../components/auth/TurnstileWidget';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const ForgotPassword = () => {
 
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
@@ -30,15 +28,10 @@ const ForgotPassword = () => {
       return;
     }
 
-    if (!turnstileToken) {
-      toast.error('Please complete the security check.');
-      return;
-    }
-
     const toastId = toast.loading('Sending reset instructions...');
 
     try {
-      await forgotPassword.mutateAsync({ email, turnstileToken });
+      await forgotPassword.mutateAsync({ email });
       toast.dismiss(toastId);
       toast.success('Reset instructions sent!');
       setIsSubmitted(true);
@@ -46,7 +39,6 @@ const ForgotPassword = () => {
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || 'Failed to send reset email');
-      setTurnstileToken(null);
     }
   };
 
@@ -89,15 +81,11 @@ const ForgotPassword = () => {
             className="rounded-lg border-slate-200/60"
           />
 
-          <div className="flex justify-center -mt-2">
-            <TurnstileWidget onSuccess={(token) => setTurnstileToken(token)} />
-          </div>
-
           <div className="pt-2">
             <button
               type="submit"
               className="btn-primary w-full py-3.5 rounded-md text-[14px] font-bold tracking-tight shadow-sm shadow-purple-500/20 active:scale-95 transition-all flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-              disabled={forgotPassword.isPending || !turnstileToken}
+              disabled={forgotPassword.isPending}
             >
               {forgotPassword.isPending ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

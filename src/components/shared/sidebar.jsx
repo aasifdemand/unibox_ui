@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -99,12 +99,22 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                     }}
                     onMouseEnter={() => setActiveHover(item.path)}
                     onMouseLeave={() => setActiveHover(null)}
-                    className={`group flex items-center rounded-md px-3 py-2 transition-colors duration-150 ${
+                    style={{ fontFamily: 'var(--font-sidebar)' }}
+                    className={`group relative flex items-center rounded-md px-3 py-2 transition-all duration-200 ${
                       isActive
-                        ? 'bg-purple-50 text-purple-700 font-semibold'
-                        : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 font-medium'
+                        ? 'bg-purple-50/50 text-purple-700'
+                        : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium'
                     }`}
                   >
+                    {/* Selection Pin */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activePin"
+                        className="absolute left-0 top-[15%] w-0.5 h-[70%] bg-purple-600 rounded-r-md"
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                      />
+                    )}
+
                     <div className="flex items-center justify-center shrink-0">
                       <Icon
                         className={`w-4 h-4 transition-colors ${
@@ -115,12 +125,12 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, navItems }) => {
                     
                     {!sidebarCollapsed && (
                       <div className="ltr:ml-3 rtl:mr-3 flex-1 flex items-center justify-between overflow-hidden">
-                        <span className="text-[13px] truncate">
+                        <span className={`text-[12px] truncate ${isActive ? 'font-bold tracking-tight' : 'font-semibold tracking-tight'}`}>
                           {item.label}
                         </span>
                         {item.badge && (
                           <span
-                            className={`px-1.5 py-0.5 text-[10px] rounded font-semibold ${
+                            className={`px-1.5 py-0.5 text-[9px] rounded font-bold ${
                               isActive ? 'bg-purple-100 text-purple-700' : 'bg-zinc-100 text-zinc-500'
                             }`}
                           >

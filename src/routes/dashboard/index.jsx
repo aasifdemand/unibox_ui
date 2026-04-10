@@ -564,9 +564,9 @@ const Dashboard = () => {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="btn-primary flex items-center text-xs font-bold transition-all"
+            className="btn-primary flex items-center text-xs  font-bold transition-all"
           >
-            {!isRefreshing && <RefreshCw className="w-4 h-4 me-2.5" />}
+            {!isRefreshing && <RefreshCw className="w-4 h-5 me-2.5" />}
             {isRefreshing ? t('dashboard.syncing') : t('dashboard.refresh_data')}
           </button>
         </div>

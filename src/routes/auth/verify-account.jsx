@@ -1,4 +1,4 @@
-﻿// src/pages/auth/VerifyAccount.jsx
+// src/pages/auth/VerifyAccount.jsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import OTPInput from 'react-otp-input';
@@ -7,7 +7,6 @@ import { Mail } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 import { useVerifyAccount, useResendVerification, useCurrentUser } from '../../hooks/useAuth';
 import { motion } from "motion/react"
-import TurnstileWidget from '../../components/auth/TurnstileWidget';
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ const VerifyAccount = () => {
   const [otp, setOtp] = useState('');
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState(null);
 
   const verifyAccount = useVerifyAccount();
   const resendVerification = useResendVerification();
@@ -78,24 +76,17 @@ const VerifyAccount = () => {
   const handleResend = async () => {
     if (!canResend) return;
 
-    if (!turnstileToken) {
-      toast.error('Please complete the security check to resend the code.');
-      return;
-    }
-
     const toastId = toast.loading('Sending new code...');
 
     try {
-      await resendVerification.mutateAsync({ email, turnstileToken });
+      await resendVerification.mutateAsync({ email });
       toast.dismiss(toastId);
       toast.success('New verification code sent!');
       setCanResend(false);
       setResendTimer(60);
-      setTurnstileToken(null); // Reset after successful resend
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || 'Failed to resend code');
-      setTurnstileToken(null); // Reset on failure too
     }
   };
 
@@ -153,23 +144,16 @@ const VerifyAccount = () => {
             </button>
           </div>
 
-          <div className="flex justify-center -mt-2">
-            <TurnstileWidget onSuccess={(token) => setTurnstileToken(token)} />
-          </div>
-
           <OTPInput
             value={otp}
             onChange={setOtp}
             numInputs={6}
-            containerStyle="flex gap-2.5"
+            containerStyle="flex gap-3 justify-between"
             renderInput={(props) => (
               <input
                 {...props}
                 disabled={isLoading}
-                className="w-full h-14 text-xl font-bold text-center border-2 rounded-md transition-all outline-none focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/5 disabled:bg-slate-50 disabled:cursor-not-allowed bg-slate-50/30"
-                style={{
-                  borderColor: otp.length === 6 ? '#e11d48' : 'rgba(226, 232, 240, 0.6)',
-                }}
+                className="w-full h-14 text-xl font-bold text-center border-2 rounded-lg transition-all outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-600/10 disabled:bg-slate-50 disabled:cursor-not-allowed bg-white shadow-sm border-slate-200/60"
               />
             )}
           />

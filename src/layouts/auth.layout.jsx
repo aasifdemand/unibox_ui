@@ -1,4 +1,4 @@
-﻿import Logo from '../components/shared/logo';
+import Logo from '../components/shared/logo';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
