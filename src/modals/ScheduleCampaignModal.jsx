@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Clock, Calendar, Globe } from 'lucide-react';
+import { Clock, Calendar, Globe, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import Modal from '../components/shared/modal';
 import Input from '../components/ui/input';
@@ -9,6 +9,7 @@ import Button from '../components/ui/button';
 import { toast } from 'react-hot-toast';
 
 import { getIanaTimezone } from '../routes/dashboard/campaigns/campaign-utils';
+import { getSmartDefaults } from '../routes/dashboard/campaigns/utils';
 import { DateTime } from 'luxon';
 
 const ScheduleCampaignModal = ({
@@ -41,25 +42,34 @@ const ScheduleCampaignModal = ({
   const selectedDate = watch('startDate');
   const selectedTime = watch('startTime');
 
-  // One-shot correction: when modal opens or date changes, fix startTime if it's in the past for today
+  // Proactive sync: when timezone changes, use smart defaults if fields are empty or stale
   useEffect(() => {
     if (!isOpen) return;
 
+    // Force sync if the date is today and time is in the past
     if (selectedDate === todayStr) {
-      const currentStartTime = watch('startTime');
-      if (!currentStartTime || currentStartTime <= currentTime) {
-        const [h, m] = currentTime.split(':').map(Number);
-        const totalMins = h * 60 + m + 5;
-        const newH = String(Math.floor(totalMins / 60) % 24).padStart(2, '0');
-        const newM = String(totalMins % 60).padStart(2, '0');
-        setValue('startTime', `${newH}:${newM}`, { shouldDirty: true });
+      if (!selectedTime || selectedTime <= currentTime) {
+        const d = getSmartDefaults(selectedTimezone);
+        setValue('startTime', d.startTime, { shouldDirty: true });
+        // Also update endTime to maintain the window
+        setValue('endTime', d.endTime, { shouldDirty: true });
       }
     }
-    setValidationError('');
+    if (validationError) setValidationError('');
     // watch is intentionally omitted — it's a stable function from react-hook-form,
-    // and including selectedTime would cause an infinite re-render loop.
+    // and including selectedTime would cause an infinite re-render loop if not handled.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, selectedDate, selectedTimezone, currentTime, todayStr, setValue]);
+
+  // Sync to "Now" helper
+  const syncToNow = () => {
+    const d = getSmartDefaults(selectedTimezone);
+    setValue('startDate', d.dateStr, { shouldDirty: true });
+    setValue('startTime', d.startTime, { shouldDirty: true });
+    setValue('endTime', d.endTime, { shouldDirty: true });
+    setValidationError('');
+    toast.success(t('campaigns.synced_to_timezone', 'Synced to current time in {{tz}}', { tz: selectedTimezone }));
+  };
 
 
   const selectedEndTime = watch('endTime');
@@ -182,17 +192,25 @@ const ScheduleCampaignModal = ({
 
             {/* Time Period */}
             <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100">
-              <div>
+              <div className="relative group/input">
                 <Input
                   type="time"
                   label={t('campaigns.start_time', 'Start Time')}
                   {...register('startTime')}
                   value={watch('startTime')}
                   error={validationError && watch('startDate') === todayStr ? validationError : ''}
-                  className="h-12 font-medium text-sm"
+                  className="h-12 font-medium text-sm pr-10"
                   containerClassName="space-y-2"
                   labelClassName="text-sm font-semibold text-slate-500 mb-1"
                 />
+                <button
+                  type="button"
+                  onClick={syncToNow}
+                  className="absolute right-3 top-[38px] p-1.5 text-slate-300 hover:text-purple-600 transition-colors bg-white rounded-md border border-transparent hover:border-slate-200"
+                  title="Sync to current time"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
               </div>
               <div>
                 <Input

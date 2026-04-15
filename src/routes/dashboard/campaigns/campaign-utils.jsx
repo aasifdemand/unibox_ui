@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Edit, Clock, Send, CheckCircle, Pause } from 'lucide-react';
 import { DateTime } from 'luxon';
 
@@ -33,8 +33,13 @@ export const getAllTimezones = () => {
     'America/New_York',
     'America/Chicago',
     'America/Denver',
-    'America/Los_Angeles',
     'America/Phoenix',
+    'America/Los_Angeles',
+    'America/Vancouver',
+    'America/Halifax',
+    'America/Anchorage',
+    'America/Honolulu',
+    'America/St_Johns',
     'Europe/London',
     'Europe/Paris',
     'Asia/Dubai',
@@ -45,6 +50,19 @@ export const getAllTimezones = () => {
     'Pacific/Auckland',
   ];
 
+  const friendlyNames = {
+    'America/New_York': 'Eastern Time (US & Canada)',
+    'America/Chicago': 'Central Time (US & Canada)',
+    'America/Denver': 'Mountain Time (US & Canada)',
+    'America/Phoenix': 'Arizona (No DST)',
+    'America/Los_Angeles': 'Pacific Time (US & Canada)',
+    'America/Vancouver': 'Pacific Time (Canada)',
+    'America/Halifax': 'Atlantic Time (Canada)',
+    'America/Anchorage': 'Alaska Time',
+    'America/Honolulu': 'Hawaii Time',
+    'America/St_Johns': 'Newfoundland Time',
+  };
+
   const now = DateTime.now();
 
   return popularTzs
@@ -52,9 +70,10 @@ export const getAllTimezones = () => {
       const dt = now.setZone(tz);
       if (!dt.isValid) return null;
       const offset = dt.toFormat('ZZ');
+      const descriptiveName = friendlyNames[tz] || tz.replace(/_/g, ' ');
       return {
         value: tz,
-        label: `(UTC${offset}) ${tz.replace(/_/g, ' ')}`,
+        label: `(UTC${offset}) ${descriptiveName}`,
         offset: dt.offset,
       };
     })

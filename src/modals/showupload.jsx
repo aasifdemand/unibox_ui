@@ -61,39 +61,41 @@ const ShowUpload = ({
         const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
         if (jsonData.length > 0) {
-          const headers = jsonData[0];
+          const headers = jsonData[0].filter(Boolean); // remove empty header cells
 
-          // Update file headers and mapping
-          handleFileUpload(file, headers);
-
-          // Auto-map common headers
+          // Build mapping dynamically from ALL headers so every column gets a card
           const autoMapping = {};
           headers.forEach((header) => {
-            const lowerHeader = header.toLowerCase();
-            if (lowerHeader.includes('email')) autoMapping.email = header;
-            if (
-              lowerHeader.includes('name') &&
-              !lowerHeader.includes('first') &&
-              !lowerHeader.includes('last')
-            )
+            if (!header) return;
+            const lowerHeader = String(header).toLowerCase().replace(/[^a-z]/g, '');
+            if (lowerHeader === 'email' || lowerHeader.includes('email')) {
+              autoMapping.email = autoMapping.email || header;
+            } else if (lowerHeader === 'firstname' || lowerHeader === 'first') {
+              autoMapping.firstName = header;
+            } else if (lowerHeader === 'lastname' || lowerHeader === 'last') {
+              autoMapping.lastName = header;
+            } else if (lowerHeader === 'name' || lowerHeader === 'fullname') {
               autoMapping.name = header;
-            if (lowerHeader.includes('first')) autoMapping.firstName = header;
-            if (lowerHeader.includes('last')) autoMapping.lastName = header;
-            if (lowerHeader.includes('company')) autoMapping.company = header;
-            if (lowerHeader.includes('phone')) autoMapping.phone = header;
-            if (lowerHeader.includes('city')) autoMapping.city = header;
-            if (lowerHeader.includes('country')) autoMapping.country = header;
-            if (
-              lowerHeader.includes('role') ||
-              lowerHeader.includes('title') ||
-              lowerHeader.includes('job')
-            )
+            } else if (lowerHeader === 'company') {
+              autoMapping.company = header;
+            } else if (lowerHeader === 'phone') {
+              autoMapping.phone = header;
+            } else if (lowerHeader === 'city') {
+              autoMapping.city = header;
+            } else if (lowerHeader === 'country') {
+              autoMapping.country = header;
+            } else if (lowerHeader === 'role' || lowerHeader === 'title' || lowerHeader === 'jobtitle') {
               autoMapping.role = header;
-            if (lowerHeader.includes('industry') || lowerHeader.includes('sector'))
+            } else if (lowerHeader === 'industry' || lowerHeader === 'sector') {
               autoMapping.industry = header;
+            } else {
+              // All other columns: use the original header as the key so nothing is lost
+              autoMapping[header] = header;
+            }
           });
 
-          setMapping((prev) => ({ ...prev, ...autoMapping }));
+          setMapping(autoMapping);
+          handleFileUpload(file, headers);
           setUploadStep(2);
         }
       } catch (error) {
@@ -224,7 +226,7 @@ const ShowUpload = ({
                     className="group p-5 bg-slate-50/50 rounded-lg border border-slate-100 hover:border-purple-200 hover:bg-white transition-all duration-300"
                   >
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
                         {field === 'email' && <Mail className="w-4 h-4 text-purple-500" />}
                         {field === 'name' && <User className="w-4 h-4 text-purple-500" />}
                         {field === 'firstName' && <User className="w-4 h-4 text-purple-500" />}
@@ -235,12 +237,17 @@ const ShowUpload = ({
                         {field === 'country' && <Globe className="w-4 h-4 text-purple-500" />}
                         {field === 'role' && <Briefcase className="w-4 h-4 text-slate-500" />}
                         {field === 'industry' && <Factory className="w-4 h-4 text-purple-500" />}
+                        {!['email','name','firstName','lastName','company','phone','city','country','role','industry'].includes(field) && (
+                          <Zap className="w-4 h-4 text-purple-400" />
+                        )}
                       </div>
                       <div className="flex flex-col gap-0.5">
                         <p className="text-sm font-semibold text-slate-800">
-                          {field === 'email'
-                            ? t('common.email')
-                            : t(`modals.details.${field.replace(/([A-Z])/g, '_$1').toLowerCase()}`)}
+                          {/* For known fields use i18n; for custom fields convert to Title Case */}
+                          {['email','name','firstName','lastName','company','phone','city','country','role','industry'].includes(field)
+                            ? (field === 'email' ? t('common.email') : field.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()))
+                            : field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                          }
                           {field === 'email' && (
                             <span className="text-purple-500 ltr:ml-1 ltr:mr-1 rtl:ml-1">*</span>
                           )}

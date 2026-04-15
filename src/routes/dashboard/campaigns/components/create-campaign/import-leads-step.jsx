@@ -27,13 +27,7 @@ const ImportLeadsStep = ({
   const [uploadStep, setUploadStep] = useState(1);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [fileHeaders, setFileHeaders] = useState([]);
-  const [mapping, setMapping] = useState({
-    email: '',
-    name: '',
-    firstName: '',
-    lastName: '',
-    company: '',
-  });
+  const [mapping, setMapping] = useState({});
 
   const uploadBatch = useUploadBatch();
 
@@ -42,16 +36,29 @@ const ImportLeadsStep = ({
     setFileHeaders(headers);
     setUploadStep(2);
 
+    // Build mapping dynamically from ALL headers in the file.
+    // Pre-assign each header to its own slot so every column is visible.
     const autoMapping = {};
     headers.forEach((header) => {
-      const lowerHeader = header.toLowerCase();
-      if (lowerHeader.includes('email')) autoMapping.email = header;
-      if (lowerHeader.includes('first')) autoMapping.firstName = header;
-      if (lowerHeader.includes('last')) autoMapping.lastName = header;
-      if (lowerHeader.includes('name') && !autoMapping.firstName) autoMapping.name = header;
-      if (lowerHeader.includes('company')) autoMapping.company = header;
+      if (!header) return;
+      const lowerHeader = header.toLowerCase().replace(/[^a-z]/g, '');
+      // Use a canonical key for well-known fields, otherwise use the header itself
+      if (lowerHeader === 'email' || lowerHeader.includes('email')) {
+        autoMapping.email = autoMapping.email || header;
+      } else if (lowerHeader === 'firstname' || lowerHeader === 'first') {
+        autoMapping.firstName = header;
+      } else if (lowerHeader === 'lastname' || lowerHeader === 'last') {
+        autoMapping.lastName = header;
+      } else if (lowerHeader === 'name' || lowerHeader === 'fullname') {
+        autoMapping.name = header;
+      } else if (lowerHeader === 'company') {
+        autoMapping.company = header;
+      } else {
+        // All other columns: key = the header itself so nothing is lost
+        autoMapping[header] = header;
+      }
     });
-    setMapping((prev) => ({ ...prev, ...autoMapping }));
+    setMapping(autoMapping);
   };
 
   const handleContactsUpload = async () => {

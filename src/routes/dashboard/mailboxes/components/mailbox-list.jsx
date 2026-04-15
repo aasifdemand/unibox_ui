@@ -16,8 +16,10 @@ import {
   ShieldCheck,
   RefreshCw,
   Settings2,
+  Settings,
   Trash2,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import WarmupSettingsModal from './warmup-settings-modal';
 
 const SortIndicator = ({ column }) => {
@@ -55,6 +57,7 @@ const MailboxList = ({
   const [sorting, setSorting] = React.useState([]);
   const [isWarmupModalOpen, setIsWarmupModalOpen] = React.useState(false);
   const [activeMailboxForSettings, setActiveMailboxForSettings] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenWarmupSettings = (mailbox) => {
     setActiveMailboxForSettings(mailbox);
@@ -338,7 +341,7 @@ const MailboxList = ({
                 onSync(row.original.id, row.original.type);
               }}
               disabled={isSyncingMailboxId === row.original.id}
-              className="inline-flex w-8 h-8 rounded-full bg-slate-50 items-center justify-center hover:bg-purple-50 text-slate-400 hover:text-purple-600 transition-all border border-transparent hover:border-purple-100 shadow-xs active:scale-90"
+              className="inline-flex w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-400 items-center justify-center hover:border-purple-200 hover:bg-purple-50 hover:text-purple-600 transition-all shadow-sm active:scale-95"
               title="Sync Now"
             >
               <RefreshCw
@@ -347,17 +350,27 @@ const MailboxList = ({
             </button>
             <button
               onClick={() => onSelect(row.original)}
-              className="inline-flex w-8 h-8 rounded-full bg-purple-600 items-center justify-center hover:bg-slate-800 transition-all shadow-md shadow-purple-500/20 active:scale-90"
+              className="inline-flex w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-400 items-center justify-center hover:border-purple-200 hover:bg-purple-50 hover:text-purple-600 transition-all shadow-sm active:scale-95"
               title="View Mailbox"
             >
-              <ChevronRight className="w-4 h-4 text-white" />
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/dashboard/mailboxes/${row.original.id}`);
+              }}
+              className="inline-flex w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-400 items-center justify-center hover:border-purple-200 hover:bg-purple-50 hover:text-purple-600 transition-all shadow-sm active:scale-95"
+              title="Mailbox Settings"
+            >
+              <Settings className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onDisconnect(row.original);
               }}
-              className="inline-flex w-8 h-8 rounded-full bg-red-50 items-center justify-center hover:bg-red-500 text-red-500 hover:text-white transition-all border border-transparent shadow-xs active:scale-90"
+              className="inline-flex w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-400 items-center justify-center hover:border-red-200 hover:bg-red-50 hover:text-red-600 transition-all shadow-sm active:scale-95"
               title="Disconnect Mailbox"
             >
               <Trash2 className="w-3.5 h-3.5" />

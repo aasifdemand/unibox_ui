@@ -41,6 +41,7 @@ const transformSenderToMailbox = (sender) => {
     expiresAt: sender.expiresAt,
     /* Configuration Fields */
     minTimeGap: sender.minTimeGap || 1,
+    designation: sender.designation || '',
     signature: sender.signature || '',
     bccEmail: sender.bccEmail || '',
     replyToAddress: sender.replyToAddress || '',

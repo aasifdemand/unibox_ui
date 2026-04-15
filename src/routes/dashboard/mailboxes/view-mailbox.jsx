@@ -20,7 +20,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useMailbox, useUpdateMailbox } from '../../../hooks/useMailboxes';
 import { useDeleteSender } from '../../../hooks/useSenders';
 import Button from '../../../components/ui/button';
-import { useToast } from '../../../hooks/useToast';
+import { toast } from 'react-hot-toast';
 import { useCurrentUser } from '../../../hooks/useAuth';
 import { formatInTimezone } from '../../../utils/date-utils';
 
@@ -28,7 +28,6 @@ import { formatInTimezone } from '../../../utils/date-utils';
 const ViewMailbox = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { data: mailbox, isLoading, isError } = useMailbox(id);
   const updateMailbox = useUpdateMailbox();
   const deleteSender = useDeleteSender();
@@ -44,6 +43,7 @@ const ViewMailbox = () => {
       setFormData({
         displayName: mailbox.displayName || '',
         minTimeGap: mailbox.minTimeGap || 1,
+        designation: mailbox.designation || '',
         signature: mailbox.signature || '',
         bccEmail: mailbox.bccEmail || '',
         replyToAddress: mailbox.replyToAddress || '',
@@ -56,17 +56,9 @@ const ViewMailbox = () => {
   const handleSave = async () => {
     try {
       await updateMailbox.mutateAsync({ id, ...formData });
-      toast({
-        title: 'Success',
-        description: 'Mailbox configuration updated successfully',
-        variant: 'success',
-      });
+      toast.success('Mailbox configuration updated successfully');
     } catch (err) {
-      toast({
-        title: 'Error',
-        description: err.message || 'Failed to update mailbox',
-        variant: 'destructive',
-      });
+      toast.error(err.message || 'Failed to update mailbox');
     }
   };
   
@@ -77,18 +69,10 @@ const ViewMailbox = () => {
     
     try {
       await deleteSender.mutateAsync({ senderId: id, senderType: mailbox.type });
-      toast({
-        title: 'Disconnected',
-        description: 'Mailbox has been removed successfully',
-        variant: 'success',
-      });
+      toast.success('Mailbox has been removed successfully');
       navigate('/dashboard/mailboxes');
     } catch (err) {
-      toast({
-        title: 'Error',
-        description: err.message || 'Failed to disconnect mailbox',
-        variant: 'destructive',
-      });
+      toast.error(err.message || 'Failed to disconnect mailbox');
     }
   };
 
@@ -250,7 +234,7 @@ const ViewMailbox = () => {
 
                   <div className="space-y-8">
                     {/* Basic Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                       <div className="space-y-3">
                         <label className="text-metadata ml-1">Display Name</label>
                         <input 
@@ -259,6 +243,16 @@ const ViewMailbox = () => {
                           onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
                           className="input-premium h-11"
                           placeholder="e.g. John Doe"
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-metadata ml-1">Designation</label>
+                        <input 
+                          type="text" 
+                          value={formData?.designation}
+                          onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                          className="input-premium h-11"
+                          placeholder="e.g. Head of Sales"
                         />
                       </div>
                       <div className="space-y-3">
@@ -366,10 +360,10 @@ const ViewMailbox = () => {
                   {/* High Level Stats Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                     {[
-                      { label: 'Total Sent', value: '4,281', change: '+12.5%', color: 'indigo' },
-                      { label: 'Open Rate', value: '62.4%', change: '+4.2%', color: 'emerald' },
-                      { label: 'Click Rate', value: '18.9%', change: '-0.3%', color: 'orange' },
-                      { label: 'Bounce Rate', value: '0.4%', change: '-50%', color: 'rose' },
+                      { label: 'Daily Sent', value: mailbox?.stats?.dailySent || '0', change: '', color: 'indigo' },
+                      { label: 'Warmup Sent', value: mailbox?.stats?.warmupCurrentSent || '0', change: '', color: 'emerald' },
+                      { label: 'Campaigns', value: mailbox?.campaignCount || '0', change: '', color: 'orange' },
+                      { label: 'Total Leads', value: mailbox?.leadCount || '0', change: '', color: 'rose' },
                     ].map((stat, i) => (
                       <motion.div
                         key={i}
@@ -381,9 +375,11 @@ const ViewMailbox = () => {
                         <span className="text-xs font-semibold text-slate-500">{stat.label}</span>
                         <div className="flex items-baseline gap-2 mt-1">
                           <span className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</span>
-                          <span className={`text-xs font-bold ${stat.change.startsWith('+') ? 'text-purple-500' : 'text-rose-500'}`}>
-                            {stat.change}
-                          </span>
+                          {stat.change && (
+                            <span className={`text-xs font-bold ${stat.change.startsWith('+') ? 'text-purple-500' : 'text-rose-500'}`}>
+                              {stat.change}
+                            </span>
+                          )}
                         </div>
                         <div className="mt-4 h-1 w-full bg-slate-200/50 rounded-full overflow-hidden">
                           <div className={`h-full w-2/3 rounded-full transition-all duration-1000 ${
@@ -439,9 +435,11 @@ const ViewMailbox = () => {
                 </div>
                 
                 <span className="text-metadata mb-2">Health Ecosystem</span>
-                <h3 className="text-4xl font-bold text-slate-800 tracking-tight mb-1">98.4</h3>
+                <h3 className="text-4xl font-bold text-slate-800 tracking-tight mb-1">{mailbox?.stats?.reputationScore ?? 100}</h3>
                 <div className="px-3 py-1 bg-purple-50 border border-purple-100/50 rounded-lg mb-6">
-                  <span className="text-xs font-bold text-purple-700">Optimal Condition</span>
+                  <span className="text-xs font-bold text-purple-700 capitalize">
+                    {(mailbox?.stats?.reputationScore ?? 100) >= 90 ? 'Optimal Condition' : (mailbox?.stats?.reputationScore ?? 100) >= 70 ? 'Moderate Condition' : 'Critical Condition'}
+                  </span>
                 </div>
 
                 <div className="w-full space-y-4 pt-6 border-t border-slate-100">

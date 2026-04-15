@@ -171,7 +171,7 @@ const AnalyticsTab = ({ campaign, stats }) => {
 };
 
 const StatMini = ({ label, value, theme, trend }) => (
-  <div className="p-6 rounded-4xl bg-slate-50/50 border border-slate-100 hover:shadow-sm hover:shadow-slate-900/3 transition-all duration-500 group">
+  <div className="p-6 rounded-lg bg-slate-50/50 border border-slate-100 hover:shadow-sm hover:shadow-slate-900/3 transition-all duration-500 group">
     <p className="text-xs font-semibold text-slate-500 mb-3 group-hover:text-slate-600 transition-colors">
       {label}
     </p>

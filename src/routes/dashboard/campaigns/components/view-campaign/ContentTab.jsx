@@ -155,9 +155,9 @@ const ContentTab = ({
                   </span>
                 </div>
               </div>
-              <div className="relative rounded-4xl border border-slate-200/60 bg-white p-1 shadow-sm shadow-slate-900/2 overflow-hidden">
+              <div className="relative rounded-lg border border-slate-200/60 bg-white p-1 shadow-sm shadow-slate-900/2 overflow-hidden">
                 <div className="absolute top-0 ltr:left-0 ltr:right-0 rtl:left-0 w-full h-1 bg-linear-to-r from-purple-500 via-purple-500 to-purple-500 opacity-20"></div>
-                <div className="p-8 min-h-100 bg-slate-50/30 rounded-[28px] overflow-auto custom-scrollbar">
+                <div className="p-8 min-h-100 bg-slate-50/30 rounded-lg overflow-auto custom-scrollbar">
                   <div
                     dangerouslySetInnerHTML={{ __html: previews.html }}
                     className="prose max-w-none [&_p]:my-4 [&_p]:text-slate-700 [&_p]:leading-relaxed [&_ul]:my-4 [&_ul]:list-disc [&_ul]:ltr:pl-5  [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:ltr:pl-5 ltr:pr-5 rtl:pl-5"

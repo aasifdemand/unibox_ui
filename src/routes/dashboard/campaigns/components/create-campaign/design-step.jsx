@@ -287,36 +287,47 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
     const staticPlaceholders = getPlaceholders(t);
     const mapping = selectedBatch?.mapping || {};
 
-    const dynamicItems = Object.entries(mapping).map(([slug, label]) => {
-      // Check if we already have a static placeholder for this slug
-      const existing = staticPlaceholders.find((s) => s.key === slug);
+    // Normalize a slug key for comparison: remove underscores and hyphens, lowercase
+    const normalize = (key) => (key || '').toLowerCase().replace(/[_-]/g, '');
+
+    // Build a human-readable label from a camelCase or slugged key
+    const toLabel = (key) =>
+      key
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → "camel Case"
+        .replace(/[_-]+/g, ' ')               // underscores/dashes → space
+        .replace(/\b\w/g, (c) => c.toUpperCase()) // Title Case
+        .trim();
+
+    const dynamicItems = Object.entries(mapping).map(([slug, originalHeader]) => {
+      // Check if we already have a static placeholder for this slug (normalized comparison)
+      const existing = staticPlaceholders.find((s) => normalize(s.key) === normalize(slug));
       if (existing) return existing;
 
       return {
         key: slug,
-        label: label,
-        example: `[${label}]`,
+        label: toLabel(originalHeader || slug),
+        example: `[${toLabel(originalHeader || slug)}]`,
         category: t('campaigns.cat_custom'),
       };
     });
 
-    // Deduplicate and combine
+    // Start with static, then add dynamic items not already covered
     const combined = [...staticPlaceholders];
-    
-    // Add dynamic items from mapping
+
     dynamicItems.forEach((item) => {
-      if (!combined.find((c) => c.key === item.key)) {
+      const alreadyIn = combined.find((c) => normalize(c.key) === normalize(item.key));
+      if (!alreadyIn) {
         combined.push(item);
       }
     });
 
     // Add manual placeholders
     manualPlaceholders.forEach((token) => {
-      if (!combined.find((c) => c.key === token)) {
+      if (!combined.find((c) => normalize(c.key) === normalize(token))) {
         combined.push({
           key: token,
-          label: token.charAt(0).toUpperCase() + token.slice(1).replace(/_/g, ' '),
-          example: `[${token}]`,
+          label: toLabel(token),
+          example: `[${toLabel(token)}]`,
           category: t('campaigns.cat_custom'),
           isManual: true,
         });
@@ -355,10 +366,11 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
   }, [mainSubject, mainHtmlBody, steps]);
 
   const missingVariables = useMemo(() => {
-    const systemTags = ['sl_time_of_day', 'sl_day_of_week', 'sl_current_month', 'sl_current_date', 'unsubscribe_link', 'sender_name', 'first_name', 'company']; // common defaults
+    const systemTags = ['sl_time_of_day', 'sl_day_of_week', 'sl_current_month', 'sl_current_date', 'unsubscribe_link', 'sender_name', 'first_name', 'firstname', 'company']; // common defaults
+    const normalize = (key) => (key || '').toLowerCase().replace(/[_-]/g, '');
     return usedVariables.filter((v) => {
-      if (systemTags.includes(v)) return false;
-      return !availableFields.find((f) => f.fieldName === v);
+      if (systemTags.some(t => normalize(t) === normalize(v))) return false;
+      return !availableFields.find((f) => normalize(f.fieldName) === normalize(v));
     });
   }, [usedVariables, availableFields]);
 
