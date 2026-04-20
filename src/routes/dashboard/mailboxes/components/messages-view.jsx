@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { forwardRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Paperclip, Search, Star, Plus, RefreshCw, ShieldCheck, X } from 'lucide-react';
 import Pagination from './pagination';
 import MessageListItem from './messagelist-item';
@@ -13,6 +14,7 @@ import { isFolderType } from '../utils/folder-utils';
 const MessagesView = forwardRef(
   (
     {
+      onFilterAttachments,
       selectedMailbox,
       selectedFolder,
       folders,
@@ -39,7 +41,7 @@ const MessagesView = forwardRef(
       filterStarred,
       onFilterStarred,
       filterAttachments,
-      onFilterAttachments,
+     
       filterUnread,
       pagination,
       onNextPage,
@@ -75,6 +77,11 @@ const MessagesView = forwardRef(
       isSyncing,
       onFilterUnread,
       filterUnreadActive,
+      // Bulk Actions
+      onBulkDelete,
+      onBulkMarkRead,
+      onBulkMarkUnread,
+      onClearSelection,
     },
     ref,
   ) => {
@@ -84,14 +91,14 @@ const MessagesView = forwardRef(
         <div className="bg-white border border-slate-200/60 rounded-xl shadow-sm flex-1 flex flex-col overflow-hidden">
           {/* Search and Filters - Integrated in Card Top - Hidden in Detail View */}
           {view !== 'message' && (
-            <div className="py-3 border-b border-slate-100 bg-white select-none">
-              <div className="flex flex-col xl:flex-row xl:items-center gap-4 w-full">
+            <div className="py-4 border-b border-slate-100 bg-white select-none">
+              <div className="flex flex-col xl:flex-row xl:items-center w-full">
                 {/* 1. Context & Internal Navigation */}
-                <div className="w-64 border-r border-slate-100 flex items-center gap-3 shrink-0 px-4">
+                <div className="w-64 border-r border-slate-100 flex items-center gap-3 shrink-0 px-7">
                   {onBack && (
                     <button
                       onClick={onBack}
-                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-90"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95"
                     >
                       <ChevronRight className="w-4 h-4 rotate-180" />
                     </button>
@@ -108,8 +115,10 @@ const MessagesView = forwardRef(
 
 
 
-                {/* 2. Global Actions */}
-                <div className="flex items-center gap-2 shrink-0">
+                {/* 2. Global Actions & Search Container */}
+                <div className="flex flex-1 items-center gap-4 py-1 flex-wrap md:flex-nowrap pl-4 md:pl-6 pr-4 md:pr-6">
+                  {/* Global Actions */}
+                  <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={onCompose}
                     className="h-9 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center gap-2 text-xs font-bold shadow-sm shadow-purple-500/20 transition-all active:scale-95"
@@ -155,14 +164,14 @@ const MessagesView = forwardRef(
                 </div>
 
                 {/* 3. Search Bar */}
-                <div className="flex-1 relative group min-w-[200px]">
+                <div className="flex-1 relative group min-w-0 max-w-2xl">
                   <Search className="absolute ltr:left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-focus-within:text-purple-500 transition-colors" />
                   <input
                     type="text"
                     placeholder={t('mailboxes.messages_search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full ltr:pl-10 rtl:pr-10 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500/40 transition-all outline-none"
+                    className="w-full ltr:pl-10 rtl:pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500/40 transition-all outline-none"
                   />
                   {searchQuery && (
                     <button
@@ -174,8 +183,26 @@ const MessagesView = forwardRef(
                   )}
                 </div>
 
-                {/* 4. Filters */}
-                <div className="flex items-center gap-2 shrink-0">
+                {/* 4. Compact Pagination */}
+                <div className="hidden md:block border-l border-slate-100 pl-4 py-1">
+                  <Pagination
+                    currentPage={pagination.currentPage}
+                    hasNextPage={pagination.hasNextPage}
+                    hasPreviousPage={pagination.hasPreviousPage}
+                    isLoadingMessages={isLoadingMessages}
+                    onNextPage={onNextPage}
+                    onPrevPage={onPrevPage}
+                    onPageChange={onPageChange}
+                    startMessageCount={startMessageCount}
+                    endMessageCount={endMessageCount}
+                    totalMessages={totalMessages}
+                    itemsPerPage={10}
+                    isCompact={true}
+                  />
+                </div>
+
+                {/* 5. Filters */}
+                <div className="flex items-center gap-2 shrink-0 border-l border-slate-100 pl-4 py-1">
                   <div className="relative shrink-0">
                     <select
                       value={dateRange}
@@ -196,17 +223,18 @@ const MessagesView = forwardRef(
                         ? 'bg-purple-600 border-purple-600 text-white shadow-sm'
                         : 'bg-white border-slate-200 text-slate-400 hover:text-purple-600'
                     }`}
-                    title="Files"
+                    title={t('mailboxes.filter_attachments', 'Files')}
                   >
                     <Paperclip className="w-3.5 h-3.5" />
                   </button>
 
                   <button
                     className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 bg-purple-50/30 text-purple-600 hover:bg-purple-50 transition-all active:scale-95 shadow-xs"
-                    title="Connection Secure"
+                    title={t('mailboxes.secure_connection', 'Connection Secure')}
                   >
                     <ShieldCheck className="w-3.5 h-3.5" />
                   </button>
+                </div>
                 </div>
               </div>
             </div>
@@ -312,9 +340,9 @@ const MessagesView = forwardRef(
                         </div>
                       )}
                       <div
-                        className={`flex-1 overflow-y-auto p-4 md:p-6 space-y-2 ${
+                        className={`flex-1 overflow-y-auto p-0 space-y-2 ${
                           viewMode === 'grid'
-                            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0'
+                            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0 p-4 md:p-6'
                             : ''
                         }`}
                       >
@@ -344,31 +372,77 @@ const MessagesView = forwardRef(
                           );
                         })}
                       </div>
-
-                      {/* Pagination */}
-                      {(totalMessages > 0 || (isLoadingMessages && pagination.currentPage > 1)) && (
-                        <div className="py-2 border-t border-slate-100 bg-white/50 px-6 shrink-0">
-                          <Pagination
-                            currentPage={pagination.currentPage}
-                            hasNextPage={pagination.hasNextPage}
-                            hasPreviousPage={pagination.hasPreviousPage}
-                            isLoadingMessages={isLoadingMessages}
-                            onNextPage={onNextPage}
-                            onPrevPage={onPrevPage}
-                            onPageChange={onPageChange}
-                            startMessageCount={startMessageCount}
-                            endMessageCount={endMessageCount}
-                            totalMessages={totalMessages}
-                            itemsPerPage={10}
-                          />
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
               )}
             </div>
           </div>
+ 
+          {/* Floating Selection Bar */}
+          <AnimatePresence>
+            {selectedMessages && selectedMessages.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 100, x: '-50%' }}
+                animate={{ opacity: 1, y: 0, x: '-50%' }}
+                exit={{ opacity: 0, y: 100, x: '-50%' }}
+                className="fixed bottom-10 left-1/2 z-100 flex items-center gap-0 px-2 py-2 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5),0_0_40px_rgba(139,92,246,0.1)] min-w-[400px]"
+              >
+                <div className="flex items-center gap-3 px-6 py-2 border-r border-slate-800">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-purple-500 blur-md opacity-20 animate-pulse"></div>
+                    <div className="relative w-9 h-9 flex items-center justify-center bg-linear-to-br from-purple-500 to-indigo-600 rounded-xl text-white text-xs font-black shadow-lg shadow-purple-500/30">
+                      {selectedMessages.length}
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-white text-sm font-bold tracking-tight leading-none mb-0.5">
+                      {selectedMessages.length} {selectedMessages.length === 1 ? t('mailboxes.item_selected') : t('mailboxes.items_selected')}
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                      {t('mailboxes.bulk_actions', 'Global Actions')}
+                    </span>
+                  </div>
+                </div>
+ 
+                <div className="flex items-center gap-1 px-4">
+                  <button
+                    onClick={onBulkMarkRead}
+                    className="h-10 px-4 flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all active:scale-95"
+                  >
+                    <span>{t('mailboxes.mark_as_read')}</span>
+                  </button>
+                  
+                  <button
+                    onClick={onBulkMarkUnread}
+                    className="h-10 px-4 flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all active:scale-95"
+                  >
+                    <span>{t('mailboxes.mark_as_unread')}</span>
+                  </button>
+ 
+                  <div className="w-px h-8 bg-slate-800 mx-2" />
+ 
+                  <button
+                    onClick={onBulkDelete}
+                    className="h-10 px-5 flex items-center gap-2 text-xs font-extrabold  bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all active:scale-95 shadow-lg shadow-red-500/5 group"
+                  >
+                    <X className="w-4 h-4 text-red-500 group-hover:text-white transition-colors" />
+                    <span>{t('mailboxes.delete')}</span>
+                  </button>
+                </div>
+ 
+                <div className="pr-2">
+                  <button
+                    onClick={onClearSelection}
+                    className="w-9 h-9 flex items-center justify-center bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-xl transition-all active:scale-90"
+                    title={t('mailboxes.clear_selection')}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     );

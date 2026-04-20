@@ -18,6 +18,8 @@ import {
   Settings2,
   Settings,
   Trash2,
+
+  ShieldAlert,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import WarmupSettingsModal from './warmup-settings-modal';
@@ -137,16 +139,29 @@ const MailboxList = ({
             <SortIndicator column={column} />
           </button>
         ),
-        cell: ({ row }) => (
-          <span
-            className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block capitalize ${row.original.isVerified
-                ? 'bg-purple-50 text-purple-600 border-purple-100'
-                : 'bg-amber-50 text-amber-600 border-amber-100'
-              }`}
-          >
-            {row.original.isVerified ? t('mailboxes.status_active') : t('mailboxes.status_warning')}
-          </span>
-        ),
+        cell: ({ row }) => {
+          const isVerified = row.original.isVerified;
+          const errorMsg = row.original.verificationError;
+
+          return (
+            <div className="flex flex-col gap-1">
+              <span
+                className={`text-[10px] font-extrabold px-2.5 py-1 rounded-lg border shadow-xs inline-block capitalize w-fit ${isVerified
+                    ? 'bg-purple-50 text-purple-600 border-purple-100'
+                    : 'bg-red-50 text-red-600 border-red-100'
+                  }`}
+                title={errorMsg || ''}
+              >
+                {isVerified ? t('mailboxes.status_active') : 'Needs Attention'}
+              </span>
+              {!isVerified && errorMsg && (
+                <span className="text-[9px] font-medium text-red-500 leading-tight max-w-[120px] truncate" title={errorMsg}>
+                  {errorMsg}
+                </span>
+              )}
+            </div>
+          );
+        },
       },
       {
         accessorKey: 'stats.warmupEnabled',
@@ -211,6 +226,20 @@ const MailboxList = ({
         ),
         cell: ({ row }) => {
           const score = row.original.stats?.reputationScore ?? 100;
+          const isBlacklisted = row.original.stats?.blacklisted || row.original.stats?.healthStatus === 'critical';
+
+          if (isBlacklisted) {
+            return (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-red-100 border border-red-200 rounded-md w-fit">
+                  <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
+                  <span className="text-[10px] font-black text-red-700 uppercase">Blacklisted</span>
+                </div>
+                <span className="text-[9px] font-bold text-slate-400">Critical Reputation</span>
+              </div>
+            );
+          }
+
           return (
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">

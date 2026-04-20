@@ -352,6 +352,18 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
     }));
   }, [allPlaceholders]);
 
+  // Helper to render text with example values for demo preview
+  const renderWithDemoContent = (text) => {
+    if (!text) return text;
+    let result = text;
+    allPlaceholders.forEach((p) => {
+      const regex = new RegExp(`\\{\\{\\s*${p.key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\}\\}`, 'gi');
+      result = result.replace(regex, p.example || `[${p.label}]`);
+    });
+    // Fallback for any other custom variables not currently in allPlaceholders
+    return result.replace(/\{\{\s*([\w.#/]+)\s*\}\}/g, (match, key) => `[${key}]`);
+  };
+
   // Campaign Health Check Logic
   const usedVariables = useMemo(() => {
     const allText = [
@@ -518,7 +530,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
               </div>
 
               <div className="flex items-center justify-between px-1">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Initial outreach</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Email 1</p>
               </div>
 
               <button
@@ -529,7 +541,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <span className={`w-1.5 h-1.5 rounded-full ${activeStepIndex === 0 ? 'bg-purple-500 animate-pulse' : 'bg-slate-300'}`} />
-                    <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-500'}`}>Email Step</span>
+                    <span className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${activeStepIndex === 0 ? 'text-purple-600' : 'text-slate-500'}`}>Message</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-800 truncate pl-3.5">
                     {mainSubject || '----'}
@@ -554,7 +566,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
 
                 <div className="flex items-center justify-between px-1">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
-                    Follow-up #{idx + 1}
+                    Email {idx + 2}
                   </p>
                   <button
                     type="button"
@@ -643,10 +655,10 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
             </div>
             <div className="flex-1 min-w-0 flex items-baseline gap-2">
               <span className="text-sm font-semibold text-slate-900 truncate w-fit">
-                {currentSubject || 'Your subject line will display here'}
+                {renderWithDemoContent(currentSubject) || 'Your subject line will display here'}
               </span>
               <span className="text-xs text-slate-500 truncate font-medium">
-                {getBodySnippet(currentHtmlBody)}
+                {renderWithDemoContent(getBodySnippet(currentHtmlBody))}
               </span>
             </div>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -659,7 +671,7 @@ const Step1Design = ({ watch, setValue, selectedBatch, selectedSender, senders }
         <div className="bg-white border-2 border-[#eaecf0] rounded-lg shadow-sm flex flex-col min-h-[500px] overflow-hidden">
           {/* Header row */}
           <div className="px-6 py-5 border-b border-[#eaecf0] flex items-center justify-between bg-white sticky top-0 z-10">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Stage {activeStepIndex + 1}: Email Architecture</h2>
+            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Step {activeStepIndex + 1}: Email Content</h2>
             {isGenerating && (
               <div className="flex items-center gap-2 px-3 py-1 bg-purple-50 border border-purple-100 rounded-full animate-pulse shadow-sm">
                 <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping" />

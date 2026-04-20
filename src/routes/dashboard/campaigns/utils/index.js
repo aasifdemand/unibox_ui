@@ -12,7 +12,7 @@ export const getSmartDefaults = (tz) => {
     const { dateStr, timeStr } = getNowInTimezone(tz);
 
     const [h, m] = timeStr.split(':').map(Number);
-    let startMins = h * 60 + m + 5; // Start in 5 mins
+    let startMins = h * 60 + m + 1; // Start in 1 min (buffer for saving)
     let dateFinal = dateStr;
 
     // If we cross midnight, push to tomorrow 09:00

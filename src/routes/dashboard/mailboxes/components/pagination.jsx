@@ -1,4 +1,4 @@
-﻿import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 const Pagination = ({
@@ -13,6 +13,7 @@ const Pagination = ({
   endMessageCount,
   totalMessages,
   itemsPerPage = 10,
+  isCompact = false,
 }) => {
   const { t } = useTranslation();
   const totalPages = Math.ceil(totalMessages / itemsPerPage);
@@ -64,36 +65,46 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex items-center justify-between py-4 px-4">
-      <div className="text-metadata flex items-center gap-2">
+    <div className={`flex items-center justify-between ${isCompact ? 'py-0 gap-4' : 'py-4'} px-0`}>
+      <div className={`text-metadata flex items-center ${isCompact ? 'gap-0' : 'gap-2'}`}>
         {totalMessages > 0 && (
-          <span className="mx-2 font-semibold text-slate-500">
-            {t('mailboxes.showing')} {startMessageCount} - {endMessageCount}{' '}
-            <span className="text-slate-300">/</span> {totalMessages}
+          <span className={`font-semibold text-slate-500 ${isCompact ? 'text-[10px] whitespace-nowrap' : 'mx-2'}`}>
+            {isCompact ? (
+              <>
+                {startMessageCount}-{endMessageCount} <span className="text-slate-300">/</span> {totalMessages}
+              </>
+            ) : (
+              <>
+                {t('mailboxes.showing')} {startMessageCount} - {endMessageCount}{' '}
+                <span className="text-slate-300">/</span> {totalMessages}
+              </>
+            )}
           </span>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-3 shrink-0">
+        <div className={`flex items-center ${isCompact ? 'gap-1' : 'gap-1.5'}`}>
           <button
             onClick={onPrevPage}
             disabled={!hasPreviousPage || isLoadingMessages}
-            className="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30 transition-all shadow-xs"
+            className={`${isCompact ? 'w-7 h-7' : 'w-8 h-8'} rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30 transition-all shadow-xs`}
           >
-            <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
+            <ChevronLeft className={`${isCompact ? 'w-3 h-3' : 'w-4 h-4'} rtl:rotate-180`} />
           </button>
 
-          <div className="flex items-center gap-1 mx-1">
-            {totalPages > 1 && renderPageNumbers()}
-          </div>
+          {!isCompact && (
+            <div className="flex items-center gap-1 mx-1">
+              {totalPages > 1 && renderPageNumbers()}
+            </div>
+          )}
 
           <button
             onClick={onNextPage}
             disabled={!hasNextPage || isLoadingMessages}
-            className="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30 transition-all shadow-xs"
+            className={`${isCompact ? 'w-7 h-7' : 'w-8 h-8'} rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-30 transition-all shadow-xs`}
           >
-            <ChevronRight className="w-4 h-4 rtl:rotate-180" />
+            <ChevronRight className={`${isCompact ? 'w-3 h-3' : 'w-4 h-4'} rtl:rotate-180`} />
           </button>
         </div>
       </div>

@@ -165,16 +165,16 @@ const ShowSender = ({
                                     <Zap className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-bold text-slate-800 tracking-tight">Unibox Infrastructure</h4>
-                                    <p className="text-xs font-semibold text-slate-400 mt-0.5">High reputation sending channels</p>
+                                    <h4 className="text-sm font-bold text-slate-800 tracking-tight">Standard Connection</h4>
+                                    <p className="text-xs font-semibold text-slate-400 mt-0.5">Reliable and easy email sending</p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-6">
                             {[
-                                'Quick Setup', 'Managed infrastructure', 
-                                'Default Permissions', 'Pre-configured settings'
+                                'Quick Setup', 'Automated maintenance', 
+                                'Standard Permissions', 'Optimized settings'
                             ].map((feature, i) => (
                                 <div key={i} className="flex items-center gap-2">
                                     <div className="w-4 h-4 bg-purple-100 rounded-full flex items-center justify-center">
@@ -190,9 +190,9 @@ const ShowSender = ({
                             <h5 className="text-xs font-bold text-slate-800 mb-4">Choose your provider:</h5>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {[
-                                   { id: 'gmail', label: 'Google OAuth', icon: Google },
-                                   { id: 'outlook', label: 'Outlook', icon: Microsoft },
-                                   { id: 'smtp', label: 'SMTP', icon: Smtp },
+                                   { id: 'gmail', label: 'Gmail / Google', icon: Google },
+                                   { id: 'outlook', label: 'Outlook / Office 365', icon: Microsoft },
+                                   { id: 'smtp', label: 'Other (Manual)', icon: Smtp },
                                 ].map((provider) => (
                                    <button
                                      key={provider.id}
@@ -239,9 +239,10 @@ const ShowSender = ({
                         <Shield className="w-8 h-8" />
                    </div>
                    <div>
-                        <h4 className="text-lg font-bold text-slate-800 tracking-tight">Authorize Account</h4>
+                        <h4 className="text-lg font-bold text-slate-800 tracking-tight">Secure Connection</h4>
                         <p className="text-xs font-semibold text-slate-400 mt-2 max-w-xs mx-auto leading-relaxed">
-                            Complete authentication securely via {senderType === 'gmail' ? 'Google' : 'Microsoft'} OAuth.
+                            Complete your connection safely through {senderType === 'gmail' ? 'Google' : 'Microsoft'}.
+                            {senderType === 'gmail' && <span className="block mt-1 text-purple-600 font-bold italic">Note: Google Workspace accounts only. Personal @gmail.com accounts are not supported.</span>}
                         </p>
                    </div>
                    <div className="flex flex-col gap-3 max-w-xs mx-auto">
@@ -269,8 +270,8 @@ const ShowSender = ({
                                 <Smtp className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                                <h4 className="text-sm font-bold text-slate-800 tracking-tight">Custom SMTP Setup</h4>
-                                <p className="text-xs font-semibold text-slate-400">Configure your own server</p>
+                                <h4 className="text-sm font-bold text-slate-800 tracking-tight">Manual Connection</h4>
+                                <p className="text-xs font-semibold text-slate-400">Add any other email provider</p>
                             </div>
                         </div>
                         <button 
@@ -312,7 +313,7 @@ const ShowSender = ({
                              onClick={() => setSettingsTab(t)}
                              className={`flex-1 py-3 px-4 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-300 transform active:scale-[0.98] ${settingsTab === t ? 'bg-white text-purple-600 shadow-md border border-slate-100 ring-4 ring-purple-500/5' : 'text-slate-500 hover:text-slate-800'}`}
                             >
-                                {t === 'smtp' ? 'Sending (SMTP)' : 'Syncing (IMAP)'}
+                                {t === 'smtp' ? 'Sending Settings' : 'Receiving Settings'}
                             </button>
                         ))}
                     </div>

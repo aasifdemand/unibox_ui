@@ -11,13 +11,17 @@ import {
   MousePointer2,
   Trash2,
   Sparkles,
+ 
 } from 'lucide-react';
+import { useBatchStatus } from '../../../../../hooks/useBatches';
+
 
 const Step3Finalize = ({
   watch,
   setValue,
   selectedBatch,
 
+  watchSenderId,
   watchSenderIds = [],
   senders = [],
 }) => {
@@ -25,8 +29,12 @@ const Step3Finalize = ({
   const campaignName = watch('name');
   const subject = watch('subject');
 
+  const { data: batchDetails, } = useBatchStatus(selectedBatch?.id);
+  const sampleRecipients = batchDetails?.sampleRecords || [];
+  const validCount = (selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0;
+
   return (
-    <div className="max-w-5xl mx-auto space-y-10 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-7xl mx-auto space-y-10 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Launch Readiness Header */}
       <div className="bg-purple-600 rounded-lg p-12 text-white relative overflow-hidden shadow-sm shadow-purple-600/20 group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:scale-110 transition-transform duration-700" />
@@ -87,12 +95,14 @@ const Step3Finalize = ({
                     <Mail className="w-4 h-4" />
                   </div>
                   <span className="text-xs font-semibold text-slate-400">
-                    {t('campaigns.sender_rotation_count', { count: watchSenderIds.length })}
+                    {watchSenderIds.length > 0 
+                      ? t('campaigns.sender_rotation_count', { count: watchSenderIds.length })
+                      : 'Primary Sending Account'}
                   </span>
                 </div>
                 <div className="space-y-1.5">
                   {senders
-                    .filter((s) => watchSenderIds.includes(s.id))
+                    .filter((s) => watchSenderIds.includes(s.id) || s.id === watchSenderId)
                     .slice(0, 3)
                     .map((s) => (
                       <p
@@ -108,7 +118,7 @@ const Step3Finalize = ({
                       {t('campaigns.more_accounts', { count: watchSenderIds.length - 3 })}
                     </p>
                   )}
-                  {watchSenderIds.length === 0 && (
+                  {watchSenderIds.length === 0 && !watchSenderId && (
                     <p className="text-sm font-bold text-slate-800">
                       {t('campaigns.no_sender_set')}
                     </p>
@@ -128,9 +138,22 @@ const Step3Finalize = ({
                 <p className="text-sm font-bold text-slate-800 truncate">
                   {selectedBatch?.originalFilename || 'No list selected'}
                 </p>
+                {sampleRecipients.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {sampleRecipients.slice(0, 2).map((r, i) => (
+                      <span key={r.id || i} className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-bold border border-slate-200">
+                        {r.name || r.email}
+                      </span>
+                    ))}
+                    {validCount > 2 && (
+                      <span className="text-[10px] text-slate-400 font-bold self-center">
+                        + {validCount - 2} more
+                      </span>
+                    )}
+                  </div>
+                )}
                 <p className="text-xs font-bold text-slate-400 mt-1">
-                  {(selectedBatch?.verification?.valid ?? selectedBatch?.validRecords) || 0} Ready
-                  Prospects
+                  {validCount} Ready Prospects
                 </p>
               </div>
             </div>
@@ -163,7 +186,7 @@ const Step3Finalize = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { label: 'Days', val: (watch('sendingDays') || []).length, desc: 'Active days' },
-                { label: 'Window', val: '9-6', desc: 'Working hours' },
+                { label: 'Window', val: `${watch('startTime') || '09:00'} - ${watch('endTime') || '18:00'}`, desc: 'Working hours' },
                 { label: 'Leads', val: watch('maxLeadsPerDay'), desc: 'Daily max' },
                 { label: 'Interval', val: `${watch('sendingInterval')}m`, desc: 'Wait time' },
               ].map((item, idx) => (

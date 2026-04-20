@@ -280,6 +280,10 @@ const Mailboxes = () => {
                     isIntegrated={true}
                     showPreview={showComposePreview}
                     onTogglePreview={() => setShowComposePreview(!showComposePreview)}
+                    onBulkDelete={handleRequestBulkDelete}
+                    onBulkMarkRead={handlers.handleBulkMarkRead}
+                    onBulkMarkUnread={handlers.handleBulkMarkUnread}
+                    onClearSelection={() => setters.setSelectedMessages([])}
                   />
                 </motion.div>
               )}

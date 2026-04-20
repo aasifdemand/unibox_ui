@@ -1,4 +1,4 @@
-﻿import Modal from '../components/shared/modal';
+import Modal from '../components/shared/modal';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Calendar, MessageCircle, Reply, AtSign } from 'lucide-react';
@@ -78,9 +78,10 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
     if (isHtml) {
       return (
         <div
-          className="mail-content-html prose prose-slate max-w-none"
+          className="mail-content-html max-w-none"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayContent) }}
         />
+
       );
     }
 
@@ -220,7 +221,8 @@ const ShowReply = ({ isOpen, setIsOpen, loading, reply, setSelectedRecipientId, 
                   <div className="absolute top-0 ltr:right-0 rtl:left-0 p-4 opacity-5 pointer-events-none">
                     <MessageCircle className="w-24 h-24 text-slate-900" />
                   </div>
-                  <div className="prose prose-slate max-w-none">{renderMessageBody()}</div>
+                  <div className="mail-content-html max-w-none">{renderMessageBody()}</div>
+
                 </div>
               </div>
 

@@ -218,12 +218,14 @@ export const useTestSender = () => {
 // =========================
 // OAUTH REDIRECTS (not mutations)
 // =========================
-export const initiateGmailOAuth = () => {
-  window.location.href = `${API_URL}/senders/oauth/gmail`;
+export const initiateGmailOAuth = (isSystemAccount = false) => {
+  const query = isSystemAccount ? '?isSystemAccount=true' : '';
+  window.location.href = `${API_URL}/senders/oauth/gmail${query}`;
 };
 
-export const initiateOutlookOAuth = () => {
-  window.location.href = `${API_URL}/senders/oauth/outlook`;
+export const initiateOutlookOAuth = (isSystemAccount = false) => {
+  const query = isSystemAccount ? '?isSystemAccount=true' : '';
+  window.location.href = `${API_URL}/senders/oauth/outlook${query}`;
 };
 
 // =========================

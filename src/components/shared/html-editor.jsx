@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -108,17 +108,23 @@ const FontSize = TextStyle.extend({
 const VariableHighlight = Extension.create({
   name: 'variableHighlight',
 
+  addOptions() {
+    return {
+      userFields: [],
+    };
+  },
+
   addProseMirrorPlugins() {
     return [
       new Plugin({
         key: new PluginKey('variableHighlight'),
         state: {
-          init(_, { doc }) {
-            return findVariables(doc);
+          init: (_, { doc }) => {
+            return findVariables(doc, this.options.userFields);
           },
-          apply(tr, oldState) {
+          apply: (tr, oldState) => {
             if (tr.docChanged) {
-              return findVariables(tr.doc);
+              return findVariables(tr.doc, this.options.userFields);
             }
             return oldState.map(tr.mapping, tr.doc);
           },
@@ -133,20 +139,39 @@ const VariableHighlight = Extension.create({
   },
 });
 
-function findVariables(doc) {
+function findVariables(doc, userFields = []) {
   const decorations = [];
   const regex = /\{\{[^{}]+\}\}/g;
+
+  const systemTags = [
+    'sl_time_of_day', 'sl_day_of_week', 'sl_current_month', 'sl_current_date',
+    'unsubscribe_link', 'sender_name', 'first_name', 'firstname', 'company'
+  ];
+  const normalize = (key) => (key || '').toLowerCase().replace(/[_-]/g, '');
+  const normalizedUserFields = userFields.map(f => normalize(f.fieldName || f.key || f));
 
   doc.descendants((node, pos) => {
     if (node.isText) {
       let match;
       while ((match = regex.exec(node.text))) {
+        const varName = match[0].replace(/[{}]/g, '').trim();
+        const normalizedVar = normalize(varName);
+
+        const isValid = systemTags.some(t => normalize(t) === normalizedVar) ||
+                        normalizedUserFields.includes(normalizedVar);
+
+        const className = isValid
+          ? 'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-amber-200/60 shadow-sm'
+          : 'bg-red-100/80 text-red-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-red-200/60 shadow-sm';
+
+        const style = isValid
+          ? 'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 500;'
+          : 'background-color: rgba(254, 226, 226, 0.8); color: #991b1b; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(252, 165, 165, 0.6); font-size: 0.75rem; font-weight: 500;';
+
         decorations.push(
           Decoration.inline(pos + match.index, pos + match.index + match[0].length, {
-            class:
-              'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-amber-200/60 shadow-sm',
-            style:
-              'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 500;',
+            class: className,
+            style: style,
           }),
         );
       }
@@ -166,9 +191,6 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   const [imageUploadTab, setImageUploadTab] = useState('url'); // 'url' | 'file'
   const [openDropdown, setOpenDropdown] = useState(null); // 'style' | 'font' | 'size' | 'format' | 'align' | 'lists' | 'insert'
 
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showFontPicker, setShowFontPicker] = useState(false);
-  const [showFontSizePicker, setShowFontSizePicker] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
@@ -178,7 +200,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   const [tableCols, setTableCols] = useState(3);
 
   const editor = useEditor({
-    extensions: [
+    extensions: useMemo(() => [
       // ✅ StarterKit includes: Bold, Italic, Strike, Code, CodeBlock, Blockquote, HorizontalRule, HardBreak, Heading, History
       StarterKit.configure({
         bulletList: false,
@@ -242,16 +264,16 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
       TableHeader.configure({
         HTMLAttributes: {
           class:
-            'border border-gray-300 bg-gray-100 px-4 py-2 ltr:text-left ltr:text-right rtl:text-left font-semibold',
+            'border border-gray-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-900 shadow-sm',
         },
       }),
       TableCell.configure({
         HTMLAttributes: {
-          class: 'border border-gray-300 px-4 py-2',
+          class: 'border border-gray-200 px-4 py-2.5 text-left text-slate-700',
         },
       }),
-      VariableHighlight,
-    ],
+      VariableHighlight.configure({ userFields }),
+    ], [userFields]),
     content: value || '',
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
@@ -352,7 +374,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   const setLink = () => {
     if (!linkUrl) return;
     const url = linkUrl.startsWith('http') ? linkUrl : `https://${linkUrl}`;
-    const { from, to, empty } = editor.state.selection;
+    const { empty } = editor.state.selection;
     if (empty) {
       // No text selected — insert the URL as clickable text
       editor
@@ -392,29 +414,6 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
     setShowTableModal(false);
   };
 
-  const renderEmailPreview = (content) => {
-    if (!content || content.trim() === '') {
-      return `
-      <div class="text-sm text-slate-400 italic flex items-center justify-center py-10">
-        No content to preview
-      </div>
-    `;
-    }
-
-    let html = content;
-
-    // Highlight tokens
-    html = html.replace(
-      /\{\{([^}]+)\}\}/g,
-      `<span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-lg font-mono text-xs font-bold border border-amber-200/50 leading-none shadow-sm inline-block mx-0.5">$&</span>`,
-    );
-
-    // Filter out trailing empty paragraphs that add extra space
-    html = html.trim().replace(/(<p>&nbsp;<\/p>|<p><\/p>)+$/, '');
-
-    return html;
-  };
-
   if (!editor) {
     return (
       <div className="min-h-100 flex items-center justify-center text-gray-500">
@@ -429,7 +428,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
   return (
     <div className="flex flex-col h-full bg-white group/editor">
       {/* Toolbar - z-index high so dropdowns render above content */}
-      <div className="sticky top-0 z-[100] border-b border-slate-100 bg-white">
+      <div className="sticky top-0 z-100 border-b border-slate-100 bg-white">
         <div className="flex items-center gap-0.5 px-2 py-1.5 min-h-[44px]">
           {/* Undo / Redo */}
           <button
@@ -476,7 +475,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3 flex-none" />
             </button>
             {openDropdown === 'style' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-32 animate-in fade-in zoom-in-95 duration-150 overflow-hidden">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-32 animate-in fade-in zoom-in-95 duration-150 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => {
@@ -518,7 +517,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3 flex-none" />
             </button>
             {openDropdown === 'font' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-48 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-48 animate-in fade-in zoom-in-95 duration-150">
                 <div className="max-h-60 overflow-y-auto custom-scrollbar">
                   {FONTS.map((font) => (
                     <button
@@ -551,7 +550,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3 flex-none" />
             </button>
             {openDropdown === 'size' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-20 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-20 animate-in fade-in zoom-in-95 duration-150">
                 <div className="max-h-60 overflow-y-auto custom-scrollbar">
                   {FONT_SIZES.map((size) => (
                     <button
@@ -585,7 +584,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3" />
             </button>
             {openDropdown === 'format' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-44 animate-in fade-in zoom-in-95 duration-150">
                 <button
                   type="button"
                   onClick={() => {
@@ -669,7 +668,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3" />
             </button>
             {openDropdown === 'align' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-44 animate-in fade-in zoom-in-95 duration-150">
                 <button
                   type="button"
                   onClick={() => {
@@ -730,7 +729,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3" />
             </button>
             {openDropdown === 'lists' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-44 animate-in fade-in zoom-in-95 duration-150">
                 <button
                   type="button"
                   onClick={() => {
@@ -771,7 +770,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <ChevronDown className="w-3 h-3" />
             </button>
             {openDropdown === 'insert' && (
-              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-[500] w-44 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute top-full left-0 mt-1 bg-white border border-slate-100 rounded-md shadow-sm py-1 z-500 w-44 animate-in fade-in zoom-in-95 duration-150">
                 <button
                   type="button"
                   onClick={() => {
@@ -877,10 +876,20 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
               <div
                 className="flex-1 p-8 md:p-10 lg:p-12 max-w-none text-slate-800 mail-content-html leading-normal"
                 dangerouslySetInnerHTML={{
-                  __html: (value || '').replace(
-                    /\{\{\s*sender_name\s*\}\}/g,
-                    senderName || '[Sender Name]',
-                  ),
+                  __html: (() => {
+                    let html = value || '';
+                    // Replace all placeholders with examples from userFields
+                    userFields.forEach(f => {
+                      const key = f.fieldName || f.key || f;
+                      const regex = new RegExp(`\\{\\{\\s*${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\}\\}`, 'gi');
+                      const replacement = f.example || f.displayName || `[${key}]`;
+                      html = html.replace(regex, replacement);
+                    });
+                    // Fallback for sender_name specifically
+                    html = html.replace(/\{\{\s*sender_name\s*\}\}/g, senderName || '[Sender Name]');
+                    // Fallback for any remaining {{ }}
+                    return html.replace(/\{\{\s*([\w.#/]+)\s*\}\}/g, (match, key) => `[${key}]`);
+                  })()
                 }}
               />
             </div>
@@ -1096,7 +1105,7 @@ const HtmlEmailEditor = ({ value, onChange, userFields = [], senderName = '' }) 
         {showTokens && (
           <div
             ref={tokenRef}
-            className="absolute z-[600] animate-in slide-in-from-top-1 duration-300 w-48 shadow-sm"
+            className="absolute z-600 animate-in slide-in-from-top-1 duration-300 w-48 shadow-sm"
             style={{
               top: `${dropdownPos.top}px`,
               left: `${dropdownPos.left}px`,

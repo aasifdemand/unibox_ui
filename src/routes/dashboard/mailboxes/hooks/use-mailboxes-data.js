@@ -414,7 +414,8 @@ export const useMailboxesData = () => {
       if (selectedMailbox.type === 'smtp') {
         setHasNextPage(currentPage * PAGE_SIZE < total);
       } else {
-        setHasNextPage(!!query.hasNextPage);
+        const fetchedPages = query.data?.pages?.length || 0;
+        setHasNextPage(currentPage < fetchedPages || !!query.hasNextPage);
       }
       setHasPreviousPage(currentPage > 1);
     }, [

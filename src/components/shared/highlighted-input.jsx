@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle, useMemo } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -8,20 +8,39 @@ import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import PersonalizationTokens from './personalization-tokens';
 
 // Real-time variable highlighting
-const findVariables = (doc) => {
+const findVariables = (doc, userFields = []) => {
   const decorations = [];
   const regex = /\{\{[^{}]+\}\}/g;
+
+  const systemTags = [
+    'sl_time_of_day', 'sl_day_of_week', 'sl_current_month', 'sl_current_date',
+    'unsubscribe_link', 'sender_name', 'first_name', 'firstname', 'company'
+  ];
+  const normalize = (key) => (key || '').toLowerCase().replace(/[_-]/g, '');
+  const normalizedUserFields = userFields.map(f => normalize(f.fieldName || f.key || f));
 
   doc.descendants((node, pos) => {
     if (node.isText) {
       let match;
       while ((match = regex.exec(node.text))) {
+        const varName = match[0].replace(/[{}]/g, '').trim();
+        const normalizedVar = normalize(varName);
+
+        const isValid = systemTags.some(t => normalize(t) === normalizedVar) ||
+                        normalizedUserFields.includes(normalizedVar);
+
+        const className = isValid
+          ? 'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-amber-200/60 shadow-sm'
+          : 'bg-red-100/80 text-red-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-red-200/60 shadow-sm';
+
+        const style = isValid
+          ? 'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 500;'
+          : 'background-color: rgba(254, 226, 226, 0.8); color: #991b1b; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(252, 165, 165, 0.6); font-size: 0.75rem; font-weight: 500;';
+
         decorations.push(
           Decoration.inline(pos + match.index, pos + match.index + match[0].length, {
-            class:
-              'bg-amber-100/80 text-amber-900 px-2 py-0.5 rounded-lg font-mono text-xs font-medium border border-amber-200/60 shadow-sm',
-            style:
-              'background-color: rgba(254, 243, 199, 0.8); color: #78350f; padding: 2px 6px; border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; border: 1px solid rgba(253, 230, 138, 0.6); font-size: 0.75rem; font-weight: 500;',
+            class: className,
+            style: style,
           }),
         );
       }
@@ -33,16 +52,21 @@ const findVariables = (doc) => {
 
 const VariableHighlight = Extension.create({
   name: 'variableHighlight',
+  addOptions() {
+    return {
+      userFields: [],
+    };
+  },
   addProseMirrorPlugins() {
     return [
       new Plugin({
         key: new PluginKey('variableHighlight'),
         state: {
-          init(_, { doc }) {
-            return findVariables(doc);
+          init: (_, { doc }) => {
+            return findVariables(doc, this.options.userFields);
           },
-          apply(tr, oldState) {
-            if (tr.docChanged) return findVariables(tr.doc);
+          apply: (tr, oldState) => {
+            if (tr.docChanged) return findVariables(tr.doc, this.options.userFields);
             return oldState.map(tr.mapping, tr.doc);
           },
         },
@@ -75,7 +99,7 @@ const HighlightedInput = React.forwardRef(
     const tokenRef = useRef(null);
 
     const editor = useEditor({
-      extensions: [
+      extensions: useMemo(() => [
         StarterKit.configure({
           heading: false,
           blockquote: false,
@@ -87,11 +111,11 @@ const HighlightedInput = React.forwardRef(
           history: true,
         }),
         SingleLine,
-        VariableHighlight,
+        VariableHighlight.configure({ userFields }),
         Placeholder.configure({
           placeholder: placeholder || 'Type something...',
         }),
-      ],
+      ], [userFields, placeholder]),
       content: value || '',
       onUpdate: ({ editor }) => {
         const text = editor.getText();
@@ -174,7 +198,7 @@ const HighlightedInput = React.forwardRef(
         {showTokens && (
           <div
             ref={tokenRef}
-            className="absolute z-[600] animate-in slide-in-from-top-1 duration-300 w-48 shadow-sm"
+            className="absolute z-600 animate-in slide-in-from-top-1 duration-300 w-48 shadow-sm"
             style={{
               top: `${dropdownPos.top}px`,
               left: `${dropdownPos.left}px`,
@@ -193,5 +217,7 @@ const HighlightedInput = React.forwardRef(
     );
   },
 );
+
+HighlightedInput.displayName = 'HighlightedInput';
 
 export default HighlightedInput;

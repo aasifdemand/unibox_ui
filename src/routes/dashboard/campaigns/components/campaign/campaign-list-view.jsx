@@ -141,9 +141,9 @@ const CampaignListView = ({
                   <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                   <span>
                     {campaign.startedAt
-                      ? `Started at: ${formatDateTime(campaign.startedAt, userTz)}`
+                      ? `${formatDateTime(campaign.startedAt, userTz)}`
                       : campaign.scheduledAt
-                        ? `Scheduled at: ${formatDateTime(campaign.scheduledAt, userTz)}`
+                        ? `${formatDateTime(campaign.scheduledAt, userTz)}`
                         : formatDateTime(campaign.createdAt, userTz) || formatDate(campaign.createdAt, userTz)}
                   </span>
                 </div>

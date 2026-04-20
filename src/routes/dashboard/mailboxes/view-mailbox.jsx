@@ -23,6 +23,7 @@ import Button from '../../../components/ui/button';
 import { toast } from 'react-hot-toast';
 import { useCurrentUser } from '../../../hooks/useAuth';
 import { formatInTimezone } from '../../../utils/date-utils';
+import HtmlEmailEditor from '../../../components/shared/html-editor';
 
 
 const ViewMailbox = () => {
@@ -52,6 +53,12 @@ const ViewMailbox = () => {
       });
     }
   }, [mailbox]);
+
+  const signatureFields = React.useMemo(() => [
+    { fieldName: 'sender_name', displayName: 'Sender Name' },
+    { fieldName: 'designation', displayName: 'Designation' },
+    { fieldName: 'sender_email', displayName: 'Sender Email' },
+  ], []);
 
   const handleSave = async () => {
     try {
@@ -269,15 +276,16 @@ const ViewMailbox = () => {
                       </div>
                     </div>
 
-                    {/* Signature */}
                     <div className="space-y-3">
                       <label className="text-metadata ml-1">Email Signature</label>
-                      <textarea 
-                        value={formData?.signature}
-                        onChange={(e) => setFormData({ ...formData, signature: e.target.value })}
-                        className="input-premium min-h-[160px] py-4 leading-relaxed"
-                        placeholder="Sent from my secure workspace..."
-                      />
+                      <div className="border-2 border-slate-100 rounded-lg overflow-hidden">
+                        <HtmlEmailEditor 
+                          value={formData?.signature}
+                          onChange={(val) => setFormData({ ...formData, signature: val })}
+                          userFields={signatureFields}
+                          senderName={formData?.displayName}
+                        />
+                      </div>
                     </div>
 
                     {/* Advanced Routing */}

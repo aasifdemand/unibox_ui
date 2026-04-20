@@ -148,12 +148,17 @@ const VerifyAccount = () => {
             value={otp}
             onChange={setOtp}
             numInputs={6}
-            containerStyle="flex gap-3 justify-between"
+            containerStyle="flex gap-2 justify-between"
             renderInput={(props) => (
               <input
                 {...props}
                 disabled={isLoading}
-                className="w-full h-14 text-xl font-bold text-center border-2 rounded-lg transition-all outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-600/10 disabled:bg-slate-50 disabled:cursor-not-allowed bg-white shadow-sm border-slate-200/60"
+                style={{
+                  ...props.style,
+                  width: '48px',
+                  height: '48px',
+                }}
+                className="text-xl font-bold text-center border-2 rounded-lg transition-all outline-none focus:border-purple-600 focus:ring-4 focus:ring-purple-600/10 disabled:bg-slate-50 disabled:cursor-not-allowed bg-white shadow-sm border-slate-200/60 flex-none"
               />
             )}
           />

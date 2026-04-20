@@ -512,8 +512,8 @@ const MessageDetailView = ({
     >
       {/* Navigation Header */}
       <div className="bg-white border-b border-slate-200/60 px-6 py-4 sticky top-0 z-30 select-none">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-6">
+          <div className="flex items-center gap-4 min-w-0">
             <button
               onClick={onBack}
               className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all active:scale-95 shrink-0"
@@ -522,51 +522,51 @@ const MessageDetailView = ({
               <ChevronRight className="w-4 h-4 rotate-180" />
             </button>
 
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={onReply}
-                className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                title={t('mailboxes.reply')}
-              >
-                <Reply className="w-4 h-4" />
-              </button>
-              <button
-                onClick={onForward}
-                className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                title={t('mailboxes.forward')}
-              >
-                <Forward className="w-4 h-4" />
-              </button>
-              <div className="w-px h-4 bg-slate-200 mx-1" />
-              <button
-                onClick={onMarkUnread}
-                className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                title={t('mailboxes.mark_unread')}
-              >
-                <Mail className="w-4 h-4" />
-              </button>
-              <button
-                onClick={onDelete}
-                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                title={t('common.delete')}
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-lg font-bold text-slate-900 tracking-tight truncate leading-none mb-1.5 pt-0.5">
+                {getSubject(message)}
+              </h1>
+              <div className="flex items-center gap-1.5 overflow-hidden">
+                <span className="text-[10px] font-semibold text-slate-400 shrink-0">
+                  {t('mailboxes.from', 'From')}:
+                </span>
+                <span className="text-[10px] font-bold text-purple-600 truncate">
+                  {sender.name || sender.email}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col min-w-0">
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight truncate leading-none mb-2">
-              {getSubject(message)}
-            </h1>
-            <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="text-xs font-semibold text-slate-400 shrink-0">
-                {t('mailboxes.from', 'From')}:
-              </span>
-              <span className="text-xs font-bold text-purple-600 truncate">
-                {sender.name || sender.email}
-              </span>
-            </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={onReply}
+              className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+              title={t('mailboxes.reply')}
+            >
+              <Reply className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onForward}
+              className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+              title={t('mailboxes.forward')}
+            >
+              <Forward className="w-4 h-4" />
+            </button>
+            <div className="w-px h-4 bg-slate-200 mx-1" />
+            <button
+              onClick={onMarkUnread}
+              className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              title={t('mailboxes.mark_unread')}
+            >
+              <Mail className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onDelete}
+              className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              title={t('common.delete')}
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
