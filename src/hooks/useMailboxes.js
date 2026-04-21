@@ -133,9 +133,8 @@ export const useUpdateMailbox = () => {
       const res = await api.put(`/senders/${id}`, data);
       return await res.json();
     },
-    onSuccess: (response, variables) => {
-      queryClient.invalidateQueries({ queryKey: mailboxKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: mailboxKeys.lists() });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.all });
     },
   });
 };
@@ -148,9 +147,8 @@ export const useUpdateWarmupSettings = () => {
       const res = await api.put(`/senders/${senderId}/warmup`, settings);
       return await res.json();
     },
-    onSuccess: (_, { senderId }) => {
-      queryClient.invalidateQueries({ queryKey: mailboxKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: mailboxKeys.detail(senderId) });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: mailboxKeys.all });
     },
   });
 };

@@ -369,7 +369,10 @@ const ContactsTable = ({ searchTerm, filterStatus, setShowUploadModal, visibleCo
       refetch();
     } catch (err) {
       toast.dismiss(toastId);
-      toast.error(err.message);
+      const msg = err.message || 'Enrichment failed';
+      // Truncate if somehow it's still too long (e.g. 150 chars)
+      const displayMsg = msg.length > 150 ? msg.substring(0, 147) + '...' : msg;
+      toast.error(displayMsg);
     } finally {
       setEnrichingId(null);
     }

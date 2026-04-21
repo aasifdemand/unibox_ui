@@ -31,7 +31,6 @@ const WarmupSettingsModal = ({
 
   const handleSave = () => {
     onSave(mailbox.id, {
-      dailyLimit: parseInt(dailyLimit),
       replyRate: parseFloat(replyRate / 100),
       initialLimit: parseInt(initialLimit),
       incrementBy: parseInt(incrementBy),
