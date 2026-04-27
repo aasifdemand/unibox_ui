@@ -306,6 +306,19 @@ const ShowSender = ({
                         </div>
                     </div>
 
+                    <div className="bg-purple-50/50 border border-purple-100 rounded-xl p-4 flex items-start gap-4 mb-2">
+                        <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                            <Info className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="space-y-1">
+                            <h5 className="text-[11px] font-black text-purple-900 uppercase tracking-widest">Setup Guide</h5>
+                            <p className="text-xs font-semibold text-purple-700/80 leading-relaxed">
+                                Use <strong>Sending Settings</strong> for outbound mail and <strong>Receiving Settings</strong> to track replies. 
+                                Most providers (Gmail, Zoho, Outlook) require an <strong className="text-purple-900">App Password</strong> instead of your regular login.
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="bg-slate-50 p-1.5 rounded-2xl flex gap-1.5 border border-slate-200/60 shadow-inner">
                         {['smtp', 'imap'].map(t => (
                             <button
@@ -313,51 +326,72 @@ const ShowSender = ({
                              onClick={() => setSettingsTab(t)}
                              className={`flex-1 py-3 px-4 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all duration-300 transform active:scale-[0.98] ${settingsTab === t ? 'bg-white text-purple-600 shadow-md border border-slate-100 ring-4 ring-purple-500/5' : 'text-slate-500 hover:text-slate-800'}`}
                             >
-                                {t === 'smtp' ? 'Sending Settings' : 'Receiving Settings'}
+                                {t === 'smtp' ? 'Sending (SMTP)' : 'Receiving (IMAP)'}
                             </button>
                         ))}
                     </div>
 
                     <div className="grid grid-cols-2 gap-6 pb-2">
                         <div className="space-y-2">
-                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Host Server</label>
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">
+                                {settingsTab === 'smtp' ? 'SMTP Host' : 'IMAP Host'}
+                            </label>
                             <input
                               type="text"
                               value={settingsTab === 'smtp' ? smtpData.host : (smtpData.imapHost || '')}
                               onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'host' : 'imapHost']: e.target.value })}
                               className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
-                              placeholder={settingsTab === 'smtp' ? 'smtp.host.com' : 'imap.host.com'}
+                              placeholder={settingsTab === 'smtp' ? 'e.g. smtp.gmail.com' : 'e.g. imap.gmail.com'}
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Access Port</label>
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Port</label>
                             <input
                               type="number"
                               value={settingsTab === 'smtp' ? smtpData.port : (smtpData.imapPort || '')}
-                              onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'port' : 'imapPort']: e.target.value })}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                const portNum = parseInt(val);
+                                let newSecure = settingsTab === 'smtp' ? smtpData.secure : (smtpData.imapSecure || true);
+                                
+                                // Smart Auto-Toggle
+                                if (settingsTab === 'smtp') {
+                                    if (portNum === 465) newSecure = true;
+                                    else if (portNum === 587) newSecure = false;
+                                } else {
+                                    if (portNum === 993) newSecure = true;
+                                    else if (portNum === 143) newSecure = false;
+                                }
+
+                                setSmtpData({ 
+                                    ...smtpData, 
+                                    [settingsTab === 'smtp' ? 'port' : 'imapPort']: val,
+                                    [settingsTab === 'smtp' ? 'secure' : 'imapSecure']: newSecure
+                                });
+                              }}
                               className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
-                              placeholder={settingsTab === 'smtp' ? '587' : '993'}
+                              placeholder={settingsTab === 'smtp' ? '587 or 465' : '993'}
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Username / ID</label>
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Username</label>
                             <input
                               type="text"
                               value={settingsTab === 'smtp' ? smtpData.username : (smtpData.imapUser || '')}
                               onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'username' : 'imapUser']: e.target.value })}
                               className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all shadow-sm hover:border-slate-300"
-                              placeholder={settingsTab === 'smtp' ? 'Sender Username' : 'IMAP Username'}
+                              placeholder="your-email@domain.com"
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">Account Secret</label>
+                            <label className="block text-[13px] font-semibold text-slate-800 ml-1">App Password</label>
                             <div className="relative group/pass">
                                 <input
                                   type={showPassword ? 'text' : 'password'}
                                   value={settingsTab === 'smtp' ? smtpData.password : (smtpData.imapPassword || '')}
                                   onChange={(e) => setSmtpData({ ...smtpData, [settingsTab === 'smtp' ? 'password' : 'imapPassword']: e.target.value })}
                                   className="w-full h-12 px-4 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none pr-12 transition-all shadow-sm hover:border-slate-300"
-                                  placeholder="••••••••••••"
+                                  placeholder="Your unique app secret"
                                 />
                                 <button onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-600 transition-all p-1 hover:bg-purple-50 rounded-lg">
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -377,7 +411,7 @@ const ShowSender = ({
                                 />
                                 <div className="w-10 h-6 bg-slate-200 peer-checked:bg-purple-600 rounded-full transition-all duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all peer-checked:after:translate-x-4" />
                            </div>
-                           <span className="text-[10px] font-bold text-slate-500 uppercase">SSL/TLS Security</span>
+                           <span className="text-[10px] font-bold text-slate-500 uppercase">Secure Connection</span>
                         </label>
                         <div className="flex gap-3">
                              <button
