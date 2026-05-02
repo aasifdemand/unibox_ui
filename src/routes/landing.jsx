@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Mail,
@@ -789,7 +789,8 @@ const Landing = () => {
       </section>
 
       {/* ── CAMPAIGN FEATURES ── */}
-      <section className="py-28 px-6 bg-white relative overflow-hidden">
+      <section id="solutions" className="py-28 px-6 bg-white relative overflow-hidden">
+
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/30 rounded-full translate-y-1/2 -translate-x-1/4 blur-[80px]" />
 
         <div className="max-w-7xl mx-auto relative z-10">

@@ -43,9 +43,11 @@
 }
 
 html, body {
-  overflow: hidden;
   height: 100%;
+  scroll-behavior: smooth;
 }
+
+
 
 body {
   font-family: var(--font-sans);
