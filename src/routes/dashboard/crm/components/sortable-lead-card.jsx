@@ -1,6 +1,7 @@
 import React from 'react'
 import LeadCard from './lead-card';
 import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // ─── Sortable Lead Card wrapper ───────────────────────────────────────────────
 const SortableLeadCard = ({ lead, onOpen }) => {

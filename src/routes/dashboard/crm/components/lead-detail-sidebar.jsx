@@ -23,7 +23,7 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
   const [notes, setNotes] = useState(lead?.metadata?.notes || '');
 
   if (lead?.id !== prevLeadId) {
-    setPrevLeadId(lead.id);
+    setPrevLeadId(lead?.id);
     setValue(lead?.value != null ? String(lead.value) : '');
     setNotes(lead?.metadata?.notes || '');
   }
