@@ -64,26 +64,29 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md z-0"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-0"
           />
 
           {/* Sidebar */}
           <motion.div
-            initial={{ x: '100%', opacity: 0.9 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0.9 }}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
             transition={{ 
               type: 'spring', 
               damping: 30, 
               stiffness: 300,
-              mass: 0.8
+              mass: 1
             }}
-            className="relative w-full max-w-[480px] bg-white shadow-2xl h-full flex flex-col border-l border-slate-200 z-10 overflow-hidden outline-none focus:outline-none focus:ring-0"
+            className="relative w-full max-w-[420px] bg-white shadow-2xl h-full flex flex-col border-l border-slate-200 z-10 overflow-hidden outline-none"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-7 border-b border-slate-100 bg-white/80 backdrop-blur-xs sticky top-0 z-20">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-base font-black shadow-lg shadow-purple-500/20">
+            <div className="bg-linear-to-br from-purple-600 to-purple-700 p-6 relative overflow-hidden group shrink-0">
+              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+                <Briefcase className="w-20 h-20 text-white" />
+              </div>
+              <div className="relative flex items-center gap-4 pr-12">
+                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center border border-white/20 text-white text-lg font-black shadow-inner">
                   {contact?.name
                     ? contact.name
                         .split(' ')
@@ -92,87 +95,107 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                         .join('')
                     : '?'}
                 </div>
-                <div>
-                  <h3 className="font-black text-slate-900 text-lg leading-tight tracking-tight">
+                <div className="min-w-0">
+                  <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none truncate">
                     {contact?.name || 'Unknown Lead'}
                   </h3>
-                  <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-1">
+                  <p className="text-[9px] font-bold text-purple-100/60 uppercase tracking-widest mt-2 truncate">
                     {contact?.normalizedEmail}
                   </p>
                 </div>
               </div>
+              
               <button
                 onClick={onClose}
-                className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 border border-slate-100 transition-all active:scale-90 shadow-sm"
+                className="absolute top-6 right-6 w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center border border-white/10 transition-all active:scale-90 z-20 group/btn"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 text-white/80 group-hover/btn:text-white" />
               </button>
             </div>
 
             {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto px-8 py-8 space-y-8 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
               {/* Identity info */}
-              <div className="grid grid-cols-1 gap-4">
-                {meta.job_title && (
-                  <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100/50">
-                    <Briefcase className="w-4 h-4 text-purple-500 shrink-0" />
-                    <span className="font-bold text-slate-700 text-sm">{meta.job_title}</span>
-                  </div>
-                )}
-                {meta.company && (
-                  <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100/50">
-                    <Building2 className="w-4 h-4 text-purple-500 shrink-0" />
-                    <span className="font-bold text-slate-700 text-sm">{meta.company}</span>
-                  </div>
-                )}
-                {meta.phone && (
-                  <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100/50">
-                    <Phone className="w-4 h-4 text-purple-500 shrink-0" />
-                    <span className="font-bold text-slate-700 text-sm">{meta.phone}</span>
-                  </div>
-                )}
-                {meta.linkedin && (
-                  <a
-                    href={meta.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-4 bg-purple-50 rounded-xl border border-purple-100 group hover:bg-purple-100 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Globe className="w-4 h-4 text-purple-600 shrink-0" />
-                      <span className="font-bold text-purple-700 text-sm">LinkedIn Profile</span>
+              <div className="space-y-3">
+                <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">
+                  Lead Information
+                </label>
+                <div className="grid grid-cols-1 gap-3">
+                  {(meta.job_title || meta.company) && (
+                    <div className="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                      <div className="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+                        <Building2 className="w-3.5 h-3.5 text-purple-500" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Organization</p>
+                        <p className="text-xs font-bold text-slate-700 truncate">
+                          {meta.job_title ? `${meta.job_title} @ ` : ''}{meta.company || 'Unknown Co.'}
+                        </p>
+                      </div>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </a>
-                )}
+                  )}
+                  
+                  {meta.phone && (
+                    <div className="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-lg">
+                      <div className="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+                        <Phone className="w-3.5 h-3.5 text-purple-500" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Contact</p>
+                        <p className="text-xs font-bold text-slate-700">{meta.phone}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {meta.linkedin && (
+                    <a
+                      href={meta.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-4 bg-purple-50 border border-purple-100 rounded-lg group hover:bg-purple-100 transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-md bg-white border border-purple-100 flex items-center justify-center shadow-xs">
+                          <Globe className="w-3.5 h-3.5 text-purple-600" />
+                        </div>
+                        <span className="text-xs font-bold text-purple-700">LinkedIn Profile</span>
+                      </div>
+                      <ExternalLink className="w-3.5 h-3.5 text-purple-400 group-hover:text-purple-600 transition-colors" />
+                    </a>
+                  )}
+                </div>
               </div>
 
-              {/* Activity Info Card */}
-              <div className="relative p-6 bg-linear-to-br from-slate-900 to-slate-800 rounded-2xl shadow-xl shadow-slate-900/10 overflow-hidden group">
-                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-                  <Clock className="w-24 h-24 text-white" />
-                </div>
-                <div className="relative z-10">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">
-                    Engagement Timeline
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-white text-xs font-bold">Last Activity:</span>
-                    <span className="text-purple-400 text-base font-black tracking-tight">
+              {/* Engagement Timeline */}
+              <div className="space-y-3">
+                <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">
+                  Engagement
+                </label>
+                <div className="p-4 bg-purple-50 border border-purple-100 rounded-lg relative overflow-hidden group shadow-sm">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform pointer-events-none">
+                    <Clock className="w-16 h-16 text-purple-600" />
+                  </div>
+                  <div className="relative z-10">
+                    <p className="text-[8px] font-black text-purple-400 uppercase tracking-widest mb-1">Last Interaction</p>
+                    <p className="text-base font-black text-purple-600 tracking-tight">
                       {formatDate(lead.lastActivity)}
-                    </span>
+                    </p>
                   </div>
                 </div>
               </div>
 
               {/* Deal Value Input */}
               <div className="space-y-3">
-                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
-                  Estimated Deal Value
-                </label>
+                <div className="px-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                    Deal Value
+                  </label>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mt-0.5">
+                    Estimated monetary value of this lead.
+                  </p>
+                </div>
                 <div className="relative group">
-                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg transition-colors group-focus-within:text-purple-600">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm group-focus-within:text-purple-500">
                     $
                   </div>
                   <input
@@ -182,65 +205,58 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     placeholder="0.00"
-                    className="w-full pl-10 pr-6 py-4 bg-white border-2 border-slate-100 rounded-2xl text-lg font-black text-slate-900 focus:border-purple-500 focus:ring-8 focus:ring-purple-500/5 outline-none transition-all placeholder:text-slate-200"
+                    className="w-full h-11 pl-8 pr-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 placeholder:text-slate-300 focus:border-purple-500/50 focus:bg-white transition-all outline-none"
                   />
                 </div>
               </div>
 
               {/* Notes Area */}
               <div className="space-y-3">
-                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
-                  Strategic Notes
-                </label>
+                <div className="px-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                    Strategic Notes
+                  </label>
+                </div>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  rows={6}
+                  rows={8}
                   placeholder="Capture key insights about this lead..."
-                  className="w-full px-6 py-5 bg-white border-2 border-slate-100 rounded-2xl text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:border-purple-500 focus:ring-8 focus:ring-purple-500/5 outline-none transition-all resize-none shadow-inner"
+                  className="w-full p-5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 placeholder:text-slate-300 focus:border-purple-500/50 focus:bg-white transition-all outline-none resize-none min-h-[160px]"
                 />
               </div>
 
               {/* Enrichment metadata */}
               {meta._enrichedAt && (
-                <div className="p-6 bg-linear-to-br from-purple-50 to-indigo-50 rounded-2xl border border-purple-100 relative overflow-hidden">
-                  <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-purple-500/5 rounded-full blur-xl"></div>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white shadow-sm">
-                        <DollarSign className="w-3.5 h-3.5" />
-                      </div>
-                      <p className="text-xs font-black text-purple-900 uppercase tracking-tight">
-                        AI Data Enrichment
+                <div className="p-4 bg-linear-to-br from-purple-50 to-indigo-50 border border-purple-100 rounded-lg relative overflow-hidden">
+                  <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-purple-500/5 rounded-full blur-xl"></div>
+                  <div className="relative z-10 flex items-start gap-3">
+                    <div className="w-8 h-8 bg-white border border-purple-100 rounded-md flex items-center justify-center text-purple-600 shrink-0 shadow-xs">
+                      <DollarSign className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-purple-900 uppercase tracking-tight">AI Data Enrichment</p>
+                      <p className="text-[9px] text-purple-600/70 font-bold leading-relaxed mt-0.5">
+                        Sourced via {Array.isArray(meta._enrichedBy) ? meta._enrichedBy.join(', ') : meta._enrichedBy} on {formatDate(meta._enrichedAt)}
                       </p>
                     </div>
-                    <p className="text-xs text-purple-600/80 font-bold leading-relaxed">
-                      Intelligence sourced via{' '}
-                      <span className="text-purple-700 underline decoration-2 underline-offset-2">
-                        {Array.isArray(meta._enrichedBy)
-                          ? meta._enrichedBy.join(', ')
-                          : meta._enrichedBy}
-                      </span>{' '}
-                      on {formatDate(meta._enrichedAt)}
-                    </p>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Footer Action */}
-            <div className="px-8 py-6 border-t border-slate-100 bg-white/80 backdrop-blur-md sticky bottom-0 z-20">
+            <div className="p-6 border-t border-slate-100 bg-slate-50/50 shrink-0">
                 <button
                   onClick={handleSave}
                   disabled={updateLead.isPending}
-                  className="w-full py-4 bg-slate-900 hover:bg-black text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-[0.97] flex items-center justify-center gap-3 shadow-xl shadow-slate-900/10 disabled:opacity-50 group"
+                  className="w-full h-11 bg-purple-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest shadow-lg shadow-purple-500/10 hover:bg-purple-500 hover:-translate-y-px transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 group"
                 >
                   {updateLead.isPending ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <>
-                      <Save className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <Save className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                       Save Intelligence
                     </>
                   )}
@@ -255,5 +271,3 @@ const LeadDetailSidebar = ({ lead, onClose }) => {
 };
 
 export default LeadDetailSidebar;
-
-
